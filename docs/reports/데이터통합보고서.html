@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimeFit 데이터 타당성·아키텍처 통합 보고서</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#171d26; --panel2:#1e2630; --line:#2a3340;
+    --txt:#e6edf3; --muted:#9aa7b4; --accent:#4cc2ff; --accent2:#7ee787;
+    --use:#2ea043; --maybe:#d29922; --avoid:#cf3b3b; --crit:#f85149;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",Segoe UI,Roboto,sans-serif;
+    line-height:1.65;font-size:15px}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 80px}
+  header.top{border-bottom:2px solid var(--line);padding-bottom:20px;margin-bottom:28px}
+  h1{font-size:27px;margin:0 0 6px;letter-spacing:-.3px}
+  h1 .em{color:var(--accent)}
+  .sub{color:var(--muted);font-size:14px}
+  .meta-line{margin-top:10px;font-size:12.5px;color:var(--muted)}
+  .meta-line b{color:var(--txt)}
+  h2{font-size:20px;margin:42px 0 14px;padding-left:11px;border-left:4px solid var(--accent)}
+  h3{font-size:16px;margin:26px 0 10px;color:#cdd9e5}
+  p{margin:10px 0}
+  .lead{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:18px 0}
+  .lead b{color:var(--accent2)}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.3px;background:var(--panel);border-radius:10px;overflow:hidden}
+  th,td{padding:9px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel2);color:#bcc8d4;font-weight:600;font-size:12.5px;white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  td.num{text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .badge{display:inline-block;padding:1px 9px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap}
+  .b-use{background:rgba(46,160,67,.18);color:#56d364;border:1px solid #2ea04366}
+  .b-maybe{background:rgba(210,153,34,.16);color:#e3b341;border:1px solid #d2992266}
+  .b-avoid{background:rgba(207,59,59,.15);color:#f08a8a;border:1px solid #cf3b3b55}
+  .b-crit{background:rgba(248,81,73,.18);color:#ff7b72;border:1px solid #f8514955}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .card h4{margin:0 0 8px;font-size:14.5px;color:var(--accent)}
+  .kpi{display:flex;gap:14px;flex-wrap:wrap;margin:16px 0}
+  .kpi .box{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .big{font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .kpi .lbl{font-size:12px;color:var(--muted);margin-top:2px}
+  .pill{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin-left:6px}
+  ul{margin:8px 0;padding-left:20px}
+  li{margin:5px 0}
+  code{background:#11161d;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12.5px;color:#9ad1ff;font-family:"SF Mono",Menlo,Consolas,monospace}
+  .flow{background:#0c1117;border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:12.7px;color:#c9d3de;white-space:pre-wrap;overflow-x:auto;line-height:1.7}
+  .note{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);margin-top:10px;padding-top:8px}
+  .warn{background:rgba(210,153,34,.1);border:1px solid #d2992244;border-radius:10px;padding:12px 16px;font-size:13px;color:#e3b341;margin:14px 0}
+  .ok{color:#56d364;font-weight:700}
+  .bad{color:#ff7b72;font-weight:700}
+  footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+  .tag{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 9px;font-size:11.5px;color:var(--muted);margin:2px 4px 2px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1><span class="em">TimeFit</span> — 데이터 타당성 · 시간-적합 엔진 아키텍처 <span style="font-size:16px;color:var(--muted)">통합 보고서</span></h1>
+  <div class="sub">붕 뜬 시간 안에 <b style="color:#cdd9e5">실제로 가능한 미니 코스</b>를 짜주는 짬-플래너 · 전국 · React Native · 1인 개발</div>
+  <div class="meta-line">
+    작성 <b>2026-06-15</b> · 마감 <b>2026-09-21</b> · 근거: <b>TourAPI 라이브 검증</b>(serviceKey) +
+    멀티에이전트 조사 <b>2건</b>(<code>timefit-data-research</code> 5에이전트 / <code>dwell-source-cost-sweep</code> 4에이전트)
+  </div>
+</header>
+
+<!-- ===== EXEC SUMMARY ===== -->
+<div class="lead">
+  <b>핵심 결론.</b> 시간-적합 계산의 심장인 3대 입력(체류·이동·혼잡) 중 <b>TourAPI가 안정적으로 주는 것은 0개</b>다.
+  그러나 라이브 검증 결과 <b>운영시간은 90~100% 실재</b>해 "지금 열려있나" 게이트는 탄탄하고,
+  남은 결손(체류·이동)은 <b>무료 데이터 + 휴리스틱으로 메울 수 있는 엔지니어링 문제</b>임이 확인됐다.
+  per-POI 체류시간을 주는 무료 OpenAPI는 사실상 없으며(전부 지역단위거나 dwell 아님), 유료 전수는 비현실적($24k+/년).
+  → <b>정적 카테고리 테이블을 1차 진실원</b>으로, AI-Hub 여행로그로 실측 보정, BestTime은 상위 POI만.
+  <b>월 운용비 $0(MVP), 옵션 $29.</b> 시간-적합 엔진은 <span class="ok">9/21 마감 내 실현 가능</span>.
+</div>
+
+<div class="kpi">
+  <div class="box"><div class="big" style="color:#56d364">90–100%</div><div class="lbl">TourAPI 운영시간 채움률 (라이브 검증)</div></div>
+  <div class="box"><div class="big" style="color:#ff7b72">0개</div><div class="lbl">per-POI 체류시간 주는 무료 API</div></div>
+  <div class="box"><div class="big">$0–29</div><div class="lbl">체류 데이터 월 운용비 (MVP–옵션)</div></div>
+  <div class="box"><div class="big" style="color:var(--accent)">TMAP</div><div class="lbl">이동시간 1순위 (1000콜/일/모드 무료)</div></div>
+</div>
+
+<!-- ===== 1. LIVE VERIFICATION ===== -->
+<h2>1. TourAPI 라이브 검증 결과</h2>
+<p>유효 serviceKey로 전국 5개 시도 표본을 직접 호출(<code>scripts/verify_tourapi.mjs</code>, <code>probe_dwell_fields.mjs</code>).
+필드 스키마 → 채움률 샘플링 → 전체 필드 덤프, <b>3중 확인 일치</b>.</p>
+
+<h3>1-A. 운영시간/휴무 — <span class="ok">예상보다 탄탄</span></h3>
+<table>
+  <tr><th>contentType</th><th>운영시간 필드 / 채움률</th><th>휴무</th><th>per-POI 체류시간</th></tr>
+  <tr><td>관광지(12)</td><td class="num"><code>usetime</code> <b class="ok">90%</b></td><td class="num">restdate 93%</td><td><span class="badge b-avoid">필드 없음</span></td></tr>
+  <tr><td>문화시설(14)</td><td class="num"><code>usetimeculture</code> <b class="ok">100%</b></td><td class="num">100%</td><td><code>spendtime</code> <b class="bad">10%</b> (무용)</td></tr>
+  <tr><td>음식점(39)</td><td class="num"><code>opentimefood</code> <b class="ok">100%</b></td><td class="num">97%</td><td><span class="badge b-avoid">필드 없음</span></td></tr>
+  <tr><td>쇼핑(38)</td><td class="num"><code>opentime</code> <b class="ok">97%</b></td><td class="num">97%</td><td><span class="badge b-avoid">필드 없음</span></td></tr>
+  <tr><td>여행코스(25)</td><td class="num"><code>taketime</code> 90% · schedule 100%</td><td class="num">distance 97%</td><td>코스 <b>전체</b> 소요(per-POI 아님)</td></tr>
+  <tr><td>레포츠(28)</td><td class="num"><code>usetimeleports</code> 90%</td><td class="num">openperiod 0%</td><td><span class="badge b-avoid">필드 없음</span></td></tr>
+</table>
+
+<div class="warn">
+<b>확정: TourAPI에 관광지별(per-POI) 체류시간 데이터는 없다.</b> 6개 타입 전체 필드 덤프 + 여행코스 구성지점(<code>detailInfo2</code>)까지 확인한 결과,
+체류시간으로 잡힌 값은 모두 <b>운영시간(usetime류)</b>이거나 false positive였다. 여행코스를 쪼개도 구성지점별 소요시간은 없음(이름·개요·이미지뿐).
+</div>
+
+<h3>1-B. 집중률(15128555) 프로빙</h3>
+<p><code>TatsCnctrRateService</code> → <b>403</b>(데이터셋 활용신청 미승인 추정), 다른 후보 500/404.
+정확 경로 확정 후 <b>활용신청</b> 필요. 단 혼잡은 <i>표시 상품이 아닌 보정 재료</i>라 <b>MVP 블로킹 아님</b>.</p>
+
+<!-- ===== 2. ENGINE ARCH ===== -->
+<h2>2. 시간-적합 엔진 데이터 아키텍처</h2>
+<div class="flow">시간-적합(후보) = Σ(이동시간 + 유효체류시간) + 운영시간게이트  ≤  남은시간 − 안전버퍼(10~15%)
+유효체류시간 = 기본체류 × 혼잡배수            (※ 이동시간엔 혼잡배수 미적용)</div>
+
+<table>
+  <tr><th>입력</th><th>1순위 소스</th><th>Fallback (순서)</th><th>확신도</th></tr>
+  <tr><td><b>체류시간</b></td><td>카테고리 정적 테이블(상수)</td><td>① AI-Hub 실측 보정 → ② TourAPI 14/25 정규식 추출 → ③ 상위 N개만 BestTime</td><td><span class="badge b-use">High</span></td></tr>
+  <tr><td><b>이동시간</b></td><td>TMAP walk/car/transit (1000콜/일/모드 무료)</td><td>① haversine×우회÷속도+고정(무제한·무료) → ② ODsay 보조</td><td><span class="badge b-maybe">Medium</span></td></tr>
+  <tr><td><b>혼잡</b></td><td>시간대×요일 정적 배수(전국·무료)</td><td>① 서울 citydata 실시간(+0.3) → ② 15128555 피크 ×1.1 → ③ 상위 N개 BestTime</td><td><span class="badge b-maybe">Medium</span></td></tr>
+  <tr><td><b>운영시간</b></td><td>TourAPI <code>detailIntro2</code> (90~100% 검증됨)</td><td>① 정규식 2패턴 → ② 미상시 기본운영(매일 09:00~18:00)+"미확인" 배지</td><td><span class="badge b-maybe">Medium</span></td></tr>
+</table>
+<p class="note">per-POI 정밀화: 카테고리 키는 <code>contentTypeId</code>(8종)가 아니라 <code>cat1/cat2/cat3</code> 신분류코드로 잡아 같은 관광지(12) 안에서도 박물관/전망대/해변을 구분한다.</p>
+
+<!-- ===== 3. DWELL COST ===== -->
+<h2>3. 체류시간 데이터 소스 · 비용 비교 <span class="pill">TourAPI 외 전수 탐색</span></h2>
+<p>한국 공공 / 글로벌 상용 / 지도·모빌리티 OpenAPI를 멀티에이전트로 전수 서치 + 비용 비교한 결과:</p>
+<table>
+  <tr><th>소스</th><th>단위</th><th>한국 커버리지</th><th>비용</th><th>1인</th><th>판정</th></tr>
+  <tr><td><b>AI-Hub 국내여행로그</b></td><td>POI</td><td>전국(4권역)</td><td><b class="ok">무료</b> 다운로드</td><td class="num">○</td><td><span class="badge b-use">채택</span></td></tr>
+  <tr><td>한국관광 데이터랩 (KT/SKT)</td><td>지역(시군구)</td><td>전국</td><td>무료 API 1000건/일</td><td class="num">○</td><td><span class="badge b-maybe">보정용</span></td></tr>
+  <tr><td>BestTime.app</td><td>POI</td><td>150개국(KR 검증필요)</td><td>$0 / <b>$29</b> / Ent $2000+/월</td><td class="num">○</td><td><span class="badge b-maybe">상위후보</span></td></tr>
+  <tr><td>집중률 15128555 (KT)</td><td>POI근접</td><td>전국 주요</td><td>무료</td><td class="num">○</td><td><span class="badge b-avoid">dwell 아님</span></td></tr>
+  <tr><td>주요관광지점 입장객통계</td><td>POI</td><td>전국 유료지점</td><td>무료</td><td class="num">○</td><td><span class="badge b-avoid">입장객수만</span></td></tr>
+  <tr><td>서울 생활인구/유동인구</td><td>지역(격자)</td><td><b class="bad">서울만</b></td><td>무료</td><td class="num">○</td><td><span class="badge b-avoid">서울 한정</span></td></tr>
+  <tr><td>Google Places (New)</td><td>POI</td><td>전국</td><td>$5~32/1k · dwell 없음</td><td class="num">○</td><td><span class="badge b-avoid">dwell 없음</span></td></tr>
+  <tr><td>Kakao / Naver / Apple / TMAP</td><td>POI</td><td>전국</td><td>무료~유료 · dwell 없음</td><td class="num">○</td><td><span class="badge b-avoid">dwell 없음</span></td></tr>
+  <tr><td>Foursquare Places</td><td>POI</td><td>약함</td><td>무료 500콜 · dwell 없음</td><td class="num">○</td><td><span class="badge b-avoid">dwell 없음</span></td></tr>
+  <tr><td>KT BigSight TrIP</td><td>지역(시군구)</td><td>전국</td><td><b class="bad">₩2,000만~5,000만</b></td><td class="num">✗</td><td><span class="badge b-avoid">비현실</span></td></tr>
+  <tr><td>SKT 지오비전 퍼즐</td><td>지역(50m격자)</td><td>전국</td><td>유료 B2B 견적</td><td class="num">✗</td><td><span class="badge b-avoid">비현실</span></td></tr>
+  <tr><td>Placer.ai</td><td>POI</td><td><b class="bad">미국 only</b></td><td>$12k~50k+/년</td><td class="num">✗</td><td><span class="badge b-avoid">비현실</span></td></tr>
+  <tr><td>Advan/Veraset/Unacast 등</td><td>POI/지역</td><td>US 중심</td><td>$40k+/년</td><td class="num">✗</td><td><span class="badge b-avoid">비현실</span></td></tr>
+</table>
+
+<div class="grid2">
+  <div class="card">
+    <h4>채택 스택 (무료/유료 경계)</h4>
+    <div class="flow" style="font-size:12px">[무료 — 전국 전수, 항상 ON]
+ ① AI-Hub 여행로그 → POI별 실측 dwell
+ ② 세분류 카테고리 기준값(①서 학습)
+ ③ 데이터랩 지역평균으로 ±보정
+   ⇒ POI매칭값 &gt; (카테고리×지역보정) 폴백
+
+──── 유료 경계 ($0 → 옵션 $29) ────
+
+[유료 — 상위 인기 POI 한정]
+ ④ BestTime Basic $29/월
+   ※ KR 커버리지 사전검증 통과시만</div>
+  </div>
+  <div class="card">
+    <h4>"전국 전수 유료 dwell = 비현실" 비용 재확인</h4>
+    <ul>
+      <li>BestTime Ent 전수 = 연 <b class="bad">$24,000+</b></li>
+      <li>BestTime Basic($29)은 호출/POI 제한 → 전수 불가, 구조적으로 "상위 보정"용</li>
+      <li>KT/SKT/Placer = 1회 수천만원~연 $50k, 게다가 <b>지역단위</b></li>
+      <li>→ 전국 전수의 유일한 현실해 = <b class="ok">무료 자체추정</b></li>
+    </ul>
+    <p class="note">원 명제(정적 테이블 1차) 비용근거로 타당성 확정.</p>
+  </div>
+</div>
+
+<!-- ===== 3.5 AIHUB ===== -->
+<h2>3-B. AI-Hub 국내여행로그 — 체류시간 실측 엔진 <span class="pill">★ 핵심 데이터</span></h2>
+<div class="lead">
+  <b>판정: 추출 가능(yes).</b> 4권역(수도권·동부권·서부권·제주도서) 동일 스키마로, 핵심 테이블
+  <code>tn_visit_area_info</code>에 <b>per-POI 체류시간 <code>RESIDENCE_TIME_MIN</code></b>(또는 방문 종료−시작),
+  POI 식별(<code>VISIT_AREA_NM</code>·좌표·<code>VISIT_AREA_TYPE_CD</code>), 만족도(<code>DGSTFN</code>)를 담는다.
+  전국 합산 여행자 <b>12,800~16,000명</b>. 무료. → <b>카테고리 체류 테이블 실측 보정 + 요일×시간대 혼잡배수</b>를 둘 다 도출 가능.
+</div>
+<table>
+  <tr><th>목표 요소</th><th>가능</th><th>근거 필드</th></tr>
+  <tr><td>좌표 / 이름 / 카테고리</td><td class="num"><b class="ok">✅</b></td><td><code>X/Y_COORD</code> · <code>VISIT_AREA_NM</code> · <code>VISIT_AREA_TYPE_CD</code></td></tr>
+  <tr><td><b>체류시간(분)</b></td><td class="num"><b class="ok">✅</b></td><td><code>RESIDENCE_TIME_MIN</code> 또는 방문 종료−시작</td></tr>
+  <tr><td>방문요일 / 계절</td><td class="num"><b class="ok">✅</b></td><td><code>VISIT_START_YMD</code> 파생</td></tr>
+  <tr><td>만족도</td><td class="num"><b class="ok">✅</b></td><td><code>DGSTFN</code>(1~5) + 재방문/추천의향</td></tr>
+  <tr><td><b>방문 시간대(hour)</b></td><td class="num"><b style="color:#e3b341">⚠️</b></td><td>방문시작 <b>시각 해상도</b> 필요(없으면 사진 EXIF·GPS 폴백)</td></tr>
+</table>
+<div class="grid2">
+  <div class="card">
+    <h4>추출 파이프라인</h4>
+    <div class="flow" style="font-size:11.5px">[1] 4권역 다운로드(내국인인증)→병합
+[2] tn_visit_area_info union
+[3] TYPE_CD(+TC_CODEB)→카테고리 매핑
+[4] 클리닝(이상치·시각차 검증)
+[5] 명칭+좌표 클러스터링→고유 POI_ID
+[6] 카테고리/POI별 mean·median·p25·p75
+[7] 요일×시간대 혼잡 매트릭스
+[8] category_dwell / poi_dwell / congestion .json</div>
+  </div>
+  <div class="card" style="border-color:#d2992244">
+    <h4 style="color:#e3b341">검증 게이트</h4>
+    <ul>
+      <li><b>시각 해상도</b> 시:분 포함? (최우선 게이트)</li>
+      <li><code>RESIDENCE_TIME_MIN</code> 존재·단위(분)</li>
+      <li><code>TC_CODEB</code> 코드표(음식점/카페 분리) · 좌표계(WGS84/TM)</li>
+      <li>표본=여행자 다이어리 → 절대값보다 <b>상대비·배수</b>로 사용</li>
+    </ul>
+  </div>
+</div>
+
+<h3>3-B-2. 상업 앱 배포 라이선스 — <span class="badge b-maybe">조건부 GO</span></h3>
+<p>AI-Hub 이용정책 ★ <i>"데이터로 만든 AI모델·서비스는 출처표시 시 자유롭게 배포·영리 판매 가능"</i> → 상업 배포 허용.
+단 <b>AI-Hub 약관 + CC-BY-SA-4.0 누적 적용</b>(약관이 더 빡빡한 게이트).</p>
+<table>
+  <tr><th>쟁점</th><th>판정</th></tr>
+  <tr><td>상업 이용</td><td><span class="badge b-use">허용</span> 약관·CC 둘 다 NC 아님</td></tr>
+  <tr><td>원본 데이터 앱 임베드</td><td><span class="badge b-avoid">금지</span> 원본 유출·재가공 배포 불가</td></tr>
+  <tr><td><b>집계 통계값만 내장</b></td><td><span class="badge b-use">조건부 가능</span> 사실·소수통계 → ShareAlike 전파 안 됨</td></tr>
+  <tr><td>POI별 통계 대량 탑재</td><td><span class="badge b-maybe">그레이존</span> 재식별 시 '재가공 배포' 위험</td></tr>
+</table>
+<div class="card" style="border-color:#2ea04344;margin-top:10px">
+  <h4 style="color:#56d364">안전 사용 5조건</h4>
+  <span class="tag">① 집계 파라미터만 앱 내장(원본·원시DB 미탑재)</span>
+  <span class="tag">② 출처표시 3종(AI-Hub/NIA·데이터웨이·한국관광공사)+CC-BY-SA 링크</span>
+  <span class="tag">③ 내국인 명의 신청</span>
+  <span class="tag">④ POI별은 고집계·최소화</span>
+  <span class="tag">⑤ 출품 전 운영사무국·공모전 사무국 서면 질의</span>
+</div>
+<p class="note">⚠️ 필드명은 선행 2022 DACON 스키마 기반 <b>추정</b> — 실제 CSV 헤더 확정 필요. 라이선스는 <b>법률 자문 아님</b>(약관·조항 사실확인).
+다음 액션: <b>서부권 71779 샘플(비신청)로 시각 해상도·<code>RESIDENCE_TIME_MIN</code>·코드표 확정</b> → 4권역 일괄 활용신청 + 사무국 서면 질의.</p>
+
+<!-- ===== 4. DWELL TABLE ===== -->
+<h2>4. 카테고리별 기본 체류시간 테이블 <span class="pill">MVP 기본값 · AI-Hub로 실측 보정</span></h2>
+<p><code>typical</code> = 계산 기본값, <code>min/max</code> = 마진/표시. AI-Hub 실측으로 분기 보정 예정.</p>
+<table>
+  <tr><th>카테고리</th><th>typical</th><th>min</th><th>max</th><th>근거</th></tr>
+  <tr><td>카페</td><td class="num">45</td><td class="num">25</td><td class="num">90</td><td>한국 카페 길어 보수적</td></tr>
+  <tr><td>식당(일반)</td><td class="num">60</td><td class="num">40</td><td class="num">90</td><td>1식사 단위</td></tr>
+  <tr><td>패스트푸드/분식</td><td class="num">25</td><td class="num">15</td><td class="num">40</td><td></td></tr>
+  <tr><td>전통시장</td><td class="num">40</td><td class="num">20</td><td class="num">70</td><td>회유형</td></tr>
+  <tr><td>전망대</td><td class="num">30</td><td class="num">15</td><td class="num">50</td><td>사진·조망 단발성</td></tr>
+  <tr><td>박물관</td><td class="num">60</td><td class="num">30</td><td class="num">110</td><td>museum study ≈57.6분</td></tr>
+  <tr><td>미술관</td><td class="num">60</td><td class="num">30</td><td class="num">100</td><td>특별전 75~90분</td></tr>
+  <tr><td>공원</td><td class="num">45</td><td class="num">20</td><td class="num">90</td><td>면적 의존</td></tr>
+  <tr><td>산책로/둘레길</td><td class="num">60</td><td class="num">30</td><td class="num">120</td><td><b>거리÷4km/h 동적 산출 우선</b></td></tr>
+  <tr><td>해변</td><td class="num">60</td><td class="num">30</td><td class="num">120</td><td>시즌·날씨 의존</td></tr>
+  <tr><td>쇼핑몰/백화점</td><td class="num">75</td><td class="num">45</td><td class="num">120</td><td>통념 60~90분</td></tr>
+  <tr><td>사찰</td><td class="num">40</td><td class="num">20</td><td class="num">70</td><td>규모 의존</td></tr>
+  <tr><td>편의점/매점</td><td class="num">5</td><td class="num">3</td><td class="num">10</td><td>convenience 3~5분</td></tr>
+</table>
+
+<!-- ===== 5. CONGESTION + TRAVEL ===== -->
+<h2>5. 혼잡 배수 · 이동시간 계수</h2>
+<div class="warn">⚠️ 혼잡(아래)은 조사 결과 일부 손상으로 도착해 <b>초안(저확신)</b>으로 격리한다. 라이브 검증 전 확정 금지.</div>
+
+<h3>5-A. 시간대×요일 혼잡 배수 (L0, 전국·무료·정적)</h3>
+<p><code>유효체류 = 기본체류 × mult</code>, clamp <b>0.8~1.8</b>, 이동시간 미적용.</p>
+<table>
+  <tr><th>카테고리</th><th>평일점심</th><th>평일 그외</th><th>주말점심</th><th>주말 오후/저녁</th><th>캡</th></tr>
+  <tr><td>식당</td><td class="num">1.5</td><td class="num">1.0</td><td class="num">1.7</td><td class="num">1.4</td><td class="num">1.6</td></tr>
+  <tr><td>카페</td><td class="num">1.2</td><td class="num">1.0</td><td class="num">1.4</td><td class="num">1.3</td><td class="num">1.6</td></tr>
+  <tr><td>전통시장</td><td class="num">1.2</td><td class="num">1.0</td><td class="num">1.4</td><td class="num">1.3</td><td class="num">1.6</td></tr>
+  <tr><td>박물관/미술관</td><td class="num">1.1</td><td class="num">1.0</td><td class="num">1.3</td><td class="num">1.2</td><td class="num">1.3</td></tr>
+  <tr><td>쇼핑몰/백화점</td><td class="num">1.1</td><td class="num">1.0</td><td class="num">1.3</td><td class="num">1.3</td><td class="num">1.4</td></tr>
+  <tr><td>공원/산책로</td><td class="num">1.0</td><td class="num">0.9</td><td class="num">1.2</td><td class="num">1.1</td><td class="num">1.2</td></tr>
+  <tr><td>전망대</td><td class="num">1.0</td><td class="num">1.0</td><td class="num">1.2</td><td class="num">1.2</td><td class="num">1.2</td></tr>
+  <tr><td>해변</td><td class="num">1.0</td><td class="num">1.0</td><td class="num">1.3</td><td class="num">1.2</td><td class="num">1.3</td></tr>
+  <tr><td>사찰</td><td class="num">1.0</td><td class="num">1.0</td><td class="num">1.1</td><td class="num">1.1</td><td class="num">1.2</td></tr>
+</table>
+<p class="note">L1 서울 citydata 실시간 +0.3 / 15128555 피크 ×1.1 (서울 외 지역은 L0 정적만). L2 안전버퍼 +15%. 날씨: 해변·공원 우천 ×0.8.</p>
+
+<h3>5-B. 이동시간 — TMAP 단일벤더 + 휴리스틱 가지치기</h3>
+<p>비용가드: 반경 축소 → haversine 휴리스틱 가지치기 → 살아남은 상위 구간만 TMAP 호출 → 좌표쌍 캐시.</p>
+<table>
+  <tr><th>모드</th><th>우회계수</th><th>속도</th><th>고정시간</th><th>메모</th></tr>
+  <tr><td>도보</td><td class="num">1.25</td><td class="num">4.5 km/h</td><td class="num">0</td><td><b>800m 미만 무조건 도보</b></td></tr>
+  <tr><td>자동차</td><td class="num">1.3</td><td class="num">25 km/h</td><td class="num">+3분</td><td>시내</td></tr>
+  <tr><td>대중교통</td><td class="num">1.4</td><td class="num">18 km/h</td><td class="num">+7분</td><td>대기·환승 포함</td></tr>
+</table>
+<p class="note">러시(평일 점심/저녁 피크) ×1.2~1.4. 계수는 라이브 TMAP ETA로 캘리브레이션. ODsay 2순위. <b>Naver/Kakao는 MVP 제외</b>(마스터계정·사업계약 제약).</p>
+
+<!-- ===== 6. CUTLINE ===== -->
+<h2>6. 9/21 마감 컷라인</h2>
+<div class="grid2">
+  <div class="card">
+    <h4 style="color:#56d364">MVP — 이것만 있으면 출시 (월 $0)</h4>
+    <ul>
+      <li>카테고리 정적 체류 테이블 (§4)</li>
+      <li>시간대×요일 정적 혼잡 배수 (§5-A, 서울 실시간 없이)</li>
+      <li>TMAP + haversine 휴리스틱 이동 (§5-B)</li>
+      <li>TourAPI 운영시간 정규식 2패턴 + 미상 기본운영 가정</li>
+      <li>안전버퍼 10~15% 시간-적합 식</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="color:#e3b341">Post-MVP — 있으면 좋음</h4>
+    <ul>
+      <li>AI-Hub 여행로그 dwell 실측 보정</li>
+      <li>BestTime $29/월 상위 POI dwell/혼잡 보정</li>
+      <li>서울 citydata 실시간 혼잡</li>
+      <li>LLM 운영시간 텍스트 정제 (상위 N개 batch)</li>
+      <li>원격 config 실측 피드백 루프 · ODsay 대중교통</li>
+    </ul>
+  </div>
+</div>
+<div class="card" style="margin-top:14px;border-color:#f8514944">
+  <h4 style="color:#ff7b72">절대 컷 — 시도 금지</h4>
+  <span class="tag">외부 dwell API 전국 전수</span>
+  <span class="tag">LLM 전수 운영시간 정제</span>
+  <span class="tag">KT/SKT/카드사 엔터프라이즈 빅데이터</span>
+  <span class="tag">Placer.ai 등 미국 중심 상용</span>
+  <span class="tag">Naver/Kakao 이동 API (계약·마스터계정)</span>
+  <span class="tag">Popular Times 스크레이퍼 (ToS)</span>
+</div>
+
+<!-- ===== 7. CHECKLIST ===== -->
+<h2>7. 라이브 검증 남은 체크리스트</h2>
+<table>
+  <tr><th>대상</th><th>검증 항목</th><th>용도</th></tr>
+  <tr><td>TourAPI</td><td>운영시간 fill-rate 대규모 표본(수천 건)</td><td>게이트 신뢰성</td></tr>
+  <tr><td>TourAPI</td><td>14 spendtime / 25 taketime 단위 일관성·결측, 빈문자열 vs 키누락 비율</td><td>파서 분기</td></tr>
+  <tr><td>TourAPI</td><td>운영시간 텍스트 표현분포(브레이크타임/동절기/라스트오더/요일휴무)</td><td>정규식 커버리지·LLM 비용</td></tr>
+  <tr><td>TMAP</td><td>초과요금률·한도 단위, 실 ETA로 휴리스틱 계수 캘리브레이션</td><td>비용·정확도</td></tr>
+  <tr><td>혼잡</td><td>서울 citydata 포맷·갱신주기, 15128555 입도(일단위) 확정 + 활용신청</td><td>L1 레이어</td></tr>
+  <tr><td>AI-Hub</td><td>국내여행로그 dwell 필드 구조·POI 매칭률·권역 커버리지</td><td>체류 1차 엔진</td></tr>
+  <tr><td>BestTime</td><td>(선택) 무료 크레딧·한국 비수도권 dwell_avg 결측률</td><td>유료 채택 판단</td></tr>
+  <tr><td>LLM</td><td>모델ID·요금은 <code>claude-api</code> 스킬로 라이브 확인(메모리 금지)</td><td>운영시간 정제 비용</td></tr>
+</table>
+
+<footer>
+  TimeFit 데이터 통합 보고서 · 2026-06-15 · 근거 산출물: <code>데이터타당성검증.md</code> ·
+  <code>데이터아키텍처.md</code> · <code>scripts/verify_tourapi.mjs</code> · <code>scripts/probe_dwell_fields.mjs</code> ·
+  멀티에이전트 워크플로우 <code>timefit-data-research</code> / <code>dwell-source-cost-sweep</code>
+</footer>
+
+</div>
+</body>
+</html>
