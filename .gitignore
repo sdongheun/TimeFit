@@ -1,0 +1,19 @@
+# 비밀키
+.env
+.env.local
+.env.*.local
+
+# 의존성
+node_modules/
+
+# AI-Hub 원본 데이터 (CC-BY-SA: 원본 재배포 금지 → 커밋 금지!)
+data/raw/
+data/aihub_donbu/
+# ※ 집계 산출물 data/processed/ 는 커밋 OK (사실·통계 파라미터)
+
+# macOS / 에디터
+.DS_Store
+*.log
+
+# 도구 설정
+.claude/

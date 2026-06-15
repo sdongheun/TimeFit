@@ -1,0 +1,110 @@
+# TimeFit — 짬-시간 AI 플래너
+
+> **"붕 뜬 시간(예: 2시간)에, 이동·체류·혼잡·운영시간까지 따져 *진짜 가능한* 미니 코스를 짜주는 앱."**
+> 2026 관광데이터 활용 공모전(KTO+카카오) 웹·앱 부문 · 전국(부산·김해 우선) · React Native · 1인 · 마감 **2026-09-21**
+
+---
+
+## 📁 폴더 구조
+
+```
+TimeFit/
+├── README.md                       ← 전체 인덱스(지금 이 문서)
+├── docs/
+│   ├── 01_concept/                 앱 컨셉·여정
+│   │   ├── 앱컨셉.md                  무엇을 만드나(기능·로직·차별점)
+│   │   └── 프로젝트여정.md            왜 이 방향인가(공모전·AR포기·전환)
+│   ├── 02_data/                    데이터 전략(핵심)
+│   │   ├── 데이터아키텍처.md          ⭐ 시간-적합 엔진 + 최종 데이터소스 결정
+│   │   ├── 데이터타당성검증.md        TourAPI 라이브 검증 결과
+│   │   ├── AI허브_체류시간데이터.md   ⭐ 체류시간 추출·검증·라이선스·대안·매칭
+│   │   └── TourAPI카탈로그.md         TourAPI 서비스·오퍼레이션 카탈로그
+│   ├── 03_product/                 제품 시나리오·스택
+│   │   ├── MVP시나리오.md             ⭐ MVP 플로우·필터·예시(인터뷰 확정)
+│   │   └── 기술스택.md               ⭐ RN/지도/키/백엔드 결정
+│   └── reports/                    HTML 시각화(브라우저로 열기)
+│       ├── 데이터통합보고서.html
+│       ├── AI허브_추출카탈로그.html
+│       ├── 부산매칭보고서.html
+│       └── TourAPI카탈로그.html
+├── scripts/                        검증·분석·엔진 (Node, 키는 env 주입)
+│   ├── verify_tourapi.mjs              TourAPI 필드 채움률 검증
+│   ├── probe_dwell_fields.mjs          per-POI 체류시간 필드 프로빙
+│   ├── match_busan.mjs                 부산 TourAPI↔AI-Hub 매칭
+│   ├── build_dwell.mjs                 ⭐ AI-Hub CSV → 체류/혼잡 JSON 집계(+검증)
+│   └── engine_spike.mjs                ⭐ 결정적 시간-적합 엔진 스파이크
+└── data/
+    ├── processed/                  ⭐ 앱 번들용 산출 JSON
+    ├── aihub_donbu/                AI-Hub 동부권 추출 CSV + busan_match.json
+    └── raw/                        원본 다운로드(.part0)
+```
+
+---
+
+## ⭐ 핵심: 시간-적합 계산
+
+```
+가능한 후보? = (이동 + 유효체류 + 복귀/경유 이동) + 운영시간게이트  ≤  남은시간 − 안전버퍼(10~15%)
+```
+TourAPI는 후보·운영시간만 줌 → **체류·이동·혼잡은 자체 데이터/휴리스틱으로** 채운다(차별점). 신뢰의 핵심은 **결정적 엔진**, LLM은 설명·큐레이션의 선택적 폴리시.
+
+## ⭐ 최종 데이터 소스 결정
+
+| 신호 | 메인 | 보완 | 호출 |
+|---|---|---|---|
+| POI 후보·운영시간 | **TourAPI** | — | 🔴 런타임 |
+| 이동(보행/자차/대중교통) | **TMAP** | haversine 폴백 + AI-Hub 계수보정 | 🔴 런타임 + 🔵 빌드 |
+| **체류시간** | **AI-Hub 여행로그** | 상가정보·데이터랩·입장객·앱로그 | 🔵 빌드 내장 |
+| 혼잡도 | **AI-Hub 요일×시간대 배수** | (가능시)집중률 override | 🔵 빌드 + 🔴 선택 |
+| 실시간 대기시간 | **제외**(무료 API 부재) | — | — |
+
+체류시간 결론: 무료 per-POI 분단위 체류는 **AI-Hub가 유일·최선**(실데이터 검증). 단독 아닌 보완재 결합.
+
+## ⭐ 기술 스택 (확정)
+
+RN **Expo** · **iOS 우선** · 지도 **MVP Apple Maps → 추후 카카오(래퍼)** · 언어 TypeScript(엔진 Node↔RN 공용)
+키 **MVP `.env`(TourAPI/TMAP) → Claude는 프록시** · 백엔드 **MVP 0 → Phase2 Supabase(Auth+DB+프록시)**
+
+---
+
+## ✅ 진행 상태 (2026-06-16)
+
+| 항목 | 상태 |
+|---|---|
+| 컨셉 확정 (AR→AI 짬플래너) | ✅ |
+| TourAPI 라이브 검증 (운영시간 90~100%, 체류시간 부재) | ✅ |
+| 시간-적합 엔진 아키텍처 + 최종 데이터소스 결정 | ✅ |
+| AI-Hub 체류시간 실데이터 검증 (동부권 32,930건, 채움률 91%) | ✅ |
+| 부산 매칭 (TourAPI 후보의 58.6%에 직접 체류시간) | ✅ |
+| 최신성·라이선스·대안·측정방식 검증 | ✅ |
+| **체류/혼잡 집계** (`build_dwell.mjs`, 검증 11/11) | ✅ `data/processed/` |
+| **MVP 시나리오·기술스택 확정** (인터뷰) | ✅ |
+| **엔진 스파이크 + TMAP 라이브** (`engine_spike.mjs`, TMAP 54/54, 검증 5/5) | ✅ |
+| **Expo RN 셋업 + 엔진 TS 이식 + 입력·결과 화면** (`mobile/`, 타입체크·번들 통과) | ✅ |
+| 지도(상세화면) + 결과/상세 분리 + 필터칩 | ⬜ 다음 |
+| 4권역 union(전국화) | ⬜ |
+
+## 📱 앱 실행 (`mobile/`) — Expo SDK 55(stable, Expo Go 호환)
+```bash
+cd mobile
+npx expo start          # 터미널 QR을 아이폰 카메라로 스캔 → Expo Go에서 실행
+```
+- 실기: App Store에서 **Expo Go** 설치 · 폰과 맥 **같은 Wi-Fi** · QR 스캔
+- 엔진(`mobile/src/engine/`): 순수 TS, 스파이크 로직 이식. `planTimeFit(input)` → 코스 후보.
+- 데이터: `mobile/src/data/*.json`(빌드 번들). 키: `mobile/.env`(EXPO_PUBLIC_).
+- ℹ️ SDK 56→55 다운그레이드(Expo Go 호환). 카카오 dev client 갈 땐 56+로 올려도 무방.
+
+## 다음 액션
+1. **앱 실기 실행 확인** (시뮬레이터/Expo Go) — 입력→코스 표시 동작
+2. 결과/상세 화면 분리 + **지도(Apple Maps)** + 점진 필터칩(예산/활동/분위기)
+3. 나머지 3권역 CSV → 전국 union · (Phase2) Supabase + Claude 설명
+
+## 산출 데이터 (`data/processed/`)
+- `category_dwell.json` — 카테고리별 체류시간(median/p25/p75), 식당↔카페 분리
+- `congestion_matrix.json` — 카테고리 × 요일 × 시간대 혼잡 배수(0.8~1.8)
+- `poi_dwell.json` — 표본충분(≥5) 개별 POI 체류시간(704개)
+
+## 기술 메모
+- 스크립트: `TOURAPI_KEY=... node scripts/<name>.mjs` (키는 env로만, 하드코딩 금지)
+- AI-Hub: CC-BY-SA-4.0 → **집계 파라미터만 앱 내장·원본 미탑재·출처표시**(상세: `docs/02_data/AI허브_체류시간데이터.md §8`)
+- 측정성격: `RESIDENCE_TIME_MIN`은 여행자가 30분 단위로 기록한 추정 체류(타임스탬프 계산값 아님)
