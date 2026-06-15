@@ -6,14 +6,36 @@
 # 의존성
 node_modules/
 
+# Expo / React Native
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+/ios
+/android
+*.tsbuildinfo
+.metro-health-check*
+
+# 서명/네이티브 키
+*.pem
+*.p8
+*.p12
+*.key
+*.jks
+*.mobileprovision
+*.orig.*
+
 # AI-Hub 원본 데이터 (CC-BY-SA: 원본 재배포 금지 → 커밋 금지!)
 data/raw/
 data/aihub_donbu/
-# ※ 집계 산출물 data/processed/ 는 커밋 OK (사실·통계 파라미터)
+# ※ 집계 산출물 data/processed/ 는 커밋 OK
 
-# macOS / 에디터
+# 디버그
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS / 도구
 .DS_Store
 *.log
-
-# 도구 설정
 .claude/

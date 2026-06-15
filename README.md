@@ -7,8 +7,15 @@
 
 ## 📁 폴더 구조
 
+> 구조: Expo 앱 + 데이터 파이프라인(scripts)·문서(docs)가 **한 프로젝트 루트**에 통합.
+
 ```
-TimeFit/
+TimeFit/                            ← Expo 앱 = 프로젝트 루트 (단일 프로젝트)
+├── App.tsx                         입력·결과 화면 + 테스트 시각
+├── src/
+│   ├── engine/                     ⭐ 순수 TS 시간-적합 엔진 (planTimeFit)
+│   └── data/*.json                 앱 번들 파라미터(체류·혼잡·POI)
+├── app.json · package.json · tsconfig.json   Expo 설정
 ├── README.md                       ← 전체 인덱스(지금 이 문서)
 ├── docs/
 │   ├── 01_concept/                 앱 컨셉·여정
@@ -80,19 +87,18 @@ RN **Expo** · **iOS 우선** · 지도 **MVP Apple Maps → 추후 카카오(�
 | **체류/혼잡 집계** (`build_dwell.mjs`, 검증 11/11) | ✅ `data/processed/` |
 | **MVP 시나리오·기술스택 확정** (인터뷰) | ✅ |
 | **엔진 스파이크 + TMAP 라이브** (`engine_spike.mjs`, TMAP 54/54, 검증 5/5) | ✅ |
-| **Expo RN 셋업 + 엔진 TS 이식 + 입력·결과 화면** (`mobile/`, 타입체크·번들 통과) | ✅ |
+| **Expo RN 셋업 + 엔진 TS 이식 + 입력·결과 화면** (루트 통합, 타입체크·번들 통과) | ✅ |
 | 지도(상세화면) + 결과/상세 분리 + 필터칩 | ⬜ 다음 |
 | 4권역 union(전국화) | ⬜ |
 
-## 📱 앱 실행 (`mobile/`) — Expo SDK 55(stable, Expo Go 호환)
+## 📱 앱 실행 (루트에서) — Expo SDK 55
 ```bash
-cd mobile
-npx expo start          # 터미널 QR을 아이폰 카메라로 스캔 → Expo Go에서 실행
+npx expo start          # 개발 서버(Metro). Xcode dev build 또는 Expo Go에서 접속
+npx expo run:ios --device <UDID>   # 실기기 dev build (또는 ios/mobile.xcworkspace를 Xcode로 열어 ▶)
 ```
-- 실기: App Store에서 **Expo Go** 설치 · 폰과 맥 **같은 Wi-Fi** · QR 스캔
-- 엔진(`mobile/src/engine/`): 순수 TS, 스파이크 로직 이식. `planTimeFit(input)` → 코스 후보.
-- 데이터: `mobile/src/data/*.json`(빌드 번들). 키: `mobile/.env`(EXPO_PUBLIC_).
-- ℹ️ SDK 56→55 다운그레이드(Expo Go 호환). 카카오 dev client 갈 땐 56+로 올려도 무방.
+- 엔진(`src/engine/`): 순수 TS, 스파이크 로직 이식. `planTimeFit(input)` → 코스 후보.
+- 데이터: `src/data/*.json`(빌드 번들). 키: `.env`(EXPO_PUBLIC_ + 스크립트용 평문).
+- ℹ️ 실기 테스트는 **Xcode dev build** 사용(Expo Go 버전종속 회피). `ios/`는 prebuild로 재생성(gitignore).
 
 ## 다음 액션
 1. **앱 실기 실행 확인** (시뮬레이터/Expo Go) — 입력→코스 표시 동작
