@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>부산 매칭 — TourAPI ↔ AI-Hub 체류시간</title>
+<style>
+  :root{--bg:#0f1419;--panel:#171d26;--panel2:#1e2630;--line:#2a3340;--txt:#e6edf3;--muted:#9aa7b4;--accent:#4cc2ff;--accent2:#7ee787;--amber:#e3b341}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",Segoe UI,Roboto,sans-serif;line-height:1.65;font-size:15px}
+  .wrap{max-width:1000px;margin:0 auto;padding:32px 22px 80px}
+  header.top{border-bottom:2px solid var(--line);padding-bottom:18px;margin-bottom:26px}
+  h1{font-size:25px;margin:0 0 6px;letter-spacing:-.3px}
+  h1 .em{color:var(--accent)}
+  .sub{color:var(--muted);font-size:14px}
+  .meta-line{margin-top:9px;font-size:12.5px;color:var(--muted)}
+  .meta-line b{color:var(--txt)}
+  h2{font-size:19px;margin:38px 0 14px;padding-left:11px;border-left:4px solid var(--accent)}
+  p{margin:10px 0}
+  .lead{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:17px 20px;margin:18px 0}
+  .lead b{color:var(--accent2)}
+  /* gauges */
+  .gauges{display:flex;gap:18px;flex-wrap:wrap;margin:18px 0}
+  .gauge{flex:1;min-width:260px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;align-items:center;gap:18px}
+  .ring{--p:0;--c:var(--accent);width:108px;height:108px;border-radius:50%;flex-shrink:0;
+    background:conic-gradient(var(--c) calc(var(--p)*1%), #232c38 0);display:grid;place-items:center;position:relative}
+  .ring::before{content:"";position:absolute;inset:11px;border-radius:50%;background:var(--panel)}
+  .ring b{position:relative;font-size:25px;font-weight:800}
+  .gauge .t{font-size:13.5px}
+  .gauge .t .big{font-size:15px;font-weight:700;color:#cdd9e5}
+  .gauge .t .s{color:var(--muted);font-size:12.5px;margin-top:3px}
+  /* numbers row */
+  .kpi{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+  .kpi .box{flex:1;min-width:130px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+  .kpi .big{font-size:22px;font-weight:800;letter-spacing:-.5px}
+  .kpi .lbl{font-size:11.5px;color:var(--muted);margin-top:2px}
+  /* type bars */
+  .tbar{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:13px}
+  .tbar .lab{width:80px;color:var(--muted);text-align:right;flex-shrink:0}
+  .tbar .track{flex:1;background:#232c38;border-radius:5px;height:18px;overflow:hidden}
+  .tbar .fill{height:100%;background:linear-gradient(90deg,#2b6cb0,#4cc2ff);border-radius:5px}
+  .tbar .v{width:46px;text-align:right;font-variant-numeric:tabular-nums;color:#cdd9e5}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.2px;background:var(--panel);border-radius:10px;overflow:hidden}
+  th,td{padding:8px 11px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:var(--panel2);color:#bcc8d4;font-weight:600;font-size:12.5px}
+  tr:last-child td{border-bottom:none}
+  td.num{text-align:center;font-variant-numeric:tabular-nums}
+  .badge{display:inline-block;padding:1px 8px;border-radius:20px;font-size:11px;font-weight:700}
+  .b-c{background:rgba(76,194,255,.15);color:#7cc7f0;border:1px solid #4cc2ff44}
+  .b-nc{background:rgba(126,231,135,.15);color:#7ee787;border:1px solid #7ee78744}
+  code{background:#11161d;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;color:#9ad1ff;font-family:"SF Mono",Menlo,Consolas,monospace}
+  .note{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);margin-top:10px;padding-top:8px}
+  .flow{display:flex;align-items:stretch;gap:0;margin:16px 0;border-radius:12px;overflow:hidden;border:1px solid var(--line);font-size:13px}
+  .flow .seg{padding:12px 14px;text-align:center}
+  .seg.direct{background:rgba(76,194,255,.16);color:#9ad1ff;font-weight:700}
+  .seg.fallback{background:rgba(126,231,135,.12);color:#9ae6a0;font-weight:700}
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1><span class="em">부산 매칭 검증</span> — TourAPI <code>areaBasedList2</code> ↔ AI-Hub 체류시간</h1>
+  <div class="sub">앱 후보 POI에 실측 체류시간을 직접 붙일 수 있는 비율 측정</div>
+  <div class="meta-line">매칭 기준: 정규화 이름 일치 OR 좌표 근접(&lt;150m) · 부산: AI-Hub 주소'부산' / TourAPI <code>areaCode=6</code> · 2026-06-15 · <code>scripts/match_busan.mjs</code></div>
+</header>
+
+<div class="lead">
+  <b>결론.</b> 4,000명 표본 데이터인데도 <b>TourAPI 부산 후보의 58.6%에 직접 실측 체류시간</b>을 붙일 수 있다.
+  여행자가 유명 POI에 집중 → 앱이 추천할 POI와 겹침이 크기 때문. 나머지 41.4%는 카테고리 폴백으로 자연 처리.
+  <b>하이브리드(POI 직접 + 카테고리 폴백)가 부산에서 실증됨.</b>
+</div>
+
+<div class="kpi">
+  <div class="box"><div class="big" style="color:var(--accent)">829</div><div class="lbl">TourAPI 부산 POI(areaCode=6)</div></div>
+  <div class="box"><div class="big" style="color:var(--accent2)">1,826</div><div class="lbl">AI-Hub 부산 고유 POI(체류 보유)</div></div>
+  <div class="box"><div class="big">4,288</div><div class="lbl">AI-Hub 부산 방문 레코드</div></div>
+</div>
+
+<h2>양방향 매칭 커버리지</h2>
+<div class="gauges">
+  <div class="gauge">
+    <div class="ring" style="--p:58.6;--c:#4cc2ff"><b>59%</b></div>
+    <div class="t">
+      <div class="big">방향② TourAPI → AI-Hub</div>
+      <div class="s">TourAPI 부산 829개 중 <b style="color:#9ad1ff">486개</b>가 실측 체류 보유<br>= <b>앱 후보의 58.6%에 직접 체류시간</b></div>
+    </div>
+  </div>
+  <div class="gauge">
+    <div class="ring" style="--p:62.9;--c:#7ee787"><b>63%</b></div>
+    <div class="t">
+      <div class="big">방향① AI-Hub → TourAPI</div>
+      <div class="s">AI-Hub 부산 1,826개 중 <b style="color:#7ee787">1,149개</b>가 TourAPI에 존재<br>= 측정 체류 POI의 62.9%가 추천 후보로도 등장</div>
+    </div>
+  </div>
+</div>
+<p class="note">매칭 내역: 좌표 근접(&lt;150m) <b>1,142</b> + 이름 일치 118 → 좌표 매칭이 주력(지점명·표기차로 이름은 낮음).</p>
+
+<h2>앱 후보(TourAPI 829) 체류시간 처리 방식</h2>
+<div class="flow">
+  <div class="seg direct" style="flex:58.6">직접 실측 체류 &nbsp;58.6% (486)</div>
+  <div class="seg fallback" style="flex:41.4">카테고리 폴백 &nbsp;41.4% (343)</div>
+</div>
+
+<h2>TourAPI 부산 829 — 콘텐츠 타입 분포</h2>
+<div>
+  <div class="tbar"><div class="lab">음식점</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="v">370</div></div>
+  <div class="tbar"><div class="lab">관광지</div><div class="track"><div class="fill" style="width:46%"></div></div><div class="v">170</div></div>
+  <div class="tbar"><div class="lab">숙박</div><div class="track"><div class="fill" style="width:21.6%"></div></div><div class="v">80</div></div>
+  <div class="tbar"><div class="lab">쇼핑</div><div class="track"><div class="fill" style="width:15.7%"></div></div><div class="v">58</div></div>
+  <div class="tbar"><div class="lab">문화시설</div><div class="track"><div class="fill" style="width:13.5%"></div></div><div class="v">50</div></div>
+  <div class="tbar"><div class="lab">레포츠</div><div class="track"><div class="fill" style="width:10.5%"></div></div><div class="v">39</div></div>
+  <div class="tbar"><div class="lab">축제</div><div class="track"><div class="fill" style="width:10.5%"></div></div><div class="v">39</div></div>
+  <div class="tbar"><div class="lab">여행코스</div><div class="track"><div class="fill" style="width:6.2%"></div></div><div class="v">23</div></div>
+</div>
+
+<h2>매칭된 부산 핵심 POI (방문수 상위 12) — 실측 체류시간</h2>
+<table>
+  <tr><th>POI</th><th>AI-Hub 방문수</th><th>체류 중앙(분)</th><th>매칭</th></tr>
+  <tr><td>부산역</td><td class="num">196</td><td class="num">30</td><td><span class="badge b-c">좌표</span></td></tr>
+  <tr><td>광안리해수욕장</td><td class="num">182</td><td class="num">30</td><td><span class="badge b-nc">이름+좌표</span></td></tr>
+  <tr><td>해운대해수욕장</td><td class="num">124</td><td class="num">30</td><td><span class="badge b-c">좌표</span></td></tr>
+  <tr><td>밀란 더 마켓</td><td class="num">56</td><td class="num">60</td><td><span class="badge b-c">좌표</span></td></tr>
+  <tr><td>흰여울 문화마을</td><td class="num">49</td><td class="num">60</td><td><span class="badge b-c">좌표</span></td></tr>
+  <tr><td>신세계백화점 센텀시티점</td><td class="num">43</td><td class="num">60</td><td><span class="badge b-nc">이름+좌표</span></td></tr>
+  <tr><td>롯데 프리미엄 아웃렛 동부산점</td><td class="num">35</td><td class="num">60</td><td><span class="badge b-c">좌표</span></td></tr>
+  <tr><td>해운대 블루라인파크 미포정거장</td><td class="num">34</td><td class="num">30</td><td><span class="badge b-c">좌표</span></td></tr>
+  <tr><td>부평 깡통시장</td><td class="num">30</td><td class="num">30</td><td><span class="badge b-nc">이름+좌표</span></td></tr>
+  <tr><td>송정해수욕장</td><td class="num">27</td><td class="num">60</td><td><span class="badge b-c">좌표</span></td></tr>
+  <tr><td>국제시장</td><td class="num">22</td><td class="num">60</td><td><span class="badge b-nc">이름+좌표</span></td></tr>
+  <tr><td>전포 카페거리</td><td class="num">22</td><td class="num">45</td><td><span class="badge b-c">좌표</span></td></tr>
+</table>
+<p class="note">상위 매칭이 정확히 <b>앱이 추천할 부산 핵심 명소</b>와 일치 — 가장 자주 추천될 POI에 가장 풍부한 실측 체류가 붙는다(이상적).</p>
+
+<div class="lead">
+  <b style="color:var(--accent2)">해석.</b> ① 인기 POI일수록 표본이 많아 신뢰도 높음(부산역 196방문). ② 동부권 단독 결과 — <b>4권역 union + 이름매칭 보강 시 커버리지 상승</b>. ③ 폴백 41%도 카테고리 실측 테이블(§9)로 처리되므로 빈 값 없음. ④ 라이선스(조건부 GO): 집계 파라미터만 사용·출처표시.
+</div>
+
+<footer>
+  TimeFit · 부산 매칭 검증 · 2026-06-15 · 데이터: <code>data/aihub_donbu/busan_match.json</code> · 근거: <code>AI허브_체류시간데이터.md §12</code> · TourAPI areaCode=6 라이브 + AI-Hub 동부권
+</footer>
+
+</div>
+</body>
+</html>
