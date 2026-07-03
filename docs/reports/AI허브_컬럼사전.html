@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimeFit — AI-Hub 여행로그 컬럼 사전</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2330; --line:#2a3341;
+    --txt:#e6edf3; --txt2:#adbac7; --muted:#768390;
+    --accent:#4cc2ff; --green:#3fb950; --amber:#d29922; --red:#f85149; --purple:#bc8cff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Apple SD Gothic Neo',sans-serif;
+    line-height:1.6;padding:32px 20px 80px;}
+  .wrap{max-width:1080px;margin:0 auto}
+  h1{font-size:28px;font-weight:800;letter-spacing:-0.5px;margin:0 0 4px}
+  h1 .em{color:var(--accent)}
+  .sub{color:var(--muted);font-size:14.5px;margin-bottom:8px}
+  .tag{display:inline-block;font-size:12px;padding:3px 9px;border-radius:20px;border:1px solid var(--line);
+    color:var(--txt2);margin:2px 4px 2px 0;background:var(--panel)}
+  h2{font-size:19px;margin:38px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  h2 .n{color:var(--accent);font-weight:800;margin-right:8px}
+  p.lead{color:var(--txt2);font-size:14px;margin:6px 0 14px}
+  table{width:100%;border-collapse:collapse;font-size:13.3px;margin:10px 0 6px;
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel2);color:var(--txt2);font-weight:700;font-size:12.5px;
+    text-transform:uppercase;letter-spacing:0.3px}
+  tr:last-child td{border-bottom:none}
+  td code,code.i{font-family:'SF Mono',Menlo,monospace;font-size:12px;color:var(--accent);
+    background:rgba(76,194,255,.08);padding:1px 6px;border-radius:5px;white-space:nowrap}
+  .use{color:var(--green);font-weight:700}
+  .skip{color:var(--muted)}
+  .key{color:var(--purple);font-weight:700;font-size:11px;border:1px solid var(--purple);
+    padding:1px 6px;border-radius:5px;white-space:nowrap}
+  .ex{color:var(--txt2);font-family:'SF Mono',Menlo,monospace;font-size:11.5px}
+  .flow{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+    font-family:'SF Mono',Menlo,monospace;font-size:12.8px;color:var(--txt2);
+    white-space:pre;overflow-x:auto;line-height:1.75}
+  .flow b{color:var(--green)}.flow .a{color:var(--accent)}.flow .m{color:var(--muted)}
+  .note{background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.35);border-radius:10px;
+    padding:12px 16px;font-size:13px;color:#e3c07b;margin:14px 0}
+  .note b{color:var(--amber)}
+  .bar{display:inline-block;height:9px;background:var(--accent);border-radius:3px;vertical-align:middle;margin-right:6px}
+  .foot{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .card h3{margin:0 0 8px;font-size:14.5px;color:var(--txt)}
+  small.src{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>AI-Hub 여행로그 <span class="em">컬럼 사전</span></h1>
+  <div class="sub">TimeFit이 체류시간·혼잡도를 뽑을 때 <b>실제로 읽는 컬럼과 값</b>을 한눈에</div>
+  <div>
+    <span class="tag">📦 국내여행로그 동부권(2023구축)</span>
+    <span class="tag">방문 레코드 32,930</span>
+    <span class="tag">집계 사용 21,752</span>
+    <span class="tag">라이선스 CC-BY-SA-4.0</span>
+    <span class="tag">🔵 빌드타임 내장</span>
+  </div>
+
+  <div class="note">
+    <b>이 데이터의 성격 —</b> <code class="i">RESIDENCE_TIME_MIN</code>은 여행자가 <b>30분 단위로 자기보고</b>한 추정 체류시간(타임스탬프 계산값 아님).
+    개별값은 거칠지만, <b>표본을 모아 중앙값</b>을 내면 장소별 전형적 체류의 신호가 남습니다. 그래서 확정값이 아니라 <b>어림값(+버퍼)</b>으로 씁니다.
+  </div>
+
+  <!-- ============ 1. 방문지정보 ============ -->
+  <h2><span class="n">1</span>tn_visit_area_info (방문지정보) — 메인 소스</h2>
+  <p class="lead">체류시간·카테고리·좌표·POI명이 모두 여기서 나옵니다. 전체 23개 컬럼 중 <b class="use">8개만 사용</b>.</p>
+  <table>
+    <thead><tr><th>컬럼</th><th>의미</th><th>사용</th><th>예시값</th><th>어디에 쓰나</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>RESIDENCE_TIME_MIN</code></td><td>체류시간(분)</td>
+        <td class="use">✔ 핵심</td><td class="ex">30 · 60 · 90 · 120</td>
+        <td>체류시간 중앙값/분위수 집계</td>
+      </tr>
+      <tr>
+        <td><code>VISIT_AREA_TYPE_CD</code></td><td>방문지 유형 코드</td>
+        <td class="use">✔ 핵심</td><td class="ex">1 · 11 · 13 · 21</td>
+        <td>카테고리 매핑(아래 §2), 집·숙소 제외</td>
+      </tr>
+      <tr>
+        <td><code>VISIT_AREA_NM</code></td><td>방문지 이름</td>
+        <td class="use">✔</td><td class="ex">해운대해수욕장</td>
+        <td>POI 집계 키 · 식당↔카페 분리 · TourAPI 이름매칭</td>
+      </tr>
+      <tr>
+        <td><code>X_COORD</code> / <code>Y_COORD</code></td><td>경도 / 위도</td>
+        <td class="use">✔</td><td class="ex">129.16 / 35.15</td>
+        <td>POI 좌표 · TourAPI 좌표매칭(&lt;150m)</td>
+      </tr>
+      <tr>
+        <td><code>TRAVEL_ID</code></td><td>여행 식별자</td>
+        <td class="use">✔ <span class="key">복합키</span></td><td class="ex">e_e000003</td>
+        <td>도착시각 조인의 복합키(단독 PK 아님)</td>
+      </tr>
+      <tr>
+        <td><code>VISIT_AREA_ID</code></td><td>방문지 순번</td>
+        <td class="use">✔ <span class="key">복합키</span></td><td class="ex">2304300001</td>
+        <td><code>TRAVEL_ID</code>+이걸로 이동내역과 조인</td>
+      </tr>
+      <tr>
+        <td><code>ROAD_NM_ADDR</code> / <code>LOTNO_ADDR</code></td><td>도로명/지번 주소</td>
+        <td class="use">✔</td><td class="ex">부산 해운대구…</td>
+        <td>지역 필터('부산' 접두)</td>
+      </tr>
+      <tr class="skip">
+        <td><code>DGSTFN</code>·<code>REVISIT_INTENTION</code>·<code>RCMDTN_INTENTION</code></td>
+        <td>만족도·재방문·추천 의향(1~5)</td>
+        <td class="skip">✘ 미사용</td><td class="ex">5 / 5 / 4</td>
+        <td>Phase 2 큐레이션 후보</td>
+      </tr>
+      <tr class="skip">
+        <td><code>POI_ID</code>·<code>POI_NM</code>·<code>VISIT_ORDER</code>·<code>REVISIT_YN</code> 외</td>
+        <td>외부 POI 연계·순서·재방문 등</td>
+        <td class="skip">✘ 미사용</td><td class="ex">—</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ============ 2. 유형코드 → 카테고리 ============ -->
+  <h2><span class="n">2</span>VISIT_AREA_TYPE_CD → 앱 카테고리 매핑</h2>
+  <p class="lead"><code class="i">categoryOf(cd, name)</code>. 코드 11(식당/카페)은 이름 정규식으로 <b>카페↔식당</b> 분리. 코드 21~24(집·친지·사무실·숙소)는 <b class="skip">추천 대상 제외</b>.</p>
+  <div class="grid2">
+    <table>
+      <thead><tr><th>코드</th><th>카테고리</th><th>사용</th></tr></thead>
+      <tbody>
+        <tr><td><code>1</code></td><td>자연관광지</td><td class="use">✔</td></tr>
+        <tr><td><code>2</code></td><td>역사/유적/종교</td><td class="use">✔</td></tr>
+        <tr><td><code>3</code></td><td>문화시설</td><td class="use">✔</td></tr>
+        <tr><td><code>4</code></td><td>상업지구</td><td class="use">✔</td></tr>
+        <tr><td><code>5</code></td><td>레저/스포츠</td><td class="use">✔</td></tr>
+        <tr><td><code>6</code></td><td>테마시설</td><td class="use">✔</td></tr>
+        <tr><td><code>7</code></td><td>산책로/둘레길</td><td class="use">✔</td></tr>
+      </tbody>
+    </table>
+    <table>
+      <thead><tr><th>코드</th><th>카테고리</th><th>사용</th></tr></thead>
+      <tbody>
+        <tr><td><code>8</code></td><td>지역축제/행사</td><td class="use">✔</td></tr>
+        <tr><td><code>9</code></td><td>역/터미널/휴게소</td><td class="use">✔</td></tr>
+        <tr><td><code>10</code></td><td>상점</td><td class="use">✔</td></tr>
+        <tr><td><code>11</code></td><td>식당 / 카페 <small class="src">(이름분리)</small></td><td class="use">✔</td></tr>
+        <tr><td><code>13</code></td><td>체험활동관광지</td><td class="use">✔</td></tr>
+        <tr><td><code>12</code></td><td>기타</td><td class="use">△</td></tr>
+        <tr><td><code>21~24</code></td><td>집·친지·사무실·숙소</td><td class="skip">✘ 제외</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============ 3. 이동내역 ============ -->
+  <h2><span class="n">3</span>tn_move_his (이동내역) — 혼잡도 보조</h2>
+  <p class="lead">방문지 <b>도착 시각</b>을 얻어 "요일 × 시간대" 혼잡 배수를 만드는 데만 씁니다.</p>
+  <table>
+    <thead><tr><th>컬럼</th><th>의미</th><th>사용</th><th>예시값</th><th>어디에 쓰나</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>TRAVEL_ID</code> + <code>END_VISIT_AREA_ID</code></td><td>여행 + 도착 방문지</td>
+        <td class="use">✔ <span class="key">복합키</span></td><td class="ex">e_e000003 | 2304…</td>
+        <td>방문지정보와 조인하는 키</td>
+      </tr>
+      <tr>
+        <td><code>END_DT_MIN</code></td><td>도착 일시</td>
+        <td class="use">✔</td><td class="ex">2023-04-30 14:30</td>
+        <td>시(hour) 추출 → 시간대 버킷</td>
+      </tr>
+      <tr class="skip">
+        <td><code>START_DT_MIN</code>·<code>MVMN_CD_1/2</code>·<code>TRIP_ID</code></td>
+        <td>출발시각·이동수단코드</td>
+        <td class="skip">✘ 미사용</td><td class="ex">—</td>
+        <td>이동시간은 <b>TMAP</b>이 담당(이 데이터 아님)</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>복합키 주의 —</b> <code class="i">VISIT_AREA_ID</code>는 <b>여행 내 순번</b>이라 여행자끼리 겹칩니다.
+    반드시 <code class="i">TRAVEL_ID | VISIT_AREA_ID</code> 복합키로 조인해야 함. (단독 조인 시 도착시각 매핑 1,877건 → 복합키로 30,048건, 테스트가 이 버그를 잡음)
+  </div>
+
+  <!-- ============ 4. 파생값 ============ -->
+  <h2><span class="n">4</span>파생 시간대 버킷 &amp; 요일</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>🕒 HOUR_BUCKET (도착 시)</h3>
+      <table style="margin:0">
+        <tbody>
+          <tr><td>아침</td><td class="ex">~10시</td></tr>
+          <tr><td>점심</td><td class="ex">11~13시</td></tr>
+          <tr><td>오후</td><td class="ex">14~16시</td></tr>
+          <tr><td>저녁</td><td class="ex">17~20시</td></tr>
+          <tr><td>야간</td><td class="ex">21시~</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>📅 dayType (VISIT_START_YMD)</h3>
+      <p style="color:var(--txt2);font-size:13px;margin:4px 0 0">
+        방문 날짜의 요일 → <b>평일 / 주말</b>(토·일).<br>
+        카테고리 × 요일 × 시간대별 도착 빈도 → <b>혼잡 배수 0.8~1.8</b>로 정규화.
+      </p>
+    </div>
+  </div>
+
+  <!-- ============ 5. 산출물 ============ -->
+  <h2><span class="n">5</span>산출물 — 앱 번들 JSON (<code class="i">data/processed/</code>)</h2>
+  <p class="lead">위 컬럼들이 <code class="i">build_dwell.mjs</code>를 거쳐 3개 파일로 집계됩니다. 앱은 원본 CSV가 아니라 <b>이 집계값만</b> 내장.</p>
+  <table>
+    <thead><tr><th>파일</th><th>내용</th><th>키</th><th>값(예시)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>category_dwell.json</code></td><td>카테고리별 체류시간</td>
+        <td class="ex">식당 / 자연관광지 …</td>
+        <td class="ex">median 60, p25 30, p75 60</td>
+      </tr>
+      <tr>
+        <td><code>congestion_matrix.json</code></td><td>혼잡 배수</td>
+        <td class="ex">카테고리×평일/주말×버킷</td>
+        <td class="ex">0.8 ~ 1.8</td>
+      </tr>
+      <tr>
+        <td><code>poi_dwell.json</code></td><td>개별 POI 체류(표본≥5)</td>
+        <td class="ex">정규화 이름</td>
+        <td class="ex">704개 POI, median</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin:22px 0 8px;font-size:15px;color:var(--txt2)">카테고리별 체류시간 중앙값(발췌)</h3>
+  <table>
+    <thead><tr><th>카테고리</th><th>표본</th><th>p25</th><th>중앙값</th><th>p75</th><th style="width:34%">분포</th></tr></thead>
+    <tbody>
+      <tr><td>식당</td><td class="ex">6,905</td><td class="ex">30</td><td class="use">60</td><td class="ex">60</td><td><span class="bar" style="width:30%"></span><span class="ex">30–60</span></td></tr>
+      <tr><td>카페</td><td class="ex">—</td><td class="ex">30</td><td class="use">60</td><td class="ex">60</td><td><span class="bar" style="width:30%"></span><span class="ex">30–60</span></td></tr>
+      <tr><td>자연관광지</td><td class="ex">2,710</td><td class="ex">30</td><td class="use">60</td><td class="ex">90</td><td><span class="bar" style="width:45%;background:var(--green)"></span><span class="ex">30–90</span></td></tr>
+      <tr><td>역사/유적/종교</td><td class="ex">681</td><td class="ex">30</td><td class="use">30</td><td class="ex">60</td><td><span class="bar" style="width:20%;background:var(--purple)"></span><span class="ex">30–60</span></td></tr>
+      <tr><td>테마시설</td><td class="ex">433</td><td class="ex">60</td><td class="use">120</td><td class="ex">180</td><td><span class="bar" style="width:80%;background:var(--amber)"></span><span class="ex">60–180</span></td></tr>
+      <tr><td>레저/스포츠</td><td class="ex">332</td><td class="ex">60</td><td class="use">90</td><td class="ex">180</td><td><span class="bar" style="width:70%;background:var(--amber)"></span><span class="ex">60–180</span></td></tr>
+      <tr><td>역/터미널/휴게소</td><td class="ex">2,437</td><td class="ex">30</td><td class="use">30</td><td class="ex">30</td><td><span class="bar" style="width:12%;background:var(--muted)"></span><span class="ex">30</span></td></tr>
+    </tbody>
+  </table>
+  <p class="lead" style="margin-top:8px">※ p25~p75 폭이 넓은 <b>테마시설·레저</b>는 편차가 커서 세분화·분위수 활용 여지가 큼. 폭이 좁은 역/터미널은 30분으로 안정적.</p>
+
+  <!-- ============ 흐름 ============ -->
+  <h2><span class="n">6</span>데이터 흐름 한눈에</h2>
+  <div class="flow">CSV 원본                          집계(build_dwell.mjs)              앱 번들
+<span class="m">─────────────</span>                     <span class="m">──────────────────</span>            <span class="m">──────────</span>
+tn_visit_area_info
+  <span class="a">RESIDENCE_TIME_MIN</span>  ─┐
+  <span class="a">VISIT_AREA_TYPE_CD</span>  ─┼─▶  카테고리별 <b>중앙값/분위수</b>  ─▶  <b>category_dwell.json</b>
+  <span class="a">VISIT_AREA_NM</span>       ─┤        POI별 중앙값(표본≥5)     ─▶  <b>poi_dwell.json</b>
+  <span class="a">X/Y_COORD</span>          ─┘
+      │ <span class="m">복합키(TRAVEL_ID|VISIT_AREA_ID)</span>
+      ▼
+tn_move_his
+  <span class="a">END_DT_MIN</span>          ─────▶  요일×시간대 <b>혼잡 배수</b>    ─▶  <b>congestion_matrix.json</b>
+
+<span class="m">런타임:</span> 유효체류 = <b>중앙값</b>(POI 우선→카테고리) × <b>혼잡배수</b>  →  시간-적합 판정</div>
+
+  <div class="foot">
+    출처: AI-Hub 국내여행로그(동부권, 2023구축) · CC-BY-SA-4.0 — 집계 파라미터만 앱 내장(원본 미탑재·출처표시)<br>
+    생성 스크립트: <code class="i">scripts/build_dwell.mjs</code> (검증 11/11) · 상세: <code class="i">docs/02_data/AI허브_체류시간데이터.md</code><br>
+    TimeFit · 2026 관광데이터 활용 공모전
+  </div>
+
+</div>
+</body>
+</html>
