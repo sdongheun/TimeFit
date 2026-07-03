@@ -6,6 +6,8 @@ import { RootStackParamList } from './src/ui/nav';
 import { HomeScreen } from './src/ui/HomeScreen';
 import { ResultsScreen } from './src/ui/ResultsScreen';
 import { DetailScreen } from './src/ui/DetailScreen';
+import { ExecutionScreen } from './src/ui/ExecutionScreen';
+import { FeedbackScreen } from './src/ui/FeedbackScreen';
 import { C } from './src/ui/theme';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -33,6 +35,8 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Results" component={ResultsScreen} options={{ title: '추천 코스' }} />
           <Stack.Screen name="Detail" component={DetailScreen} options={{ title: '코스 상세' }} />
+          <Stack.Screen name="Execution" component={ExecutionScreen} options={{ title: '코스 진행 중', headerBackTitle: '상세' }} />
+          <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: '코스 완료', headerBackVisible: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
