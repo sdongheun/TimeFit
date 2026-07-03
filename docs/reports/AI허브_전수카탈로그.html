@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimeFit — AI-Hub 데이터셋 전수 카탈로그 (Phase A)</title>
+<style>
+  :root{
+    --bg:#0d1117;--panel:#161b22;--panel2:#1c2330;--line:#2a3341;
+    --txt:#e6edf3;--txt2:#adbac7;--muted:#768390;
+    --accent:#4cc2ff;--green:#3fb950;--amber:#d29922;--red:#f85149;--purple:#bc8cff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Apple SD Gothic Neo',sans-serif;
+    line-height:1.6;padding:32px 20px 80px}
+  .wrap{max-width:1080px;margin:0 auto}
+  h1{font-size:27px;font-weight:800;letter-spacing:-0.5px;margin:0 0 4px}
+  h1 .em{color:var(--accent)}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:10px}
+  .tag{display:inline-block;font-size:12px;padding:3px 9px;border-radius:20px;border:1px solid var(--line);
+    color:var(--txt2);margin:2px 4px 2px 0;background:var(--panel)}
+  h2{font-size:18px;margin:36px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  h2 .n{color:var(--accent);font-weight:800;margin-right:8px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0;
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:8px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{background:var(--panel2);color:var(--txt2);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+  tr:last-child td{border-bottom:none}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;font-family:'SF Mono',Menlo,monospace;font-size:12px}
+  code{font-family:'SF Mono',Menlo,monospace;font-size:12px;color:var(--accent);
+    background:rgba(76,194,255,.08);padding:1px 6px;border-radius:5px;white-space:nowrap}
+  .star{color:var(--amber)}
+  .use{color:var(--green);font-weight:700}.skip{color:var(--muted)}
+  .verdict{background:linear-gradient(180deg,rgba(63,185,80,.08),rgba(63,185,80,.03));
+    border:1px solid rgba(63,185,80,.35);border-radius:12px;padding:16px 20px;margin:14px 0}
+  .verdict h3{margin:0 0 8px;color:var(--green);font-size:16px}
+  .warn{background:linear-gradient(180deg,rgba(210,153,34,.09),rgba(210,153,34,.03));
+    border:1px solid rgba(210,153,34,.4);border-radius:12px;padding:16px 20px;margin:14px 0}
+  .warn h3{margin:0 0 8px;color:var(--amber);font-size:16px}
+  .warn b,.verdict b{color:var(--txt)}
+  .fill{display:inline-flex;align-items:center;gap:8px;min-width:150px}
+  .track{flex:1;height:8px;background:#243040;border-radius:4px;overflow:hidden;min-width:80px}
+  .fillbar{height:100%;border-radius:4px}
+  .flow{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+    font-family:'SF Mono',Menlo,monospace;font-size:12.5px;color:var(--txt2);white-space:pre;overflow-x:auto;line-height:1.7}
+  .flow b{color:var(--green)}.flow .a{color:var(--accent)}.flow .m{color:var(--muted)}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+  .kpi .c{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 12px;text-align:center}
+  .kpi .v{font-size:24px;font-weight:800;color:var(--accent)}
+  .kpi .v.g{color:var(--green)}.kpi .v.w{color:var(--amber)}
+  .kpi .l{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+  ol{padding-left:20px}ol li{margin:6px 0;font-size:13.5px;color:var(--txt2)}
+  ol li b{color:var(--txt)}
+  .foot{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+  @media(max-width:760px){.kpi{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>AI-Hub 국내여행로그 <span class="em">전수 카탈로그</span> <span style="font-size:15px;color:var(--muted)">Phase A</span></h1>
+  <div class="sub">앱 개발 전, 이 데이터가 무엇을 제공하는지 전수 확인 + 시간-적합 수식 검증(Phase B) 실현성 판정</div>
+  <div>
+    <span class="tag">📦 동부권(2023구축)</span>
+    <span class="tag">14개 테이블</span>
+    <span class="tag">train 2,560 / valid 320 여행</span>
+    <span class="tag">CC-BY-SA-4.0</span>
+    <span class="tag">scripts/profile_aihub.mjs · probe_chain.mjs</span>
+  </div>
+
+  <!-- 판정 요약 -->
+  <div class="verdict">
+    <h3>✅ 판정: 시간-적합 수식 검증 가능</h3>
+    <span style="color:var(--txt2);font-size:14px">
+    여행별 <b>방문 순서 + 구간 도착시각</b>으로 실제 여행 타임라인을 재구성할 수 있다 —
+    인접 방문쌍의 <b>90.5%</b>가 재구성 가능. 즉 "실제로 시간 안에 이행된 코스"라는 <b>정답 데이터</b>가 존재한다.</span>
+  </div>
+  <div class="warn">
+    <h3>⚠️ 단, 모든 시각이 30분 단위로 반올림</h3>
+    <span style="color:var(--txt2);font-size:14px">
+    도착시각 <b>100%가 :00/:30</b>, 체류도 30분 버킷. → 재구성 이동시간의 <b>50%가 0 이하</b>로 튄다(반올림 상쇄).
+    <b>개별 구간을 TMAP과 1:1로 대조하는 정밀 검증은 불가.</b>
+    Phase B는 <b>집계·분포·총량</b> 검증으로 설계해야 한다(대수의 법칙으로 노이즈 상쇄).</span>
+  </div>
+
+  <!-- 1. 전수 목록 -->
+  <h2><span class="n">1</span>테이블 전수 목록</h2>
+  <table>
+    <thead><tr><th>테이블</th><th class="num">train</th><th class="num">valid</th><th class="num">부산</th><th class="num">컬럼</th><th>성격</th><th>사용</th></tr></thead>
+    <tbody>
+      <tr><td><span class="star">★</span> <code>tn_visit_area_info</code></td><td class="num">29,392</td><td class="num">3,538</td><td class="num">5,103</td><td class="num">23</td><td>방문지: 체류·좌표·순서·유형</td><td class="use">핵심</td></tr>
+      <tr><td><span class="star">★</span> <code>tn_move_his</code></td><td class="num">29,392</td><td class="num">3,538</td><td class="num">—</td><td class="num">8</td><td>이동: 구간 도착시각·수단</td><td class="use">핵심(검증)</td></tr>
+      <tr><td><code>tn_activity_his</code></td><td class="num">33,907</td><td class="num">4,202</td><td class="num">—</td><td class="num">9</td><td>방문지에서 한 활동</td><td>보조 후보</td></tr>
+      <tr><td><code>tn_activity_consume_his</code></td><td class="num">16,352</td><td class="num">2,071</td><td class="num">2,851</td><td class="num">18</td><td>활동 소비(금액)</td><td>예산 후보</td></tr>
+      <tr><td><code>tn_tour_photo</code></td><td class="num">14,507</td><td class="num">1,759</td><td class="num">—</td><td class="num">12</td><td>관광사진(좌표·시각)</td><td class="skip">post-MVP</td></tr>
+      <tr><td><code>tn_mvmn_consume_his</code></td><td class="num">6,103</td><td class="num">760</td><td class="num">—</td><td class="num">13</td><td>이동수단 소비(교통비)</td><td>예산 후보</td></tr>
+      <tr><td><code>tn_companion_info</code></td><td class="num">3,920</td><td class="num">490</td><td class="num">—</td><td class="num">6</td><td>동반자(인원·관계)</td><td class="skip">post-MVP</td></tr>
+      <tr><td><code>tn_traveller_master</code></td><td class="num">2,560</td><td class="num">320</td><td class="num">—</td><td class="num">36</td><td>여행객 인구통계·성향</td><td>개인화(P2)</td></tr>
+      <tr><td><code>tn_travel</code></td><td class="num">2,560</td><td class="num">320</td><td class="num">—</td><td class="num">10</td><td>여행 단위(기간·목적)</td><td>맥락</td></tr>
+      <tr><td><code>tn_lodge_consume_his</code></td><td class="num">1,454</td><td class="num">170</td><td class="num">152</td><td class="num">18</td><td>숙박 소비</td><td class="skip">제외</td></tr>
+      <tr><td><code>tn_adv_consume_his</code></td><td class="num">629</td><td class="num">76</td><td class="num">54</td><td class="num">15</td><td>사전 지출</td><td class="skip">제외</td></tr>
+      <tr><td><code>tc_sgg</code></td><td class="num">8,075</td><td class="num">—</td><td class="num">—</td><td class="num">9</td><td>시군구 코드 사전</td><td>참조</td></tr>
+      <tr><td><code>tc_codeb</code></td><td class="num">238</td><td class="num">—</td><td class="num">—</td><td class="num">10</td><td>코드값 사전 B</td><td>참조</td></tr>
+      <tr><td><code>tc_codea</code></td><td class="num">30</td><td class="num">—</td><td class="num">—</td><td class="num">12</td><td>코드값 사전 A</td><td>참조</td></tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted);font-size:12.5px">방문지·이동 테이블이 <b style="color:var(--txt2)">행수 동일(29,392)</b> = 방문지 1건 ↔ 도착 이동 1건 1:1 대응.</p>
+
+  <!-- 2. 조인 구조 -->
+  <h2><span class="n">2</span>조인 구조 — 여행 1건 재구성</h2>
+  <div class="flow">tn_traveller_master ─(TRAVELER_ID)─ tn_travel ─(<span class="a">TRAVEL_ID</span>)─┬─ <b>tn_visit_area_info</b>  방문지 N개 (VISIT_ORDER 순)
+                                                          ├─ <b>tn_move_his</b>         구간 N개 (도착시각)
+                                                          ├─ tn_activity_his
+                                                          └─ tn_*_consume / photo / companion
+
+<span class="m">⭐ 복합키</span>  <span class="a">TRAVEL_ID | VISIT_AREA_ID</span>   (VISIT_AREA_ID는 여행 내 순번 → 단독 사용 금지)
+<span class="m">도착시각 조인</span>  move_his(<span class="a">TRAVEL_ID, END_VISIT_AREA_ID</span>) → END_DT_MIN 을 방문지에 부착</div>
+
+  <!-- 3. 핵심 필드 채움률 -->
+  <h2><span class="n">3</span>핵심 필드 채움률</h2>
+  <table>
+    <thead><tr><th>tn_visit_area_info</th><th>채움률</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td><code>VISIT_ORDER</code></td><td><span class="fill"><span class="track"><span class="fillbar" style="width:100%;background:var(--green)"></span></span>100%</span></td><td>타임라인 재구성 축</td></tr>
+      <tr><td><code>VISIT_AREA_TYPE_CD</code></td><td><span class="fill"><span class="track"><span class="fillbar" style="width:100%;background:var(--green)"></span></span>100%</span></td><td>카테고리 매핑</td></tr>
+      <tr><td><code>RESIDENCE_TIME_MIN</code> ⏱</td><td><span class="fill"><span class="track"><span class="fillbar" style="width:91%;background:var(--green)"></span></span>91.3%</span></td><td>체류(30분 버킷)</td></tr>
+      <tr><td><code>X_COORD / Y_COORD</code></td><td><span class="fill"><span class="track"><span class="fillbar" style="width:76%;background:var(--accent)"></span></span>76.4%</span></td><td>거리 대조</td></tr>
+      <tr><td><code>DGSTFN·REVISIT·RCMDTN</code></td><td><span class="fill"><span class="track"><span class="fillbar" style="width:81%;background:var(--accent)"></span></span>81.2%</span></td><td>만족·재방문(개인화)</td></tr>
+      <tr><td><code>VISIT_START_YMD</code> ⏱</td><td><span class="fill"><span class="track"><span class="fillbar" style="width:100%;background:var(--muted)"></span></span>100%</span></td><td class="skip">날짜만(시각 없음)</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>tn_move_his</th><th>채움률</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td><code>END_VISIT_AREA_ID</code> 🔑</td><td><span class="fill"><span class="track"><span class="fillbar" style="width:91%;background:var(--green)"></span></span>91.3%</span></td><td>도착 방문지(복합키)</td></tr>
+      <tr><td><code>END_DT_MIN</code> ⏱</td><td><span class="fill"><span class="track"><span class="fillbar" style="width:91%;background:var(--green)"></span></span>91.3%</span></td><td>도착 시각(:00/:30만)</td></tr>
+      <tr><td><code>MVMN_CD_1</code></td><td><span class="fill"><span class="track"><span class="fillbar" style="width:91%;background:var(--accent)"></span></span>91.3%</span></td><td>주 이동수단</td></tr>
+      <tr><td><code>START_DT_MIN</code> ⏱</td><td><span class="fill"><span class="track"><span class="fillbar" style="width:9%;background:var(--red)"></span></span>8.7%</span></td><td class="skip">거의 빔 → 사용 불가</td></tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted);font-size:12.5px"><b style="color:var(--amber)">START_DT_MIN이 8.7%</b> → "출발−도착 차"로 이동시간 직접 산출 불가. 대신 <b style="color:var(--txt2)">연속 도착시각 체이닝</b>으로 구한다 ↓</p>
+
+  <!-- 4. 검증 실현성 -->
+  <h2><span class="n">4</span>⭐ 수식 검증(Phase B) 실현성</h2>
+  <div class="flow"><span class="m">이동시간 재구성 (START_DT 없이):</span>
+  구간이동(i→i+1) = <b>도착_(i+1)</b> − <b>도착_i</b> − <b>체류_i</b>
+       도착 : move_his.END_DT_MIN (복합키로 방문지에 부착)
+       체류 : visit_area.RESIDENCE_TIME_MIN</div>
+
+  <div class="kpi">
+    <div class="c"><div class="v g">2,560</div><div class="l">방문≥2 여행<br>(전부)</div></div>
+    <div class="c"><div class="v">26,832</div><div class="l">총 인접<br>방문쌍</div></div>
+    <div class="c"><div class="v g">90.5%</div><div class="l">이동시간<br>재구성 가능</div></div>
+    <div class="c"><div class="v w">50.3%</div><div class="l">양수 이동<br>(반올림 탈락)</div></div>
+  </div>
+
+  <div class="warn">
+    <h3>⚠️ 30분 양자화의 영향 (결정적)</h3>
+    <span style="color:var(--txt2);font-size:14px">
+    도착시각 <b>:00 51.9% / :30 48.1%</b> — 100% 반올림. 재구성 이동 = (반올림 도착간격) − (반올림 체류) →
+    짧은 이동이 반올림에 먹혀 <b>절반이 0 이하</b>. 노이즈(±30분)가 신호(도보 5~20분)보다 커서
+    <b>개별 구간 정밀 대조 불가.</b></span>
+  </div>
+
+  <p style="color:var(--txt2);font-size:14px;font-weight:700;margin-top:18px">그래서 Phase B는 집계·분포·총량으로 설계:</p>
+  <ol>
+    <li><b>Q1 이동(집계)</b> — 거리 bin별 실측 이동 중앙값 vs haversine 추정(다수 표본으로 반올림 상쇄, 양수만)</li>
+    <li><b>Q2 체류(분포)</b> — 카테고리 실측 분포가 우리 중앙값을 뒷받침하나 + cat3 세분화 이득</li>
+    <li><b>Q3 버퍼</b> — 하루 총량(Σ실측) 대비 우리 공식 총합 초과율 → 10~15% 버퍼가 p몇 커버</li>
+    <li><b>Q4 코스 실현성</b> — 실제 다구간 코스를 우리 엔진 총량이 체계적으로 과소/과대(bias) 추정하나</li>
+  </ol>
+  <div class="verdict" style="margin-top:16px">
+    <span style="color:var(--txt2);font-size:14px">핵심 전환 — 이 데이터는 <b>"이 구간 몇 분?"의 정밀 검증기가 아니라,
+    "우리 공식이 현실의 총량·분포를 편향 없이 맞추나"의 타당성 검증기</b>다. 그 목적엔 충분하다.</span>
+  </div>
+
+  <div class="foot">
+    출처: AI-Hub 국내여행로그(동부권, 2023구축) · CC-BY-SA-4.0 · 집계·검증 목적 로컬 사용(원본 미탑재)<br>
+    스크립트: <code>scripts/profile_aihub.mjs</code>, <code>scripts/probe_chain.mjs</code> · 상세: <code>docs/02_data/AI허브_데이터셋_전수카탈로그.md</code><br>
+    다음: Phase B — <code>docs/02_data/시간적합_수식검증.md</code> · TimeFit
+  </div>
+
+</div>
+</body>
+</html>
