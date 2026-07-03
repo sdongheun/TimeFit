@@ -71,10 +71,11 @@
 
   <!-- 판정 요약 -->
   <div class="verdict">
-    <h3>✅ 판정: 시간-적합 수식 검증 가능</h3>
+    <h3>➡️ 결론: 별도 수식 검증(Phase B)은 스킵</h3>
     <span style="color:var(--txt2);font-size:14px">
-    여행별 <b>방문 순서 + 구간 도착시각</b>으로 실제 여행 타임라인을 재구성할 수 있다 —
-    인접 방문쌍의 <b>90.5%</b>가 재구성 가능. 즉 "실제로 시간 안에 이행된 코스"라는 <b>정답 데이터</b>가 존재한다.</span>
+    타임라인 재구성은 기술적으로 가능(인접쌍 <b>90.5%</b>)하나, <b>공식은 덧셈이라 틀릴 게 없고</b>
+    이동은 <b>TMAP</b>이 권위 소스, 체류는 이 데이터에서 뽑아 되검증이 순환, 버퍼는 <b>앱 로그로 사후 보정</b>이 정석.
+    <b>Phase A로 "데이터가 공식을 지탱하는가"의 답은 이미 확보</b> → 앱 개발로 진행.</span>
   </div>
   <div class="warn">
     <h3>⚠️ 단, 모든 시각이 30분 단위로 반올림</h3>
@@ -139,46 +140,12 @@
       <tr><td><code>START_DT_MIN</code> ⏱</td><td><span class="fill"><span class="track"><span class="fillbar" style="width:9%;background:var(--red)"></span></span>8.7%</span></td><td class="skip">거의 빔 → 사용 불가</td></tr>
     </tbody>
   </table>
-  <p style="color:var(--muted);font-size:12.5px"><b style="color:var(--amber)">START_DT_MIN이 8.7%</b> → "출발−도착 차"로 이동시간 직접 산출 불가. 대신 <b style="color:var(--txt2)">연속 도착시각 체이닝</b>으로 구한다 ↓</p>
-
-  <!-- 4. 검증 실현성 -->
-  <h2><span class="n">4</span>⭐ 수식 검증(Phase B) 실현성</h2>
-  <div class="flow"><span class="m">이동시간 재구성 (START_DT 없이):</span>
-  구간이동(i→i+1) = <b>도착_(i+1)</b> − <b>도착_i</b> − <b>체류_i</b>
-       도착 : move_his.END_DT_MIN (복합키로 방문지에 부착)
-       체류 : visit_area.RESIDENCE_TIME_MIN</div>
-
-  <div class="kpi">
-    <div class="c"><div class="v g">2,560</div><div class="l">방문≥2 여행<br>(전부)</div></div>
-    <div class="c"><div class="v">26,832</div><div class="l">총 인접<br>방문쌍</div></div>
-    <div class="c"><div class="v g">90.5%</div><div class="l">이동시간<br>재구성 가능</div></div>
-    <div class="c"><div class="v w">50.3%</div><div class="l">양수 이동<br>(반올림 탈락)</div></div>
-  </div>
-
-  <div class="warn">
-    <h3>⚠️ 30분 양자화의 영향 (결정적)</h3>
-    <span style="color:var(--txt2);font-size:14px">
-    도착시각 <b>:00 51.9% / :30 48.1%</b> — 100% 반올림. 재구성 이동 = (반올림 도착간격) − (반올림 체류) →
-    짧은 이동이 반올림에 먹혀 <b>절반이 0 이하</b>. 노이즈(±30분)가 신호(도보 5~20분)보다 커서
-    <b>개별 구간 정밀 대조 불가.</b></span>
-  </div>
-
-  <p style="color:var(--txt2);font-size:14px;font-weight:700;margin-top:18px">그래서 Phase B는 집계·분포·총량으로 설계:</p>
-  <ol>
-    <li><b>Q1 이동(집계)</b> — 거리 bin별 실측 이동 중앙값 vs haversine 추정(다수 표본으로 반올림 상쇄, 양수만)</li>
-    <li><b>Q2 체류(분포)</b> — 카테고리 실측 분포가 우리 중앙값을 뒷받침하나 + cat3 세분화 이득</li>
-    <li><b>Q3 버퍼</b> — 하루 총량(Σ실측) 대비 우리 공식 총합 초과율 → 10~15% 버퍼가 p몇 커버</li>
-    <li><b>Q4 코스 실현성</b> — 실제 다구간 코스를 우리 엔진 총량이 체계적으로 과소/과대(bias) 추정하나</li>
-  </ol>
-  <div class="verdict" style="margin-top:16px">
-    <span style="color:var(--txt2);font-size:14px">핵심 전환 — 이 데이터는 <b>"이 구간 몇 분?"의 정밀 검증기가 아니라,
-    "우리 공식이 현실의 총량·분포를 편향 없이 맞추나"의 타당성 검증기</b>다. 그 목적엔 충분하다.</span>
-  </div>
+  <p style="color:var(--muted);font-size:12.5px"><b style="color:var(--amber)">START_DT_MIN이 8.7%</b> → "출발−도착 차"로 이동시간 직접 산출 불가. 애초에 앱은 이동시간을 <b style="color:var(--txt2)">TMAP</b>으로 받으므로 이 필드는 앱에 불필요.</p>
 
   <div class="foot">
-    출처: AI-Hub 국내여행로그(동부권, 2023구축) · CC-BY-SA-4.0 · 집계·검증 목적 로컬 사용(원본 미탑재)<br>
+    출처: AI-Hub 국내여행로그(동부권, 2023구축) · CC-BY-SA-4.0 · 집계 목적 로컬 사용(원본 미탑재)<br>
     스크립트: <code>scripts/profile_aihub.mjs</code>, <code>scripts/probe_chain.mjs</code> · 상세: <code>docs/02_data/AI허브_데이터셋_전수카탈로그.md</code><br>
-    다음: Phase B — <code>docs/02_data/시간적합_수식검증.md</code> · TimeFit
+    백로그: 버퍼 앱로그 보정 · cat3 체류 세분화(정확도 개선) · TimeFit
   </div>
 
 </div>
