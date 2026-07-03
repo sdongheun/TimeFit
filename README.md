@@ -1,7 +1,8 @@
 # TimeFit — 짬-시간 AI 플래너
 
 > **"붕 뜬 시간(예: 2시간)에, 이동·체류·혼잡·운영시간까지 따져 *진짜 가능한* 미니 코스를 짜주는 앱."**
-> 2026 관광데이터 활용 공모전(KTO+카카오) 웹·앱 부문 · 전국(부산·김해 우선) · React Native · 1인 · 마감 **2026-09-21**
+> 2026 관광데이터 활용 공모전(KTO+카카오) 웹·앱 부문 · **부산 전용** · React Native · 1인 · 마감 **2026-09-21**
+> 플로우(v2): 입력 → 추천 → 수락 → 실행(경로+로컬알림) → 완료 피드백. 개인화는 피드백에서만. (`docs/03_product/MVP시나리오.md`)
 
 ---
 
@@ -23,21 +24,23 @@ TimeFit/                            ← Expo 앱 = 프로젝트 루트 (단일 �
 │   │   └── 프로젝트여정.md            왜 이 방향인가(공모전·AR포기·전환)
 │   ├── 02_data/                    데이터 전략(핵심)
 │   │   ├── 데이터아키텍처.md          ⭐ 시간-적합 엔진 + 최종 데이터소스 결정
-│   │   ├── 데이터타당성검증.md        TourAPI 라이브 검증 결과
+│   │   ├── AI허브_데이터셋_전수카탈로그.md ⭐ 데이터 14테이블 전수·수식검증 실현성(Phase A)
 │   │   ├── AI허브_체류시간데이터.md   ⭐ 체류시간 추출·검증·라이선스·대안·매칭
 │   │   └── TourAPI카탈로그.md         TourAPI 서비스·오퍼레이션 카탈로그
 │   ├── 03_product/                 제품 시나리오·스택
-│   │   ├── MVP시나리오.md             ⭐ MVP 플로우·필터·예시(인터뷰 확정)
+│   │   ├── MVP시나리오.md             ⭐ 라이프사이클·필터·예시(v2)
 │   │   └── 기술스택.md               ⭐ RN/지도/키/백엔드 결정
 │   └── reports/                    HTML 시각화(브라우저로 열기)
+│       ├── AI허브_전수카탈로그.html      ⭐ 데이터셋 전수·검증 실현성
+│       ├── AI허브_컬럼사전.html
 │       ├── 데이터통합보고서.html
-│       ├── AI허브_추출카탈로그.html
 │       ├── 부산매칭보고서.html
 │       └── TourAPI카탈로그.html
 ├── scripts/                        검증·분석·엔진 (Node, 키는 env 주입)
 │   ├── verify_tourapi.mjs              TourAPI 필드 채움률 검증
-│   ├── probe_dwell_fields.mjs          per-POI 체류시간 필드 프로빙
 │   ├── match_busan.mjs                 부산 TourAPI↔AI-Hub 매칭
+│   ├── profile_aihub.mjs               ⭐ AI-Hub 14테이블 전수 프로파일(Phase A)
+│   ├── probe_chain.mjs                 타임라인 재구성 실현성 프로브
 │   ├── build_dwell.mjs                 ⭐ AI-Hub CSV → 체류/혼잡 JSON 집계(+검증)
 │   └── engine_spike.mjs                ⭐ 결정적 시간-적합 엔진 스파이크
 └── data/
@@ -89,7 +92,9 @@ RN **Expo** · **iOS 우선** · 지도 **MVP Apple Maps → 추후 카카오(�
 | **엔진 스파이크 + TMAP 라이브** (`engine_spike.mjs`, TMAP 54/54, 검증 5/5) | ✅ |
 | **Expo RN 셋업 + 엔진 TS 이식 + 입력·결과 화면** (루트 통합, 타입체크·번들 통과) | ✅ |
 | **화면 분리(입력→결과→상세) + Apple Maps 지도 + 점진 필터칩** | ✅ |
-| 4권역 union(전국화) | ⬜ 다음 |
+| **기획 재정리 v2** (부산 전용·라이프사이클·개인화=피드백) | ✅ 문서 |
+| **시간-적합 수식 데이터 검증** (AI-Hub 실측 타임라인 대조) | ⬜ **다음(앱개발 선행)** |
+| 약속 입력(시각+장소) + 경유 경로 + 실행 화면 + 로컬 알림 | ⬜ |
 
 ## 📱 앱 실행 (루트에서) — Expo SDK 55
 ```bash
@@ -101,9 +106,9 @@ npx expo run:ios --device <UDID>   # 실기기 dev build (또는 ios/mobile.xcwo
 - ℹ️ 실기 테스트는 **Xcode dev build** 사용(Expo Go 버전종속 회피). `ios/`는 prebuild로 재생성(gitignore).
 
 ## 다음 액션
-1. **앱 실기 실행 확인** (시뮬레이터/Expo Go) — 입력→코스 표시 동작
-2. 결과/상세 화면 분리 + **지도(Apple Maps)** + 점진 필터칩(예산/활동/분위기)
-3. 나머지 3권역 CSV → 전국 union · (Phase2) Supabase + Claude 설명
+1. **시간-적합 수식 검증** — AI-Hub 실측 여행 타임라인(도착→체류→이동)으로 `Σ(이동+체류)+버퍼 ≤ 남은시간` 공식·버퍼 타당성 대조 (앱개발 선행)
+2. **약속 입력(시각+장소)** + 엔진 `destination` 경유 경로 연결 + 실행 화면 + 로컬 알림
+3. 수락→피드백 루프 · (Phase2) Supabase 로그인 + Claude 코스 설명
 
 ## 산출 데이터 (`data/processed/`)
 - `category_dwell.json` — 카테고리별 체류시간(median/p25/p75), 식당↔카페 분리
