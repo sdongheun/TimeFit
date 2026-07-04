@@ -4,22 +4,20 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, 
 import * as Location from 'expo-location';
 import { planTimeFit, poiSearch, timeContext, Mode } from '../engine';
 import { Appointment, RootStackParamList, fmtHM } from './nav';
+import { Chip } from './Chip';
 import { C } from './theme';
 
 const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
-// 이동수단 직접 입력 → 엔진 mode 매핑 (버스·택시는 자차 시간 기준 임시)
-function parseMode(txt: string): { mode: Mode; label: string; note?: string } | null {
-  const t = txt.trim();
-  if (!t) return null;
-  if (t.includes('도보') || t.includes('걷')) return { mode: 'walk', label: '도보' };
-  if (t.includes('자차') || t === '차' || t.includes('자동차')) return { mode: 'car', label: '자차' };
-  if (t.includes('택시')) return { mode: 'car', label: '택시' };
-  if (t.includes('버스') || t.includes('대중')) return { mode: 'car', label: '버스', note: '버스는 자차 시간 기준 임시 계산(대중교통 API 추후)' };
-  return null;
-}
+// 이동수단 버튼 (버스·택시는 자차 시간 기준 임시)
+const MODES: { label: string; icon: string; mode: Mode; note?: string }[] = [
+  { label: '도보', icon: '🚶', mode: 'walk' },
+  { label: '자차', icon: '🚗', mode: 'car' },
+  { label: '버스', icon: '🚌', mode: 'car', note: '버스는 자차 시간 기준 임시 계산(대중교통 API 추후)' },
+  { label: '택시', icon: '🚕', mode: 'car' },
+];
 
 // "14:30" / "14" → 자정 기준 분
 function parseTime(txt: string): number | null {
@@ -39,7 +37,7 @@ export function HomeScreen({ navigation }: Props) {
   const [apptTxt, setApptTxt] = useState('');
   const [appointment, setAppointment] = useState<Appointment>(null);
   const [apptMsg, setApptMsg] = useState('');
-  const [modeTxt, setModeTxt] = useState('도보');
+  const [modeSel, setModeSel] = useState(MODES[0]);
   const [locTxt, setLocTxt] = useState('');
   const [origin, setOrigin] = useState(SEOMYEON);
   const [locLabel, setLocLabel] = useState('부산 서면(기본)');
@@ -85,9 +83,7 @@ export function HomeScreen({ navigation }: Props) {
 
   async function run() {
     setError('');
-    const pm = parseMode(modeTxt);
     if (!remaining) { setError('비는 시간을 분 단위 숫자로 입력하세요 (예: 120)'); return; }
-    if (!pm) { setError('이동수단은 도보 / 자차 / 버스 / 택시 중 하나로 입력하세요'); return; }
     if (timeTxt.trim() && manualMin == null) { setError('테스트 시각은 HH:MM 형식으로 입력하세요 (예: 14:30)'); return; }
     if (apptTxt.trim() && !appointment) { setError('약속 장소를 검색해 확정해주세요 (입력 후 검색 버튼)'); return; }
 
@@ -102,20 +98,18 @@ export function HomeScreen({ navigation }: Props) {
       const result = await planTimeFit({
         origin,
         destination: appointment ? { lat: appointment.lat, lon: appointment.lon } : null,
-        remainingMin: remaining, mode: pm.mode,
+        remainingMin: remaining, mode: modeSel.mode,
         nowMin: useMin, dayType, hourBucket,
       });
       if (!result.courses.length) { setError('이 시간 안에 가능한 코스를 찾지 못했어요. 시간을 늘려보세요.'); return; }
       navigation.navigate('Results', {
         result, usedTimeLabel, origin,
-        ctx: { startMin: useMin, mode: pm.mode, modeLabel: pm.label, appointment, remainingMin: remaining },
+        ctx: { startMin: useMin, mode: modeSel.mode, modeLabel: modeSel.label, appointment, remainingMin: remaining },
       });
     } catch (e: any) {
       setError('추천 실패: ' + (e?.message ?? '알 수 없음'));
     } finally { setLoading(false); }
   }
-
-  const pmPreview = parseMode(modeTxt);
 
   return (
     <View style={s.root}>
@@ -155,10 +149,11 @@ export function HomeScreen({ navigation }: Props) {
         {apptMsg ? <Text style={[s.hint, appointment ? { color: C.green } : { color: C.amber }]}>{apptMsg}</Text> : null}
         {appointment && <Text style={s.hint}>코스 후 {appointment.label}에 {fmtHM(endMin)}까지 도착하는 경유 코스로 계산해요</Text>}
 
-        <Text style={s.label}>이동수단 (도보 / 자차 / 버스 / 택시)</Text>
-        <TextInput style={s.input} value={modeTxt} onChangeText={setModeTxt}
-          placeholder="예: 도보" placeholderTextColor={C.muted} />
-        {pmPreview?.note ? <Text style={[s.hint, { color: C.amber }]}>{pmPreview.note}</Text> : null}
+        <Text style={s.label}>이동수단</Text>
+        <View style={s.row}>{MODES.map((m) => (
+          <Chip key={m.label} active={modeSel.label === m.label} onPress={() => setModeSel(m)} text={`${m.icon} ${m.label}`} />
+        ))}</View>
+        {modeSel.note ? <Text style={[s.hint, { color: C.amber }]}>{modeSel.note}</Text> : null}
 
         <Text style={s.label}>현재 위치</Text>
         <View style={s.searchRow}>
@@ -204,6 +199,7 @@ const s = StyleSheet.create({
   timeDiv: { width: 1, height: 30, backgroundColor: C.line },
   label: { color: C.txt2, fontSize: 14, fontWeight: '700', marginTop: 18, marginBottom: 8 },
   input: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 11, paddingVertical: 11, paddingHorizontal: 14, color: C.txt, fontSize: 14.5 },
+  row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   searchRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
   grow: { flex: 1 },
   searchBtn: { paddingVertical: 11, paddingHorizontal: 14, borderRadius: 11, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, minWidth: 52, alignItems: 'center' },
