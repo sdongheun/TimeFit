@@ -83,7 +83,7 @@ export async function poiSearchMulti(keyword: string, center?: LatLon, count = 5
   };
   if (center) {
     params.centerLat = String(center.lat); params.centerLon = String(center.lon);
-    params.radius = '10'; params.searchtypCd = 'R'; // 반경 10km 내 가까운 순
+    params.radius = '30'; params.searchtypCd = 'R'; // 반경 30km(부산 전역 커버) 가까운 순
   }
   try {
     const res = await fetch(`https://apis.openapi.sk.com/tmap/pois?${new URLSearchParams(params)}`, { headers: { appKey: TMAP_KEY } });

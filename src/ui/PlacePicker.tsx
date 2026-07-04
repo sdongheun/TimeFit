@@ -26,11 +26,12 @@ export function PlacePicker({ visible, title, center, onClose, onConfirm }: Prop
   async function search() {
     if (!q.trim()) return;
     setBusy('search'); setSel(-1);
-    // POI(가까운 순) + 주소 지오코딩 동시 조회 → 합치기
-    const [pois, addrs] = await Promise.all([
+    // POI(반경 30km 가까운 순) + 주소 지오코딩 동시 조회 → 합치기
+    let [pois, addrs] = await Promise.all([
       poiSearchMulti(q, center, 5),
       geocodeAddr(q, 3),
     ]);
+    if (!pois.length) pois = await poiSearchMulti(q, undefined, 5); // 반경 밖이면 전국 재시도
     setBusy('');
     const list = [...pois, ...addrs];
     setCands(list);
