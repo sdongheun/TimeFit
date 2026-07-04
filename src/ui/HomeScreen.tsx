@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import * as Location from 'expo-location';
-import { planTimeFit, timeContext, Mode } from '../engine';
+import { planTimeFit, reverseGeocode, timeContext, Mode } from '../engine';
 import { Appointment, RootStackParamList, fmtHM } from './nav';
 import { Chip } from './Chip';
 import { PlacePicker } from './PlacePicker';
@@ -56,8 +56,11 @@ export function HomeScreen({ navigation }: Props) {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') { setLocLabel('위치 권한 거부 → 서면 기본'); return; }
       const p = await Location.getCurrentPositionAsync({});
-      setOrigin({ lat: p.coords.latitude, lon: p.coords.longitude });
-      setLocLabel(`현재 위치 (${p.coords.latitude.toFixed(3)}, ${p.coords.longitude.toFixed(3)})`);
+      const lat = p.coords.latitude, lon = p.coords.longitude;
+      setOrigin({ lat, lon });
+      setLocLabel('📍 내 위치 · 주소 확인 중…');
+      const addr = await reverseGeocode(lat, lon);
+      setLocLabel(addr ? `📍 내 위치 · ${addr}` : `📍 내 위치 (${lat.toFixed(3)}, ${lon.toFixed(3)})`);
     } catch { setLocLabel('위치 실패 → 서면 기본'); }
   }
 
