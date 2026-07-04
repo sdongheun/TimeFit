@@ -35,11 +35,14 @@ export function resolveDwell(title: string, category: string): { base: number; s
   return c ? { base: c.median, src: '카테고리' } : { base: 30, src: '기본값' };
 }
 
-// 유효 체류 = 기본 × 혼잡배수
+// 유효 체류 = 기본 × 혼잡배수(완화 적용)
+// 원배수(0.8~1.8)를 그대로 곱하면 체류 60분→108분 같은 비현실 값 발생 →
+// 저신뢰(자기보고 30분 버킷) 파생 데이터이므로 영향 절반 + [0.9, 1.2] 클램프
 export function effectiveDwell(
   title: string, category: string, dayType: DayType, hourBucket: HourBucket,
 ): { eff: number; base: number; mult: number; src: string } {
   const { base, src } = resolveDwell(title, category);
-  const mult = congData[category]?.[dayType]?.[hourBucket] ?? 1.0;
-  return { eff: Math.round(base * mult), base, mult, src };
+  const raw = congData[category]?.[dayType]?.[hourBucket] ?? 1.0;
+  const mult = Math.round(Math.min(1.2, Math.max(0.9, 1 + (raw - 1) * 0.5)) * 100) / 100;
+  return { eff: Math.round(base * mult / 5) * 5, base, mult, src }; // 5분 단위 반올림
 }

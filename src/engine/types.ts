@@ -46,5 +46,6 @@ export type PlanResult = {
   gatedCount: number;
   tmapOk: number;
   tmapFail: number;
-  courses: Course[];
+  courses: Course[]; // 확정 배치(≤5, TMAP 정밀)
+  pending: Course[]; // "다른 코스 보기" 대기열(haversine 추정치)
 };

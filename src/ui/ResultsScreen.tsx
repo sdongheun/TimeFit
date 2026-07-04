@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Course } from '../engine';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Course, refineCourses } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
 import { Chip } from './Chip';
 import { C } from './theme';
@@ -28,16 +28,32 @@ export function ResultsScreen({ route, navigation }: Props) {
   const { result, usedTimeLabel, origin, ctx } = route.params;
   const [moods, setMoods] = useState<Set<Mood>>(new Set());
   const [acts, setActs] = useState<Set<Activity>>(new Set());
+  // 배치식 추천: 현재 5개 + 대기열(pending) → "다른 코스 보기"로 다음 배치 정밀화
+  const [courses, setCourses] = useState<Course[]>(result.courses);
+  const [pending, setPending] = useState<Course[]>(result.pending);
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshMsg, setRefreshMsg] = useState('');
 
   const toggle = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const n = new Set(set); n.has(v) ? n.delete(v) : n.add(v); setter(n);
   };
 
-  const filtered = useMemo(() => result.courses.filter((c) => {
+  async function showMore() {
+    setRefreshing(true); setRefreshMsg('');
+    try {
+      const dest = ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : null;
+      const r = await refineCourses(pending, origin, dest, ctx.mode, ctx.remainingMin, 5);
+      setPending(r.rest);
+      if (r.courses.length) setCourses(r.courses);
+      else setRefreshMsg('더 이상 새 코스가 없어요 — 시간을 바꿔보세요');
+    } finally { setRefreshing(false); }
+  }
+
+  const filtered = useMemo(() => courses.filter((c) => {
     const moodOk = moods.size === 0 || c.spots.some((sp) => { const m = moodOf(sp.category); return m && moods.has(m); });
     const actOk = acts.size === 0 || c.spots.some((sp) => actsOf(sp.category).some((a) => acts.has(a)));
     return moodOk && actOk;
-  }), [result.courses, moods, acts]);
+  }), [courses, moods, acts]);
 
   const endMin = ctx.startMin + ctx.remainingMin;
 
@@ -62,7 +78,15 @@ export function ResultsScreen({ route, navigation }: Props) {
           <Chip key={a} active={acts.has(a)} onPress={() => toggle(acts, a, setActs)} text={a} />
         ))}</View>
 
-        <Text style={s.count}>가능한 코스 {filtered.length}</Text>
+        <View style={s.countRow}>
+          <Text style={s.count}>가능한 코스 {filtered.length}</Text>
+          {pending.length > 0 && (
+            <Pressable style={s.moreBtn} onPress={showMore} disabled={refreshing}>
+              {refreshing ? <ActivityIndicator size="small" color={C.accent} /> : <Text style={s.moreBtnTxt}>🔄 다른 코스 보기 ({pending.length})</Text>}
+            </Pressable>
+          )}
+        </View>
+        {refreshMsg ? <Text style={s.empty}>{refreshMsg}</Text> : null}
         {filtered.length === 0 && <Text style={s.empty}>이 필터에 맞는 코스가 없어요. 필터를 줄여보세요.</Text>}
 
         {filtered.map((c, i) => (
@@ -97,7 +121,10 @@ const s = StyleSheet.create({
   meta: { color: C.muted, fontSize: 11.5, marginBottom: 8 },
   flabel: { color: C.txt2, fontSize: 13, fontWeight: '700', marginTop: 12, marginBottom: 6 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  count: { color: C.muted, fontSize: 12.5, marginTop: 16, marginBottom: 4, fontWeight: '700', letterSpacing: 0.5 },
+  countRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, marginBottom: 4 },
+  count: { color: C.muted, fontSize: 12.5, fontWeight: '700', letterSpacing: 0.5 },
+  moreBtn: { paddingVertical: 6, paddingHorizontal: 11, borderRadius: 9, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel, minWidth: 60, alignItems: 'center' },
+  moreBtnTxt: { color: C.accent, fontSize: 12, fontWeight: '700' },
   empty: { color: C.amber, fontSize: 13, marginTop: 6 },
   card: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 16, marginTop: 12 },
   cardHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
