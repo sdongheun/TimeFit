@@ -17,8 +17,10 @@ export function DetailScreen({ route, navigation }: Props) {
     latitudeDelta: Math.max(0.012, (Math.max(...lats) - Math.min(...lats)) * 1.8),
     longitudeDelta: Math.max(0.012, (Math.max(...lons) - Math.min(...lons)) * 1.8),
   };
-  const line = pts.map((p) => ({ latitude: p.lat, longitude: p.lon }));
   const travelLegs = course.legs.filter((lg) => !lg.label.startsWith('체류'));
+  // TMAP 실경로(geo) 연결 — 없으면 직선 폴백
+  const geoCoords = travelLegs.flatMap((lg) => lg.geo ?? []);
+  const line = (geoCoords.length > 1 ? geoCoords : pts).map((p) => ({ latitude: p.lat, longitude: p.lon }));
   const icon = modeIcon(ctx.modeLabel);
 
   return (

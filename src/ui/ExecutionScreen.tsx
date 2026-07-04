@@ -57,7 +57,12 @@ export function ExecutionScreen({ route, navigation }: Props) {
           <Marker key={i} coordinate={{ latitude: sp.lat, longitude: sp.lon }} title={`${i + 1}. ${sp.title}`} />
         ))}
         {ctx.appointment && <Marker coordinate={{ latitude: target.lat, longitude: target.lon }} title={`약속 · ${ctx.appointment.label}`} pinColor="#7ee787" />}
-        <Polyline coordinates={pts.map((p) => ({ latitude: p.lat, longitude: p.lon }))} strokeColor="#4cc2ff" strokeWidth={3} />
+        <Polyline
+          coordinates={(() => {
+            const geo = course.legs.filter((lg) => !lg.label.startsWith('체류')).flatMap((lg) => lg.geo ?? []);
+            return (geo.length > 1 ? geo : pts).map((p) => ({ latitude: p.lat, longitude: p.lon })); // 실경로, 없으면 직선
+          })()}
+          strokeColor="#4cc2ff" strokeWidth={3} />
       </MapView>
 
       <ScrollView contentContainerStyle={s.scroll}>

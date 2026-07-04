@@ -2,7 +2,7 @@
 import { Course, LatLon, PlanInput, PlanResult, Spot } from './types';
 import { effectiveDwell, mapCategory } from './data';
 import { detailIntro, isOpenDuring, locationBased } from './tourapi';
-import { haversineMin, precompute, travelMin, travelSrc } from './travel';
+import { haversineMin, precompute, travelGeo, travelMin, travelSrc } from './travel';
 
 export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   const radiusM = input.radiusM ?? 1500;
@@ -39,29 +39,24 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
     if (g.ok) gated.push({ ...s, openNote: g.note });
   }
 
-  // 4) TMAP 정밀 이동(게이트 풀: origin↔spot + 상위 pair)
-  const pool = gated.slice(0, 8);
-  const pairs: [LatLon, LatLon][] = [];
-  for (const s of gated) { pairs.push([input.origin, s]); pairs.push([s, target]); }
-  for (let i = 0; i < pool.length; i++) for (let j = i + 1; j < pool.length; j++) pairs.push([pool[i], pool[j]]);
-  const stat = await precompute(pairs, mode);
-
-  // 5) 시간적응형 코스
+  // 4) 시간적응형 코스 조립 — 이 단계는 haversine 추정만 사용 (TMAP 미호출)
+  //    지연 정밀화: 상위 후보에만 TMAP 호출(5단계) → 추천 1회 ~54건 → ~12건 (합산 1,000/일 한도 대응)
   const courses: Course[] = [];
   const buildLegs = (spots: Spot[]): { legs: Course['legs']; total: number } => {
     const legs: Course['legs'] = [];
     let cur: LatLon = input.origin, total = 0;
     spots.forEach((s, k) => {
       const t = travelMin(cur, s, mode); total += t + s.dwell;
-      legs.push({ label: `${k === 0 ? '출발' : '이동'} → ${s.title}`, min: t, src: travelSrc(cur, s) });
+      legs.push({ label: `${k === 0 ? '출발' : '이동'} → ${s.title}`, min: t, src: travelSrc(cur, s, mode), geo: travelGeo(cur, s, mode) });
       legs.push({ label: `체류 · ${s.title}`, min: s.dwell, src: s.dwellSrc });
       cur = s;
     });
     const back = travelMin(cur, target, mode); total += back;
-    legs.push({ label: input.destination ? '다음 스케줄로' : '출발지로 복귀', min: back, src: travelSrc(cur, target) });
+    legs.push({ label: input.destination ? '다음 스케줄로' : '출발지로 복귀', min: back, src: travelSrc(cur, target, mode), geo: travelGeo(cur, target, mode) });
     return { legs, total };
   };
 
+  const pool = gated.slice(0, 8);
   for (const s of gated) {
     const { legs, total } = buildLegs([s]);
     if (total <= budget) courses.push({ type: '단일', spots: [s], totalMin: total, legs, bufferLeftMin: input.remainingMin - total });
@@ -76,14 +71,30 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
     }
   }
 
-  // 미니 우선 + 시간 알차게, 중복 제거
+  // 미니 우선 + 시간 알차게, 중복 제거 → 정밀화 후보 6개 (탈락 대비 3+3)
   courses.sort((a, b) => (b.spots.length - a.spots.length) || (b.totalMin - a.totalMin));
-  const top: Course[] = [];
+  const cand6: Course[] = [];
   const seen = new Set<string>();
   for (const c of courses) {
     const k = c.spots.map((s) => s.title).sort().join('|');
     if (seen.has(k)) continue;
-    seen.add(k); top.push(c);
+    seen.add(k); cand6.push(c);
+    if (cand6.length >= 6) break;
+  }
+
+  // 5) 지연 정밀화 — 상위 후보의 구간만 TMAP(시간+실경로), 예산 재검증 통과분 3개 확정
+  const stat = { ok: 0, fail: 0 };
+  const top: Course[] = [];
+  for (const c of cand6) {
+    const pairs: [LatLon, LatLon][] = [];
+    let cur: LatLon = input.origin;
+    for (const s of c.spots) { pairs.push([cur, s]); cur = s; }
+    pairs.push([cur, target]);
+    const st = await precompute(pairs, mode); // 캐시된 쌍은 재호출 없음
+    stat.ok += st.ok; stat.fail += st.fail;
+    const { legs, total } = buildLegs(c.spots); // TMAP 정밀값+geometry로 재계산
+    if (total > budget) continue; // 정밀화 후 예산 초과 → 탈락
+    top.push({ ...c, legs, totalMin: total, bufferLeftMin: input.remainingMin - total });
     if (top.length >= 3) break;
   }
 

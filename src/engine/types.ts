@@ -29,7 +29,7 @@ export type Spot = {
   openNote: string;
 };
 
-export type Leg = { label: string; min: number; src: string };
+export type Leg = { label: string; min: number; src: string; geo?: LatLon[] }; // geo: TMAP 실경로 좌표(이동 구간만)
 
 export type Course = {
   type: "단일" | "미니코스";

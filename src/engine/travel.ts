@@ -21,7 +21,8 @@ export function haversineMin(a: LatLon, b: LatLon, mode: Mode): number {
   return Math.round((km * use.circ) / use.kmh * 60 + use.fix);
 }
 
-async function tmapTravel(a: LatLon, b: LatLon, mode: Mode): Promise<number | null> {
+// TMAP 경로: 소요시간 + 경로좌표(geometry) — geometry는 지도 실경로 표시용
+async function tmapTravel(a: LatLon, b: LatLon, mode: Mode): Promise<{ min: number; geo: LatLon[] } | null> {
   if (!TMAP_KEY) return null;
   const ped = mode === 'walk';
   const url = ped
@@ -42,35 +43,57 @@ async function tmapTravel(a: LatLon, b: LatLon, mode: Mode): Promise<number | nu
     if (!res.ok) return null;
     const j = await res.json();
     const sec = j?.features?.[0]?.properties?.totalTime;
-    return Number.isFinite(sec) ? Math.round(sec / 60) : null;
+    if (!Number.isFinite(sec)) return null;
+    // LineString feature들의 좌표([lon,lat])를 이어붙여 실경로 구성
+    const geo: LatLon[] = [];
+    for (const f of j.features ?? []) {
+      if (f?.geometry?.type !== 'LineString') continue;
+      for (const c of f.geometry.coordinates ?? []) {
+        const lon = parseFloat(c[0]), lat = parseFloat(c[1]);
+        if (!isNaN(lat) && !isNaN(lon)) geo.push({ lat, lon });
+      }
+    }
+    return { min: Math.round(sec / 60), geo };
   } catch {
     return null;
   }
 }
 
-const cache = new Map<string, { min: number; src: string }>();
-const ckey = (a: LatLon, b: LatLon) => `${a.lat.toFixed(5)},${a.lon.toFixed(5)}|${b.lat.toFixed(5)},${b.lon.toFixed(5)}`;
+// 캐시: 약관상 취득 데이터 24시간 이상 보관 금지 → TTL 24h
+const TTL_MS = 24 * 60 * 60 * 1000;
+type CacheEntry = { min: number; src: string; geo?: LatLon[]; ts: number };
+const cache = new Map<string, CacheEntry>();
+// ⚠️ 모드 포함 필수 — 좌표만 키로 쓰면 도보 시간을 자차로 잘못 재사용
+const ckey = (a: LatLon, b: LatLon, mode: Mode) => `${mode}|${a.lat.toFixed(5)},${a.lon.toFixed(5)}|${b.lat.toFixed(5)},${b.lon.toFixed(5)}`;
+const getCache = (k: string): CacheEntry | undefined => {
+  const e = cache.get(k);
+  if (e && Date.now() - e.ts > TTL_MS) { cache.delete(k); return undefined; }
+  return e;
+};
 
 export type PrecomputeStat = { ok: number; fail: number };
 
-// 필요한 좌표쌍을 TMAP로 미리 채움(실패 시 haversine 캐시)
+// 필요한 좌표쌍을 TMAP로 채움(실패 시 haversine 캐시) — 지연 정밀화: 최종 코스 구간에만 호출
 export async function precompute(pairs: [LatLon, LatLon][], mode: Mode): Promise<PrecomputeStat> {
   let ok = 0, fail = 0;
   for (const [a, b] of pairs) {
-    const k = ckey(a, b);
-    if (cache.has(k)) continue;
+    const k = ckey(a, b, mode);
+    if (getCache(k)?.src === 'TMAP') continue; // haversine 폴백은 재시도 대상
     const t = await tmapTravel(a, b, mode);
-    if (t != null) { cache.set(k, { min: t, src: 'TMAP' }); ok++; }
-    else { cache.set(k, { min: haversineMin(a, b, mode), src: 'haversine' }); fail++; }
+    if (t != null) { cache.set(k, { min: t.min, src: 'TMAP', geo: t.geo, ts: Date.now() }); ok++; }
+    else { cache.set(k, { min: haversineMin(a, b, mode), src: 'haversine', ts: Date.now() }); fail++; }
   }
   return { ok, fail };
 }
 
 export function travelMin(a: LatLon, b: LatLon, mode: Mode): number {
-  return cache.get(ckey(a, b))?.min ?? haversineMin(a, b, mode);
+  return getCache(ckey(a, b, mode))?.min ?? haversineMin(a, b, mode);
 }
-export function travelSrc(a: LatLon, b: LatLon): string {
-  return cache.get(ckey(a, b))?.src ?? 'haversine';
+export function travelSrc(a: LatLon, b: LatLon, mode: Mode): string {
+  return getCache(ckey(a, b, mode))?.src ?? 'haversine';
+}
+export function travelGeo(a: LatLon, b: LatLon, mode: Mode): LatLon[] | undefined {
+  return getCache(ckey(a, b, mode))?.geo;
 }
 
 // TMAP POI 통합검색: 장소명 → 좌표 후보 (center 지정 시 가까운 순)
