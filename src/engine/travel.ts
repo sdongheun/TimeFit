@@ -72,3 +72,25 @@ export function travelMin(a: LatLon, b: LatLon, mode: Mode): number {
 export function travelSrc(a: LatLon, b: LatLon): string {
   return cache.get(ckey(a, b))?.src ?? 'haversine';
 }
+
+// TMAP POI 통합검색: 장소명 → 좌표 (약속장소/현재위치 직접 입력용)
+export type Poi = { name: string; lat: number; lon: number; addr: string };
+export async function poiSearch(keyword: string): Promise<Poi | null> {
+  if (!TMAP_KEY || !keyword.trim()) return null;
+  const qs = new URLSearchParams({
+    version: '1', searchKeyword: keyword.trim(), count: '1',
+    resCoordType: 'WGS84GEO', reqCoordType: 'WGS84GEO',
+  }).toString();
+  try {
+    const res = await fetch(`https://apis.openapi.sk.com/tmap/pois?${qs}`, { headers: { appKey: TMAP_KEY } });
+    if (!res.ok) return null;
+    const j = await res.json();
+    const p = j?.searchPoiInfo?.pois?.poi?.[0];
+    if (!p) return null;
+    const lat = parseFloat(p.frontLat ?? p.noorLat), lon = parseFloat(p.frontLon ?? p.noorLon);
+    if (isNaN(lat) || isNaN(lon)) return null;
+    return { name: p.name, lat, lon, addr: [p.upperAddrName, p.middleAddrName, p.lowerAddrName].filter(Boolean).join(' ') };
+  } catch {
+    return null;
+  }
+}

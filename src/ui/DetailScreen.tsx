@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from 'react-native-maps';
-import { RootStackParamList } from './nav';
+import { RootStackParamList, modeIcon } from './nav';
 import { C } from './theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
@@ -19,7 +19,7 @@ export function DetailScreen({ route, navigation }: Props) {
   };
   const line = pts.map((p) => ({ latitude: p.lat, longitude: p.lon }));
   const travelLegs = course.legs.filter((lg) => !lg.label.startsWith('체류'));
-  const modeIcon = ctx.mode === 'car' ? '🚗' : '🚶';
+  const icon = modeIcon(ctx.modeLabel);
 
   return (
     <View style={s.root}>
@@ -52,7 +52,7 @@ export function DetailScreen({ route, navigation }: Props) {
         ))}
 
         {/* 이동 요약: 🚶 8분 · 🚶 6분 · 🚶 10분 */}
-        <Text style={s.legRow}>{travelLegs.map((lg) => `${modeIcon} ${lg.min}분`).join('  ·  ')}</Text>
+        <Text style={s.legRow}>{travelLegs.map((lg) => `${icon} ${lg.min}분`).join('  ·  ')}</Text>
 
         <Text style={s.legHead}>동선 분해</Text>
         <View style={s.legBox}>
