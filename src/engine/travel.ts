@@ -107,6 +107,32 @@ export async function poiSearch(keyword: string): Promise<Poi | null> {
   return (await poiSearchMulti(keyword, undefined, 1))[0] ?? null;
 }
 
+// TMAP 주소 지오코딩: 주소 문자열 → 좌표 후보 (도로명 우선)
+export async function geocodeAddr(fullAddr: string, count = 3): Promise<Poi[]> {
+  if (!TMAP_KEY || !fullAddr.trim()) return [];
+  const qs = new URLSearchParams({
+    version: '1', format: 'json', coordType: 'WGS84GEO', fullAddr: fullAddr.trim(),
+  }).toString();
+  try {
+    const res = await fetch(`https://apis.openapi.sk.com/tmap/geo/fullAddrGeo?${qs}`, { headers: { appKey: TMAP_KEY } });
+    if (!res.ok) return [];
+    const j = await res.json();
+    let list = j?.coordinateInfo?.coordinate ?? [];
+    if (!Array.isArray(list)) list = [list];
+    const out: Poi[] = [];
+    for (const c of list.slice(0, count)) {
+      const lat = parseFloat(c.newLat || c.lat), lon = parseFloat(c.newLon || c.lon);
+      if (isNaN(lat) || isNaN(lon)) continue;
+      const label = [c.city_do, c.gu_gun, c.eup_myun, c.newRoadName || c.legalDong, c.newBuildingIndex || c.bunji, c.buildingName]
+        .filter(Boolean).join(' ').trim();
+      out.push({ name: label || fullAddr.trim(), lat, lon, addr: '주소' });
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
+
 // TMAP 역지오코딩: 좌표 → 주소 (지도 롱프레스 핀용)
 export async function reverseGeocode(lat: number, lon: number): Promise<string | null> {
   if (!TMAP_KEY) return null;
