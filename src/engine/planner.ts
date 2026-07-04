@@ -57,16 +57,8 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
     }
   }
 
-  // 미니 우선 + 시간 알차게, 중복 제거 → 정밀화 대기열 (배치 5개씩 소비)
-  courses.sort((a, b) => (b.spots.length - a.spots.length) || (b.totalMin - a.totalMin));
-  const ranked: Course[] = [];
-  const seen = new Set<string>();
-  for (const c of courses) {
-    const k = c.spots.map((s) => s.title).sort().join('|');
-    if (seen.has(k)) continue;
-    seen.add(k); ranked.push(c);
-    if (ranked.length >= 24) break; // "다른 코스 보기" 여유분까지 보관
-  }
+  // 랭킹 v1 — 결정적 점수 함수 + 그리디 다양성 (추천로직.md §4)
+  const ranked = rankCourses(courses, budget, input.hourBucket);
 
   // 5) 지연 정밀화 — 첫 배치 5개 확정, 나머지는 pending(새로고침용, haversine 추정치)
   const r = await refineCourses(ranked, input.origin, input.destination ?? null, mode, input.remainingMin, 5);
@@ -75,6 +67,51 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
     budgetMin: budget, bufferMin: buffer, candidateCount: cands.length,
     gatedCount: gated.length, tmapOk: r.ok, tmapFail: r.fail, courses: r.courses, pending: r.rest,
   };
+}
+
+// ───────────────── 랭킹 v1 (결정적·설명가능) ─────────────────
+// score = 0.4·체류비율 + 0.3·시간활용 + 0.3·시간대적합 + 0.05·(스팟수−1) − 0.15·카테고리중복(그리디)
+// · 체류비율: 이동 낭비 벌점 — "멀리 걷게 하는 코스가 상위" 왜곡 제거 (A2)
+// · 시간대적합: 오후 3시 뷔페 같은 부조화 감점 (A4)
+// · 그리디 다양성: 위에서부터 뽑을 때 이미 뽑힌 카테고리는 감점 → 상위 5개 골고루 (A3)
+const TIMEFIT: Record<PlanInput['hourBucket'], Record<string, number>> = {
+  아침: { 카페: 1.0, 자연관광지: 0.9, '레저/스포츠': 0.7, 문화시설: 0.6, 식당: 0.4 },
+  점심: { 식당: 1.0, 카페: 0.7, 문화시설: 0.6, 자연관광지: 0.6, 상업지구: 0.6 },
+  오후: { 자연관광지: 1.0, 문화시설: 1.0, 상업지구: 0.9, '레저/스포츠': 0.9, '지역축제/행사': 0.9, 카페: 0.8, 식당: 0.4 },
+  저녁: { 식당: 1.0, '지역축제/행사': 0.9, 카페: 0.8, 상업지구: 0.8, 자연관광지: 0.6 },
+  야간: { 카페: 0.8, 상업지구: 0.8, '지역축제/행사': 0.8, 식당: 0.7, 자연관광지: 0.6 },
+};
+const timeFitOf = (bucket: PlanInput['hourBucket'], category: string) => TIMEFIT[bucket]?.[category] ?? 0.6;
+
+function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourBucket'], cap = 24): Course[] {
+  const scored = courses.map((c) => {
+    const dwell = c.spots.reduce((n, s) => n + s.dwell, 0);
+    const ratio = dwell / c.totalMin;                                   // 체류비율(이동낭비 벌점)
+    const use = Math.min(1, c.totalMin / budget);                       // 시간활용(알차게)
+    const fit = c.spots.reduce((n, s) => n + timeFitOf(bucket, s.category), 0) / c.spots.length; // 시간대적합
+    const score = 0.4 * ratio + 0.3 * use + 0.3 * fit + 0.05 * (c.spots.length - 1);
+    const why = `체류 ${Math.round(ratio * 100)}% · ${bucket} 적합 ${Math.round(fit * 100)}%`;
+    return { c: { ...c, why }, score };
+  });
+  // 그리디 선택: 매 단계 (점수 − 이미 뽑힌 카테고리 중복 벌점) 최대를 뽑음
+  const ranked: Course[] = [];
+  const catCnt: Record<string, number> = {};
+  const seen = new Set<string>();
+  while (ranked.length < cap && scored.length) {
+    let bi = 0, bv = -Infinity;
+    for (let i = 0; i < scored.length; i++) {
+      const pen = scored[i].c.spots.reduce((p, s) => p + (catCnt[s.category] ?? 0), 0) * 0.15;
+      const v = scored[i].score - pen;
+      if (v > bv) { bv = v; bi = i; }
+    }
+    const { c } = scored.splice(bi, 1)[0];
+    const k = c.spots.map((s) => s.title).sort().join('|');
+    if (seen.has(k)) continue;
+    seen.add(k);
+    ranked.push(c);
+    c.spots.forEach((s) => { catCnt[s.category] = (catCnt[s.category] ?? 0) + 1; });
+  }
+  return ranked;
 }
 
 // 구간 시간/경로 조립 — precompute 이후 호출하면 TMAP 정밀값+실경로, 아니면 haversine 추정

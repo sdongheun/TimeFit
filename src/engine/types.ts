@@ -37,6 +37,7 @@ export type Course = {
   totalMin: number;
   legs: Leg[];
   bufferLeftMin: number;
+  why?: string; // 랭킹 근거(설명가능성): "체류 72% · 오후 적합 90%"
 };
 
 export type PlanResult = {

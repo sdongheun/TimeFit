@@ -14,7 +14,7 @@ async function run(name: string, input: Parameters<typeof planTimeFit>[0]) {
   console.log(`후보 ${r.candidateCount} · 게이트 ${r.gatedCount} · TMAP ${r.tmapOk}/${calls} · 코스 ${r.courses.length} · 대기열 ${r.pending.length}`);
   for (const c of r.courses) {
     const geoPts = c.legs.reduce((n, l) => n + (l.geo?.length ?? 0), 0);
-    console.log(`  [${c.type}] ${c.spots.map((s) => s.title).join(' + ')} · 총 ${c.totalMin}분 · 여유 ${c.bufferLeftMin}분 · 경로좌표 ${geoPts}개 · 혼잡×${c.spots[0].mult}`);
+    console.log(`  [${c.type}] ${c.spots.map((s) => `${s.title}(${s.category})`).join(' + ')} · 총 ${c.totalMin}분 · ${c.why} · 경로 ${geoPts}pt`);
   }
   // 1) 지연 정밀화: 호출 수 급감 (기존 ~54건, 배치 5개)
   assert('TMAP 호출 ≤ 25', calls <= 25, `${calls}건`);
@@ -31,6 +31,13 @@ async function run(name: string, input: Parameters<typeof planTimeFit>[0]) {
   // 6) 혼잡배수 완화: 0.9~1.2 범위
   const mults = r.courses.flatMap((c) => c.spots.map((s) => s.mult));
   assert('혼잡배수 0.9~1.2', mults.every((m) => m >= 0.9 && m <= 1.2), mults.join(','));
+  // 8) 랭킹 v1: 카테고리 다양성 — 상위 배치에서 같은 카테고리 3개 초과 금지
+  const catCount: Record<string, number> = {};
+  r.courses.forEach((c) => c.spots.forEach((s) => { catCount[s.category] = (catCount[s.category] ?? 0) + 1; }));
+  const maxCat = Math.max(...Object.values(catCount));
+  assert('동일 카테고리 ≤ 3', maxCat <= 3, JSON.stringify(catCount));
+  // 9) 랭킹 근거(why) 부착
+  assert('전 코스 why 보유', r.courses.every((c) => !!c.why), r.courses[0]?.why ?? '');
   // 7) "다른 코스 보기" 시뮬레이션 — 대기열에서 다음 배치, 기존과 중복 없음
   if (r.pending.length) {
     const dest = (input.destination ?? null) as { lat: number; lon: number } | null;

@@ -95,6 +95,7 @@ export function ResultsScreen({ route, navigation }: Props) {
               <Text style={s.cardType}>{c.type} · {c.spots.length}곳</Text>
               <Text style={s.cardTotal}>{c.totalMin}분 ›</Text>
             </View>
+            {c.why ? <Text style={s.whyMeta}>{c.why}</Text> : null}
             {c.spots.map((sp, k) => (
               <View key={k} style={s.spot}>
                 <Text style={s.spotName}>{sp.title} <Text style={s.spotMeta}>체류 {sp.dwell}분</Text></Text>
@@ -130,6 +131,7 @@ const s = StyleSheet.create({
   cardHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
   cardType: { color: C.green, fontWeight: '800', fontSize: 12.5 },
   cardTotal: { color: C.txt, fontSize: 14, fontWeight: '700' },
+  whyMeta: { color: C.muted, fontSize: 11.5, marginTop: -6, marginBottom: 8 },
   spot: { marginBottom: 5 },
   spotName: { color: C.txt, fontSize: 15, fontWeight: '600' },
   spotMeta: { color: C.muted, fontSize: 12.5, fontWeight: '400' },
