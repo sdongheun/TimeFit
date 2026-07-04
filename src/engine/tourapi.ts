@@ -40,10 +40,23 @@ function parseOpen(text?: string): { open: number; close: number } | null {
 }
 
 // 방문 [start, start+dwell]이 영업시간 내인가
-export function isOpenDuring(intro: any, typeId: string, startMin: number, dwell: number): { ok: boolean; note: string } {
+export function isOpenDuring(intro: any, typeId: string, startMin: number, dwell: number, todayYmd?: string): { ok: boolean; note: string } {
+  // 축제(15): 행사 기간 게이트 — 기간 밖(종료된/미개막 행사)이면 시간과 무관하게 탈락
+  // (playtime만 보면 작년에 끝난 박람회도 통과하는 버그 → 기간 필수 검사)
+  if (typeId === '15') {
+    const s = String(intro?.eventstartdate ?? ''), e = String(intro?.eventenddate ?? '');
+    const today = todayYmd ?? ymdNow();
+    if (!/^\d{8}$/.test(s) || !/^\d{8}$/.test(e)) return { ok: false, note: '행사 기간 미확인' };
+    if (today < s || today > e) return { ok: false, note: '행사 기간 아님' };
+  }
   const ut = intro?.[USETIME_FIELD[typeId]];
   const parsed = parseOpen(ut);
-  if (!parsed) return { ok: true, note: '운영시간 미확인' };
+  if (!parsed) return { ok: true, note: typeId === '15' ? '행사 진행 중' : '운영시간 미확인' };
   const ok = startMin >= parsed.open && startMin + dwell <= parsed.close;
   return { ok, note: ok ? String(ut).replace(/<br\s*\/?>/gi, ' ') : '영업시간 밖' };
+}
+
+function ymdNow(): string {
+  const d = new Date();
+  return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
 }
