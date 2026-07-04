@@ -73,23 +73,52 @@ export function travelSrc(a: LatLon, b: LatLon): string {
   return cache.get(ckey(a, b))?.src ?? 'haversine';
 }
 
-// TMAP POI 통합검색: 장소명 → 좌표 (약속장소/현재위치 직접 입력용)
+// TMAP POI 통합검색: 장소명 → 좌표 후보 (center 지정 시 가까운 순)
 export type Poi = { name: string; lat: number; lon: number; addr: string };
-export async function poiSearch(keyword: string): Promise<Poi | null> {
-  if (!TMAP_KEY || !keyword.trim()) return null;
-  const qs = new URLSearchParams({
-    version: '1', searchKeyword: keyword.trim(), count: '1',
+export async function poiSearchMulti(keyword: string, center?: LatLon, count = 5): Promise<Poi[]> {
+  if (!TMAP_KEY || !keyword.trim()) return [];
+  const params: Record<string, string> = {
+    version: '1', searchKeyword: keyword.trim(), count: String(count),
     resCoordType: 'WGS84GEO', reqCoordType: 'WGS84GEO',
+  };
+  if (center) {
+    params.centerLat = String(center.lat); params.centerLon = String(center.lon);
+    params.radius = '10'; params.searchtypCd = 'R'; // 반경 10km 내 가까운 순
+  }
+  try {
+    const res = await fetch(`https://apis.openapi.sk.com/tmap/pois?${new URLSearchParams(params)}`, { headers: { appKey: TMAP_KEY } });
+    if (!res.ok) return [];
+    const j = await res.json();
+    let list = j?.searchPoiInfo?.pois?.poi ?? [];
+    if (!Array.isArray(list)) list = [list];
+    const out: Poi[] = [];
+    for (const p of list) {
+      const lat = parseFloat(p.frontLat ?? p.noorLat), lon = parseFloat(p.frontLon ?? p.noorLon);
+      if (isNaN(lat) || isNaN(lon)) continue;
+      out.push({ name: p.name, lat, lon, addr: [p.upperAddrName, p.middleAddrName, p.lowerAddrName].filter(Boolean).join(' ') });
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
+
+export async function poiSearch(keyword: string): Promise<Poi | null> {
+  return (await poiSearchMulti(keyword, undefined, 1))[0] ?? null;
+}
+
+// TMAP 역지오코딩: 좌표 → 주소 (지도 롱프레스 핀용)
+export async function reverseGeocode(lat: number, lon: number): Promise<string | null> {
+  if (!TMAP_KEY) return null;
+  const qs = new URLSearchParams({
+    version: '1', lat: String(lat), lon: String(lon), coordType: 'WGS84GEO', addressType: 'A03',
   }).toString();
   try {
-    const res = await fetch(`https://apis.openapi.sk.com/tmap/pois?${qs}`, { headers: { appKey: TMAP_KEY } });
+    const res = await fetch(`https://apis.openapi.sk.com/tmap/geo/reversegeocoding?${qs}`, { headers: { appKey: TMAP_KEY } });
     if (!res.ok) return null;
     const j = await res.json();
-    const p = j?.searchPoiInfo?.pois?.poi?.[0];
-    if (!p) return null;
-    const lat = parseFloat(p.frontLat ?? p.noorLat), lon = parseFloat(p.frontLon ?? p.noorLon);
-    if (isNaN(lat) || isNaN(lon)) return null;
-    return { name: p.name, lat, lon, addr: [p.upperAddrName, p.middleAddrName, p.lowerAddrName].filter(Boolean).join(' ') };
+    const a = j?.addressInfo;
+    return a?.fullAddress || [a?.city_do, a?.gu_gun, a?.legalDong].filter(Boolean).join(' ') || null;
   } catch {
     return null;
   }

@@ -2,9 +2,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import * as Location from 'expo-location';
-import { planTimeFit, poiSearch, timeContext, Mode } from '../engine';
+import { planTimeFit, timeContext, Mode } from '../engine';
 import { Appointment, RootStackParamList, fmtHM } from './nav';
 import { Chip } from './Chip';
+import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
 
 const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
@@ -34,16 +35,13 @@ const hourBucketOf = (h: number): HourBucket => (h < 11 ? '아침' : h < 14 ? '�
 export function HomeScreen({ navigation }: Props) {
   // 전부 직접 입력 (테스트용)
   const [remainingTxt, setRemainingTxt] = useState('120');
-  const [apptTxt, setApptTxt] = useState('');
   const [appointment, setAppointment] = useState<Appointment>(null);
-  const [apptMsg, setApptMsg] = useState('');
   const [modeSel, setModeSel] = useState(MODES[0]);
-  const [locTxt, setLocTxt] = useState('');
   const [origin, setOrigin] = useState(SEOMYEON);
   const [locLabel, setLocLabel] = useState('부산 서면(기본)');
   const [timeTxt, setTimeTxt] = useState('');   // 비우면 실제 시각
   const [dayTxt, setDayTxt] = useState('주말');
-  const [searching, setSearching] = useState('');
+  const [picker, setPicker] = useState<'appt' | 'loc' | null>(null); // 장소 선택 모달
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -52,24 +50,6 @@ export function HomeScreen({ navigation }: Props) {
   const manualMin = parseTime(timeTxt);
   const nowMin = manualMin ?? timeContext(new Date()).nowMin;
   const endMin = nowMin + remaining;
-
-  async function searchAppt() {
-    if (!apptTxt.trim()) { setAppointment(null); setApptMsg(''); return; }
-    setSearching('appt');
-    const p = await poiSearch(apptTxt);
-    setSearching('');
-    if (p) { setAppointment({ label: p.name, lat: p.lat, lon: p.lon }); setApptMsg(`📍 ${p.name} · ${p.addr}`); }
-    else { setAppointment(null); setApptMsg('검색 결과 없음 — 다른 이름으로 시도'); }
-  }
-
-  async function searchLoc() {
-    if (!locTxt.trim()) return;
-    setSearching('loc');
-    const p = await poiSearch(locTxt);
-    setSearching('');
-    if (p) { setOrigin({ lat: p.lat, lon: p.lon }); setLocLabel(`📍 ${p.name} · ${p.addr}`); }
-    else setLocLabel('검색 결과 없음 — 다른 이름으로 시도');
-  }
 
   async function useGps() {
     try {
@@ -85,7 +65,6 @@ export function HomeScreen({ navigation }: Props) {
     setError('');
     if (!remaining) { setError('비는 시간을 분 단위 숫자로 입력하세요 (예: 120)'); return; }
     if (timeTxt.trim() && manualMin == null) { setError('테스트 시각은 HH:MM 형식으로 입력하세요 (예: 14:30)'); return; }
-    if (apptTxt.trim() && !appointment) { setError('약속 장소를 검색해 확정해주세요 (입력 후 검색 버튼)'); return; }
 
     setLoading(true);
     try {
@@ -140,13 +119,15 @@ export function HomeScreen({ navigation }: Props) {
 
         <Text style={s.label}>약속 장소 (선택 — 비우면 왕복)</Text>
         <View style={s.searchRow}>
-          <TextInput style={[s.input, s.grow]} value={apptTxt} onChangeText={(t) => { setApptTxt(t); setAppointment(null); setApptMsg(''); }}
-            placeholder="예: 서면역, 부산시청" placeholderTextColor={C.muted} returnKeyType="search" onSubmitEditing={searchAppt} />
-          <Pressable style={s.searchBtn} onPress={searchAppt} disabled={searching === 'appt'}>
-            {searching === 'appt' ? <ActivityIndicator size="small" color={C.accent} /> : <Text style={s.searchBtnTxt}>검색</Text>}
+          <Pressable style={[s.input, s.grow, s.field]} onPress={() => setPicker('appt')}>
+            <Text style={appointment ? s.fieldVal : s.fieldPh} numberOfLines={1}>
+              {appointment ? `📍 ${appointment.label}` : '지도에서 검색·선택 (탭)'}
+            </Text>
           </Pressable>
+          {appointment && (
+            <Pressable style={s.searchBtn} onPress={() => setAppointment(null)}><Text style={s.searchBtnTxt}>✕</Text></Pressable>
+          )}
         </View>
-        {apptMsg ? <Text style={[s.hint, appointment ? { color: C.green } : { color: C.amber }]}>{apptMsg}</Text> : null}
         {appointment && <Text style={s.hint}>코스 후 {appointment.label}에 {fmtHM(endMin)}까지 도착하는 경유 코스로 계산해요</Text>}
 
         <Text style={s.label}>이동수단</Text>
@@ -157,14 +138,11 @@ export function HomeScreen({ navigation }: Props) {
 
         <Text style={s.label}>현재 위치</Text>
         <View style={s.searchRow}>
-          <TextInput style={[s.input, s.grow]} value={locTxt} onChangeText={setLocTxt}
-            placeholder="예: 부산역, 전포카페거리" placeholderTextColor={C.muted} returnKeyType="search" onSubmitEditing={searchLoc} />
-          <Pressable style={s.searchBtn} onPress={searchLoc} disabled={searching === 'loc'}>
-            {searching === 'loc' ? <ActivityIndicator size="small" color={C.accent} /> : <Text style={s.searchBtnTxt}>검색</Text>}
+          <Pressable style={[s.input, s.grow, s.field]} onPress={() => setPicker('loc')}>
+            <Text style={s.fieldVal} numberOfLines={1}>{locLabel}</Text>
           </Pressable>
           <Pressable style={s.searchBtn} onPress={useGps}><Text style={s.searchBtnTxt}>GPS</Text></Pressable>
         </View>
-        <Text style={s.hint}>{locLabel}</Text>
 
         <Text style={s.label}>🧪 테스트 시각 (비우면 실제 시각)</Text>
         <View style={s.searchRow}>
@@ -180,6 +158,18 @@ export function HomeScreen({ navigation }: Props) {
         {error ? <Text style={s.err}>{error}</Text> : null}
         <View style={{ height: 40 }} />
       </ScrollView>
+
+      {/* 장소 선택 모달 (약속 장소 / 현재 위치 공용) */}
+      <PlacePicker
+        visible={picker !== null}
+        title={picker === 'appt' ? '약속 장소 선택' : '현재 위치 선택'}
+        center={picker === 'appt' ? (appointment ?? origin) : origin}
+        onClose={() => setPicker(null)}
+        onConfirm={(p) => {
+          if (picker === 'appt') setAppointment({ label: p.label, lat: p.lat, lon: p.lon });
+          else { setOrigin({ lat: p.lat, lon: p.lon }); setLocLabel(`📍 ${p.label}`); }
+        }}
+      />
     </View>
   );
 }
@@ -201,6 +191,9 @@ const s = StyleSheet.create({
   input: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 11, paddingVertical: 11, paddingHorizontal: 14, color: C.txt, fontSize: 14.5 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   searchRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
+  field: { justifyContent: 'center' },
+  fieldVal: { color: C.txt, fontSize: 14.5 },
+  fieldPh: { color: C.muted, fontSize: 14.5 },
   grow: { flex: 1 },
   searchBtn: { paddingVertical: 11, paddingHorizontal: 14, borderRadius: 11, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, minWidth: 52, alignItems: 'center' },
   searchBtnTxt: { color: C.accent, fontWeight: '700', fontSize: 13 },
