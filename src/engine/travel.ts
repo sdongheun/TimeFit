@@ -78,7 +78,7 @@ export async function precompute(pairs: [LatLon, LatLon][], mode: Mode): Promise
   let ok = 0, fail = 0;
   for (const [a, b] of pairs) {
     const k = ckey(a, b, mode);
-    if (getCache(k)?.src === 'TMAP') continue; // haversine 폴백은 재시도 대상
+    if (getCache(k)) continue;
     const t = await tmapTravel(a, b, mode);
     if (t != null) { cache.set(k, { min: t.min, src: 'TMAP', geo: t.geo, ts: Date.now() }); ok++; }
     else { cache.set(k, { min: haversineMin(a, b, mode), src: 'haversine', ts: Date.now() }); fail++; }
@@ -98,7 +98,7 @@ export function travelGeo(a: LatLon, b: LatLon, mode: Mode): LatLon[] | undefine
 
 // TMAP POI 통합검색: 장소명 → 좌표 후보 (center 지정 시 가까운 순)
 export type Poi = { name: string; lat: number; lon: number; addr: string };
-export async function poiSearchMulti(keyword: string, center?: LatLon, count = 5): Promise<Poi[]> {
+async function tmapPoiSearch(keyword: string, center?: LatLon, count = 10): Promise<Poi[]> {
   if (!TMAP_KEY || !keyword.trim()) return [];
   const params: Record<string, string> = {
     version: '1', searchKeyword: keyword.trim(), count: String(count),
@@ -124,6 +124,45 @@ export async function poiSearchMulti(keyword: string, center?: LatLon, count = 5
   } catch {
     return [];
   }
+}
+
+const normalizeKeyword = (s: string) => s.replace(/\[[^\]]+\]|\([^)]*\)|\s/g, '').toLowerCase();
+
+function poiScore(p: Poi, keyword: string, center?: LatLon): number {
+  const q = normalizeKeyword(keyword);
+  const name = normalizeKeyword(p.name);
+  let score = 0;
+  if (name === q) score += 1000;
+  else if (name.startsWith(q)) score += 700;
+  else if (name.includes(q)) score += 350;
+  if (/역$/.test(q) && /역(\[|\(|$)/.test(p.name)) score += 180;
+  if (/주차장|호텔|진료소|점$|\[.+\]/.test(p.name) && name !== q) score -= 120;
+  if (p.addr.startsWith('부산 ')) score += 50;
+  if (center) score -= Math.min(120, haversineKm(center, p) * 2);
+  return score;
+}
+
+function dedupePois(list: Poi[]): Poi[] {
+  const seen = new Set<string>();
+  const out: Poi[] = [];
+  for (const p of list) {
+    const key = `${normalizeKeyword(p.name)}|${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(p);
+  }
+  return out;
+}
+
+export async function poiSearchMulti(keyword: string, center?: LatLon, count = 5): Promise<Poi[]> {
+  if (!TMAP_KEY || !keyword.trim()) return [];
+  const [global, nearby] = await Promise.all([
+    tmapPoiSearch(keyword, undefined, Math.max(10, count * 2)),
+    center ? tmapPoiSearch(keyword, center, Math.max(10, count * 2)) : Promise.resolve([]),
+  ]);
+  return dedupePois([...global, ...nearby])
+    .sort((a, b) => poiScore(b, keyword, center) - poiScore(a, keyword, center))
+    .slice(0, count);
 }
 
 export async function poiSearch(keyword: string): Promise<Poi | null> {

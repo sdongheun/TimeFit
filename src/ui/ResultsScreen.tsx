@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Course, refineCourses } from '../engine';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Course } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
 import { Chip } from './Chip';
 import { C } from './theme';
@@ -24,29 +24,47 @@ function CompositionBar({ course, remainingMin }: { course: Course; remainingMin
   );
 }
 
+function mobilityLine(course: Course): string {
+  const walk = course.mobility?.walk;
+  const car = course.mobility?.car;
+  if (!walk || !car) return `총 ${course.totalMin}분`;
+  return `도보 이동 ${walk.moveMin}분 · 자동차 이동 ${car.moveMin}분`;
+}
+
+function stayLine(course: Course): string {
+  const walk = course.mobility?.walk;
+  const car = course.mobility?.car;
+  if (!walk || !car) return `여유 ${course.bufferLeftMin}분`;
+  const best = car.stayMin > walk.stayMin ? car : walk;
+  const label = best.mode === 'car' ? '자동차' : '도보';
+  return `${label} 기준 약 ${best.stayMin}분 머물 수 있어요`;
+}
+
+function strategyLabel(course: Course): string {
+  if (course.strategy === 'destination_area') return '약속지 근처';
+  if (course.strategy === 'route_area') return '가는 길 중간';
+  return '출발지 근처';
+}
+
 export function ResultsScreen({ route, navigation }: Props) {
   const { result, usedTimeLabel, origin, ctx } = route.params;
   const [moods, setMoods] = useState<Set<Mood>>(new Set());
   const [acts, setActs] = useState<Set<Activity>>(new Set());
-  // 배치식 추천: 현재 5개 + 대기열(pending) → "다른 코스 보기"로 다음 배치 정밀화
+  // 배치식 추천: 현재 5개 + 대기열(pending). API 사용량 보호를 위해 추가 배치는 추정값 그대로 보여준다.
   const [courses, setCourses] = useState<Course[]>(result.courses);
   const [pending, setPending] = useState<Course[]>(result.pending);
-  const [refreshing, setRefreshing] = useState(false);
   const [refreshMsg, setRefreshMsg] = useState('');
 
   const toggle = <T,>(set: Set<T>, v: T, setter: (s: Set<T>) => void) => {
     const n = new Set(set); n.has(v) ? n.delete(v) : n.add(v); setter(n);
   };
 
-  async function showMore() {
-    setRefreshing(true); setRefreshMsg('');
-    try {
-      const dest = ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : null;
-      const r = await refineCourses(pending, origin, dest, ctx.mode, ctx.remainingMin, 5);
-      setPending(r.rest);
-      if (r.courses.length) setCourses(r.courses);
-      else setRefreshMsg('더 이상 새 코스가 없어요 — 시간을 바꿔보세요');
-    } finally { setRefreshing(false); }
+  function showMore() {
+    setRefreshMsg('');
+    const next = pending.slice(0, 5);
+    setPending(pending.slice(5));
+    if (next.length) setCourses(next);
+    else setRefreshMsg('더 이상 새 코스가 없어요 — 시간을 바꿔보세요');
   }
 
   const filtered = useMemo(() => courses.filter((c) => {
@@ -81,8 +99,8 @@ export function ResultsScreen({ route, navigation }: Props) {
         <View style={s.countRow}>
           <Text style={s.count}>가능한 코스 {filtered.length}</Text>
           {pending.length > 0 && (
-            <Pressable style={s.moreBtn} onPress={showMore} disabled={refreshing}>
-              {refreshing ? <ActivityIndicator size="small" color={C.accent} /> : <Text style={s.moreBtnTxt}>🔄 다른 코스 보기 ({pending.length})</Text>}
+            <Pressable style={s.moreBtn} onPress={showMore}>
+              <Text style={s.moreBtnTxt}>🔄 다른 코스 보기 ({pending.length})</Text>
             </Pressable>
           )}
         </View>
@@ -92,18 +110,19 @@ export function ResultsScreen({ route, navigation }: Props) {
         {filtered.map((c, i) => (
           <Pressable key={i} style={s.card} onPress={() => navigation.navigate('Detail', { course: c, origin, ctx })}>
             <View style={s.cardHead}>
-              <Text style={s.cardType}>{c.type} · {c.spots.length}곳</Text>
-              <Text style={s.cardTotal}>{c.totalMin}분 ›</Text>
+              <Text style={s.cardType}>{strategyLabel(c)} · {c.type} · {c.spots.length}곳</Text>
+              <Text style={s.cardTotal}>{c.bestMode === 'car' ? '자동차' : '도보'} ›</Text>
             </View>
             {c.why ? <Text style={s.whyMeta}>{c.why}</Text> : null}
             {c.spots.map((sp, k) => (
               <View key={k} style={s.spot}>
-                <Text style={s.spotName}>{sp.title} <Text style={s.spotMeta}>체류 {sp.dwell}분</Text></Text>
+                <Text style={s.spotName}>{sp.title} <Text style={s.spotMeta}>권장 {sp.dwell}분</Text></Text>
               </View>
             ))}
+            <Text style={s.mobility}>{mobilityLine(c)}</Text>
             <CompositionBar course={c} remainingMin={ctx.remainingMin} />
             <Text style={s.why}>
-              ✓ {ctx.appointment ? `${ctx.appointment.label} 도착 여유 ${c.bufferLeftMin}분` : `여유 ${c.bufferLeftMin}분`}
+              ✓ {stayLine(c)}
             </Text>
           </Pressable>
         ))}
@@ -135,6 +154,7 @@ const s = StyleSheet.create({
   spot: { marginBottom: 5 },
   spotName: { color: C.txt, fontSize: 15, fontWeight: '600' },
   spotMeta: { color: C.muted, fontSize: 12.5, fontWeight: '400' },
+  mobility: { color: C.txt2, fontSize: 12.5, marginTop: 3 },
   bar: { flexDirection: 'row', height: 8, borderRadius: 5, overflow: 'hidden', marginTop: 8, gap: 2 },
   why: { color: C.green, fontSize: 12, marginTop: 8, fontWeight: '600' },
 });

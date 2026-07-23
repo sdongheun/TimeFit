@@ -1,15 +1,26 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from 'react-native-maps';
-import { RootStackParamList, modeIcon } from './nav';
+import { Course, refineCourses } from '../engine';
+import { RootStackParamList } from './nav';
 import { C } from './theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
 
+function strategyLabel(course: Props['route']['params']['course']): string {
+  if (course.strategy === 'destination_area') return '약속지 근처';
+  if (course.strategy === 'route_area') return '가는 길 중간';
+  return '출발지 근처';
+}
+
 export function DetailScreen({ route, navigation }: Props) {
   const { course, origin, ctx } = route.params;
+  const [activeCourse, setActiveCourse] = useState<Course>(course);
+  const [refining, setRefining] = useState(false);
+  const [refineNote, setRefineNote] = useState('');
   const target = ctx.appointment ?? origin;
-  const pts = [origin, ...course.spots, target];
+  const pts = useMemo(() => [origin, ...activeCourse.spots, target], [activeCourse.spots, origin, target]);
   const lats = pts.map((p) => p.lat), lons = pts.map((p) => p.lon);
   const region = {
     latitude: (Math.min(...lats) + Math.max(...lats)) / 2,
@@ -17,17 +28,43 @@ export function DetailScreen({ route, navigation }: Props) {
     latitudeDelta: Math.max(0.012, (Math.max(...lats) - Math.min(...lats)) * 1.8),
     longitudeDelta: Math.max(0.012, (Math.max(...lons) - Math.min(...lons)) * 1.8),
   };
-  const travelLegs = course.legs.filter((lg) => !lg.label.startsWith('체류'));
+  const travelLegs = activeCourse.legs.filter((lg) => !lg.label.startsWith('체류'));
   // TMAP 실경로(geo) 연결 — 없으면 직선 폴백
   const geoCoords = travelLegs.flatMap((lg) => lg.geo ?? []);
   const line = (geoCoords.length > 1 ? geoCoords : pts).map((p) => ({ latitude: p.lat, longitude: p.lon }));
-  const icon = modeIcon(ctx.modeLabel);
+  const walk = activeCourse.mobility?.walk;
+  const car = activeCourse.mobility?.car;
+
+  useEffect(() => {
+    let alive = true;
+    const alreadyPrecise = activeCourse.legs.some((lg) => lg.src === 'TMAP');
+    if (alreadyPrecise) return;
+    async function run() {
+      setRefining(true);
+      setRefineNote('TMAP 기준으로 선택한 코스만 정밀 계산 중');
+      try {
+        const dest = ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : null;
+        const r = await refineCourses([activeCourse], origin, dest, ctx.mode, ctx.remainingMin, 1);
+        if (!alive) return;
+        if (r.courses[0]) {
+          setActiveCourse(r.courses[0]);
+          setRefineNote(r.ok > 0 ? `TMAP 정밀 계산 완료 · 호출 ${r.ok + r.fail}건` : '추정 이동시간으로 표시 중');
+        } else {
+          setRefineNote('정밀 계산 후 시간이 부족해질 수 있어요');
+        }
+      } finally {
+        if (alive) setRefining(false);
+      }
+    }
+    run();
+    return () => { alive = false; };
+  }, []);
 
   return (
     <View style={s.root}>
       <MapView provider={PROVIDER_DEFAULT} style={s.map} initialRegion={region}>
         <Marker coordinate={{ latitude: origin.lat, longitude: origin.lon }} title="출발지" pinColor="#4cc2ff" />
-        {course.spots.map((sp, i) => (
+        {activeCourse.spots.map((sp, i) => (
           <Marker key={i} coordinate={{ latitude: sp.lat, longitude: sp.lon }} title={`${i + 1}. ${sp.title}`} description={`${sp.category} · 체류 ${sp.dwell}분`} />
         ))}
         {ctx.appointment && (
@@ -38,23 +75,41 @@ export function DetailScreen({ route, navigation }: Props) {
 
       <ScrollView contentContainerStyle={s.scroll}>
         <View style={s.head}>
-          <Text style={s.type}>{course.type} {course.spots.length}곳</Text>
-          <Text style={s.total}>총 {course.totalMin}분 · 여유 {course.bufferLeftMin}분</Text>
+          <Text style={s.type}>{strategyLabel(activeCourse)} · {activeCourse.type} {activeCourse.spots.length}곳</Text>
+          <Text style={s.total}>{activeCourse.bestMode === 'car' ? '자동차' : '도보'} 추천</Text>
         </View>
+        {refineNote ? (
+          <View style={s.preciseBox}>
+            {refining ? <ActivityIndicator size="small" color={C.accent} /> : null}
+            <Text style={s.preciseTxt}>{refineNote}</Text>
+          </View>
+        ) : null}
 
-        {course.spots.map((sp, i) => (
+        {activeCourse.spots.map((sp, i) => (
           <View key={i} style={s.spot}>
             <View style={s.badge}><Text style={s.badgeTxt}>{i + 1}</Text></View>
             <View style={{ flex: 1 }}>
               <Text style={s.spotName}>{sp.title}</Text>
-              <Text style={s.spotMeta}>{sp.category} · 체류 {sp.dwell}분 ({sp.dwellSrc}{sp.mult !== 1 ? ` ×혼잡${sp.mult}` : ''})</Text>
+              <Text style={s.spotMeta}>{sp.category} · 권장 체류 {sp.dwell}분 ({sp.dwellSrc}{sp.mult !== 1 ? ` ×혼잡${sp.mult}` : ''})</Text>
               <Text style={s.spotOpen}>🕒 {sp.openNote}</Text>
             </View>
           </View>
         ))}
 
-        {/* 이동 요약: 🚶 8분 · 🚶 6분 · 🚶 10분 */}
-        <Text style={s.legRow}>{travelLegs.map((lg) => `${icon} ${lg.min}분`).join('  ·  ')}</Text>
+        {walk && car ? (
+          <View style={s.mobilityBox}>
+            <View style={s.mobilityRow}>
+              <Text style={s.mobilityMode}>도보</Text>
+              <Text style={s.mobilityTime}>이동 {walk.moveMin}분 · 약 {walk.stayMin}분 체류 가능</Text>
+            </View>
+            <View style={s.mobilityRow}>
+              <Text style={s.mobilityMode}>자동차</Text>
+              <Text style={s.mobilityTime}>이동 {car.moveMin}분 · 약 {car.stayMin}분 체류 가능</Text>
+            </View>
+          </View>
+        ) : null}
+
+        <Text style={s.legRow}>{travelLegs.map((lg) => `${lg.min}분`).join('  ·  ')}</Text>
 
         <Text style={s.legHead}>동선 분해</Text>
         <View style={s.legBox}>
@@ -62,9 +117,9 @@ export function DetailScreen({ route, navigation }: Props) {
             <Text key={i} style={s.leg}>{lg.label} — <Text style={s.legMin}>{lg.min}분</Text> <Text style={s.legSrc}>[{lg.src}]</Text></Text>
           ))}
         </View>
-        <Text style={s.why}>▶ 이동+체류 합 {course.totalMin}분, 버퍼 {course.bufferLeftMin}분 여유 — 진짜 가능</Text>
+        <Text style={s.why}>▶ 선택한 이동수단에 따라 머물 수 있는 시간이 달라져요. 최소 30분 이상 체류 가능한 코스만 추천합니다.</Text>
 
-        <Pressable style={s.cta} onPress={() => navigation.navigate('Execution', { course, origin, ctx })}>
+        <Pressable style={s.cta} onPress={() => navigation.navigate('Execution', { course: activeCourse, origin, ctx })}>
           <Text style={s.ctaTxt}>이 코스로 갈래요</Text>
         </Pressable>
         <View style={{ height: 40 }} />
@@ -80,6 +135,8 @@ const s = StyleSheet.create({
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
   type: { color: C.txt, fontWeight: '800', fontSize: 18 },
   total: { color: C.txt2, fontSize: 14 },
+  preciseBox: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: 'rgba(76,194,255,0.08)', borderColor: 'rgba(76,194,255,0.22)', borderWidth: 1, borderRadius: 12, padding: 10, marginBottom: 10 },
+  preciseTxt: { color: C.txt2, fontSize: 12.5, flex: 1 },
   spot: { flexDirection: 'row', gap: 11, alignItems: 'center', backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 13, marginBottom: 9 },
   badge: { width: 26, height: 26, borderRadius: 9, backgroundColor: C.accent, alignItems: 'center', justifyContent: 'center' },
   badgeTxt: { color: C.bg, fontWeight: '800', fontSize: 13 },
@@ -87,6 +144,10 @@ const s = StyleSheet.create({
   spotMeta: { color: C.muted, fontSize: 12.5, marginTop: 2 },
   spotOpen: { color: C.txt2, fontSize: 12.5, marginTop: 2 },
   legRow: { color: C.muted, fontSize: 13, marginTop: 2, marginBottom: 10, paddingHorizontal: 2 },
+  mobilityBox: { backgroundColor: 'rgba(76,194,255,0.08)', borderColor: 'rgba(76,194,255,0.25)', borderWidth: 1, borderRadius: 12, padding: 12, marginBottom: 10 },
+  mobilityRow: { flexDirection: 'row', justifyContent: 'space-between', gap: 10, marginVertical: 3 },
+  mobilityMode: { color: C.accent, fontSize: 13, fontWeight: '800', width: 54 },
+  mobilityTime: { color: C.txt, fontSize: 13, flex: 1, textAlign: 'right' },
   legHead: { color: C.txt2, fontSize: 14, fontWeight: '700', marginTop: 4, marginBottom: 6 },
   legBox: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 12, padding: 14 },
   leg: { color: C.txt2, fontSize: 13, marginVertical: 2 },

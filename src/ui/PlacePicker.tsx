@@ -1,5 +1,5 @@
 // 장소 선택 모달 (검색 전용, 지도 없음 — WebView 미의존이라 재빌드 불필요)
-// 검색어 하나로 POI(가까운 순 5곳) + 주소 지오코딩을 동시에 조회해 합쳐 보여준다.
+// 검색어 하나로 TMAP POI(가까운 순 5곳) + TMAP 주소 지오코딩을 동시에 조회해 합쳐 보여준다.
 import { useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import * as Location from 'expo-location';
@@ -12,16 +12,17 @@ type Props = {
   visible: boolean;
   title: string;
   center: LatLon;              // POI 검색 가까운 순 기준
+  showGps?: boolean;
   onClose: () => void;
   onConfirm: (p: Place) => void;
 };
 
-export function PlacePicker({ visible, title, center, onClose, onConfirm }: Props) {
+export function PlacePicker({ visible, title, center, showGps = true, onClose, onConfirm }: Props) {
   const [q, setQ] = useState('');
   const [cands, setCands] = useState<Poi[]>([]);
   const [sel, setSel] = useState(-1);
   const [busy, setBusy] = useState<'search' | 'gps' | ''>('');
-  const [msg, setMsg] = useState('장소 이름(POI) 또는 주소로 검색하세요');
+  const [msg, setMsg] = useState('TMAP 장소 이름 또는 주소로 검색하세요');
 
   async function search() {
     if (!q.trim()) return;
@@ -67,17 +68,19 @@ export function PlacePicker({ visible, title, center, onClose, onConfirm }: Prop
 
         <View style={s.searchRow}>
           <TextInput style={s.input} value={q} onChangeText={setQ} autoFocus
-            placeholder="예: 서면역 / 카페 / 부산진구 중앙대로 672" placeholderTextColor={C.muted}
+            placeholder="예: 부산역 / 벡스코 / 부산진구 중앙대로 672" placeholderTextColor={C.muted}
             returnKeyType="search" onSubmitEditing={search} />
           <Pressable style={s.searchBtn} onPress={search} disabled={busy === 'search'}>
             {busy === 'search' ? <ActivityIndicator size="small" color={C.accent} /> : <Text style={s.searchBtnTxt}>검색</Text>}
           </Pressable>
         </View>
-        <View style={s.searchRow}>
-          <Pressable style={[s.searchBtn, { flex: 1 }]} onPress={useMyLocation} disabled={busy === 'gps'}>
-            {busy === 'gps' ? <ActivityIndicator size="small" color={C.accent} /> : <Text style={s.searchBtnTxt}>📍 내 위치 사용 (GPS → 주소)</Text>}
-          </Pressable>
-        </View>
+        {showGps && (
+          <View style={s.searchRow}>
+            <Pressable style={[s.searchBtn, { flex: 1 }]} onPress={useMyLocation} disabled={busy === 'gps'}>
+              {busy === 'gps' ? <ActivityIndicator size="small" color={C.accent} /> : <Text style={s.searchBtnTxt}>📍 현재 위치 사용</Text>}
+            </Pressable>
+          </View>
+        )}
 
         {msg ? <Text style={s.msg}>{msg}</Text> : null}
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 14 }} keyboardShouldPersistTaps="handled">

@@ -1,6 +1,7 @@
 // 시간-적합 엔진 타입
 export type LatLon = { lat: number; lon: number };
 export type Mode = "walk" | "car";
+export type Strategy = "origin_area" | "destination_area" | "route_area";
 export type DayType = "평일" | "주말";
 export type HourBucket = "아침" | "점심" | "오후" | "저녁" | "야간";
 
@@ -27,16 +28,31 @@ export type Spot = {
   dwellSrc: string;
   mult: number;
   openNote: string;
+  confidence: "direct_match" | "category_fallback";
+  strategy: Strategy;
 };
 
 export type Leg = { label: string; min: number; src: string; geo?: LatLon[] }; // geo: TMAP 실경로 좌표(이동 구간만)
 
+export type MobilityOption = {
+  mode: Mode;
+  moveMin: number;
+  stayMin: number;
+  totalMin: number;
+  bufferLeftMin: number;
+  ok: boolean;
+  legs: Leg[];
+};
+
 export type Course = {
   type: "단일" | "미니코스";
+  strategy?: Strategy;
   spots: Spot[];
   totalMin: number;
   legs: Leg[];
   bufferLeftMin: number;
+  bestMode?: Mode;
+  mobility?: Record<Mode, MobilityOption>;
   why?: string; // 랭킹 근거(설명가능성): "체류 72% · 오후 적합 90%"
 };
 

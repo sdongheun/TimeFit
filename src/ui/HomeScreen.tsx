@@ -2,23 +2,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import * as Location from 'expo-location';
-import { planTimeFit, reverseGeocode, timeContext, Mode } from '../engine';
+import { planTimeFit, reverseGeocode, timeContext } from '../engine';
 import { Appointment, RootStackParamList, fmtHM } from './nav';
-import { Chip } from './Chip';
 import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
 
 const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
-
-// 이동수단 버튼 (버스·택시는 자차 시간 기준 임시)
-const MODES: { label: string; icon: string; mode: Mode; note?: string }[] = [
-  { label: '도보', icon: '🚶', mode: 'walk' },
-  { label: '자차', icon: '🚗', mode: 'car' },
-  { label: '버스', icon: '🚌', mode: 'car', note: '버스는 자차 시간 기준 임시 계산(대중교통 API 추후)' },
-  { label: '택시', icon: '🚕', mode: 'car' },
-];
 
 // "14:30" / "14" → 자정 기준 분
 function parseTime(txt: string): number | null {
@@ -36,7 +27,6 @@ export function HomeScreen({ navigation }: Props) {
   // 전부 직접 입력 (테스트용)
   const [remainingTxt, setRemainingTxt] = useState('120');
   const [appointment, setAppointment] = useState<Appointment>(null);
-  const [modeSel, setModeSel] = useState(MODES[0]);
   const [origin, setOrigin] = useState(SEOMYEON);
   const [locLabel, setLocLabel] = useState('부산 서면(기본)');
   const [timeTxt, setTimeTxt] = useState('');   // 비우면 실제 시각
@@ -81,13 +71,13 @@ export function HomeScreen({ navigation }: Props) {
       const result = await planTimeFit({
         origin,
         destination: appointment ? { lat: appointment.lat, lon: appointment.lon } : null,
-        remainingMin: remaining, mode: modeSel.mode,
+        remainingMin: remaining, mode: 'walk',
         nowMin: useMin, dayType, hourBucket,
       });
       if (!result.courses.length) { setError('이 시간 안에 가능한 코스를 찾지 못했어요. 시간을 늘려보세요.'); return; }
       navigation.navigate('Results', {
         result, usedTimeLabel, origin,
-        ctx: { startMin: useMin, mode: modeSel.mode, modeLabel: modeSel.label, appointment, remainingMin: remaining },
+        ctx: { startMin: useMin, mode: 'walk', modeLabel: '도보·자동차 비교', appointment, remainingMin: remaining },
       });
     } catch (e: any) {
       setError('추천 실패: ' + (e?.message ?? '알 수 없음'));
@@ -125,7 +115,7 @@ export function HomeScreen({ navigation }: Props) {
         <View style={s.searchRow}>
           <Pressable style={[s.input, s.grow, s.field]} onPress={() => setPicker('appt')}>
             <Text style={appointment ? s.fieldVal : s.fieldPh} numberOfLines={1}>
-              {appointment ? `📍 ${appointment.label}` : '지도에서 검색·선택 (탭)'}
+              {appointment ? `📍 ${appointment.label}` : 'TMAP 장소·주소 검색 (탭)'}
             </Text>
           </Pressable>
           {appointment && (
@@ -134,18 +124,23 @@ export function HomeScreen({ navigation }: Props) {
         </View>
         {appointment && <Text style={s.hint}>코스 후 {appointment.label}에 {fmtHM(endMin)}까지 도착하는 경유 코스로 계산해요</Text>}
 
-        <Text style={s.label}>이동수단</Text>
-        <View style={s.row}>{MODES.map((m) => (
-          <Chip key={m.label} active={modeSel.label === m.label} onPress={() => setModeSel(m)} text={`${m.icon} ${m.label}`} />
-        ))}</View>
-        {modeSel.note ? <Text style={[s.hint, { color: C.amber }]}>{modeSel.note}</Text> : null}
+        <Text style={s.hint}>추천 결과에서 도보와 자동차 이동시간을 함께 비교해요. 대중교통은 추후 연결합니다.</Text>
 
         <Text style={s.label}>현재 위치</Text>
+        <View style={s.locModeRow}>
+          <Pressable style={s.locModeBtn} onPress={() => setPicker('loc')}>
+            <Text style={s.locModeTitle}>직접 입력</Text>
+            <Text style={s.locModeSub}>장소명·주소 검색</Text>
+          </Pressable>
+          <Pressable style={s.locModeBtn} onPress={useGps}>
+            <Text style={s.locModeTitle}>현재 위치</Text>
+            <Text style={s.locModeSub}>GPS 자동 찾기</Text>
+          </Pressable>
+        </View>
         <View style={s.searchRow}>
           <Pressable style={[s.input, s.grow, s.field]} onPress={() => setPicker('loc')}>
             <Text style={s.fieldVal} numberOfLines={1}>{locLabel}</Text>
           </Pressable>
-          <Pressable style={s.searchBtn} onPress={useGps}><Text style={s.searchBtnTxt}>GPS</Text></Pressable>
         </View>
 
         <Text style={s.label}>🧪 테스트 시각 (비우면 실제 시각)</Text>
@@ -168,6 +163,7 @@ export function HomeScreen({ navigation }: Props) {
         visible={picker !== null}
         title={picker === 'appt' ? '약속 장소 선택' : '현재 위치 선택'}
         center={picker === 'appt' ? (appointment ?? origin) : origin}
+        showGps={picker === 'loc'}
         onClose={() => setPicker(null)}
         onConfirm={(p) => {
           if (picker === 'appt') setAppointment({ label: p.label, lat: p.lat, lon: p.lon });
@@ -194,6 +190,10 @@ const s = StyleSheet.create({
   label: { color: C.txt2, fontSize: 14, fontWeight: '700', marginTop: 18, marginBottom: 8 },
   input: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 11, paddingVertical: 11, paddingHorizontal: 14, color: C.txt, fontSize: 14.5 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  locModeRow: { flexDirection: 'row', gap: 8, marginBottom: 8 },
+  locModeBtn: { flex: 1, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 12, paddingVertical: 11, paddingHorizontal: 12 },
+  locModeTitle: { color: C.txt, fontSize: 14, fontWeight: '800' },
+  locModeSub: { color: C.muted, fontSize: 11.5, marginTop: 2 },
   searchRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
   field: { justifyContent: 'center' },
   fieldVal: { color: C.txt, fontSize: 14.5 },
