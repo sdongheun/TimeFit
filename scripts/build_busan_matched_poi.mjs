@@ -2,7 +2,8 @@
 // TourAPI 부산 장소 ↔ AI-Hub 부산 방문지 매칭 후보 마스터 생성
 // 산출:
 //   - data/processed/busan_matched_poi.json
-//   - src/data/busan_matched_poi.json
+//   - data/processed/busan_unmatched_tourapi.json
+//   - src/data/busan_poi_catalog.json
 // 사용: TOURAPI_KEY=... node scripts/build_busan_matched_poi.mjs
 import fs from 'node:fs';
 import path from 'node:path';
@@ -16,15 +17,16 @@ if (!KEY) {
 const ROOT = path.resolve('data/aihub_donbu');
 const OUT_PROCESSED = path.resolve('data/processed/busan_matched_poi.json');
 const OUT_UNMATCHED = path.resolve('data/processed/busan_unmatched_tourapi.json');
-const OUT_APP = path.resolve('src/data/busan_matched_poi.json');
+const OUT_APP = path.resolve('src/data/busan_poi_catalog.json');
+const CATEGORY_DWELL = path.resolve('data/processed/category_dwell.json');
 const BASE = 'https://apis.data.go.kr/B551011/KorService2/areaBasedList2';
 const COMMON = { serviceKey: KEY, MobileOS: 'ETC', MobileApp: 'TimeFit', _type: 'json', areaCode: 6 };
 const MATCH_RADIUS_M = 150;
 const POI_THRESHOLD = 3;
-const INCLUDE_FOOD = process.env.INCLUDE_FOOD === '1';
+const INCLUDE_FOOD = process.env.INCLUDE_FOOD !== '0';
 const DRY_RUN = process.env.DRY_RUN === '1';
 
-// MVP 추천 후보: 둘러보기/쇼핑/문화/자연 중심. 음식점·숙박·축제·여행코스 제외.
+// 추천 후보: 둘러보기/쇼핑/문화/자연 + 음식점/카페. 숙박·축제·여행코스 제외.
 const TOUR_TYPES = {
   12: '관광지',
   14: '문화시설',
@@ -38,12 +40,17 @@ const TOUR_CATEGORY = {
   14: '문화시설',
   28: '레저/스포츠',
   38: '상업지구',
-  39: '식당/카페',
 };
+const CAFE_TITLE_RE = /카페|커피|베이커리|제과|디저트|브런치|찻집|다방|로스터/i;
 const FOODISH_TITLE_RE = /먹자골목|음식|식당|맛집|푸드|카페|커피|베이커리|제과|디저트|브런치/i;
+const LODGING_TITLE_RE = /호텔|모텔|리조트|숙박|숙소|게스트하우스|펜션|여관|여인숙|호스텔|콘도/i;
+const tourCategory = (p) => {
+  if (String(p.contentTypeId) === '39') return CAFE_TITLE_RE.test(p.title) ? '카페' : '식당';
+  return TOUR_CATEGORY[p.contentTypeId];
+};
 
-// AI-Hub VIS 코드 중 자투리 시간에 둘러볼 후보만 허용.
-// 제외: 9 역/터미널, 11 식당/카페, 21 집, 22 지인집, 23 사무실, 24 숙소, 8 축제
+// AI-Hub VIS 코드 중 자투리 시간에 활용할 후보만 허용.
+// 제외: 9 역/터미널, 21 집, 22 지인집, 23 사무실, 24 숙소, 8 축제
 const AIHUB_VIS = {
   1: '자연관광지',
   2: '역사/유적/종교',
@@ -54,7 +61,7 @@ const AIHUB_VIS = {
   7: '산책로/둘레길',
   10: '상점',
   13: '체험활동관광지',
-  ...(INCLUDE_FOOD ? { 11: '식당/카페' } : {}),
+  ...(INCLUDE_FOOD ? { 11: '식당' } : {}),
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -113,6 +120,16 @@ function parseCSV(file) {
     .map((r) => Object.fromEntries(header.map((h, i) => [h, r[i]])));
 }
 
+function loadCategoryDwell(categories) {
+  const src = JSON.parse(fs.readFileSync(CATEGORY_DWELL, 'utf-8'));
+  const all = src.data ?? {};
+  const out = {};
+  for (const category of categories) {
+    if (all[category]) out[category] = all[category];
+  }
+  return out;
+}
+
 async function fetchTourBusan() {
   const out = [];
   for (const tid of Object.keys(TOUR_TYPES)) {
@@ -154,7 +171,11 @@ async function fetchTourBusan() {
       await sleep(80);
     }
   }
-  return out.filter((p) => p.contentId && p.title && (INCLUDE_FOOD || !FOODISH_TITLE_RE.test(p.title)));
+  return out.filter((p) =>
+    p.contentId && p.title &&
+    !LODGING_TITLE_RE.test(p.title) &&
+    (INCLUDE_FOOD || !FOODISH_TITLE_RE.test(p.title)),
+  );
 }
 
 function loadAihubBusanPois() {
@@ -293,7 +314,7 @@ for (const t of tour) {
       title: t.title,
       contentTypeId: t.contentTypeId,
       contentTypeName: TOUR_TYPES[t.contentTypeId],
-      category: TOUR_CATEGORY[t.contentTypeId],
+      category: tourCategory(t),
       addr1: t.addr1,
       lat: t.lat,
       lon: t.lon,
@@ -307,7 +328,7 @@ for (const t of tour) {
     title: t.title,
     contentTypeId: t.contentTypeId,
     contentTypeName: TOUR_TYPES[t.contentTypeId],
-    category: TOUR_CATEGORY[t.contentTypeId],
+    category: tourCategory(t),
     addr1: t.addr1,
     lat: t.lat,
     lon: t.lon,
@@ -348,8 +369,13 @@ const payload = {
     excluded: INCLUDE_FOOD
       ? ['숙박(32)', '축제공연행사(15)', '여행코스(25)', 'AI-Hub 역/터미널(9)']
       : ['음식점(39)', '숙박(32)', '축제공연행사(15)', '여행코스(25)', 'AI-Hub 식당/카페(11)', 'AI-Hub 역/터미널(9)'],
-    excludedTitleKeywords: INCLUDE_FOOD ? [] : ['먹자골목', '음식', '식당', '맛집', '푸드', '카페', '커피', '베이커리', '제과', '디저트', '브런치'],
-    note: 'AI-Hub 원본 미탑재. 부산 TourAPI 장소 중 AI-Hub 부산 방문지와 매칭된 둘러보기 후보만 앱 번들용 집계 파라미터로 사용.',
+    excludedTitleKeywords: [
+      '호텔', '모텔', '리조트', '숙박', '숙소', '게스트하우스', '펜션', '여관', '여인숙', '호스텔', '콘도',
+      ...(INCLUDE_FOOD ? [] : ['먹자골목', '음식', '식당', '맛집', '푸드', '카페', '커피', '베이커리', '제과', '디저트', '브런치']),
+    ],
+    note: INCLUDE_FOOD
+      ? 'AI-Hub 원본 미탑재. 부산 TourAPI 장소 중 AI-Hub 부산 방문지와 매칭된 후보를 앱 번들용 집계 파라미터로 사용. 음식점/카페는 추천 가능 여부보다 이동 후 체류 가능 시간 안내를 중심으로 사용.'
+      : 'AI-Hub 원본 미탑재. 부산 TourAPI 장소 중 AI-Hub 부산 방문지와 매칭된 둘러보기 후보만 앱 번들용 집계 파라미터로 사용.',
   },
   summary: {
     tourCandidates: tour.length,
@@ -385,6 +411,26 @@ const unmatchedPayload = {
   byContentId: Object.fromEntries(unmatched.map((p) => [p.contentId, p])),
 };
 
+const usedCategories = [...new Set([...matched, ...unmatched].map((p) => p.category))].sort();
+const appCatalog = {
+  meta: {
+    generatedAt: payload.meta.generatedAt,
+    targetRegion: payload.meta.targetRegion,
+    maxGapMin: payload.meta.maxGapMin,
+    maxSpotsPerCourse: payload.meta.maxSpotsPerCourse,
+    source: payload.meta.source,
+    note: '앱 런타임용 부산 POI 카탈로그. matched는 장소 직접 체류시간, unmatched는 categoryDwell 폴백 체류시간으로 사용.',
+  },
+  summary: {
+    matched: matched.length,
+    unmatched: unmatched.length,
+    categories: usedCategories,
+  },
+  matched: payload,
+  unmatched: unmatchedPayload,
+  categoryDwell: loadCategoryDwell(usedCategories),
+};
+
 console.log('\n=== 검증 ===');
 const fail = assertOutput(payload);
 if (fail > 0) {
@@ -397,7 +443,7 @@ if (!DRY_RUN) {
   fs.mkdirSync(path.dirname(OUT_APP), { recursive: true });
   fs.writeFileSync(OUT_PROCESSED, JSON.stringify(payload, null, 2));
   fs.writeFileSync(OUT_UNMATCHED, JSON.stringify(unmatchedPayload, null, 2));
-  fs.writeFileSync(OUT_APP, JSON.stringify(payload, null, 2));
+  fs.writeFileSync(OUT_APP, JSON.stringify(appCatalog, null, 2));
 }
 
 console.log('\n=== 산출 ===');

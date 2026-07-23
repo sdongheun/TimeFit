@@ -118,10 +118,11 @@ npx expo run:ios --device <UDID>   # 실기기 dev build (또는 ios/mobile.xcwo
 2. 수락→피드백 루프 · 완료 후 시간 남으면 재추천
 3. (Phase2) Supabase 로그인 + Claude 코스 설명 · cat3 체류 세분화(정확도 개선)
 
-## 산출 데이터 (`data/processed/`)
-- `category_dwell.json` — 카테고리별 체류시간(median/p25/p75), 식당↔카페 분리
-- `congestion_matrix.json` — 카테고리 × 요일 × 시간대 혼잡 배수(0.8~1.8)
-- `poi_dwell.json` — 표본충분(≥5) 개별 POI 체류시간(704개)
+## 산출 데이터
+- `src/data/busan_poi_catalog.json` — 앱 번들용 부산 POI 단일 카탈로그
+- `data/processed/busan_matched_poi.json` — TourAPI 부산 장소와 AI-Hub 부산 방문지가 직접 매칭된 작업용 산출물
+- `data/processed/busan_unmatched_tourapi.json` — 직접 매칭은 없지만 카테고리 체류시간으로 폴백하는 작업용 TourAPI 후보
+- `data/processed/category_dwell.json` — 카테고리별 체류시간 폴백(median/p25/p75)
 
 ## 기술 메모
 - 스크립트: `TOURAPI_KEY=... node scripts/<name>.mjs` (키는 env로만, 하드코딩 금지)

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// src/data/busan_matched_poi.json -> docs/reports/busan_matched_tmap.html
+// src/data/busan_poi_catalog.json matched -> docs/reports/busan_matched_tmap.html
 // TMAP appKey는 .env에서 읽어 HTML에 주입한다. 생성된 HTML 외부 공유 주의.
 import fs from 'node:fs';
 import path from 'node:path';
 
-const INPUT = path.resolve('src/data/busan_matched_poi.json');
+const INPUT = path.resolve('src/data/busan_poi_catalog.json');
 const OUTPUT = path.resolve('docs/reports/busan_matched_tmap.html');
 
 const payload = JSON.parse(fs.readFileSync(INPUT, 'utf-8'));
@@ -18,7 +18,7 @@ const env = Object.fromEntries(envText
     return [line.slice(0, i), line.slice(i + 1).replace(/^['"]|['"]$/g, '')];
   }));
 const tmapKey = env.EXPO_PUBLIC_TMAP_APP_KEY || env.TMAP_APP_KEY || '';
-const places = payload.data.map((p) => ({
+const places = payload.matched.data.map((p) => ({
   contentId: p.contentId,
   title: p.title,
   contentTypeName: p.contentTypeName,

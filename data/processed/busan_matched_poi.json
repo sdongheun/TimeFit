@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-07-23T11:20:54.657Z",
+    "generatedAt": "2026-07-23T15:21:43.762Z",
     "targetRegion": "부산",
     "targetUser": "출장/여행 중 약속 전 자투리 시간이 있는 직장인",
     "maxGapMin": 240,
@@ -12,61 +12,66 @@
       "12": "관광지",
       "14": "문화시설",
       "28": "레포츠",
-      "38": "쇼핑"
+      "38": "쇼핑",
+      "39": "음식점"
     },
     "excluded": [
-      "음식점(39)",
       "숙박(32)",
       "축제공연행사(15)",
       "여행코스(25)",
-      "AI-Hub 식당/카페(11)",
       "AI-Hub 역/터미널(9)"
     ],
     "excludedTitleKeywords": [
-      "먹자골목",
-      "음식",
-      "식당",
-      "맛집",
-      "푸드",
-      "카페",
-      "커피",
-      "베이커리",
-      "제과",
-      "디저트",
-      "브런치"
+      "호텔",
+      "모텔",
+      "리조트",
+      "숙박",
+      "숙소",
+      "게스트하우스",
+      "펜션",
+      "여관",
+      "여인숙",
+      "호스텔",
+      "콘도"
     ],
-    "note": "AI-Hub 원본 미탑재. 부산 TourAPI 장소 중 AI-Hub 부산 방문지와 매칭된 둘러보기 후보만 앱 번들용 집계 파라미터로 사용."
+    "note": "AI-Hub 원본 미탑재. 부산 TourAPI 장소 중 AI-Hub 부산 방문지와 매칭된 후보를 앱 번들용 집계 파라미터로 사용. 음식점/카페는 추천 가능 여부보다 이동 후 체류 가능 시간 안내를 중심으로 사용."
   },
   "summary": {
-    "tourCandidates": 292,
+    "tourCandidates": 641,
     "aihubBusanRows": 5103,
-    "aihubUsedRows": 1880,
-    "aihubCandidatePois": 128,
-    "matched": 64,
+    "aihubUsedRows": 3351,
+    "aihubCandidatePois": 227,
+    "matched": 135,
     "byType": {
       "12": {
         "name": "관광지",
-        "total": 153,
-        "matched": 28,
-        "rate": 18.3
+        "total": 155,
+        "matched": 33,
+        "rate": 21.3
       },
       "14": {
         "name": "문화시설",
         "total": 44,
-        "matched": 7,
-        "rate": 15.9
+        "matched": 8,
+        "rate": 18.2
       },
       "28": {
         "name": "레포츠",
         "total": 39,
-        "matched": 10,
-        "rate": 25.6
+        "matched": 14,
+        "rate": 35.9
       },
       "38": {
         "name": "쇼핑",
         "total": 56,
-        "matched": 19,
-        "rate": 33.9
+        "matched": 20,
+        "rate": 35.7
+      },
+      "39": {
+        "name": "음식점",
+        "total": 347,
+        "matched": 60,
+        "rate": 17.3
       }
     }
   },
@@ -127,11 +132,11 @@
       "matchType": "name+coord",
       "matchDistanceM": 63,
       "dwell": {
-        "count": 41,
+        "count": 42,
         "median": 60,
         "p25": 60,
         "p75": 150,
-        "mean": 106
+        "mean": 105
       }
     },
     {
@@ -140,48 +145,6 @@
       "contentTypeId": "28",
       "contentTypeName": "레포츠",
       "category": "레저/스포츠",
-      "addr1": "부산광역시 해운대구 달맞이길62번길 13 (중동)",
-      "lat": 35.1581969059,
-      "lon": 129.172851279,
-      "aihubName": "해운대 블루라인파크 미포 정거장",
-      "aihubCategory": "체험활동관광지",
-      "matchType": "coord",
-      "matchDistanceM": 6,
-      "dwell": {
-        "count": 30,
-        "median": 30,
-        "p25": 30,
-        "p75": 60,
-        "mean": 63
-      }
-    },
-    {
-      "contentId": "2784330",
-      "title": "미포항",
-      "contentTypeId": "12",
-      "contentTypeName": "관광지",
-      "category": "자연관광지",
-      "addr1": "부산광역시 해운대구 중동",
-      "lat": 35.1580385696,
-      "lon": 129.1717291585,
-      "aihubName": "해운대 블루라인파크 미포 정거장",
-      "aihubCategory": "체험활동관광지",
-      "matchType": "coord",
-      "matchDistanceM": 99,
-      "dwell": {
-        "count": 30,
-        "median": 30,
-        "p25": 30,
-        "p75": 60,
-        "mean": 63
-      }
-    },
-    {
-      "contentId": "3027700",
-      "title": "청사포 기찻길",
-      "contentTypeId": "12",
-      "contentTypeName": "관광지",
-      "category": "자연관광지",
       "addr1": "부산광역시 해운대구 달맞이길62번길 13 (중동)",
       "lat": 35.1581969059,
       "lon": 129.172851279,
@@ -211,11 +174,11 @@
       "matchType": "name+coord",
       "matchDistanceM": 60,
       "dwell": {
-        "count": 28,
+        "count": 30,
         "median": 30,
         "p25": 30,
         "p75": 60,
-        "mean": 49
+        "mean": 48
       }
     },
     {
@@ -232,11 +195,53 @@
       "matchType": "coord",
       "matchDistanceM": 98,
       "dwell": {
-        "count": 28,
+        "count": 30,
         "median": 30,
         "p25": 30,
         "p75": 60,
-        "mean": 49
+        "mean": 48
+      }
+    },
+    {
+      "contentId": "2726193",
+      "title": "이가네떡볶이",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 부평1길 48",
+      "lat": 35.1015921962,
+      "lon": 129.0260517037,
+      "aihubName": "부평 깡통시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 60,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      }
+    },
+    {
+      "contentId": "3027700",
+      "title": "청사포 기찻길",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 13 (중동)",
+      "lat": 35.1581969059,
+      "lon": 129.172851279,
+      "aihubName": "해운대 블루라인파크 미포 정거장",
+      "aihubCategory": "체험활동관광지",
+      "matchType": "coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 63
       }
     },
     {
@@ -252,6 +257,27 @@
       "aihubCategory": "상업지구",
       "matchType": "name+coord",
       "matchDistanceM": 73,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      }
+    },
+    {
+      "contentId": "1018702",
+      "title": "국제시장 먹자골목",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 중구로 36",
+      "lat": 35.1011311741,
+      "lon": 129.0280793175,
+      "aihubName": "국제시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 1,
       "dwell": {
         "count": 22,
         "median": 60,
@@ -324,6 +350,27 @@
       }
     },
     {
+      "contentId": "2952936",
+      "title": "카페제노아",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "카페",
+      "addr1": "부산광역시 중구 중구로29번길 17 (부평동1가)",
+      "lat": 35.1004034583,
+      "lon": 129.0270044311,
+      "aihubName": "국제시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 127,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      }
+    },
+    {
       "contentId": "132190",
       "title": "부산 자갈치시장",
       "contentTypeId": "38",
@@ -337,7 +384,28 @@
       "matchType": "coord",
       "matchDistanceM": 4,
       "dwell": {
-        "count": 15,
+        "count": 16,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 56
+      }
+    },
+    {
+      "contentId": "133313",
+      "title": "부산명물횟집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 자갈치해안로 55",
+      "lat": 35.0971289007,
+      "lon": 129.0311458269,
+      "aihubName": "자갈치시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 77,
+      "dwell": {
+        "count": 16,
         "median": 30,
         "p25": 30,
         "p75": 60,
@@ -358,7 +426,7 @@
       "matchType": "coord",
       "matchDistanceM": 139,
       "dwell": {
-        "count": 15,
+        "count": 16,
         "median": 30,
         "p25": 30,
         "p75": 60,
@@ -379,7 +447,7 @@
       "matchType": "coord",
       "matchDistanceM": 5,
       "dwell": {
-        "count": 15,
+        "count": 16,
         "median": 30,
         "p25": 30,
         "p75": 60,
@@ -400,11 +468,32 @@
       "matchType": "coord",
       "matchDistanceM": 104,
       "dwell": {
-        "count": 15,
+        "count": 16,
         "median": 30,
         "p25": 30,
         "p75": 60,
         "mean": 56
+      }
+    },
+    {
+      "contentId": "403957",
+      "title": "성일집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 대교로 103",
+      "lat": 35.09942876,
+      "lon": 129.0375007674,
+      "aihubName": "롯데백화점 광복점",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 143,
+      "dwell": {
+        "count": 14,
+        "median": 60,
+        "p25": 38,
+        "p75": 90,
+        "mean": 73
       }
     },
     {
@@ -441,6 +530,48 @@
       "aihubCategory": "산책로/둘레길",
       "matchType": "coord",
       "matchDistanceM": 32,
+      "dwell": {
+        "count": 11,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 44
+      }
+    },
+    {
+      "contentId": "1805656",
+      "title": "일번지자갈치산곰장어",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로41번길 12",
+      "lat": 35.1610408317,
+      "lon": 129.1620465848,
+      "aihubName": "해운대 전통시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 48,
+      "dwell": {
+        "count": 11,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 46
+      }
+    },
+    {
+      "contentId": "2785956",
+      "title": "초량밀면",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 중앙대로 225 (초량동)",
+      "lat": 35.1173462584,
+      "lon": 129.0406944453,
+      "aihubName": "초량 밀면",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 10,
       "dwell": {
         "count": 11,
         "median": 30,
@@ -534,6 +665,27 @@
       }
     },
     {
+      "contentId": "2832671",
+      "title": "신발원",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 대영로243번길 62 (초량동)",
+      "lat": 35.1148492791,
+      "lon": 129.0387363501,
+      "aihubName": "신발원",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 10,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 51
+      }
+    },
+    {
       "contentId": "1942348",
       "title": "관수옥과 초량왜관 터",
       "contentTypeId": "12",
@@ -618,6 +770,27 @@
       }
     },
     {
+      "contentId": "2778487",
+      "title": "금수복국 해운대본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 중동1로43번길 23",
+      "lat": 35.1624573857,
+      "lon": 129.1645185529,
+      "aihubName": "금수복국 해운대본점",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 9,
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 56
+      }
+    },
+    {
       "contentId": "2782747",
       "title": "분홍이네",
       "contentTypeId": "38",
@@ -636,6 +809,27 @@
         "p25": 30,
         "p75": 45,
         "mean": 39
+      }
+    },
+    {
+      "contentId": "851286",
+      "title": "상국이네",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로41번길 40-1",
+      "lat": 35.1620074073,
+      "lon": 129.1629548127,
+      "aihubName": "상국이네",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 7,
+      "dwell": {
+        "count": 7,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 34
       }
     },
     {
@@ -681,6 +875,48 @@
       }
     },
     {
+      "contentId": "686419",
+      "title": "할매가야밀면",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 광복로 56-14",
+      "lat": 35.0989509211,
+      "lon": 129.0312346584,
+      "aihubName": "광복로 패션거리",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 39,
+      "dwell": {
+        "count": 7,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 39
+      }
+    },
+    {
+      "contentId": "2704645",
+      "title": "[해파랑길] 2코스",
+      "contentTypeId": "28",
+      "contentTypeName": "레포츠",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 33-1",
+      "lat": 35.1584551702,
+      "lon": 129.1706820162,
+      "aihubName": "호랑이 젤라 떡",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 21,
+      "dwell": {
+        "count": 6,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    {
       "contentId": "1013112",
       "title": "광주요",
       "contentTypeId": "38",
@@ -702,6 +938,27 @@
       }
     },
     {
+      "contentId": "2784330",
+      "title": "미포항",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 중동",
+      "lat": 35.1580385696,
+      "lon": 129.1717291585,
+      "aihubName": "호랑이 젤라 떡",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 95,
+      "dwell": {
+        "count": 6,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    {
       "contentId": "1019616",
       "title": "센텀시티 아이스링크",
       "contentTypeId": "28",
@@ -720,6 +977,48 @@
         "p25": 195,
         "p75": 263,
         "mean": 240
+      }
+    },
+    {
+      "contentId": "2858974",
+      "title": "타이가텐푸라",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 우동1로38번가길 15 (우동)",
+      "lat": 35.1648042324,
+      "lon": 129.1584217967,
+      "aihubName": "금송덕미 행리단길점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 9,
+      "dwell": {
+        "count": 6,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 60
+      }
+    },
+    {
+      "contentId": "2785272",
+      "title": "고향연화",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 연화길 33-8",
+      "lat": 35.2172384782,
+      "lon": 129.2245979306,
+      "aihubName": "고향 연화",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 29,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
       }
     },
     {
@@ -765,6 +1064,111 @@
       }
     },
     {
+      "contentId": "3335951",
+      "title": "레이저태그스포츠 광안점",
+      "contentTypeId": "28",
+      "contentTypeName": "레포츠",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 수영구 광안해변로 269 (민락동)",
+      "lat": 35.1558823541,
+      "lon": 129.12306956,
+      "aihubName": "민락 회 타운 시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 69,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 54
+      }
+    },
+    {
+      "contentId": "2776396",
+      "title": "무진장횟집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 연화1길 137",
+      "lat": 35.2171162986,
+      "lon": 129.2261339112,
+      "aihubName": "고향 연화",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 126,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      }
+    },
+    {
+      "contentId": "2776391",
+      "title": "미청식당",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광면 기장해안로 1303",
+      "lat": 35.2603115904,
+      "lon": 129.2331904364,
+      "aihubName": "일광해수욕장",
+      "aihubCategory": "자연관광지",
+      "matchType": "coord",
+      "matchDistanceM": 68,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 66
+      }
+    },
+    {
+      "contentId": "2868655",
+      "title": "바로해장",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광남로94번길 2 (광안동, 광일)",
+      "lat": 35.15014673,
+      "lon": 129.1146787801,
+      "aihubName": "랜디스 도넛 광안리점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 41,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 36
+      }
+    },
+    {
+      "contentId": "2845123",
+      "title": "본가딸부자전복죽집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 연화2길 14-1",
+      "lat": 35.2175468041,
+      "lon": 129.2260450183,
+      "aihubName": "고향 연화",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 113,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      }
+    },
+    {
       "contentId": "2782626",
       "title": "삼익비치수변공원",
       "contentTypeId": "12",
@@ -807,6 +1211,132 @@
       }
     },
     {
+      "contentId": "3442923",
+      "title": "솥이랑 서면점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 부산진구 중앙대로 672 (부전동)",
+      "lat": 35.1530453881,
+      "lon": 129.0596334885,
+      "aihubName": "런닝맨 부산점",
+      "aihubCategory": "테마시설",
+      "matchType": "coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 84
+      }
+    },
+    {
+      "contentId": "2668102",
+      "title": "수변최고돼지국밥 민락본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광안해변로370번길 9-32",
+      "lat": 35.1567852389,
+      "lon": 129.1343130018,
+      "aihubName": "수변 최고 돼지국밥 민락 본점",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 13,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      }
+    },
+    {
+      "contentId": "2870354",
+      "title": "스완양분식",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 중앙대로236번길 7-5 (초량동)",
+      "lat": 35.1181073148,
+      "lon": 129.042383166,
+      "aihubName": "대건 명가 돼지국밥",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 113,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 60
+      }
+    },
+    {
+      "contentId": "2753006",
+      "title": "어느멋진날",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 기장해안로 1286",
+      "lat": 35.2588256667,
+      "lon": 129.2343181572,
+      "aihubName": "일광해수욕장",
+      "aihubCategory": "자연관광지",
+      "matchType": "coord",
+      "matchDistanceM": 131,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 66
+      }
+    },
+    {
+      "contentId": "2869405",
+      "title": "영동밀면&돼지국밥",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 중앙대로209번길 12 (초량동)",
+      "lat": 35.1163102386,
+      "lon": 129.0393473684,
+      "aihubName": "영동 밀면 영동 국밥",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 13,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 54
+      }
+    },
+    {
+      "contentId": "851073",
+      "title": "장성향",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 대영로243번길 29",
+      "lat": 35.1135771812,
+      "lon": 129.0377225842,
+      "aihubName": "초량 차이나타운",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 23,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 54
+      }
+    },
+    {
       "contentId": "3511011",
       "title": "주식회사아래모래",
       "contentTypeId": "38",
@@ -825,6 +1355,48 @@
         "p25": 60,
         "p75": 60,
         "mean": 72
+      }
+    },
+    {
+      "contentId": "2822910",
+      "title": "창비부산",
+      "contentTypeId": "14",
+      "contentTypeName": "문화시설",
+      "category": "문화시설",
+      "addr1": "부산광역시 동구 중앙대로209번길 16",
+      "lat": 35.1163768939,
+      "lon": 129.0391696039,
+      "aihubName": "영동 밀면 영동 국밥",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 24,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 54
+      }
+    },
+    {
+      "contentId": "2832636",
+      "title": "코랄라니",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 기장해안로 32",
+      "lat": 35.1825920662,
+      "lon": 129.2089308044,
+      "aihubName": "코랄 라느니",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 23,
+      "dwell": {
+        "count": 5,
+        "median": 90,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
       }
     },
     {
@@ -849,6 +1421,195 @@
       }
     },
     {
+      "contentId": "2848939",
+      "title": "튼튼장어 무한리필",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장해안로 1301",
+      "lat": 35.2601393874,
+      "lon": 129.2331682209,
+      "aihubName": "일광해수욕장",
+      "aihubCategory": "자연관광지",
+      "matchType": "coord",
+      "matchDistanceM": 59,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 66
+      }
+    },
+    {
+      "contentId": "851989",
+      "title": "할매복국",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 1",
+      "lat": 35.1609243536,
+      "lon": 129.1715207639,
+      "aihubName": "바다마루 전복죽",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 58,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    {
+      "contentId": "2760773",
+      "title": "해운대기와집대구탕",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길50번길 4 (중동)",
+      "lat": 35.1611742976,
+      "lon": 129.1700125548,
+      "aihubName": "바다마루 전복죽",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 130,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    {
+      "contentId": "2858936",
+      "title": "해운대하얀오징어집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길50번길 4",
+      "lat": 35.1611742976,
+      "lon": 129.1700125548,
+      "aihubName": "바다마루 전복죽",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 130,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    {
+      "contentId": "133525",
+      "title": "18번완당집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 비프광장로 31",
+      "lat": 35.0989841994,
+      "lon": 129.0284682315,
+      "aihubName": "18번 완당집",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 45
+      }
+    },
+    {
+      "contentId": "2782628",
+      "title": "그린노마드",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 좌수영로 161-10 (망미동)",
+      "lat": 35.1784130482,
+      "lon": 129.1167972647,
+      "aihubName": "코스트코 부산점",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 138,
+      "dwell": {
+        "count": 4,
+        "median": 60,
+        "p25": 53,
+        "p75": 75,
+        "mean": 68
+      }
+    },
+    {
+      "contentId": "850093",
+      "title": "급행장",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 부산진구 서면문화로 4",
+      "lat": 35.1581031257,
+      "lon": 129.0580307117,
+      "aihubName": "서면 지하상가",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 108,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 68,
+        "mean": 53
+      }
+    },
+    {
+      "contentId": "2859101",
+      "title": "나가하마만게츠",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 우동1로 57 (우동)",
+      "lat": 35.1667289995,
+      "lon": 129.1574801581,
+      "aihubName": "산리 오러 버스 클럽",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 56,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
+      }
+    },
+    {
+      "contentId": "1846830",
+      "title": "남도해양열차 에스트레인(S-train)",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 동구 중앙대로 206",
+      "lat": 35.1152715223,
+      "lon": 129.0424332391,
+      "aihubName": "부산역",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 94,
+      "dwell": {
+        "count": 4,
+        "median": 60,
+        "p25": 53,
+        "p75": 75,
+        "mean": 68
+      }
+    },
+    {
       "contentId": "769761",
       "title": "다대포 꿈의 낙조분수",
       "contentTypeId": "12",
@@ -867,6 +1628,48 @@
         "p25": 30,
         "p75": 38,
         "mean": 38
+      }
+    },
+    {
+      "contentId": "2891789",
+      "title": "라꽁띠",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 청사포로 85",
+      "lat": 35.1626050452,
+      "lon": 129.1890108643,
+      "aihubName": "심미안",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 126,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 45
+      }
+    },
+    {
+      "contentId": "2891814",
+      "title": "류센소 본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로8번길 62",
+      "lat": 35.1616267696,
+      "lon": 129.1562304075,
+      "aihubName": "류센소 본점",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 45
       }
     },
     {
@@ -954,6 +1757,48 @@
       }
     },
     {
+      "contentId": "2905141",
+      "title": "할매집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 중동2로10번길 7",
+      "lat": 35.1630962099,
+      "lon": 129.1649018354,
+      "aihubName": "해운대 밀면",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 69,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    {
+      "contentId": "2786779",
+      "title": "해운대 가야밀면",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 좌동순환로 27 (좌동)",
+      "lat": 35.1688900329,
+      "lon": 129.1663598827,
+      "aihubName": "해운대 가야 밀면",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
+      }
+    },
+    {
       "contentId": "2822343",
       "title": "해운대 그린레일웨이 (미포~송정 구간)",
       "contentTypeId": "12",
@@ -972,6 +1817,48 @@
         "p25": 53,
         "p75": 105,
         "mean": 83
+      }
+    },
+    {
+      "contentId": "126108",
+      "title": "해운대온천센터",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 중동2로 16",
+      "lat": 35.1634406103,
+      "lon": 129.1645768542,
+      "aihubName": "해운대 밀면",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 92,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    {
+      "contentId": "2865236",
+      "title": "희와제과",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "카페",
+      "addr1": "부산광역시 부산진구 전포대로246번길 6 (전포동, 동양팰리스)",
+      "lat": 35.1584310105,
+      "lon": 129.0658105816,
+      "aihubName": "회와 제과",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 22,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
       }
     },
     {
@@ -996,6 +1883,27 @@
       }
     },
     {
+      "contentId": "2708019",
+      "title": "광안리 SUP Zone",
+      "contentTypeId": "28",
+      "contentTypeName": "레포츠",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 수영구 남천동",
+      "lat": 35.1477386656,
+      "lon": 129.114673291,
+      "aihubName": "샌더스",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 61,
+      "dwell": {
+        "count": 3,
+        "median": 90,
+        "p25": 75,
+        "p75": 165,
+        "mean": 130
+      }
+    },
+    {
       "contentId": "127925",
       "title": "광안리해변 테마거리",
       "contentTypeId": "12",
@@ -1014,6 +1922,27 @@
         "p25": 30,
         "p75": 45,
         "mean": 40
+      }
+    },
+    {
+      "contentId": "2873498",
+      "title": "구로마쯔",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정광어골로 41 (송정동)",
+      "lat": 35.1774729774,
+      "lon": 129.1971986315,
+      "aihubName": "서프 짐",
+      "aihubCategory": "레저/스포츠",
+      "matchType": "coord",
+      "matchDistanceM": 58,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
       }
     },
     {
@@ -1038,24 +1967,129 @@
       }
     },
     {
-      "contentId": "1846830",
-      "title": "남도해양열차 에스트레인(S-train)",
-      "contentTypeId": "12",
-      "contentTypeName": "관광지",
-      "category": "자연관광지",
-      "addr1": "부산광역시 동구 중앙대로 206",
-      "lat": 35.1152715223,
-      "lon": 129.0424332391,
-      "aihubName": "부산역",
-      "aihubCategory": "역사/유적/종교",
+      "contentId": "2872474",
+      "title": "기장끝집 죽성본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 기장해안로 895",
+      "lat": 35.2348590788,
+      "lon": 129.2435319086,
+      "aihubName": "오직 전복죽 기장 끝 집",
+      "aihubCategory": "식당",
       "matchType": "coord",
-      "matchDistanceM": 94,
+      "matchDistanceM": 17,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      }
+    },
+    {
+      "contentId": "850121",
+      "title": "꺼먹동네횟집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 문오성길 509",
+      "lat": 35.2985883478,
+      "lon": 129.2595731906,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 142,
       "dwell": {
         "count": 3,
         "median": 60,
         "p25": 45,
-        "p75": 90,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "1942299",
+      "title": "남선창고터",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 동구 초량로13번길 53",
+      "lat": 35.1167962983,
+      "lon": 129.0395112298,
+      "aihubName": "설빙 부산역점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 46,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 60
+      }
+    },
+    {
+      "contentId": "1942233",
+      "title": "대각사(부산)",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 광복중앙로 19 (신창동1가)",
+      "lat": 35.1010840062,
+      "lon": 129.0307152012,
+      "aihubName": "이재모 피자 본점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 107,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "2747589",
+      "title": "더무빙 카라반",
+      "contentTypeId": "28",
+      "contentTypeName": "레포츠",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 기장군 장안읍 해맞이로 290",
+      "lat": 35.3226997305,
+      "lon": 129.2701216022,
+      "aihubName": "웨이브 온 커피",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 55,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
         "mean": 70
+      }
+    },
+    {
+      "contentId": "2783646",
+      "title": "러브얼스",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광안로49번길 32-1 (광안동)",
+      "lat": 35.1564683169,
+      "lon": 129.118606043,
+      "aihubName": "러브 이즈 기방 1호점",
+      "aihubCategory": "상점",
+      "matchType": "coord",
+      "matchDistanceM": 55,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
       }
     },
     {
@@ -1077,27 +2111,6 @@
         "p25": 30,
         "p75": 45,
         "mean": 40
-      }
-    },
-    {
-      "contentId": "3335951",
-      "title": "레이저태그스포츠 광안점",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 수영구 광안해변로 269 (민락동)",
-      "lat": 35.1558823541,
-      "lon": 129.12306956,
-      "aihubName": "민락 회 타운 시장",
-      "aihubCategory": "상업지구",
-      "matchType": "coord",
-      "matchDistanceM": 69,
-      "dwell": {
-        "count": 3,
-        "median": 30,
-        "p25": 30,
-        "p75": 30,
-        "mean": 30
       }
     },
     {
@@ -1290,6 +2303,27 @@
       }
     },
     {
+      "contentId": "1855868",
+      "title": "부전돼지국밥",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 사상구 사상로 214",
+      "lat": 35.1642344065,
+      "lon": 128.9839369933,
+      "aihubName": "애플 아웃렛",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 124,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      }
+    },
+    {
       "contentId": "132188",
       "title": "부전마켓타운",
       "contentTypeId": "38",
@@ -1308,6 +2342,48 @@
         "p25": 30,
         "p75": 75,
         "mean": 60
+      }
+    },
+    {
+      "contentId": "2470024",
+      "title": "삼진어묵 체험·역사과학관",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 영도구 절영로7번길 41-1 (봉래동2가)",
+      "lat": 35.0928101531,
+      "lon": 129.0427254928,
+      "aihubName": "삼진 어묵 영도 본점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 17,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
+    {
+      "contentId": "2793181",
+      "title": "속씨원한대구탕미포본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 28 (중동)",
+      "lat": 35.1589051184,
+      "lon": 129.1706181201,
+      "aihubName": "수변 최고 돼지국밥 미포점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 33,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
       }
     },
     {
@@ -1332,6 +2408,195 @@
       }
     },
     {
+      "contentId": "2860833",
+      "title": "송정물총칼국수",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정중앙로6번길 184 명신횟집",
+      "lat": 35.1763758683,
+      "lon": 129.196657043,
+      "aihubName": "서프 짐",
+      "aihubCategory": "레저/스포츠",
+      "matchType": "coord",
+      "matchDistanceM": 75,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      }
+    },
+    {
+      "contentId": "2784112",
+      "title": "송정서핑학교",
+      "contentTypeId": "28",
+      "contentTypeName": "레포츠",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 해운대구 송정해변로 34-8 (송정동)",
+      "lat": 35.1810226785,
+      "lon": 129.2024952959,
+      "aihubName": "스타벅스 부산 송정 비치점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 37,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "2785965",
+      "title": "송정집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정광어골로 59 (송정동)",
+      "lat": 35.1762119923,
+      "lon": 129.1963681835,
+      "aihubName": "서프 짐",
+      "aihubCategory": "레저/스포츠",
+      "matchType": "coord",
+      "matchDistanceM": 102,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      }
+    },
+    {
+      "contentId": "1805853",
+      "title": "수민이네",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 청사포로58번길 118",
+      "lat": 35.1606275259,
+      "lon": 129.1909968571,
+      "aihubName": "앨리스 도넛 청사포 본점",
+      "aihubCategory": "상점",
+      "matchType": "coord",
+      "matchDistanceM": 20,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
+    {
+      "contentId": "2785269",
+      "title": "수월경화",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정중앙로6번길 188",
+      "lat": 35.176150892,
+      "lon": 129.1966014983,
+      "aihubName": "서프 짐",
+      "aihubCategory": "레저/스포츠",
+      "matchType": "coord",
+      "matchDistanceM": 101,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      }
+    },
+    {
+      "contentId": "3081825",
+      "title": "아트모이지",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광안해변로294번길 26 (민락동)",
+      "lat": 35.1553158082,
+      "lon": 129.1261720835,
+      "aihubName": "개미집 광안리점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 94,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
+    {
+      "contentId": "2773623",
+      "title": "야스마루",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 부산진구 중앙대로756번길 24 (부전동)",
+      "lat": 35.1593225066,
+      "lon": 129.0619942225,
+      "aihubName": "오브젝트 에디트",
+      "aihubCategory": "상점",
+      "matchType": "coord",
+      "matchDistanceM": 99,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "2836412",
+      "title": "에테르",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 영도구 절영로 234",
+      "lat": 35.0772952921,
+      "lon": 129.0465200301,
+      "aihubName": "에테르",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 7,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      }
+    },
+    {
+      "contentId": "1942316",
+      "title": "영도봉래시장",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "category": "상업지구",
+      "addr1": "부산광역시 영도구 태종로113번길 39",
+      "lat": 35.0927462941,
+      "lon": 129.0439559432,
+      "aihubName": "삼진 어묵 영도 본점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 108,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
+    {
       "contentId": "3454074",
       "title": "영화의전당 라이브러리 자료실",
       "contentTypeId": "12",
@@ -1350,6 +2615,27 @@
         "p25": 30,
         "p75": 45,
         "mean": 40
+      }
+    },
+    {
+      "contentId": "2860782",
+      "title": "오반장",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로24번길 20 (우동)",
+      "lat": 35.1614851749,
+      "lon": 129.1592634811,
+      "aihubName": "해목",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 51,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
       }
     },
     {
@@ -1374,6 +2660,90 @@
       }
     },
     {
+      "contentId": "3443614",
+      "title": "원시학",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 우동1로20번가길 31 (우동)",
+      "lat": 35.166279066,
+      "lon": 129.1583939802,
+      "aihubName": "원에 학",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 113,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 80
+      }
+    },
+    {
+      "contentId": "2836450",
+      "title": "이재모피자 본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 광복중앙로 31 (신창동1가, 중앙아파트)",
+      "lat": 35.1021394414,
+      "lon": 129.0306068486,
+      "aihubName": "이재모 피자 본점",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 17,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "2848952",
+      "title": "일광정",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 일광로 645",
+      "lat": 35.2996881955,
+      "lon": 129.2580316277,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 103,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "851955",
+      "title": "일품한우",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 해운대로570번길 49",
+      "lat": 35.1602575377,
+      "lon": 129.1594329447,
+      "aihubName": "맥도날드 해운대 DT점",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 21,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    {
       "contentId": "2994179",
       "title": "전포공구길",
       "contentTypeId": "12",
@@ -1392,6 +2762,132 @@
         "p25": 30,
         "p75": 60,
         "mean": 50
+      }
+    },
+    {
+      "contentId": "2870703",
+      "title": "초량온당",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 초량중로 135 (수정동)",
+      "lat": 35.1234594789,
+      "lon": 129.0415747569,
+      "aihubName": "초량 온당",
+      "aihubCategory": "상점",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "2848949",
+      "title": "칠암만장",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 일광로 648",
+      "lat": 35.2999631688,
+      "lon": 129.258231602,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 85,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "2822840",
+      "title": "칠암사계",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 칠암1길 7-10",
+      "lat": 35.2999215202,
+      "lon": 129.2589676506,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 20,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "2775556",
+      "title": "칠암일번지횟집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광면 문오성길 547",
+      "lat": 35.3002520455,
+      "lon": 129.2592953908,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 49,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    {
+      "contentId": "2841442",
+      "title": "톤쇼우",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 금정구 금강로 247-10 (장전동)",
+      "lat": 35.2304871678,
+      "lon": 129.0842986624,
+      "aihubName": "톤쇼우",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
+    {
+      "contentId": "2786766",
+      "title": "해목",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로24번길 8 (우동)",
+      "lat": 35.1618601408,
+      "lon": 129.1596828783,
+      "aihubName": "해목",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
       }
     },
     {
@@ -1417,6 +2913,27 @@
     }
   ],
   "byContentId": {
+    "126108": {
+      "contentId": "126108",
+      "title": "해운대온천센터",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 중동2로 16",
+      "lat": 35.1634406103,
+      "lon": 129.1645768542,
+      "aihubName": "해운대 밀면",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 92,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
     "126857": {
       "contentId": "126857",
       "title": "광복로패션거리",
@@ -1578,7 +3095,7 @@
       "matchType": "coord",
       "matchDistanceM": 4,
       "dwell": {
-        "count": 15,
+        "count": 16,
         "median": 30,
         "p25": 30,
         "p75": 60,
@@ -1620,11 +3137,11 @@
       "matchType": "coord",
       "matchDistanceM": 98,
       "dwell": {
-        "count": 28,
+        "count": 30,
         "median": 30,
         "p25": 30,
         "p75": 60,
-        "mean": 49
+        "mean": 48
       }
     },
     "132576": {
@@ -1641,11 +3158,53 @@
       "matchType": "coord",
       "matchDistanceM": 139,
       "dwell": {
-        "count": 15,
+        "count": 16,
         "median": 30,
         "p25": 30,
         "p75": 60,
         "mean": 56
+      }
+    },
+    "133313": {
+      "contentId": "133313",
+      "title": "부산명물횟집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 자갈치해안로 55",
+      "lat": 35.0971289007,
+      "lon": 129.0311458269,
+      "aihubName": "자갈치시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 77,
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 56
+      }
+    },
+    "133525": {
+      "contentId": "133525",
+      "title": "18번완당집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 비프광장로 31",
+      "lat": 35.0989841994,
+      "lon": 129.0284682315,
+      "aihubName": "18번 완당집",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 45
       }
     },
     "229912": {
@@ -1669,6 +3228,48 @@
         "mean": 86
       }
     },
+    "403957": {
+      "contentId": "403957",
+      "title": "성일집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 대교로 103",
+      "lat": 35.09942876,
+      "lon": 129.0375007674,
+      "aihubName": "롯데백화점 광복점",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 143,
+      "dwell": {
+        "count": 14,
+        "median": 60,
+        "p25": 38,
+        "p75": 90,
+        "mean": 73
+      }
+    },
+    "686419": {
+      "contentId": "686419",
+      "title": "할매가야밀면",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 광복로 56-14",
+      "lat": 35.0989509211,
+      "lon": 129.0312346584,
+      "aihubName": "광복로 패션거리",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 39,
+      "dwell": {
+        "count": 7,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 39
+      }
+    },
     "767084": {
       "contentId": "767084",
       "title": "신세계백화점 센텀시티점",
@@ -1683,11 +3284,11 @@
       "matchType": "name+coord",
       "matchDistanceM": 63,
       "dwell": {
-        "count": 41,
+        "count": 42,
         "median": 60,
         "p25": 60,
         "p75": 150,
-        "mean": 106
+        "mean": 105
       }
     },
     "769761": {
@@ -1709,6 +3310,132 @@
         "p25": 30,
         "p75": 38,
         "mean": 38
+      }
+    },
+    "850093": {
+      "contentId": "850093",
+      "title": "급행장",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 부산진구 서면문화로 4",
+      "lat": 35.1581031257,
+      "lon": 129.0580307117,
+      "aihubName": "서면 지하상가",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 108,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 68,
+        "mean": 53
+      }
+    },
+    "850121": {
+      "contentId": "850121",
+      "title": "꺼먹동네횟집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 문오성길 509",
+      "lat": 35.2985883478,
+      "lon": 129.2595731906,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 142,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    "851073": {
+      "contentId": "851073",
+      "title": "장성향",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 대영로243번길 29",
+      "lat": 35.1135771812,
+      "lon": 129.0377225842,
+      "aihubName": "초량 차이나타운",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 23,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 54
+      }
+    },
+    "851286": {
+      "contentId": "851286",
+      "title": "상국이네",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로41번길 40-1",
+      "lat": 35.1620074073,
+      "lon": 129.1629548127,
+      "aihubName": "상국이네",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 7,
+      "dwell": {
+        "count": 7,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 34
+      }
+    },
+    "851955": {
+      "contentId": "851955",
+      "title": "일품한우",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 해운대로570번길 49",
+      "lat": 35.1602575377,
+      "lon": 129.1594329447,
+      "aihubName": "맥도날드 해운대 DT점",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 21,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    "851989": {
+      "contentId": "851989",
+      "title": "할매복국",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 1",
+      "lat": 35.1609243536,
+      "lon": 129.1715207639,
+      "aihubName": "바다마루 전복죽",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 58,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
       }
     },
     "985921": {
@@ -1858,6 +3585,27 @@
         "mean": 60
       }
     },
+    "1018702": {
+      "contentId": "1018702",
+      "title": "국제시장 먹자골목",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 중구로 36",
+      "lat": 35.1011311741,
+      "lon": 129.0280793175,
+      "aihubName": "국제시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 1,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      }
+    },
     "1019616": {
       "contentId": "1019616",
       "title": "센텀시티 아이스링크",
@@ -1900,6 +3648,48 @@
         "mean": 70
       }
     },
+    "1805656": {
+      "contentId": "1805656",
+      "title": "일번지자갈치산곰장어",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로41번길 12",
+      "lat": 35.1610408317,
+      "lon": 129.1620465848,
+      "aihubName": "해운대 전통시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 48,
+      "dwell": {
+        "count": 11,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 46
+      }
+    },
+    "1805853": {
+      "contentId": "1805853",
+      "title": "수민이네",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 청사포로58번길 118",
+      "lat": 35.1606275259,
+      "lon": 129.1909968571,
+      "aihubName": "앨리스 도넛 청사포 본점",
+      "aihubCategory": "상점",
+      "matchType": "coord",
+      "matchDistanceM": 20,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
     "1846830": {
       "contentId": "1846830",
       "title": "남도해양열차 에스트레인(S-train)",
@@ -1910,15 +3700,36 @@
       "lat": 35.1152715223,
       "lon": 129.0424332391,
       "aihubName": "부산역",
-      "aihubCategory": "역사/유적/종교",
+      "aihubCategory": "식당",
       "matchType": "coord",
       "matchDistanceM": 94,
       "dwell": {
-        "count": 3,
+        "count": 4,
         "median": 60,
-        "p25": 45,
-        "p75": 90,
-        "mean": 70
+        "p25": 53,
+        "p75": 75,
+        "mean": 68
+      }
+    },
+    "1855868": {
+      "contentId": "1855868",
+      "title": "부전돼지국밥",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 사상구 사상로 214",
+      "lat": 35.1642344065,
+      "lon": 128.9839369933,
+      "aihubName": "애플 아웃렛",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 124,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
       }
     },
     "1878218": {
@@ -1935,11 +3746,74 @@
       "matchType": "name+coord",
       "matchDistanceM": 60,
       "dwell": {
-        "count": 28,
+        "count": 30,
         "median": 30,
         "p25": 30,
         "p75": 60,
-        "mean": 49
+        "mean": 48
+      }
+    },
+    "1942233": {
+      "contentId": "1942233",
+      "title": "대각사(부산)",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 광복중앙로 19 (신창동1가)",
+      "lat": 35.1010840062,
+      "lon": 129.0307152012,
+      "aihubName": "이재모 피자 본점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 107,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    "1942299": {
+      "contentId": "1942299",
+      "title": "남선창고터",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 동구 초량로13번길 53",
+      "lat": 35.1167962983,
+      "lon": 129.0395112298,
+      "aihubName": "설빙 부산역점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 46,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 60
+      }
+    },
+    "1942316": {
+      "contentId": "1942316",
+      "title": "영도봉래시장",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "category": "상업지구",
+      "addr1": "부산광역시 영도구 태종로113번길 39",
+      "lat": 35.0927462941,
+      "lon": 129.0439559432,
+      "aihubName": "삼진 어묵 영도 본점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 108,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
       }
     },
     "1942348": {
@@ -1977,7 +3851,7 @@
       "matchType": "coord",
       "matchDistanceM": 5,
       "dwell": {
-        "count": 15,
+        "count": 16,
         "median": 30,
         "p25": 30,
         "p75": 60,
@@ -2039,6 +3913,27 @@
       "aihubCategory": "문화시설",
       "matchType": "coord",
       "matchDistanceM": 26,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
+    "2470024": {
+      "contentId": "2470024",
+      "title": "삼진어묵 체험·역사과학관",
+      "contentTypeId": "12",
+      "contentTypeName": "관광지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 영도구 절영로7번길 41-1 (봉래동2가)",
+      "lat": 35.0928101531,
+      "lon": 129.0427254928,
+      "aihubName": "삼진 어묵 영도 본점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 17,
       "dwell": {
         "count": 3,
         "median": 30,
@@ -2215,6 +4110,153 @@
         "mean": 60
       }
     },
+    "2668102": {
+      "contentId": "2668102",
+      "title": "수변최고돼지국밥 민락본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광안해변로370번길 9-32",
+      "lat": 35.1567852389,
+      "lon": 129.1343130018,
+      "aihubName": "수변 최고 돼지국밥 민락 본점",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 13,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      }
+    },
+    "2704645": {
+      "contentId": "2704645",
+      "title": "[해파랑길] 2코스",
+      "contentTypeId": "28",
+      "contentTypeName": "레포츠",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 33-1",
+      "lat": 35.1584551702,
+      "lon": 129.1706820162,
+      "aihubName": "호랑이 젤라 떡",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 21,
+      "dwell": {
+        "count": 6,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    "2708019": {
+      "contentId": "2708019",
+      "title": "광안리 SUP Zone",
+      "contentTypeId": "28",
+      "contentTypeName": "레포츠",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 수영구 남천동",
+      "lat": 35.1477386656,
+      "lon": 129.114673291,
+      "aihubName": "샌더스",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 61,
+      "dwell": {
+        "count": 3,
+        "median": 90,
+        "p25": 75,
+        "p75": 165,
+        "mean": 130
+      }
+    },
+    "2726193": {
+      "contentId": "2726193",
+      "title": "이가네떡볶이",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 부평1길 48",
+      "lat": 35.1015921962,
+      "lon": 129.0260517037,
+      "aihubName": "부평 깡통시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 60,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      }
+    },
+    "2747589": {
+      "contentId": "2747589",
+      "title": "더무빙 카라반",
+      "contentTypeId": "28",
+      "contentTypeName": "레포츠",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 기장군 장안읍 해맞이로 290",
+      "lat": 35.3226997305,
+      "lon": 129.2701216022,
+      "aihubName": "웨이브 온 커피",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 55,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      }
+    },
+    "2753006": {
+      "contentId": "2753006",
+      "title": "어느멋진날",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 기장해안로 1286",
+      "lat": 35.2588256667,
+      "lon": 129.2343181572,
+      "aihubName": "일광해수욕장",
+      "aihubCategory": "자연관광지",
+      "matchType": "coord",
+      "matchDistanceM": 131,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 66
+      }
+    },
+    "2760773": {
+      "contentId": "2760773",
+      "title": "해운대기와집대구탕",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길50번길 4 (중동)",
+      "lat": 35.1611742976,
+      "lon": 129.1700125548,
+      "aihubName": "바다마루 전복죽",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 130,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
     "2763856": {
       "contentId": "2763856",
       "title": "놀이마루",
@@ -2236,6 +4278,111 @@
         "mean": 36
       }
     },
+    "2773623": {
+      "contentId": "2773623",
+      "title": "야스마루",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 부산진구 중앙대로756번길 24 (부전동)",
+      "lat": 35.1593225066,
+      "lon": 129.0619942225,
+      "aihubName": "오브젝트 에디트",
+      "aihubCategory": "상점",
+      "matchType": "coord",
+      "matchDistanceM": 99,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    "2775556": {
+      "contentId": "2775556",
+      "title": "칠암일번지횟집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광면 문오성길 547",
+      "lat": 35.3002520455,
+      "lon": 129.2592953908,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 49,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    "2776391": {
+      "contentId": "2776391",
+      "title": "미청식당",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광면 기장해안로 1303",
+      "lat": 35.2603115904,
+      "lon": 129.2331904364,
+      "aihubName": "일광해수욕장",
+      "aihubCategory": "자연관광지",
+      "matchType": "coord",
+      "matchDistanceM": 68,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 66
+      }
+    },
+    "2776396": {
+      "contentId": "2776396",
+      "title": "무진장횟집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 연화1길 137",
+      "lat": 35.2171162986,
+      "lon": 129.2261339112,
+      "aihubName": "고향 연화",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 126,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      }
+    },
+    "2778487": {
+      "contentId": "2778487",
+      "title": "금수복국 해운대본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 중동1로43번길 23",
+      "lat": 35.1624573857,
+      "lon": 129.1645185529,
+      "aihubName": "금수복국 해운대본점",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 9,
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 56
+      }
+    },
     "2782626": {
       "contentId": "2782626",
       "title": "삼익비치수변공원",
@@ -2255,6 +4402,27 @@
         "p25": 90,
         "p75": 210,
         "mean": 138
+      }
+    },
+    "2782628": {
+      "contentId": "2782628",
+      "title": "그린노마드",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 좌수영로 161-10 (망미동)",
+      "lat": 35.1784130482,
+      "lon": 129.1167972647,
+      "aihubName": "코스트코 부산점",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 138,
+      "dwell": {
+        "count": 4,
+        "median": 60,
+        "p25": 53,
+        "p75": 75,
+        "mean": 68
       }
     },
     "2782747": {
@@ -2320,6 +4488,48 @@
         "mean": 138
       }
     },
+    "2783646": {
+      "contentId": "2783646",
+      "title": "러브얼스",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광안로49번길 32-1 (광안동)",
+      "lat": 35.1564683169,
+      "lon": 129.118606043,
+      "aihubName": "러브 이즈 기방 1호점",
+      "aihubCategory": "상점",
+      "matchType": "coord",
+      "matchDistanceM": 55,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
+    "2784112": {
+      "contentId": "2784112",
+      "title": "송정서핑학교",
+      "contentTypeId": "28",
+      "contentTypeName": "레포츠",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 해운대구 송정해변로 34-8 (송정동)",
+      "lat": 35.1810226785,
+      "lon": 129.2024952959,
+      "aihubName": "스타벅스 부산 송정 비치점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 37,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
     "2784330": {
       "contentId": "2784330",
       "title": "미포항",
@@ -2329,16 +4539,16 @@
       "addr1": "부산광역시 해운대구 중동",
       "lat": 35.1580385696,
       "lon": 129.1717291585,
-      "aihubName": "해운대 블루라인파크 미포 정거장",
-      "aihubCategory": "체험활동관광지",
+      "aihubName": "호랑이 젤라 떡",
+      "aihubCategory": "식당",
       "matchType": "coord",
-      "matchDistanceM": 99,
+      "matchDistanceM": 95,
       "dwell": {
-        "count": 30,
+        "count": 6,
         "median": 30,
         "p25": 30,
-        "p75": 60,
-        "mean": 63
+        "p75": 30,
+        "mean": 30
       }
     },
     "2784363": {
@@ -2360,6 +4570,132 @@
         "p25": 30,
         "p75": 30,
         "mean": 30
+      }
+    },
+    "2785269": {
+      "contentId": "2785269",
+      "title": "수월경화",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정중앙로6번길 188",
+      "lat": 35.176150892,
+      "lon": 129.1966014983,
+      "aihubName": "서프 짐",
+      "aihubCategory": "레저/스포츠",
+      "matchType": "coord",
+      "matchDistanceM": 101,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      }
+    },
+    "2785272": {
+      "contentId": "2785272",
+      "title": "고향연화",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 연화길 33-8",
+      "lat": 35.2172384782,
+      "lon": 129.2245979306,
+      "aihubName": "고향 연화",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 29,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      }
+    },
+    "2785956": {
+      "contentId": "2785956",
+      "title": "초량밀면",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 중앙대로 225 (초량동)",
+      "lat": 35.1173462584,
+      "lon": 129.0406944453,
+      "aihubName": "초량 밀면",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 10,
+      "dwell": {
+        "count": 11,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 44
+      }
+    },
+    "2785965": {
+      "contentId": "2785965",
+      "title": "송정집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정광어골로 59 (송정동)",
+      "lat": 35.1762119923,
+      "lon": 129.1963681835,
+      "aihubName": "서프 짐",
+      "aihubCategory": "레저/스포츠",
+      "matchType": "coord",
+      "matchDistanceM": 102,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      }
+    },
+    "2786766": {
+      "contentId": "2786766",
+      "title": "해목",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로24번길 8 (우동)",
+      "lat": 35.1618601408,
+      "lon": 129.1596828783,
+      "aihubName": "해목",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      }
+    },
+    "2786779": {
+      "contentId": "2786779",
+      "title": "해운대 가야밀면",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 좌동순환로 27 (좌동)",
+      "lat": 35.1688900329,
+      "lon": 129.1663598827,
+      "aihubName": "해운대 가야 밀면",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
       }
     },
     "2789488": {
@@ -2404,6 +4740,27 @@
         "mean": 80
       }
     },
+    "2793181": {
+      "contentId": "2793181",
+      "title": "속씨원한대구탕미포본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 28 (중동)",
+      "lat": 35.1589051184,
+      "lon": 129.1706181201,
+      "aihubName": "수변 최고 돼지국밥 미포점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 33,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
     "2815627": {
       "contentId": "2815627",
       "title": "롯데월드 어드벤처 부산",
@@ -2446,6 +4803,48 @@
         "mean": 83
       }
     },
+    "2822840": {
+      "contentId": "2822840",
+      "title": "칠암사계",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 칠암1길 7-10",
+      "lat": 35.2999215202,
+      "lon": 129.2589676506,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 20,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    "2822910": {
+      "contentId": "2822910",
+      "title": "창비부산",
+      "contentTypeId": "14",
+      "contentTypeName": "문화시설",
+      "category": "문화시설",
+      "addr1": "부산광역시 동구 중앙대로209번길 16",
+      "lat": 35.1163768939,
+      "lon": 129.0391696039,
+      "aihubName": "영동 밀면 영동 국밥",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 24,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 54
+      }
+    },
     "2825115": {
       "contentId": "2825115",
       "title": "요트탈래",
@@ -2467,6 +4866,48 @@
         "mean": 40
       }
     },
+    "2832636": {
+      "contentId": "2832636",
+      "title": "코랄라니",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 기장해안로 32",
+      "lat": 35.1825920662,
+      "lon": 129.2089308044,
+      "aihubName": "코랄 라느니",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 23,
+      "dwell": {
+        "count": 5,
+        "median": 90,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      }
+    },
+    "2832671": {
+      "contentId": "2832671",
+      "title": "신발원",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 대영로243번길 62 (초량동)",
+      "lat": 35.1148492791,
+      "lon": 129.0387363501,
+      "aihubName": "신발원",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 10,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 51
+      }
+    },
     "2834026": {
       "contentId": "2834026",
       "title": "갤러리이알디 부산",
@@ -2486,6 +4927,489 @@
         "p25": 30,
         "p75": 60,
         "mean": 51
+      }
+    },
+    "2836412": {
+      "contentId": "2836412",
+      "title": "에테르",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 영도구 절영로 234",
+      "lat": 35.0772952921,
+      "lon": 129.0465200301,
+      "aihubName": "에테르",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 7,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      }
+    },
+    "2836450": {
+      "contentId": "2836450",
+      "title": "이재모피자 본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 광복중앙로 31 (신창동1가, 중앙아파트)",
+      "lat": 35.1021394414,
+      "lon": 129.0306068486,
+      "aihubName": "이재모 피자 본점",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 17,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    "2841442": {
+      "contentId": "2841442",
+      "title": "톤쇼우",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 금정구 금강로 247-10 (장전동)",
+      "lat": 35.2304871678,
+      "lon": 129.0842986624,
+      "aihubName": "톤쇼우",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
+    "2845123": {
+      "contentId": "2845123",
+      "title": "본가딸부자전복죽집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 연화2길 14-1",
+      "lat": 35.2175468041,
+      "lon": 129.2260450183,
+      "aihubName": "고향 연화",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 113,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      }
+    },
+    "2848939": {
+      "contentId": "2848939",
+      "title": "튼튼장어 무한리필",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장해안로 1301",
+      "lat": 35.2601393874,
+      "lon": 129.2331682209,
+      "aihubName": "일광해수욕장",
+      "aihubCategory": "자연관광지",
+      "matchType": "coord",
+      "matchDistanceM": 59,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 66
+      }
+    },
+    "2848949": {
+      "contentId": "2848949",
+      "title": "칠암만장",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 일광로 648",
+      "lat": 35.2999631688,
+      "lon": 129.258231602,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 85,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    "2848952": {
+      "contentId": "2848952",
+      "title": "일광정",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 일광로 645",
+      "lat": 35.2996881955,
+      "lon": 129.2580316277,
+      "aihubName": "칠암 삼계",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 103,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    "2858936": {
+      "contentId": "2858936",
+      "title": "해운대하얀오징어집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길50번길 4",
+      "lat": 35.1611742976,
+      "lon": 129.1700125548,
+      "aihubName": "바다마루 전복죽",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 130,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    "2858974": {
+      "contentId": "2858974",
+      "title": "타이가텐푸라",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 우동1로38번가길 15 (우동)",
+      "lat": 35.1648042324,
+      "lon": 129.1584217967,
+      "aihubName": "금송덕미 행리단길점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 9,
+      "dwell": {
+        "count": 6,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 60
+      }
+    },
+    "2859101": {
+      "contentId": "2859101",
+      "title": "나가하마만게츠",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 우동1로 57 (우동)",
+      "lat": 35.1667289995,
+      "lon": 129.1574801581,
+      "aihubName": "산리 오러 버스 클럽",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 56,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
+      }
+    },
+    "2860782": {
+      "contentId": "2860782",
+      "title": "오반장",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로24번길 20 (우동)",
+      "lat": 35.1614851749,
+      "lon": 129.1592634811,
+      "aihubName": "해목",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 51,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      }
+    },
+    "2860833": {
+      "contentId": "2860833",
+      "title": "송정물총칼국수",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정중앙로6번길 184 명신횟집",
+      "lat": 35.1763758683,
+      "lon": 129.196657043,
+      "aihubName": "서프 짐",
+      "aihubCategory": "레저/스포츠",
+      "matchType": "coord",
+      "matchDistanceM": 75,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      }
+    },
+    "2865236": {
+      "contentId": "2865236",
+      "title": "희와제과",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "카페",
+      "addr1": "부산광역시 부산진구 전포대로246번길 6 (전포동, 동양팰리스)",
+      "lat": 35.1584310105,
+      "lon": 129.0658105816,
+      "aihubName": "회와 제과",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 22,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
+      }
+    },
+    "2868655": {
+      "contentId": "2868655",
+      "title": "바로해장",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광남로94번길 2 (광안동, 광일)",
+      "lat": 35.15014673,
+      "lon": 129.1146787801,
+      "aihubName": "랜디스 도넛 광안리점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 41,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 36
+      }
+    },
+    "2869405": {
+      "contentId": "2869405",
+      "title": "영동밀면&돼지국밥",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 중앙대로209번길 12 (초량동)",
+      "lat": 35.1163102386,
+      "lon": 129.0393473684,
+      "aihubName": "영동 밀면 영동 국밥",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 13,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 54
+      }
+    },
+    "2870354": {
+      "contentId": "2870354",
+      "title": "스완양분식",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 중앙대로236번길 7-5 (초량동)",
+      "lat": 35.1181073148,
+      "lon": 129.042383166,
+      "aihubName": "대건 명가 돼지국밥",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 113,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 60
+      }
+    },
+    "2870703": {
+      "contentId": "2870703",
+      "title": "초량온당",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 동구 초량중로 135 (수정동)",
+      "lat": 35.1234594789,
+      "lon": 129.0415747569,
+      "aihubName": "초량 온당",
+      "aihubCategory": "상점",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 50
+      }
+    },
+    "2872474": {
+      "contentId": "2872474",
+      "title": "기장끝집 죽성본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 기장해안로 895",
+      "lat": 35.2348590788,
+      "lon": 129.2435319086,
+      "aihubName": "오직 전복죽 기장 끝 집",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 17,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      }
+    },
+    "2873498": {
+      "contentId": "2873498",
+      "title": "구로마쯔",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정광어골로 41 (송정동)",
+      "lat": 35.1774729774,
+      "lon": 129.1971986315,
+      "aihubName": "서프 짐",
+      "aihubCategory": "레저/스포츠",
+      "matchType": "coord",
+      "matchDistanceM": 58,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      }
+    },
+    "2891789": {
+      "contentId": "2891789",
+      "title": "라꽁띠",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 청사포로 85",
+      "lat": 35.1626050452,
+      "lon": 129.1890108643,
+      "aihubName": "심미안",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 126,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 45
+      }
+    },
+    "2891814": {
+      "contentId": "2891814",
+      "title": "류센소 본점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로8번길 62",
+      "lat": 35.1616267696,
+      "lon": 129.1562304075,
+      "aihubName": "류센소 본점",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 45
+      }
+    },
+    "2905141": {
+      "contentId": "2905141",
+      "title": "할매집",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 중동2로10번길 7",
+      "lat": 35.1630962099,
+      "lon": 129.1649018354,
+      "aihubName": "해운대 밀면",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 69,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      }
+    },
+    "2952936": {
+      "contentId": "2952936",
+      "title": "카페제노아",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "카페",
+      "addr1": "부산광역시 중구 중구로29번길 17 (부평동1가)",
+      "lat": 35.1004034583,
+      "lon": 129.0270044311,
+      "aihubName": "국제시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 127,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
       }
     },
     "2991028": {
@@ -2586,7 +5510,7 @@
       "matchType": "coord",
       "matchDistanceM": 104,
       "dwell": {
-        "count": 15,
+        "count": 16,
         "median": 30,
         "p25": 30,
         "p75": 60,
@@ -2635,6 +5559,27 @@
         "mean": 60
       }
     },
+    "3081825": {
+      "contentId": "3081825",
+      "title": "아트모이지",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광안해변로294번길 26 (민락동)",
+      "lat": 35.1553158082,
+      "lon": 129.1261720835,
+      "aihubName": "개미집 광안리점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 94,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      }
+    },
     "3083767": {
       "contentId": "3083767",
       "title": "부산근현대역사관 본관",
@@ -2670,11 +5615,11 @@
       "matchType": "coord",
       "matchDistanceM": 69,
       "dwell": {
-        "count": 3,
+        "count": 5,
         "median": 30,
         "p25": 30,
-        "p75": 30,
-        "mean": 30
+        "p75": 60,
+        "mean": 54
       }
     },
     "3336600": {
@@ -2717,6 +5662,48 @@
         "p25": 30,
         "p75": 30,
         "mean": 30
+      }
+    },
+    "3442923": {
+      "contentId": "3442923",
+      "title": "솥이랑 서면점",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 부산진구 중앙대로 672 (부전동)",
+      "lat": 35.1530453881,
+      "lon": 129.0596334885,
+      "aihubName": "런닝맨 부산점",
+      "aihubCategory": "테마시설",
+      "matchType": "coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 84
+      }
+    },
+    "3443614": {
+      "contentId": "3443614",
+      "title": "원시학",
+      "contentTypeId": "39",
+      "contentTypeName": "음식점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 우동1로20번가길 31 (우동)",
+      "lat": 35.166279066,
+      "lon": 129.1583939802,
+      "aihubName": "원에 학",
+      "aihubCategory": "식당",
+      "matchType": "name+coord",
+      "matchDistanceM": 113,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 80
       }
     },
     "3454074": {
