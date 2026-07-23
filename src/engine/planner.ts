@@ -1,6 +1,6 @@
 // 시간-적합 플래너 (결정적). 스파이크 engine_spike.mjs 로직 이식.
 import { Course, LatLon, PlanInput, PlanResult, Spot } from './types';
-import { effectiveDwell, mapCategory } from './data';
+import { effectiveBusanMatchedDwell, resolveBusanMatched } from './data';
 import { detailIntro, isOpenDuring, locationBased } from './tourapi';
 import { haversineMin, precompute, travelGeo, travelMin, travelSrc } from './travel';
 
@@ -15,11 +15,12 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   const raw = await locationBased(input.origin.lat, input.origin.lon, radiusM);
   const cands: Spot[] = [];
   for (const it of raw) {
-    const cat = mapCategory(it.contenttypeid, it.title);
-    if (!cat) continue;
+    const matched = resolveBusanMatched(it.contentid);
+    if (!matched) continue;
+    const cat = matched.category;
     const lat = parseFloat(it.mapy), lon = parseFloat(it.mapx);
     if (isNaN(lat) || isNaN(lon)) continue;
-    const d = effectiveDwell(it.title, cat, input.dayType, input.hourBucket);
+    const d = effectiveBusanMatchedDwell(matched, input.dayType, input.hourBucket);
     cands.push({
       title: it.title, contentId: it.contentid, typeId: it.contenttypeid, category: cat,
       lat, lon, dwell: d.eff, dwellBase: d.base, dwellSrc: d.src, mult: d.mult, openNote: '',

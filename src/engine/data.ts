@@ -1,48 +1,28 @@
-// 정적 체류/혼잡 파라미터 (AI-Hub 동부권 집계, 빌드 번들)
-import categoryDwell from '../data/category_dwell.json';
-import congestion from '../data/congestion_matrix.json';
-import poiDwell from '../data/poi_dwell.json';
+// 부산 TourAPI ↔ AI-Hub 매칭 장소 파라미터 (앱 번들)
+import busanMatchedPoi from '../data/busan_matched_poi.json';
 import { DayType, HourBucket } from './types';
 
-type CatRec = { count: number; median: number; p25: number; p75: number; mean: number };
-type PoiRec = { name: string; category: string; count: number; median: number; x: number; y: number };
+type BusanMatchedRec = {
+  contentId: string;
+  title: string;
+  category: string;
+  dwell: { count: number; median: number; p25: number; p75: number; mean: number };
+};
 
-const catData = (categoryDwell as any).data as Record<string, CatRec>;
-const congData = (congestion as any).data as Record<string, Record<string, Record<string, number | null>>>;
-const poiData = (poiDwell as any).data as Record<string, PoiRec>;
+const busanMatched = (busanMatchedPoi as any).byContentId as Record<string, BusanMatchedRec>;
 
-const norm = (s: string) => (s || '').replace(/\s+/g, '').toLowerCase();
-const CAFE_RE = /카페|커피|coffee|cafe|베이커리|제과|디저트|빵|브런치|로스터리/i;
-
-// TourAPI contentTypeId → 우리 카테고리 (null = 추천대상 아님)
-export function mapCategory(typeId: string, title: string): string | null {
-  switch (String(typeId)) {
-    case '12': return '자연관광지';
-    case '14': return '문화시설';
-    case '15': return '지역축제/행사';
-    case '28': return '레저/스포츠';
-    case '38': return '상업지구';
-    case '39': return CAFE_RE.test(title) ? '카페' : '식당';
-    default: return null;
-  }
+export function resolveBusanMatched(contentId: string): BusanMatchedRec | null {
+  return busanMatched[String(contentId)] ?? null;
 }
 
-// 체류시간: POI 실측(표본충분) → 카테고리 폴백
-export function resolveDwell(title: string, category: string): { base: number; src: string } {
-  const hit = poiData[norm(title)];
-  if (hit && hit.count >= 5) return { base: hit.median, src: `POI실측(n=${hit.count})` };
-  const c = catData[category];
-  return c ? { base: c.median, src: '카테고리' } : { base: 30, src: '기본값' };
-}
-
-// 유효 체류 = 기본 × 혼잡배수(완화 적용)
-// 원배수(0.8~1.8)를 그대로 곱하면 체류 60분→108분 같은 비현실 값 발생 →
-// 저신뢰(자기보고 30분 버킷) 파생 데이터이므로 영향 절반 + [0.9, 1.2] 클램프
-export function effectiveDwell(
-  title: string, category: string, dayType: DayType, hourBucket: HourBucket,
+export function effectiveBusanMatchedDwell(
+  matched: BusanMatchedRec, _dayType: DayType, _hourBucket: HourBucket,
 ): { eff: number; base: number; mult: number; src: string } {
-  const { base, src } = resolveDwell(title, category);
-  const raw = congData[category]?.[dayType]?.[hourBucket] ?? 1.0;
-  const mult = Math.round(Math.min(1.2, Math.max(0.9, 1 + (raw - 1) * 0.5)) * 100) / 100;
-  return { eff: Math.round(base * mult / 5) * 5, base, mult, src }; // 5분 단위 반올림
+  const base = matched.dwell.median;
+  return {
+    eff: base,
+    base,
+    mult: 1,
+    src: `부산매칭(n=${matched.dwell.count})`,
+  };
 }

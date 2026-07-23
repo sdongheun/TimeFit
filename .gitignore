@@ -34,6 +34,7 @@ data/aihub_donbu/
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+docs/reports/busan_matched_tmap.html
 
 # macOS / 도구
 .DS_Store

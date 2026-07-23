@@ -67,6 +67,7 @@ export function HomeScreen({ navigation }: Props) {
   async function run() {
     setError('');
     if (!remaining) { setError('비는 시간을 분 단위 숫자로 입력하세요 (예: 120)'); return; }
+    if (remaining > 240) { setError('자투리 시간은 최대 4시간(240분)까지만 입력하세요.'); return; }
     if (timeTxt.trim() && manualMin == null) { setError('테스트 시각은 HH:MM 형식으로 입력하세요 (예: 14:30)'); return; }
 
     setLoading(true);
