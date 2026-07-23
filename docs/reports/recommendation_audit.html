@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TimeFit 추천 품질 감사</title>
+  <style>
+    :root { --bg:#0f1419; --panel:#171d26; --line:#2a3340; --txt:#e6edf3; --muted:#9aa7b4; --pass:#2ea043; --warn:#d29922; --fail:#f85149; --accent:#4cc2ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--txt); font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",sans-serif; }
+    header { position:sticky; top:0; background:rgba(15,20,25,.96); border-bottom:1px solid var(--line); padding:18px 22px; z-index:2; }
+    h1 { margin:0; font-size:22px; }
+    .sub { color:var(--muted); margin-top:6px; font-size:13px; }
+    main { padding:18px 22px 40px; max-width:1280px; margin:0 auto; }
+    .summary { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin:14px 0 18px; }
+    .tile, .scenario, .course { background:var(--panel); border:1px solid var(--line); border-radius:10px; }
+    .tile { padding:13px; }
+    .tile b { display:block; font-size:22px; margin-bottom:2px; }
+    .tile span { color:var(--muted); font-size:12px; }
+    .scenario { margin:16px 0; overflow:hidden; }
+    .shead { padding:14px 16px; border-bottom:1px solid var(--line); display:flex; gap:12px; justify-content:space-between; align-items:flex-start; }
+    .shead h2 { margin:0; font-size:17px; }
+    .meta { color:var(--muted); font-size:12px; margin-top:4px; }
+    .courses { display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:10px; padding:12px; }
+    .course { padding:12px; }
+    .top { display:flex; justify-content:space-between; gap:8px; align-items:center; margin-bottom:8px; }
+    .status { font-weight:800; font-size:12px; border-radius:999px; padding:4px 8px; }
+    .PASS { color:white; background:var(--pass); }
+    .WARN { color:#111; background:var(--warn); }
+    .FAIL { color:white; background:var(--fail); }
+    .title { font-weight:800; line-height:1.35; }
+    .spots { margin:8px 0; }
+    .spot { padding:7px 0; border-top:1px solid rgba(42,51,64,.7); }
+    .spot:first-child { border-top:0; }
+    .small { color:var(--muted); font-size:12px; line-height:1.55; }
+    .metric { display:grid; grid-template-columns:1fr 1fr; gap:6px; color:var(--muted); font-size:12px; margin:8px 0; }
+    .metric div { background:#10161d; border:1px solid rgba(42,51,64,.7); border-radius:8px; padding:7px; }
+    .issues { margin:8px 0 0; padding:0; list-style:none; }
+    .issues li { margin-top:5px; font-size:12px; line-height:1.4; }
+    .issues b.fail { color:var(--fail); }
+    .issues b.warn { color:var(--warn); }
+    .issueTable { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .chip { border:1px solid var(--line); border-radius:999px; color:var(--muted); padding:5px 8px; font-size:12px; }
+    .rules { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; margin:16px 0; }
+    .rules h2 { margin:0 0 8px; font-size:16px; }
+    .rulesGrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:8px; }
+    .rule { border:1px solid rgba(42,51,64,.8); border-radius:8px; padding:9px; background:#10161d; }
+    .rule b { font-size:12px; }
+    .rule .desc { color:var(--muted); font-size:12px; margin-top:4px; line-height:1.45; }
+    .err { color:var(--fail); padding:14px 16px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TimeFit 추천 품질 감사</h1>
+    <div class="sub">생성: 2026. 7. 24. 오전 2:09:36 · PASS/WARN/FAIL은 휴리스틱 자동 진단입니다.</div>
+  </header>
+  <main>
+    <section class="summary">
+      <div class="tile"><b>3</b><span>시나리오</span></div>
+      <div class="tile"><b>10</b><span>추천 코스</span></div>
+      <div class="tile"><b>5</b><span>PASS</span></div>
+      <div class="tile"><b>4</b><span>WARN</span></div>
+      <div class="tile"><b>1</b><span>FAIL</span></div>
+    </section>
+    <div class="issueTable"><span class="chip">약속지 근처 4</span><span class="chip">가는 길 중간 1</span><span class="chip">출발지 근처 5</span></div>
+    <div class="issueTable"><span class="chip">walk_too_long 5</span><span class="chip">car_only 5</span><span class="chip">fallback_only_course 1</span></div>
+    <section class="rules">
+      <h2>판정 기준</h2>
+      <div class="sub">100점에서 이슈별 penalty를 차감합니다. fail 이슈가 하나라도 있거나 60점 미만이면 FAIL, warn 이슈만 있으면 WARN, 이슈가 없으면 PASS입니다.</div>
+      <div class="rulesGrid">
+        <div class="rule">
+          <b class="fail">lodging_keyword · FAIL · -100</b>
+          <div class="desc">숙박성 키워드 포함</div>
+        </div><div class="rule">
+          <b class="fail">utility_keyword · FAIL · -90</b>
+          <div class="desc">주차장/병원/주유소 등 부적합 시설 키워드 포함</div>
+        </div><div class="rule">
+          <b class="fail">same_food_pair · FAIL · -45</b>
+          <div class="desc">식당 2곳 코스</div>
+        </div><div class="rule">
+          <b class="fail">far_pair · FAIL · -60</b>
+          <div class="desc">2개 장소 사이 도보 12분 초과</div>
+        </div><div class="rule">
+          <b class="fail">detour_high · FAIL · -45</b>
+          <div class="desc">직행 대비 우회율 1.8배 이상</div>
+        </div><div class="rule">
+          <b class="warn">same_cafe_pair · WARN · -25</b>
+          <div class="desc">카페 2곳 코스</div>
+        </div><div class="rule">
+          <b class="warn">duplicate_category_pair · WARN · -15</b>
+          <div class="desc">같은 카테고리 2곳 코스</div>
+        </div><div class="rule">
+          <b class="warn">detour_medium · WARN · -20</b>
+          <div class="desc">직행 대비 우회율 1.45배 이상</div>
+        </div><div class="rule">
+          <b class="warn">walk_too_long · WARN · -15</b>
+          <div class="desc">도보 총 이동시간 60분 초과</div>
+        </div><div class="rule">
+          <b class="warn">car_only · WARN · -20</b>
+          <div class="desc">자동차로만 30분 이상 체류 가능</div>
+        </div><div class="rule">
+          <b class="warn">low_stay_margin · WARN · -20</b>
+          <div class="desc">최선 수단 체류 가능 시간 40분 미만</div>
+        </div><div class="rule">
+          <b class="warn">move_over_stay · WARN · -15</b>
+          <div class="desc">이동시간이 체류 가능 시간보다 김</div>
+        </div><div class="rule">
+          <b class="warn">fallback_only_course · WARN · -10</b>
+          <div class="desc">모든 장소가 카테고리 폴백 데이터</div>
+        </div>
+      </div>
+    </section>
+    <section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S01. 서면 -&gt; 부산역 60분</h2>
+        <div class="meta">서면역 -> 부산역 · 60분 · 평일 14:00 오후</div>
+      </div>
+      <div class="meta">후보 61 · 영업 0 · TMAP 0</div>
+    </div>
+    <div class="courses"></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S02. 서면 -&gt; 부산역 120분</h2>
+        <div class="meta">서면역 -> 부산역 · 120분 · 평일 14:00 오후</div>
+      </div>
+      <div class="meta">후보 61 · 영업 16 · TMAP 20</div>
+    </div>
+    <div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 창비부산 + 남선창고터</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 자동차 기준 체류가능 83분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>창비부산</div>
+      <div class="small">문화시설 · 권장 60분 · direct_match</div>
+    </div><div class="spot">
+      <div>남선창고터</div>
+      <div class="small">자연관광지 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 81분<br />체류 가능 25분</div>
+      <div>자동차 이동 14분<br />체류 가능 92분</div>
+      <div>최선 수단 자동차<br />최선 체류 92분</div>
+      <div>우회율 0.7<br />장소간 도보 1분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 81분입니다.</li><li><b class="warn">car_only</b> 자동차로만 30분 이상 체류 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 영동밀면&amp;돼지국밥</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 자동차 기준 체류가능 84분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>영동밀면&amp;돼지국밥</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 87분<br />체류 가능 19분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 87분입니다.</li><li><b class="warn">car_only</b> 자동차로만 30분 이상 체류 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 남도해양열차 에스트레인(S-train)</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 자동차 기준 체류가능 85분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>남도해양열차 에스트레인(S-train)</div>
+      <div class="small">자연관광지 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 85분<br />체류 가능 21분</div>
+      <div>자동차 이동 21분<br />체류 가능 85분</div>
+      <div>최선 수단 자동차<br />최선 체류 85분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 85분입니다.</li><li><b class="warn">car_only</b> 자동차로만 30분 이상 체류 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 창비부산</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 자동차 기준 체류가능 84분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>창비부산</div>
+      <div class="small">문화시설 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 78분<br />체류 가능 28분</div>
+      <div>자동차 이동 14분<br />체류 가능 92분</div>
+      <div>최선 수단 자동차<br />최선 체류 92분</div>
+      <div>우회율 0.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 78분입니다.</li><li><b class="warn">car_only</b> 자동차로만 30분 이상 체류 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 좌천동 가구거리</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 자동차 기준 체류가능 84분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>좌천동 가구거리</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 86분<br />체류 가능 20분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 86분입니다.</li><li><b class="warn">car_only</b> 자동차로만 30분 이상 체류 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S03. 서면 왕복 90분</h2>
+        <div class="meta">서면역 -> 출발지 복귀 · 90분 · 주말 14:00 오후</div>
+      </div>
+      <div class="meta">후보 17 · 영업 15 · TMAP 22</div>
+    </div>
+    <div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 놀이마루 + 그런고로</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 도보 기준 체류가능 63분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>놀이마루</div>
+      <div class="small">문화시설 · 권장 30분 · direct_match</div>
+    </div><div class="spot">
+      <div>그런고로</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 16분<br />체류 가능 63분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 도보<br />최선 체류 63분</div>
+      <div>우회율 -<br />장소간 도보 3분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부전마켓타운</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 도보 기준 체류가능 61분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>부전마켓타운</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 18분<br />체류 가능 61분</div>
+      <div>자동차 이동 18분<br />체류 가능 61분</div>
+      <div>최선 수단 도보<br />최선 체류 61분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 희와제과</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 도보 기준 체류가능 59분 · 오후 적합 80%</div>
+    <div class="spots"><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 20분<br />체류 가능 59분</div>
+      <div>자동차 이동 20분<br />체류 가능 59분</div>
+      <div>최선 수단 도보<br />최선 체류 59분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 급행장</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 도보 기준 체류가능 75분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>급행장</div>
+      <div class="small">식당 · 권장 45분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 4분<br />체류 가능 75분</div>
+      <div>자동차 이동 4분<br />체류 가능 75분</div>
+      <div>최선 수단 도보<br />최선 체류 75분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 놀이마루</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 도보 기준 체류가능 67분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>놀이마루</div>
+      <div class="small">문화시설 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 12분<br />체류 가능 67분</div>
+      <div>자동차 이동 12분<br />체류 가능 67분</div>
+      <div>최선 수단 도보<br />최선 체류 67분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article></div>
+  </section>
+  </main>
+</body>
+</html>
