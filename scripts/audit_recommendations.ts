@@ -148,11 +148,12 @@ function auditCourse(sc: Scenario, c: Course): CourseAudit {
   const issues: Issue[] = [];
   const walk = c.mobility?.walk;
   const car = c.mobility?.car;
+  const transit = c.mobility?.transit;
   const bestMode = c.bestMode ?? 'walk';
-  const best = bestMode === 'car' ? car : walk;
+  const best = bestMode === 'car' ? car : bestMode === 'transit' ? transit : walk;
   const bestMoveMin = best?.moveMin ?? c.totalMin;
   const bestStayMin = best?.stayMin ?? Math.max(0, sc.remainingMin - c.totalMin);
-  const direct = routeDirectApprox(sc, bestMode);
+  const direct = bestMode === 'transit' ? routeDirectApprox(sc, 'car') : routeDirectApprox(sc, bestMode);
   const detourRatio = direct && direct > 0 ? round1(bestMoveMin / direct) : null;
   const pair = pairWalkMin(c);
   const titles = c.spots.map((p) => p.title).join(' + ');

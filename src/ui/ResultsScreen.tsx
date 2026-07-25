@@ -28,14 +28,19 @@ function CompositionBar({ course, remainingMin }: { course: Course; remainingMin
 function mobilityLine(course: Course): string {
   const walk = course.mobility?.walk;
   const car = course.mobility?.car;
-  if (!walk || !car) return `총 ${course.totalMin}분`;
-  return `도보 이동 ${walk.moveMin}분 · 자동차 이동 ${car.moveMin}분`;
+  const transit = course.mobility?.transit;
+  const parts = [];
+  if (walk) parts.push(`도보 ${walk.moveMin}분`);
+  if (transit) parts.push(`대중교통 ${transit.moveMin}분`);
+  if (car) parts.push(`차량 ${car.moveMin}분`);
+  return parts.length ? parts.join(' · ') : `총 ${course.totalMin}분`;
 }
 
-function stayLine(course: Course, mode: 'walk' | 'car'): string {
+function stayLine(course: Course, mode: Course['bestMode']): string {
+  if (!mode) return `여유 ${course.bufferLeftMin}분`;
   const selected = course.mobility?.[mode];
   if (!selected) return `여유 ${course.bufferLeftMin}분`;
-  const label = mode === 'car' ? '차량' : '도보';
+  const label = mode === 'car' ? '차량' : mode === 'transit' ? '대중교통' : '도보';
   return `${label} 기준 약 ${selected.stayMin}분 머물 수 있어요`;
 }
 
@@ -110,7 +115,7 @@ export function ResultsScreen({ route, navigation }: Props) {
           <Pressable key={i} style={s.card} onPress={() => navigation.navigate('Detail', { course: c, origin, ctx })}>
             <View style={s.cardHead}>
               <Text style={s.cardType}>{strategyLabel(c)} · {c.type} · {c.spots.length}곳</Text>
-              <Text style={s.cardTotal}>{c.bestMode === 'car' ? '자동차' : '도보'} ›</Text>
+              <Text style={s.cardTotal}>{c.bestMode === 'car' ? '차량' : c.bestMode === 'transit' ? '대중교통' : '도보'} ›</Text>
             </View>
             {c.why ? <Text style={s.whyMeta}>{c.why}</Text> : null}
             {c.spots.map((sp, k) => (

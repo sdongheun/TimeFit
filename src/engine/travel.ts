@@ -1,8 +1,9 @@
 // 이동시간: TMAP REST(보행/자동차) + haversine 폴백 + 좌표쌍 캐시
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LatLon, Mode } from './types';
+import { LatLon, Mode, RoadMode } from './types';
 
 const TMAP_KEY = process.env.EXPO_PUBLIC_TMAP_APP_KEY;
+const ODSAY_KEY = process.env.EXPO_PUBLIC_ODSAY_API_KEY ?? process.env.ODSAY_API_KEY;
 const ROUTE_USAGE_KEY = 'timefit:tmap-route-usage:v1';
 
 type RouteUsageStats = {
@@ -10,7 +11,7 @@ type RouteUsageStats = {
   total: number;
   ok: number;
   fail: number;
-  byMode: Record<Mode, number>;
+  byMode: Record<RoadMode, number>;
 };
 
 declare global {
@@ -102,9 +103,9 @@ async function routeUsagePersistent(): Promise<RouteUsageStats> {
 }
 
 const coordLabel = (p: LatLon) => `${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
-const modeLabel = (mode: Mode) => (mode === 'walk' ? '도보' : '자동차');
+const modeLabel = (mode: RoadMode) => (mode === 'walk' ? '도보' : '자동차');
 
-async function markRouteCall(mode: Mode, a: LatLon, b: LatLon): Promise<number> {
+async function markRouteCall(mode: RoadMode, a: LatLon, b: LatLon): Promise<number> {
   const usage = await routeUsagePersistent();
   usage.total += 1;
   usage.byMode[mode] += 1;
@@ -117,7 +118,7 @@ async function markRouteCall(mode: Mode, a: LatLon, b: LatLon): Promise<number> 
   return usage.total;
 }
 
-async function markRouteResult(callNo: number, mode: Mode, ok: boolean, min?: number) {
+async function markRouteResult(callNo: number, mode: RoadMode, ok: boolean, min?: number) {
   const usage = await routeUsagePersistent();
   if (ok) usage.ok += 1;
   else usage.fail += 1;
@@ -144,6 +145,7 @@ export function haversineKm(a: LatLon, b: LatLon): number {
 const MODE: Record<Mode, { circ: number; kmh: number; fix: number }> = {
   walk: { circ: 1.25, kmh: 4.5, fix: 0 },
   car: { circ: 1.3, kmh: 25, fix: 3 },
+  transit: { circ: 1.45, kmh: 18, fix: 8 },
 };
 
 export function haversineMin(a: LatLon, b: LatLon, mode: Mode): number {
@@ -153,7 +155,7 @@ export function haversineMin(a: LatLon, b: LatLon, mode: Mode): number {
 }
 
 // TMAP 경로: 소요시간 + 경로좌표(geometry) — geometry는 지도 실경로 표시용
-async function tmapTravel(a: LatLon, b: LatLon, mode: Mode): Promise<{ min: number; geo: LatLon[] } | null> {
+async function tmapTravel(a: LatLon, b: LatLon, mode: RoadMode): Promise<{ min: number; geo: LatLon[] } | null> {
   if (!TMAP_KEY) return null;
   const callNo = await markRouteCall(mode, a, b);
   const ped = mode === 'walk';
@@ -215,7 +217,7 @@ const getCache = (k: string): CacheEntry | undefined => {
 export type PrecomputeStat = { ok: number; fail: number };
 
 // 필요한 좌표쌍을 TMAP로 채움(실패 시 haversine 캐시) — 지연 정밀화: 최종 코스 구간에만 호출
-export async function precompute(pairs: [LatLon, LatLon][], mode: Mode): Promise<PrecomputeStat> {
+export async function precompute(pairs: [LatLon, LatLon][], mode: RoadMode): Promise<PrecomputeStat> {
   let ok = 0, fail = 0;
   let cacheHit = 0;
   for (const [a, b] of pairs) {
@@ -235,14 +237,118 @@ export async function precompute(pairs: [LatLon, LatLon][], mode: Mode): Promise
   return { ok, fail };
 }
 
+type TransitMeta = {
+  pathType: number;
+  totalTime: number;
+  payment: number;
+  busTransitCount: number;
+  subwayTransitCount: number;
+  totalWalk: number;
+  firstStartStation: string;
+  lastEndStation: string;
+  summary: string;
+};
+type TransitCacheEntry = { min: number; src: string; ts: number; meta?: TransitMeta };
+const transitCache = new Map<string, TransitCacheEntry>();
+const transitKey = (a: LatLon, b: LatLon) => `transit|${a.lat.toFixed(5)},${a.lon.toFixed(5)}|${b.lat.toFixed(5)},${b.lon.toFixed(5)}`;
+
+function getTransitCache(k: string): TransitCacheEntry | undefined {
+  const e = transitCache.get(k);
+  if (e && Date.now() - e.ts > TTL_MS) { transitCache.delete(k); return undefined; }
+  return e;
+}
+
+function transitFallbackMin(a: LatLon, b: LatLon): number {
+  return haversineMin(a, b, 'transit');
+}
+
+function transitScore(path: any): number {
+  const info = path?.info ?? {};
+  const time = Number(info.totalTime ?? 9999);
+  const transfers = Number(info.busTransitCount ?? 0) + Number(info.subwayTransitCount ?? 0);
+  const walk = Number(info.totalWalk ?? 0);
+  const pathType = Number(path?.pathType ?? 0);
+  const subwayBonus = pathType === 1 ? 8 : pathType === 3 ? 4 : 0;
+  return time + transfers * 4 + Math.round(walk / 250) - subwayBonus;
+}
+
+function transitSummary(path: any): string {
+  const sub = Array.isArray(path?.subPath) ? path.subPath : [];
+  const labels = sub
+    .filter((s: any) => s.trafficType === 1 || s.trafficType === 2)
+    .map((s: any) => {
+      const lane = Array.isArray(s.lane) ? s.lane[0] : null;
+      const laneName = lane?.name ?? lane?.busNo ?? (s.trafficType === 1 ? '지하철' : '버스');
+      return `${laneName} ${s.startName ?? ''}->${s.endName ?? ''}`.trim();
+    });
+  return labels.slice(0, 3).join(' · ');
+}
+
+async function odsayTransit(a: LatLon, b: LatLon): Promise<{ min: number; meta: TransitMeta } | null> {
+  if (!ODSAY_KEY) return null;
+  const qs = new URLSearchParams({
+    SX: String(a.lon),
+    SY: String(a.lat),
+    EX: String(b.lon),
+    EY: String(b.lat),
+    SearchType: '0',
+    apiKey: ODSAY_KEY,
+  });
+  try {
+    const res = await fetch(`https://api.odsay.com/v1/api/searchPubTransPathT?${qs}`);
+    if (!res.ok) return null;
+    const j = await res.json();
+    const paths = j?.result?.path;
+    if (!Array.isArray(paths) || paths.length === 0) return null;
+    const best = [...paths].sort((aPath, bPath) => transitScore(aPath) - transitScore(bPath))[0];
+    const info = best.info ?? {};
+    const totalTime = Number(info.totalTime);
+    if (!Number.isFinite(totalTime)) return null;
+    return {
+      min: Math.round(totalTime),
+      meta: {
+        pathType: Number(best.pathType ?? 0),
+        totalTime: Math.round(totalTime),
+        payment: Number(info.payment ?? 0),
+        busTransitCount: Number(info.busTransitCount ?? 0),
+        subwayTransitCount: Number(info.subwayTransitCount ?? 0),
+        totalWalk: Number(info.totalWalk ?? 0),
+        firstStartStation: info.firstStartStation ?? '',
+        lastEndStation: info.lastEndStation ?? '',
+        summary: transitSummary(best),
+      },
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function precomputeTransit(pairs: [LatLon, LatLon][]): Promise<PrecomputeStat> {
+  let ok = 0, fail = 0;
+  for (const [a, b] of pairs) {
+    const k = transitKey(a, b);
+    if (getTransitCache(k)) continue;
+    const t = await odsayTransit(a, b);
+    if (t) { transitCache.set(k, { min: t.min, src: 'ODsay', meta: t.meta, ts: Date.now() }); ok++; }
+    else { transitCache.set(k, { min: transitFallbackMin(a, b), src: 'transit_fallback', ts: Date.now() }); fail++; }
+  }
+  return { ok, fail };
+}
+
 export function travelMin(a: LatLon, b: LatLon, mode: Mode): number {
+  if (mode === 'transit') return getTransitCache(transitKey(a, b))?.min ?? transitFallbackMin(a, b);
   return getCache(ckey(a, b, mode))?.min ?? haversineMin(a, b, mode);
 }
 export function travelSrc(a: LatLon, b: LatLon, mode: Mode): string {
+  if (mode === 'transit') return getTransitCache(transitKey(a, b))?.src ?? 'transit_fallback';
   return getCache(ckey(a, b, mode))?.src ?? 'haversine';
 }
 export function travelGeo(a: LatLon, b: LatLon, mode: Mode): LatLon[] | undefined {
+  if (mode === 'transit') return undefined;
   return getCache(ckey(a, b, mode))?.geo;
+}
+export function transitMeta(a: LatLon, b: LatLon): TransitMeta | undefined {
+  return getTransitCache(transitKey(a, b))?.meta;
 }
 
 // TMAP POI 통합검색: 장소명 → 좌표 후보 (center 지정 시 가까운 순)

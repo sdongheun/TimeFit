@@ -34,6 +34,7 @@ export function DetailScreen({ route, navigation }: Props) {
   const line = (geoCoords.length > 1 ? geoCoords : pts).map((p) => ({ latitude: p.lat, longitude: p.lon }));
   const walk = activeCourse.mobility?.walk;
   const car = activeCourse.mobility?.car;
+  const transit = activeCourse.mobility?.transit;
 
   useEffect(() => {
     let alive = true;
@@ -76,7 +77,7 @@ export function DetailScreen({ route, navigation }: Props) {
       <ScrollView contentContainerStyle={s.scroll}>
         <View style={s.head}>
           <Text style={s.type}>{strategyLabel(activeCourse)} · {activeCourse.type} {activeCourse.spots.length}곳</Text>
-          <Text style={s.total}>{activeCourse.bestMode === 'car' ? '자동차' : '도보'} 추천</Text>
+          <Text style={s.total}>{activeCourse.bestMode === 'car' ? '차량' : activeCourse.bestMode === 'transit' ? '대중교통' : '도보'} 추천</Text>
         </View>
         {refineNote ? (
           <View style={s.preciseBox}>
@@ -96,16 +97,26 @@ export function DetailScreen({ route, navigation }: Props) {
           </View>
         ))}
 
-        {walk && car ? (
+        {walk || transit || car ? (
           <View style={s.mobilityBox}>
-            <View style={s.mobilityRow}>
-              <Text style={s.mobilityMode}>도보</Text>
-              <Text style={s.mobilityTime}>이동 {walk.moveMin}분 · 약 {walk.stayMin}분 체류 가능</Text>
-            </View>
-            <View style={s.mobilityRow}>
-              <Text style={s.mobilityMode}>자동차</Text>
-              <Text style={s.mobilityTime}>이동 {car.moveMin}분 · 약 {car.stayMin}분 체류 가능</Text>
-            </View>
+            {walk ? (
+              <View style={s.mobilityRow}>
+                <Text style={s.mobilityMode}>도보</Text>
+                <Text style={s.mobilityTime}>이동 {walk.moveMin}분 · 약 {walk.stayMin}분 체류 가능</Text>
+              </View>
+            ) : null}
+            {transit ? (
+              <View style={s.mobilityRow}>
+                <Text style={s.mobilityMode}>대중교통</Text>
+                <Text style={s.mobilityTime}>이동 {transit.moveMin}분 · 약 {transit.stayMin}분 체류 가능</Text>
+              </View>
+            ) : null}
+            {car ? (
+              <View style={s.mobilityRow}>
+                <Text style={s.mobilityMode}>차량</Text>
+                <Text style={s.mobilityTime}>이동 {car.moveMin}분 · 약 {car.stayMin}분 체류 가능</Text>
+              </View>
+            ) : null}
           </View>
         ) : null}
 
@@ -146,7 +157,7 @@ const s = StyleSheet.create({
   legRow: { color: C.muted, fontSize: 13, marginTop: 2, marginBottom: 10, paddingHorizontal: 2 },
   mobilityBox: { backgroundColor: 'rgba(76,194,255,0.08)', borderColor: 'rgba(76,194,255,0.25)', borderWidth: 1, borderRadius: 12, padding: 12, marginBottom: 10 },
   mobilityRow: { flexDirection: 'row', justifyContent: 'space-between', gap: 10, marginVertical: 3 },
-  mobilityMode: { color: C.accent, fontSize: 13, fontWeight: '800', width: 54 },
+  mobilityMode: { color: C.accent, fontSize: 13, fontWeight: '800', width: 70 },
   mobilityTime: { color: C.txt, fontSize: 13, flex: 1, textAlign: 'right' },
   legHead: { color: C.txt2, fontSize: 14, fontWeight: '700', marginTop: 4, marginBottom: 6 },
   legBox: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 12, padding: 14 },

@@ -78,7 +78,7 @@ export function HomeScreen({ navigation }: Props) {
       if (!result.courses.length) { setError('이 시간 안에 가능한 코스를 찾지 못했어요. 시간을 늘려보세요.'); return; }
       navigation.navigate('Results', {
         result, usedTimeLabel, origin,
-        ctx: { startMin: useMin, mode, modeLabel: mode === 'car' ? '차량' : '도보', appointment, remainingMin: remaining },
+        ctx: { startMin: useMin, mode, modeLabel: mode === 'car' ? '차량' : mode === 'transit' ? '대중교통' : '도보', appointment, remainingMin: remaining },
       });
     } catch (e: any) {
       setError('추천 실패: ' + (e?.message ?? '알 수 없음'));
@@ -135,12 +135,12 @@ export function HomeScreen({ navigation }: Props) {
             <Text style={[s.modeTitle, mode === 'car' && s.modeTitleOn]}>차량</Text>
             <Text style={s.modeSub}>자차·택시 기준</Text>
           </Pressable>
-          <Pressable style={[s.modeBtn, s.modeBtnDisabled]} onPress={() => setError('대중교통 추천은 ODsay 연동 단계에서 추가할 예정입니다.')}>
-            <Text style={s.modeTitle}>대중교통</Text>
-            <Text style={s.modeSub}>준비중</Text>
+          <Pressable style={[s.modeBtn, mode === 'transit' && s.modeBtnOn]} onPress={() => setMode('transit')}>
+            <Text style={[s.modeTitle, mode === 'transit' && s.modeTitleOn]}>대중교통</Text>
+            <Text style={s.modeSub}>버스·지하철</Text>
           </Pressable>
         </View>
-        <Text style={s.hint}>추천은 선택한 이동수단 기준으로 계산하고, 상세에서 도보·차량 시간을 참고로 비교해요.</Text>
+        <Text style={s.hint}>추천은 선택한 이동수단 기준으로 계산하고, 상세에서 다른 수단 시간을 참고로 비교해요.</Text>
 
         <Text style={s.label}>현재 위치</Text>
         <View style={s.locModeRow}>
@@ -210,7 +210,6 @@ const s = StyleSheet.create({
   modeRow: { flexDirection: 'row', gap: 8 },
   modeBtn: { flex: 1, minHeight: 68, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 12, paddingVertical: 11, paddingHorizontal: 10 },
   modeBtnOn: { borderColor: C.accent, backgroundColor: 'rgba(76,194,255,0.12)' },
-  modeBtnDisabled: { opacity: 0.55 },
   modeTitle: { color: C.txt, fontSize: 14, fontWeight: '800' },
   modeTitleOn: { color: C.accent },
   modeSub: { color: C.muted, fontSize: 11, marginTop: 3 },
