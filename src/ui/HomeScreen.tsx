@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import * as Location from 'expo-location';
-import { planTimeFit, reverseGeocode, timeContext } from '../engine';
+import { Mode, planTimeFit, reverseGeocode, timeContext } from '../engine';
 import { Appointment, RootStackParamList, fmtHM } from './nav';
 import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
@@ -31,6 +31,7 @@ export function HomeScreen({ navigation }: Props) {
   const [locLabel, setLocLabel] = useState('부산 서면(기본)');
   const [timeTxt, setTimeTxt] = useState('');   // 비우면 실제 시각
   const [dayTxt, setDayTxt] = useState('주말');
+  const [mode, setMode] = useState<Mode>('walk');
   const [picker, setPicker] = useState<'appt' | 'loc' | null>(null); // 장소 선택 모달
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -71,13 +72,13 @@ export function HomeScreen({ navigation }: Props) {
       const result = await planTimeFit({
         origin,
         destination: appointment ? { lat: appointment.lat, lon: appointment.lon } : null,
-        remainingMin: remaining, mode: 'walk',
+        remainingMin: remaining, mode,
         nowMin: useMin, dayType, hourBucket,
       });
       if (!result.courses.length) { setError('이 시간 안에 가능한 코스를 찾지 못했어요. 시간을 늘려보세요.'); return; }
       navigation.navigate('Results', {
         result, usedTimeLabel, origin,
-        ctx: { startMin: useMin, mode: 'walk', modeLabel: '도보·자동차 비교', appointment, remainingMin: remaining },
+        ctx: { startMin: useMin, mode, modeLabel: mode === 'car' ? '차량' : '도보', appointment, remainingMin: remaining },
       });
     } catch (e: any) {
       setError('추천 실패: ' + (e?.message ?? '알 수 없음'));
@@ -124,7 +125,22 @@ export function HomeScreen({ navigation }: Props) {
         </View>
         {appointment && <Text style={s.hint}>코스 후 {appointment.label}에 {fmtHM(endMin)}까지 도착하는 경유 코스로 계산해요</Text>}
 
-        <Text style={s.hint}>추천 결과에서 도보와 자동차 이동시간을 함께 비교해요. 대중교통은 추후 연결합니다.</Text>
+        <Text style={s.label}>이동수단</Text>
+        <View style={s.modeRow}>
+          <Pressable style={[s.modeBtn, mode === 'walk' && s.modeBtnOn]} onPress={() => setMode('walk')}>
+            <Text style={[s.modeTitle, mode === 'walk' && s.modeTitleOn]}>도보</Text>
+            <Text style={s.modeSub}>걸어서 가능한 코스</Text>
+          </Pressable>
+          <Pressable style={[s.modeBtn, mode === 'car' && s.modeBtnOn]} onPress={() => setMode('car')}>
+            <Text style={[s.modeTitle, mode === 'car' && s.modeTitleOn]}>차량</Text>
+            <Text style={s.modeSub}>자차·택시 기준</Text>
+          </Pressable>
+          <Pressable style={[s.modeBtn, s.modeBtnDisabled]} onPress={() => setError('대중교통 추천은 ODsay 연동 단계에서 추가할 예정입니다.')}>
+            <Text style={s.modeTitle}>대중교통</Text>
+            <Text style={s.modeSub}>준비중</Text>
+          </Pressable>
+        </View>
+        <Text style={s.hint}>추천은 선택한 이동수단 기준으로 계산하고, 상세에서 도보·차량 시간을 참고로 비교해요.</Text>
 
         <Text style={s.label}>현재 위치</Text>
         <View style={s.locModeRow}>
@@ -191,6 +207,13 @@ const s = StyleSheet.create({
   input: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 11, paddingVertical: 11, paddingHorizontal: 14, color: C.txt, fontSize: 14.5 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   locModeRow: { flexDirection: 'row', gap: 8, marginBottom: 8 },
+  modeRow: { flexDirection: 'row', gap: 8 },
+  modeBtn: { flex: 1, minHeight: 68, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 12, paddingVertical: 11, paddingHorizontal: 10 },
+  modeBtnOn: { borderColor: C.accent, backgroundColor: 'rgba(76,194,255,0.12)' },
+  modeBtnDisabled: { opacity: 0.55 },
+  modeTitle: { color: C.txt, fontSize: 14, fontWeight: '800' },
+  modeTitleOn: { color: C.accent },
+  modeSub: { color: C.muted, fontSize: 11, marginTop: 3 },
   locModeBtn: { flex: 1, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 12, paddingVertical: 11, paddingHorizontal: 12 },
   locModeTitle: { color: C.txt, fontSize: 14, fontWeight: '800' },
   locModeSub: { color: C.muted, fontSize: 11.5, marginTop: 2 },

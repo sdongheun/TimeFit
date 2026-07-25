@@ -31,13 +31,11 @@ function mobilityLine(course: Course): string {
   return `도보 이동 ${walk.moveMin}분 · 자동차 이동 ${car.moveMin}분`;
 }
 
-function stayLine(course: Course): string {
-  const walk = course.mobility?.walk;
-  const car = course.mobility?.car;
-  if (!walk || !car) return `여유 ${course.bufferLeftMin}분`;
-  const best = car.stayMin > walk.stayMin ? car : walk;
-  const label = best.mode === 'car' ? '자동차' : '도보';
-  return `${label} 기준 약 ${best.stayMin}분 머물 수 있어요`;
+function stayLine(course: Course, mode: 'walk' | 'car'): string {
+  const selected = course.mobility?.[mode];
+  if (!selected) return `여유 ${course.bufferLeftMin}분`;
+  const label = mode === 'car' ? '차량' : '도보';
+  return `${label} 기준 약 ${selected.stayMin}분 머물 수 있어요`;
 }
 
 function strategyLabel(course: Course): string {
@@ -122,7 +120,7 @@ export function ResultsScreen({ route, navigation }: Props) {
             <Text style={s.mobility}>{mobilityLine(c)}</Text>
             <CompositionBar course={c} remainingMin={ctx.remainingMin} />
             <Text style={s.why}>
-              ✓ {stayLine(c)}
+              ✓ {stayLine(c, ctx.mode)}
             </Text>
           </Pressable>
         ))}
