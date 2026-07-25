@@ -1,7 +1,138 @@
 // 이동시간: TMAP REST(보행/자동차) + haversine 폴백 + 좌표쌍 캐시
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LatLon, Mode } from './types';
 
 const TMAP_KEY = process.env.EXPO_PUBLIC_TMAP_APP_KEY;
+const ROUTE_USAGE_KEY = 'timefit:tmap-route-usage:v1';
+
+type RouteUsageStats = {
+  date: string;
+  total: number;
+  ok: number;
+  fail: number;
+  byMode: Record<Mode, number>;
+};
+
+declare global {
+  // 개발 중 Fast Refresh가 발생해도 같은 JS 런타임에서는 일일 카운터를 이어간다.
+  // 앱/Metro를 완전히 재시작하면 초기화된다.
+  // eslint-disable-next-line no-var
+  var __TIMEFIT_TMAP_ROUTE_USAGE__: RouteUsageStats | undefined;
+}
+
+const todayKey = () => {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+function routeUsage(): RouteUsageStats {
+  const today = todayKey();
+  const current = globalThis.__TIMEFIT_TMAP_ROUTE_USAGE__;
+  if (!current || current.date !== today) {
+    const fresh: RouteUsageStats = {
+      date: today,
+      total: 0,
+      ok: 0,
+      fail: 0,
+      byMode: { walk: 0, car: 0 },
+    };
+    globalThis.__TIMEFIT_TMAP_ROUTE_USAGE__ = fresh;
+    return fresh;
+  }
+  return current;
+}
+
+async function loadRouteUsage(): Promise<RouteUsageStats> {
+  const today = todayKey();
+  try {
+    const raw = await AsyncStorage.getItem(ROUTE_USAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<RouteUsageStats>;
+      if (
+        parsed.date === today
+        && Number.isFinite(parsed.total)
+        && Number.isFinite(parsed.ok)
+        && Number.isFinite(parsed.fail)
+      ) {
+        const usage: RouteUsageStats = {
+          date: today,
+          total: parsed.total ?? 0,
+          ok: parsed.ok ?? 0,
+          fail: parsed.fail ?? 0,
+          byMode: {
+            walk: parsed.byMode?.walk ?? 0,
+            car: parsed.byMode?.car ?? 0,
+          },
+        };
+        globalThis.__TIMEFIT_TMAP_ROUTE_USAGE__ = usage;
+        return usage;
+      }
+    }
+  } catch {
+    return routeUsage();
+  }
+
+  const usage: RouteUsageStats = {
+    date: today,
+    total: 0,
+    ok: 0,
+    fail: 0,
+    byMode: { walk: 0, car: 0 },
+  };
+  globalThis.__TIMEFIT_TMAP_ROUTE_USAGE__ = usage;
+  await saveRouteUsage(usage);
+  return usage;
+}
+
+async function saveRouteUsage(usage: RouteUsageStats) {
+  try {
+    await AsyncStorage.setItem(ROUTE_USAGE_KEY, JSON.stringify(usage));
+  } catch {
+    // 저장소 접근이 불가능한 환경에서는 메모리 카운터만 유지한다.
+  }
+}
+
+async function routeUsagePersistent(): Promise<RouteUsageStats> {
+  const current = globalThis.__TIMEFIT_TMAP_ROUTE_USAGE__;
+  if (current?.date === todayKey()) return current;
+  return loadRouteUsage();
+}
+
+const coordLabel = (p: LatLon) => `${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
+const modeLabel = (mode: Mode) => (mode === 'walk' ? '도보' : '자동차');
+
+async function markRouteCall(mode: Mode, a: LatLon, b: LatLon): Promise<number> {
+  const usage = await routeUsagePersistent();
+  usage.total += 1;
+  usage.byMode[mode] += 1;
+  await saveRouteUsage(usage);
+  console.log(
+    `[TMAP 경로 API] 요청 #${usage.total} · 오늘 ${usage.date} 총 ${usage.total}건 `
+    + `(도보 ${usage.byMode.walk}, 자동차 ${usage.byMode.car}) · ${modeLabel(mode)} `
+    + `${coordLabel(a)} -> ${coordLabel(b)}`,
+  );
+  return usage.total;
+}
+
+async function markRouteResult(callNo: number, mode: Mode, ok: boolean, min?: number) {
+  const usage = await routeUsagePersistent();
+  if (ok) usage.ok += 1;
+  else usage.fail += 1;
+  await saveRouteUsage(usage);
+  console.log(
+    `[TMAP 경로 API] 응답 #${callNo} · ${ok ? '성공' : '실패'}`
+    + `${ok && Number.isFinite(min) ? ` ${min}분` : ''} · 오늘 누적 성공 ${usage.ok}, 실패 ${usage.fail}, 총 ${usage.total}건 `
+    + `(${modeLabel(mode)})`,
+  );
+}
+
+export async function getTmapRouteUsage(): Promise<RouteUsageStats> {
+  const usage = await routeUsagePersistent();
+  return { ...usage, byMode: { ...usage.byMode } };
+}
 
 export function haversineKm(a: LatLon, b: LatLon): number {
   const R = 6371, t = (d: number) => (d * Math.PI) / 180;
@@ -24,6 +155,7 @@ export function haversineMin(a: LatLon, b: LatLon, mode: Mode): number {
 // TMAP 경로: 소요시간 + 경로좌표(geometry) — geometry는 지도 실경로 표시용
 async function tmapTravel(a: LatLon, b: LatLon, mode: Mode): Promise<{ min: number; geo: LatLon[] } | null> {
   if (!TMAP_KEY) return null;
+  const callNo = await markRouteCall(mode, a, b);
   const ped = mode === 'walk';
   const url = ped
     ? 'https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json'
@@ -40,10 +172,16 @@ async function tmapTravel(a: LatLon, b: LatLon, mode: Mode): Promise<{ min: numb
       headers: { appKey: TMAP_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      await markRouteResult(callNo, mode, false);
+      return null;
+    }
     const j = await res.json();
     const sec = j?.features?.[0]?.properties?.totalTime;
-    if (!Number.isFinite(sec)) return null;
+    if (!Number.isFinite(sec)) {
+      await markRouteResult(callNo, mode, false);
+      return null;
+    }
     // LineString feature들의 좌표([lon,lat])를 이어붙여 실경로 구성
     const geo: LatLon[] = [];
     for (const f of j.features ?? []) {
@@ -53,8 +191,11 @@ async function tmapTravel(a: LatLon, b: LatLon, mode: Mode): Promise<{ min: numb
         if (!isNaN(lat) && !isNaN(lon)) geo.push({ lat, lon });
       }
     }
-    return { min: Math.round(sec / 60), geo };
+    const min = Math.round(sec / 60);
+    await markRouteResult(callNo, mode, true, min);
+    return { min, geo };
   } catch {
+    await markRouteResult(callNo, mode, false);
     return null;
   }
 }
@@ -76,12 +217,20 @@ export type PrecomputeStat = { ok: number; fail: number };
 // 필요한 좌표쌍을 TMAP로 채움(실패 시 haversine 캐시) — 지연 정밀화: 최종 코스 구간에만 호출
 export async function precompute(pairs: [LatLon, LatLon][], mode: Mode): Promise<PrecomputeStat> {
   let ok = 0, fail = 0;
+  let cacheHit = 0;
   for (const [a, b] of pairs) {
     const k = ckey(a, b, mode);
-    if (getCache(k)) continue;
+    if (getCache(k)) { cacheHit++; continue; }
     const t = await tmapTravel(a, b, mode);
     if (t != null) { cache.set(k, { min: t.min, src: 'TMAP', geo: t.geo, ts: Date.now() }); ok++; }
     else { cache.set(k, { min: haversineMin(a, b, mode), src: 'haversine', ts: Date.now() }); fail++; }
+  }
+  if (ok + fail > 0 || cacheHit > 0) {
+    const usage = routeUsage();
+    console.log(
+      `[TMAP 경로 API] 배치 완료 · ${modeLabel(mode)} 신규 ${ok + fail}건, 캐시 ${cacheHit}건 `
+      + `· 오늘 총 ${usage.total}건`,
+    );
   }
   return { ok, fail };
 }
