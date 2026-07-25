@@ -8,7 +8,7 @@ const MODES: Mode[] = ['walk', 'car'];
 const MIN_STAY_MIN = 30;
 const HARD_DETOUR_RATIO = 1.8;
 const INITIAL_TMAP_REFINE_COUNT = 0;
-const INITIAL_RESULT_COUNT = 5;
+const INITIAL_RESULT_COUNT = 10;
 const STRATEGY_LABEL: Record<Strategy, string> = {
   origin_area: '출발지 근처',
   destination_area: '약속지 근처',
@@ -78,7 +78,7 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   }
 
   // 랭킹 v1 — 결정적 점수 함수 + 그리디 다양성 (추천로직.md §4)
-  const ranked = rankCourses(courses, budget, input.hourBucket, primaryMode);
+  const ranked = stabilizeVisibleMix(rankCourses(courses, budget, input.hourBucket, primaryMode), input.remainingMin);
 
   // 5) 지연 정밀화 — API 사용량 보호를 위해 추천 목록에서는 TMAP 경로 API를 호출하지 않는다.
   //    나머지는 haversine 추정값으로 먼저 보여주고, 상세/확정 단계에서 정밀화하는 구조로 확장한다.
@@ -96,7 +96,7 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
 // score = 0.4·체류비율 + 0.3·시간활용 + 0.3·시간대적합 + 0.05·(스팟수−1) − 0.15·카테고리중복(그리디)
 // · 체류비율: 이동 낭비 벌점 — "멀리 걷게 하는 코스가 상위" 왜곡 제거 (A2)
 // · 시간대적합: 오후 3시 뷔페 같은 부조화 감점 (A4)
-// · 그리디 다양성: 위에서부터 뽑을 때 이미 뽑힌 카테고리는 감점 → 상위 5개 골고루 (A3)
+// · 그리디 다양성: 위에서부터 뽑을 때 이미 뽑힌 카테고리는 감점 → 상위 10개 골고루 (A3)
 const TIMEFIT: Record<PlanInput['hourBucket'], Record<string, number>> = {
   아침: { 카페: 1.0, 자연관광지: 0.9, '레저/스포츠': 0.7, 문화시설: 0.6, 식당: 0.4 },
   점심: { 식당: 1.0, 카페: 0.7, 문화시설: 0.6, 자연관광지: 0.6, 상업지구: 0.6 },
@@ -173,6 +173,21 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
     c.spots.forEach((s) => { catCnt[s.category] = (catCnt[s.category] ?? 0) + 1; });
   }
   return ranked;
+}
+
+function stabilizeVisibleMix(ranked: Course[], remainingMin: number): Course[] {
+  if (remainingMin < 90) return ranked;
+  const visible = ranked.slice(0, INITIAL_RESULT_COUNT);
+  if (visible.some((c) => c.type === '미니코스')) return ranked;
+  const miniIdx = ranked.findIndex((c, i) => i >= INITIAL_RESULT_COUNT && c.type === '미니코스');
+  if (miniIdx < 0) return ranked;
+  const mini = ranked[miniIdx];
+  return [
+    ...ranked.slice(0, INITIAL_RESULT_COUNT - 1),
+    mini,
+    ...ranked.slice(INITIAL_RESULT_COUNT, miniIdx),
+    ...ranked.slice(miniIdx + 1),
+  ];
 }
 
 // 구간 시간/경로 조립 — precompute 이후 호출하면 TMAP 정밀값+실경로, 아니면 haversine 추정

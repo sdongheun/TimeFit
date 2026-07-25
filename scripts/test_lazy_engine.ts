@@ -18,8 +18,8 @@ async function run(name: string, input: Parameters<typeof planTimeFit>[0]) {
   }
   // 1) 추천 목록 단계: TMAP 경로 API 호출 금지
   assert('추천 목록 TMAP 호출 0건', calls === 0, `${calls}건`);
-  // 2) 배치 크기: 1~5개
-  assert('코스 1~5개', r.courses.length >= 1 && r.courses.length <= 5, `${r.courses.length}개`);
+  // 2) 배치 크기: 1~10개
+  assert('코스 1~10개', r.courses.length >= 1 && r.courses.length <= 10, `${r.courses.length}개`);
   // 3) 정밀화 후 예산 재검증 통과
   assert('전 코스 예산 내', r.courses.every((c) => c.totalMin <= r.budgetMin), r.courses.map((c) => c.totalMin).join(','));
   // 4) 실경로 geometry (TMAP 성공 시)
@@ -40,8 +40,8 @@ async function run(name: string, input: Parameters<typeof planTimeFit>[0]) {
   assert('전 코스 why 보유', r.courses.every((c) => !!c.why), r.courses[0]?.why ?? '');
   // 7) "다른 코스 보기" 시뮬레이션 — 대기열에서 다음 배치, API 호출 없음
   if (r.pending.length) {
-    const next = r.pending.slice(0, 5);
-    const rest = r.pending.slice(5);
+    const next = r.pending.slice(0, 10);
+    const rest = r.pending.slice(10);
     const key = (c: typeof r.courses[0]) => c.spots.map((s) => s.title).sort().join('|');
     const dup = next.filter((c) => r.courses.some((o) => key(o) === key(c)));
     console.log(`  ↻ 새로고침: +${next.length}개 (호출 0건, 잔여 ${rest.length})`);

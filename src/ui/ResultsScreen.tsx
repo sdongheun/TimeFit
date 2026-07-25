@@ -8,6 +8,7 @@ import { C } from './theme';
 import { ACTS, Activity, actsOf, MOODS, Mood, moodOf } from './tags';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Results'>;
+const RESULT_BATCH_COUNT = 10;
 
 // 코스 시간 구성 바: 이동(회색)·체류(파랑)·남는 여유(초록 틴트)
 function CompositionBar({ course, remainingMin }: { course: Course; remainingMin: number }) {
@@ -48,7 +49,7 @@ export function ResultsScreen({ route, navigation }: Props) {
   const { result, usedTimeLabel, origin, ctx } = route.params;
   const [moods, setMoods] = useState<Set<Mood>>(new Set());
   const [acts, setActs] = useState<Set<Activity>>(new Set());
-  // 배치식 추천: 현재 5개 + 대기열(pending). API 사용량 보호를 위해 추가 배치는 추정값 그대로 보여준다.
+  // 배치식 추천: 현재 10개 + 대기열(pending). API 사용량 보호를 위해 추가 배치는 추정값 그대로 보여준다.
   const [courses, setCourses] = useState<Course[]>(result.courses);
   const [pending, setPending] = useState<Course[]>(result.pending);
   const [refreshMsg, setRefreshMsg] = useState('');
@@ -59,8 +60,8 @@ export function ResultsScreen({ route, navigation }: Props) {
 
   function showMore() {
     setRefreshMsg('');
-    const next = pending.slice(0, 5);
-    setPending(pending.slice(5));
+    const next = pending.slice(0, RESULT_BATCH_COUNT);
+    setPending(pending.slice(RESULT_BATCH_COUNT));
     if (next.length) setCourses(next);
     else setRefreshMsg('더 이상 새 코스가 없어요 — 시간을 바꿔보세요');
   }
