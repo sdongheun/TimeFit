@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TimeFit 대중교통 추천 자동진단</title>
+  <style>
+    :root { --bg:#0f1419; --panel:#171d26; --line:#2a3340; --txt:#e6edf3; --muted:#9aa7b4; --pass:#2ea043; --warn:#d29922; --fail:#f85149; --accent:#4cc2ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--txt); font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",sans-serif; }
+    header { position:sticky; top:0; background:rgba(15,20,25,.96); border-bottom:1px solid var(--line); padding:18px 22px; z-index:2; }
+    h1 { margin:0; font-size:22px; }
+    main { padding:18px 22px 40px; max-width:1280px; margin:0 auto; }
+    .sub, .meta, .small { color:var(--muted); font-size:12px; line-height:1.55; }
+    .summary { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px; margin:14px 0 18px; }
+    .tile, .scenario, .course, .rules { background:var(--panel); border:1px solid var(--line); border-radius:10px; }
+    .tile { padding:13px; }
+    .tile b { display:block; font-size:22px; margin-bottom:2px; }
+    .scenario { margin:16px 0; overflow:hidden; }
+    .shead { padding:14px 16px; border-bottom:1px solid var(--line); display:flex; gap:12px; justify-content:space-between; align-items:flex-start; }
+    .shead h2 { margin:0; font-size:17px; }
+    .courses { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:10px; padding:12px; }
+    .course { padding:12px; }
+    .top { display:flex; justify-content:space-between; gap:8px; align-items:center; margin-bottom:8px; }
+    .title { font-weight:800; line-height:1.35; }
+    .status { font-weight:800; font-size:12px; border-radius:999px; padding:4px 8px; white-space:nowrap; }
+    .PASS { color:white; background:var(--pass); }
+    .WARN { color:#111; background:var(--warn); }
+    .FAIL { color:white; background:var(--fail); }
+    .metric { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:9px 0; }
+    .metric div { background:#10161d; border:1px solid rgba(42,51,64,.7); border-radius:8px; padding:7px; font-size:12px; color:var(--muted); line-height:1.55; }
+    .spots { margin:8px 0; }
+    .spot { padding:7px 0; border-top:1px solid rgba(42,51,64,.7); }
+    .spot:first-child { border-top:0; }
+    .issues { margin:8px 0 0; padding:0; list-style:none; }
+    .issues li { margin-top:5px; font-size:12px; line-height:1.4; }
+    .issues b.fail { color:var(--fail); }
+    .issues b.warn { color:var(--warn); }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 14px; }
+    .chip { border:1px solid var(--line); border-radius:999px; color:var(--muted); padding:5px 8px; font-size:12px; }
+    .rules { padding:14px; margin:16px 0; }
+    .rules h2 { margin:0 0 8px; font-size:16px; }
+    .rulesGrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:8px; }
+    .rule { border:1px solid rgba(42,51,64,.8); border-radius:8px; padding:9px; background:#10161d; }
+    .err { color:var(--fail); padding:14px 16px; }
+    @media (max-width: 760px) { .summary { grid-template-columns:repeat(2,minmax(0,1fr)); } .shead { display:block; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TimeFit 대중교통 추천 자동진단</h1>
+    <div class="sub">생성: 2026. 7. 26. 오후 8:50:36 · ODsay 호출량과 추천 품질을 함께 점검합니다.</div>
+  </header>
+  <main>
+    <section class="summary">
+      <div class="tile"><b>1</b><span class="small">시나리오</span></div>
+      <div class="tile"><b>10</b><span class="small">추천 코스</span></div>
+      <div class="tile"><b>8</b><span class="small">PASS</span></div>
+      <div class="tile"><b>0</b><span class="small">WARN</span></div>
+      <div class="tile"><b>2</b><span class="small">FAIL</span></div>
+      <div class="tile"><b>20</b><span class="small">ODsay 호출</span></div>
+    </section>
+    <div class="chips">
+      <span class="chip">ODsay 성공 8</span>
+      <span class="chip">ODsay 실패 12</span>
+      <span class="chip">ODsay 구간 9</span>
+      <span class="chip">지하철 구간 9</span>
+      <span class="chip">walk_short 10</span>
+      <span class="chip">transit_fallback 2</span>
+    </div>
+    <div class="chips"><span class="chip">no_odsay_verified_leg 2</span><span class="chip">transit_fallback_leg 2</span></div>
+    <section class="rules">
+      <h2>판정 기준</h2>
+      <div class="sub">100점에서 이슈별 penalty를 차감합니다. fail 이슈가 하나라도 있거나 60점 미만이면 FAIL, warn 이슈만 있으면 WARN, 이슈가 없으면 PASS입니다.</div>
+      <div class="rulesGrid"><div class="rule">
+        <b class="fail">no_odsay_verified_leg · FAIL · -45</b>
+        <div class="small">약속장소가 있는 대중교통 코스인데 ODsay 확인 구간이 없음</div>
+      </div><div class="rule">
+        <b class="warn">transit_fallback_leg · WARN · -18</b>
+        <div class="small">ODsay 실패 후 대중교통 근사값으로 남은 구간 존재</div>
+      </div><div class="rule">
+        <b class="warn">low_stay_margin · WARN · -20</b>
+        <div class="small">대중교통 기준 체류 가능 시간이 40분 미만</div>
+      </div><div class="rule">
+        <b class="warn">move_over_stay · WARN · -14</b>
+        <div class="small">이동시간이 체류 가능 시간보다 김</div>
+      </div><div class="rule">
+        <b class="warn">high_move_ratio · WARN · -14</b>
+        <div class="small">남은 시간 대비 이동시간 비율이 높음</div>
+      </div><div class="rule">
+        <b class="fail">far_two_spot_pair · FAIL · -35</b>
+        <div class="small">2곳 코스인데 장소 간 이동이 도보권이 아님</div>
+      </div><div class="rule">
+        <b class="fail">same_food_pair · FAIL · -45</b>
+        <div class="small">식당 2곳 코스</div>
+      </div><div class="rule">
+        <b class="warn">same_cafe_pair · WARN · -20</b>
+        <div class="small">카페 2곳 코스</div>
+      </div><div class="rule">
+        <b class="fail">lodging_keyword · FAIL · -100</b>
+        <div class="small">숙박성 키워드 포함</div>
+      </div><div class="rule">
+        <b class="fail">utility_keyword · FAIL · -90</b>
+        <div class="small">주차장/병원/주유소 등 부적합 시설 키워드 포함</div>
+      </div></div>
+    </section>
+    <section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>T01. 서면 -&gt; 사상역 120분</h2>
+        <div class="meta">서면역 -> 사상역 · 120분 · 주말 14:00 오후</div>
+      </div>
+      <div class="meta">후보 64 · 영업 15<br />ODsay 20건 · 성공 8 · 실패 12<br />PASS 8 · WARN 0 · FAIL 2</div>
+    </div>
+    <div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 놀이마루 + 그런고로</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 대중교통 기준 체류가능 73분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>놀이마루</div>
+      <div class="small">문화시설 · 권장 30분 · direct_match</div>
+    </div><div class="spot">
+      <div>그런고로</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 33분<br />체류 가능 73분</div>
+      <div>ODsay 1/3<br />walk_short 2</div>
+      <div>fallback 0<br />지하철 1</div>
+      <div>이동 비율 28%<br />장소간 도보권 true</div>
+      <div>타입 미니코스<br />전략 origin_area</div>
+      <div>여유 27분<br />총 93분</div>
+    </div>
+    <div class="small">출발 → 놀이마루 6분 [walk_short]<br />이동 → 그런고로 3분 [walk_short]<br />다음 스케줄로 · 부산 2호선 서면-&gt;사상 24분 [ODsay]</div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부전돼지국밥</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 대중교통 기준 체류가능 83분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>부전돼지국밥</div>
+      <div class="small">식당 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 23분<br />체류 가능 83분</div>
+      <div>ODsay 1/2<br />walk_short 1</div>
+      <div>fallback 0<br />지하철 1</div>
+      <div>이동 비율 19%<br />장소간 도보권 -</div>
+      <div>타입 단일<br />전략 destination_area</div>
+      <div>여유 67분<br />총 53분</div>
+    </div>
+    <div class="small">출발 → 부전돼지국밥 · 부산 2호선 서면-&gt;사상 19분 [ODsay]<br />다음 스케줄로 4분 [walk_short]</div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 놀이마루</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 대중교통 기준 체류가능 78분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>놀이마루</div>
+      <div class="small">문화시설 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 28분<br />체류 가능 78분</div>
+      <div>ODsay 1/2<br />walk_short 1</div>
+      <div>fallback 0<br />지하철 1</div>
+      <div>이동 비율 23%<br />장소간 도보권 -</div>
+      <div>타입 단일<br />전략 origin_area</div>
+      <div>여유 62분<br />총 58분</div>
+    </div>
+    <div class="small">출발 → 놀이마루 6분 [walk_short]<br />다음 스케줄로 · 부산 2호선 서면-&gt;사상 22분 [ODsay]</div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 그런고로</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 대중교통 기준 체류가능 75분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>그런고로</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 31분<br />체류 가능 75분</div>
+      <div>ODsay 1/2<br />walk_short 1</div>
+      <div>fallback 0<br />지하철 1</div>
+      <div>이동 비율 26%<br />장소간 도보권 -</div>
+      <div>타입 단일<br />전략 origin_area</div>
+      <div>여유 59분<br />총 61분</div>
+    </div>
+    <div class="small">출발 → 그런고로 7분 [walk_short]<br />다음 스케줄로 · 부산 2호선 서면-&gt;사상 24분 [ODsay]</div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 급행장</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 대중교통 기준 체류가능 87분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>급행장</div>
+      <div class="small">식당 · 권장 45분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 19분<br />체류 가능 87분</div>
+      <div>ODsay 1/2<br />walk_short 1</div>
+      <div>fallback 0<br />지하철 1</div>
+      <div>이동 비율 16%<br />장소간 도보권 -</div>
+      <div>타입 단일<br />전략 origin_area</div>
+      <div>여유 56분<br />총 64분</div>
+    </div>
+    <div class="small">출발 → 급행장 2분 [walk_short]<br />다음 스케줄로 · 부산 2호선 서면-&gt;사상 17분 [ODsay]</div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 전포공구길</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 대중교통 기준 체류가능 74분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>전포공구길</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 32분<br />체류 가능 74분</div>
+      <div>ODsay 1/2<br />walk_short 1</div>
+      <div>fallback 0<br />지하철 1</div>
+      <div>이동 비율 27%<br />장소간 도보권 -</div>
+      <div>타입 단일<br />전략 origin_area</div>
+      <div>여유 58분<br />총 62분</div>
+    </div>
+    <div class="small">출발 → 전포공구길 8분 [walk_short]<br />다음 스케줄로 · 부산 2호선 서면-&gt;사상 24분 [ODsay]</div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 솥이랑 서면점</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 대중교통 기준 체류가능 73분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>솥이랑 서면점</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 33분<br />체류 가능 73분</div>
+      <div>ODsay 1/2<br />walk_short 1</div>
+      <div>fallback 0<br />지하철 1</div>
+      <div>이동 비율 28%<br />장소간 도보권 -</div>
+      <div>타입 단일<br />전략 origin_area</div>
+      <div>여유 27분<br />총 93분</div>
+    </div>
+    <div class="small">출발 → 솥이랑 서면점 9분 [walk_short]<br />다음 스케줄로 · 부산 2호선 서면-&gt;사상 24분 [ODsay]</div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 한국신발관</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">가는 길 중간 · 대중교통 기준 체류가능 71분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>한국신발관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 35분<br />체류 가능 71분</div>
+      <div>ODsay 2/2<br />walk_short 0</div>
+      <div>fallback 0<br />지하철 2</div>
+      <div>이동 비율 29%<br />장소간 도보권 -</div>
+      <div>타입 단일<br />전략 route_area</div>
+      <div>여유 25분<br />총 95분</div>
+    </div>
+    <div class="small">출발 → 한국신발관 · 부산 2호선 서면-&gt;동의대 16분 [ODsay]<br />다음 스케줄로 · 부산 2호선 개금-&gt;사상 19분 [ODsay]</div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 대궐안집</div>
+      <span class="status FAIL">FAIL 37</span>
+    </div>
+    <div class="small">약속지 근처 · 대중교통 기준 체류가능 64분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>대궐안집</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 42분<br />체류 가능 64분</div>
+      <div>ODsay 0/2<br />walk_short 1</div>
+      <div>fallback 1<br />지하철 0</div>
+      <div>이동 비율 35%<br />장소간 도보권 -</div>
+      <div>타입 단일<br />전략 destination_area</div>
+      <div>여유 18분<br />총 102분</div>
+    </div>
+    <div class="small">출발 → 대궐안집 41분 [transit_fallback]<br />다음 스케줄로 1분 [walk_short]</div>
+    <ul class="issues"><li><b class="fail">no_odsay_verified_leg</b> ODsay로 확인된 대중교통 구간이 없습니다.</li><li><b class="warn">transit_fallback_leg</b> 대중교통 근사 구간이 1개 남아 있습니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 77돌곱창</div>
+      <span class="status FAIL">FAIL 37</span>
+    </div>
+    <div class="small">약속지 근처 · 대중교통 기준 체류가능 56분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>77돌곱창</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>이동 50분<br />체류 가능 56분</div>
+      <div>ODsay 0/2<br />walk_short 1</div>
+      <div>fallback 1<br />지하철 0</div>
+      <div>이동 비율 42%<br />장소간 도보권 -</div>
+      <div>타입 단일<br />전략 destination_area</div>
+      <div>여유 14분<br />총 106분</div>
+    </div>
+    <div class="small">출발 → 77돌곱창 41분 [transit_fallback]<br />다음 스케줄로 9분 [walk_short]</div>
+    <ul class="issues"><li><b class="fail">no_odsay_verified_leg</b> ODsay로 확인된 대중교통 구간이 없습니다.</li><li><b class="warn">transit_fallback_leg</b> 대중교통 근사 구간이 1개 남아 있습니다.</li></ul>
+  </article></div>
+  </section>
+  </main>
+</body>
+</html>

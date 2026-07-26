@@ -1,4 +1,4 @@
-import { planTimeFit } from '../src/engine';
+import { getOdsayTransitUsage, planTimeFit } from '../src/engine';
 
 async function main() {
   const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
@@ -13,7 +13,9 @@ async function main() {
     hourBucket: '오후',
   });
 
+  const usage = await getOdsayTransitUsage();
   console.log(`후보 ${result.candidateCount} · 게이트 ${result.gatedCount} · 코스 ${result.courses.length}`);
+  console.log(`ODsay 오늘 누적 ${usage.total}건 · 성공 ${usage.ok} · 실패 ${usage.fail}`);
   for (const c of result.courses.slice(0, 10)) {
     const transit = c.mobility?.transit;
     console.log(`[${c.type}] ${c.spots.map((s) => s.title).join(' + ')} · 대중교통 이동 ${transit?.moveMin ?? 0}분 · 체류가능 ${transit?.stayMin ?? 0}분 · ${c.why}`);

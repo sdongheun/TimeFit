@@ -9,8 +9,7 @@ const MIN_STAY_MIN = 30;
 const HARD_DETOUR_RATIO = 1.8;
 const INITIAL_TMAP_REFINE_COUNT = 0;
 const INITIAL_RESULT_COUNT = 10;
-const TRANSIT_POOL_COUNT = 8;
-const TRANSIT_PAIR_CALL_LIMIT = 12;
+const TRANSIT_REFINE_COUNT = 18;
 const STRATEGY_LABEL: Record<Strategy, string> = {
   origin_area: '출발지 근처',
   destination_area: '약속지 근처',
@@ -62,30 +61,17 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   // 4) 시간적응형 코스 조립 — 이 단계는 haversine 추정만 사용 (TMAP 미호출)
   //    지연 정밀화: 상위 후보에만 TMAP 호출(5단계) → 추천 1회 ~54건 → ~10여건 (합산 1,000/일 한도 대응)
   const courses: Course[] = [];
-  const pool = gated.slice(0, primaryMode === 'transit' ? TRANSIT_POOL_COUNT : 12);
-  if (primaryMode === 'transit') {
-    const pairs: [LatLon, LatLon][] = [];
-    for (const s of pool) {
-      pairs.push([input.origin, s], [s, target]);
-    }
-    await precomputeTransit(dedupePairs(pairs));
-  }
+  const pool = gated.slice(0, 12);
   for (const s of gated) {
     const c = buildCourse([s], input.origin, target, !!input.destination, input.remainingMin, primaryMode);
     if (c) courses.push({ ...c, type: '단일', strategy: s.strategy });
   }
-  let transitPairCalls = 0;
   for (let i = 0; i < pool.length; i++) for (let j = 0; j < pool.length; j++) {
     if (i === j) continue;
     const base = buildCourse([pool[i]], input.origin, target, !!input.destination, input.remainingMin, primaryMode);
     if (!base || slackOf(base, primaryMode) < 35) continue;
     if (!isAllowedPairDistance(pool[i], pool[j], primaryMode, input.remainingMin, slackOf(base, primaryMode))) continue;
     if (!isAllowedPair(pool[i], pool[j])) continue;
-    if (primaryMode === 'transit') {
-      if (transitPairCalls >= TRANSIT_PAIR_CALL_LIMIT) continue;
-      await precomputeTransit(dedupePairs([[pool[i], pool[j]]]));
-      transitPairCalls++;
-    }
     const c = buildCourse([pool[i], pool[j]], input.origin, target, !!input.destination, input.remainingMin, primaryMode);
     if (c) {
       courses.push({ ...c, type: '미니코스', strategy: pool[i].strategy });
@@ -97,13 +83,33 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
 
   // 5) 지연 정밀화 — API 사용량 보호를 위해 추천 목록에서는 TMAP 경로 API를 호출하지 않는다.
   //    나머지는 haversine 추정값으로 먼저 보여주고, 상세/확정 단계에서 정밀화하는 구조로 확장한다.
-  const r = await refineCourses(ranked, input.origin, input.destination ?? null, input.mode, input.remainingMin, INITIAL_TMAP_REFINE_COUNT);
+  const r = primaryMode === 'transit'
+    ? await refineTransitCandidates(ranked, input.origin, input.destination ?? null, input.remainingMin, input.hourBucket, budget)
+    : await refineCourses(ranked, input.origin, input.destination ?? null, input.mode, input.remainingMin, INITIAL_TMAP_REFINE_COUNT);
   const visibleCourses = [...r.courses, ...r.rest.slice(0, Math.max(0, INITIAL_RESULT_COUNT - r.courses.length))];
   const pendingCourses = r.rest.slice(Math.max(0, INITIAL_RESULT_COUNT - r.courses.length));
 
   return {
     budgetMin: budget, bufferMin: buffer, candidateCount: cands.length,
     gatedCount: gated.length, tmapOk: r.ok, tmapFail: r.fail, courses: visibleCourses, pending: pendingCourses,
+  };
+}
+
+async function refineTransitCandidates(
+  ranked: Course[],
+  origin: LatLon,
+  destination: LatLon | null,
+  remainingMin: number,
+  hourBucket: PlanInput['hourBucket'],
+  budget: number,
+): Promise<{ courses: Course[]; rest: Course[]; ok: number; fail: number }> {
+  const refined = await refineCourses(ranked, origin, destination, 'transit', remainingMin, TRANSIT_REFINE_COUNT);
+  const reranked = stabilizeVisibleMix(rankCourses(refined.courses, budget, hourBucket, 'transit', refined.courses.length), remainingMin);
+  return {
+    courses: reranked.slice(0, INITIAL_RESULT_COUNT),
+    rest: [...reranked.slice(INITIAL_RESULT_COUNT), ...refined.rest],
+    ok: refined.ok,
+    fail: refined.fail,
   };
 }
 
@@ -339,22 +345,6 @@ export async function refineCourses(
     out.push({ ...c, ...rebuilt });
   }
   return { courses: out, rest: cands.slice(i), ok, fail };
-}
-
-function pairKey(a: LatLon, b: LatLon): string {
-  return `${a.lat.toFixed(5)},${a.lon.toFixed(5)}|${b.lat.toFixed(5)},${b.lon.toFixed(5)}`;
-}
-
-function dedupePairs(pairs: [LatLon, LatLon][]): [LatLon, LatLon][] {
-  const seen = new Set<string>();
-  const out: [LatLon, LatLon][] = [];
-  for (const pair of pairs) {
-    const key = pairKey(pair[0], pair[1]);
-    if (seen.has(key)) continue;
-    seen.add(key);
-    out.push(pair);
-  }
-  return out;
 }
 
 function hasSubwayLeg(course: Course): boolean {
