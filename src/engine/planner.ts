@@ -36,8 +36,12 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
       if (isNaN(lat) || isNaN(lon)) continue;
       const contentId = String(it.contentid);
       const spot: Spot = {
-        title: it.title, contentId, typeId: it.contenttypeid, category: d.category,
+        title: it.title, contentId, typeId: it.contenttypeid, category: d.category, subCategory: d.subCategory,
         lat, lon, dwell: d.eff, dwellBase: d.base, dwellSrc: d.src, mult: d.mult,
+        dwellSourceName: d.dwellSourceName,
+        openingHoursSourceName: d.openingHoursSourceName,
+        openingHoursReliability: d.openingHoursReliability,
+        matchScope: d.matchScope,
         openNote: '', confidence: d.confidence, strategy: center.strategy,
       };
       const prev = seenCand.get(contentId);
@@ -169,18 +173,20 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
     const ratio = dwell / Math.max(bestMove + dwell, 1);                // 체류비율(이동낭비 벌점)
     const use = Math.min(1, (bestMove + dwell) / budget);               // 시간활용(알차게)
     const fit = c.spots.reduce((n, s) => n + timeFitOf(bucket, s.category), 0) / c.spots.length; // 시간대적합
-    const conf = c.spots.reduce((n, s) => n + (s.confidence === 'direct_match' ? 1 : 0.7), 0) / c.spots.length;
+    const conf = c.spots.reduce((n, s) => n + confidenceScore(s.confidence), 0) / c.spots.length;
     const compact = c.spots.length === 1 ? 0.7 : Math.max(0, 1 - haversineMin(c.spots[0], c.spots[1], 'walk') / 12);
     const minStay = minStayForCourse(c.spots, remainingMin);
     const carOnlyPenalty = primaryMode === 'walk' && (c.mobility?.walk?.stayMin ?? 0) < minStay && (c.mobility?.car?.stayMin ?? 0) >= minStay ? 0.12 : 0;
     const fallbackOnlyPenalty = c.spots.every((s) => s.confidence === 'category_fallback') ? 0.12 : 0;
+    const openingReliabilityPenalty = c.spots.reduce((n, s) => n + openingReliabilityPenaltyOf(s.openingHoursReliability), 0) / c.spots.length;
     const duplicatePairPenalty = c.spots.length === 2 && c.spots[0].category === c.spots[1].category ? 0.08 : 0;
     const strategyBonus = c.strategy === 'destination_area' ? 0.04 : c.strategy === 'route_area' ? 0.03 : 0;
     const shortGapBonus = budget <= 60 ? shortGapCategoryBonus(c) : 0;
     const transitRailBonus = primaryMode === 'transit' && hasSubwayLeg(c) ? 0.06 : 0;
     const transitReliabilityPenalty = primaryMode === 'transit' ? transitFallbackPenalty(c) : 0;
     const score = 0.3 * Math.min(1, bestStay / 60) + 0.2 * ratio + 0.2 * fit + 0.15 * conf + 0.15 * compact
-      + strategyBonus + shortGapBonus + transitRailBonus - carOnlyPenalty - fallbackOnlyPenalty - duplicatePairPenalty - transitReliabilityPenalty;
+      + strategyBonus + shortGapBonus + transitRailBonus
+      - carOnlyPenalty - fallbackOnlyPenalty - openingReliabilityPenalty - duplicatePairPenalty - transitReliabilityPenalty;
     const modeLabel = primaryMode === 'car' ? '차량' : primaryMode === 'transit' ? '대중교통' : '도보';
     const why = `${c.strategy ? STRATEGY_LABEL[c.strategy] + ' · ' : ''}${modeLabel} 기준 체류가능 ${bestStay}분 · ${bucket} 적합 ${Math.round(fit * 100)}%`;
     return { c: { ...c, why }, score };
@@ -209,6 +215,18 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
     c.spots.forEach((s) => { catCnt[s.category] = (catCnt[s.category] ?? 0) + 1; });
   }
   return ranked;
+}
+
+function confidenceScore(confidence: Spot['confidence']): number {
+  if (confidence === 'direct_match') return 1;
+  if (confidence === 'area_context_match') return 0.85;
+  return 0.7;
+}
+
+function openingReliabilityPenaltyOf(reliability: Spot['openingHoursReliability']): number {
+  if (reliability === 'area_uncertain') return 0.03;
+  if (reliability === 'unknown') return 0.04;
+  return 0;
 }
 
 function transitFallbackPenalty(course: Course): number {

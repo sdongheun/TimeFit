@@ -318,7 +318,7 @@ AI-Hub category = 상업지구</pre>
           <tr><td>지도 검색 존재 검증</td><td>카카오맵에서 검색되지 않는 장소가 섞이면 신뢰가 떨어짐</td><td>Kakao Local API로 title+좌표 검증 후 제외/감점</td></tr>
           <tr><td>운영시간 신뢰도</td><td>TourAPI 운영시간이 비거나 복잡한 문구일 수 있음</td><td>브레이크타임, 요일별 운영, 점포별 상이 문구를 파싱/감점 처리</td></tr>
           <tr><td><input type="checkbox" checked disabled /> 상업지구 세분화</td><td>시장, 거리, 백화점, 쇼핑몰이 한 카테고리에 섞임</td><td>matched 상업지구 18개에 전통시장/전문상가/개별상점/아울렛/백화점·쇼핑몰/거리·골목상권 반영 완료</td></tr>
-          <tr><td>AI-Hub 매칭 신뢰도</td><td>좌표 기반 매칭은 실제 장소가 다를 수 있음</td><td>이름, 거리, 카테고리, 표본 수로 신뢰도 점수화</td></tr>
+          <tr><td><input type="checkbox" checked disabled /> AI-Hub 매칭 신뢰도</td><td>좌표 기반 매칭은 실제 장소가 다를 수 있음</td><td>direct/area_context/category_fallback/bad_match로 분리하고, bad_match만 제외</td></tr>
           <tr><td>카테고리 폴백</td><td>unmatched는 넓은 카테고리 중앙값만 사용</td><td>세부 카테고리별 체류시간 중앙값으로 개선</td></tr>
           <tr><td>경로 전략</td><td>출발지/약속지/중간 전략 점수가 단순함</td><td>남은 시간, 수단, 환승역, 우회율 기반 전략 강화</td></tr>
           <tr><td>2곳 코스 조합</td><td>시간과 거리만 보면 조합이 어색할 수 있음</td><td>카페+산책, 시장+카페, 문화시설+카페 같은 자연 조합 가점</td></tr>
@@ -332,7 +332,25 @@ AI-Hub category = 상업지구</pre>
     </section>
 
     <section>
-      <h2>11. 정확도 개선 백로그</h2>
+      <h2>11. 매칭 신뢰도 기준</h2>
+      <table>
+        <thead><tr><th>구분</th><th>의미</th><th>추천 처리</th></tr></thead>
+        <tbody>
+          <tr><td>direct_place</td><td>TourAPI와 AI-Hub가 같은 장소로 볼 수 있음</td><td>감점 없음</td></tr>
+          <tr><td>area_context</td><td>시장, 거리, 골목, 상권처럼 같은 생활권 맥락을 빌려 쓰는 매칭</td><td>추천 허용, 약한 감점</td></tr>
+          <tr><td>category_fallback</td><td>AI-Hub 직접 매칭 없이 카테고리 중앙값을 사용</td><td>추천 허용, 중간 감점</td></tr>
+          <tr><td>bad_match</td><td>좌표만 가까울 뿐 실제로 다른 장소일 가능성이 큼</td><td>추천 제외</td></tr>
+        </tbody>
+      </table>
+      <div class="grid">
+        <div class="card"><b>현재 matched 분포</b>direct_place 67개 · area_context 13개 · bad_match 42개</div>
+        <div class="card"><b>유연한 추천</b>bad_match만 강하게 제외하고, area_context와 category_fallback은 후보로 유지한다.</div>
+        <div class="card"><b>출처 분리</b>체류시간은 AI-Hub 출처, 운영시간은 TourAPI 장소 출처를 별도로 기록한다.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>12. 정확도 개선 백로그</h2>
       <table>
         <thead><tr><th>순서</th><th>작업</th><th>왜 중요한가</th><th>완료 기준</th></tr></thead>
         <tbody>
@@ -340,7 +358,7 @@ AI-Hub category = 상업지구</pre>
           <tr><td>2</td><td>운영시간 파서 고도화</td><td>식당/카페/문화시설은 실제로 열려 있는지가 핵심</td><td>요일별 운영, 브레이크타임, 라스트오더, 시설별 상이 문구 처리</td></tr>
           <tr><td>3</td><td><input type="checkbox" checked disabled /> 상업지구 세부 규칙</td><td>같은 카테고리 안에서도 자투리 적합성이 크게 다름</td><td>matched 상업지구 수동 검토와 subCategory 반영 완료</td></tr>
           <tr><td>3-1</td><td><input type="checkbox" disabled /> 문화시설·식당·카페 세부 규칙</td><td>상업지구 외 카테고리도 세부 유형 차이가 큼</td><td>공연장/전시관, 식사/카페 규칙 분리 필요</td></tr>
-          <tr><td>4</td><td>매칭/폴백 신뢰도 점수화</td><td>직접 매칭과 카테고리 폴백의 정확도가 다름</td><td>name+coord, coord only, 표본 수, 거리, 카테고리 일치 여부를 점수에 반영</td></tr>
+          <tr><td>4</td><td><input type="checkbox" checked disabled /> 매칭/폴백 신뢰도 점수화</td><td>직접 매칭과 카테고리 폴백의 정확도가 다름</td><td>direct_place, area_context, category_fallback, bad_match 반영</td></tr>
           <tr><td>5</td><td>자연스러운 2곳 코스 조합</td><td>두 장소가 가능해도 사용자가 보기엔 어색할 수 있음</td><td>카페+산책, 시장+카페, 문화시설+카페 조합 가점과 부자연 조합 감점</td></tr>
           <tr><td>6</td><td>카페 후보 보강</td><td>1시간 자투리에서 가장 유용한 카테고리지만 현재 수가 적음</td><td>서면/해운대/부산역 등 주요 지점에서 짧은 시간 추천 수 확보</td></tr>
           <tr><td>7</td><td>상위 후보 정밀 이동시간 계산</td><td>목록 단계 추정값과 실제 경로 차이를 줄여야 함</td><td>호출량 한도 안에서 상위 3개 정도만 정밀계산하거나 상세 전 예상 표시</td></tr>
@@ -352,7 +370,7 @@ AI-Hub category = 상업지구</pre>
     </section>
 
     <section>
-      <h2>12. 추천 정확도 현재 평가</h2>
+      <h2>13. 추천 정확도 현재 평가</h2>
       <table>
         <thead><tr><th>영역</th><th>현재 수준</th><th>이유</th></tr></thead>
         <tbody>
@@ -360,7 +378,8 @@ AI-Hub category = 상업지구</pre>
           <tr><td>도보/차량 이동시간</td><td class="mid">중</td><td>목록은 추정, 상세는 TMAP 정밀화 가능</td></tr>
           <tr><td>대중교통 이동시간</td><td class="good">중상</td><td>ODsay 성공 구간은 신뢰 가능, fallback은 낮음</td></tr>
           <tr><td>대중교통 지도 경로</td><td class="mid">중</td><td>역/정류장 간이 polyline</td></tr>
-          <tr><td>체류시간</td><td class="mid">중</td><td>AI-Hub 직접 매칭은 유용하지만 개인별 차이가 큼</td></tr>
+          <tr><td>체류시간</td><td class="mid">중</td><td>direct_place는 신뢰도가 높고, area_context/category_fallback은 감점해 사용함</td></tr>
+          <tr><td>운영시간 안정성</td><td class="mid">중</td><td>direct/area_uncertain/unknown으로 나눠 점수에 반영하지만 파싱은 아직 약함</td></tr>
           <tr><td>장소 품질</td><td class="bad">낮음~중</td><td>만족도, 재방문 의향, 인기도 반영이 약함</td></tr>
           <tr><td>개인화</td><td class="bad">낮음</td><td>사용자 취향 입력이 없음</td></tr>
         </tbody>
@@ -368,7 +387,7 @@ AI-Hub category = 상업지구</pre>
     </section>
 
     <section>
-      <h2>13. 다음 개선 우선순위</h2>
+      <h2>14. 다음 개선 우선순위</h2>
       <table class="priority">
         <thead><tr><th>우선순위</th><th>작업</th><th>효과</th></tr></thead>
         <tbody>
@@ -376,7 +395,7 @@ AI-Hub category = 상업지구</pre>
           <tr><td>2</td><td>운영시간 파서/감점 개선</td><td>실제로 열려 있는 장소 추천 안정성 증가.</td></tr>
           <tr><td>3</td><td><input type="checkbox" checked disabled /> 상업지구 세부 규칙</td><td>matched 상업지구 세분화 완료.</td></tr>
           <tr><td>3-1</td><td><input type="checkbox" disabled /> 문화시설·식당·카페 세부 규칙</td><td>상업지구 외 카테고리별 어색한 추천 감소.</td></tr>
-          <tr><td>4</td><td>매칭/폴백 신뢰도 점수화</td><td>AI-Hub 직접 매칭과 폴백의 정확도 차이 반영.</td></tr>
+          <tr><td>4</td><td><input type="checkbox" checked disabled /> 매칭/폴백 신뢰도 점수화</td><td>AI-Hub 직접 매칭과 폴백의 정확도 차이 반영 완료.</td></tr>
           <tr><td>5</td><td>자연스러운 2곳 코스 조합</td><td>시간상 가능하지만 어색한 코스 감소.</td></tr>
           <tr><td>6</td><td>날씨/실내외 가중치</td><td>공모전 차별화 강화.</td></tr>
         </tbody>

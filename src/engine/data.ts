@@ -1,6 +1,6 @@
 // 부산 TourAPI ↔ AI-Hub 매칭/폴백 장소 파라미터 (앱 번들)
 import busanPoiCatalog from '../data/busan_poi_catalog.json';
-import { DayType, HourBucket } from './types';
+import { DayType, HourBucket, MatchScope, OpeningHoursReliability, SpotConfidence } from './types';
 
 type BusanMatchedRec = {
   contentId: string;
@@ -9,6 +9,11 @@ type BusanMatchedRec = {
   aihubCategory?: string;
   matchType?: string;
   matchDistanceM?: number;
+  subCategory?: string;
+  matchScope?: MatchScope;
+  dwellSourceName?: string;
+  openingHoursSourceName?: string;
+  openingHoursReliability?: OpeningHoursReliability;
   category: string;
   dwell: { count: number; median: number; p25: number; p75: number; mean: number };
 };
@@ -18,6 +23,11 @@ type BusanUnmatchedRec = {
   title: string;
   contentTypeId: string;
   category: string;
+  subCategory?: string;
+  matchScope?: MatchScope;
+  dwellSourceName?: string;
+  openingHoursSourceName?: string;
+  openingHoursReliability?: OpeningHoursReliability;
   lat: number;
   lon: number;
 };
@@ -40,7 +50,12 @@ export function resolveBusanDwell(
   base: number;
   mult: number;
   src: string;
-  confidence: 'direct_match' | 'category_fallback';
+  confidence: SpotConfidence;
+  subCategory?: string;
+  matchScope: MatchScope;
+  dwellSourceName: string;
+  openingHoursSourceName: string;
+  openingHoursReliability: OpeningHoursReliability;
 } | null {
   const matched = busanMatched[String(contentId)];
   if (matched) {
@@ -60,10 +75,18 @@ export function resolveBusanDwell(
     mult: 1,
     src: `카테고리폴백:${unmatched.category}(n=${stat.count})`,
     confidence: 'category_fallback',
+    subCategory: unmatched.subCategory,
+    matchScope: 'category_fallback',
+    dwellSourceName: unmatched.dwellSourceName ?? `카테고리:${unmatched.category}`,
+    openingHoursSourceName: unmatched.openingHoursSourceName ?? unmatched.title,
+    openingHoursReliability: unmatched.openingHoursReliability ?? openingReliabilityFor(unmatched),
   };
 }
 
 function isLowConfidenceMatched(matched: BusanMatchedRec): boolean {
+  if (matched.matchScope === 'bad_match') return true;
+  if (matched.matchScope === 'area_context') return false;
+
   const risks = [
     matched.matchType === 'coord',
     (matched.matchDistanceM ?? 0) > 50,
@@ -91,15 +114,52 @@ function normalizePlaceName(value: string): string {
 
 function effectiveBusanMatchedDwell(
   matched: BusanMatchedRec,
-): { title: string; category: string; eff: number; base: number; mult: number; src: string; confidence: 'direct_match' } {
+): {
+  title: string;
+  category: string;
+  eff: number;
+  base: number;
+  mult: number;
+  src: string;
+  confidence: SpotConfidence;
+  subCategory?: string;
+  matchScope: MatchScope;
+  dwellSourceName: string;
+  openingHoursSourceName: string;
+  openingHoursReliability: OpeningHoursReliability;
+} {
   const base = matched.dwell.median;
+  const matchScope = matched.matchScope ?? 'direct_place';
+  const eff = effectiveDwellByScope(matched, base);
+  const dwellSourceName = matched.dwellSourceName ?? matched.aihubName ?? matched.title;
   return {
     title: matched.title,
     category: matched.category,
-    eff: base,
+    eff,
     base,
     mult: 1,
-    src: `부산매칭(n=${matched.dwell.count})`,
-    confidence: 'direct_match',
+    src: `AI-Hub:${dwellSourceName}(${matchScope},n=${matched.dwell.count})`,
+    confidence: matchScope === 'area_context' ? 'area_context_match' : 'direct_match',
+    subCategory: matched.subCategory,
+    matchScope,
+    dwellSourceName,
+    openingHoursSourceName: matched.openingHoursSourceName ?? matched.title,
+    openingHoursReliability: matched.openingHoursReliability ?? openingReliabilityFor(matched),
   };
+}
+
+function effectiveDwellByScope(matched: BusanMatchedRec, base: number): number {
+  if (matched.matchScope !== 'area_context') return base;
+  if (matched.subCategory === '개별상점') return Math.min(base, 30);
+  if (matched.subCategory === '전문상가' || matched.subCategory === '거리/골목상권') return Math.min(base, 45);
+  return base;
+}
+
+function openingReliabilityFor(place: { title: string; category: string; subCategory?: string }): OpeningHoursReliability {
+  if (place.category === '자연관광지') return 'unknown';
+  if (['전통시장', '전문상가', '거리/골목상권'].includes(place.subCategory ?? '')) return 'area_uncertain';
+  if (/시장|거리|골목|상권|마을|해수욕장|해변|공원|광장|지하상가|먹자골목|로데오/.test(place.title)) {
+    return 'area_uncertain';
+  }
+  return 'direct';
 }

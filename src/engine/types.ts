@@ -5,6 +5,9 @@ export type RoadMode = "walk" | "car";
 export type Strategy = "origin_area" | "destination_area" | "route_area";
 export type DayType = "평일" | "주말";
 export type HourBucket = "아침" | "점심" | "오후" | "저녁" | "야간";
+export type MatchScope = "direct_place" | "area_context" | "category_fallback" | "bad_match";
+export type OpeningHoursReliability = "direct" | "area_uncertain" | "unknown";
+export type SpotConfidence = "direct_match" | "area_context_match" | "category_fallback";
 
 export type PlanInput = {
   origin: LatLon;
@@ -22,14 +25,19 @@ export type Spot = {
   contentId: string;
   typeId: string;
   category: string;
+  subCategory?: string;
   lat: number;
   lon: number;
   dwell: number; // 유효 체류(분, 혼잡반영)
   dwellBase: number;
   dwellSrc: string;
+  dwellSourceName?: string;
+  openingHoursSourceName?: string;
+  openingHoursReliability?: OpeningHoursReliability;
+  matchScope?: MatchScope;
   mult: number;
   openNote: string;
-  confidence: "direct_match" | "category_fallback";
+  confidence: SpotConfidence;
   strategy: Strategy;
 };
 
