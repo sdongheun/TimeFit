@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TimeFit 추천 로직 현재 흐름과 부족한 점</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #171d26;
+      --panel2: #10161d;
+      --line: #2a3340;
+      --txt: #e6edf3;
+      --muted: #9aa7b4;
+      --accent: #4cc2ff;
+      --green: #2ea043;
+      --warn: #d29922;
+      --fail: #f85149;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--txt);
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      padding: 18px 24px;
+      background: rgba(15,20,25,.96);
+      border-bottom: 1px solid var(--line);
+    }
+    h1 { margin: 0; font-size: 23px; }
+    .sub { color: var(--muted); font-size: 13px; margin-top: 5px; }
+    main { max-width: 1240px; margin: 0 auto; padding: 22px 24px 48px; }
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 16px 0;
+    }
+    h2 { margin: 0 0 12px; font-size: 18px; }
+    h3 { margin: 18px 0 8px; font-size: 15px; color: var(--accent); }
+    p { margin: 8px 0; }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: var(--panel2);
+      border: 1px solid rgba(42,51,64,.8);
+      border-radius: 10px;
+      padding: 13px;
+      color: #dbeafe;
+      overflow: auto;
+    }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+    th, td { border: 1px solid var(--line); padding: 9px 10px; vertical-align: top; font-size: 13px; }
+    th { background: var(--panel2); color: var(--txt); text-align: left; }
+    td { color: #d3dae2; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    .card { background: var(--panel2); border: 1px solid rgba(42,51,64,.8); border-radius: 10px; padding: 13px; }
+    .card b { display: block; margin-bottom: 5px; }
+    .pill {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 8px;
+      margin: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .good { color: #7ee787; }
+    .mid { color: #f2cc60; }
+    .bad { color: #ff7b72; }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      counter-reset: step;
+    }
+    .step {
+      background: var(--panel2);
+      border: 1px solid rgba(42,51,64,.8);
+      border-radius: 10px;
+      padding: 12px;
+      min-height: 118px;
+      position: relative;
+    }
+    .step:before {
+      counter-increment: step;
+      content: counter(step);
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(76,194,255,.14);
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .step b { display: block; margin-bottom: 4px; }
+    .step span { color: var(--muted); font-size: 12px; }
+    .scorebar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 7px;
+    }
+    .scorebar div {
+      background: var(--panel2);
+      border: 1px solid rgba(42,51,64,.8);
+      border-radius: 8px;
+      padding: 9px;
+      font-size: 12px;
+      min-height: 76px;
+    }
+    .priority tr:nth-child(1) td { border-color: rgba(46,160,67,.7); }
+    .priority tr:nth-child(2) td { border-color: rgba(46,160,67,.45); }
+    .priority tr:nth-child(3) td { border-color: rgba(76,194,255,.45); }
+    @media (max-width: 760px) {
+      main { padding: 16px; }
+      .scorebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TimeFit 추천 로직 현재 흐름과 부족한 점</h1>
+    <div class="sub">작성일: 2026-07-26 · 기준 코드: src/engine/planner.ts, src/engine/travel.ts</div>
+  </header>
+  <main>
+    <section>
+      <h2>1. 핵심 요약</h2>
+      <p>TimeFit은 사용자의 현재 위치, 약속 장소, 남은 시간, 이동수단을 받아서 <b>이동시간을 제외하고 자투리 시간에 의미 있게 머물 수 있는 부산 장소 코스</b>를 추천한다.</p>
+      <div>
+        <span class="pill">TourAPI 장소</span>
+        <span class="pill">AI-Hub 체류시간</span>
+        <span class="pill">TMAP 도보/차량</span>
+        <span class="pill">ODsay 대중교통</span>
+        <span class="pill">최대 10개 추천</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. 전체 흐름</h2>
+      <div class="flow">
+        <div class="step"><b>입력</b><span>현재 위치, 약속 장소, 남은 시간, 이동수단을 받는다.</span></div>
+        <div class="step"><b>예산 계산</b><span>남은 시간에서 buffer를 빼 실제 추천에 쓸 budget을 만든다.</span></div>
+        <div class="step"><b>후보 수집</b><span>출발지, 약속지, 중간 지점 주변 TourAPI 장소를 모은다.</span></div>
+        <div class="step"><b>데이터 매칭</b><span>busan_poi_catalog에 있는 부산 장소만 통과시킨다.</span></div>
+        <div class="step"><b>체류시간 부여</b><span>AI-Hub 직접 매칭 또는 카테고리 중앙값을 사용한다.</span></div>
+        <div class="step"><b>시간 필터</b><span>선택 이동수단 기준 카테고리별 최소 체류시간 이상 머물 수 있어야 한다.</span></div>
+        <div class="step"><b>코스 조립</b><span>단일 장소 또는 2곳 미니코스를 만든다.</span></div>
+        <div class="step"><b>랭킹</b><span>체류 가능 시간, 시간대, 신뢰도, 동선 효율 등을 점수화한다.</span></div>
+        <div class="step"><b>정밀화</b><span>대중교통은 ODsay로 상위 후보를 다시 계산하고 재랭킹한다.</span></div>
+        <div class="step"><b>출력</b><span>최종 추천 10개와 대기열을 보여준다.</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. 시간 계산</h2>
+      <pre>buffer = max(10분, 남은 시간 * 12%)
+budget = 남은 시간 - buffer
+
+추천 가능 조건:
+선택 이동수단 기준 체류 가능 시간 >= 카테고리별 최소 체류시간</pre>
+      <p>예를 들어 사용자가 120분을 입력하면 약 14분을 여유 시간으로 빼고, 106분 안에서 이동과 체류가 모두 가능해야 한다.</p>
+      <table>
+        <thead><tr><th>상황</th><th>카테고리</th><th>최소 체류시간</th></tr></thead>
+        <tbody>
+          <tr><td>남은 시간 60분 이하</td><td>카페, 상업지구</td><td>20분</td></tr>
+          <tr><td>남은 시간 60분 이하</td><td>문화시설, 자연관광지</td><td>25분</td></tr>
+          <tr><td>남은 시간 90분 이하</td><td>카페, 상업지구</td><td>25분</td></tr>
+          <tr><td>그 외 단일 장소</td><td>모든 카테고리</td><td>30분</td></tr>
+          <tr><td>2곳 미니코스</td><td>모든 조합</td><td>30분</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>4. 숫자로 보는 추천 예시</h2>
+      <p>다른 사람이 봐도 이해하기 쉽도록, 실제 추천이 어떤 계산으로 만들어지는지 예시로 정리하면 아래와 같다.</p>
+      <div class="grid">
+        <div class="card">
+          <b>사용자 입력</b>
+          현재 위치: 서면역<br />
+          약속 장소: 사상역<br />
+          남은 시간: 120분<br />
+          이동수단: 대중교통
+        </div>
+        <div class="card">
+          <b>사용 가능 시간 계산</b>
+          buffer = max(10분, 120분 × 12%) = 14분<br />
+          budget = 120분 - 14분 = 106분
+        </div>
+        <div class="card">
+          <b>이동시간 계산</b>
+          서면역 → 놀이마루: 6분<br />
+          놀이마루 → 사상역: 22분<br />
+          총 이동시간: 28분
+        </div>
+        <div class="card">
+          <b>체류 가능 시간</b>
+          체류 가능 시간 = budget - 총 이동시간<br />
+          106분 - 28분 = 78분<br />
+          따라서 약 78분 머물 수 있음
+        </div>
+      </div>
+      <pre>AI-Hub 기준 체류시간 = 이 장소를 보통 어느 정도 머무는지에 대한 기준값
+체류 가능 시간 = 사용자가 이번 상황에서 실제로 머물 수 있는 시간
+
+예:
+놀이마루 AI-Hub 기준 체류시간: 40분
+사용자 체류 가능 시간: 78분
+
+판단:
+최소 30분 이상 머물 수 있고,
+AI-Hub 기준 체류시간도 충분히 소화 가능하므로 추천 가능</pre>
+      <p>중요한 점은 AI-Hub 체류시간을 반드시 정확히 채워야 추천하는 구조가 아니라는 것이다. TimeFit은 <b>사용자가 입력한 시간에서 이동시간을 뺀 뒤, 실제로 머물 수 있는 시간이 충분한지</b>를 먼저 본다. AI-Hub 체류시간은 그 장소가 그 시간 안에 적절한지 판단하는 기준값으로 사용한다.</p>
+    </section>
+
+    <section>
+      <h2>5. 후보 장소와 체류시간</h2>
+      <table>
+        <thead><tr><th>구분</th><th>의미</th><th>체류시간 근거</th><th>신뢰도</th></tr></thead>
+        <tbody>
+          <tr><td>matched</td><td>TourAPI 장소와 AI-Hub 장소가 매칭됨</td><td>해당 장소 AI-Hub 체류시간</td><td class="good">상대적으로 높음. 단, 좌표 기반 저신뢰 매칭은 제외</td></tr>
+          <tr><td>unmatched</td><td>TourAPI에는 있지만 AI-Hub 직접 매칭 안 됨</td><td>카테고리 중앙값</td><td class="mid">중간 이하</td></tr>
+        </tbody>
+      </table>
+      <pre>저신뢰 제외 예시:
+TourAPI title = 그런고로
+AI-Hub name = 포셋 전포점
+matchType = coord
+matchDistanceM = 97m
+dwell count = 3
+TourAPI category = 자연관광지
+AI-Hub category = 상업지구</pre>
+      <p>현재 추천 후보에는 문화시설, 자연관광지, 상업지구, 레저/스포츠, 식당, 카페, 지역축제/행사가 포함될 수 있다. 레저/스포츠는 예약·장비·장시간 체험 장소를 제외하고 10개만 유지한다.</p>
+      <table>
+        <thead><tr><th>레저/스포츠 유지</th><th>장소</th></tr></thead>
+        <tbody>
+          <tr><td>matched</td><td>광안리 해양레포츠센터, 미포정거장, 송도 구름산책로</td></tr>
+          <tr><td>unmatched</td><td>구포무장애숲길, 문탠로드, 부산광역시 부산실내빙상장, 삼락강변체육공원인라인스케이트장, 송도해안볼레길, 해안누리길 몰운대길, 회동수원지 둘레길</td></tr>
+          <tr><td>제외 보관</td><td><code>data/processed/부산_제외_레저스포츠.json</code>에 29개 보관</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>6. 위치 전략</h2>
+      <div class="grid">
+        <div class="card"><b>출발지 근처</b>현재 위치 주변에서 시간을 보내고 약속 장소로 이동한다.</div>
+        <div class="card"><b>약속지 근처</b>먼저 약속 장소 근처로 가서 시간을 보낸다.</div>
+        <div class="card"><b>가는 길 중간</b>출발지와 약속 장소 사이에서 들를 장소를 찾는다.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>7. 이동수단별 현재 방식</h2>
+      <table>
+        <thead><tr><th>수단</th><th>추천 목록</th><th>상세/정밀화</th><th>현재 한계</th></tr></thead>
+        <tbody>
+          <tr><td>도보</td><td>haversine 추정</td><td>선택 코스만 TMAP 보행자 경로</td><td>60분 이하는 1km 후보까지 보고 시간 필터로 재검증</td></tr>
+          <tr><td>차량</td><td>차량 속도 기반 추정</td><td>선택 코스만 TMAP 차량 경로</td><td>주차 고려 없음</td></tr>
+          <tr><td>대중교통</td><td>근사 랭킹 후 상위 18개 ODsay 정밀화</td><td>ODsay subPath 기반 간이 polyline</td><td>실제 선로/도로 geometry는 아님</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>8. 점수 계산 요소</h2>
+      <div class="scorebar">
+        <div><b>체류 가능 시간</b><br />얼마나 머물 수 있는가</div>
+        <div><b>체류 비율</b><br />이동 대비 체류가 충분한가</div>
+        <div><b>시간대 적합도</b><br />아침/점심/오후/저녁에 어울리는가</div>
+        <div><b>데이터 신뢰도</b><br />직접 매칭인지 폴백인지</div>
+        <div><b>장소 밀집도</b><br />2곳 코스가 가까운가</div>
+        <div><b>전략 가점</b><br />약속지/중간 전략 여부</div>
+        <div><b>짧은 시간 가점</b><br />카페/상업지구/가벼운 구경 우선</div>
+        <div><b>지하철 가점</b><br />대중교통에서 지하철 확인 여부</div>
+        <div><b>감점</b><br />fallback, 중복 카테고리, 약한 신뢰도</div>
+      </div>
+      <table>
+        <thead><tr><th>60분 이하 가점</th><th>의도</th></tr></thead>
+        <tbody>
+          <tr><td>카페, 상업지구</td><td>짧게 앉거나 둘러볼 수 있는 장소를 살린다.</td></tr>
+          <tr><td>문화시설, 자연관광지</td><td>가벼운 구경 장소를 유지한다.</td></tr>
+          <tr><td>식당</td><td>웨이팅 가능성이 있어 짧은 시간에서는 약하게 낮춘다.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>9. 현재 강점</h2>
+      <div class="grid">
+        <div class="card"><b>시간 계산이 핵심</b>남은 시간에서 이동시간을 빼고 체류 가능 시간을 계산한다.</div>
+        <div class="card"><b>다음 일정 고려</b>약속 장소가 있으면 최종 도착지로 넣고 판단한다.</div>
+        <div class="card"><b>이동수단 분리</b>도보, 차량, 대중교통 추천 기준이 분리되어 있다.</div>
+        <div class="card"><b>대중교통 API 사용</b>상위 후보군은 ODsay로 실제 대중교통 시간을 확인한다.</div>
+        <div class="card"><b>자동진단</b>추천 결과를 스크립트로 점검할 수 있다.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>10. 부족한 점</h2>
+      <table>
+        <thead><tr><th>부족한 점</th><th>현재 문제</th><th>개선 방향</th></tr></thead>
+        <tbody>
+          <tr><td>장소 품질 점수</td><td>시간상 가능하면 애매한 장소도 추천될 수 있음</td><td>AI-Hub 만족도, 재방문 의향, 이미지/소개 유무 반영</td></tr>
+          <tr><td>사용자 취향</td><td>사용자마다 거의 같은 추천이 나옴</td><td>카페, 산책, 쇼핑, 문화 등 취향 칩 반영</td></tr>
+          <tr><td>음식점/카페 규칙</td><td>웨이팅, 식사 시간대, 약속 전 적합성 판단이 약함</td><td>점심/저녁 가점, 약속 직전 식당 감점</td></tr>
+          <tr><td>지도 검색 존재 검증</td><td>카카오맵에서 검색되지 않는 장소가 섞이면 신뢰가 떨어짐</td><td>Kakao Local API로 title+좌표 검증 후 제외/감점</td></tr>
+          <tr><td>운영시간 신뢰도</td><td>TourAPI 운영시간이 비거나 복잡한 문구일 수 있음</td><td>브레이크타임, 요일별 운영, 점포별 상이 문구를 파싱/감점 처리</td></tr>
+          <tr><td>상업지구 세분화</td><td>시장, 거리, 백화점, 쇼핑몰이 한 카테고리에 섞임</td><td>시장/거리/쇼핑몰/백화점/전문상가로 분리</td></tr>
+          <tr><td>AI-Hub 매칭 신뢰도</td><td>좌표 기반 매칭은 실제 장소가 다를 수 있음</td><td>이름, 거리, 카테고리, 표본 수로 신뢰도 점수화</td></tr>
+          <tr><td>카테고리 폴백</td><td>unmatched는 넓은 카테고리 중앙값만 사용</td><td>세부 카테고리별 체류시간 중앙값으로 개선</td></tr>
+          <tr><td>경로 전략</td><td>출발지/약속지/중간 전략 점수가 단순함</td><td>남은 시간, 수단, 환승역, 우회율 기반 전략 강화</td></tr>
+          <tr><td>2곳 코스 조합</td><td>시간과 거리만 보면 조합이 어색할 수 있음</td><td>카페+산책, 시장+카페, 문화시설+카페 같은 자연 조합 가점</td></tr>
+          <tr><td>목록 이동시간</td><td>도보/차량 목록 단계는 haversine 추정값</td><td>상위 3개 정밀계산 또는 예상값 문구 명확화</td></tr>
+          <tr><td>날씨/실내외</td><td>비·폭염·추위가 추천에 반영되지 않음</td><td>날씨 API와 실내/실외 가중치 적용</td></tr>
+          <tr><td>후보 부족 대응</td><td>1시간 이하에서 추천 수가 부족할 수 있음</td><td>짧은 시간 모드, 카페/상업지구 보강, 최소 체류 기준 단계 완화</td></tr>
+          <tr><td>대중교통 geometry</td><td>역/정류장 간이 polyline, 실제 노선 모양은 아님</td><td>OSM/Overpass 또는 공공 노선 데이터 후속 검토</td></tr>
+          <tr><td>검증 데이터</td><td>좋은 추천/나쁜 추천의 기준 샘플이 부족함</td><td>대표 시나리오 5~10개 수동 검증 세트 구축</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>11. 정확도 개선 백로그</h2>
+      <table>
+        <thead><tr><th>순서</th><th>작업</th><th>왜 중요한가</th><th>완료 기준</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>카카오맵 장소 존재 검증</td><td>검색되지 않는 장소 추천은 신뢰를 크게 떨어뜨림</td><td>카카오 Local 검색 결과가 없는 POI는 제외 또는 강한 감점</td></tr>
+          <tr><td>2</td><td>운영시간 파서 고도화</td><td>식당/카페/문화시설은 실제로 열려 있는지가 핵심</td><td>요일별 운영, 브레이크타임, 라스트오더, 시설별 상이 문구 처리</td></tr>
+          <tr><td>3</td><td>상업지구·문화시설·식당·카페 세부 규칙</td><td>같은 카테고리 안에서도 자투리 적합성이 크게 다름</td><td>시장/거리/쇼핑몰, 공연장/전시관, 식사/카페 규칙 분리</td></tr>
+          <tr><td>4</td><td>매칭/폴백 신뢰도 점수화</td><td>직접 매칭과 카테고리 폴백의 정확도가 다름</td><td>name+coord, coord only, 표본 수, 거리, 카테고리 일치 여부를 점수에 반영</td></tr>
+          <tr><td>5</td><td>자연스러운 2곳 코스 조합</td><td>두 장소가 가능해도 사용자가 보기엔 어색할 수 있음</td><td>카페+산책, 시장+카페, 문화시설+카페 조합 가점과 부자연 조합 감점</td></tr>
+          <tr><td>6</td><td>카페 후보 보강</td><td>1시간 자투리에서 가장 유용한 카테고리지만 현재 수가 적음</td><td>서면/해운대/부산역 등 주요 지점에서 짧은 시간 추천 수 확보</td></tr>
+          <tr><td>7</td><td>상위 후보 정밀 이동시간 계산</td><td>목록 단계 추정값과 실제 경로 차이를 줄여야 함</td><td>호출량 한도 안에서 상위 3개 정도만 정밀계산하거나 상세 전 예상 표시</td></tr>
+          <tr><td>8</td><td>날씨/실내외 반영</td><td>공모전 차별화와 실제 사용성을 높임</td><td>비/폭염/추위에는 실내 가점, 실외 장거리 도보 감점</td></tr>
+          <tr><td>9</td><td>사용자 취향 칩</td><td>개인화가 없으면 같은 추천만 반복됨</td><td>카페, 산책, 쇼핑, 전시, 조용한 곳 선호를 점수에 반영</td></tr>
+          <tr><td>10</td><td>추천 실패 대응</td><td>후보가 적으면 앱이 빈약해 보임</td><td>후보 부족 시 짧은 체류 안내 모드와 완화 규칙 자동 적용</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>12. 추천 정확도 현재 평가</h2>
+      <table>
+        <thead><tr><th>영역</th><th>현재 수준</th><th>이유</th></tr></thead>
+        <tbody>
+          <tr><td>시간 안에 가능한지</td><td class="good">중상</td><td>이동시간과 체류가능시간을 budget 안에서 계산함</td></tr>
+          <tr><td>도보/차량 이동시간</td><td class="mid">중</td><td>목록은 추정, 상세는 TMAP 정밀화 가능</td></tr>
+          <tr><td>대중교통 이동시간</td><td class="good">중상</td><td>ODsay 성공 구간은 신뢰 가능, fallback은 낮음</td></tr>
+          <tr><td>대중교통 지도 경로</td><td class="mid">중</td><td>역/정류장 간이 polyline</td></tr>
+          <tr><td>체류시간</td><td class="mid">중</td><td>AI-Hub 직접 매칭은 유용하지만 개인별 차이가 큼</td></tr>
+          <tr><td>장소 품질</td><td class="bad">낮음~중</td><td>만족도, 재방문 의향, 인기도 반영이 약함</td></tr>
+          <tr><td>개인화</td><td class="bad">낮음</td><td>사용자 취향 입력이 없음</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>13. 다음 개선 우선순위</h2>
+      <table class="priority">
+        <thead><tr><th>우선순위</th><th>작업</th><th>효과</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>카카오맵 장소 존재 검증</td><td>검색되지 않는 장소 추천 제거.</td></tr>
+          <tr><td>2</td><td>운영시간 파서/감점 개선</td><td>실제로 열려 있는 장소 추천 안정성 증가.</td></tr>
+          <tr><td>3</td><td>상업지구·문화시설·식당·카페 세부 규칙</td><td>카테고리별 어색한 추천 감소.</td></tr>
+          <tr><td>4</td><td>매칭/폴백 신뢰도 점수화</td><td>AI-Hub 직접 매칭과 폴백의 정확도 차이 반영.</td></tr>
+          <tr><td>5</td><td>자연스러운 2곳 코스 조합</td><td>시간상 가능하지만 어색한 코스 감소.</td></tr>
+          <tr><td>6</td><td>날씨/실내외 가중치</td><td>공모전 차별화 강화.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

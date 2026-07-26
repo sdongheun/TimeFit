@@ -77,7 +77,7 @@ TRAVELER_ID → TRAVEL_ID → VISIT_AREA_ID (방문지정보) ★핵심
 [5] POI 정규화 VISIT_AREA_NM+좌표 클러스터링 → 고유 POI_ID
 [6] 체류 집계  카테고리/POI별 count·mean·median·p25·p75
 [7] 요일×시간대 YMD→요일/계절, 시각(or 사진/GPS)→hour bucket → 혼잡배수 매트릭스
-[8] 산출      category_dwell.json / poi_dwell.json / congestion_matrix.json
+[8] 산출      카테고리별_체류시간.json / poi_dwell.json / congestion_matrix.json
 ```
 
 ## 5. 검증 게이트 결과 ✅ (2026-06-15 동부권 TL+VL CSV 라이브 분석)
@@ -180,7 +180,7 @@ TRAVELER_ID → TRAVEL_ID → VISIT_AREA_ID (방문지정보) ★핵심
 
 ## 10. 다음 액션 (갱신)
 1. ✅ 동부권 스키마·체류시간 검증 완료(본 §5·§9).
-2. **추출/집계 스크립트화**(규칙1·4): 4권역 union → category_dwell.json / poi_dwell.json 산출 + 테스트(채움률·범위·count≥N).
+2. **추출/집계 스크립트화**(규칙1·4): 4권역 union → 카테고리별_체류시간.json / poi_dwell.json 산출 + 테스트(채움률·범위·count≥N).
 3. 나머지 3권역(수도권 71777 / 서부권 71779 / 제주 71780) CSV만 추가 다운로드(각 ~수MB) → union으로 표본 4배·안정화.
 4. `POI_NM` 키워드로 식당↔카페 분리 규칙.
 5. ARCH §4 테이블 실측 교체 + 출처표시(§8 라이선스 5조건).
@@ -217,7 +217,7 @@ TRAVELER_ID → TRAVEL_ID → VISIT_AREA_ID (방문지정보) ★핵심
 | C4 | 숙박·이동수단 소비 | `tn_lodge_consume_his`·`tn_mvmn_consume_his.PAYMENT_AMT_WON` |
 
 ### 산출 JSON (빌드 파이프라인 결과물)
-- `category_dwell.json` (A1) · `poi_dwell.json` (A2) · `congestion_matrix.json` (A3) · `travel_calib.json` (A4) · `course_transition.json` (A5)
+- `카테고리별_체류시간.json` (A1) · `poi_dwell.json` (A2) · `congestion_matrix.json` (A3) · `travel_calib.json` (A4) · `course_transition.json` (A5)
 - (사업성 PT용) `spend_by_category_hour.json` (C1)
 
 > 라이선스(§8 조건부 GO): 위 전부 **집계 통계 파라미터** 형태로만 앱/PT에 사용, 원본 미탑재, 출처표시.

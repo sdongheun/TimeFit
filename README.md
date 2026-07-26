@@ -120,9 +120,9 @@ npx expo run:ios --device <UDID>   # 실기기 dev build (또는 ios/mobile.xcwo
 
 ## 산출 데이터
 - `src/data/busan_poi_catalog.json` — 앱 번들용 부산 POI 단일 카탈로그
-- `data/processed/busan_matched_poi.json` — TourAPI 부산 장소와 AI-Hub 부산 방문지가 직접 매칭된 작업용 산출물
-- `data/processed/busan_unmatched_tourapi.json` — 직접 매칭은 없지만 카테고리 체류시간으로 폴백하는 작업용 TourAPI 후보
-- `data/processed/category_dwell.json` — 카테고리별 체류시간 폴백(median/p25/p75)
+- `data/processed/부산_매칭장소.json` — TourAPI 부산 장소와 AI-Hub 부산 방문지가 직접 매칭된 작업용 산출물
+- `data/processed/부산_미매칭_TourAPI장소.json` — 직접 매칭은 없지만 카테고리 체류시간으로 폴백하는 작업용 TourAPI 후보
+- `data/processed/카테고리별_체류시간.json` — 카테고리별 체류시간 폴백(median/p25/p75)
 
 ## 기술 메모
 - 스크립트: `TOURAPI_KEY=... node scripts/<name>.mjs` (키는 env로만, 하드코딩 금지)
