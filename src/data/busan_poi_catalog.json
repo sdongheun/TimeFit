@@ -8,16 +8,16 @@
     "note": "앱 런타임용 부산 POI 카탈로그. matched는 장소 직접 체류시간, unmatched는 categoryDwell 폴백 체류시간으로 사용."
   },
   "summary": {
-    "matched": 135,
-    "unmatched": 506,
-    "categories": [
-      "레저/스포츠",
-      "문화시설",
-      "상업지구",
-      "식당",
-      "자연관광지",
-      "카페"
-    ]
+    "matched": 122,
+    "unmatched": 488,
+    "categories": {
+      "자연관광지": 155,
+      "상업지구": 54,
+      "레저/스포츠": 10,
+      "식당": 329,
+      "카페": 18,
+      "문화시설": 44
+    }
   },
   "matched": {
     "meta": {
@@ -62,7 +62,7 @@
       "aihubBusanRows": 5103,
       "aihubUsedRows": 3351,
       "aihubCandidatePois": 227,
-      "matched": 135,
+      "matched": 122,
       "byType": {
         "12": {
           "name": "관광지",
@@ -78,15 +78,15 @@
         },
         "28": {
           "name": "레포츠",
-          "total": 39,
-          "matched": 14,
-          "rate": 35.9
+          "total": 10,
+          "matched": 3,
+          "rate": 30
         },
         "38": {
           "name": "쇼핑",
-          "total": 56,
-          "matched": 20,
-          "rate": 35.7
+          "total": 54,
+          "matched": 18,
+          "rate": 33.3
         },
         "39": {
           "name": "음식점",
@@ -158,7 +158,9 @@
           "p25": 60,
           "p75": 150,
           "mean": 105
-        }
+        },
+        "subCategory": "백화점/쇼핑몰",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "2789488",
@@ -200,7 +202,9 @@
           "p25": 30,
           "p75": 60,
           "mean": 48
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "132550",
@@ -221,7 +225,9 @@
           "p25": 30,
           "p75": 60,
           "mean": 48
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "2726193",
@@ -284,7 +290,9 @@
           "p25": 30,
           "p75": 83,
           "mean": 63
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "1018702",
@@ -347,28 +355,9 @@
           "p25": 30,
           "p75": 83,
           "mean": 63
-        }
-      },
-      {
-        "contentId": "1013461",
-        "title": "아이하시 (수제젓가락공예)",
-        "contentTypeId": "38",
-        "contentTypeName": "쇼핑",
-        "category": "상업지구",
-        "addr1": "부산광역시 중구 국제시장2길 33",
-        "lat": 35.1024004807,
-        "lon": 129.028312596,
-        "aihubName": "국제시장",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 143,
-        "dwell": {
-          "count": 22,
-          "median": 60,
-          "p25": 30,
-          "p75": 83,
-          "mean": 63
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "2952936",
@@ -410,7 +399,9 @@
           "p25": 30,
           "p75": 60,
           "mean": 56
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "133313",
@@ -452,7 +443,9 @@
           "p25": 30,
           "p75": 60,
           "mean": 56
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "1957694",
@@ -515,27 +508,6 @@
           "p25": 38,
           "p75": 90,
           "mean": 73
-        }
-      },
-      {
-        "contentId": "2790332",
-        "title": "부산요트투어 3355마린",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 해운대해변로 84",
-        "lat": 35.1598405944,
-        "lon": 129.1419844733,
-        "aihubName": "수영만 요트경기장",
-        "aihubCategory": "레저/스포츠",
-        "matchType": "coord",
-        "matchDistanceM": 80,
-        "dwell": {
-          "count": 12,
-          "median": 75,
-          "p25": 60,
-          "p75": 90,
-          "mean": 80
         }
       },
       {
@@ -830,7 +802,9 @@
           "p25": 30,
           "p75": 45,
           "mean": 39
-        }
+        },
+        "subCategory": "개별상점",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "851286",
@@ -872,7 +846,9 @@
           "p25": 60,
           "p75": 75,
           "mean": 77
-        }
+        },
+        "subCategory": "아울렛",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "229912",
@@ -917,48 +893,6 @@
         }
       },
       {
-        "contentId": "2704645",
-        "title": "[해파랑길] 2코스",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 달맞이길62번길 33-1",
-        "lat": 35.1584551702,
-        "lon": 129.1706820162,
-        "aihubName": "호랑이 젤라 떡",
-        "aihubCategory": "식당",
-        "matchType": "coord",
-        "matchDistanceM": 21,
-        "dwell": {
-          "count": 6,
-          "median": 30,
-          "p25": 30,
-          "p75": 30,
-          "mean": 30
-        }
-      },
-      {
-        "contentId": "1013112",
-        "title": "광주요",
-        "contentTypeId": "38",
-        "contentTypeName": "쇼핑",
-        "category": "상업지구",
-        "addr1": "부산광역시 해운대구 센텀남대로 35",
-        "lat": 35.1688671344,
-        "lon": 129.1297464005,
-        "aihubName": "센텀시티 스파랜드",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 66,
-        "dwell": {
-          "count": 6,
-          "median": 240,
-          "p25": 195,
-          "p75": 263,
-          "mean": 240
-        }
-      },
-      {
         "contentId": "2784330",
         "title": "미포항",
         "contentTypeId": "12",
@@ -977,27 +911,6 @@
           "p25": 30,
           "p75": 30,
           "mean": 30
-        }
-      },
-      {
-        "contentId": "1019616",
-        "title": "센텀시티 아이스링크",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 센텀남대로 35",
-        "lat": 35.1688560217,
-        "lon": 129.129551973,
-        "aihubName": "센텀시티 스파랜드",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 49,
-        "dwell": {
-          "count": 6,
-          "median": 240,
-          "p25": 195,
-          "p75": 263,
-          "mean": 240
         }
       },
       {
@@ -1082,27 +995,6 @@
           "p25": 30,
           "p75": 30,
           "mean": 36
-        }
-      },
-      {
-        "contentId": "3335951",
-        "title": "레이저태그스포츠 광안점",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 수영구 광안해변로 269 (민락동)",
-        "lat": 35.1558823541,
-        "lon": 129.12306956,
-        "aihubName": "민락 회 타운 시장",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 69,
-        "dwell": {
-          "count": 5,
-          "median": 30,
-          "p25": 30,
-          "p75": 60,
-          "mean": 54
         }
       },
       {
@@ -1202,27 +1094,6 @@
         "aihubCategory": "레저/스포츠",
         "matchType": "coord",
         "matchDistanceM": 147,
-        "dwell": {
-          "count": 5,
-          "median": 90,
-          "p25": 90,
-          "p75": 210,
-          "mean": 138
-        }
-      },
-      {
-        "contentId": "2783308",
-        "title": "서프마린",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 수영구 광안해변로 125 (남천동)",
-        "lat": 35.1461166232,
-        "lon": 129.1145761217,
-        "aihubName": "광안리해양레포츠센터",
-        "aihubCategory": "레저/스포츠",
-        "matchType": "coord",
-        "matchDistanceM": 67,
         "dwell": {
           "count": 5,
           "median": 90,
@@ -1376,7 +1247,9 @@
           "p25": 60,
           "p75": 60,
           "mean": 72
-        }
+        },
+        "subCategory": "거리/골목상권",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "2822910",
@@ -1712,7 +1585,9 @@
           "p25": 30,
           "p75": 75,
           "mean": 60
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "130668",
@@ -1775,7 +1650,9 @@
           "p25": 30,
           "p75": 75,
           "mean": 60
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "2905141",
@@ -1901,28 +1778,9 @@
           "p25": 30,
           "p75": 30,
           "mean": 30
-        }
-      },
-      {
-        "contentId": "2708019",
-        "title": "광안리 SUP Zone",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 수영구 남천동",
-        "lat": 35.1477386656,
-        "lon": 129.114673291,
-        "aihubName": "샌더스",
-        "aihubCategory": "식당",
-        "matchType": "coord",
-        "matchDistanceM": 61,
-        "dwell": {
-          "count": 3,
-          "median": 90,
-          "p25": 75,
-          "p75": 165,
-          "mean": 130
-        }
+        },
+        "subCategory": "개별상점",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "127925",
@@ -2072,27 +1930,6 @@
         }
       },
       {
-        "contentId": "2747589",
-        "title": "더무빙 카라반",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 장안읍 해맞이로 290",
-        "lat": 35.3226997305,
-        "lon": 129.2701216022,
-        "aihubName": "웨이브 온 커피",
-        "aihubCategory": "식당",
-        "matchType": "coord",
-        "matchDistanceM": 55,
-        "dwell": {
-          "count": 3,
-          "median": 60,
-          "p25": 60,
-          "p75": 75,
-          "mean": 70
-        }
-      },
-      {
         "contentId": "2783646",
         "title": "러브얼스",
         "contentTypeId": "39",
@@ -2132,7 +1969,9 @@
           "p25": 30,
           "p75": 45,
           "mean": 40
-        }
+        },
+        "subCategory": "개별상점",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "1993017",
@@ -2153,7 +1992,9 @@
           "p25": 45,
           "p75": 90,
           "mean": 70
-        }
+        },
+        "subCategory": "아울렛",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "2554111",
@@ -2195,27 +2036,6 @@
           "p25": 30,
           "p75": 45,
           "mean": 40
-        }
-      },
-      {
-        "contentId": "3065360",
-        "title": "부산 요트투어 요트야",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 해운대해변로 84 (우동)",
-        "lat": 35.1608543617,
-        "lon": 129.1415539265,
-        "aihubName": "부산요트투어 G",
-        "aihubCategory": "레저/스포츠",
-        "matchType": "coord",
-        "matchDistanceM": 52,
-        "dwell": {
-          "count": 3,
-          "median": 60,
-          "p25": 60,
-          "p75": 75,
-          "mean": 70
         }
       },
       {
@@ -2261,27 +2081,6 @@
         }
       },
       {
-        "contentId": "3009050",
-        "title": "부산요트투어 고고요트",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 해운대해변로 84",
-        "lat": 35.1608543617,
-        "lon": 129.1415539265,
-        "aihubName": "부산요트투어 G",
-        "aihubCategory": "레저/스포츠",
-        "matchType": "coord",
-        "matchDistanceM": 52,
-        "dwell": {
-          "count": 3,
-          "median": 60,
-          "p25": 60,
-          "p75": 75,
-          "mean": 70
-        }
-      },
-      {
         "contentId": "3080300",
         "title": "부산전자종합시장",
         "contentTypeId": "38",
@@ -2300,7 +2099,9 @@
           "p25": 30,
           "p75": 75,
           "mean": 60
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "1277679",
@@ -2363,7 +2164,9 @@
           "p25": 30,
           "p75": 75,
           "mean": 60
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "2470024",
@@ -2447,27 +2250,6 @@
           "p25": 75,
           "p75": 180,
           "mean": 130
-        }
-      },
-      {
-        "contentId": "2784112",
-        "title": "송정서핑학교",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 송정해변로 34-8 (송정동)",
-        "lat": 35.1810226785,
-        "lon": 129.2024952959,
-        "aihubName": "스타벅스 부산 송정 비치점",
-        "aihubCategory": "식당",
-        "matchType": "coord",
-        "matchDistanceM": 37,
-        "dwell": {
-          "count": 3,
-          "median": 60,
-          "p25": 45,
-          "p75": 60,
-          "mean": 50
         }
       },
       {
@@ -2615,7 +2397,9 @@
           "p25": 30,
           "p75": 45,
           "mean": 40
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       {
         "contentId": "3454074",
@@ -2657,27 +2441,6 @@
           "p25": 60,
           "p75": 75,
           "mean": 70
-        }
-      },
-      {
-        "contentId": "2825115",
-        "title": "요트탈래",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 동백로 52",
-        "lat": 35.1566216976,
-        "lon": 129.152097571,
-        "aihubName": "더베이",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 9,
-        "dwell": {
-          "count": 3,
-          "median": 30,
-          "p25": 30,
-          "p75": 45,
-          "mean": 40
         }
       },
       {
@@ -3100,7 +2863,9 @@
           "p25": 30,
           "p75": 75,
           "mean": 60
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       "132190": {
         "contentId": "132190",
@@ -3121,7 +2886,9 @@
           "p25": 30,
           "p75": 60,
           "mean": 56
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       "132191": {
         "contentId": "132191",
@@ -3142,7 +2909,9 @@
           "p25": 30,
           "p75": 83,
           "mean": 63
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       "132550": {
         "contentId": "132550",
@@ -3163,7 +2932,9 @@
           "p25": 30,
           "p75": 60,
           "mean": 48
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       "132576": {
         "contentId": "132576",
@@ -3184,7 +2955,9 @@
           "p25": 30,
           "p75": 60,
           "mean": 56
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       "133313": {
         "contentId": "133313",
@@ -3310,7 +3083,9 @@
           "p25": 60,
           "p75": 150,
           "mean": 105
-        }
+        },
+        "subCategory": "백화점/쇼핑몰",
+        "subCategorySource": "manual_commercial_review"
       },
       "769761": {
         "contentId": "769761",
@@ -3501,48 +3276,6 @@
           "mean": 44
         }
       },
-      "1013112": {
-        "contentId": "1013112",
-        "title": "광주요",
-        "contentTypeId": "38",
-        "contentTypeName": "쇼핑",
-        "category": "상업지구",
-        "addr1": "부산광역시 해운대구 센텀남대로 35",
-        "lat": 35.1688671344,
-        "lon": 129.1297464005,
-        "aihubName": "센텀시티 스파랜드",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 66,
-        "dwell": {
-          "count": 6,
-          "median": 240,
-          "p25": 195,
-          "p75": 263,
-          "mean": 240
-        }
-      },
-      "1013461": {
-        "contentId": "1013461",
-        "title": "아이하시 (수제젓가락공예)",
-        "contentTypeId": "38",
-        "contentTypeName": "쇼핑",
-        "category": "상업지구",
-        "addr1": "부산광역시 중구 국제시장2길 33",
-        "lat": 35.1024004807,
-        "lon": 129.028312596,
-        "aihubName": "국제시장",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 143,
-        "dwell": {
-          "count": 22,
-          "median": 60,
-          "p25": 30,
-          "p75": 83,
-          "mean": 63
-        }
-      },
       "1013694": {
         "contentId": "1013694",
         "title": "만물의거리",
@@ -3562,7 +3295,9 @@
           "p25": 30,
           "p75": 75,
           "mean": 60
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       "1013709": {
         "contentId": "1013709",
@@ -3583,7 +3318,9 @@
           "p25": 30,
           "p75": 83,
           "mean": 63
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       "1013721": {
         "contentId": "1013721",
@@ -3604,7 +3341,9 @@
           "p25": 30,
           "p75": 75,
           "mean": 60
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       "1018702": {
         "contentId": "1018702",
@@ -3625,27 +3364,6 @@
           "p25": 30,
           "p75": 83,
           "mean": 63
-        }
-      },
-      "1019616": {
-        "contentId": "1019616",
-        "title": "센텀시티 아이스링크",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 센텀남대로 35",
-        "lat": 35.1688560217,
-        "lon": 129.129551973,
-        "aihubName": "센텀시티 스파랜드",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 49,
-        "dwell": {
-          "count": 6,
-          "median": 240,
-          "p25": 195,
-          "p75": 263,
-          "mean": 240
         }
       },
       "1277679": {
@@ -3772,7 +3490,9 @@
           "p25": 30,
           "p75": 60,
           "mean": 48
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       "1942233": {
         "contentId": "1942233",
@@ -3835,7 +3555,9 @@
           "p25": 30,
           "p75": 45,
           "mean": 40
-        }
+        },
+        "subCategory": "전통시장",
+        "subCategorySource": "manual_commercial_review"
       },
       "1942348": {
         "contentId": "1942348",
@@ -3898,7 +3620,9 @@
           "p25": 45,
           "p75": 90,
           "mean": 70
-        }
+        },
+        "subCategory": "아울렛",
+        "subCategorySource": "manual_commercial_review"
       },
       "2385686": {
         "contentId": "2385686",
@@ -4024,7 +3748,9 @@
           "p25": 60,
           "p75": 75,
           "mean": 77
-        }
+        },
+        "subCategory": "아울렛",
+        "subCategorySource": "manual_commercial_review"
       },
       "2554068": {
         "contentId": "2554068",
@@ -4152,48 +3878,6 @@
           "mean": 48
         }
       },
-      "2704645": {
-        "contentId": "2704645",
-        "title": "[해파랑길] 2코스",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 달맞이길62번길 33-1",
-        "lat": 35.1584551702,
-        "lon": 129.1706820162,
-        "aihubName": "호랑이 젤라 떡",
-        "aihubCategory": "식당",
-        "matchType": "coord",
-        "matchDistanceM": 21,
-        "dwell": {
-          "count": 6,
-          "median": 30,
-          "p25": 30,
-          "p75": 30,
-          "mean": 30
-        }
-      },
-      "2708019": {
-        "contentId": "2708019",
-        "title": "광안리 SUP Zone",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 수영구 남천동",
-        "lat": 35.1477386656,
-        "lon": 129.114673291,
-        "aihubName": "샌더스",
-        "aihubCategory": "식당",
-        "matchType": "coord",
-        "matchDistanceM": 61,
-        "dwell": {
-          "count": 3,
-          "median": 90,
-          "p25": 75,
-          "p75": 165,
-          "mean": 130
-        }
-      },
       "2726193": {
         "contentId": "2726193",
         "title": "이가네떡볶이",
@@ -4213,27 +3897,6 @@
           "p25": 30,
           "p75": 60,
           "mean": 48
-        }
-      },
-      "2747589": {
-        "contentId": "2747589",
-        "title": "더무빙 카라반",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 장안읍 해맞이로 290",
-        "lat": 35.3226997305,
-        "lon": 129.2701216022,
-        "aihubName": "웨이브 온 커피",
-        "aihubCategory": "식당",
-        "matchType": "coord",
-        "matchDistanceM": 55,
-        "dwell": {
-          "count": 3,
-          "median": 60,
-          "p25": 60,
-          "p75": 75,
-          "mean": 70
         }
       },
       "2753006": {
@@ -4465,7 +4128,9 @@
           "p25": 30,
           "p75": 45,
           "mean": 39
-        }
+        },
+        "subCategory": "개별상점",
+        "subCategorySource": "manual_commercial_review"
       },
       "2782750": {
         "contentId": "2782750",
@@ -4486,28 +4151,9 @@
           "p25": 30,
           "p75": 45,
           "mean": 40
-        }
-      },
-      "2783308": {
-        "contentId": "2783308",
-        "title": "서프마린",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 수영구 광안해변로 125 (남천동)",
-        "lat": 35.1461166232,
-        "lon": 129.1145761217,
-        "aihubName": "광안리해양레포츠센터",
-        "aihubCategory": "레저/스포츠",
-        "matchType": "coord",
-        "matchDistanceM": 67,
-        "dwell": {
-          "count": 5,
-          "median": 90,
-          "p25": 90,
-          "p75": 210,
-          "mean": 138
-        }
+        },
+        "subCategory": "개별상점",
+        "subCategorySource": "manual_commercial_review"
       },
       "2783646": {
         "contentId": "2783646",
@@ -4528,27 +4174,6 @@
           "p25": 30,
           "p75": 45,
           "mean": 40
-        }
-      },
-      "2784112": {
-        "contentId": "2784112",
-        "title": "송정서핑학교",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 송정해변로 34-8 (송정동)",
-        "lat": 35.1810226785,
-        "lon": 129.2024952959,
-        "aihubName": "스타벅스 부산 송정 비치점",
-        "aihubCategory": "식당",
-        "matchType": "coord",
-        "matchDistanceM": 37,
-        "dwell": {
-          "count": 3,
-          "median": 60,
-          "p25": 45,
-          "p75": 60,
-          "mean": 50
         }
       },
       "2784330": {
@@ -4740,27 +4365,6 @@
           "mean": 63
         }
       },
-      "2790332": {
-        "contentId": "2790332",
-        "title": "부산요트투어 3355마린",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 해운대해변로 84",
-        "lat": 35.1598405944,
-        "lon": 129.1419844733,
-        "aihubName": "수영만 요트경기장",
-        "aihubCategory": "레저/스포츠",
-        "matchType": "coord",
-        "matchDistanceM": 80,
-        "dwell": {
-          "count": 12,
-          "median": 75,
-          "p25": 60,
-          "p75": 90,
-          "mean": 80
-        }
-      },
       "2793181": {
         "contentId": "2793181",
         "title": "속씨원한대구탕미포본점",
@@ -4864,27 +4468,6 @@
           "p25": 30,
           "p75": 60,
           "mean": 54
-        }
-      },
-      "2825115": {
-        "contentId": "2825115",
-        "title": "요트탈래",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 동백로 52",
-        "lat": 35.1566216976,
-        "lon": 129.152097571,
-        "aihubName": "더베이",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 9,
-        "dwell": {
-          "count": 3,
-          "median": 30,
-          "p25": 30,
-          "p75": 45,
-          "mean": 40
         }
       },
       "2832636": {
@@ -5475,27 +5058,6 @@
           "mean": 50
         }
       },
-      "3009050": {
-        "contentId": "3009050",
-        "title": "부산요트투어 고고요트",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 해운대해변로 84",
-        "lat": 35.1608543617,
-        "lon": 129.1415539265,
-        "aihubName": "부산요트투어 G",
-        "aihubCategory": "레저/스포츠",
-        "matchType": "coord",
-        "matchDistanceM": 52,
-        "dwell": {
-          "count": 3,
-          "median": 60,
-          "p25": 60,
-          "p75": 75,
-          "mean": 70
-        }
-      },
       "3027700": {
         "contentId": "3027700",
         "title": "청사포 기찻길",
@@ -5538,27 +5100,6 @@
           "mean": 56
         }
       },
-      "3065360": {
-        "contentId": "3065360",
-        "title": "부산 요트투어 요트야",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 해운대해변로 84 (우동)",
-        "lat": 35.1608543617,
-        "lon": 129.1415539265,
-        "aihubName": "부산요트투어 G",
-        "aihubCategory": "레저/스포츠",
-        "matchType": "coord",
-        "matchDistanceM": 52,
-        "dwell": {
-          "count": 3,
-          "median": 60,
-          "p25": 60,
-          "p75": 75,
-          "mean": 70
-        }
-      },
       "3080300": {
         "contentId": "3080300",
         "title": "부산전자종합시장",
@@ -5578,7 +5119,9 @@
           "p25": 30,
           "p75": 75,
           "mean": 60
-        }
+        },
+        "subCategory": "전문상가",
+        "subCategorySource": "manual_commercial_review"
       },
       "3081825": {
         "contentId": "3081825",
@@ -5622,27 +5165,6 @@
           "mean": 30
         }
       },
-      "3335951": {
-        "contentId": "3335951",
-        "title": "레이저태그스포츠 광안점",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 수영구 광안해변로 269 (민락동)",
-        "lat": 35.1558823541,
-        "lon": 129.12306956,
-        "aihubName": "민락 회 타운 시장",
-        "aihubCategory": "상업지구",
-        "matchType": "coord",
-        "matchDistanceM": 69,
-        "dwell": {
-          "count": 5,
-          "median": 30,
-          "p25": 30,
-          "p75": 60,
-          "mean": 54
-        }
-      },
       "3336600": {
         "contentId": "3336600",
         "title": "고래서이뻐",
@@ -5662,7 +5184,9 @@
           "p25": 30,
           "p75": 30,
           "mean": 30
-        }
+        },
+        "subCategory": "개별상점",
+        "subCategorySource": "manual_commercial_review"
       },
       "3421909": {
         "contentId": "3421909",
@@ -5767,7 +5291,9 @@
           "p25": 60,
           "p75": 60,
           "mean": 72
-        }
+        },
+        "subCategory": "거리/골목상권",
+        "subCategorySource": "manual_commercial_review"
       }
     }
   },
@@ -5788,8 +5314,8 @@
     },
     "summary": {
       "tourCandidates": 641,
-      "matched": 135,
-      "unmatched": 506,
+      "matched": 122,
+      "unmatched": 488,
       "byType": {
         "12": {
           "name": "관광지",
@@ -5807,16 +5333,16 @@
         },
         "28": {
           "name": "레포츠",
-          "total": 39,
-          "matched": 14,
-          "rate": 35.9,
-          "unmatched": 25
+          "total": 10,
+          "matched": 3,
+          "rate": 30,
+          "unmatched": 7
         },
         "38": {
           "name": "쇼핑",
-          "total": 56,
-          "matched": 20,
-          "rate": 35.7,
+          "total": 54,
+          "matched": 18,
+          "rate": 33.3,
           "unmatched": 36
         },
         "39": {
@@ -7568,17 +7094,6 @@
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       {
-        "contentId": "2661479",
-        "title": "구덕야영장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 서구 꽃마을로156번길 109",
-        "lat": 35.1255892096,
-        "lon": 129.0097191372,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
         "contentId": "2755696",
         "title": "구포무장애숲길",
         "contentTypeId": "28",
@@ -7587,39 +7102,6 @@
         "addr1": "부산광역시 북구 낙동북로 722 (구포동)",
         "lat": 35.197780951,
         "lon": 129.0004318626,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "2872199",
-        "title": "남파랑길(부산)",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 남구 용호동",
-        "lat": 35.1026382801,
-        "lon": 129.1212572871,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "3027022",
-        "title": "늘푸른숲",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 금정구 체육공원로 270 (선동)",
-        "lat": 35.266130818,
-        "lon": 129.1071456915,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "2729157",
-        "title": "대저캠핑장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 강서구 체육공원로6번길 184",
-        "lat": 35.2074545784,
-        "lon": 128.9847746284,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       {
@@ -7645,28 +7127,6 @@
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       {
-        "contentId": "131146",
-        "title": "부산광역시교육청학생인성교육원",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 금정구 북문로 178",
-        "lat": 35.2606108543,
-        "lon": 129.0456984184,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "2726803",
-        "title": "부산항힐링야영장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 중구 이순신대로 72 (중앙동4가)",
-        "lat": 35.1057837263,
-        "lon": 129.0440916874,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
         "contentId": "3080310",
         "title": "삼락강변체육공원인라인스케이트장",
         "contentTypeId": "28",
@@ -7675,17 +7135,6 @@
         "addr1": "부산광역시 사상구 삼락동",
         "lat": 35.1612622933,
         "lon": 128.9717797997,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "2756707",
-        "title": "삼락수상레포츠타운",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 사상구 삼락동 29-21",
-        "lat": 35.1728970354,
-        "lon": 128.9682186811,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       {
@@ -7700,105 +7149,6 @@
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       {
-        "contentId": "576732",
-        "title": "아시아드 컨트리클럽",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 일광면 차양길 26",
-        "lat": 35.2872281487,
-        "lon": 129.2401863043,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "131943",
-        "title": "영도관광실탄사격장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 영도구 절영로 319",
-        "lat": 35.0735291869,
-        "lon": 129.0541194729,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "131087",
-        "title": "용호동일대 바다낚시",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 남구 용호동",
-        "lat": 35.1335291572,
-        "lon": 129.1153208463,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "2741535",
-        "title": "임랑카라반파크",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 일광면 일광로 763",
-        "lat": 35.3095065653,
-        "lon": 129.2593979022,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "2734243",
-        "title": "장안캠프",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 장안읍 장안로 18",
-        "lat": 35.3418805818,
-        "lon": 129.252403167,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "2741526",
-        "title": "제이스글램핑",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 일광읍 이천8길 132-20",
-        "lat": 35.2777040982,
-        "lon": 129.2338482308,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "2749611",
-        "title": "지오클럽",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 일광면 기장해안로 1272",
-        "lat": 35.2578452406,
-        "lon": 129.2353514279,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "2734175",
-        "title": "초원숲속캠핑장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 정관읍 병산1길 18",
-        "lat": 35.3449845893,
-        "lon": 129.1880920151,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "131452",
-        "title": "함지골청소년수련관",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 영도구 절영로 321",
-        "lat": 35.0744874138,
-        "lon": 129.0541777748,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
         "contentId": "2708164",
         "title": "해안누리길 몰운대길",
         "contentTypeId": "28",
@@ -7810,17 +7160,6 @@
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       {
-        "contentId": "2734674",
-        "title": "화명오토캠핑장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 북구 낙동강자전거길 1425 (덕천동)",
-        "lat": 35.2164177357,
-        "lon": 128.9995730939,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
         "contentId": "2663187",
         "title": "회동수원지 둘레길",
         "contentTypeId": "28",
@@ -7829,17 +7168,6 @@
         "addr1": "부산광역시 금정구 오륜동",
         "lat": 35.2660392535,
         "lon": 129.1121285941,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      {
-        "contentId": "1878262",
-        "title": "[부산 갈맷길] 2코스 2구간",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 우동",
-        "lat": 35.1618263079,
-        "lon": 129.13252413,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       {
@@ -11859,50 +11187,6 @@
         "lon": 128.9898027697,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
-      "131087": {
-        "contentId": "131087",
-        "title": "용호동일대 바다낚시",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 남구 용호동",
-        "lat": 35.1335291572,
-        "lon": 129.1153208463,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "131146": {
-        "contentId": "131146",
-        "title": "부산광역시교육청학생인성교육원",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 금정구 북문로 178",
-        "lat": 35.2606108543,
-        "lon": 129.0456984184,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "131452": {
-        "contentId": "131452",
-        "title": "함지골청소년수련관",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 영도구 절영로 321",
-        "lat": 35.0744874138,
-        "lon": 129.0541777748,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "131943": {
-        "contentId": "131943",
-        "title": "영도관광실탄사격장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 영도구 절영로 319",
-        "lat": 35.0735291869,
-        "lon": 129.0541194729,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
       "132187": {
         "contentId": "132187",
         "title": "남포동 지하도상가",
@@ -12319,17 +11603,6 @@
         "addr1": "부산광역시 부산진구 백양대로136번길 51",
         "lat": 35.1622327711,
         "lon": 129.0337549338,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "576732": {
-        "contentId": "576732",
-        "title": "아시아드 컨트리클럽",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 일광면 차양길 26",
-        "lat": 35.2872281487,
-        "lon": 129.2401863043,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       "688610": {
@@ -12772,17 +12045,6 @@
         "lon": 129.1768644,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
-      "1878262": {
-        "contentId": "1878262",
-        "title": "[부산 갈맷길] 2코스 2구간",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 해운대구 우동",
-        "lat": 35.1618263079,
-        "lon": 129.13252413,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
       "1918263": {
         "contentId": "1918263",
         "title": "누리마루 APEC하우스",
@@ -13201,17 +12463,6 @@
         "lon": 129.2399148578,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
-      "2661479": {
-        "contentId": "2661479",
-        "title": "구덕야영장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 서구 꽃마을로156번길 109",
-        "lat": 35.1255892096,
-        "lon": 129.0097191372,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
       "2663187": {
         "contentId": "2663187",
         "title": "회동수원지 둘레길",
@@ -13355,17 +12606,6 @@
         "lon": 129.0173415667,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
-      "2726803": {
-        "contentId": "2726803",
-        "title": "부산항힐링야영장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 중구 이순신대로 72 (중앙동4가)",
-        "lat": 35.1057837263,
-        "lon": 129.0440916874,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
       "2726843": {
         "contentId": "2726843",
         "title": "가덕도 연대봉",
@@ -13375,17 +12615,6 @@
         "addr1": "부산광역시 강서구 천성동",
         "lat": 35.0317518247,
         "lon": 128.8216713782,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "2729157": {
-        "contentId": "2729157",
-        "title": "대저캠핑장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 강서구 체육공원로6번길 184",
-        "lat": 35.2074545784,
-        "lon": 128.9847746284,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       "2732397": {
@@ -13410,39 +12639,6 @@
         "lon": 129.0827285679,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
-      "2734175": {
-        "contentId": "2734175",
-        "title": "초원숲속캠핑장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 정관읍 병산1길 18",
-        "lat": 35.3449845893,
-        "lon": 129.1880920151,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "2734243": {
-        "contentId": "2734243",
-        "title": "장안캠프",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 장안읍 장안로 18",
-        "lat": 35.3418805818,
-        "lon": 129.252403167,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "2734674": {
-        "contentId": "2734674",
-        "title": "화명오토캠핑장",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 북구 낙동강자전거길 1425 (덕천동)",
-        "lat": 35.2164177357,
-        "lon": 128.9995730939,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
       "2736392": {
         "contentId": "2736392",
         "title": "청학수변공원",
@@ -13452,28 +12648,6 @@
         "addr1": "부산광역시 영도구 청학동 217-43",
         "lat": 35.0977293865,
         "lon": 129.0611626448,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "2741526": {
-        "contentId": "2741526",
-        "title": "제이스글램핑",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 일광읍 이천8길 132-20",
-        "lat": 35.2777040982,
-        "lon": 129.2338482308,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "2741535": {
-        "contentId": "2741535",
-        "title": "임랑카라반파크",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 일광면 일광로 763",
-        "lat": 35.3095065653,
-        "lon": 129.2593979022,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       "2742601": {
@@ -13507,17 +12681,6 @@
         "addr1": "부산광역시 서구 꽃마을로163번길 73 (서대신동3가)",
         "lat": 35.1264334874,
         "lon": 129.0058166756,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "2749611": {
-        "contentId": "2749611",
-        "title": "지오클럽",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 기장군 일광면 기장해안로 1272",
-        "lat": 35.2578452406,
-        "lon": 129.2353514279,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       "2752168": {
@@ -13606,17 +12769,6 @@
         "addr1": "부산광역시 북구 산성로 299",
         "lat": 35.2510535364,
         "lon": 129.0426767218,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "2756707": {
-        "contentId": "2756707",
-        "title": "삼락수상레포츠타운",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 사상구 삼락동 29-21",
-        "lat": 35.1728970354,
-        "lon": 128.9682186811,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       "2758469": {
@@ -16193,17 +15345,6 @@
         "lon": 128.9816844453,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
-      "2872199": {
-        "contentId": "2872199",
-        "title": "남파랑길(부산)",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 남구 용호동",
-        "lat": 35.1026382801,
-        "lon": 129.1212572871,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
       "2872258": {
         "contentId": "2872258",
         "title": "채플린",
@@ -16741,17 +15882,6 @@
         "addr1": "부산광역시 금정구 산성로 453 (금성동)",
         "lat": 35.2504121966,
         "lon": 129.0564283199,
-        "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-      },
-      "3027022": {
-        "contentId": "3027022",
-        "title": "늘푸른숲",
-        "contentTypeId": "28",
-        "contentTypeName": "레포츠",
-        "category": "레저/스포츠",
-        "addr1": "부산광역시 금정구 체육공원로 270 (선동)",
-        "lat": 35.266130818,
-        "lon": 129.1071456915,
         "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
       },
       "3027098": {

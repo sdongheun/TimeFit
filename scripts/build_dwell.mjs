@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // AI-Hub 동부권 여행로그 → 시간-적합 엔진 파라미터 산출
-//   - category_dwell.json   : 카테고리별 체류시간(median/p25/p75/mean)  [식당↔카페 분리]
+//   - 카테고리별_체류시간.json   : 카테고리별 체류시간(median/p25/p75/mean)  [식당↔카페 분리]
 //   - congestion_matrix.json: 카테고리 × 요일타입 × 시간대 혼잡 배수(방문빈도 기반)
 //   - poi_dwell.json        : 표본 충분(count>=THRESH) 개별 POI 체류시간
 // 규칙4: 산출 후 자체 검증(assert) 통과해야 종료코드 0.
@@ -119,7 +119,7 @@ for (const v of visits) {
   }
 }
 
-// ---- category_dwell.json ----
+// ---- 카테고리별_체류시간.json ----
 const categoryDwell = {};
 for (const [cat, arr] of Object.entries(catDwell)) {
   categoryDwell[cat] = { count: arr.length, median: r0(median(arr)), p25: r0(quantile(arr, 0.25)), p75: r0(quantile(arr, 0.75)), mean: r0(mean(arr)) };
@@ -150,16 +150,16 @@ for (const [k, p] of poiAgg) {
 }
 
 const meta = { source: 'AI-Hub 국내여행로그 동부권(2023구축)', generatedFrom: 'training+validation', visitRecords: visits.length, usedRecords: used, poiThreshold: THRESH, note: 'CC-BY-SA-4.0 — 집계 파라미터(앱 내장용). 출처표시 필수.' };
-fs.writeFileSync(path.join(OUT, 'category_dwell.json'), JSON.stringify({ meta, data: categoryDwell }, null, 2));
+fs.writeFileSync(path.join(OUT, '카테고리별_체류시간.json'), JSON.stringify({ meta, data: categoryDwell }, null, 2));
 fs.writeFileSync(path.join(OUT, 'congestion_matrix.json'), JSON.stringify({ meta, buckets: BUCKETS, data: congestionMatrix }, null, 2));
 fs.writeFileSync(path.join(OUT, 'poi_dwell.json'), JSON.stringify({ meta, count: Object.keys(poiDwell).length, data: poiDwell }, null, 2));
 
 console.log(`\n산출:`);
-console.log(`  category_dwell.json  (${Object.keys(categoryDwell).length} 카테고리, used ${used})`);
+console.log(`  카테고리별_체류시간.json  (${Object.keys(categoryDwell).length} 카테고리, used ${used})`);
 console.log(`  congestion_matrix.json (${Object.keys(congestionMatrix).length} 카테고리)`);
 console.log(`  poi_dwell.json (${Object.keys(poiDwell).length} POI, count>=${THRESH})`);
 
-console.log('\n=== category_dwell 미리보기 (건수순) ===');
+console.log('\n=== 카테고리별_체류시간 미리보기 (건수순) ===');
 Object.entries(categoryDwell).sort((a, b) => b[1].count - a[1].count).forEach(([c, s]) => console.log(`  ${c.padEnd(14)} n=${String(s.count).padStart(5)}  median ${s.median}분 (p25 ${s.p25}/p75 ${s.p75})`));
 
 // ================= 규칙4: 자체 검증 =================

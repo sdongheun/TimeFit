@@ -1,0 +1,148 @@
+{
+  "meta": {
+    "generatedAt": "2026-07-26T17:57:31.439Z",
+    "source": [
+      "data/processed/review/부산_매칭상업지구_검토.json",
+      "data/processed/부산_매칭장소.json",
+      "src/data/busan_poi_catalog.json"
+    ],
+    "purpose": "상업지구 검토에서 폐기 선택된 matched 장소 보관"
+  },
+  "summary": {
+    "excluded": 2
+  },
+  "data": [
+    {
+      "contentId": "1013112",
+      "title": "광주요",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 해운대구 센텀남대로 35",
+      "lat": 35.1688671344,
+      "lon": 129.1297464005,
+      "aihubName": "센텀시티 스파랜드",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 66,
+      "dwell": {
+        "count": 6,
+        "median": 240,
+        "p25": 195,
+        "p75": 263,
+        "mean": 240
+      },
+      "subCategory": "백화점/쇼핑몰",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "폐기",
+      "reason": "사용자 검토 반영: 추천 카탈로그에서 제외",
+      "candidates": [
+        "백화점/쇼핑몰"
+      ],
+      "appliedSubCategory": "폐기",
+      "sourceName": "data/processed/review/부산_매칭상업지구_검토.json",
+      "excludeReason": "사용자 상업지구 검토에서 폐기 선택"
+    },
+    {
+      "contentId": "1013461",
+      "title": "아이하시 (수제젓가락공예)",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 국제시장2길 33",
+      "lat": 35.1024004807,
+      "lon": 129.028312596,
+      "aihubName": "국제시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 143,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "subCategory": "전통시장",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "폐기",
+      "reason": "사용자 검토 반영: 추천 카탈로그에서 제외",
+      "candidates": [
+        "전통시장",
+        "개별상점"
+      ],
+      "appliedSubCategory": "폐기",
+      "sourceName": "data/processed/review/부산_매칭상업지구_검토.json",
+      "excludeReason": "사용자 상업지구 검토에서 폐기 선택"
+    }
+  ],
+  "byContentId": {
+    "1013112": {
+      "contentId": "1013112",
+      "title": "광주요",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 해운대구 센텀남대로 35",
+      "lat": 35.1688671344,
+      "lon": 129.1297464005,
+      "aihubName": "센텀시티 스파랜드",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 66,
+      "dwell": {
+        "count": 6,
+        "median": 240,
+        "p25": 195,
+        "p75": 263,
+        "mean": 240
+      },
+      "subCategory": "백화점/쇼핑몰",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "폐기",
+      "reason": "사용자 검토 반영: 추천 카탈로그에서 제외",
+      "candidates": [
+        "백화점/쇼핑몰"
+      ],
+      "appliedSubCategory": "폐기",
+      "sourceName": "data/processed/review/부산_매칭상업지구_검토.json",
+      "excludeReason": "사용자 상업지구 검토에서 폐기 선택"
+    },
+    "1013461": {
+      "contentId": "1013461",
+      "title": "아이하시 (수제젓가락공예)",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 국제시장2길 33",
+      "lat": 35.1024004807,
+      "lon": 129.028312596,
+      "aihubName": "국제시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 143,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "subCategory": "전통시장",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "폐기",
+      "reason": "사용자 검토 반영: 추천 카탈로그에서 제외",
+      "candidates": [
+        "전통시장",
+        "개별상점"
+      ],
+      "appliedSubCategory": "폐기",
+      "sourceName": "data/processed/review/부산_매칭상업지구_검토.json",
+      "excludeReason": "사용자 상업지구 검토에서 폐기 선택"
+    }
+  }
+}

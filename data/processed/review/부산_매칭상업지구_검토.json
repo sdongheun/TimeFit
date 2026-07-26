@@ -1,0 +1,644 @@
+{
+  "meta": {
+    "generatedAt": "2026-07-26T17:38:41.679Z",
+    "source": "data/processed/부산_매칭장소.json",
+    "purpose": "상업지구 matched 장소 세부 카테고리 검토용",
+    "reviewGuide": {
+      "PASS": "자동 분류를 그대로 써도 될 가능성이 높음",
+      "REVIEW": "사용자가 장소명을 보고 세부 카테고리 확정 필요"
+    }
+  },
+  "summary": {
+    "total": 20,
+    "bySubCategory": {
+      "개별상점": 3,
+      "백화점/쇼핑몰": 2,
+      "전통시장": 7,
+      "아울렛": 2,
+      "전문상가": 5,
+      "거리/골목상권": 1
+    },
+    "byReviewStatus": {
+      "APPLIED": 13,
+      "PASS": 7
+    }
+  },
+  "data": [
+    {
+      "contentId": "3336600",
+      "title": "고래서이뻐",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 해운대구 우동1로38번길 15-1 (우동)",
+      "lat": 35.1657319056,
+      "lon": 129.1583856629,
+      "aihubName": "고래서 이뻐",
+      "aihubCategory": "상점",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "subCategory": "개별상점",
+      "confidence": "low",
+      "reviewStatus": "APPLIED",
+      "select": "개별상점",
+      "reason": "사용자 검토 반영: 개별상점",
+      "candidates": [
+        "개별상점"
+      ],
+      "appliedSubCategory": "개별상점"
+    },
+    {
+      "contentId": "1013112",
+      "title": "광주요",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 해운대구 센텀남대로 35",
+      "lat": 35.1688671344,
+      "lon": 129.1297464005,
+      "aihubName": "센텀시티 스파랜드",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 66,
+      "dwell": {
+        "count": 6,
+        "median": 240,
+        "p25": 195,
+        "p75": 263,
+        "mean": 240
+      },
+      "subCategory": "백화점/쇼핑몰",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "폐기",
+      "reason": "사용자 검토 반영: 추천 카탈로그에서 제외",
+      "candidates": [
+        "백화점/쇼핑몰"
+      ],
+      "appliedSubCategory": "폐기"
+    },
+    {
+      "contentId": "132191",
+      "title": "국제시장",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 신창로4가 일원",
+      "lat": 35.1016422372,
+      "lon": 129.0285792599,
+      "aihubName": "국제시장",
+      "aihubCategory": "상업지구",
+      "matchType": "name+coord",
+      "matchDistanceM": 73,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "subCategory": "전통시장",
+      "confidence": "high",
+      "reviewStatus": "PASS",
+      "reason": "사용자 검토 반영: 전통시장",
+      "candidates": [
+        "전통시장"
+      ],
+      "appliedSubCategory": "전통시장"
+    },
+    {
+      "contentId": "2782750",
+      "title": "러브이즈기빙",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 수영구 광안로49번길 24 (광안동)",
+      "lat": 35.1560822443,
+      "lon": 129.1183532979,
+      "aihubName": "러브 이즈 기방 1호점",
+      "aihubCategory": "상점",
+      "matchType": "coord",
+      "matchDistanceM": 7,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "subCategory": "개별상점",
+      "confidence": "low",
+      "reviewStatus": "APPLIED",
+      "select": "개별상점",
+      "reason": "사용자 검토 반영: 개별상점",
+      "appliedSubCategory": "개별상점"
+    },
+    {
+      "contentId": "1993017",
+      "title": "롯데프리미엄아울렛 동부산점",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 기장군 기장읍 기장해안로 147",
+      "lat": 35.1922299485,
+      "lon": 129.2127940917,
+      "aihubName": "롯데 프리미엄 아울렛 동부산점",
+      "aihubCategory": "상업지구",
+      "matchType": "name+coord",
+      "matchDistanceM": 67,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 90,
+        "mean": 70
+      },
+      "subCategory": "아울렛",
+      "confidence": "high",
+      "reviewStatus": "PASS",
+      "reason": "사용자 검토 반영: 아울렛",
+      "candidates": [
+        "아울렛"
+      ],
+      "appliedSubCategory": "아울렛"
+    },
+    {
+      "contentId": "1013694",
+      "title": "만물의거리",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 국제시장2길 20-1",
+      "lat": 35.0996507962,
+      "lon": 129.0286987483,
+      "aihubName": "국제시장 먹자골목",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 56,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      },
+      "subCategory": "전문상가",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "전문상가",
+      "reason": "사용자 검토 반영: 전문상가",
+      "candidates": [
+        "전통시장",
+        "거리/골목상권"
+      ],
+      "appliedSubCategory": "전문상가"
+    },
+    {
+      "contentId": "132190",
+      "title": "부산 자갈치시장",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 자갈치해안로 52",
+      "lat": 35.0966511661,
+      "lon": 129.0306042201,
+      "aihubName": "자갈치시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 56
+      },
+      "subCategory": "전통시장",
+      "confidence": "high",
+      "reviewStatus": "PASS",
+      "reason": "사용자 검토 반영: 전통시장",
+      "candidates": [
+        "전통시장"
+      ],
+      "appliedSubCategory": "전통시장"
+    },
+    {
+      "contentId": "3080300",
+      "title": "부산전자종합시장",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 부산진구 부전로 196 (부전동)",
+      "lat": 35.1637636841,
+      "lon": 129.0624412844,
+      "aihubName": "부전시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 149,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      },
+      "subCategory": "전문상가",
+      "confidence": "medium",
+      "reviewStatus": "APPLIED",
+      "select": "전문상가",
+      "reason": "사용자 검토 반영: 전문상가",
+      "candidates": [
+        "전문상가",
+        "전통시장"
+      ],
+      "appliedSubCategory": "전문상가"
+    },
+    {
+      "contentId": "132188",
+      "title": "부전마켓타운",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 부산진구 중앙대로755번길 21",
+      "lat": 35.1624610334,
+      "lon": 129.0614025211,
+      "aihubName": "부전시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 34,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      },
+      "subCategory": "전통시장",
+      "confidence": "high",
+      "reviewStatus": "PASS",
+      "reason": "사용자 검토 반영: 전통시장",
+      "candidates": [
+        "전통시장"
+      ],
+      "appliedSubCategory": "전통시장"
+    },
+    {
+      "contentId": "1878218",
+      "title": "부평깡통시장",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 부평1길 48",
+      "lat": 35.1015921962,
+      "lon": 129.0260517037,
+      "aihubName": "부평 깡통시장",
+      "aihubCategory": "상업지구",
+      "matchType": "name+coord",
+      "matchDistanceM": 60,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      },
+      "subCategory": "전통시장",
+      "confidence": "high",
+      "reviewStatus": "PASS",
+      "reason": "사용자 검토 반영: 전통시장",
+      "candidates": [
+        "전통시장"
+      ],
+      "appliedSubCategory": "전통시장"
+    },
+    {
+      "contentId": "132550",
+      "title": "부평동한복거리",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 부평2길 44",
+      "lat": 35.1014505558,
+      "lon": 129.0265905492,
+      "aihubName": "부평 깡통시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 98,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      },
+      "subCategory": "전문상가",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "전문상가",
+      "reason": "사용자 검토 반영: 전문상가",
+      "candidates": [
+        "전통시장",
+        "거리/골목상권"
+      ],
+      "appliedSubCategory": "전문상가"
+    },
+    {
+      "contentId": "2782747",
+      "title": "분홍이네",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 수영구 광안로45번길 2 (광안동, 광안비취빌리지)",
+      "lat": 35.1554211893,
+      "lon": 129.1173728455,
+      "aihubName": "분홍이네",
+      "aihubCategory": "상점",
+      "matchType": "name+coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 7,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 39
+      },
+      "subCategory": "개별상점",
+      "confidence": "low",
+      "reviewStatus": "APPLIED",
+      "select": "개별상점",
+      "reason": "사용자 검토 반영: 개별상점",
+      "appliedSubCategory": "개별상점"
+    },
+    {
+      "contentId": "132576",
+      "title": "신동아 수산물시장",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 자갈치로 42",
+      "lat": 35.096851116,
+      "lon": 129.0290793478,
+      "aihubName": "자갈치시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 139,
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 56
+      },
+      "subCategory": "전통시장",
+      "confidence": "medium",
+      "reviewStatus": "APPLIED",
+      "select": "전통시장",
+      "reason": "사용자 검토 반영: 전통시장",
+      "candidates": [
+        "전문상가",
+        "전통시장"
+      ],
+      "appliedSubCategory": "전통시장"
+    },
+    {
+      "contentId": "767084",
+      "title": "신세계백화점 센텀시티점",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 해운대구 센텀남대로 35",
+      "lat": 35.1687865886,
+      "lon": 129.1297408475,
+      "aihubName": "신세계백화점 센텀시티점",
+      "aihubCategory": "상업지구",
+      "matchType": "name+coord",
+      "matchDistanceM": 63,
+      "dwell": {
+        "count": 42,
+        "median": 60,
+        "p25": 60,
+        "p75": 150,
+        "mean": 105
+      },
+      "subCategory": "백화점/쇼핑몰",
+      "confidence": "high",
+      "reviewStatus": "PASS",
+      "reason": "사용자 검토 반영: 백화점/쇼핑몰",
+      "candidates": [
+        "백화점/쇼핑몰"
+      ],
+      "appliedSubCategory": "백화점/쇼핑몰"
+    },
+    {
+      "contentId": "2532877",
+      "title": "신세계사이먼 부산 프리미엄 아울렛",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 기장군 정관로 1133 부산프리미엄아울렛",
+      "lat": 35.3238517233,
+      "lon": 129.2349940728,
+      "aihubName": "신세계 프리미엄 아웃렛 부산",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 10,
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 77
+      },
+      "subCategory": "아울렛",
+      "confidence": "high",
+      "reviewStatus": "PASS",
+      "reason": "사용자 검토 반영: 아울렛",
+      "candidates": [
+        "아울렛"
+      ],
+      "appliedSubCategory": "아울렛"
+    },
+    {
+      "contentId": "1013709",
+      "title": "아리랑거리",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 광복로35번길 11 (신창동3가)",
+      "lat": 35.100281283,
+      "lon": 129.0287931674,
+      "aihubName": "국제시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 114,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "subCategory": "전문상가",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "전문상가",
+      "reason": "사용자 검토 반영: 전문상가",
+      "candidates": [
+        "전통시장",
+        "거리/골목상권"
+      ],
+      "appliedSubCategory": "전문상가"
+    },
+    {
+      "contentId": "1013461",
+      "title": "아이하시 (수제젓가락공예)",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 국제시장2길 33",
+      "lat": 35.1024004807,
+      "lon": 129.028312596,
+      "aihubName": "국제시장",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 143,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "subCategory": "전통시장",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "폐기",
+      "reason": "사용자 검토 반영: 추천 카탈로그에서 제외",
+      "candidates": [
+        "전통시장",
+        "개별상점"
+      ],
+      "appliedSubCategory": "폐기"
+    },
+    {
+      "contentId": "1942316",
+      "title": "영도봉래시장",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 영도구 태종로113번길 39",
+      "lat": 35.0927462941,
+      "lon": 129.0439559432,
+      "aihubName": "삼진 어묵 영도 본점",
+      "aihubCategory": "식당",
+      "matchType": "coord",
+      "matchDistanceM": 108,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "subCategory": "전통시장",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "전통시장",
+      "reason": "사용자 검토 반영: 전통시장",
+      "candidates": [
+        "전통시장"
+      ],
+      "appliedSubCategory": "전통시장"
+    },
+    {
+      "contentId": "1013721",
+      "title": "조명의거리",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 중구 국제시장2길 5",
+      "lat": 35.0996591215,
+      "lon": 129.0283348915,
+      "aihubName": "국제시장 먹자골목",
+      "aihubCategory": "상업지구",
+      "matchType": "coord",
+      "matchDistanceM": 66,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      },
+      "subCategory": "전문상가",
+      "confidence": "high",
+      "reviewStatus": "APPLIED",
+      "select": "전문상가",
+      "reason": "사용자 검토 반영: 전문상가",
+      "candidates": [
+        "전통시장",
+        "거리/골목상권"
+      ],
+      "appliedSubCategory": "전문상가"
+    },
+    {
+      "contentId": "3511011",
+      "title": "주식회사아래모래",
+      "category": "상업지구",
+      "contentTypeId": "38",
+      "contentTypeName": "쇼핑",
+      "addr1": "부산광역시 사하구 감내2로 100 (감천동)",
+      "lat": 35.0969979358,
+      "lon": 129.0081228329,
+      "aihubName": "감천문화마을",
+      "aihubCategory": "체험활동관광지",
+      "matchType": "coord",
+      "matchDistanceM": 142,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 72
+      },
+      "subCategory": "거리/골목상권",
+      "confidence": "low",
+      "reviewStatus": "APPLIED",
+      "select": "거리/골목상권",
+      "reason": "사용자 검토 반영: 거리/골목상권",
+      "candidates": [
+        "개별상점"
+      ],
+      "appliedSubCategory": "거리/골목상권"
+    }
+  ],
+  "contentIds": [
+    "3336600",
+    "1013112",
+    "132191",
+    "2782750",
+    "1993017",
+    "1013694",
+    "132190",
+    "3080300",
+    "132188",
+    "1878218",
+    "132550",
+    "2782747",
+    "132576",
+    "767084",
+    "2532877",
+    "1013709",
+    "1013461",
+    "1942316",
+    "1013721",
+    "3511011"
+  ]
+}

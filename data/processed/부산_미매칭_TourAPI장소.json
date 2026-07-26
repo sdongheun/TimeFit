@@ -14,9 +14,9 @@
     "note": "TourAPI 부산 후보 중 현재 AI-Hub 부산 방문지와 매칭되지 않아 추천 후보에서 제외된 장소 목록."
   },
   "summary": {
-    "tourCandidates": 641,
-    "matched": 135,
-    "unmatched": 506,
+    "tourCandidates": 612,
+    "matched": 124,
+    "unmatched": 488,
     "byType": {
       "12": {
         "name": "관광지",
@@ -34,10 +34,10 @@
       },
       "28": {
         "name": "레포츠",
-        "total": 39,
-        "matched": 14,
-        "rate": 35.9,
-        "unmatched": 25
+        "total": 10,
+        "matched": 3,
+        "rate": 30,
+        "unmatched": 7
       },
       "38": {
         "name": "쇼핑",
@@ -1795,17 +1795,6 @@
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     {
-      "contentId": "2661479",
-      "title": "구덕야영장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 서구 꽃마을로156번길 109",
-      "lat": 35.1255892096,
-      "lon": 129.0097191372,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
       "contentId": "2755696",
       "title": "구포무장애숲길",
       "contentTypeId": "28",
@@ -1814,39 +1803,6 @@
       "addr1": "부산광역시 북구 낙동북로 722 (구포동)",
       "lat": 35.197780951,
       "lon": 129.0004318626,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "2872199",
-      "title": "남파랑길(부산)",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 남구 용호동",
-      "lat": 35.1026382801,
-      "lon": 129.1212572871,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "3027022",
-      "title": "늘푸른숲",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 금정구 체육공원로 270 (선동)",
-      "lat": 35.266130818,
-      "lon": 129.1071456915,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "2729157",
-      "title": "대저캠핑장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 강서구 체육공원로6번길 184",
-      "lat": 35.2074545784,
-      "lon": 128.9847746284,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     {
@@ -1872,28 +1828,6 @@
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     {
-      "contentId": "131146",
-      "title": "부산광역시교육청학생인성교육원",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 금정구 북문로 178",
-      "lat": 35.2606108543,
-      "lon": 129.0456984184,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "2726803",
-      "title": "부산항힐링야영장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 중구 이순신대로 72 (중앙동4가)",
-      "lat": 35.1057837263,
-      "lon": 129.0440916874,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
       "contentId": "3080310",
       "title": "삼락강변체육공원인라인스케이트장",
       "contentTypeId": "28",
@@ -1902,17 +1836,6 @@
       "addr1": "부산광역시 사상구 삼락동",
       "lat": 35.1612622933,
       "lon": 128.9717797997,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "2756707",
-      "title": "삼락수상레포츠타운",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 사상구 삼락동 29-21",
-      "lat": 35.1728970354,
-      "lon": 128.9682186811,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     {
@@ -1927,105 +1850,6 @@
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     {
-      "contentId": "576732",
-      "title": "아시아드 컨트리클럽",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 일광면 차양길 26",
-      "lat": 35.2872281487,
-      "lon": 129.2401863043,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "131943",
-      "title": "영도관광실탄사격장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 영도구 절영로 319",
-      "lat": 35.0735291869,
-      "lon": 129.0541194729,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "131087",
-      "title": "용호동일대 바다낚시",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 남구 용호동",
-      "lat": 35.1335291572,
-      "lon": 129.1153208463,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "2741535",
-      "title": "임랑카라반파크",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 일광면 일광로 763",
-      "lat": 35.3095065653,
-      "lon": 129.2593979022,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "2734243",
-      "title": "장안캠프",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 장안읍 장안로 18",
-      "lat": 35.3418805818,
-      "lon": 129.252403167,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "2741526",
-      "title": "제이스글램핑",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 일광읍 이천8길 132-20",
-      "lat": 35.2777040982,
-      "lon": 129.2338482308,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "2749611",
-      "title": "지오클럽",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 일광면 기장해안로 1272",
-      "lat": 35.2578452406,
-      "lon": 129.2353514279,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "2734175",
-      "title": "초원숲속캠핑장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 정관읍 병산1길 18",
-      "lat": 35.3449845893,
-      "lon": 129.1880920151,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "131452",
-      "title": "함지골청소년수련관",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 영도구 절영로 321",
-      "lat": 35.0744874138,
-      "lon": 129.0541777748,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
       "contentId": "2708164",
       "title": "해안누리길 몰운대길",
       "contentTypeId": "28",
@@ -2037,17 +1861,6 @@
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     {
-      "contentId": "2734674",
-      "title": "화명오토캠핑장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 북구 낙동강자전거길 1425 (덕천동)",
-      "lat": 35.2164177357,
-      "lon": 128.9995730939,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
       "contentId": "2663187",
       "title": "회동수원지 둘레길",
       "contentTypeId": "28",
@@ -2056,17 +1869,6 @@
       "addr1": "부산광역시 금정구 오륜동",
       "lat": 35.2660392535,
       "lon": 129.1121285941,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    {
-      "contentId": "1878262",
-      "title": "[부산 갈맷길] 2코스 2구간",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 해운대구 우동",
-      "lat": 35.1618263079,
-      "lon": 129.13252413,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     {
@@ -6086,50 +5888,6 @@
       "lon": 128.9898027697,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
-    "131087": {
-      "contentId": "131087",
-      "title": "용호동일대 바다낚시",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 남구 용호동",
-      "lat": 35.1335291572,
-      "lon": 129.1153208463,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "131146": {
-      "contentId": "131146",
-      "title": "부산광역시교육청학생인성교육원",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 금정구 북문로 178",
-      "lat": 35.2606108543,
-      "lon": 129.0456984184,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "131452": {
-      "contentId": "131452",
-      "title": "함지골청소년수련관",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 영도구 절영로 321",
-      "lat": 35.0744874138,
-      "lon": 129.0541777748,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "131943": {
-      "contentId": "131943",
-      "title": "영도관광실탄사격장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 영도구 절영로 319",
-      "lat": 35.0735291869,
-      "lon": 129.0541194729,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
     "132187": {
       "contentId": "132187",
       "title": "남포동 지하도상가",
@@ -6546,17 +6304,6 @@
       "addr1": "부산광역시 부산진구 백양대로136번길 51",
       "lat": 35.1622327711,
       "lon": 129.0337549338,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "576732": {
-      "contentId": "576732",
-      "title": "아시아드 컨트리클럽",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 일광면 차양길 26",
-      "lat": 35.2872281487,
-      "lon": 129.2401863043,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     "688610": {
@@ -6999,17 +6746,6 @@
       "lon": 129.1768644,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
-    "1878262": {
-      "contentId": "1878262",
-      "title": "[부산 갈맷길] 2코스 2구간",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 해운대구 우동",
-      "lat": 35.1618263079,
-      "lon": 129.13252413,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
     "1918263": {
       "contentId": "1918263",
       "title": "누리마루 APEC하우스",
@@ -7428,17 +7164,6 @@
       "lon": 129.2399148578,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
-    "2661479": {
-      "contentId": "2661479",
-      "title": "구덕야영장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 서구 꽃마을로156번길 109",
-      "lat": 35.1255892096,
-      "lon": 129.0097191372,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
     "2663187": {
       "contentId": "2663187",
       "title": "회동수원지 둘레길",
@@ -7582,17 +7307,6 @@
       "lon": 129.0173415667,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
-    "2726803": {
-      "contentId": "2726803",
-      "title": "부산항힐링야영장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 중구 이순신대로 72 (중앙동4가)",
-      "lat": 35.1057837263,
-      "lon": 129.0440916874,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
     "2726843": {
       "contentId": "2726843",
       "title": "가덕도 연대봉",
@@ -7602,17 +7316,6 @@
       "addr1": "부산광역시 강서구 천성동",
       "lat": 35.0317518247,
       "lon": 128.8216713782,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "2729157": {
-      "contentId": "2729157",
-      "title": "대저캠핑장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 강서구 체육공원로6번길 184",
-      "lat": 35.2074545784,
-      "lon": 128.9847746284,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     "2732397": {
@@ -7637,39 +7340,6 @@
       "lon": 129.0827285679,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
-    "2734175": {
-      "contentId": "2734175",
-      "title": "초원숲속캠핑장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 정관읍 병산1길 18",
-      "lat": 35.3449845893,
-      "lon": 129.1880920151,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "2734243": {
-      "contentId": "2734243",
-      "title": "장안캠프",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 장안읍 장안로 18",
-      "lat": 35.3418805818,
-      "lon": 129.252403167,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "2734674": {
-      "contentId": "2734674",
-      "title": "화명오토캠핑장",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 북구 낙동강자전거길 1425 (덕천동)",
-      "lat": 35.2164177357,
-      "lon": 128.9995730939,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
     "2736392": {
       "contentId": "2736392",
       "title": "청학수변공원",
@@ -7679,28 +7349,6 @@
       "addr1": "부산광역시 영도구 청학동 217-43",
       "lat": 35.0977293865,
       "lon": 129.0611626448,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "2741526": {
-      "contentId": "2741526",
-      "title": "제이스글램핑",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 일광읍 이천8길 132-20",
-      "lat": 35.2777040982,
-      "lon": 129.2338482308,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "2741535": {
-      "contentId": "2741535",
-      "title": "임랑카라반파크",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 일광면 일광로 763",
-      "lat": 35.3095065653,
-      "lon": 129.2593979022,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     "2742601": {
@@ -7734,17 +7382,6 @@
       "addr1": "부산광역시 서구 꽃마을로163번길 73 (서대신동3가)",
       "lat": 35.1264334874,
       "lon": 129.0058166756,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "2749611": {
-      "contentId": "2749611",
-      "title": "지오클럽",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 기장군 일광면 기장해안로 1272",
-      "lat": 35.2578452406,
-      "lon": 129.2353514279,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     "2752168": {
@@ -7833,17 +7470,6 @@
       "addr1": "부산광역시 북구 산성로 299",
       "lat": 35.2510535364,
       "lon": 129.0426767218,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "2756707": {
-      "contentId": "2756707",
-      "title": "삼락수상레포츠타운",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 사상구 삼락동 29-21",
-      "lat": 35.1728970354,
-      "lon": 128.9682186811,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     "2758469": {
@@ -10420,17 +10046,6 @@
       "lon": 128.9816844453,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
-    "2872199": {
-      "contentId": "2872199",
-      "title": "남파랑길(부산)",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 남구 용호동",
-      "lat": 35.1026382801,
-      "lon": 129.1212572871,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
     "2872258": {
       "contentId": "2872258",
       "title": "채플린",
@@ -10968,17 +10583,6 @@
       "addr1": "부산광역시 금정구 산성로 453 (금성동)",
       "lat": 35.2504121966,
       "lon": 129.0564283199,
-      "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
-    },
-    "3027022": {
-      "contentId": "3027022",
-      "title": "늘푸른숲",
-      "contentTypeId": "28",
-      "contentTypeName": "레포츠",
-      "category": "레저/스포츠",
-      "addr1": "부산광역시 금정구 체육공원로 270 (선동)",
-      "lat": 35.266130818,
-      "lon": 129.1071456915,
       "reason": "AI-Hub 부산 후보 POI와 150m 이내 좌표 매칭 또는 이름 매칭 없음"
     },
     "3027098": {

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // TourAPI 부산 장소 ↔ AI-Hub 부산 방문지 매칭 후보 마스터 생성
 // 산출:
-//   - data/processed/busan_matched_poi.json
-//   - data/processed/busan_unmatched_tourapi.json
+//   - data/processed/부산_매칭장소.json
+//   - data/processed/부산_미매칭_TourAPI장소.json
 //   - src/data/busan_poi_catalog.json
 // 사용: TOURAPI_KEY=... node scripts/build_busan_matched_poi.mjs
 import fs from 'node:fs';
@@ -15,10 +15,10 @@ if (!KEY) {
 }
 
 const ROOT = path.resolve('data/aihub_donbu');
-const OUT_PROCESSED = path.resolve('data/processed/busan_matched_poi.json');
-const OUT_UNMATCHED = path.resolve('data/processed/busan_unmatched_tourapi.json');
+const OUT_PROCESSED = path.resolve('data/processed/부산_매칭장소.json');
+const OUT_UNMATCHED = path.resolve('data/processed/부산_미매칭_TourAPI장소.json');
 const OUT_APP = path.resolve('src/data/busan_poi_catalog.json');
-const CATEGORY_DWELL = path.resolve('data/processed/category_dwell.json');
+const CATEGORY_DWELL = path.resolve('data/processed/카테고리별_체류시간.json');
 const BASE = 'https://apis.data.go.kr/B551011/KorService2/areaBasedList2';
 const COMMON = { serviceKey: KEY, MobileOS: 'ETC', MobileApp: 'TimeFit', _type: 'json', areaCode: 6 };
 const MATCH_RADIUS_M = 150;

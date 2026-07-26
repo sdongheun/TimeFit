@@ -24,7 +24,7 @@ const scenario = {
 
 // ---------- 데이터 ----------
 const PROC = path.resolve('data/processed');
-const catDwell = JSON.parse(fs.readFileSync(path.join(PROC, 'category_dwell.json'), 'utf-8')).data;
+const catDwell = JSON.parse(fs.readFileSync(path.join(PROC, '카테고리별_체류시간.json'), 'utf-8')).data;
 const poiDwell = JSON.parse(fs.readFileSync(path.join(PROC, 'poi_dwell.json'), 'utf-8')).data;
 const congestion = JSON.parse(fs.readFileSync(path.join(PROC, 'congestion_matrix.json'), 'utf-8')).data;
 const norm = (s) => (s || '').replace(/\s+/g, '').toLowerCase();
