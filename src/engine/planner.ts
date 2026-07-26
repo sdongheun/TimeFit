@@ -5,7 +5,7 @@ import { detailIntro, isOpenDuring, locationBased } from './tourapi';
 import { haversineMin, precompute, precomputeTransit, transitMeta, travelGeo, travelMin, travelSrc } from './travel';
 
 const ROAD_MODES: RoadMode[] = ['walk', 'car'];
-const MIN_STAY_MIN = 30;
+const DEFAULT_MIN_STAY_MIN = 30;
 const HARD_DETOUR_RATIO = 1.8;
 const INITIAL_TMAP_REFINE_COUNT = 0;
 const INITIAL_RESULT_COUNT = 10;
@@ -46,13 +46,13 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   }
   cands.push(...seenCand.values());
 
-  // 2) haversine 프리필터: 사용자가 선택한 이동수단으로 30분 이상 머물 수 있으면 유지
-  const pre = cands.filter((c) => hasStayOpportunity([c], input.origin, target, !!input.destination, budget, primaryMode));
+  // 2) haversine 프리필터: 짧은 자투리 시간에는 카페/상업지구/가벼운 구경 장소를 더 유연하게 유지
+  const pre = cands.filter((c) => hasStayOpportunity([c], input.origin, target, !!input.destination, budget, primaryMode, input.remainingMin));
   pre.sort((a, b) => moveOnlyMin([a], input.origin, target, primaryMode, !!input.destination) - moveOnlyMin([b], input.origin, target, primaryMode, !!input.destination));
 
   // 3) 운영시간 게이트 (상위만 detailIntro2)
   const gated: Spot[] = [];
-  for (const s of pre.slice(0, 16)) {
+  for (const s of pre.slice(0, gateLimitFor(primaryMode, input.remainingMin))) {
     const intro = await detailIntro(s.contentId, s.typeId);
     const start = input.nowMin + Math.min(haversineMin(input.origin, s, 'walk'), haversineMin(input.origin, s, 'car'));
     const g = isOpenDuring(intro, s.typeId, start, s.dwell);
@@ -80,7 +80,7 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   }
 
   // 랭킹 v1 — 결정적 점수 함수 + 그리디 다양성 (추천로직.md §4)
-  const ranked = stabilizeVisibleMix(rankCourses(courses, budget, input.hourBucket, primaryMode), input.remainingMin);
+  const ranked = stabilizeVisibleMix(rankCourses(courses, budget, input.hourBucket, primaryMode, input.remainingMin), input.remainingMin);
 
   // 5) 지연 정밀화 — API 사용량 보호를 위해 추천 목록에서는 TMAP 경로 API를 호출하지 않는다.
   //    나머지는 haversine 추정값으로 먼저 보여주고, 상세/확정 단계에서 정밀화하는 구조로 확장한다.
@@ -105,7 +105,7 @@ async function refineTransitCandidates(
   budget: number,
 ): Promise<{ courses: Course[]; rest: Course[]; ok: number; fail: number }> {
   const refined = await refineCourses(ranked, origin, destination, 'transit', remainingMin, TRANSIT_REFINE_COUNT);
-  const reranked = stabilizeVisibleMix(rankCourses(refined.courses, budget, hourBucket, 'transit', refined.courses.length), remainingMin);
+  const reranked = stabilizeVisibleMix(rankCourses(refined.courses, budget, hourBucket, 'transit', remainingMin, refined.courses.length), remainingMin);
   return {
     courses: reranked.slice(0, INITIAL_RESULT_COUNT),
     rest: [...reranked.slice(INITIAL_RESULT_COUNT), ...refined.rest],
@@ -151,7 +151,7 @@ function radiusFor(mode: Mode, remainingMin: number): number {
     return 6000;
   }
   if (mode === 'walk') {
-    if (remainingMin <= 60) return 700;
+    if (remainingMin <= 60) return 1000;
     if (remainingMin <= 120) return 1000;
     return 1500;
   }
@@ -160,7 +160,7 @@ function radiusFor(mode: Mode, remainingMin: number): number {
   return 8000;
 }
 
-function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourBucket'], primaryMode: Mode, cap = 24): Course[] {
+function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourBucket'], primaryMode: Mode, remainingMin: number, cap = 24): Course[] {
   const scored = courses.map((c) => {
     const primary = c.mobility?.[primaryMode];
     const bestStay = primary?.stayMin ?? 0;
@@ -171,14 +171,16 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
     const fit = c.spots.reduce((n, s) => n + timeFitOf(bucket, s.category), 0) / c.spots.length; // 시간대적합
     const conf = c.spots.reduce((n, s) => n + (s.confidence === 'direct_match' ? 1 : 0.7), 0) / c.spots.length;
     const compact = c.spots.length === 1 ? 0.7 : Math.max(0, 1 - haversineMin(c.spots[0], c.spots[1], 'walk') / 12);
-    const carOnlyPenalty = primaryMode === 'walk' && (c.mobility?.walk?.stayMin ?? 0) < MIN_STAY_MIN && (c.mobility?.car?.stayMin ?? 0) >= MIN_STAY_MIN ? 0.12 : 0;
+    const minStay = minStayForCourse(c.spots, remainingMin);
+    const carOnlyPenalty = primaryMode === 'walk' && (c.mobility?.walk?.stayMin ?? 0) < minStay && (c.mobility?.car?.stayMin ?? 0) >= minStay ? 0.12 : 0;
     const fallbackOnlyPenalty = c.spots.every((s) => s.confidence === 'category_fallback') ? 0.12 : 0;
     const duplicatePairPenalty = c.spots.length === 2 && c.spots[0].category === c.spots[1].category ? 0.08 : 0;
     const strategyBonus = c.strategy === 'destination_area' ? 0.04 : c.strategy === 'route_area' ? 0.03 : 0;
+    const shortGapBonus = budget <= 60 ? shortGapCategoryBonus(c) : 0;
     const transitRailBonus = primaryMode === 'transit' && hasSubwayLeg(c) ? 0.06 : 0;
     const transitReliabilityPenalty = primaryMode === 'transit' ? transitFallbackPenalty(c) : 0;
     const score = 0.3 * Math.min(1, bestStay / 60) + 0.2 * ratio + 0.2 * fit + 0.15 * conf + 0.15 * compact
-      + strategyBonus + transitRailBonus - carOnlyPenalty - fallbackOnlyPenalty - duplicatePairPenalty - transitReliabilityPenalty;
+      + strategyBonus + shortGapBonus + transitRailBonus - carOnlyPenalty - fallbackOnlyPenalty - duplicatePairPenalty - transitReliabilityPenalty;
     const modeLabel = primaryMode === 'car' ? '차량' : primaryMode === 'transit' ? '대중교통' : '도보';
     const why = `${c.strategy ? STRATEGY_LABEL[c.strategy] + ' · ' : ''}${modeLabel} 기준 체류가능 ${bestStay}분 · ${bucket} 적합 ${Math.round(fit * 100)}%`;
     return { c: { ...c, why }, score };
@@ -234,8 +236,14 @@ function stabilizeVisibleMix(ranked: Course[], remainingMin: number): Course[] {
 }
 
 // 구간 시간/경로 조립 — precompute 이후 호출하면 TMAP 정밀값+실경로, 아니면 haversine 추정
-function hasStayOpportunity(spots: Spot[], origin: LatLon, target: LatLon, viaAppointment: boolean, budget: number, mode: Mode): boolean {
-  return moveOnlyMin(spots, origin, target, mode, viaAppointment) <= budget - MIN_STAY_MIN;
+function gateLimitFor(mode: Mode, remainingMin: number): number {
+  if (mode === 'walk' && remainingMin <= 60) return 28;
+  if (remainingMin <= 90) return 22;
+  return 16;
+}
+
+function hasStayOpportunity(spots: Spot[], origin: LatLon, target: LatLon, viaAppointment: boolean, budget: number, mode: Mode, remainingMin: number): boolean {
+  return moveOnlyMin(spots, origin, target, mode, viaAppointment) <= budget - minStayForCourse(spots, remainingMin);
 }
 
 function isAllowedPair(a: Spot, b: Spot): boolean {
@@ -277,6 +285,7 @@ function buildCourse(
 ): Omit<Course, 'type'> | null {
   const buffer = Math.max(10, Math.round(remainingMin * 0.12));
   const budget = remainingMin - buffer;
+  const minStay = minStayForCourse(spots, remainingMin);
   const modes = Array.from(new Set<Mode>([...ROAD_MODES, primaryMode]));
   const mobility = Object.fromEntries(modes.map((mode) => {
     const moveMin = moveOnlyMin(spots, origin, target, mode, viaAppointment);
@@ -286,7 +295,7 @@ function buildCourse(
     return [mode, {
       mode, moveMin, stayMin, totalMin: moveMin + allocatedStay,
       bufferLeftMin: remainingMin - moveMin - allocatedStay,
-      ok: stayMin >= MIN_STAY_MIN,
+      ok: stayMin >= minStay,
       legs,
     } satisfies MobilityOption];
   })) as Record<Mode, MobilityOption>;
@@ -295,6 +304,28 @@ function buildCourse(
   if (!best.ok) return null;
   if (viaAppointment && detourRatio(spots, origin, target, bestMode) >= HARD_DETOUR_RATIO) return null;
   return { spots, totalMin: best.totalMin, legs: best.legs, bufferLeftMin: best.bufferLeftMin, bestMode, mobility };
+}
+
+function minStayForCourse(spots: Spot[], remainingMin: number): number {
+  if (spots.length > 1) return DEFAULT_MIN_STAY_MIN;
+  const category = spots[0]?.category;
+  if (remainingMin <= 60) {
+    if (category === '카페' || category === '상업지구') return 20;
+    if (category === '문화시설' || category === '자연관광지') return 25;
+  }
+  if (remainingMin <= 90 && (category === '카페' || category === '상업지구')) return 25;
+  return DEFAULT_MIN_STAY_MIN;
+}
+
+function shortGapCategoryBonus(course: Course): number {
+  if (course.spots.length > 1) return -0.03;
+  const category = course.spots[0]?.category;
+  if (category === '카페') return 0.08;
+  if (category === '상업지구') return 0.06;
+  if (category === '문화시설') return 0.04;
+  if (category === '자연관광지') return 0.03;
+  if (category === '식당') return -0.03;
+  return 0;
 }
 
 function detourRatio(spots: Spot[], origin: LatLon, target: LatLon, mode: Mode): number {

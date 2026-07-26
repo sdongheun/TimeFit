@@ -5,6 +5,10 @@ import { DayType, HourBucket } from './types';
 type BusanMatchedRec = {
   contentId: string;
   title: string;
+  aihubName?: string;
+  aihubCategory?: string;
+  matchType?: string;
+  matchDistanceM?: number;
   category: string;
   dwell: { count: number; median: number; p25: number; p75: number; mean: number };
 };
@@ -39,7 +43,10 @@ export function resolveBusanDwell(
   confidence: 'direct_match' | 'category_fallback';
 } | null {
   const matched = busanMatched[String(contentId)];
-  if (matched) return effectiveBusanMatchedDwell(matched);
+  if (matched) {
+    if (isLowConfidenceMatched(matched)) return null;
+    return effectiveBusanMatchedDwell(matched);
+  }
 
   const unmatched = busanUnmatched[String(contentId)];
   if (!unmatched) return null;
@@ -54,6 +61,32 @@ export function resolveBusanDwell(
     src: `카테고리폴백:${unmatched.category}(n=${stat.count})`,
     confidence: 'category_fallback',
   };
+}
+
+function isLowConfidenceMatched(matched: BusanMatchedRec): boolean {
+  const risks = [
+    matched.matchType === 'coord',
+    (matched.matchDistanceM ?? 0) > 50,
+    (matched.dwell?.count ?? 0) < 5,
+    !!matched.aihubName && !isSimilarPlaceName(matched.title, matched.aihubName),
+    !!matched.aihubCategory && matched.aihubCategory !== matched.category,
+  ];
+  return risks.filter(Boolean).length >= 4;
+}
+
+function isSimilarPlaceName(a: string, b: string): boolean {
+  const na = normalizePlaceName(a);
+  const nb = normalizePlaceName(b);
+  if (!na || !nb) return false;
+  return na.includes(nb) || nb.includes(na);
+}
+
+function normalizePlaceName(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/\[[^\]]*]|\([^)]*\)/g, '')
+    .replace(/부산|광역시|본점|지점|점|센터|관|카페|coffee|cafe/g, '')
+    .replace(/[^0-9a-z가-힣]/g, '');
 }
 
 function effectiveBusanMatchedDwell(

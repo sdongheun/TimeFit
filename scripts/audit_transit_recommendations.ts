@@ -43,7 +43,7 @@ type ScenarioAudit = {
 };
 
 const OUT = path.resolve('docs/reports/transit_recommendation_audit.html');
-const MIN_STAY_MIN = 30;
+const DEFAULT_MIN_STAY_MIN = 30;
 
 const RULES = [
   { code: 'no_odsay_verified_leg', level: 'FAIL', penalty: 45, desc: '약속장소가 있는 대중교통 코스인데 ODsay 확인 구간이 없음' },
@@ -127,7 +127,8 @@ function auditCourse(sc: Scenario, course: Course): CourseAudit {
 
   if (odsayLegs === 0) add('fail', 'no_odsay_verified_leg', 'ODsay로 확인된 대중교통 구간이 없습니다.', 45);
   if (fallbackLegs > 0) add('warn', 'transit_fallback_leg', `대중교통 근사 구간이 ${fallbackLegs}개 남아 있습니다.`, 18);
-  if (stayMin < MIN_STAY_MIN) add('fail', 'below_min_stay', `체류 가능 시간이 ${stayMin}분입니다.`, 60);
+  const minStay = minStayForAudit(course, sc.remainingMin);
+  if (stayMin < minStay) add('fail', 'below_min_stay', `체류 가능 시간이 ${stayMin}분입니다. 최소 기준은 ${minStay}분입니다.`, 60);
   else if (stayMin < 40) add('warn', 'low_stay_margin', `체류 가능 시간이 ${stayMin}분입니다.`, 20);
   if (moveMin > stayMin) add('warn', 'move_over_stay', `이동 ${moveMin}분, 체류 가능 ${stayMin}분입니다.`, 14);
   if (moveMin / Math.max(sc.remainingMin, 1) >= 0.45) add('warn', 'high_move_ratio', `이동시간이 입력 시간의 ${Math.round((moveMin / sc.remainingMin) * 100)}%입니다.`, 14);
@@ -160,6 +161,17 @@ function auditCourse(sc: Scenario, course: Course): CourseAudit {
       pairWalkShort,
     },
   };
+}
+
+function minStayForAudit(course: Course, remainingMin: number): number {
+  if (course.spots.length > 1) return DEFAULT_MIN_STAY_MIN;
+  const category = course.spots[0]?.category;
+  if (remainingMin <= 60) {
+    if (category === '카페' || category === '상업지구') return 20;
+    if (category === '문화시설' || category === '자연관광지') return 25;
+  }
+  if (remainingMin <= 90 && (category === '카페' || category === '상업지구')) return 25;
+  return DEFAULT_MIN_STAY_MIN;
 }
 
 async function runScenario(sc: Scenario): Promise<ScenarioAudit> {

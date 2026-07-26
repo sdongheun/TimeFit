@@ -44,7 +44,7 @@ type ScenarioAudit = {
 };
 
 const OUT = path.resolve('docs/reports/recommendation_audit.html');
-const MIN_STAY_MIN = 30;
+const DEFAULT_MIN_STAY_MIN = 30;
 
 const RULES = [
   { code: 'lodging_keyword', level: 'FAIL', penalty: 100, desc: '숙박성 키워드 포함' },
@@ -189,8 +189,9 @@ function auditCourse(sc: Scenario, c: Course): CourseAudit {
   if ((walk?.moveMin ?? 0) > 60) {
     add('warn', 'walk_too_long', `도보 총 이동이 ${walk?.moveMin}분입니다.`, 15);
   }
-  if ((walk?.stayMin ?? 0) < MIN_STAY_MIN && (car?.stayMin ?? 0) >= MIN_STAY_MIN) {
-    add('warn', 'car_only', '자동차로만 30분 이상 체류 가능한 코스입니다.', 20);
+  const minStay = minStayForAudit(c, sc.remainingMin);
+  if ((walk?.stayMin ?? 0) < minStay && (car?.stayMin ?? 0) >= minStay) {
+    add('warn', 'car_only', `자동차로만 최소 체류 ${minStay}분 이상 가능한 코스입니다.`, 20);
   }
   if (bestStayMin < 40) {
     add('warn', 'low_stay_margin', `최선 수단 기준 체류 가능 시간이 ${bestStayMin}분입니다.`, 20);
@@ -222,6 +223,17 @@ function auditCourse(sc: Scenario, c: Course): CourseAudit {
       strategy: c.strategy ?? 'origin_area',
     },
   };
+}
+
+function minStayForAudit(course: Course, remainingMin: number): number {
+  if (course.spots.length > 1) return DEFAULT_MIN_STAY_MIN;
+  const category = course.spots[0]?.category;
+  if (remainingMin <= 60) {
+    if (category === '카페' || category === '상업지구') return 20;
+    if (category === '문화시설' || category === '자연관광지') return 25;
+  }
+  if (remainingMin <= 90 && (category === '카페' || category === '상업지구')) return 25;
+  return DEFAULT_MIN_STAY_MIN;
 }
 
 function round1(n: number): number {
