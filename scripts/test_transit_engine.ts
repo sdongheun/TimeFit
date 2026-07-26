@@ -20,7 +20,7 @@ async function main() {
     const transit = c.mobility?.transit;
     console.log(`[${c.type}] ${c.spots.map((s) => s.title).join(' + ')} · 대중교통 이동 ${transit?.moveMin ?? 0}분 · 체류가능 ${transit?.stayMin ?? 0}분 · ${c.why}`);
     for (const leg of c.legs.filter((l) => !l.label.startsWith('체류'))) {
-      console.log(`  - ${leg.label}: ${leg.min}분 [${leg.src}]`);
+      console.log(`  - ${leg.label}: ${leg.min}분 [${leg.src}] geo=${leg.geo?.length ?? 0}`);
     }
   }
 

@@ -10,6 +10,7 @@ const HARD_DETOUR_RATIO = 1.8;
 const INITIAL_TMAP_REFINE_COUNT = 0;
 const INITIAL_RESULT_COUNT = 10;
 const TRANSIT_REFINE_COUNT = 18;
+const RANKING_VARIATION_WINDOW = 0.035;
 const STRATEGY_LABEL: Record<Strategy, string> = {
   origin_area: '출발지 근처',
   destination_area: '약속지 근처',
@@ -175,8 +176,9 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
     const duplicatePairPenalty = c.spots.length === 2 && c.spots[0].category === c.spots[1].category ? 0.08 : 0;
     const strategyBonus = c.strategy === 'destination_area' ? 0.04 : c.strategy === 'route_area' ? 0.03 : 0;
     const transitRailBonus = primaryMode === 'transit' && hasSubwayLeg(c) ? 0.06 : 0;
+    const transitReliabilityPenalty = primaryMode === 'transit' ? transitFallbackPenalty(c) : 0;
     const score = 0.3 * Math.min(1, bestStay / 60) + 0.2 * ratio + 0.2 * fit + 0.15 * conf + 0.15 * compact
-      + strategyBonus + transitRailBonus - carOnlyPenalty - fallbackOnlyPenalty - duplicatePairPenalty;
+      + strategyBonus + transitRailBonus - carOnlyPenalty - fallbackOnlyPenalty - duplicatePairPenalty - transitReliabilityPenalty;
     const modeLabel = primaryMode === 'car' ? '차량' : primaryMode === 'transit' ? '대중교통' : '도보';
     const why = `${c.strategy ? STRATEGY_LABEL[c.strategy] + ' · ' : ''}${modeLabel} 기준 체류가능 ${bestStay}분 · ${bucket} 적합 ${Math.round(fit * 100)}%`;
     return { c: { ...c, why }, score };
@@ -186,12 +188,17 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
   const catCnt: Record<string, number> = {};
   const seen = new Set<string>();
   while (ranked.length < cap && scored.length) {
-    let bi = 0, bv = -Infinity;
-    for (let i = 0; i < scored.length; i++) {
-      const pen = scored[i].c.spots.reduce((p, s) => p + (catCnt[s.category] ?? 0), 0) * 0.15;
-      const v = scored[i].score - pen;
-      if (v > bv) { bv = v; bi = i; }
-    }
+    let bv = -Infinity;
+    const values = scored.map((item) => {
+      const pen = item.c.spots.reduce((p, s) => p + (catCnt[s.category] ?? 0), 0) * 0.15;
+      const v = item.score - pen;
+      if (v > bv) bv = v;
+      return v;
+    });
+    const nearBest = values
+      .map((v, i) => ({ v, i }))
+      .filter((x) => bv - x.v <= RANKING_VARIATION_WINDOW);
+    const bi = nearBest[Math.floor(Math.random() * nearBest.length)]?.i ?? 0;
     const { c } = scored.splice(bi, 1)[0];
     const k = c.spots.map((s) => s.title).sort().join('|');
     if (seen.has(k)) continue;
@@ -200,6 +207,15 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
     c.spots.forEach((s) => { catCnt[s.category] = (catCnt[s.category] ?? 0) + 1; });
   }
   return ranked;
+}
+
+function transitFallbackPenalty(course: Course): number {
+  const movement = course.legs.filter((leg) => !leg.label.startsWith('체류'));
+  if (!movement.length) return 0;
+  const fallback = movement.filter((leg) => leg.src === 'transit_fallback').length;
+  const odsay = movement.filter((leg) => leg.src === 'ODsay').length;
+  if (!fallback) return 0;
+  return Math.min(0.08, fallback * 0.035 + (odsay === 0 ? 0.035 : 0));
 }
 
 function stabilizeVisibleMix(ranked: Course[], remainingMin: number): Course[] {

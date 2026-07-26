@@ -124,7 +124,7 @@ export function DetailScreen({ route, navigation }: Props) {
 
         <Text style={s.legHead}>동선 분해</Text>
         <View style={s.legBox}>
-          {course.legs.map((lg, i) => (
+          {activeCourse.legs.map((lg, i) => (
             <Text key={i} style={s.leg}>{lg.label} — <Text style={s.legMin}>{lg.min}분</Text> <Text style={s.legSrc}>[{lg.src}]</Text></Text>
           ))}
         </View>

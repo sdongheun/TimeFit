@@ -340,6 +340,7 @@ type TransitMeta = {
   firstStartStation: string;
   lastEndStation: string;
   summary: string;
+  geo?: LatLon[];
 };
 type TransitCacheEntry = { min: number; src: string; ts: number; meta?: TransitMeta };
 const transitCache = new Map<string, TransitCacheEntry>();
@@ -379,6 +380,54 @@ function transitSummary(path: any): string {
       return `${laneName} ${s.startName ?? ''}->${s.endName ?? ''}`.trim();
     });
   return labels.slice(0, 3).join(' · ');
+}
+
+function finiteCoord(lat: number, lon: number): LatLon | null {
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+  if (lat < 32 || lat > 39 || lon < 124 || lon > 132) return null;
+  return { lat, lon };
+}
+
+function readOdsayPoint(obj: any, xKey = 'X', yKey = 'Y'): LatLon | null {
+  if (!obj) return null;
+  const lon = Number(obj[xKey]);
+  const lat = Number(obj[yKey]);
+  return finiteCoord(lat, lon);
+}
+
+function pushPoint(points: LatLon[], p: LatLon | null) {
+  if (!p) return;
+  const last = points[points.length - 1];
+  if (last && Math.abs(last.lat - p.lat) < 0.00001 && Math.abs(last.lon - p.lon) < 0.00001) return;
+  points.push(p);
+}
+
+function collectPassStopPoints(subPath: any): LatLon[] {
+  const raw =
+    subPath?.passStopList?.stations
+    ?? subPath?.passStopList?.stationList
+    ?? subPath?.passStopList?.station
+    ?? subPath?.stations
+    ?? [];
+  const list = Array.isArray(raw) ? raw : [raw];
+  const points: LatLon[] = [];
+  for (const station of list) {
+    pushPoint(points, readOdsayPoint(station, 'x', 'y') ?? readOdsayPoint(station, 'X', 'Y'));
+  }
+  return points;
+}
+
+function transitGeo(path: any, origin: LatLon, destination: LatLon): LatLon[] | undefined {
+  const sub = Array.isArray(path?.subPath) ? path.subPath : [];
+  const points: LatLon[] = [];
+  pushPoint(points, origin);
+  for (const part of sub) {
+    pushPoint(points, readOdsayPoint(part, 'startX', 'startY'));
+    for (const stop of collectPassStopPoints(part)) pushPoint(points, stop);
+    pushPoint(points, readOdsayPoint(part, 'endX', 'endY'));
+  }
+  pushPoint(points, destination);
+  return points.length > 2 ? points : undefined;
 }
 
 async function odsayTransit(a: LatLon, b: LatLon): Promise<{ min: number; meta: TransitMeta } | null> {
@@ -425,6 +474,7 @@ async function odsayTransit(a: LatLon, b: LatLon): Promise<{ min: number; meta: 
         firstStartStation: info.firstStartStation ?? '',
         lastEndStation: info.lastEndStation ?? '',
         summary: transitSummary(best),
+        geo: transitGeo(best, a, b),
       },
     };
   } catch {
@@ -468,7 +518,12 @@ export function travelSrc(a: LatLon, b: LatLon, mode: Mode): string {
   return getCache(ckey(a, b, mode))?.src ?? 'haversine';
 }
 export function travelGeo(a: LatLon, b: LatLon, mode: Mode): LatLon[] | undefined {
-  if (mode === 'transit') return undefined;
+  if (mode === 'transit') {
+    const entry = getTransitCache(transitKey(a, b));
+    if (entry?.meta?.geo && entry.meta.geo.length > 1) return entry.meta.geo;
+    if (entry?.src === 'walk_short' || entry?.src === 'transit_fallback') return [a, b];
+    return undefined;
+  }
   return getCache(ckey(a, b, mode))?.geo;
 }
 export function transitMeta(a: LatLon, b: LatLon): TransitMeta | undefined {
