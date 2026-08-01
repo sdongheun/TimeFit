@@ -43,9 +43,9 @@ function kakaoRouteMode(mode: Mode): 'car' | 'foot' | 'publictransit' {
   return 'foot';
 }
 
-function kakaoRouteUrl(from: LatLon, to: LatLon, mode: Mode): string {
+function kakaoRouteUrl(to: LatLon, mode: Mode): string {
   const by = kakaoRouteMode(mode);
-  return `kakaomap://route?sp=${from.lat},${from.lon}&ep=${to.lat},${to.lon}&by=${by}`;
+  return `kakaomap://route?ep=${to.lat},${to.lon}&by=${by}`;
 }
 
 function kakaoWebFallback(to: Stop): string {
@@ -87,7 +87,7 @@ export function ExecutionScreen({ route, navigation }: Props) {
     const now = currentMinuteOfDay();
     setRouteOpened(true);
     setActualDepartMinByStep((prev) => ({ ...prev, [step]: now }));
-    const url = kakaoRouteUrl(current.point, next.point, ctx.mode);
+    const url = kakaoRouteUrl(next.point, ctx.mode);
     const fallback = kakaoWebFallback(next);
     try {
       await Linking.openURL(url);
@@ -139,7 +139,7 @@ export function ExecutionScreen({ route, navigation }: Props) {
               <Text style={s.nowMeta}>
                 {current.isSpot
                   ? `${current.name}에서 현재 기준 약 ${stayMin}분 머물 수 있어요. ${fmtHM(current.leaveMin)}에는 출발하세요.`
-                  : `카카오맵에서 현재 구간 길찾기를 열고, 도착 후 TimeFit으로 돌아오세요.`}
+                  : `카카오맵에서 현재 위치 기준 길찾기를 열고, 도착 후 TimeFit으로 돌아오세요.`}
               </Text>
               {actualDepartMin != null ? (
                 <Text style={s.actualNote}>실제 출발 {fmtHM(actualDepartMin)} 기준으로 진행 중입니다.</Text>
@@ -192,7 +192,7 @@ export function ExecutionScreen({ route, navigation }: Props) {
         <View style={s.btnRow}>
           {!isDone ? (
             <Pressable style={[s.btn, s.btnMain]} onPress={openCurrentRoute}>
-              <Text style={s.btnMainTxt}>카카오맵으로 {next.name} 길찾기</Text>
+              <Text style={s.btnMainTxt}>현재 위치에서 {next.name} 길찾기</Text>
             </Pressable>
           ) : (
             <Pressable style={[s.btn, s.btnMain]} onPress={() => navigation.navigate('Feedback', { course, ctx })}>
