@@ -4,7 +4,7 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 import { Course, refineCourses } from '../engine';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
-import { KakaoRouteMap } from './KakaoRouteMap';
+import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
 
@@ -25,6 +25,7 @@ export function DetailScreen({ route, navigation }: Props) {
   // TMAP 실경로(geo) 연결 — 없으면 직선 폴백
   const geoCoords = travelLegs.flatMap((lg) => lg.geo ?? []);
   const line = geoCoords.length > 1 ? geoCoords : pts;
+  const routeSegments = buildRouteMapSegments(pts, travelLegs);
   const walk = activeCourse.mobility?.walk;
   const car = activeCourse.mobility?.car;
   const transit = activeCourse.mobility?.transit;
@@ -60,6 +61,7 @@ export function DetailScreen({ route, navigation }: Props) {
         style={s.map}
         points={pts}
         line={line}
+        segments={routeSegments}
         markers={[
           { ...origin, label: '출발지', kind: 'origin' },
           ...activeCourse.spots.map((sp) => ({ ...sp, label: sp.title, kind: 'spot' as const })),
