@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import * as Location from 'expo-location';
-import { Mode, planTimeFit, reverseGeocode, timeContext } from '../engine';
+import { kakaoReverseGeocode, Mode, planTimeFit, reverseGeocode, timeContext } from '../engine';
 import { Appointment, RootStackParamList, fmtHM } from './nav';
 import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
@@ -50,7 +50,7 @@ export function HomeScreen({ navigation }: Props) {
       const lat = p.coords.latitude, lon = p.coords.longitude;
       setOrigin({ lat, lon });
       setLocLabel('📍 내 위치 · 주소 확인 중…');
-      const addr = await reverseGeocode(lat, lon);
+      const addr = await kakaoReverseGeocode(lat, lon) ?? await reverseGeocode(lat, lon);
       setLocLabel(addr ? `📍 내 위치 · ${addr}` : `📍 내 위치 (${lat.toFixed(3)}, ${lon.toFixed(3)})`);
     } catch { setLocLabel('위치 실패 → 서면 기본'); }
   }
@@ -116,7 +116,7 @@ export function HomeScreen({ navigation }: Props) {
         <View style={s.searchRow}>
           <Pressable style={[s.input, s.grow, s.field]} onPress={() => setPicker('appt')}>
             <Text style={appointment ? s.fieldVal : s.fieldPh} numberOfLines={1}>
-              {appointment ? `📍 ${appointment.label}` : 'TMAP 장소·주소 검색 (탭)'}
+              {appointment ? `📍 ${appointment.label}` : '카카오 장소·주소 검색 (탭)'}
             </Text>
           </Pressable>
           {appointment && (

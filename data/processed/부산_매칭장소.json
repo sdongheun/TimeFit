@@ -83,6 +83,11 @@
       "unknown": 33,
       "area_uncertain": 15,
       "direct": 74
+    },
+    "kakaoMapVerification": {
+      "not_found": 15,
+      "verified": 102,
+      "weak": 5
     }
   },
   "data": [
@@ -109,7 +114,12 @@
       "matchScope": "area_context",
       "dwellSourceName": "해운대해수욕장",
       "openingHoursSourceName": "해운대 관광특구",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:46.605Z"
+      }
     },
     {
       "contentId": "2606221",
@@ -134,7 +144,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "흰 여울 문화마을",
       "openingHoursSourceName": "영도 흰여울해안터널",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "흰여울 해안터널",
+        "matchedAddress": "부산 영도구 영선동4가 1210-38",
+        "distanceM": 383,
+        "checkedAt": "2026-08-01T15:42:46.726Z"
+      }
     },
     {
       "contentId": "767084",
@@ -161,7 +179,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "신세계백화점 센텀시티점",
       "openingHoursSourceName": "신세계백화점 센텀시티점",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "사리원냉면 신세계백화점 센텀시티점",
+        "matchedAddress": "부산 해운대구 센텀남대로 35",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:46.869Z"
+      }
     },
     {
       "contentId": "2789488",
@@ -186,7 +212,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해운대 블루라인파크 미포 정거장",
       "openingHoursSourceName": "미포정거장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대블루라인파크 미포정거장",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 13",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:46.988Z"
+      }
     },
     {
       "contentId": "1878218",
@@ -213,7 +247,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부평 깡통시장",
       "openingHoursSourceName": "부평깡통시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부평깡통시장 어묵특화거리",
+        "matchedAddress": "부산 중구 부평1길 48",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:47.114Z"
+      }
     },
     {
       "contentId": "132550",
@@ -240,7 +282,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "부평 깡통시장",
       "openingHoursSourceName": "부평동한복거리",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부평동한복거리",
+        "matchedAddress": "부산 중구 부평2길 44",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:47.225Z"
+      }
     },
     {
       "contentId": "2726193",
@@ -265,7 +315,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "부평 깡통시장",
       "openingHoursSourceName": "이가네떡볶이",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "이가네떡볶이 본점",
+        "matchedAddress": "부산 중구 부평1길 48",
+        "distanceM": 15,
+        "checkedAt": "2026-08-01T15:42:47.340Z"
+      }
     },
     {
       "contentId": "3027700",
@@ -290,7 +348,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해운대 블루라인파크 미포 정거장",
       "openingHoursSourceName": "청사포 기찻길",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "matchedName": "송정역 (폐역)",
+        "matchedAddress": "부산 해운대구 송정중앙로8번길 60",
+        "distanceM": 3574,
+        "checkedAt": "2026-08-01T15:42:47.461Z"
+      }
     },
     {
       "contentId": "132191",
@@ -317,7 +383,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "국제시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "국제시장새마을금고 본점",
+        "matchedAddress": "부산 중구 국제시장2길 26-1",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:47.581Z"
+      }
     },
     {
       "contentId": "1018702",
@@ -342,7 +416,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "국제시장 먹자골목",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "국제시장먹자골목",
+        "matchedAddress": "부산 중구 창선동2가 40-5",
+        "distanceM": 201,
+        "checkedAt": "2026-08-01T15:42:47.703Z"
+      }
     },
     {
       "contentId": "985921",
@@ -367,7 +449,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "미술의거리",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "미술의거리",
+        "matchedAddress": "부산 중구 중구로 31",
+        "distanceM": 10,
+        "checkedAt": "2026-08-01T15:42:47.816Z"
+      }
     },
     {
       "contentId": "1013709",
@@ -394,7 +484,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "아리랑거리",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "아리랑거리",
+        "matchedAddress": "부산 중구 신창동3가 24-1",
+        "distanceM": 23,
+        "checkedAt": "2026-08-01T15:42:47.926Z"
+      }
     },
     {
       "contentId": "2952936",
@@ -419,7 +517,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "카페제노아",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "제노아",
+        "matchedAddress": "부산 중구 중구로29번길 17",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:48.039Z"
+      }
     },
     {
       "contentId": "132190",
@@ -446,7 +552,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "부산 자갈치시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "자갈치시장번영회",
+        "matchedAddress": "부산 중구 자갈치해안로 52",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:48.168Z"
+      }
     },
     {
       "contentId": "133313",
@@ -471,7 +585,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "부산명물횟집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산명물횟집",
+        "matchedAddress": "부산 중구 자갈치해안로 55",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:48.284Z"
+      }
     },
     {
       "contentId": "132576",
@@ -498,7 +620,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "신동아 수산물시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "신동아회센터15호",
+        "matchedAddress": "부산 중구 자갈치로 42",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:48.392Z"
+      }
     },
     {
       "contentId": "1957694",
@@ -523,7 +653,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "용두산 자갈치 관광특구",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:48.517Z"
+      }
     },
     {
       "contentId": "3064821",
@@ -548,7 +683,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "자갈치 크루즈",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "자갈치크루즈",
+        "matchedAddress": "부산 중구 자갈치해안로 60",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:48.639Z"
+      }
     },
     {
       "contentId": "403957",
@@ -573,7 +716,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "롯데백화점 광복점",
       "openingHoursSourceName": "성일집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산원조꼼장어 성일집",
+        "matchedAddress": "부산 중구 대교로 103",
+        "distanceM": 10,
+        "checkedAt": "2026-08-01T15:42:48.758Z"
+      }
     },
     {
       "contentId": "128810",
@@ -598,7 +749,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "동백섬",
       "openingHoursSourceName": "동백공원",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "동백공원 최치원유적",
+        "matchedAddress": "부산 해운대구 동백로 99",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:48.881Z"
+      }
     },
     {
       "contentId": "1805656",
@@ -623,7 +782,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "해운대 전통시장",
       "openingHoursSourceName": "일번지자갈치산곰장어",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "일번지자갈치산곰장어",
+        "matchedAddress": "부산 해운대구 구남로41번길 12",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:48.989Z"
+      }
     },
     {
       "contentId": "2785956",
@@ -648,7 +815,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "초량 밀면",
       "openingHoursSourceName": "초량밀면",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "초량밀면",
+        "matchedAddress": "부산 동구 중앙대로 225",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:49.108Z"
+      }
     },
     {
       "contentId": "987810",
@@ -673,7 +848,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "동백섬",
       "openingHoursSourceName": "해운대 동백섬",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "동백섬",
+        "matchedAddress": "부산 해운대구 우동 708-3",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:49.228Z"
+      }
     },
     {
       "contentId": "2834026",
@@ -698,7 +881,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "라이언 홀리데이 인 부산",
       "openingHoursSourceName": "갤러리이알디 부산",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "갤러리이알디 부산",
+        "matchedAddress": "부산 해운대구 해운대해변로 302",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:49.342Z"
+      }
     },
     {
       "contentId": "2815627",
@@ -723,7 +914,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "롯데월드 어드벤처 부산",
       "openingHoursSourceName": "롯데월드 어드벤처 부산",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "에맥앤볼리오스 롯데월드어드벤처부산점",
+        "matchedAddress": "부산 기장군 기장읍 동부산관광로 42",
+        "distanceM": 17,
+        "checkedAt": "2026-08-01T15:42:49.463Z"
+      }
     },
     {
       "contentId": "130166",
@@ -748,7 +947,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부산 시립미술관",
       "openingHoursSourceName": "부산시립미술관",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산시립미술관 (휴관중)",
+        "matchedAddress": "부산 해운대구 APEC로 58",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:49.591Z"
+      }
     },
     {
       "contentId": "2832671",
@@ -773,7 +980,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "신발원",
       "openingHoursSourceName": "신발원",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "신발원 외전",
+        "matchedAddress": "부산 동구 대영로243번길 64",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:49.707Z"
+      }
     },
     {
       "contentId": "1942348",
@@ -798,7 +1013,12 @@
       "matchScope": "area_context",
       "dwellSourceName": "용두산공원",
       "openingHoursSourceName": "관수옥과 초량왜관 터",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:49.814Z"
+      }
     },
     {
       "contentId": "2385686",
@@ -823,7 +1043,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "아홉 살 숲",
       "openingHoursSourceName": "아홉산숲",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "아홉산숲",
+        "matchedAddress": "부산 기장군 철마면 미동길 37-1",
+        "distanceM": 12,
+        "checkedAt": "2026-08-01T15:42:49.926Z"
+      }
     },
     {
       "contentId": "2504464",
@@ -848,7 +1076,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "송도 해상 케이블카 송도 베이 스테이션",
       "openingHoursSourceName": "부산 송도해상케이블카",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "송도해상케이블카",
+        "matchedAddress": "부산 서구 송도해변로 171",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:50.046Z"
+      }
     },
     {
       "contentId": "126857",
@@ -873,7 +1109,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "광복로 패션거리",
       "openingHoursSourceName": "광복로패션거리",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "광복로패션거리",
+        "matchedAddress": "부산 중구 광복동2가 49",
+        "distanceM": 149,
+        "checkedAt": "2026-08-01T15:42:50.158Z"
+      }
     },
     {
       "contentId": "2778487",
@@ -898,7 +1142,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "금수복국 해운대본점",
       "openingHoursSourceName": "금수복국 해운대본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "금수복국 해운대본점",
+        "matchedAddress": "부산 해운대구 중동1로43번길 23",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:50.272Z"
+      }
     },
     {
       "contentId": "2782747",
@@ -925,7 +1177,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "분홍이네",
       "openingHoursSourceName": "분홍이네",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "분홍이네",
+        "matchedAddress": "부산 수영구 광안로45번길 2",
+        "distanceM": 4,
+        "checkedAt": "2026-08-01T15:42:50.391Z"
+      }
     },
     {
       "contentId": "851286",
@@ -950,7 +1210,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "상국이네",
       "openingHoursSourceName": "상국이네",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "상국이네",
+        "matchedAddress": "부산 해운대구 구남로41번길 40-1",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:50.497Z"
+      }
     },
     {
       "contentId": "2532877",
@@ -977,7 +1245,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "신세계 프리미엄 아웃렛 부산",
       "openingHoursSourceName": "신세계사이먼 부산 프리미엄 아울렛",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "신세계사이먼 부산프리미엄아울렛",
+        "matchedAddress": "부산 기장군 장안읍 정관로 1133",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:50.621Z"
+      }
     },
     {
       "contentId": "229912",
@@ -1002,7 +1278,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "씨라 이르 부산아쿠아리움",
       "openingHoursSourceName": "씨라이프부산아쿠아리움",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "씨라이프부산아쿠아리움 전기차충전소",
+        "matchedAddress": "부산 해운대구 해운대해변로 266",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:50.734Z"
+      }
     },
     {
       "contentId": "686419",
@@ -1027,7 +1311,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "광복로 패션거리",
       "openingHoursSourceName": "할매가야밀면",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "할매가야밀면",
+        "matchedAddress": "부산 중구 광복로 56-14",
+        "distanceM": 1,
+        "checkedAt": "2026-08-01T15:42:50.840Z"
+      }
     },
     {
       "contentId": "2784330",
@@ -1052,7 +1344,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "호랑이 젤라 떡",
       "openingHoursSourceName": "미포항",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "미포항",
+        "matchedAddress": "부산 해운대구 중동 957-22",
+        "distanceM": 22,
+        "checkedAt": "2026-08-01T15:42:50.953Z"
+      }
     },
     {
       "contentId": "2858974",
@@ -1077,7 +1377,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "금송덕미 행리단길점",
       "openingHoursSourceName": "타이가텐푸라",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "타이가텐푸라",
+        "matchedAddress": "부산 해운대구 우동1로38번가길 15",
+        "distanceM": 4,
+        "checkedAt": "2026-08-01T15:42:51.062Z"
+      }
     },
     {
       "contentId": "2785272",
@@ -1102,7 +1410,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "고향 연화",
       "openingHoursSourceName": "고향연화",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "고향연화",
+        "matchedAddress": "부산 기장군 기장읍 연화길 33-8",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:51.175Z"
+      }
     },
     {
       "contentId": "2991028",
@@ -1127,7 +1443,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "광안리해양레포츠센터",
       "openingHoursSourceName": "광안리 해양레포츠센터",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "광안리해양레포츠센터",
+        "matchedAddress": "부산 수영구 광안해변로54번길 222",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:51.287Z"
+      }
     },
     {
       "contentId": "2763856",
@@ -1152,7 +1476,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "NC백화점 서면점",
       "openingHoursSourceName": "놀이마루",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산광역시 이동청소년쉼터 서면 놀이마루 후문",
+        "matchedAddress": "부산 부산진구 전포대로209번길 26",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:51.401Z"
+      }
     },
     {
       "contentId": "2776396",
@@ -1177,7 +1509,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "고향 연화",
       "openingHoursSourceName": "무진장횟집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "무진장횟집",
+        "matchedAddress": "부산 기장군 기장읍 연화1길 137",
+        "distanceM": 19,
+        "checkedAt": "2026-08-01T15:42:51.521Z"
+      }
     },
     {
       "contentId": "2776391",
@@ -1202,7 +1542,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "일광해수욕장",
       "openingHoursSourceName": "미청식당",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "미청식당",
+        "matchedAddress": "부산 기장군 일광읍 기장해안로 1303",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:51.636Z"
+      }
     },
     {
       "contentId": "2868655",
@@ -1227,7 +1575,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "랜디스 도넛 광안리점",
       "openingHoursSourceName": "바로해장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "바로해장",
+        "matchedAddress": "부산 수영구 광남로94번길 2",
+        "distanceM": 16,
+        "checkedAt": "2026-08-01T15:42:51.747Z"
+      }
     },
     {
       "contentId": "2845123",
@@ -1252,7 +1608,12 @@
       "matchScope": "direct_place",
       "dwellSourceName": "고향 연화",
       "openingHoursSourceName": "본가딸부자전복죽집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:51.858Z"
+      }
     },
     {
       "contentId": "2782626",
@@ -1277,7 +1638,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "광안리해양레포츠센터",
       "openingHoursSourceName": "삼익비치수변공원",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "삼익비치 수변공원",
+        "matchedAddress": "부산 수영구 남천동 148-103",
+        "distanceM": 46,
+        "checkedAt": "2026-08-01T15:42:51.981Z"
+      }
     },
     {
       "contentId": "3442923",
@@ -1302,7 +1671,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "런닝맨 부산점",
       "openingHoursSourceName": "솥이랑 서면점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "솥이랑",
+        "matchedAddress": "부산 부산진구 중앙대로 672",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:52.101Z"
+      }
     },
     {
       "contentId": "2668102",
@@ -1327,7 +1704,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "수변 최고 돼지국밥 민락 본점",
       "openingHoursSourceName": "수변최고돼지국밥 민락본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "수변최고돼지국밥 민락본점",
+        "matchedAddress": "부산 수영구 광안해변로370번길 9-32",
+        "distanceM": 13,
+        "checkedAt": "2026-08-01T15:42:52.210Z"
+      }
     },
     {
       "contentId": "2870354",
@@ -1352,7 +1737,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "대건 명가 돼지국밥",
       "openingHoursSourceName": "스완양분식",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "스완양분식 본점",
+        "matchedAddress": "부산 동구 중앙대로236번길 7-5",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:52.325Z"
+      }
     },
     {
       "contentId": "2753006",
@@ -1377,7 +1770,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "일광해수욕장",
       "openingHoursSourceName": "어느멋진날",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "어느멋진날",
+        "matchedAddress": "부산 기장군 일광읍 기장해안로 1286",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:52.436Z"
+      }
     },
     {
       "contentId": "2869405",
@@ -1402,7 +1803,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "영동 밀면 영동 국밥",
       "openingHoursSourceName": "영동밀면&돼지국밥",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "영동밀면&돼지국밥",
+        "matchedAddress": "부산 동구 중앙대로209번길 12",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:52.549Z"
+      }
     },
     {
       "contentId": "851073",
@@ -1427,7 +1836,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "초량 차이나타운",
       "openingHoursSourceName": "장성향",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "장성향",
+        "matchedAddress": "부산 동구 대영로243번길 29",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:52.652Z"
+      }
     },
     {
       "contentId": "3511011",
@@ -1454,7 +1871,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "감천문화마을",
       "openingHoursSourceName": "주식회사아래모래",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "주식회사 아래모래",
+        "matchedAddress": "부산 사하구 감내2로 122",
+        "distanceM": 73,
+        "checkedAt": "2026-08-01T15:42:52.763Z"
+      }
     },
     {
       "contentId": "2822910",
@@ -1479,7 +1904,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "영동 밀면 영동 국밥",
       "openingHoursSourceName": "창비부산",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "matchedName": "창비이즈팰리스",
+        "matchedAddress": "부산 부산진구 연수로11번길 21",
+        "distanceM": 7164,
+        "checkedAt": "2026-08-01T15:42:52.872Z"
+      }
     },
     {
       "contentId": "2832636",
@@ -1504,7 +1937,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "코랄 라느니",
       "openingHoursSourceName": "코랄라니",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "코랄라니",
+        "matchedAddress": "부산 기장군 기장읍 기장해안로 32",
+        "distanceM": 23,
+        "checkedAt": "2026-08-01T15:42:52.987Z"
+      }
     },
     {
       "contentId": "2496023",
@@ -1529,7 +1970,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "신세계 센텀시티몰",
       "openingHoursSourceName": "키자니아 부산",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "푸디스트 키자니아점",
+        "matchedAddress": "부산 해운대구 센텀4로 15",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:53.099Z"
+      }
     },
     {
       "contentId": "2848939",
@@ -1554,7 +2003,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "일광해수욕장",
       "openingHoursSourceName": "튼튼장어 무한리필",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:53.208Z"
+      }
     },
     {
       "contentId": "851989",
@@ -1579,7 +2033,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "바다마루 전복죽",
       "openingHoursSourceName": "할매복국",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "할매복국",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 1",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:53.321Z"
+      }
     },
     {
       "contentId": "2760773",
@@ -1604,7 +2066,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "바다마루 전복죽",
       "openingHoursSourceName": "해운대기와집대구탕",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대기와집대구탕",
+        "matchedAddress": "부산 해운대구 달맞이길50번길 4",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:53.445Z"
+      }
     },
     {
       "contentId": "2858936",
@@ -1629,7 +2099,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "바다마루 전복죽",
       "openingHoursSourceName": "해운대하얀오징어집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대하얀오징어집",
+        "matchedAddress": "부산 해운대구 달맞이길 50",
+        "distanceM": 27,
+        "checkedAt": "2026-08-01T15:42:53.553Z"
+      }
     },
     {
       "contentId": "133525",
@@ -1654,7 +2132,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "18번 완당집",
       "openingHoursSourceName": "18번완당집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "18번완당집",
+        "matchedAddress": "부산 중구 비프광장로 31",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:53.662Z"
+      }
     },
     {
       "contentId": "2782628",
@@ -1679,7 +2165,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "코스트코 부산점",
       "openingHoursSourceName": "그린노마드",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "그린노마드",
+        "matchedAddress": "부산 수영구 좌수영로 161-10",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:53.788Z"
+      }
     },
     {
       "contentId": "850093",
@@ -1704,7 +2198,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서면 지하상가",
       "openingHoursSourceName": "급행장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "급행장 본점",
+        "matchedAddress": "부산 부산진구 서면문화로 4",
+        "distanceM": 4,
+        "checkedAt": "2026-08-01T15:42:53.900Z"
+      }
     },
     {
       "contentId": "2859101",
@@ -1729,7 +2231,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "산리 오러 버스 클럽",
       "openingHoursSourceName": "나가하마만게츠",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "나가하마만게츠",
+        "matchedAddress": "부산 해운대구 우동1로 57",
+        "distanceM": 18,
+        "checkedAt": "2026-08-01T15:42:54.015Z"
+      }
     },
     {
       "contentId": "1846830",
@@ -1754,7 +2264,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "부산역",
       "openingHoursSourceName": "남도해양열차 에스트레인(S-train)",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:54.119Z"
+      }
     },
     {
       "contentId": "769761",
@@ -1779,7 +2294,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "다대포 해변공원",
       "openingHoursSourceName": "다대포 꿈의 낙조분수",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "다대포꿈의낙조분수",
+        "matchedAddress": "부산 사하구 몰운대1길 14",
+        "distanceM": 106,
+        "checkedAt": "2026-08-01T15:42:54.241Z"
+      }
     },
     {
       "contentId": "2891789",
@@ -1804,7 +2327,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "심미안",
       "openingHoursSourceName": "라꽁띠",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "라꽁띠",
+        "matchedAddress": "부산 해운대구 청사포로 85",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:54.352Z"
+      }
     },
     {
       "contentId": "2891814",
@@ -1829,7 +2360,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "류센소 본점",
       "openingHoursSourceName": "류센소 본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "류센소 본점",
+        "matchedAddress": "부산 해운대구 구남로8번길 62",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:54.465Z"
+      }
     },
     {
       "contentId": "1013694",
@@ -1856,7 +2395,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "국제시장 먹자골목",
       "openingHoursSourceName": "만물의거리",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "만물의거리",
+        "matchedAddress": "부산 중구 신창동4가",
+        "distanceM": 186,
+        "checkedAt": "2026-08-01T15:42:54.579Z"
+      }
     },
     {
       "contentId": "130668",
@@ -1881,7 +2428,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "벡스코",
       "openingHoursSourceName": "벡스코(BEXCO)",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "벡스코 제1전시장",
+        "matchedAddress": "부산 해운대구 APEC로 55",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:54.699Z"
+      }
     },
     {
       "contentId": "2554068",
@@ -1906,7 +2461,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부산영화체험 박물관",
       "openingHoursSourceName": "부산영화체험박물관",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산영화체험박물관",
+        "matchedAddress": "부산 중구 대청로126번길 12",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:54.811Z"
+      }
     },
     {
       "contentId": "1013721",
@@ -1933,7 +2496,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "국제시장 먹자골목",
       "openingHoursSourceName": "조명의거리",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "조명의거리",
+        "matchedAddress": "부산 중구 창선동2가 26-17",
+        "distanceM": 18,
+        "checkedAt": "2026-08-01T15:42:54.924Z"
+      }
     },
     {
       "contentId": "2905141",
@@ -1958,7 +2529,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "해운대 밀면",
       "openingHoursSourceName": "할매집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대할매집",
+        "matchedAddress": "부산 해운대구 중동2로10번길 7",
+        "distanceM": 19,
+        "checkedAt": "2026-08-01T15:42:55.035Z"
+      }
     },
     {
       "contentId": "2786779",
@@ -1983,7 +2562,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해운대 가야 밀면",
       "openingHoursSourceName": "해운대 가야밀면",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대가야밀면",
+        "matchedAddress": "부산 해운대구 좌동순환로 27",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:55.153Z"
+      }
     },
     {
       "contentId": "2822343",
@@ -2008,7 +2595,12 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해운대 블루라인",
       "openingHoursSourceName": "해운대 그린레일웨이 (미포~송정 구간)",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:55.260Z"
+      }
     },
     {
       "contentId": "126108",
@@ -2033,7 +2625,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "해운대 밀면",
       "openingHoursSourceName": "해운대온천센터",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대온천센터",
+        "matchedAddress": "부산 해운대구 중동2로 16",
+        "distanceM": 4,
+        "checkedAt": "2026-08-01T15:42:55.374Z"
+      }
     },
     {
       "contentId": "2865236",
@@ -2058,7 +2658,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "회와 제과",
       "openingHoursSourceName": "희와제과",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "희와제과",
+        "matchedAddress": "부산 부산진구 전포대로246번길 6",
+        "distanceM": 22,
+        "checkedAt": "2026-08-01T15:42:55.481Z"
+      }
     },
     {
       "contentId": "3336600",
@@ -2085,7 +2693,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "고래서 이뻐",
       "openingHoursSourceName": "고래서이뻐",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "고래서이뻐",
+        "matchedAddress": "부산 해운대구 우동1로38번길 15-1",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:55.591Z"
+      }
     },
     {
       "contentId": "127925",
@@ -2110,7 +2726,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "광안리 해변 테마거리",
       "openingHoursSourceName": "광안리해변 테마거리",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "광안리해변테마거리",
+        "matchedAddress": "부산 수영구 민락동",
+        "distanceM": 21,
+        "checkedAt": "2026-08-01T15:42:55.710Z"
+      }
     },
     {
       "contentId": "2873498",
@@ -2135,7 +2759,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서프 짐",
       "openingHoursSourceName": "구로마쯔",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "구로마쯔",
+        "matchedAddress": "부산 해운대구 송정광어골로 41",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:55.820Z"
+      }
     },
     {
       "contentId": "3421909",
@@ -2160,7 +2792,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "포셋 전포점",
       "openingHoursSourceName": "그런고로",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:55.926Z"
+      }
     },
     {
       "contentId": "2872474",
@@ -2185,7 +2822,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "오직 전복죽 기장 끝 집",
       "openingHoursSourceName": "기장끝집 죽성본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "오직전복죽 기장끝집",
+        "matchedAddress": "부산 기장군 기장읍 기장해안로 895",
+        "distanceM": 17,
+        "checkedAt": "2026-08-01T15:42:56.045Z"
+      }
     },
     {
       "contentId": "850121",
@@ -2210,7 +2855,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "꺼먹동네횟집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "꺼먹동네 칠암본점",
+        "matchedAddress": "부산 기장군 일광읍 문오성길 509",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:56.157Z"
+      }
     },
     {
       "contentId": "1942299",
@@ -2235,7 +2888,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "설빙 부산역점",
       "openingHoursSourceName": "남선창고터",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "남선창고터",
+        "matchedAddress": "부산 동구 초량동 393-1",
+        "distanceM": 35,
+        "checkedAt": "2026-08-01T15:42:56.271Z"
+      }
     },
     {
       "contentId": "1942233",
@@ -2260,7 +2921,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "이재모 피자 본점",
       "openingHoursSourceName": "대각사(부산)",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "대각사",
+        "matchedAddress": "부산 중구 광복중앙로 19",
+        "distanceM": 14,
+        "checkedAt": "2026-08-01T15:42:56.386Z"
+      }
     },
     {
       "contentId": "2783646",
@@ -2285,7 +2954,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "러브 이즈 기방 1호점",
       "openingHoursSourceName": "러브얼스",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:56.493Z"
+      }
     },
     {
       "contentId": "2782750",
@@ -2312,7 +2986,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "러브 이즈 기방 1호점",
       "openingHoursSourceName": "러브이즈기빙",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "러브이즈기빙 하트베어 3호점",
+        "matchedAddress": "부산 수영구 광안로 51",
+        "distanceM": 109,
+        "checkedAt": "2026-08-01T15:42:56.604Z"
+      }
     },
     {
       "contentId": "1993017",
@@ -2339,7 +3021,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "롯데 프리미엄 아울렛 동부산점",
       "openingHoursSourceName": "롯데프리미엄아울렛 동부산점",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "코노미스시 롯데프리미엄아울렛동부산점",
+        "matchedAddress": "부산 기장군 기장읍 기장해안로 147",
+        "distanceM": 1,
+        "checkedAt": "2026-08-01T15:42:56.724Z"
+      }
     },
     {
       "contentId": "2554111",
@@ -2364,7 +3054,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "범어사",
       "openingHoursSourceName": "범어사 성보박물관",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "범어사 성보박물관",
+        "matchedAddress": "부산 금정구 범어사로 296",
+        "distanceM": 842,
+        "checkedAt": "2026-08-01T15:42:56.846Z"
+      }
     },
     {
       "contentId": "2456837",
@@ -2389,7 +3087,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "영화의 전당",
       "openingHoursSourceName": "부산 영화의 전당",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "영화의전당 더블콘",
+        "matchedAddress": "부산 해운대구 수영강변대로 120",
+        "distanceM": 23,
+        "checkedAt": "2026-08-01T15:42:56.960Z"
+      }
     },
     {
       "contentId": "2784363",
@@ -2414,7 +3120,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부산 근현대 역사관 별관",
       "openingHoursSourceName": "부산근현대역사관 별관",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산근현대역사관 별관",
+        "matchedAddress": "부산 중구 대청로 104",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:57.074Z"
+      }
     },
     {
       "contentId": "3083767",
@@ -2439,7 +3153,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "부산 근현대 역사관 별관",
       "openingHoursSourceName": "부산근현대역사관 본관",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산근현대역사관 본관",
+        "matchedAddress": "부산 중구 대청로 112",
+        "distanceM": 22,
+        "checkedAt": "2026-08-01T15:42:57.188Z"
+      }
     },
     {
       "contentId": "3080300",
@@ -2466,7 +3188,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "부전시장",
       "openingHoursSourceName": "부산전자종합시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산 전자종합시장 번영회",
+        "matchedAddress": "부산 부산진구 부전로 196",
+        "distanceM": 15,
+        "checkedAt": "2026-08-01T15:42:57.299Z"
+      }
     },
     {
       "contentId": "1277679",
@@ -2491,7 +3221,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부산타워",
       "openingHoursSourceName": "부산타워",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산타워 기프트샵",
+        "matchedAddress": "부산 중구 용두산길 37-30",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:57.456Z"
+      }
     },
     {
       "contentId": "1855868",
@@ -2516,7 +3254,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "애플 아웃렛",
       "openingHoursSourceName": "부전돼지국밥",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부전돼지국밥",
+        "matchedAddress": "부산 사상구 사상로 214",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:57.580Z"
+      }
     },
     {
       "contentId": "132188",
@@ -2543,7 +3289,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "부전시장",
       "openingHoursSourceName": "부전마켓타운",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부전마켓타운",
+        "matchedAddress": "부산 부산진구 중앙대로783번길 23",
+        "distanceM": 117,
+        "checkedAt": "2026-08-01T15:42:57.693Z"
+      }
     },
     {
       "contentId": "2470024",
@@ -2568,7 +3322,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "삼진 어묵 영도 본점",
       "openingHoursSourceName": "삼진어묵 체험·역사과학관",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:57.803Z"
+      }
     },
     {
       "contentId": "2793181",
@@ -2593,7 +3352,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "수변 최고 돼지국밥 미포점",
       "openingHoursSourceName": "속씨원한대구탕미포본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "속씨원한 대구탕 미포 본점",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 28",
+        "distanceM": 23,
+        "checkedAt": "2026-08-01T15:42:57.916Z"
+      }
     },
     {
       "contentId": "2557807",
@@ -2618,7 +3385,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "송도 구름 산책로",
       "openingHoursSourceName": "송도 구름산책로",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "송도구름산책로 송도365",
+        "matchedAddress": "부산 서구 암남동 129-4",
+        "distanceM": 19,
+        "checkedAt": "2026-08-01T15:42:58.027Z"
+      }
     },
     {
       "contentId": "2860833",
@@ -2643,7 +3418,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서프 짐",
       "openingHoursSourceName": "송정물총칼국수",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "송정물총칼국수",
+        "matchedAddress": "부산 해운대구 송정중앙로6번길 184",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:58.148Z"
+      }
     },
     {
       "contentId": "2785965",
@@ -2668,7 +3451,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서프 짐",
       "openingHoursSourceName": "송정집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "송정집",
+        "matchedAddress": "부산 해운대구 송정광어골로 59",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:58.276Z"
+      }
     },
     {
       "contentId": "1805853",
@@ -2693,7 +3484,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "앨리스 도넛 청사포 본점",
       "openingHoursSourceName": "수민이네",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "수민이네",
+        "matchedAddress": "부산 해운대구 청사포로58번길 118",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:58.384Z"
+      }
     },
     {
       "contentId": "2785269",
@@ -2718,7 +3517,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서프 짐",
       "openingHoursSourceName": "수월경화",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "수월경화 주차장",
+        "matchedAddress": "부산 해운대구 송정중앙로6번길 188",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:58.492Z"
+      }
     },
     {
       "contentId": "3081825",
@@ -2743,7 +3550,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "개미집 광안리점",
       "openingHoursSourceName": "아트모이지",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:58.603Z"
+      }
     },
     {
       "contentId": "2773623",
@@ -2768,7 +3580,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "오브젝트 에디트",
       "openingHoursSourceName": "야스마루",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "야스마루 쇼쿠도",
+        "matchedAddress": "부산 부산진구 중앙대로756번길 24",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:58.714Z"
+      }
     },
     {
       "contentId": "2836412",
@@ -2793,7 +3613,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "에테르",
       "openingHoursSourceName": "에테르",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "에테르",
+        "matchedAddress": "부산 영도구 절영로 234",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:58.826Z"
+      }
     },
     {
       "contentId": "1942316",
@@ -2820,7 +3648,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "삼진 어묵 영도 본점",
       "openingHoursSourceName": "영도봉래시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "영도봉래시장",
+        "matchedAddress": "부산 영도구 봉래동3가 196",
+        "distanceM": 17,
+        "checkedAt": "2026-08-01T15:42:58.951Z"
+      }
     },
     {
       "contentId": "3454074",
@@ -2845,7 +3681,12 @@
       "matchScope": "direct_place",
       "dwellSourceName": "영화의 전당",
       "openingHoursSourceName": "영화의전당 라이브러리 자료실",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:59.061Z"
+      }
     },
     {
       "contentId": "2860782",
@@ -2870,7 +3711,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "해목",
       "openingHoursSourceName": "오반장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "오반장",
+        "matchedAddress": "부산 해운대구 구남로24번길 20",
+        "distanceM": 12,
+        "checkedAt": "2026-08-01T15:42:59.177Z"
+      }
     },
     {
       "contentId": "3443614",
@@ -2895,7 +3744,12 @@
       "matchScope": "direct_place",
       "dwellSourceName": "원에 학",
       "openingHoursSourceName": "원시학",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:59.290Z"
+      }
     },
     {
       "contentId": "2836450",
@@ -2920,7 +3774,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "이재모 피자 본점",
       "openingHoursSourceName": "이재모피자 본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "이재모피자 본점",
+        "matchedAddress": "부산 중구 광복중앙로 31",
+        "distanceM": 17,
+        "checkedAt": "2026-08-01T15:42:59.402Z"
+      }
     },
     {
       "contentId": "2848952",
@@ -2945,7 +3807,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "일광정",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "일광정 소갈비찜",
+        "matchedAddress": "부산 기장군 일광읍 일광로 645",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:59.516Z"
+      }
     },
     {
       "contentId": "851955",
@@ -2970,7 +3840,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "맥도날드 해운대 DT점",
       "openingHoursSourceName": "일품한우",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "일품한우",
+        "matchedAddress": "부산 해운대구 해운대로570번길 49",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:59.634Z"
+      }
     },
     {
       "contentId": "2994179",
@@ -2995,7 +3873,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "오브젝트 에디트",
       "openingHoursSourceName": "전포공구길",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "전포공구길",
+        "matchedAddress": "부산 부산진구 전포동 868",
+        "distanceM": 41,
+        "checkedAt": "2026-08-01T15:42:59.751Z"
+      }
     },
     {
       "contentId": "2870703",
@@ -3020,7 +3906,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "초량 온당",
       "openingHoursSourceName": "초량온당",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "초량온당",
+        "matchedAddress": "부산 동구 초량중로 135",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:59.856Z"
+      }
     },
     {
       "contentId": "2848949",
@@ -3045,7 +3939,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "칠암만장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "칠암만장 본점",
+        "matchedAddress": "부산 기장군 일광읍 일광로 648",
+        "distanceM": 13,
+        "checkedAt": "2026-08-01T15:42:59.978Z"
+      }
     },
     {
       "contentId": "2822840",
@@ -3070,7 +3972,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "칠암사계",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "칠암사계",
+        "matchedAddress": "부산 기장군 일광읍 칠암1길 7-10",
+        "distanceM": 20,
+        "checkedAt": "2026-08-01T15:43:00.105Z"
+      }
     },
     {
       "contentId": "2775556",
@@ -3095,7 +4005,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "칠암일번지횟집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "칠암일번지횟집",
+        "matchedAddress": "부산 기장군 일광읍 문오성길 547",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:43:00.227Z"
+      }
     },
     {
       "contentId": "2841442",
@@ -3120,7 +4038,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "톤쇼우",
       "openingHoursSourceName": "톤쇼우",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "톤쇼우 부산대본점",
+        "matchedAddress": "부산 금정구 금강로 247-10",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:43:00.339Z"
+      }
     },
     {
       "contentId": "2786766",
@@ -3145,7 +4071,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해목",
       "openingHoursSourceName": "해목",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해목",
+        "matchedAddress": "부산 해운대구 구남로24번길 8",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:43:00.447Z"
+      }
     },
     {
       "contentId": "2661475",
@@ -3170,7 +4104,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "회동수원지",
       "openingHoursSourceName": "회동수원지",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "명장정수사업소 회동수원지 입구",
+        "matchedAddress": "부산 금정구 수원지로 58",
+        "distanceM": 976,
+        "checkedAt": "2026-08-01T15:43:00.561Z"
+      }
     }
   ],
   "byContentId": {
@@ -3197,7 +4139,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "해운대 밀면",
       "openingHoursSourceName": "해운대온천센터",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대온천센터",
+        "matchedAddress": "부산 해운대구 중동2로 16",
+        "distanceM": 4,
+        "checkedAt": "2026-08-01T15:42:55.374Z"
+      }
     },
     "126857": {
       "contentId": "126857",
@@ -3222,7 +4172,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "광복로 패션거리",
       "openingHoursSourceName": "광복로패션거리",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "광복로패션거리",
+        "matchedAddress": "부산 중구 광복동2가 49",
+        "distanceM": 149,
+        "checkedAt": "2026-08-01T15:42:50.158Z"
+      }
     },
     "127004": {
       "contentId": "127004",
@@ -3247,7 +4205,12 @@
       "matchScope": "area_context",
       "dwellSourceName": "해운대해수욕장",
       "openingHoursSourceName": "해운대 관광특구",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:46.605Z"
+      }
     },
     "127925": {
       "contentId": "127925",
@@ -3272,7 +4235,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "광안리 해변 테마거리",
       "openingHoursSourceName": "광안리해변 테마거리",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "광안리해변테마거리",
+        "matchedAddress": "부산 수영구 민락동",
+        "distanceM": 21,
+        "checkedAt": "2026-08-01T15:42:55.710Z"
+      }
     },
     "128810": {
       "contentId": "128810",
@@ -3297,7 +4268,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "동백섬",
       "openingHoursSourceName": "동백공원",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "동백공원 최치원유적",
+        "matchedAddress": "부산 해운대구 동백로 99",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:48.881Z"
+      }
     },
     "130166": {
       "contentId": "130166",
@@ -3322,7 +4301,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부산 시립미술관",
       "openingHoursSourceName": "부산시립미술관",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산시립미술관 (휴관중)",
+        "matchedAddress": "부산 해운대구 APEC로 58",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:49.591Z"
+      }
     },
     "130668": {
       "contentId": "130668",
@@ -3347,7 +4334,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "벡스코",
       "openingHoursSourceName": "벡스코(BEXCO)",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "벡스코 제1전시장",
+        "matchedAddress": "부산 해운대구 APEC로 55",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:54.699Z"
+      }
     },
     "132188": {
       "contentId": "132188",
@@ -3374,7 +4369,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "부전시장",
       "openingHoursSourceName": "부전마켓타운",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부전마켓타운",
+        "matchedAddress": "부산 부산진구 중앙대로783번길 23",
+        "distanceM": 117,
+        "checkedAt": "2026-08-01T15:42:57.693Z"
+      }
     },
     "132190": {
       "contentId": "132190",
@@ -3401,7 +4404,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "부산 자갈치시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "자갈치시장번영회",
+        "matchedAddress": "부산 중구 자갈치해안로 52",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:48.168Z"
+      }
     },
     "132191": {
       "contentId": "132191",
@@ -3428,7 +4439,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "국제시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "국제시장새마을금고 본점",
+        "matchedAddress": "부산 중구 국제시장2길 26-1",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:47.581Z"
+      }
     },
     "132550": {
       "contentId": "132550",
@@ -3455,7 +4474,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "부평 깡통시장",
       "openingHoursSourceName": "부평동한복거리",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부평동한복거리",
+        "matchedAddress": "부산 중구 부평2길 44",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:47.225Z"
+      }
     },
     "132576": {
       "contentId": "132576",
@@ -3482,7 +4509,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "신동아 수산물시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "신동아회센터15호",
+        "matchedAddress": "부산 중구 자갈치로 42",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:48.392Z"
+      }
     },
     "133313": {
       "contentId": "133313",
@@ -3507,7 +4542,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "부산명물횟집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산명물횟집",
+        "matchedAddress": "부산 중구 자갈치해안로 55",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:48.284Z"
+      }
     },
     "133525": {
       "contentId": "133525",
@@ -3532,7 +4575,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "18번 완당집",
       "openingHoursSourceName": "18번완당집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "18번완당집",
+        "matchedAddress": "부산 중구 비프광장로 31",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:53.662Z"
+      }
     },
     "229912": {
       "contentId": "229912",
@@ -3557,7 +4608,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "씨라 이르 부산아쿠아리움",
       "openingHoursSourceName": "씨라이프부산아쿠아리움",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "씨라이프부산아쿠아리움 전기차충전소",
+        "matchedAddress": "부산 해운대구 해운대해변로 266",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:50.734Z"
+      }
     },
     "403957": {
       "contentId": "403957",
@@ -3582,7 +4641,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "롯데백화점 광복점",
       "openingHoursSourceName": "성일집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산원조꼼장어 성일집",
+        "matchedAddress": "부산 중구 대교로 103",
+        "distanceM": 10,
+        "checkedAt": "2026-08-01T15:42:48.758Z"
+      }
     },
     "686419": {
       "contentId": "686419",
@@ -3607,7 +4674,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "광복로 패션거리",
       "openingHoursSourceName": "할매가야밀면",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "할매가야밀면",
+        "matchedAddress": "부산 중구 광복로 56-14",
+        "distanceM": 1,
+        "checkedAt": "2026-08-01T15:42:50.840Z"
+      }
     },
     "767084": {
       "contentId": "767084",
@@ -3634,7 +4709,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "신세계백화점 센텀시티점",
       "openingHoursSourceName": "신세계백화점 센텀시티점",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "사리원냉면 신세계백화점 센텀시티점",
+        "matchedAddress": "부산 해운대구 센텀남대로 35",
+        "distanceM": 2,
+        "checkedAt": "2026-08-01T15:42:46.869Z"
+      }
     },
     "769761": {
       "contentId": "769761",
@@ -3659,7 +4742,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "다대포 해변공원",
       "openingHoursSourceName": "다대포 꿈의 낙조분수",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "다대포꿈의낙조분수",
+        "matchedAddress": "부산 사하구 몰운대1길 14",
+        "distanceM": 106,
+        "checkedAt": "2026-08-01T15:42:54.241Z"
+      }
     },
     "850093": {
       "contentId": "850093",
@@ -3684,7 +4775,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서면 지하상가",
       "openingHoursSourceName": "급행장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "급행장 본점",
+        "matchedAddress": "부산 부산진구 서면문화로 4",
+        "distanceM": 4,
+        "checkedAt": "2026-08-01T15:42:53.900Z"
+      }
     },
     "850121": {
       "contentId": "850121",
@@ -3709,7 +4808,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "꺼먹동네횟집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "꺼먹동네 칠암본점",
+        "matchedAddress": "부산 기장군 일광읍 문오성길 509",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:56.157Z"
+      }
     },
     "851073": {
       "contentId": "851073",
@@ -3734,7 +4841,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "초량 차이나타운",
       "openingHoursSourceName": "장성향",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "장성향",
+        "matchedAddress": "부산 동구 대영로243번길 29",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:52.652Z"
+      }
     },
     "851286": {
       "contentId": "851286",
@@ -3759,7 +4874,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "상국이네",
       "openingHoursSourceName": "상국이네",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "상국이네",
+        "matchedAddress": "부산 해운대구 구남로41번길 40-1",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:50.497Z"
+      }
     },
     "851955": {
       "contentId": "851955",
@@ -3784,7 +4907,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "맥도날드 해운대 DT점",
       "openingHoursSourceName": "일품한우",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "일품한우",
+        "matchedAddress": "부산 해운대구 해운대로570번길 49",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:59.634Z"
+      }
     },
     "851989": {
       "contentId": "851989",
@@ -3809,7 +4940,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "바다마루 전복죽",
       "openingHoursSourceName": "할매복국",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "할매복국",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 1",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:53.321Z"
+      }
     },
     "985921": {
       "contentId": "985921",
@@ -3834,7 +4973,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "미술의거리",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "미술의거리",
+        "matchedAddress": "부산 중구 중구로 31",
+        "distanceM": 10,
+        "checkedAt": "2026-08-01T15:42:47.816Z"
+      }
     },
     "987810": {
       "contentId": "987810",
@@ -3859,7 +5006,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "동백섬",
       "openingHoursSourceName": "해운대 동백섬",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "동백섬",
+        "matchedAddress": "부산 해운대구 우동 708-3",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:49.228Z"
+      }
     },
     "1013694": {
       "contentId": "1013694",
@@ -3886,7 +5041,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "국제시장 먹자골목",
       "openingHoursSourceName": "만물의거리",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "만물의거리",
+        "matchedAddress": "부산 중구 신창동4가",
+        "distanceM": 186,
+        "checkedAt": "2026-08-01T15:42:54.579Z"
+      }
     },
     "1013709": {
       "contentId": "1013709",
@@ -3913,7 +5076,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "아리랑거리",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "아리랑거리",
+        "matchedAddress": "부산 중구 신창동3가 24-1",
+        "distanceM": 23,
+        "checkedAt": "2026-08-01T15:42:47.926Z"
+      }
     },
     "1013721": {
       "contentId": "1013721",
@@ -3940,7 +5111,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "국제시장 먹자골목",
       "openingHoursSourceName": "조명의거리",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "조명의거리",
+        "matchedAddress": "부산 중구 창선동2가 26-17",
+        "distanceM": 18,
+        "checkedAt": "2026-08-01T15:42:54.924Z"
+      }
     },
     "1018702": {
       "contentId": "1018702",
@@ -3965,7 +5144,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "국제시장 먹자골목",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "국제시장먹자골목",
+        "matchedAddress": "부산 중구 창선동2가 40-5",
+        "distanceM": 201,
+        "checkedAt": "2026-08-01T15:42:47.703Z"
+      }
     },
     "1277679": {
       "contentId": "1277679",
@@ -3990,7 +5177,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부산타워",
       "openingHoursSourceName": "부산타워",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산타워 기프트샵",
+        "matchedAddress": "부산 중구 용두산길 37-30",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:57.456Z"
+      }
     },
     "1805656": {
       "contentId": "1805656",
@@ -4015,7 +5210,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "해운대 전통시장",
       "openingHoursSourceName": "일번지자갈치산곰장어",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "일번지자갈치산곰장어",
+        "matchedAddress": "부산 해운대구 구남로41번길 12",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:48.989Z"
+      }
     },
     "1805853": {
       "contentId": "1805853",
@@ -4040,7 +5243,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "앨리스 도넛 청사포 본점",
       "openingHoursSourceName": "수민이네",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "수민이네",
+        "matchedAddress": "부산 해운대구 청사포로58번길 118",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:58.384Z"
+      }
     },
     "1846830": {
       "contentId": "1846830",
@@ -4065,7 +5276,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "부산역",
       "openingHoursSourceName": "남도해양열차 에스트레인(S-train)",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:54.119Z"
+      }
     },
     "1855868": {
       "contentId": "1855868",
@@ -4090,7 +5306,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "애플 아웃렛",
       "openingHoursSourceName": "부전돼지국밥",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부전돼지국밥",
+        "matchedAddress": "부산 사상구 사상로 214",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:57.580Z"
+      }
     },
     "1878218": {
       "contentId": "1878218",
@@ -4117,7 +5341,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부평 깡통시장",
       "openingHoursSourceName": "부평깡통시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부평깡통시장 어묵특화거리",
+        "matchedAddress": "부산 중구 부평1길 48",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:47.114Z"
+      }
     },
     "1942233": {
       "contentId": "1942233",
@@ -4142,7 +5374,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "이재모 피자 본점",
       "openingHoursSourceName": "대각사(부산)",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "대각사",
+        "matchedAddress": "부산 중구 광복중앙로 19",
+        "distanceM": 14,
+        "checkedAt": "2026-08-01T15:42:56.386Z"
+      }
     },
     "1942299": {
       "contentId": "1942299",
@@ -4167,7 +5407,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "설빙 부산역점",
       "openingHoursSourceName": "남선창고터",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "남선창고터",
+        "matchedAddress": "부산 동구 초량동 393-1",
+        "distanceM": 35,
+        "checkedAt": "2026-08-01T15:42:56.271Z"
+      }
     },
     "1942316": {
       "contentId": "1942316",
@@ -4194,7 +5442,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "삼진 어묵 영도 본점",
       "openingHoursSourceName": "영도봉래시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "영도봉래시장",
+        "matchedAddress": "부산 영도구 봉래동3가 196",
+        "distanceM": 17,
+        "checkedAt": "2026-08-01T15:42:58.951Z"
+      }
     },
     "1942348": {
       "contentId": "1942348",
@@ -4219,7 +5475,12 @@
       "matchScope": "area_context",
       "dwellSourceName": "용두산공원",
       "openingHoursSourceName": "관수옥과 초량왜관 터",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:49.814Z"
+      }
     },
     "1957694": {
       "contentId": "1957694",
@@ -4244,7 +5505,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "용두산 자갈치 관광특구",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:48.517Z"
+      }
     },
     "1993017": {
       "contentId": "1993017",
@@ -4271,7 +5537,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "롯데 프리미엄 아울렛 동부산점",
       "openingHoursSourceName": "롯데프리미엄아울렛 동부산점",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "코노미스시 롯데프리미엄아울렛동부산점",
+        "matchedAddress": "부산 기장군 기장읍 기장해안로 147",
+        "distanceM": 1,
+        "checkedAt": "2026-08-01T15:42:56.724Z"
+      }
     },
     "2385686": {
       "contentId": "2385686",
@@ -4296,7 +5570,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "아홉 살 숲",
       "openingHoursSourceName": "아홉산숲",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "아홉산숲",
+        "matchedAddress": "부산 기장군 철마면 미동길 37-1",
+        "distanceM": 12,
+        "checkedAt": "2026-08-01T15:42:49.926Z"
+      }
     },
     "2456837": {
       "contentId": "2456837",
@@ -4321,7 +5603,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "영화의 전당",
       "openingHoursSourceName": "부산 영화의 전당",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "영화의전당 더블콘",
+        "matchedAddress": "부산 해운대구 수영강변대로 120",
+        "distanceM": 23,
+        "checkedAt": "2026-08-01T15:42:56.960Z"
+      }
     },
     "2470024": {
       "contentId": "2470024",
@@ -4346,7 +5636,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "삼진 어묵 영도 본점",
       "openingHoursSourceName": "삼진어묵 체험·역사과학관",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:57.803Z"
+      }
     },
     "2496023": {
       "contentId": "2496023",
@@ -4371,7 +5666,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "신세계 센텀시티몰",
       "openingHoursSourceName": "키자니아 부산",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "푸디스트 키자니아점",
+        "matchedAddress": "부산 해운대구 센텀4로 15",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:53.099Z"
+      }
     },
     "2504464": {
       "contentId": "2504464",
@@ -4396,7 +5699,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "송도 해상 케이블카 송도 베이 스테이션",
       "openingHoursSourceName": "부산 송도해상케이블카",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "송도해상케이블카",
+        "matchedAddress": "부산 서구 송도해변로 171",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:50.046Z"
+      }
     },
     "2532877": {
       "contentId": "2532877",
@@ -4423,7 +5734,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "신세계 프리미엄 아웃렛 부산",
       "openingHoursSourceName": "신세계사이먼 부산 프리미엄 아울렛",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "신세계사이먼 부산프리미엄아울렛",
+        "matchedAddress": "부산 기장군 장안읍 정관로 1133",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:50.621Z"
+      }
     },
     "2554068": {
       "contentId": "2554068",
@@ -4448,7 +5767,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부산영화체험 박물관",
       "openingHoursSourceName": "부산영화체험박물관",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산영화체험박물관",
+        "matchedAddress": "부산 중구 대청로126번길 12",
+        "distanceM": 11,
+        "checkedAt": "2026-08-01T15:42:54.811Z"
+      }
     },
     "2554111": {
       "contentId": "2554111",
@@ -4473,7 +5800,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "범어사",
       "openingHoursSourceName": "범어사 성보박물관",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "범어사 성보박물관",
+        "matchedAddress": "부산 금정구 범어사로 296",
+        "distanceM": 842,
+        "checkedAt": "2026-08-01T15:42:56.846Z"
+      }
     },
     "2557807": {
       "contentId": "2557807",
@@ -4498,7 +5833,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "송도 구름 산책로",
       "openingHoursSourceName": "송도 구름산책로",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "송도구름산책로 송도365",
+        "matchedAddress": "부산 서구 암남동 129-4",
+        "distanceM": 19,
+        "checkedAt": "2026-08-01T15:42:58.027Z"
+      }
     },
     "2606221": {
       "contentId": "2606221",
@@ -4523,7 +5866,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "흰 여울 문화마을",
       "openingHoursSourceName": "영도 흰여울해안터널",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "흰여울 해안터널",
+        "matchedAddress": "부산 영도구 영선동4가 1210-38",
+        "distanceM": 383,
+        "checkedAt": "2026-08-01T15:42:46.726Z"
+      }
     },
     "2661475": {
       "contentId": "2661475",
@@ -4548,7 +5899,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "회동수원지",
       "openingHoursSourceName": "회동수원지",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "명장정수사업소 회동수원지 입구",
+        "matchedAddress": "부산 금정구 수원지로 58",
+        "distanceM": 976,
+        "checkedAt": "2026-08-01T15:43:00.561Z"
+      }
     },
     "2668102": {
       "contentId": "2668102",
@@ -4573,7 +5932,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "수변 최고 돼지국밥 민락 본점",
       "openingHoursSourceName": "수변최고돼지국밥 민락본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "수변최고돼지국밥 민락본점",
+        "matchedAddress": "부산 수영구 광안해변로370번길 9-32",
+        "distanceM": 13,
+        "checkedAt": "2026-08-01T15:42:52.210Z"
+      }
     },
     "2726193": {
       "contentId": "2726193",
@@ -4598,7 +5965,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "부평 깡통시장",
       "openingHoursSourceName": "이가네떡볶이",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "이가네떡볶이 본점",
+        "matchedAddress": "부산 중구 부평1길 48",
+        "distanceM": 15,
+        "checkedAt": "2026-08-01T15:42:47.340Z"
+      }
     },
     "2753006": {
       "contentId": "2753006",
@@ -4623,7 +5998,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "일광해수욕장",
       "openingHoursSourceName": "어느멋진날",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "어느멋진날",
+        "matchedAddress": "부산 기장군 일광읍 기장해안로 1286",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:52.436Z"
+      }
     },
     "2760773": {
       "contentId": "2760773",
@@ -4648,7 +6031,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "바다마루 전복죽",
       "openingHoursSourceName": "해운대기와집대구탕",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대기와집대구탕",
+        "matchedAddress": "부산 해운대구 달맞이길50번길 4",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:53.445Z"
+      }
     },
     "2763856": {
       "contentId": "2763856",
@@ -4673,7 +6064,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "NC백화점 서면점",
       "openingHoursSourceName": "놀이마루",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산광역시 이동청소년쉼터 서면 놀이마루 후문",
+        "matchedAddress": "부산 부산진구 전포대로209번길 26",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:51.401Z"
+      }
     },
     "2773623": {
       "contentId": "2773623",
@@ -4698,7 +6097,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "오브젝트 에디트",
       "openingHoursSourceName": "야스마루",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "야스마루 쇼쿠도",
+        "matchedAddress": "부산 부산진구 중앙대로756번길 24",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:58.714Z"
+      }
     },
     "2775556": {
       "contentId": "2775556",
@@ -4723,7 +6130,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "칠암일번지횟집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "칠암일번지횟집",
+        "matchedAddress": "부산 기장군 일광읍 문오성길 547",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:43:00.227Z"
+      }
     },
     "2776391": {
       "contentId": "2776391",
@@ -4748,7 +6163,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "일광해수욕장",
       "openingHoursSourceName": "미청식당",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "미청식당",
+        "matchedAddress": "부산 기장군 일광읍 기장해안로 1303",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:51.636Z"
+      }
     },
     "2776396": {
       "contentId": "2776396",
@@ -4773,7 +6196,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "고향 연화",
       "openingHoursSourceName": "무진장횟집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "무진장횟집",
+        "matchedAddress": "부산 기장군 기장읍 연화1길 137",
+        "distanceM": 19,
+        "checkedAt": "2026-08-01T15:42:51.521Z"
+      }
     },
     "2778487": {
       "contentId": "2778487",
@@ -4798,7 +6229,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "금수복국 해운대본점",
       "openingHoursSourceName": "금수복국 해운대본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "금수복국 해운대본점",
+        "matchedAddress": "부산 해운대구 중동1로43번길 23",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:50.272Z"
+      }
     },
     "2782626": {
       "contentId": "2782626",
@@ -4823,7 +6262,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "광안리해양레포츠센터",
       "openingHoursSourceName": "삼익비치수변공원",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "삼익비치 수변공원",
+        "matchedAddress": "부산 수영구 남천동 148-103",
+        "distanceM": 46,
+        "checkedAt": "2026-08-01T15:42:51.981Z"
+      }
     },
     "2782628": {
       "contentId": "2782628",
@@ -4848,7 +6295,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "코스트코 부산점",
       "openingHoursSourceName": "그린노마드",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "그린노마드",
+        "matchedAddress": "부산 수영구 좌수영로 161-10",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:53.788Z"
+      }
     },
     "2782747": {
       "contentId": "2782747",
@@ -4875,7 +6330,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "분홍이네",
       "openingHoursSourceName": "분홍이네",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "분홍이네",
+        "matchedAddress": "부산 수영구 광안로45번길 2",
+        "distanceM": 4,
+        "checkedAt": "2026-08-01T15:42:50.391Z"
+      }
     },
     "2782750": {
       "contentId": "2782750",
@@ -4902,7 +6365,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "러브 이즈 기방 1호점",
       "openingHoursSourceName": "러브이즈기빙",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "러브이즈기빙 하트베어 3호점",
+        "matchedAddress": "부산 수영구 광안로 51",
+        "distanceM": 109,
+        "checkedAt": "2026-08-01T15:42:56.604Z"
+      }
     },
     "2783646": {
       "contentId": "2783646",
@@ -4927,7 +6398,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "러브 이즈 기방 1호점",
       "openingHoursSourceName": "러브얼스",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:56.493Z"
+      }
     },
     "2784330": {
       "contentId": "2784330",
@@ -4952,7 +6428,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "호랑이 젤라 떡",
       "openingHoursSourceName": "미포항",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "미포항",
+        "matchedAddress": "부산 해운대구 중동 957-22",
+        "distanceM": 22,
+        "checkedAt": "2026-08-01T15:42:50.953Z"
+      }
     },
     "2784363": {
       "contentId": "2784363",
@@ -4977,7 +6461,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "부산 근현대 역사관 별관",
       "openingHoursSourceName": "부산근현대역사관 별관",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산근현대역사관 별관",
+        "matchedAddress": "부산 중구 대청로 104",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:57.074Z"
+      }
     },
     "2785269": {
       "contentId": "2785269",
@@ -5002,7 +6494,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서프 짐",
       "openingHoursSourceName": "수월경화",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "수월경화 주차장",
+        "matchedAddress": "부산 해운대구 송정중앙로6번길 188",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:58.492Z"
+      }
     },
     "2785272": {
       "contentId": "2785272",
@@ -5027,7 +6527,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "고향 연화",
       "openingHoursSourceName": "고향연화",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "고향연화",
+        "matchedAddress": "부산 기장군 기장읍 연화길 33-8",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:51.175Z"
+      }
     },
     "2785956": {
       "contentId": "2785956",
@@ -5052,7 +6560,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "초량 밀면",
       "openingHoursSourceName": "초량밀면",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "초량밀면",
+        "matchedAddress": "부산 동구 중앙대로 225",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:49.108Z"
+      }
     },
     "2785965": {
       "contentId": "2785965",
@@ -5077,7 +6593,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서프 짐",
       "openingHoursSourceName": "송정집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "송정집",
+        "matchedAddress": "부산 해운대구 송정광어골로 59",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:58.276Z"
+      }
     },
     "2786766": {
       "contentId": "2786766",
@@ -5102,7 +6626,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해목",
       "openingHoursSourceName": "해목",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해목",
+        "matchedAddress": "부산 해운대구 구남로24번길 8",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:43:00.447Z"
+      }
     },
     "2786779": {
       "contentId": "2786779",
@@ -5127,7 +6659,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해운대 가야 밀면",
       "openingHoursSourceName": "해운대 가야밀면",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대가야밀면",
+        "matchedAddress": "부산 해운대구 좌동순환로 27",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:55.153Z"
+      }
     },
     "2789488": {
       "contentId": "2789488",
@@ -5152,7 +6692,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해운대 블루라인파크 미포 정거장",
       "openingHoursSourceName": "미포정거장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대블루라인파크 미포정거장",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 13",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:46.988Z"
+      }
     },
     "2793181": {
       "contentId": "2793181",
@@ -5177,7 +6725,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "수변 최고 돼지국밥 미포점",
       "openingHoursSourceName": "속씨원한대구탕미포본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "속씨원한 대구탕 미포 본점",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 28",
+        "distanceM": 23,
+        "checkedAt": "2026-08-01T15:42:57.916Z"
+      }
     },
     "2815627": {
       "contentId": "2815627",
@@ -5202,7 +6758,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "롯데월드 어드벤처 부산",
       "openingHoursSourceName": "롯데월드 어드벤처 부산",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "에맥앤볼리오스 롯데월드어드벤처부산점",
+        "matchedAddress": "부산 기장군 기장읍 동부산관광로 42",
+        "distanceM": 17,
+        "checkedAt": "2026-08-01T15:42:49.463Z"
+      }
     },
     "2822343": {
       "contentId": "2822343",
@@ -5227,7 +6791,12 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해운대 블루라인",
       "openingHoursSourceName": "해운대 그린레일웨이 (미포~송정 구간)",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:55.260Z"
+      }
     },
     "2822840": {
       "contentId": "2822840",
@@ -5252,7 +6821,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "칠암사계",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "칠암사계",
+        "matchedAddress": "부산 기장군 일광읍 칠암1길 7-10",
+        "distanceM": 20,
+        "checkedAt": "2026-08-01T15:43:00.105Z"
+      }
     },
     "2822910": {
       "contentId": "2822910",
@@ -5277,7 +6854,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "영동 밀면 영동 국밥",
       "openingHoursSourceName": "창비부산",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "matchedName": "창비이즈팰리스",
+        "matchedAddress": "부산 부산진구 연수로11번길 21",
+        "distanceM": 7164,
+        "checkedAt": "2026-08-01T15:42:52.872Z"
+      }
     },
     "2832636": {
       "contentId": "2832636",
@@ -5302,7 +6887,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "코랄 라느니",
       "openingHoursSourceName": "코랄라니",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "코랄라니",
+        "matchedAddress": "부산 기장군 기장읍 기장해안로 32",
+        "distanceM": 23,
+        "checkedAt": "2026-08-01T15:42:52.987Z"
+      }
     },
     "2832671": {
       "contentId": "2832671",
@@ -5327,7 +6920,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "신발원",
       "openingHoursSourceName": "신발원",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "신발원 외전",
+        "matchedAddress": "부산 동구 대영로243번길 64",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:49.707Z"
+      }
     },
     "2834026": {
       "contentId": "2834026",
@@ -5352,7 +6953,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "라이언 홀리데이 인 부산",
       "openingHoursSourceName": "갤러리이알디 부산",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "갤러리이알디 부산",
+        "matchedAddress": "부산 해운대구 해운대해변로 302",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:49.342Z"
+      }
     },
     "2836412": {
       "contentId": "2836412",
@@ -5377,7 +6986,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "에테르",
       "openingHoursSourceName": "에테르",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "에테르",
+        "matchedAddress": "부산 영도구 절영로 234",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:58.826Z"
+      }
     },
     "2836450": {
       "contentId": "2836450",
@@ -5402,7 +7019,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "이재모 피자 본점",
       "openingHoursSourceName": "이재모피자 본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "이재모피자 본점",
+        "matchedAddress": "부산 중구 광복중앙로 31",
+        "distanceM": 17,
+        "checkedAt": "2026-08-01T15:42:59.402Z"
+      }
     },
     "2841442": {
       "contentId": "2841442",
@@ -5427,7 +7052,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "톤쇼우",
       "openingHoursSourceName": "톤쇼우",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "톤쇼우 부산대본점",
+        "matchedAddress": "부산 금정구 금강로 247-10",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:43:00.339Z"
+      }
     },
     "2845123": {
       "contentId": "2845123",
@@ -5452,7 +7085,12 @@
       "matchScope": "direct_place",
       "dwellSourceName": "고향 연화",
       "openingHoursSourceName": "본가딸부자전복죽집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:51.858Z"
+      }
     },
     "2848939": {
       "contentId": "2848939",
@@ -5477,7 +7115,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "일광해수욕장",
       "openingHoursSourceName": "튼튼장어 무한리필",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:53.208Z"
+      }
     },
     "2848949": {
       "contentId": "2848949",
@@ -5502,7 +7145,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "칠암만장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "칠암만장 본점",
+        "matchedAddress": "부산 기장군 일광읍 일광로 648",
+        "distanceM": 13,
+        "checkedAt": "2026-08-01T15:42:59.978Z"
+      }
     },
     "2848952": {
       "contentId": "2848952",
@@ -5527,7 +7178,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "칠암 삼계",
       "openingHoursSourceName": "일광정",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "일광정 소갈비찜",
+        "matchedAddress": "부산 기장군 일광읍 일광로 645",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:59.516Z"
+      }
     },
     "2858936": {
       "contentId": "2858936",
@@ -5552,7 +7211,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "바다마루 전복죽",
       "openingHoursSourceName": "해운대하얀오징어집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대하얀오징어집",
+        "matchedAddress": "부산 해운대구 달맞이길 50",
+        "distanceM": 27,
+        "checkedAt": "2026-08-01T15:42:53.553Z"
+      }
     },
     "2858974": {
       "contentId": "2858974",
@@ -5577,7 +7244,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "금송덕미 행리단길점",
       "openingHoursSourceName": "타이가텐푸라",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "타이가텐푸라",
+        "matchedAddress": "부산 해운대구 우동1로38번가길 15",
+        "distanceM": 4,
+        "checkedAt": "2026-08-01T15:42:51.062Z"
+      }
     },
     "2859101": {
       "contentId": "2859101",
@@ -5602,7 +7277,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "산리 오러 버스 클럽",
       "openingHoursSourceName": "나가하마만게츠",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "나가하마만게츠",
+        "matchedAddress": "부산 해운대구 우동1로 57",
+        "distanceM": 18,
+        "checkedAt": "2026-08-01T15:42:54.015Z"
+      }
     },
     "2860782": {
       "contentId": "2860782",
@@ -5627,7 +7310,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "해목",
       "openingHoursSourceName": "오반장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "오반장",
+        "matchedAddress": "부산 해운대구 구남로24번길 20",
+        "distanceM": 12,
+        "checkedAt": "2026-08-01T15:42:59.177Z"
+      }
     },
     "2860833": {
       "contentId": "2860833",
@@ -5652,7 +7343,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서프 짐",
       "openingHoursSourceName": "송정물총칼국수",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "송정물총칼국수",
+        "matchedAddress": "부산 해운대구 송정중앙로6번길 184",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:58.148Z"
+      }
     },
     "2865236": {
       "contentId": "2865236",
@@ -5677,7 +7376,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "회와 제과",
       "openingHoursSourceName": "희와제과",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "희와제과",
+        "matchedAddress": "부산 부산진구 전포대로246번길 6",
+        "distanceM": 22,
+        "checkedAt": "2026-08-01T15:42:55.481Z"
+      }
     },
     "2868655": {
       "contentId": "2868655",
@@ -5702,7 +7409,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "랜디스 도넛 광안리점",
       "openingHoursSourceName": "바로해장",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "바로해장",
+        "matchedAddress": "부산 수영구 광남로94번길 2",
+        "distanceM": 16,
+        "checkedAt": "2026-08-01T15:42:51.747Z"
+      }
     },
     "2869405": {
       "contentId": "2869405",
@@ -5727,7 +7442,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "영동 밀면 영동 국밥",
       "openingHoursSourceName": "영동밀면&돼지국밥",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "영동밀면&돼지국밥",
+        "matchedAddress": "부산 동구 중앙대로209번길 12",
+        "distanceM": 9,
+        "checkedAt": "2026-08-01T15:42:52.549Z"
+      }
     },
     "2870354": {
       "contentId": "2870354",
@@ -5752,7 +7475,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "대건 명가 돼지국밥",
       "openingHoursSourceName": "스완양분식",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "스완양분식 본점",
+        "matchedAddress": "부산 동구 중앙대로236번길 7-5",
+        "distanceM": 3,
+        "checkedAt": "2026-08-01T15:42:52.325Z"
+      }
     },
     "2870703": {
       "contentId": "2870703",
@@ -5777,7 +7508,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "초량 온당",
       "openingHoursSourceName": "초량온당",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "초량온당",
+        "matchedAddress": "부산 동구 초량중로 135",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:59.856Z"
+      }
     },
     "2872474": {
       "contentId": "2872474",
@@ -5802,7 +7541,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "오직 전복죽 기장 끝 집",
       "openingHoursSourceName": "기장끝집 죽성본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "weak",
+        "matchedName": "오직전복죽 기장끝집",
+        "matchedAddress": "부산 기장군 기장읍 기장해안로 895",
+        "distanceM": 17,
+        "checkedAt": "2026-08-01T15:42:56.045Z"
+      }
     },
     "2873498": {
       "contentId": "2873498",
@@ -5827,7 +7574,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "서프 짐",
       "openingHoursSourceName": "구로마쯔",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "구로마쯔",
+        "matchedAddress": "부산 해운대구 송정광어골로 41",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:55.820Z"
+      }
     },
     "2891789": {
       "contentId": "2891789",
@@ -5852,7 +7607,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "심미안",
       "openingHoursSourceName": "라꽁띠",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "라꽁띠",
+        "matchedAddress": "부산 해운대구 청사포로 85",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:54.352Z"
+      }
     },
     "2891814": {
       "contentId": "2891814",
@@ -5877,7 +7640,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "류센소 본점",
       "openingHoursSourceName": "류센소 본점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "류센소 본점",
+        "matchedAddress": "부산 해운대구 구남로8번길 62",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:54.465Z"
+      }
     },
     "2905141": {
       "contentId": "2905141",
@@ -5902,7 +7673,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "해운대 밀면",
       "openingHoursSourceName": "할매집",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "해운대할매집",
+        "matchedAddress": "부산 해운대구 중동2로10번길 7",
+        "distanceM": 19,
+        "checkedAt": "2026-08-01T15:42:55.035Z"
+      }
     },
     "2952936": {
       "contentId": "2952936",
@@ -5927,7 +7706,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "국제시장",
       "openingHoursSourceName": "카페제노아",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "제노아",
+        "matchedAddress": "부산 중구 중구로29번길 17",
+        "distanceM": 7,
+        "checkedAt": "2026-08-01T15:42:48.039Z"
+      }
     },
     "2991028": {
       "contentId": "2991028",
@@ -5952,7 +7739,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "광안리해양레포츠센터",
       "openingHoursSourceName": "광안리 해양레포츠센터",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "광안리해양레포츠센터",
+        "matchedAddress": "부산 수영구 광안해변로54번길 222",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:51.287Z"
+      }
     },
     "2994179": {
       "contentId": "2994179",
@@ -5977,7 +7772,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "오브젝트 에디트",
       "openingHoursSourceName": "전포공구길",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "전포공구길",
+        "matchedAddress": "부산 부산진구 전포동 868",
+        "distanceM": 41,
+        "checkedAt": "2026-08-01T15:42:59.751Z"
+      }
     },
     "3027700": {
       "contentId": "3027700",
@@ -6002,7 +7805,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "해운대 블루라인파크 미포 정거장",
       "openingHoursSourceName": "청사포 기찻길",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "matchedName": "송정역 (폐역)",
+        "matchedAddress": "부산 해운대구 송정중앙로8번길 60",
+        "distanceM": 3574,
+        "checkedAt": "2026-08-01T15:42:47.461Z"
+      }
     },
     "3064821": {
       "contentId": "3064821",
@@ -6027,7 +7838,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "자갈치시장",
       "openingHoursSourceName": "자갈치 크루즈",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "자갈치크루즈",
+        "matchedAddress": "부산 중구 자갈치해안로 60",
+        "distanceM": 6,
+        "checkedAt": "2026-08-01T15:42:48.639Z"
+      }
     },
     "3080300": {
       "contentId": "3080300",
@@ -6054,7 +7873,15 @@
       "matchScope": "area_context",
       "dwellSourceName": "부전시장",
       "openingHoursSourceName": "부산전자종합시장",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산 전자종합시장 번영회",
+        "matchedAddress": "부산 부산진구 부전로 196",
+        "distanceM": 15,
+        "checkedAt": "2026-08-01T15:42:57.299Z"
+      }
     },
     "3081825": {
       "contentId": "3081825",
@@ -6079,7 +7906,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "개미집 광안리점",
       "openingHoursSourceName": "아트모이지",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:58.603Z"
+      }
     },
     "3083767": {
       "contentId": "3083767",
@@ -6104,7 +7936,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "부산 근현대 역사관 별관",
       "openingHoursSourceName": "부산근현대역사관 본관",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "부산근현대역사관 본관",
+        "matchedAddress": "부산 중구 대청로 112",
+        "distanceM": 22,
+        "checkedAt": "2026-08-01T15:42:57.188Z"
+      }
     },
     "3336600": {
       "contentId": "3336600",
@@ -6131,7 +7971,15 @@
       "matchScope": "direct_place",
       "dwellSourceName": "고래서 이뻐",
       "openingHoursSourceName": "고래서이뻐",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "고래서이뻐",
+        "matchedAddress": "부산 해운대구 우동1로38번길 15-1",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:55.591Z"
+      }
     },
     "3421909": {
       "contentId": "3421909",
@@ -6156,7 +8004,12 @@
       "matchScope": "bad_match",
       "dwellSourceName": "포셋 전포점",
       "openingHoursSourceName": "그런고로",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:55.926Z"
+      }
     },
     "3442923": {
       "contentId": "3442923",
@@ -6181,7 +8034,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "런닝맨 부산점",
       "openingHoursSourceName": "솥이랑 서면점",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "솥이랑",
+        "matchedAddress": "부산 부산진구 중앙대로 672",
+        "distanceM": 5,
+        "checkedAt": "2026-08-01T15:42:52.101Z"
+      }
     },
     "3443614": {
       "contentId": "3443614",
@@ -6206,7 +8067,12 @@
       "matchScope": "direct_place",
       "dwellSourceName": "원에 학",
       "openingHoursSourceName": "원시학",
-      "openingHoursReliability": "direct"
+      "openingHoursReliability": "direct",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:59.290Z"
+      }
     },
     "3454074": {
       "contentId": "3454074",
@@ -6231,7 +8097,12 @@
       "matchScope": "direct_place",
       "dwellSourceName": "영화의 전당",
       "openingHoursSourceName": "영화의전당 라이브러리 자료실",
-      "openingHoursReliability": "unknown"
+      "openingHoursReliability": "unknown",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-01T15:42:59.061Z"
+      }
     },
     "3511011": {
       "contentId": "3511011",
@@ -6258,7 +8129,15 @@
       "matchScope": "bad_match",
       "dwellSourceName": "감천문화마을",
       "openingHoursSourceName": "주식회사아래모래",
-      "openingHoursReliability": "area_uncertain"
+      "openingHoursReliability": "area_uncertain",
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "verified",
+        "matchedName": "주식회사 아래모래",
+        "matchedAddress": "부산 사하구 감내2로 122",
+        "distanceM": 73,
+        "checkedAt": "2026-08-01T15:42:52.763Z"
+      }
     }
   }
 }

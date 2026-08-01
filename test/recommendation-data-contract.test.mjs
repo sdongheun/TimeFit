@@ -21,6 +21,15 @@ test('숙박성 장소는 추천 catalog에서 제외되어 있다', () => {
   assert.deepEqual(leaked.map((place) => place.title), []);
 });
 
+test('카카오 지도에서 확인되지 않은 장소는 추천 제외 대상으로 표시된다', () => {
+  const rows = [...matched, ...unmatched];
+  const notFound = rows.filter((place) => place.mapVerification?.status === 'not_found');
+  const available = rows.filter((place) => place.mapVerification?.status !== 'not_found');
+
+  assert.ok(notFound.length >= 30, 'not_found places should be present as an exclusion set');
+  assert.ok(available.length >= 500, 'verified/weak places should keep enough recommendation candidates');
+});
+
 test('상업지구 matched는 수동 세부 카테고리 검토 결과를 가진다', () => {
   const commercial = matched.filter((place) => place.category === '상업지구');
   assert.ok(commercial.length > 0);

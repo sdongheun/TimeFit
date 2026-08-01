@@ -315,7 +315,7 @@ AI-Hub category = 상업지구</pre>
           <tr><td>장소 품질 점수</td><td>시간상 가능하면 애매한 장소도 추천될 수 있음</td><td>AI-Hub 만족도, 재방문 의향, 이미지/소개 유무 반영</td></tr>
           <tr><td>사용자 취향</td><td>사용자마다 거의 같은 추천이 나옴</td><td>카페, 산책, 쇼핑, 문화 등 취향 칩 반영</td></tr>
           <tr><td>음식점/카페 규칙</td><td>웨이팅, 식사 시간대, 약속 전 적합성 판단이 약함</td><td>점심/저녁 가점, 약속 직전 식당 감점</td></tr>
-          <tr><td>지도 검색 존재 검증</td><td>카카오맵에서 검색되지 않는 장소가 섞이면 신뢰가 떨어짐</td><td>Kakao Local API로 title+좌표 검증 후 제외/감점</td></tr>
+          <tr><td><input type="checkbox" checked disabled /> 지도 검색 존재 검증</td><td>카카오맵에서 검색되지 않는 장소가 섞이면 신뢰가 떨어짐</td><td>Kakao Local API로 verified/weak/not_found 반영 완료</td></tr>
           <tr><td>운영시간 신뢰도</td><td>TourAPI 운영시간이 비거나 복잡한 문구일 수 있음</td><td>브레이크타임, 요일별 운영, 점포별 상이 문구를 파싱/감점 처리</td></tr>
           <tr><td><input type="checkbox" checked disabled /> 상업지구 세분화</td><td>시장, 거리, 백화점, 쇼핑몰이 한 카테고리에 섞임</td><td>matched 상업지구 18개에 전통시장/전문상가/개별상점/아울렛/백화점·쇼핑몰/거리·골목상권 반영 완료</td></tr>
           <tr><td><input type="checkbox" checked disabled /> AI-Hub 매칭 신뢰도</td><td>좌표 기반 매칭은 실제 장소가 다를 수 있음</td><td>direct/area_context/category_fallback/bad_match로 분리하고, bad_match만 제외</td></tr>
@@ -343,9 +343,10 @@ AI-Hub category = 상업지구</pre>
         </tbody>
       </table>
       <div class="grid">
-        <div class="card"><b>현재 matched 분포</b>direct_place 67개 · area_context 13개 · bad_match 42개</div>
+        <div class="card"><b>현재 matched 분포</b>direct_place 60개 · area_context 13개 · bad_match 49개</div>
         <div class="card"><b>유연한 추천</b>bad_match만 강하게 제외하고, area_context와 category_fallback은 후보로 유지한다.</div>
         <div class="card"><b>출처 분리</b>체류시간은 AI-Hub 출처, 운영시간은 TourAPI 장소 출처를 별도로 기록한다.</div>
+        <div class="card"><b>카카오 장소 검증</b>verified 520개 · weak 32개 · not_found 58개</div>
       </div>
     </section>
 
@@ -354,7 +355,7 @@ AI-Hub category = 상업지구</pre>
       <table>
         <thead><tr><th>순서</th><th>작업</th><th>왜 중요한가</th><th>완료 기준</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td>카카오맵 장소 존재 검증</td><td>검색되지 않는 장소 추천은 신뢰를 크게 떨어뜨림</td><td>카카오 Local 검색 결과가 없는 POI는 제외 또는 강한 감점</td></tr>
+          <tr><td>1</td><td><input type="checkbox" checked disabled /> 카카오맵 장소 존재 검증</td><td>검색되지 않는 장소 추천은 신뢰를 크게 떨어뜨림</td><td>not_found 추천 제외, weak 약한 감점 반영 완료</td></tr>
           <tr><td>2</td><td>운영시간 파서 고도화</td><td>식당/카페/문화시설은 실제로 열려 있는지가 핵심</td><td>요일별 운영, 브레이크타임, 라스트오더, 시설별 상이 문구 처리</td></tr>
           <tr><td>3</td><td><input type="checkbox" checked disabled /> 상업지구 세부 규칙</td><td>같은 카테고리 안에서도 자투리 적합성이 크게 다름</td><td>matched 상업지구 수동 검토와 subCategory 반영 완료</td></tr>
           <tr><td>3-1</td><td><input type="checkbox" disabled /> 문화시설·식당·카페 세부 규칙</td><td>상업지구 외 카테고리도 세부 유형 차이가 큼</td><td>공연장/전시관, 식사/카페 규칙 분리 필요</td></tr>
@@ -379,6 +380,7 @@ AI-Hub category = 상업지구</pre>
           <tr><td>대중교통 이동시간</td><td class="good">중상</td><td>ODsay 성공 구간은 신뢰 가능, fallback은 낮음</td></tr>
           <tr><td>대중교통 지도 경로</td><td class="mid">중</td><td>역/정류장 간이 polyline</td></tr>
           <tr><td>체류시간</td><td class="mid">중</td><td>direct_place는 신뢰도가 높고, area_context/category_fallback은 감점해 사용함</td></tr>
+          <tr><td>지도 검색 존재성</td><td class="good">중상</td><td>Kakao Local not_found는 추천 제외, weak는 감점 처리함</td></tr>
           <tr><td>운영시간 안정성</td><td class="mid">중</td><td>direct/area_uncertain/unknown으로 나눠 점수에 반영하지만 파싱은 아직 약함</td></tr>
           <tr><td>장소 품질</td><td class="bad">낮음~중</td><td>만족도, 재방문 의향, 인기도 반영이 약함</td></tr>
           <tr><td>개인화</td><td class="bad">낮음</td><td>사용자 취향 입력이 없음</td></tr>
@@ -391,7 +393,7 @@ AI-Hub category = 상업지구</pre>
       <table class="priority">
         <thead><tr><th>우선순위</th><th>작업</th><th>효과</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td>카카오맵 장소 존재 검증</td><td>검색되지 않는 장소 추천 제거.</td></tr>
+          <tr><td>1</td><td><input type="checkbox" checked disabled /> 카카오맵 장소 존재 검증</td><td>검색되지 않는 장소 추천 제거.</td></tr>
           <tr><td>2</td><td>운영시간 파서/감점 개선</td><td>실제로 열려 있는 장소 추천 안정성 증가.</td></tr>
           <tr><td>3</td><td><input type="checkbox" checked disabled /> 상업지구 세부 규칙</td><td>matched 상업지구 세분화 완료.</td></tr>
           <tr><td>3-1</td><td><input type="checkbox" disabled /> 문화시설·식당·카페 세부 규칙</td><td>상업지구 외 카테고리별 어색한 추천 감소.</td></tr>

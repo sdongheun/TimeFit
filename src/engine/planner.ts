@@ -42,6 +42,9 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
         openingHoursSourceName: d.openingHoursSourceName,
         openingHoursReliability: d.openingHoursReliability,
         matchScope: d.matchScope,
+        mapVerificationStatus: d.mapVerificationStatus,
+        mapVerificationName: d.mapVerificationName,
+        mapVerificationDistanceM: d.mapVerificationDistanceM,
         openNote: '', confidence: d.confidence, strategy: center.strategy,
       };
       const prev = seenCand.get(contentId);
@@ -179,6 +182,7 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
     const carOnlyPenalty = primaryMode === 'walk' && (c.mobility?.walk?.stayMin ?? 0) < minStay && (c.mobility?.car?.stayMin ?? 0) >= minStay ? 0.12 : 0;
     const fallbackOnlyPenalty = c.spots.every((s) => s.confidence === 'category_fallback') ? 0.12 : 0;
     const openingReliabilityPenalty = c.spots.reduce((n, s) => n + openingReliabilityPenaltyOf(s.openingHoursReliability), 0) / c.spots.length;
+    const mapVerificationPenalty = c.spots.reduce((n, s) => n + mapVerificationPenaltyOf(s.mapVerificationStatus), 0) / c.spots.length;
     const duplicatePairPenalty = c.spots.length === 2 && c.spots[0].category === c.spots[1].category ? 0.08 : 0;
     const strategyBonus = c.strategy === 'destination_area' ? 0.04 : c.strategy === 'route_area' ? 0.03 : 0;
     const shortGapBonus = budget <= 60 ? shortGapCategoryBonus(c) : 0;
@@ -186,7 +190,7 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
     const transitReliabilityPenalty = primaryMode === 'transit' ? transitFallbackPenalty(c) : 0;
     const score = 0.3 * Math.min(1, bestStay / 60) + 0.2 * ratio + 0.2 * fit + 0.15 * conf + 0.15 * compact
       + strategyBonus + shortGapBonus + transitRailBonus
-      - carOnlyPenalty - fallbackOnlyPenalty - openingReliabilityPenalty - duplicatePairPenalty - transitReliabilityPenalty;
+      - carOnlyPenalty - fallbackOnlyPenalty - openingReliabilityPenalty - mapVerificationPenalty - duplicatePairPenalty - transitReliabilityPenalty;
     const modeLabel = primaryMode === 'car' ? '차량' : primaryMode === 'transit' ? '대중교통' : '도보';
     const why = `${c.strategy ? STRATEGY_LABEL[c.strategy] + ' · ' : ''}${modeLabel} 기준 체류가능 ${bestStay}분 · ${bucket} 적합 ${Math.round(fit * 100)}%`;
     return { c: { ...c, why }, score };
@@ -226,6 +230,12 @@ function confidenceScore(confidence: Spot['confidence']): number {
 function openingReliabilityPenaltyOf(reliability: Spot['openingHoursReliability']): number {
   if (reliability === 'area_uncertain') return 0.03;
   if (reliability === 'unknown') return 0.04;
+  return 0;
+}
+
+function mapVerificationPenaltyOf(status: Spot['mapVerificationStatus']): number {
+  if (status === 'weak') return 0.05;
+  if (status === 'unverified') return 0.08;
   return 0;
 }
 

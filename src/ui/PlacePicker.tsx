@@ -1,9 +1,18 @@
 // 장소 선택 모달 (검색 전용, 지도 없음 — WebView 미의존이라 재빌드 불필요)
-// 검색어 하나로 TMAP POI(가까운 순 5곳) + TMAP 주소 지오코딩을 동시에 조회해 합쳐 보여준다.
+// 검색어 하나로 Kakao Local 우선 + TMAP 폴백 POI/주소 지오코딩을 조회해 합쳐 보여준다.
 import { useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import * as Location from 'expo-location';
-import { LatLon, Poi, geocodeAddr, poiSearchMulti, reverseGeocode } from '../engine';
+import {
+  LatLon,
+  Poi,
+  geocodeAddr,
+  kakaoGeocodeAddr,
+  kakaoPoiSearchMulti,
+  kakaoReverseGeocode,
+  poiSearchMulti,
+  reverseGeocode,
+} from '../engine';
 import { C } from './theme';
 
 export type Place = { label: string; lat: number; lon: number };
@@ -22,19 +31,24 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
   const [cands, setCands] = useState<Poi[]>([]);
   const [sel, setSel] = useState(-1);
   const [busy, setBusy] = useState<'search' | 'gps' | ''>('');
-  const [msg, setMsg] = useState('TMAP 장소 이름 또는 주소로 검색하세요');
+  const [msg, setMsg] = useState('카카오 장소 이름 또는 주소로 검색하세요');
 
   async function search() {
     if (!q.trim()) return;
     setBusy('search'); setSel(-1);
-    // POI(반경 30km 가까운 순) + 주소 지오코딩 동시 조회 → 합치기
+    // Kakao Local 우선. 결과가 부족하면 기존 TMAP 검색을 폴백으로 섞는다.
     let [pois, addrs] = await Promise.all([
-      poiSearchMulti(q, center, 5),
-      geocodeAddr(q, 3),
+      kakaoPoiSearchMulti(q, center, 5),
+      kakaoGeocodeAddr(q, 3),
     ]);
-    if (!pois.length) pois = await poiSearchMulti(q, undefined, 5); // 반경 밖이면 전국 재시도
+    if (!pois.length) pois = await kakaoPoiSearchMulti(q, undefined, 5);
+    if (pois.length < 3) {
+      const tmapPois = await poiSearchMulti(q, center, 5 - pois.length);
+      pois = mergePois([...pois, ...tmapPois]);
+    }
+    if (addrs.length < 1) addrs = await geocodeAddr(q, 3);
     setBusy('');
-    const list = [...pois, ...addrs];
+    const list = mergePois([...pois, ...addrs]);
     setCands(list);
     if (!list.length) { setMsg('검색 결과 없음 — 다른 이름/주소로 시도해보세요'); return; }
     setMsg(''); setSel(0);
@@ -48,7 +62,7 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
       if (status !== 'granted') { setMsg('위치 권한이 거부됐어요'); return; }
       const p = await Location.getCurrentPositionAsync({});
       const lat = p.coords.latitude, lon = p.coords.longitude;
-      const addr = await reverseGeocode(lat, lon);
+      const addr = await kakaoReverseGeocode(lat, lon) ?? await reverseGeocode(lat, lon);
       const me: Poi = { name: addr ? `내 위치 · ${addr}` : `내 위치 (${lat.toFixed(4)}, ${lon.toFixed(4)})`, lat, lon, addr: 'GPS' };
       setCands([me]); setSel(0); setMsg('');
     } catch { setMsg('위치를 가져오지 못했어요'); }
@@ -109,6 +123,18 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
       </View>
     </Modal>
   );
+}
+
+function mergePois(list: Poi[]): Poi[] {
+  const seen = new Set<string>();
+  const out: Poi[] = [];
+  for (const p of list) {
+    const key = `${p.name.replace(/\s/g, '').toLowerCase()}|${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(p);
+  }
+  return out;
 }
 
 const s = StyleSheet.create({

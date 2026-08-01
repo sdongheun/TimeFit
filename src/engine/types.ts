@@ -8,6 +8,7 @@ export type HourBucket = "아침" | "점심" | "오후" | "저녁" | "야간";
 export type MatchScope = "direct_place" | "area_context" | "category_fallback" | "bad_match";
 export type OpeningHoursReliability = "direct" | "area_uncertain" | "unknown";
 export type SpotConfidence = "direct_match" | "area_context_match" | "category_fallback";
+export type MapVerificationStatus = "verified" | "weak" | "not_found" | "unverified";
 
 export type PlanInput = {
   origin: LatLon;
@@ -35,6 +36,9 @@ export type Spot = {
   openingHoursSourceName?: string;
   openingHoursReliability?: OpeningHoursReliability;
   matchScope?: MatchScope;
+  mapVerificationStatus?: MapVerificationStatus;
+  mapVerificationName?: string;
+  mapVerificationDistanceM?: number;
   mult: number;
   openNote: string;
   confidence: SpotConfidence;

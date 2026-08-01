@@ -1,6 +1,13 @@
 // 부산 TourAPI ↔ AI-Hub 매칭/폴백 장소 파라미터 (앱 번들)
 import busanPoiCatalog from '../data/busan_poi_catalog.json';
-import { DayType, HourBucket, MatchScope, OpeningHoursReliability, SpotConfidence } from './types';
+import { DayType, HourBucket, MapVerificationStatus, MatchScope, OpeningHoursReliability, SpotConfidence } from './types';
+
+type MapVerification = {
+  provider: 'kakao';
+  status: MapVerificationStatus;
+  matchedName?: string;
+  distanceM?: number;
+};
 
 type BusanMatchedRec = {
   contentId: string;
@@ -14,6 +21,7 @@ type BusanMatchedRec = {
   dwellSourceName?: string;
   openingHoursSourceName?: string;
   openingHoursReliability?: OpeningHoursReliability;
+  mapVerification?: MapVerification;
   category: string;
   dwell: { count: number; median: number; p25: number; p75: number; mean: number };
 };
@@ -28,6 +36,7 @@ type BusanUnmatchedRec = {
   dwellSourceName?: string;
   openingHoursSourceName?: string;
   openingHoursReliability?: OpeningHoursReliability;
+  mapVerification?: MapVerification;
   lat: number;
   lon: number;
 };
@@ -56,6 +65,9 @@ export function resolveBusanDwell(
   dwellSourceName: string;
   openingHoursSourceName: string;
   openingHoursReliability: OpeningHoursReliability;
+  mapVerificationStatus: MapVerificationStatus;
+  mapVerificationName?: string;
+  mapVerificationDistanceM?: number;
 } | null {
   const matched = busanMatched[String(contentId)];
   if (matched) {
@@ -65,6 +77,7 @@ export function resolveBusanDwell(
 
   const unmatched = busanUnmatched[String(contentId)];
   if (!unmatched) return null;
+  if (unmatched.mapVerification?.status === 'not_found') return null;
   const stat = categoryStats[unmatched.category];
   if (!stat?.median) return null;
   return {
@@ -80,11 +93,15 @@ export function resolveBusanDwell(
     dwellSourceName: unmatched.dwellSourceName ?? `카테고리:${unmatched.category}`,
     openingHoursSourceName: unmatched.openingHoursSourceName ?? unmatched.title,
     openingHoursReliability: unmatched.openingHoursReliability ?? openingReliabilityFor(unmatched),
+    mapVerificationStatus: unmatched.mapVerification?.status ?? 'unverified',
+    mapVerificationName: unmatched.mapVerification?.matchedName,
+    mapVerificationDistanceM: unmatched.mapVerification?.distanceM,
   };
 }
 
 function isLowConfidenceMatched(matched: BusanMatchedRec): boolean {
   if (matched.matchScope === 'bad_match') return true;
+  if (matched.mapVerification?.status === 'not_found') return true;
   if (matched.matchScope === 'area_context') return false;
 
   const risks = [
@@ -127,6 +144,9 @@ function effectiveBusanMatchedDwell(
   dwellSourceName: string;
   openingHoursSourceName: string;
   openingHoursReliability: OpeningHoursReliability;
+  mapVerificationStatus: MapVerificationStatus;
+  mapVerificationName?: string;
+  mapVerificationDistanceM?: number;
 } {
   const base = matched.dwell.median;
   const matchScope = matched.matchScope ?? 'direct_place';
@@ -145,6 +165,9 @@ function effectiveBusanMatchedDwell(
     dwellSourceName,
     openingHoursSourceName: matched.openingHoursSourceName ?? matched.title,
     openingHoursReliability: matched.openingHoursReliability ?? openingReliabilityFor(matched),
+    mapVerificationStatus: matched.mapVerification?.status ?? 'unverified',
+    mapVerificationName: matched.mapVerification?.matchedName,
+    mapVerificationDistanceM: matched.mapVerification?.distanceM,
   };
 }
 

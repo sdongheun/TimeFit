@@ -8,6 +8,7 @@ const unmatched = Object.values(catalog.unmatched.byContentId);
 
 const MATCH_SCOPES = new Set(['direct_place', 'area_context', 'category_fallback', 'bad_match']);
 const OPENING_RELIABILITY = new Set(['direct', 'area_uncertain', 'unknown']);
+const MAP_VERIFICATION = new Set(['verified', 'weak', 'not_found', 'unverified']);
 
 function byTitle(rows, title) {
   return rows.find((row) => row.title === title);
@@ -27,6 +28,7 @@ test('matched 장소는 매칭 범위와 출처 메타데이터를 가진다', (
     assert.ok(place.dwellSourceName, `${place.title}: missing dwellSourceName`);
     assert.ok(place.openingHoursSourceName, `${place.title}: missing openingHoursSourceName`);
     assert.ok(OPENING_RELIABILITY.has(place.openingHoursReliability), `${place.title}: invalid openingHoursReliability`);
+    assert.ok(MAP_VERIFICATION.has(place.mapVerification?.status), `${place.title}: invalid mapVerification`);
   }
 });
 
@@ -36,7 +38,20 @@ test('unmatched 장소는 category_fallback으로만 사용된다', () => {
     assert.equal(place.dwellSourceName, `카테고리:${place.category}`);
     assert.ok(place.openingHoursSourceName);
     assert.ok(OPENING_RELIABILITY.has(place.openingHoursReliability));
+    assert.ok(MAP_VERIFICATION.has(place.mapVerification?.status), `${place.title}: invalid mapVerification`);
   }
+});
+
+test('카카오 지도 검증 실패 장소는 not_found로 분리된다', () => {
+  const counts = [...matched, ...unmatched].reduce((acc, place) => {
+    acc[place.mapVerification?.status ?? 'unverified'] = (acc[place.mapVerification?.status ?? 'unverified'] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  assert.equal(counts.unverified ?? 0, 0, 'all catalog places should be checked by Kakao Local');
+  assert.ok(counts.verified > 400, 'most catalog places should be verified');
+  assert.ok(counts.not_found > 0, 'Kakao not_found places should be explicitly marked');
+  assert.ok(counts.weak > 0, 'ambiguous but visible places should be kept as weak');
 });
 
 test('명백한 근접 오매칭은 bad_match로 분리된다', () => {
