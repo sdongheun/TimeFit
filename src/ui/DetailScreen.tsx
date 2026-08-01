@@ -1,10 +1,10 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from 'react-native-maps';
 import { Course, refineCourses } from '../engine';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
+import { KakaoRouteMap } from './KakaoRouteMap';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
 
@@ -21,17 +21,10 @@ export function DetailScreen({ route, navigation }: Props) {
   const [refineNote, setRefineNote] = useState('');
   const target = ctx.appointment ?? origin;
   const pts = useMemo(() => [origin, ...activeCourse.spots, target], [activeCourse.spots, origin, target]);
-  const lats = pts.map((p) => p.lat), lons = pts.map((p) => p.lon);
-  const region = {
-    latitude: (Math.min(...lats) + Math.max(...lats)) / 2,
-    longitude: (Math.min(...lons) + Math.max(...lons)) / 2,
-    latitudeDelta: Math.max(0.012, (Math.max(...lats) - Math.min(...lats)) * 1.8),
-    longitudeDelta: Math.max(0.012, (Math.max(...lons) - Math.min(...lons)) * 1.8),
-  };
   const travelLegs = activeCourse.legs.filter((lg) => !lg.label.startsWith('체류'));
   // TMAP 실경로(geo) 연결 — 없으면 직선 폴백
   const geoCoords = travelLegs.flatMap((lg) => lg.geo ?? []);
-  const line = (geoCoords.length > 1 ? geoCoords : pts).map((p) => ({ latitude: p.lat, longitude: p.lon }));
+  const line = geoCoords.length > 1 ? geoCoords : pts;
   const walk = activeCourse.mobility?.walk;
   const car = activeCourse.mobility?.car;
   const transit = activeCourse.mobility?.transit;
@@ -63,16 +56,16 @@ export function DetailScreen({ route, navigation }: Props) {
 
   return (
     <View style={s.root}>
-      <MapView provider={PROVIDER_DEFAULT} style={s.map} initialRegion={region}>
-        <Marker coordinate={{ latitude: origin.lat, longitude: origin.lon }} title="출발지" pinColor="#4cc2ff" />
-        {activeCourse.spots.map((sp, i) => (
-          <Marker key={i} coordinate={{ latitude: sp.lat, longitude: sp.lon }} title={`${i + 1}. ${sp.title}`} description={`${sp.category} · 체류 ${sp.dwell}분`} />
-        ))}
-        {ctx.appointment && (
-          <Marker coordinate={{ latitude: target.lat, longitude: target.lon }} title={`약속 · ${ctx.appointment.label}`} pinColor="#7ee787" />
-        )}
-        <Polyline coordinates={line} strokeColor="#4cc2ff" strokeWidth={3} />
-      </MapView>
+      <KakaoRouteMap
+        style={s.map}
+        points={pts}
+        line={line}
+        markers={[
+          { ...origin, label: '출발지', kind: 'origin' },
+          ...activeCourse.spots.map((sp) => ({ ...sp, label: sp.title, kind: 'spot' as const })),
+          ...(ctx.appointment ? [{ ...target, label: ctx.appointment.label, kind: 'appointment' as const }] : []),
+        ]}
+      />
 
       <ScrollView contentContainerStyle={s.scroll}>
         <View style={s.head}>

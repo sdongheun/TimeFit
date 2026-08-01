@@ -1,5 +1,5 @@
 // TMAP 지도 (WebView + TMAP JS API v2) — 표시/마커/탭핀/중심추적
-// react-native-maps(Apple) 대체용. ⚠️ react-native-webview 네이티브 모듈 → dev build 재빌드 필요.
+// TMAP 웹 지도 검색/선택용. ⚠️ react-native-webview 네이티브 모듈 → dev build 재빌드 필요.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';

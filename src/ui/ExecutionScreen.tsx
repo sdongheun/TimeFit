@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from 'react-native-maps';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
+import { KakaoRouteMap } from './KakaoRouteMap';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Execution'>;
 
@@ -40,30 +40,22 @@ export function ExecutionScreen({ route, navigation }: Props) {
 
   const target = ctx.appointment ?? origin;
   const pts = [origin, ...course.spots, target];
-  const lats = pts.map((p) => p.lat), lons = pts.map((p) => p.lon);
-  const region = {
-    latitude: (Math.min(...lats) + Math.max(...lats)) / 2,
-    longitude: (Math.min(...lons) + Math.max(...lons)) / 2,
-    latitudeDelta: Math.max(0.012, (Math.max(...lats) - Math.min(...lats)) * 1.8),
-    longitudeDelta: Math.max(0.012, (Math.max(...lons) - Math.min(...lons)) * 1.8),
-  };
+  const geo = course.legs.filter((lg) => !lg.label.startsWith('체류')).flatMap((lg) => lg.geo ?? []);
+  const line = geo.length > 1 ? geo : pts;
   const endMin = ctx.startMin + ctx.remainingMin;
 
   return (
     <View style={s.root}>
-      <MapView provider={PROVIDER_DEFAULT} style={s.map} initialRegion={region}>
-        <Marker coordinate={{ latitude: origin.lat, longitude: origin.lon }} title="출발지" pinColor="#4cc2ff" />
-        {course.spots.map((sp, i) => (
-          <Marker key={i} coordinate={{ latitude: sp.lat, longitude: sp.lon }} title={`${i + 1}. ${sp.title}`} />
-        ))}
-        {ctx.appointment && <Marker coordinate={{ latitude: target.lat, longitude: target.lon }} title={`약속 · ${ctx.appointment.label}`} pinColor="#7ee787" />}
-        <Polyline
-          coordinates={(() => {
-            const geo = course.legs.filter((lg) => !lg.label.startsWith('체류')).flatMap((lg) => lg.geo ?? []);
-            return (geo.length > 1 ? geo : pts).map((p) => ({ latitude: p.lat, longitude: p.lon })); // 실경로, 없으면 직선
-          })()}
-          strokeColor="#4cc2ff" strokeWidth={3} />
-      </MapView>
+      <KakaoRouteMap
+        style={s.map}
+        points={pts}
+        line={line}
+        markers={[
+          { ...origin, label: '출발지', kind: 'origin' },
+          ...course.spots.map((sp) => ({ ...sp, label: sp.title, kind: 'spot' as const })),
+          ...(ctx.appointment ? [{ ...target, label: ctx.appointment.label, kind: 'appointment' as const }] : []),
+        ]}
+      />
 
       <ScrollView contentContainerStyle={s.scroll}>
         <View style={s.banner}>
