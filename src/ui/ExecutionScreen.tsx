@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { LatLon, Mode } from '../engine';
+import { ActivityIndicator, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Course, LatLon, Mode, PlanResult, planTimeFit, timeContext } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
@@ -57,12 +57,25 @@ function currentMinuteOfDay(): number {
   return d.getHours() * 60 + d.getMinutes();
 }
 
+function filterVisitedCourses(result: PlanResult, course: Course, step: number): PlanResult {
+  const visitedIds = new Set(course.spots.slice(0, Math.max(0, step)).map((sp) => sp.contentId));
+  if (!visitedIds.size) return result;
+  const keep = (c: Course) => c.spots.every((sp) => !visitedIds.has(sp.contentId));
+  return {
+    ...result,
+    courses: result.courses.filter(keep),
+    pending: result.pending.filter(keep),
+  };
+}
+
 export function ExecutionScreen({ route, navigation }: Props) {
   const { course, origin, ctx } = route.params;
   const [step, setStep] = useState(0); // 현재 위치한 지점 인덱스
   const [routeOpened, setRouteOpened] = useState(false);
   const [actualDepartMinByStep, setActualDepartMinByStep] = useState<Record<number, number>>({});
   const [actualArriveMinByStep, setActualArriveMinByStep] = useState<Record<number, number>>({});
+  const [replanning, setReplanning] = useState(false);
+  const [replanError, setReplanError] = useState('');
   const { stops, alerts } = useMemo(() => buildSchedule(route.params), [route.params]);
 
   const target = ctx.appointment ?? origin;
@@ -81,6 +94,7 @@ export function ExecutionScreen({ route, navigation }: Props) {
   const stayMin = current.isSpot ? Math.max(0, current.leaveMin - effectiveArriveMin) : 0;
   const delayMin = current.isSpot && actualArriveMin != null ? actualArriveMin - current.arriveMin : 0;
   const stayWarning = current.isSpot && actualArriveMin != null && stayMin < 20;
+  const canReplan = !isDone && step > 0;
 
   async function openCurrentRoute() {
     if (!next) return;
@@ -103,6 +117,44 @@ export function ExecutionScreen({ route, navigation }: Props) {
     setActualArriveMinByStep((prev) => ({ ...prev, [nextStep]: now }));
     setStep(nextStep);
     setRouteOpened(false);
+  }
+
+  async function replanFromHere() {
+    if (!current) return;
+    const now = currentMinuteOfDay();
+    const remainingMin = Math.max(0, endMin - now);
+    setReplanError('');
+    if (remainingMin < 30) {
+      setReplanError('남은 시간이 30분 미만이라 새 코스보다 바로 다음 일정으로 이동하는 편이 안전해요.');
+      return;
+    }
+    setReplanning(true);
+    try {
+      const real = timeContext(new Date());
+      const result = filterVisitedCourses(await planTimeFit({
+        origin: current.point,
+        destination: ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : origin,
+        remainingMin,
+        mode: ctx.mode,
+        nowMin: now,
+        dayType: real.dayType,
+        hourBucket: real.hourBucket,
+      }), course, step);
+      if (!result.courses.length) {
+        setReplanError('남은 시간으로 가능한 다른 코스를 찾지 못했어요. 다음 일정으로 바로 이동하세요.');
+        return;
+      }
+      navigation.navigate('Results', {
+        result,
+        usedTimeLabel: `${real.dayType} ${fmtHM(now)}·${real.hourBucket}`,
+        origin: current.point,
+        ctx: { ...ctx, startMin: now, remainingMin },
+      });
+    } catch (e: any) {
+      setReplanError('재검색 실패: ' + (e?.message ?? '알 수 없음'));
+    } finally {
+      setReplanning(false);
+    }
   }
 
   return (
@@ -153,6 +205,12 @@ export function ExecutionScreen({ route, navigation }: Props) {
               {stayWarning ? (
                 <Text style={s.warnNote}>머물 시간이 짧아졌어요. 다음 장소로 바로 이동하는 것도 고려하세요.</Text>
               ) : null}
+              {canReplan ? (
+                <Pressable style={[s.replanBtn, replanning && s.replanBtnOff]} onPress={replanFromHere} disabled={replanning}>
+                  {replanning ? <ActivityIndicator color={C.accent} /> : <Text style={s.replanBtnTxt}>남은 시간으로 다른 장소 찾기</Text>}
+                </Pressable>
+              ) : null}
+              {replanError ? <Text style={s.replanError}>{replanError}</Text> : null}
               <View style={s.nowStats}>
                 <View style={s.stat}><Text style={s.statLbl}>이동</Text><Text style={s.statVal}>{moveMin}분</Text></View>
                 <View style={s.stat}><Text style={s.statLbl}>체류 가능</Text><Text style={s.statVal}>{current.isSpot ? `${stayMin}분` : '-'}</Text></View>
@@ -228,6 +286,10 @@ const s = StyleSheet.create({
   actualNote: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 8 },
   delayNote: { color: C.amber },
   warnNote: { color: C.red, fontSize: 12.5, lineHeight: 18, marginTop: 8, fontWeight: '700' },
+  replanBtn: { marginTop: 12, borderWidth: 1, borderColor: 'rgba(76,194,255,0.5)', backgroundColor: 'rgba(76,194,255,0.1)', borderRadius: 11, paddingVertical: 11, alignItems: 'center' },
+  replanBtnOff: { opacity: 0.55 },
+  replanBtnTxt: { color: C.accent, fontSize: 13.5, fontWeight: '800' },
+  replanError: { color: C.amber, fontSize: 12.5, lineHeight: 18, marginTop: 8 },
   nowStats: { flexDirection: 'row', gap: 8, marginTop: 14 },
   stat: { flex: 1, backgroundColor: C.panel2, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 9 },
   statLbl: { color: C.muted, fontSize: 10.5, fontWeight: '700', marginBottom: 3 },
