@@ -78,7 +78,16 @@ export function HomeScreen({ navigation }: Props) {
       if (!result.courses.length) { setError('이 시간 안에 가능한 코스를 찾지 못했어요. 시간을 늘려보세요.'); return; }
       navigation.navigate('Results', {
         result, usedTimeLabel, origin,
-        ctx: { startMin: useMin, mode, modeLabel: mode === 'car' ? '차량' : mode === 'transit' ? '대중교통' : '도보', appointment, remainingMin: remaining },
+        ctx: {
+          startMin: useMin,
+          mode,
+          modeLabel: mode === 'car' ? '차량' : mode === 'transit' ? '대중교통' : '도보',
+          appointment,
+          remainingMin: remaining,
+          dayType,
+          hourBucket,
+          isManualTime: manualMin != null,
+        },
       });
     } catch (e: any) {
       setError('추천 실패: ' + (e?.message ?? '알 수 없음'));
