@@ -1,12 +1,10 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, Linking, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Course, LatLon, Mode, PlanResult, planTimeFit, timeContext } from '../engine';
+import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { LatLon, Mode } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
-import { Place, PlacePicker } from './PlacePicker';
-import { resolveReplanTiming } from './replanLogic';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Execution'>;
 
@@ -59,17 +57,6 @@ function currentMinuteOfDay(): number {
   return d.getHours() * 60 + d.getMinutes();
 }
 
-function filterVisitedCourses(result: PlanResult, course: Course, step: number): PlanResult {
-  const visitedIds = new Set(course.spots.slice(0, Math.max(0, step)).map((sp) => sp.contentId));
-  if (!visitedIds.size) return result;
-  const keep = (c: Course) => c.spots.every((sp) => !visitedIds.has(sp.contentId));
-  return {
-    ...result,
-    courses: result.courses.filter(keep),
-    pending: result.pending.filter(keep),
-  };
-}
-
 export function ExecutionScreen({ route, navigation }: Props) {
   const { course, origin, ctx } = route.params;
   const [step, setStep] = useState(0); // 현재 위치한 지점 인덱스
@@ -77,11 +64,6 @@ export function ExecutionScreen({ route, navigation }: Props) {
   const [transitionMsg, setTransitionMsg] = useState('');
   const [actualDepartMinByStep, setActualDepartMinByStep] = useState<Record<number, number>>({});
   const [actualArriveMinByStep, setActualArriveMinByStep] = useState<Record<number, number>>({});
-  const [replanning, setReplanning] = useState(false);
-  const [replanError, setReplanError] = useState('');
-  const [replanTimeTxt, setReplanTimeTxt] = useState('');
-  const [replanOrigin, setReplanOrigin] = useState<Place | null>(null);
-  const [replanPickerOpen, setReplanPickerOpen] = useState(false);
   const { stops, alerts } = useMemo(() => buildSchedule(route.params), [route.params]);
 
   const target = ctx.appointment ?? origin;
@@ -100,10 +82,7 @@ export function ExecutionScreen({ route, navigation }: Props) {
   const stayMin = current.isSpot ? Math.max(0, current.leaveMin - effectiveArriveMin) : 0;
   const delayMin = current.isSpot && actualArriveMin != null ? actualArriveMin - current.arriveMin : 0;
   const stayWarning = current.isSpot && actualArriveMin != null && stayMin < 20;
-  const canReplan = !isDone;
-  const replanLabel = stayWarning ? '남은 시간으로 다시 추천' : '다른 장소 찾아보기';
-  const autoReplanRemainingMin = Math.max(0, endMin - currentMinuteOfDay());
-  const replanBasePoint = replanOrigin ? { lat: replanOrigin.lat, lon: replanOrigin.lon } : current.point;
+  const canAdjust = !isDone && current.isSpot;
   const totalSegments = Math.max(0, stops.length - 1);
   const currentSegment = Math.min(step + 1, totalSegments);
   const ctaLabel = isDone
@@ -145,59 +124,11 @@ export function ExecutionScreen({ route, navigation }: Props) {
     setTransitionMsg(nextStep >= stops.length - 1 ? '마지막 지점 기준으로 코스를 마무리합니다.' : '다음 이동 안내로 전환했어요.');
   }
 
-  async function replanFromHere() {
-    if (!current) return;
-    setReplanError('');
-    const real = timeContext(new Date());
-    const timing = resolveReplanTiming({
-      timeText: replanTimeTxt,
-      endMin,
-      currentMin: currentMinuteOfDay(),
-      ctxDayType: ctx.dayType,
-      ctxHourBucket: ctx.hourBucket,
-      ctxIsManualTime: ctx.isManualTime,
-      realDayType: real.dayType,
-      realHourBucket: real.hourBucket,
-    });
-    if (!timing.ok) {
-      setReplanError(timing.error);
-      return;
-    }
-
-    setReplanning(true);
-    try {
-      const rawResult = await planTimeFit({
-        origin: replanBasePoint,
-        destination: ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : origin,
-        remainingMin: timing.remainingMin,
-        mode: ctx.mode,
-        nowMin: timing.nowMin,
-        dayType: timing.dayType,
-        hourBucket: timing.hourBucket,
-      });
-      const result = filterVisitedCourses(rawResult, course, step);
-      if (!result.courses.length) {
-        setReplanError(`남은 시간으로 가능한 다른 코스를 찾지 못했어요. 후보 ${rawResult.candidateCount}개 · 영업중 ${rawResult.gatedCount}개 기준입니다.`);
-        return;
-      }
-      navigation.navigate('Results', {
-        result,
-        usedTimeLabel: `${timing.dayType} ${fmtHM(timing.nowMin)}·${timing.hourBucket}`,
-        origin: replanBasePoint,
-        ctx: {
-          ...ctx,
-          startMin: timing.nowMin,
-          remainingMin: timing.remainingMin,
-          dayType: timing.dayType,
-          hourBucket: timing.hourBucket,
-          isManualTime: timing.isManualTime,
-        },
-      });
-    } catch (e: any) {
-      setReplanError('재검색 실패: ' + (e?.message ?? '알 수 없음'));
-    } finally {
-      setReplanning(false);
-    }
+  function adjustCourseFromNow() {
+    if (!current.isSpot) return;
+    const now = currentMinuteOfDay();
+    setActualArriveMinByStep((prev) => ({ ...prev, [step]: now }));
+    setTransitionMsg('현재 시간 기준으로 체류 가능 시간을 다시 계산했어요.');
   }
 
   return (
@@ -248,38 +179,11 @@ export function ExecutionScreen({ route, navigation }: Props) {
               {stayWarning ? (
                 <Text style={s.warnNote}>머물 시간이 짧아졌어요. 다음 장소로 바로 이동하는 것도 고려하세요.</Text>
               ) : null}
-              {canReplan ? (
-                <View style={s.replanBox}>
-                  <View style={s.replanInputRow}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={s.replanInputLbl}>재검색 조건</Text>
-                      <Text style={s.replanAuto}>비우면 자동 {autoReplanRemainingMin}분 · 현재 지점 기준</Text>
-                    </View>
-                  </View>
-                  <View style={s.replanSingleField}>
-                    <Text style={s.replanFieldLbl}>현재 시간</Text>
-                    <TextInput
-                      style={s.replanInput}
-                      value={replanTimeTxt}
-                      onChangeText={setReplanTimeTxt}
-                      placeholder="HH:MM"
-                      placeholderTextColor={C.muted}
-                      keyboardType="numbers-and-punctuation"
-                    />
-                  </View>
-                  <Pressable style={s.replanPlaceBtn} onPress={() => setReplanPickerOpen(true)}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={s.replanFieldLbl}>현재 장소</Text>
-                      <Text style={s.replanPlaceTxt} numberOfLines={1}>{replanOrigin ? replanOrigin.label : current.name}</Text>
-                    </View>
-                    <Text style={s.replanPlaceAction}>변경</Text>
-                  </Pressable>
-                  <Pressable style={[s.replanBtn, stayWarning && s.replanBtnWarn, replanning && s.replanBtnOff]} onPress={replanFromHere} disabled={replanning}>
-                    {replanning ? <ActivityIndicator color={stayWarning ? '#fff' : C.accent} /> : <Text style={[s.replanBtnTxt, stayWarning && s.replanBtnWarnTxt]}>{replanLabel}</Text>}
-                  </Pressable>
-                </View>
+              {canAdjust ? (
+                <Pressable style={[s.adjustBtn, stayWarning && s.adjustBtnWarn]} onPress={adjustCourseFromNow}>
+                  <Text style={[s.adjustBtnTxt, stayWarning && s.adjustBtnWarnTxt]}>현재 시간으로 코스 조정</Text>
+                </Pressable>
               ) : null}
-              {replanError ? <Text style={s.replanError}>{replanError}</Text> : null}
               <View style={s.nowStats}>
                 <View style={s.stat}><Text style={s.statLbl}>이동</Text><Text style={s.statVal}>{moveMin}분</Text></View>
                 <View style={s.stat}><Text style={s.statLbl}>체류 가능</Text><Text style={s.statVal}>{current.isSpot ? `${stayMin}분` : '-'}</Text></View>
@@ -347,14 +251,6 @@ export function ExecutionScreen({ route, navigation }: Props) {
         </Pressable>
         <View style={{ height: 40 }} />
       </ScrollView>
-      <PlacePicker
-        visible={replanPickerOpen}
-        title="재검색 현재 장소 선택"
-        center={replanBasePoint}
-        showGps
-        onClose={() => setReplanPickerOpen(false)}
-        onConfirm={(p) => setReplanOrigin(p)}
-      />
     </View>
   );
 }
@@ -373,22 +269,10 @@ const s = StyleSheet.create({
   actualNote: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 8 },
   delayNote: { color: C.amber },
   warnNote: { color: C.red, fontSize: 12.5, lineHeight: 18, marginTop: 8, fontWeight: '700' },
-  replanBox: { marginTop: 12 },
-  replanInputRow: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: C.panel2, borderColor: C.line, borderWidth: 1, borderRadius: 11, paddingVertical: 10, paddingHorizontal: 12 },
-  replanInputLbl: { color: C.txt, fontSize: 12.5, fontWeight: '800' },
-  replanAuto: { color: C.muted, fontSize: 11.5, marginTop: 2 },
-  replanSingleField: { marginTop: 8 },
-  replanFieldLbl: { color: C.muted, fontSize: 11.5, fontWeight: '800', marginBottom: 5 },
-  replanInput: { width: '100%', minHeight: 40, borderRadius: 9, borderWidth: 1, borderColor: C.line, backgroundColor: C.bg, color: C.txt, textAlign: 'center', fontSize: 14.5, fontWeight: '800', paddingHorizontal: 8 },
-  replanPlaceBtn: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 8, backgroundColor: C.panel2, borderColor: C.line, borderWidth: 1, borderRadius: 11, paddingVertical: 10, paddingHorizontal: 12 },
-  replanPlaceTxt: { color: C.txt, fontSize: 13.5, fontWeight: '700' },
-  replanPlaceAction: { color: C.accent, fontSize: 12.5, fontWeight: '900' },
-  replanBtn: { marginTop: 12, borderWidth: 1, borderColor: 'rgba(76,194,255,0.5)', backgroundColor: 'rgba(76,194,255,0.1)', borderRadius: 11, paddingVertical: 11, alignItems: 'center' },
-  replanBtnWarn: { borderColor: 'rgba(227,179,65,0.75)', backgroundColor: 'rgba(227,179,65,0.22)' },
-  replanBtnOff: { opacity: 0.55 },
-  replanBtnTxt: { color: C.accent, fontSize: 13.5, fontWeight: '800' },
-  replanBtnWarnTxt: { color: C.amber },
-  replanError: { color: C.amber, fontSize: 12.5, lineHeight: 18, marginTop: 8 },
+  adjustBtn: { marginTop: 12, borderWidth: 1, borderColor: 'rgba(76,194,255,0.5)', backgroundColor: 'rgba(76,194,255,0.1)', borderRadius: 11, paddingVertical: 11, alignItems: 'center' },
+  adjustBtnWarn: { borderColor: 'rgba(227,179,65,0.75)', backgroundColor: 'rgba(227,179,65,0.22)' },
+  adjustBtnTxt: { color: C.accent, fontSize: 13.5, fontWeight: '800' },
+  adjustBtnWarnTxt: { color: C.amber },
   nowStats: { flexDirection: 'row', gap: 8, marginTop: 14 },
   stat: { flex: 1, backgroundColor: C.panel2, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 9 },
   statLbl: { color: C.muted, fontSize: 10.5, fontWeight: '700', marginBottom: 3 },

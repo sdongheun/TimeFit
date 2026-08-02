@@ -33,7 +33,7 @@ export default function App() {
           }}
         >
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Results" component={ResultsScreen} options={{ title: '추천 코스' }} />
+          <Stack.Screen name="Results" component={ResultsScreen} options={{ title: '코스 만들기' }} />
           <Stack.Screen name="Detail" component={DetailScreen} options={{ title: '코스 상세' }} />
           <Stack.Screen name="Execution" component={ExecutionScreen} options={{ title: '코스 진행 중', headerBackTitle: '상세' }} />
           <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: '코스 완료', headerBackVisible: false }} />
