@@ -8,6 +8,8 @@ import { ResultsScreen } from './src/ui/ResultsScreen';
 import { DetailScreen } from './src/ui/DetailScreen';
 import { ExecutionScreen } from './src/ui/ExecutionScreen';
 import { FeedbackScreen } from './src/ui/FeedbackScreen';
+import { ProfileScreen } from './src/ui/ProfileScreen';
+import { AppFlowProvider } from './src/ui/AppFlowContext';
 import { C } from './src/ui/theme';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -21,24 +23,28 @@ const navTheme: Theme = {
 export default function App() {
   return (
     <SafeAreaProvider>
-      <NavigationContainer theme={navTheme}>
-        <StatusBar style="light" />
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: C.bg },
-            headerTintColor: C.txt,
-            headerTitleStyle: { fontWeight: '700' },
-            headerShadowVisible: false,
-            contentStyle: { backgroundColor: C.bg },
-          }}
-        >
-          <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Results" component={ResultsScreen} options={{ title: '코스 만들기' }} />
-          <Stack.Screen name="Detail" component={DetailScreen} options={{ title: '코스 상세' }} />
-          <Stack.Screen name="Execution" component={ExecutionScreen} options={{ title: '코스 진행 중', headerBackTitle: '상세' }} />
-          <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: '코스 완료', headerBackVisible: false }} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <AppFlowProvider>
+        <NavigationContainer theme={navTheme}>
+          <StatusBar style="light" />
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: C.bg },
+              headerTintColor: C.txt,
+              headerTitleStyle: { fontWeight: '700' },
+              headerShadowVisible: false,
+              contentStyle: { backgroundColor: C.bg },
+              animation: 'none',
+            }}
+          >
+            <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Results" component={ResultsScreen} options={{ title: '코스 만들기' }} />
+            <Stack.Screen name="Detail" component={DetailScreen} options={{ title: '코스 상세' }} />
+            <Stack.Screen name="Execution" component={ExecutionScreen} options={{ title: '코스 진행 중', headerBackTitle: '상세' }} />
+            <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: '코스 완료', headerBackVisible: false }} />
+            <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AppFlowProvider>
     </SafeAreaProvider>
   );
 }

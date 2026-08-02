@@ -4,6 +4,9 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RootStackParamList } from './nav';
 import { Chip } from './Chip';
 import { C } from './theme';
+import { useAppFlow } from './AppFlowContext';
+import { FloatingTabBar } from './FloatingTabBar';
+import { resetToMain, resetToMyCourse, resetToProfile } from './mainTabNavigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Feedback'>;
 
@@ -15,6 +18,7 @@ const dwellOptions = (d: number) => {
 
 export function FeedbackScreen({ route, navigation }: Props) {
   const { course, ctx } = route.params;
+  const flow = useAppFlow();
   const [rating, setRating] = useState(0);
   const [actual, setActual] = useState<Record<number, number>>({});
   const [revisit, setRevisit] = useState<boolean | null>(null);
@@ -23,7 +27,8 @@ export function FeedbackScreen({ route, navigation }: Props) {
 
   function done() {
     // TODO(Phase2): 피드백 저장(로컬→Supabase) → 개인화 축적. 지금은 수집 UI만.
-    navigation.popToTop();
+    flow.setActiveCourse(null);
+    resetToMain(navigation);
   }
 
   return (
@@ -66,13 +71,20 @@ export function FeedbackScreen({ route, navigation }: Props) {
         </Pressable>
 
         {canRetry && (
-          <Pressable style={s.retry} onPress={() => navigation.popToTop()}>
+          <Pressable style={s.retry} onPress={() => resetToMain(navigation)}>
             <Text style={s.retryTxt}>{ctx.appointment ? `약속까지 약 ${course.bufferLeftMin}분 남음` : `약 ${course.bufferLeftMin}분 남음`}</Text>
             <Text style={s.retryLink}>코스 더 보기 ›</Text>
           </Pressable>
         )}
-        <View style={{ height: 40 }} />
+        <View style={{ height: 120 }} />
       </ScrollView>
+      <FloatingTabBar
+        active="course"
+        courseEnabled={!!flow.activeCourse}
+        onMain={() => resetToMain(navigation)}
+        onCourse={() => flow.activeCourse && resetToMyCourse(navigation, flow.activeCourse)}
+        onProfile={() => resetToProfile(navigation)}
+      />
     </View>
   );
 }

@@ -6,6 +6,9 @@ import { kakaoReverseGeocode, Mode, planTimeFit, reverseGeocode, timeContext } f
 import { Appointment, RootStackParamList, fmtHM } from './nav';
 import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
+import { useAppFlow } from './AppFlowContext';
+import { FloatingTabBar } from './FloatingTabBar';
+import { resetToMyCourse, resetToProfile } from './mainTabNavigation';
 
 const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
 
@@ -24,6 +27,7 @@ import type { HourBucket } from '../engine';
 const hourBucketOf = (h: number): HourBucket => (h < 11 ? '아침' : h < 14 ? '점심' : h < 17 ? '오후' : h < 21 ? '저녁' : '야간');
 
 export function HomeScreen({ navigation }: Props) {
+  const flow = useAppFlow();
   // 전부 직접 입력 (테스트용)
   const [remainingTxt, setRemainingTxt] = useState('120');
   const [appointment, setAppointment] = useState<Appointment>(null);
@@ -76,7 +80,7 @@ export function HomeScreen({ navigation }: Props) {
         nowMin: useMin, dayType, hourBucket,
       });
       if (!result.courses.length) { setError('이 시간 안에 가능한 코스를 찾지 못했어요. 시간을 늘려보세요.'); return; }
-      navigation.navigate('Results', {
+      const resultsParams: RootStackParamList['Results'] = {
         result, usedTimeLabel, origin,
         ctx: {
           startMin: useMin,
@@ -88,7 +92,9 @@ export function HomeScreen({ navigation }: Props) {
           hourBucket,
           isManualTime: manualMin != null,
         },
-      });
+      };
+      flow.setLatestResults(resultsParams);
+      navigation.navigate('Results', resultsParams);
     } catch (e: any) {
       setError('추천 실패: ' + (e?.message ?? '알 수 없음'));
     } finally { setLoading(false); }
@@ -180,8 +186,15 @@ export function HomeScreen({ navigation }: Props) {
           {loading ? <ActivityIndicator color="#fff" /> : <Text style={s.ctaTxt}>가능한 코스 찾기</Text>}
         </Pressable>
         {error ? <Text style={s.err}>{error}</Text> : null}
-        <View style={{ height: 40 }} />
+        <View style={{ height: 120 }} />
       </ScrollView>
+      <FloatingTabBar
+        active="main"
+        courseEnabled={!!flow.activeCourse}
+        onMain={() => undefined}
+        onCourse={() => flow.activeCourse && resetToMyCourse(navigation, flow.activeCourse)}
+        onProfile={() => resetToProfile(navigation)}
+      />
 
       {/* 장소 선택 모달 (약속 장소 / 현재 위치 공용) */}
       <PlacePicker

@@ -5,6 +5,9 @@ import { Course, refineCourses } from '../engine';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
+import { useAppFlow } from './AppFlowContext';
+import { FloatingTabBar } from './FloatingTabBar';
+import { resetToMain, resetToProfile } from './mainTabNavigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
 
@@ -16,6 +19,7 @@ function strategyLabel(course: Props['route']['params']['course']): string {
 
 export function DetailScreen({ route, navigation }: Props) {
   const { course, origin, ctx } = route.params;
+  const flow = useAppFlow();
   const [activeCourse, setActiveCourse] = useState<Course>(course);
   const [refining, setRefining] = useState(false);
   const [refineNote, setRefineNote] = useState('');
@@ -125,11 +129,25 @@ export function DetailScreen({ route, navigation }: Props) {
         </View>
         <Text style={s.why}>▶ 선택한 이동수단에 따라 머물 수 있는 시간이 달라져요. 최소 30분 이상 체류 가능한 코스만 추천합니다.</Text>
 
-        <Pressable style={s.cta} onPress={() => navigation.navigate('Execution', { course: activeCourse, origin, ctx })}>
+        <Pressable
+          style={s.cta}
+          onPress={() => {
+            const params = { course: activeCourse, origin, ctx };
+            flow.setActiveCourse(params);
+            navigation.navigate('Execution', params);
+          }}
+        >
           <Text style={s.ctaTxt}>이 코스로 갈래요</Text>
         </Pressable>
-        <View style={{ height: 40 }} />
+        <View style={{ height: 120 }} />
       </ScrollView>
+      <FloatingTabBar
+        active="course"
+        courseEnabled
+        onMain={() => resetToMain(navigation)}
+        onCourse={() => undefined}
+        onProfile={() => resetToProfile(navigation)}
+      />
     </View>
   );
 }

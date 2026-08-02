@@ -1,10 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LatLon, Mode } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
+import { useAppFlow } from './AppFlowContext';
+import { FloatingTabBar } from './FloatingTabBar';
+import { resetToMain, resetToMyCourse, resetToProfile } from './mainTabNavigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Execution'>;
 
@@ -59,6 +62,8 @@ function currentMinuteOfDay(): number {
 
 export function ExecutionScreen({ route, navigation }: Props) {
   const { course, origin, ctx } = route.params;
+  const flow = useAppFlow();
+  const { setActiveCourse } = flow;
   const [step, setStep] = useState(0); // 현재 위치한 지점 인덱스
   const [routeOpened, setRouteOpened] = useState(false);
   const [transitionMsg, setTransitionMsg] = useState('');
@@ -98,6 +103,10 @@ export function ExecutionScreen({ route, navigation }: Props) {
     : routeOpened
       ? '다시 TimeFit으로 돌아왔을 때 이어서 안내합니다'
       : `${current.name} → ${next.name}`;
+
+  useEffect(() => {
+    setActiveCourse(route.params);
+  }, [setActiveCourse, route.params]);
 
   async function openCurrentRoute() {
     if (!next) return;
@@ -249,8 +258,15 @@ export function ExecutionScreen({ route, navigation }: Props) {
         <Pressable style={[s.btn, s.btnSub]} onPress={() => navigation.navigate('Feedback', { course, ctx })}>
           <Text style={s.btnSubTxt}>코스 종료</Text>
         </Pressable>
-        <View style={{ height: 40 }} />
+        <View style={{ height: 120 }} />
       </ScrollView>
+      <FloatingTabBar
+        active="course"
+        courseEnabled
+        onMain={() => resetToMain(navigation)}
+        onCourse={() => resetToMyCourse(navigation, route.params)}
+        onProfile={() => resetToProfile(navigation)}
+      />
     </View>
   );
 }

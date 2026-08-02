@@ -26,6 +26,7 @@ export type RootStackParamList = {
   Detail: { course: Course; origin: LatLon; ctx: PlanCtx };
   Execution: { course: Course; origin: LatLon; ctx: PlanCtx };
   Feedback: { course: Course; ctx: PlanCtx };
+  Profile: undefined;
 };
 
 // 분(자정 기준) → "13:00"
