@@ -6,6 +6,7 @@ import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
 import { Place, PlacePicker } from './PlacePicker';
+import { resolveReplanTiming } from './replanLogic';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Execution'>;
 
@@ -56,22 +57,6 @@ function kakaoWebFallback(to: Stop): string {
 function currentMinuteOfDay(): number {
   const d = new Date();
   return d.getHours() * 60 + d.getMinutes();
-}
-
-function parseClockMinute(txt: string): number | null {
-  const trimmed = txt.trim();
-  if (!trimmed) return null;
-  const m = trimmed.match(/^(\d{1,2})(?::(\d{1,2}))?$/);
-  if (!m) return null;
-  const h = Number(m[1]);
-  const mi = m[2] ? Number(m[2]) : 0;
-  if (!Number.isInteger(h) || !Number.isInteger(mi) || h > 23 || mi > 59) return null;
-  return h * 60 + mi;
-}
-
-function hourBucketOfMinute(min: number) {
-  const h = Math.floor((((min % 1440) + 1440) % 1440) / 60);
-  return h < 11 ? '아침' : h < 14 ? '점심' : h < 17 ? '오후' : h < 21 ? '저녁' : '야간';
 }
 
 function filterVisitedCourses(result: PlanResult, course: Course, step: number): PlanResult {
@@ -162,36 +147,33 @@ export function ExecutionScreen({ route, navigation }: Props) {
 
   async function replanFromHere() {
     if (!current) return;
-    const manualNowMin = parseClockMinute(replanTimeTxt);
-    const usingManualNow = manualNowMin != null;
-    const now = manualNowMin ?? currentMinuteOfDay();
-    const remainingMin = Math.max(0, endMin - now);
     setReplanError('');
-    if (replanTimeTxt.trim() && manualNowMin == null) {
-      setReplanError('재검색 기준 시각은 HH:MM 형식으로 입력하세요.');
+    const real = timeContext(new Date());
+    const timing = resolveReplanTiming({
+      timeText: replanTimeTxt,
+      endMin,
+      currentMin: currentMinuteOfDay(),
+      ctxDayType: ctx.dayType,
+      ctxHourBucket: ctx.hourBucket,
+      ctxIsManualTime: ctx.isManualTime,
+      realDayType: real.dayType,
+      realHourBucket: real.hourBucket,
+    });
+    if (!timing.ok) {
+      setReplanError(timing.error);
       return;
     }
-    if (remainingMin > 240) {
-      setReplanError('재검색 남은 시간은 최대 240분까지 입력하세요.');
-      return;
-    }
-    if (remainingMin < 30) {
-      setReplanError('남은 시간이 30분 미만이라 새 코스보다 바로 다음 일정으로 이동하는 편이 안전해요.');
-      return;
-    }
+
     setReplanning(true);
     try {
-      const real = timeContext(new Date());
-      const dayType = ctx.dayType ?? real.dayType;
-      const hourBucket = usingManualNow ? hourBucketOfMinute(now) : ctx.isManualTime ? (ctx.hourBucket ?? hourBucketOfMinute(now)) : real.hourBucket;
       const rawResult = await planTimeFit({
         origin: replanBasePoint,
         destination: ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : origin,
-        remainingMin,
+        remainingMin: timing.remainingMin,
         mode: ctx.mode,
-        nowMin: now,
-        dayType,
-        hourBucket,
+        nowMin: timing.nowMin,
+        dayType: timing.dayType,
+        hourBucket: timing.hourBucket,
       });
       const result = filterVisitedCourses(rawResult, course, step);
       if (!result.courses.length) {
@@ -200,9 +182,16 @@ export function ExecutionScreen({ route, navigation }: Props) {
       }
       navigation.navigate('Results', {
         result,
-        usedTimeLabel: `${dayType} ${fmtHM(now)}·${hourBucket}`,
+        usedTimeLabel: `${timing.dayType} ${fmtHM(timing.nowMin)}·${timing.hourBucket}`,
         origin: replanBasePoint,
-        ctx: { ...ctx, startMin: now, remainingMin, dayType, hourBucket, isManualTime: ctx.isManualTime || usingManualNow },
+        ctx: {
+          ...ctx,
+          startMin: timing.nowMin,
+          remainingMin: timing.remainingMin,
+          dayType: timing.dayType,
+          hourBucket: timing.hourBucket,
+          isManualTime: timing.isManualTime,
+        },
       });
     } catch (e: any) {
       setReplanError('재검색 실패: ' + (e?.message ?? '알 수 없음'));
