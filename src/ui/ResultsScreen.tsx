@@ -8,7 +8,7 @@ import { C } from './theme';
 import { ACTS, Activity, actsOf, MOODS, Mood, moodOf } from './tags';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToMyCourse, resetToProfile } from './mainTabNavigation';
+import { resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Results'>;
 type CandidateStatus = 'good' | 'short' | 'tight' | 'over';
@@ -138,8 +138,8 @@ export function ResultsScreen({ route, navigation }: Props) {
   const { setLatestResults } = flow;
   const [moods, setMoods] = useState<Set<Mood>>(new Set());
   const [acts, setActs] = useState<Set<Activity>>(new Set());
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [page, setPage] = useState<'recommend' | 'basket'>('recommend');
+  const [selectedIds, setSelectedIds] = useState<string[]>(route.params.selectedIds ?? []);
+  const [page, setPage] = useState<'recommend' | 'basket'>(route.params.initialPage ?? 'recommend');
 
   const target = ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : origin;
   const endMin = ctx.startMin + ctx.remainingMin;
@@ -204,9 +204,7 @@ export function ResultsScreen({ route, navigation }: Props) {
   function confirmCourse() {
     if (!selected.length) return;
     const course = buildBasketCourse(selected, origin, target, ctx);
-    const params = { course, origin, ctx };
-    flow.setActiveCourse(params);
-    navigation.navigate('Detail', params);
+    navigation.navigate('Detail', { course, origin, ctx, source: 'builder' });
   }
 
   return (
@@ -317,9 +315,8 @@ export function ResultsScreen({ route, navigation }: Props) {
       </ScrollView>
       <FloatingTabBar
         active="main"
-        courseEnabled={!!flow.activeCourse}
         onMain={() => resetToMain(navigation)}
-        onCourse={() => flow.activeCourse && resetToMyCourse(navigation, flow.activeCourse)}
+        onCourse={() => resetToMyCourses(navigation)}
         onProfile={() => resetToProfile(navigation)}
       />
     </View>

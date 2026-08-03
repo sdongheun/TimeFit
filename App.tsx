@@ -1,6 +1,7 @@
 import { DefaultTheme, NavigationContainer, Theme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { RootStackParamList } from './src/ui/nav';
 import { HomeScreen } from './src/ui/HomeScreen';
@@ -10,7 +11,9 @@ import { ExecutionScreen } from './src/ui/ExecutionScreen';
 import { FeedbackScreen } from './src/ui/FeedbackScreen';
 import { ProfileScreen } from './src/ui/ProfileScreen';
 import { AppFlowProvider } from './src/ui/AppFlowContext';
+import { MyCoursesScreen } from './src/ui/MyCoursesScreen';
 import { C } from './src/ui/theme';
+import { initializeNotifications } from './src/services/courseNotifications';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -21,6 +24,12 @@ const navTheme: Theme = {
 };
 
 export default function App() {
+  useEffect(() => {
+    initializeNotifications().catch((error) => {
+      console.warn('[알림] 초기 권한 설정 실패', error);
+    });
+  }, []);
+
   return (
     <SafeAreaProvider>
       <AppFlowProvider>
@@ -39,6 +48,7 @@ export default function App() {
             <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Results" component={ResultsScreen} options={{ title: '코스 만들기' }} />
             <Stack.Screen name="Detail" component={DetailScreen} options={{ title: '코스 상세' }} />
+            <Stack.Screen name="MyCourses" component={MyCoursesScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Execution" component={ExecutionScreen} options={{ title: '코스 진행 중', headerBackTitle: '상세' }} />
             <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: '코스 완료', headerBackVisible: false }} />
             <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />

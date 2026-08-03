@@ -15,12 +15,19 @@ export function resetToProfile(navigation: NavigationProp<RootStackParamList>) {
   }));
 }
 
-export function resetToMyCourse(
+export function resetToMyCourses(navigation: NavigationProp<RootStackParamList>) {
+  navigation.dispatch(CommonActions.reset({
+    index: 0,
+    routes: [{ name: 'MyCourses' }],
+  }));
+}
+
+export function resetToBasket(
   navigation: NavigationProp<RootStackParamList>,
-  params: RootStackParamList['Detail'],
+  params: RootStackParamList['Results'],
 ) {
   navigation.dispatch(CommonActions.reset({
     index: 0,
-    routes: [{ name: 'Detail', params }],
+    routes: [{ name: 'Results', params }],
   }));
 }

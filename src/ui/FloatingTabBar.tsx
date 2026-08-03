@@ -5,7 +5,6 @@ export type MainTabKey = 'main' | 'course' | 'profile';
 
 type Props = {
   active: MainTabKey;
-  courseEnabled?: boolean;
   onMain: () => void;
   onCourse: () => void;
   onProfile: () => void;
@@ -17,7 +16,7 @@ const TABS: { key: MainTabKey; label: string; mark: string }[] = [
   { key: 'profile', label: '내정보', mark: '●' },
 ];
 
-export function FloatingTabBar({ active, courseEnabled = true, onMain, onCourse, onProfile }: Props) {
+export function FloatingTabBar({ active, onMain, onCourse, onProfile }: Props) {
   const handlers: Record<MainTabKey, () => void> = {
     main: onMain,
     course: onCourse,
@@ -28,17 +27,15 @@ export function FloatingTabBar({ active, courseEnabled = true, onMain, onCourse,
     <View pointerEvents="box-none" style={s.wrap}>
       <View style={s.bar}>
         {TABS.map((tab) => {
-          const enabled = tab.key !== 'course' || courseEnabled;
           const isActive = active === tab.key;
           return (
             <Pressable
               key={tab.key}
-              style={[s.item, isActive && s.itemOn, !enabled && s.itemOff]}
+              style={[s.item, isActive && s.itemOn]}
               onPress={handlers[tab.key]}
-              disabled={!enabled}
             >
-              <Text style={[s.mark, isActive && s.markOn, !enabled && s.txtOff]}>{tab.mark}</Text>
-              <Text style={[s.label, isActive && s.labelOn, !enabled && s.txtOff]}>{tab.label}</Text>
+              <Text style={[s.mark, isActive && s.markOn]}>{tab.mark}</Text>
+              <Text style={[s.label, isActive && s.labelOn]}>{tab.label}</Text>
             </Pressable>
           );
         })}
@@ -64,10 +61,8 @@ const s = StyleSheet.create({
   },
   item: { flex: 1, minHeight: 52, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   itemOn: { backgroundColor: 'rgba(76,194,255,0.14)' },
-  itemOff: { opacity: 0.4 },
   mark: { color: C.muted, fontSize: 15, fontWeight: '900', lineHeight: 18 },
   markOn: { color: C.accent },
   label: { color: C.muted, fontSize: 11.5, fontWeight: '800', marginTop: 2 },
   labelOn: { color: C.txt },
-  txtOff: { color: '#5e6a76' },
 });

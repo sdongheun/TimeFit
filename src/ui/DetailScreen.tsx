@@ -7,7 +7,7 @@ import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToProfile } from './mainTabNavigation';
+import { resetToBasket, resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
 
@@ -18,7 +18,7 @@ function strategyLabel(course: Props['route']['params']['course']): string {
 }
 
 export function DetailScreen({ route, navigation }: Props) {
-  const { course, origin, ctx } = route.params;
+  const { course, origin, ctx, source = 'builder' } = route.params;
   const flow = useAppFlow();
   const [activeCourse, setActiveCourse] = useState<Course>(course);
   const [refining, setRefining] = useState(false);
@@ -33,6 +33,30 @@ export function DetailScreen({ route, navigation }: Props) {
   const walk = activeCourse.mobility?.walk;
   const car = activeCourse.mobility?.car;
   const transit = activeCourse.mobility?.transit;
+
+  function cancelBuilderCourse() {
+    flow.setActiveCourse(null);
+    if (flow.latestResults) {
+      resetToBasket(navigation, {
+        ...flow.latestResults,
+        selectedIds: activeCourse.spots.map((sp) => sp.contentId),
+        initialPage: 'basket',
+      });
+      return;
+    }
+    resetToMain(navigation);
+  }
+
+  function saveCurrentCourse() {
+    flow.saveCourse({ course: activeCourse, origin, ctx });
+    resetToMyCourses(navigation);
+  }
+
+  function startCourse() {
+    const params = { course: activeCourse, origin, ctx };
+    flow.setActiveCourse(params);
+    navigation.navigate('Execution', params);
+  }
 
   useEffect(() => {
     let alive = true;
@@ -75,8 +99,19 @@ export function DetailScreen({ route, navigation }: Props) {
 
       <ScrollView contentContainerStyle={s.scroll}>
         <View style={s.head}>
-          <Text style={s.type}>{strategyLabel(activeCourse)} · {activeCourse.type} {activeCourse.spots.length}곳</Text>
-          <Text style={s.total}>{activeCourse.bestMode === 'car' ? '차량' : activeCourse.bestMode === 'transit' ? '대중교통' : '도보'} 추천</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={s.type}>{source === 'saved' ? '내 코스' : '코스 상세'} · {activeCourse.type} {activeCourse.spots.length}곳</Text>
+            <Text style={s.total}>{strategyLabel(activeCourse)} · {activeCourse.bestMode === 'car' ? '차량' : activeCourse.bestMode === 'transit' ? '대중교통' : '도보'} 기준</Text>
+          </View>
+          {source === 'builder' ? (
+            <Pressable style={s.cancelBtn} onPress={cancelBuilderCourse}>
+              <Text style={s.cancelBtnTxt}>선택 취소</Text>
+            </Pressable>
+          ) : (
+            <Pressable style={s.listBtn} onPress={() => resetToMyCourses(navigation)}>
+              <Text style={s.listBtnTxt}>목록</Text>
+            </Pressable>
+          )}
         </View>
         {refineNote ? (
           <View style={s.preciseBox}>
@@ -129,23 +164,20 @@ export function DetailScreen({ route, navigation }: Props) {
         </View>
         <Text style={s.why}>▶ 선택한 이동수단에 따라 머물 수 있는 시간이 달라져요. 최소 30분 이상 체류 가능한 코스만 추천합니다.</Text>
 
-        <Pressable
-          style={s.cta}
-          onPress={() => {
-            const params = { course: activeCourse, origin, ctx };
-            flow.setActiveCourse(params);
-            navigation.navigate('Execution', params);
-          }}
-        >
-          <Text style={s.ctaTxt}>이 코스로 갈래요</Text>
+        {source === 'builder' ? (
+          <Pressable style={s.saveBtn} onPress={saveCurrentCourse}>
+            <Text style={s.saveBtnTxt}>내 코스에 저장</Text>
+          </Pressable>
+        ) : null}
+        <Pressable style={s.cta} onPress={startCourse}>
+          <Text style={s.ctaTxt}>길찾기 시작</Text>
         </Pressable>
         <View style={{ height: 120 }} />
       </ScrollView>
       <FloatingTabBar
-        active="course"
-        courseEnabled
+        active={source === 'saved' ? 'course' : 'main'}
         onMain={() => resetToMain(navigation)}
-        onCourse={() => undefined}
+        onCourse={() => resetToMyCourses(navigation)}
         onProfile={() => resetToProfile(navigation)}
       />
     </View>
@@ -156,9 +188,13 @@ const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   map: { width: '100%', height: 280 },
   scroll: { padding: 18 },
-  head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 12 },
   type: { color: C.txt, fontWeight: '800', fontSize: 18 },
-  total: { color: C.txt2, fontSize: 14 },
+  total: { color: C.txt2, fontSize: 14, marginTop: 3 },
+  cancelBtn: { borderWidth: 1, borderColor: 'rgba(255,123,114,0.45)', backgroundColor: 'rgba(255,123,114,0.08)', borderRadius: 11, paddingVertical: 9, paddingHorizontal: 11 },
+  cancelBtnTxt: { color: C.red, fontSize: 12.5, fontWeight: '900' },
+  listBtn: { borderWidth: 1, borderColor: C.line, backgroundColor: C.panel, borderRadius: 11, paddingVertical: 9, paddingHorizontal: 12 },
+  listBtnTxt: { color: C.accent, fontSize: 12.5, fontWeight: '900' },
   preciseBox: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: 'rgba(76,194,255,0.08)', borderColor: 'rgba(76,194,255,0.22)', borderWidth: 1, borderRadius: 12, padding: 10, marginBottom: 10 },
   preciseTxt: { color: C.txt2, fontSize: 12.5, flex: 1 },
   spot: { flexDirection: 'row', gap: 11, alignItems: 'center', backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 13, marginBottom: 9 },
@@ -178,6 +214,8 @@ const s = StyleSheet.create({
   legMin: { color: C.txt, fontWeight: '700' },
   legSrc: { color: '#6e7d8c', fontSize: 11 },
   why: { color: C.accent, fontSize: 13.5, marginTop: 12, fontWeight: '600' },
+  saveBtn: { marginTop: 18, backgroundColor: 'rgba(76,194,255,0.12)', borderColor: 'rgba(76,194,255,0.45)', borderWidth: 1, borderRadius: 14, paddingVertical: 15, alignItems: 'center' },
+  saveBtnTxt: { color: C.accent, fontSize: 15, fontWeight: '900' },
   cta: { marginTop: 18, backgroundColor: '#2ea043', borderRadius: 14, paddingVertical: 15, alignItems: 'center' },
   ctaTxt: { color: '#fff', fontSize: 15, fontWeight: '800' },
 });

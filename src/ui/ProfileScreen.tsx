@@ -4,7 +4,7 @@ import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToMyCourse } from './mainTabNavigation';
+import { resetToMain, resetToMyCourses } from './mainTabNavigation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
@@ -36,9 +36,8 @@ export function ProfileScreen({ navigation }: Props) {
       </ScrollView>
       <FloatingTabBar
         active="profile"
-        courseEnabled={!!flow.activeCourse}
         onMain={() => resetToMain(navigation)}
-        onCourse={() => flow.activeCourse && resetToMyCourse(navigation, flow.activeCourse)}
+        onCourse={() => resetToMyCourses(navigation)}
         onProfile={() => undefined}
       />
     </View>

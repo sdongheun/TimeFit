@@ -7,7 +7,12 @@ import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToMyCourse, resetToProfile } from './mainTabNavigation';
+import { resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
+import {
+  cancelCourseNotifications,
+  scheduleCourseNotifications,
+  ScheduleResult,
+} from '../services/courseNotifications';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Execution'>;
 
@@ -30,13 +35,14 @@ function buildSchedule(params: Props['route']['params']): { stops: Stop[]; alert
       stops.push({ name, arriveMin: t, leaveMin: t, isSpot: !isLast, point });
     }
   }
-  // 출발 알림: 각 스팟에서 떠나야 하는 시각
-  const alerts = stops.filter((st) => st.isSpot).map((st, i, arr) => ({
-    min: st.leaveMin,
-    msg: i === arr.length - 1
-      ? (params.ctx.appointment ? `이제 ${params.ctx.appointment.label}(으)로 출발하세요` : '이제 출발지로 돌아가세요')
-      : '다음 장소로 이동할 시간이에요',
-  }));
+  // 알림은 코스를 마친 뒤 약속장소(또는 출발지)로 이동해야 하는 최종 출발 시각에만 보낸다.
+  const lastSpot = [...stops].reverse().find((st) => st.isSpot);
+  const alerts = lastSpot ? [{
+    min: lastSpot.leaveMin,
+    msg: params.ctx.appointment
+      ? `${params.ctx.appointment.label}(으)로 출발하세요`
+      : '출발지로 돌아가세요',
+  }] : [];
   return { stops, alerts };
 }
 
@@ -69,6 +75,8 @@ export function ExecutionScreen({ route, navigation }: Props) {
   const [transitionMsg, setTransitionMsg] = useState('');
   const [actualDepartMinByStep, setActualDepartMinByStep] = useState<Record<number, number>>({});
   const [actualArriveMinByStep, setActualArriveMinByStep] = useState<Record<number, number>>({});
+  const [notificationResult, setNotificationResult] = useState<ScheduleResult | null>(null);
+  const [notificationError, setNotificationError] = useState(false);
   const { stops, alerts } = useMemo(() => buildSchedule(route.params), [route.params]);
 
   const target = ctx.appointment ?? origin;
@@ -107,6 +115,25 @@ export function ExecutionScreen({ route, navigation }: Props) {
   useEffect(() => {
     setActiveCourse(route.params);
   }, [setActiveCourse, route.params]);
+
+  useEffect(() => {
+    let alive = true;
+    scheduleCourseNotifications(alerts)
+      .then((result) => {
+        if (alive) setNotificationResult(result);
+      })
+      .catch((error) => {
+        console.warn('[알림] 코스 알림 예약 실패', error);
+        if (alive) setNotificationError(true);
+      });
+    return () => { alive = false; };
+  }, [alerts]);
+
+  async function finishCourse() {
+    await cancelCourseNotifications();
+    setActiveCourse(null);
+    navigation.navigate('Feedback', { course, ctx });
+  }
 
   async function openCurrentRoute() {
     if (!next) return;
@@ -222,7 +249,7 @@ export function ExecutionScreen({ route, navigation }: Props) {
           </View>
           <Pressable
             style={[s.btn, s.btnMain, routeOpened && s.btnArriveMain]}
-            onPress={isDone ? () => navigation.navigate('Feedback', { course, ctx }) : routeOpened ? continueToNextStep : openCurrentRoute}
+            onPress={isDone ? finishCourse : routeOpened ? continueToNextStep : openCurrentRoute}
           >
             <Text style={s.btnMainTxt}>{ctaLabel}</Text>
           </Pressable>
@@ -247,24 +274,33 @@ export function ExecutionScreen({ route, navigation }: Props) {
           })}
         </View>
 
-        <Text style={s.lbl}>🔔 출발 알림 예정</Text>
+        <Text style={s.lbl}>🔔 약속·복귀 출발 알림</Text>
         <View style={s.alertBox}>
           {alerts.map((a, i) => (
-            <Text key={i} style={s.alert}><Text style={s.alertTime}>{fmtHM(a.min)}</Text>  {a.msg}</Text>
+            <Text key={i} style={s.alert}>
+              <Text style={s.alertTime}>{fmtHM(a.min)}</Text>  {a.msg} · 5분 전/정각
+            </Text>
           ))}
-          <Text style={s.alertNote}>※ 지금은 예정 시각 안내입니다. 로컬 알림은 추후 연결합니다.</Text>
+          <Text style={s.alertNote}>
+            {notificationError
+              ? '알림 예약에 실패했습니다. 기기 알림 설정을 확인해 주세요.'
+              : notificationResult == null
+                ? '알림을 예약하고 있습니다.'
+                : !notificationResult.permissionGranted
+                  ? '알림 권한이 꺼져 있어 예약되지 않았습니다. 기기 설정에서 TimeFit 알림을 허용해 주세요.'
+                  : `${notificationResult.scheduled}건 예약 완료 · 최종 출발 5분 전과 정각에 알려드려요${notificationResult.skipped > 0 ? ` · 지난 시각 ${notificationResult.skipped}건 제외` : ''}`}
+          </Text>
         </View>
 
-        <Pressable style={[s.btn, s.btnSub]} onPress={() => navigation.navigate('Feedback', { course, ctx })}>
-          <Text style={s.btnSubTxt}>코스 종료</Text>
+        <Pressable style={[s.btn, s.btnSub]} onPress={finishCourse}>
+          <Text style={s.btnSubTxt}>코스 취소·종료</Text>
         </Pressable>
         <View style={{ height: 120 }} />
       </ScrollView>
       <FloatingTabBar
         active="course"
-        courseEnabled
         onMain={() => resetToMain(navigation)}
-        onCourse={() => resetToMyCourse(navigation, route.params)}
+        onCourse={() => resetToMyCourses(navigation)}
         onProfile={() => resetToProfile(navigation)}
       />
     </View>

@@ -6,7 +6,8 @@ import { Chip } from './Chip';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToMyCourse, resetToProfile } from './mainTabNavigation';
+import { resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
+import { cancelCourseNotifications } from '../services/courseNotifications';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Feedback'>;
 
@@ -25,8 +26,9 @@ export function FeedbackScreen({ route, navigation }: Props) {
 
   const canRetry = course.bufferLeftMin >= 30; // 여유가 크면 재추천 유도
 
-  function done() {
+  async function done() {
     // TODO(Phase2): 피드백 저장(로컬→Supabase) → 개인화 축적. 지금은 수집 UI만.
+    await cancelCourseNotifications();
     flow.setActiveCourse(null);
     resetToMain(navigation);
   }
@@ -80,9 +82,8 @@ export function FeedbackScreen({ route, navigation }: Props) {
       </ScrollView>
       <FloatingTabBar
         active="course"
-        courseEnabled={!!flow.activeCourse}
         onMain={() => resetToMain(navigation)}
-        onCourse={() => flow.activeCourse && resetToMyCourse(navigation, flow.activeCourse)}
+        onCourse={() => resetToMyCourses(navigation)}
         onProfile={() => resetToProfile(navigation)}
       />
     </View>

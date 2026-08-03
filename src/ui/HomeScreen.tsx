@@ -8,7 +8,7 @@ import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMyCourse, resetToProfile } from './mainTabNavigation';
+import { resetToMyCourses, resetToProfile } from './mainTabNavigation';
 
 const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
 
@@ -190,9 +190,8 @@ export function HomeScreen({ navigation }: Props) {
       </ScrollView>
       <FloatingTabBar
         active="main"
-        courseEnabled={!!flow.activeCourse}
         onMain={() => undefined}
-        onCourse={() => flow.activeCourse && resetToMyCourse(navigation, flow.activeCourse)}
+        onCourse={() => resetToMyCourses(navigation)}
         onProfile={() => resetToProfile(navigation)}
       />
 

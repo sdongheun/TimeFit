@@ -22,8 +22,16 @@ export const modeIcon = (label: string) =>
 
 export type RootStackParamList = {
   Home: undefined;
-  Results: { result: PlanResult; usedTimeLabel: string; origin: LatLon; ctx: PlanCtx };
-  Detail: { course: Course; origin: LatLon; ctx: PlanCtx };
+  Results: {
+    result: PlanResult;
+    usedTimeLabel: string;
+    origin: LatLon;
+    ctx: PlanCtx;
+    selectedIds?: string[];
+    initialPage?: "recommend" | "basket";
+  };
+  Detail: { course: Course; origin: LatLon; ctx: PlanCtx; source?: "builder" | "saved"; savedCourseId?: string };
+  MyCourses: undefined;
   Execution: { course: Course; origin: LatLon; ctx: PlanCtx };
   Feedback: { course: Course; ctx: PlanCtx };
   Profile: undefined;
