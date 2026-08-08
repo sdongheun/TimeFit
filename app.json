@@ -4,27 +4,21 @@
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
+    "platforms": [
+      "ios",
+      "web"
+    ],
     "icon": "./assets/icon.png",
     "plugins": [
-      "expo-notifications"
+      "./plugins/withoutPushEntitlement.cjs",
+      "expo-notifications",
+      "expo-status-bar"
     ],
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
+      "deploymentTarget": "16.4",
       "bundleIdentifier": "com.dongheun.mobile"
-    },
-    "android": {
-      "permissions": [
-        "android.permission.SCHEDULE_EXACT_ALARM"
-      ],
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
-      },
-      "predictiveBackGestureEnabled": false,
-      "package": "com.dongheun.mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
