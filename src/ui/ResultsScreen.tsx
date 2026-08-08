@@ -20,6 +20,17 @@ type CandidateEval = {
   bufferLeftMin: number;
   status: CandidateStatus;
   reason: string;
+  recommendationRank: number;
+  rankingScore: number;
+  recommendationStrategy?: Course['strategy'];
+  rankingWhy?: string;
+};
+
+type CandidateRecommendation = {
+  rank: number;
+  score: number;
+  strategy?: Course['strategy'];
+  why?: string;
 };
 
 const STATUS_LABEL: Record<CandidateStatus, string> = {
@@ -66,6 +77,56 @@ function uniqueCandidateSpots(courses: Course[]): Spot[] {
     }
   }
   return [...byId.values()];
+}
+
+// 하나의 장소가 여러 코스에 포함될 수 있으므로, 가장 높은 순위 코스의 근거를 후보에 연결한다.
+function candidateRecommendations(courses: Course[]): Map<string, CandidateRecommendation> {
+  const byId = new Map<string, CandidateRecommendation>();
+  courses.forEach((course, rank) => {
+    course.spots.forEach((spot) => {
+      const previous = byId.get(spot.contentId);
+      if (!previous || rank < previous.rank) {
+        byId.set(spot.contentId, {
+          rank,
+          score: course.rankingScore ?? -rank,
+          strategy: course.strategy,
+          why: course.why,
+        });
+      }
+    });
+  });
+  return byId;
+}
+
+function diversifyCandidateGroup(items: CandidateEval[]): CandidateEval[] {
+  const remaining = [...items];
+  const out: CandidateEval[] = [];
+  const categories: Record<string, number> = {};
+  const strategies: Partial<Record<NonNullable<Course['strategy']>, number>> = {};
+
+  while (remaining.length) {
+    // 낮은 순위 후보가 과도하게 앞서지 않도록 상위 6개 안에서만 다양성 선택을 한다.
+    const windowSize = Math.min(6, remaining.length);
+    let bestIndex = 0;
+    let bestValue = -Infinity;
+    for (let i = 0; i < windowSize; i++) {
+      const item = remaining[i];
+      const categoryPenalty = (categories[item.spot.category] ?? 0) * 0.09;
+      const strategyPenalty = item.recommendationStrategy ? (strategies[item.recommendationStrategy] ?? 0) * 0.035 : 0;
+      const value = item.rankingScore - categoryPenalty - strategyPenalty;
+      if (value > bestValue) {
+        bestValue = value;
+        bestIndex = i;
+      }
+    }
+    const [next] = remaining.splice(bestIndex, 1);
+    out.push(next);
+    categories[next.spot.category] = (categories[next.spot.category] ?? 0) + 1;
+    if (next.recommendationStrategy) {
+      strategies[next.recommendationStrategy] = (strategies[next.recommendationStrategy] ?? 0) + 1;
+    }
+  }
+  return out;
 }
 
 function routeMoveMin(spots: Spot[], origin: LatLon, target: LatLon, mode: Course['bestMode']): number {
@@ -192,6 +253,7 @@ export function ResultsScreen({ route, navigation }: Props) {
   const endMin = ctx.startMin + ctx.remainingMin;
   const allCourses = useMemo(() => [...result.courses, ...result.pending], [result.courses, result.pending]);
   const spots = useMemo(() => uniqueCandidateSpots(allCourses), [allCourses]);
+  const recommendationById = useMemo(() => candidateRecommendations(allCourses), [allCourses]);
   const selected = useMemo(() => selectedIds.map((id) => spots.find((sp) => sp.contentId === id)).filter(Boolean) as Spot[], [selectedIds, spots]);
   const selectedMoveMin = routeMoveMin(selected, origin, target, ctx.mode);
   const buffer = Math.max(10, Math.round(ctx.remainingMin * 0.12));
@@ -224,20 +286,44 @@ export function ResultsScreen({ route, navigation }: Props) {
         : status === 'over'
           ? `담으면 약 ${Math.abs(Math.min(bufferLeftMin, candidateStay - minStayForSpot(spot)))}분 부족해요`
           : `담으면 약 ${candidateStay}분 머물 수 있어요`;
-      return { spot, moveMin, stayPossibleMin: candidateStay, bufferLeftMin, status, reason };
+      const recommendation = recommendationById.get(spot.contentId);
+      return {
+        spot, moveMin, stayPossibleMin: candidateStay, bufferLeftMin, status, reason,
+        recommendationRank: recommendation?.rank ?? Number.MAX_SAFE_INTEGER,
+        rankingScore: recommendation?.score ?? -Number.MAX_SAFE_INTEGER,
+        recommendationStrategy: recommendation?.strategy,
+        rankingWhy: recommendation?.why,
+      };
     });
-  }, [spots, selectedIds, selected, origin, target, ctx.mode, ctx.remainingMin, budget]);
+  }, [spots, selectedIds, selected, origin, target, ctx.mode, ctx.remainingMin, budget, recommendationById]);
 
-  const filtered = useMemo(() => evals.filter(({ spot }) => {
+  const filtered = useMemo(() => {
+    const activeFilter = moods.size > 0 || acts.size > 0;
+    const candidates = evals.filter(({ spot }) => {
     const moodOk = moods.size === 0 || (() => { const m = moodOf(spot.category); return m && moods.has(m); })();
     const actOk = acts.size === 0 || actsOf(spot.category).some((a) => acts.has(a));
     return moodOk && actOk;
-  }).sort((a, b) => {
-    const selectedDiff = Number(selectedIds.includes(b.spot.contentId)) - Number(selectedIds.includes(a.spot.contentId));
-    if (selectedDiff) return selectedDiff;
+    });
     const statusRank: Record<CandidateStatus, number> = { good: 0, short: 1, tight: 2, over: 3 };
-    return statusRank[a.status] - statusRank[b.status] || b.stayPossibleMin - a.stayPossibleMin;
-  }), [evals, moods, acts, selectedIds]);
+    const ordered = candidates.sort((a, b) => {
+      const selectedDiff = Number(selectedIds.includes(b.spot.contentId)) - Number(selectedIds.includes(a.spot.contentId));
+      if (selectedDiff) return selectedDiff;
+      return statusRank[a.status] - statusRank[b.status]
+        || a.recommendationRank - b.recommendationRank
+        || b.rankingScore - a.rankingScore
+        || b.stayPossibleMin - a.stayPossibleMin;
+    });
+    if (activeFilter) return ordered;
+
+    const selectedItems = ordered.filter((item) => selectedIds.includes(item.spot.contentId));
+    const unselectedItems = ordered.filter((item) => !selectedIds.includes(item.spot.contentId));
+    return [
+      ...selectedItems,
+      ...(['good', 'short', 'tight', 'over'] as CandidateStatus[]).flatMap((status) =>
+        diversifyCandidateGroup(unselectedItems.filter((item) => item.status === status)),
+      ),
+    ];
+  }, [evals, moods, acts, selectedIds]);
 
   function addSpot(evalItem: CandidateEval) {
     if (selectedIds.includes(evalItem.spot.contentId) || evalItem.status === 'over') return;
@@ -404,7 +490,6 @@ export function ResultsScreen({ route, navigation }: Props) {
             {filtered.map((item) => {
               const isSelected = selectedIds.includes(item.spot.contentId);
               const status = statusStyle(item.status);
-              const sampleCourse = allCourses.find((course) => course.spots.some((sp) => sp.contentId === item.spot.contentId));
               return (
                 <View
                   key={item.spot.contentId}
@@ -413,7 +498,7 @@ export function ResultsScreen({ route, navigation }: Props) {
                 >
                   <View style={s.cardHead}>
                     <View style={{ flex: 1 }}>
-                      <Text style={s.cardType}>{strategyLabel(sampleCourse)} · {item.spot.category}</Text>
+                      <Text style={s.cardType}>{strategyLabel(item.recommendationStrategy ? { strategy: item.recommendationStrategy } as Course : undefined)} · {item.spot.category}</Text>
                       <Text style={s.spotName}>{item.spot.title}</Text>
                     </View>
                     <View style={[s.status, status.box]}><Text style={[s.statusTxt, status.txt]}>{isSelected ? '담김' : STATUS_LABEL[item.status]}</Text></View>
@@ -425,6 +510,7 @@ export function ResultsScreen({ route, navigation }: Props) {
                     <View style={s.evalCell}><Text style={s.evalLbl}>여유</Text><Text style={s.evalVal}>{Math.round(item.bufferLeftMin)}분</Text></View>
                   </View>
                   <Text style={s.why}>✓ {item.reason} · 권장 {item.spot.dwell}분</Text>
+                  {item.rankingWhy ? <Text style={s.rankingWhy}>추천 근거 · {item.rankingWhy}</Text> : null}
                   <Pressable
                     style={s.kakaoDetailBtn}
                     onPress={() => openKakaoPlaceDetail(item.spot)}
@@ -536,6 +622,7 @@ const s = StyleSheet.create({
   evalLbl: { color: C.muted, fontSize: 10.5, fontWeight: '800' },
   evalVal: { color: C.txt, fontSize: 13.5, fontWeight: '900', marginTop: 2 },
   why: { color: C.green, fontSize: 12.5, marginTop: 10, fontWeight: '600' },
+  rankingWhy: { color: C.muted, fontSize: 11.5, lineHeight: 17, marginTop: 6 },
   kakaoDetailBtn: { marginTop: 10, borderWidth: 1, borderColor: C.line, borderRadius: 11, paddingVertical: 10, alignItems: 'center', backgroundColor: C.panel2 },
   kakaoDetailTxt: { color: C.txt2, fontSize: 12.5, fontWeight: '800' },
   kakaoDetailTxtOff: { color: C.muted },

@@ -68,6 +68,7 @@ export type Course = {
   bufferLeftMin: number;
   bestMode?: Mode;
   mobility?: Partial<Record<Mode, MobilityOption>>;
+  rankingScore?: number; // 추천 엔진의 기본 점수. 후보 목록 정렬 근거로도 사용한다.
   why?: string; // 랭킹 근거(설명가능성): "체류 72% · 오후 적합 90%"
 };
 

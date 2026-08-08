@@ -209,7 +209,7 @@ function rankCourses(
     const modeLabel = primaryMode === 'car' ? '차량' : primaryMode === 'transit' ? '대중교통' : '도보';
     const directionNote = destination ? ` · 경유 효율 ${Math.round(direction.score * 100)}%` : '';
     const why = `${c.strategy ? STRATEGY_LABEL[c.strategy] + ' · ' : ''}${modeLabel} 기준 체류가능 ${bestStay}분 · ${bucket} 적합 ${Math.round(fit * 100)}%${directionNote}`;
-    return { c: { ...c, why }, score };
+    return { c: { ...c, rankingScore: score, why }, score };
   });
   // 그리디 선택: 매 단계 (점수 − 이미 뽑힌 카테고리 중복 벌점) 최대를 뽑음
   const ranked: Course[] = [];
