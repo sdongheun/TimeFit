@@ -43,6 +43,8 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
         openingHoursReliability: d.openingHoursReliability,
         matchScope: d.matchScope,
         mapVerificationStatus: d.mapVerificationStatus,
+        kakaoPlaceId: d.kakaoPlaceId,
+        kakaoPlaceUrl: d.kakaoPlaceUrl,
         mapVerificationName: d.mapVerificationName,
         mapVerificationDistanceM: d.mapVerificationDistanceM,
         openNote: '', confidence: d.confidence, strategy: center.strategy,
@@ -54,12 +56,14 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   cands.push(...seenCand.values());
 
   // 2) haversine 프리필터: 짧은 자투리 시간에는 카페/상업지구/가벼운 구경 장소를 더 유연하게 유지
-  const pre = cands.filter((c) => hasStayOpportunity([c], input.origin, target, !!input.destination, budget, primaryMode, input.remainingMin));
-  pre.sort((a, b) => moveOnlyMin([a], input.origin, target, primaryMode, !!input.destination) - moveOnlyMin([b], input.origin, target, primaryMode, !!input.destination));
+  const pre = cands
+    .filter((c) => hasStayOpportunity([c], input.origin, target, !!input.destination, budget, primaryMode, input.remainingMin))
+    .filter((c) => directionEfficiency([c], input.origin, input.destination ?? null, primaryMode).viable);
+  const gateQueue = prioritizeOpeningGate(pre, input.origin, input.destination ?? null, budget, input.hourBucket, primaryMode, input.remainingMin);
 
   // 3) 운영시간 게이트 (상위만 detailIntro2)
   const gated: Spot[] = [];
-  for (const s of pre.slice(0, gateLimitFor(primaryMode, input.remainingMin))) {
+  for (const s of gateQueue.slice(0, gateLimitFor(primaryMode, input.remainingMin))) {
     const intro = await detailIntro(s.contentId, s.typeId);
     const start = input.nowMin + Math.min(haversineMin(input.origin, s, 'walk'), haversineMin(input.origin, s, 'car'));
     const g = isOpenDuring(intro, s.typeId, start, s.dwell);
@@ -87,7 +91,10 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   }
 
   // 랭킹 v1 — 결정적 점수 함수 + 그리디 다양성 (추천로직.md §4)
-  const ranked = stabilizeVisibleMix(rankCourses(courses, budget, input.hourBucket, primaryMode, input.remainingMin), input.remainingMin);
+  const ranked = stabilizeVisibleMix(
+    rankCourses(courses, budget, input.hourBucket, primaryMode, input.remainingMin, input.origin, input.destination ?? null),
+    input.remainingMin,
+  );
 
   // 5) 지연 정밀화 — API 사용량 보호를 위해 추천 목록에서는 TMAP 경로 API를 호출하지 않는다.
   //    나머지는 haversine 추정값으로 먼저 보여주고, 상세/확정 단계에서 정밀화하는 구조로 확장한다.
@@ -112,7 +119,10 @@ async function refineTransitCandidates(
   budget: number,
 ): Promise<{ courses: Course[]; rest: Course[]; ok: number; fail: number }> {
   const refined = await refineCourses(ranked, origin, destination, 'transit', remainingMin, TRANSIT_REFINE_COUNT);
-  const reranked = stabilizeVisibleMix(rankCourses(refined.courses, budget, hourBucket, 'transit', remainingMin, refined.courses.length), remainingMin);
+  const reranked = stabilizeVisibleMix(
+    rankCourses(refined.courses, budget, hourBucket, 'transit', remainingMin, origin, destination, refined.courses.length),
+    remainingMin,
+  );
   return {
     courses: reranked.slice(0, INITIAL_RESULT_COUNT),
     rest: [...reranked.slice(INITIAL_RESULT_COUNT), ...refined.rest],
@@ -167,7 +177,10 @@ function radiusFor(mode: Mode, remainingMin: number): number {
   return 8000;
 }
 
-function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourBucket'], primaryMode: Mode, remainingMin: number, cap = 24): Course[] {
+function rankCourses(
+  courses: Course[], budget: number, bucket: PlanInput['hourBucket'], primaryMode: Mode, remainingMin: number,
+  origin: LatLon, destination: LatLon | null, cap = 24,
+): Course[] {
   const scored = courses.map((c) => {
     const primary = c.mobility?.[primaryMode];
     const bestStay = primary?.stayMin ?? 0;
@@ -188,11 +201,14 @@ function rankCourses(courses: Course[], budget: number, bucket: PlanInput['hourB
     const shortGapBonus = budget <= 60 ? shortGapCategoryBonus(c) : 0;
     const transitRailBonus = primaryMode === 'transit' && hasSubwayLeg(c) ? 0.06 : 0;
     const transitReliabilityPenalty = primaryMode === 'transit' ? transitFallbackPenalty(c) : 0;
+    const direction = directionEfficiency(c.spots, origin, destination, primaryMode);
+    const detourPenalty = destination ? (1 - direction.score) * 0.14 : 0;
     const score = 0.3 * Math.min(1, bestStay / 60) + 0.2 * ratio + 0.2 * fit + 0.15 * conf + 0.15 * compact
       + strategyBonus + shortGapBonus + transitRailBonus
-      - carOnlyPenalty - fallbackOnlyPenalty - openingReliabilityPenalty - mapVerificationPenalty - duplicatePairPenalty - transitReliabilityPenalty;
+      - carOnlyPenalty - fallbackOnlyPenalty - openingReliabilityPenalty - mapVerificationPenalty - duplicatePairPenalty - transitReliabilityPenalty - detourPenalty;
     const modeLabel = primaryMode === 'car' ? '차량' : primaryMode === 'transit' ? '대중교통' : '도보';
-    const why = `${c.strategy ? STRATEGY_LABEL[c.strategy] + ' · ' : ''}${modeLabel} 기준 체류가능 ${bestStay}분 · ${bucket} 적합 ${Math.round(fit * 100)}%`;
+    const directionNote = destination ? ` · 경유 효율 ${Math.round(direction.score * 100)}%` : '';
+    const why = `${c.strategy ? STRATEGY_LABEL[c.strategy] + ' · ' : ''}${modeLabel} 기준 체류가능 ${bestStay}분 · ${bucket} 적합 ${Math.round(fit * 100)}%${directionNote}`;
     return { c: { ...c, why }, score };
   });
   // 그리디 선택: 매 단계 (점수 − 이미 뽑힌 카테고리 중복 벌점) 최대를 뽑음
@@ -268,6 +284,39 @@ function gateLimitFor(mode: Mode, remainingMin: number): number {
   if (mode === 'walk' && remainingMin <= 60) return 28;
   if (remainingMin <= 90) return 22;
   return 16;
+}
+
+function prioritizeOpeningGate(
+  candidates: Spot[], origin: LatLon, destination: LatLon | null, budget: number,
+  bucket: PlanInput['hourBucket'], mode: Mode, remainingMin: number,
+): Spot[] {
+  const scored = candidates.map((spot) => {
+    const moveMin = moveOnlyMin([spot], origin, destination ?? origin, mode, Boolean(destination));
+    const minStay = minStayForCourse([spot], remainingMin);
+    const stayMargin = Math.max(0, Math.min(1, (budget - moveMin - minStay) / 60));
+    const confidence = confidenceScore(spot.confidence);
+    const verification = spot.mapVerificationStatus === 'verified' ? 1 : spot.mapVerificationStatus === 'weak' ? 0.75 : 0.55;
+    const openingReliability = spot.openingHoursReliability === 'direct' ? 1 : spot.openingHoursReliability === 'area_uncertain' ? 0.8 : 0.7;
+    const direction = directionEfficiency([spot], origin, destination, mode).score;
+    const score = 0.3 * direction + 0.24 * stayMargin + 0.2 * timeFitOf(bucket, spot.category)
+      + 0.14 * confidence + 0.07 * verification + 0.05 * openingReliability;
+    return { spot, score };
+  });
+
+  const ordered: Spot[] = [];
+  const categoryCount: Record<string, number> = {};
+  while (scored.length) {
+    scored.sort((a, b) => {
+      const aValue = a.score - (categoryCount[a.spot.category] ?? 0) * 0.08;
+      const bValue = b.score - (categoryCount[b.spot.category] ?? 0) * 0.08;
+      return bValue - aValue || b.score - a.score || a.spot.title.localeCompare(b.spot.title, 'ko');
+    });
+    const next = scored.shift();
+    if (!next) break;
+    ordered.push(next.spot);
+    categoryCount[next.spot.category] = (categoryCount[next.spot.category] ?? 0) + 1;
+  }
+  return ordered;
 }
 
 function hasStayOpportunity(spots: Spot[], origin: LatLon, target: LatLon, viaAppointment: boolean, budget: number, mode: Mode, remainingMin: number): boolean {
@@ -360,6 +409,16 @@ function detourRatio(spots: Spot[], origin: LatLon, target: LatLon, mode: Mode):
   const direct = travelMin(origin, target, mode);
   if (direct <= 0) return 1;
   return moveOnlyMin(spots, origin, target, mode, true) / direct;
+}
+
+function directionEfficiency(
+  spots: Spot[], origin: LatLon, destination: LatLon | null, mode: Mode,
+): { ratio: number; score: number; viable: boolean } {
+  if (!destination) return { ratio: 1, score: 1, viable: true };
+  const ratio = detourRatio(spots, origin, destination, mode);
+  // 1.0배는 직행과 같은 방향, 1.8배 이상은 기존 하드 컷과 동일하게 제외한다.
+  const score = Math.max(0, Math.min(1, 1 - Math.max(0, ratio - 1) / (HARD_DETOUR_RATIO - 1)));
+  return { ratio, score, viable: ratio < HARD_DETOUR_RATIO };
 }
 
 function sumDwell(spots: Spot[]): number {
