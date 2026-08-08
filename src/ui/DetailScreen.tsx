@@ -60,18 +60,25 @@ export function DetailScreen({ route, navigation }: Props) {
 
   useEffect(() => {
     let alive = true;
-    const alreadyPrecise = activeCourse.legs.some((lg) => lg.src === 'TMAP');
-    if (alreadyPrecise) return;
+    const movementLegs = course.legs.filter((lg) => !lg.label.startsWith('체류'));
+    // 한 구간만 TMAP 경로여도 나머지 구간은 직선 폴백일 수 있다.
+    // 코스의 모든 도로 이동 구간에 실경로 좌표가 있을 때만 정밀화를 생략한다.
+    const hasCompleteRoadGeometry = ctx.mode !== 'transit'
+      && movementLegs.length > 0
+      && movementLegs.every((leg) => leg.src === 'TMAP' && (leg.geo?.length ?? 0) >= 4);
+    if (hasCompleteRoadGeometry) return;
     async function run() {
       setRefining(true);
-      setRefineNote('TMAP 기준으로 선택한 코스만 정밀 계산 중');
+      setRefineNote('TMAP 기준으로 실경로가 없는 구간을 정밀 계산 중');
       try {
         const dest = ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : null;
         const r = await refineCourses([activeCourse], origin, dest, ctx.mode, ctx.remainingMin, 1);
         if (!alive) return;
         if (r.courses[0]) {
           setActiveCourse(r.courses[0]);
-          setRefineNote(r.ok > 0 ? `TMAP 정밀 계산 완료 · 호출 ${r.ok + r.fail}건` : '추정 이동시간으로 표시 중');
+          setRefineNote(r.ok > 0
+            ? `TMAP 실경로 ${r.ok}구간 반영${r.fail ? ` · ${r.fail}구간은 직선 추정` : ''}`
+            : 'TMAP 실경로를 받지 못해 직선 추정으로 표시 중');
         } else {
           setRefineNote('정밀 계산 후 시간이 부족해질 수 있어요');
         }

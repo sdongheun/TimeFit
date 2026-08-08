@@ -277,14 +277,27 @@ async function tmapTravel(a: LatLon, b: LatLon, mode: RoadMode): Promise<{ min: 
       await markRouteResult(callNo, mode, false);
       return null;
     }
-    // LineString feature들의 좌표([lon,lat])를 이어붙여 실경로 구성
+    // LineString/MultiLineString feature들의 좌표([lon,lat])를 이어붙여 실경로 구성
     const geo: LatLon[] = [];
     for (const f of j.features ?? []) {
-      if (f?.geometry?.type !== 'LineString') continue;
-      for (const c of f.geometry.coordinates ?? []) {
-        const lon = parseFloat(c[0]), lat = parseFloat(c[1]);
-        if (!isNaN(lat) && !isNaN(lon)) geo.push({ lat, lon });
+      const geometry = f?.geometry;
+      const lines = geometry?.type === 'LineString'
+        ? [geometry.coordinates]
+        : geometry?.type === 'MultiLineString'
+          ? geometry.coordinates
+          : [];
+      for (const line of lines) {
+        for (const c of line ?? []) {
+          const lon = parseFloat(c[0]), lat = parseFloat(c[1]);
+          const last = geo[geo.length - 1];
+          if (!isNaN(lat) && !isNaN(lon) && (!last || last.lat !== lat || last.lon !== lon)) geo.push({ lat, lon });
+        }
       }
+    }
+    // 시간만 있고 선형 좌표가 없으면 지도에서는 실경로를 표시할 수 없다.
+    if (geo.length < 2) {
+      await markRouteResult(callNo, mode, false);
+      return null;
     }
     const min = Math.round(sec / 60);
     await markRouteResult(callNo, mode, true, min);
