@@ -37,6 +37,8 @@ export type Spot = {
   openingHoursReliability?: OpeningHoursReliability;
   matchScope?: MatchScope;
   mapVerificationStatus?: MapVerificationStatus;
+  kakaoPlaceId?: string;
+  kakaoPlaceUrl?: string;
   mapVerificationName?: string;
   mapVerificationDistanceM?: number;
   mult: number;

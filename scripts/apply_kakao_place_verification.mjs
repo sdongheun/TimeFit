@@ -17,6 +17,7 @@ const MATCHED_FILE = path.resolve('data/processed/부산_매칭장소.json');
 const UNMATCHED_FILE = path.resolve('data/processed/부산_미매칭_TourAPI장소.json');
 const CATALOG_FILE = path.resolve('src/data/busan_poi_catalog.json');
 const REPORT_FILE = path.resolve('data/processed/카카오_장소검증.json');
+const CONCURRENCY = Math.max(1, Number(process.env.KAKAO_VERIFY_CONCURRENCY ?? 8));
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const norm = (s = '') => String(s)
@@ -77,6 +78,8 @@ function classify(place, docs) {
       if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
       const distanceM = haversineM(place.lat, place.lon, lat, lon);
       return {
+        placeId: doc.id || undefined,
+        placeUrl: String(doc.place_url ?? '').replace(/^http:/, 'https:') || undefined,
         name: doc.place_name || doc.road_address_name || doc.address_name || '',
         address: doc.road_address_name || doc.address_name || '',
         distanceM,
@@ -98,6 +101,8 @@ function classify(place, docs) {
     return {
       provider: 'kakao',
       status: 'verified',
+      placeId: best.placeId,
+      placeUrl: best.placeUrl,
       matchedName: best.name,
       matchedAddress: best.address,
       distanceM: best.distanceM,
@@ -109,6 +114,8 @@ function classify(place, docs) {
     return {
       provider: 'kakao',
       status: 'weak',
+      placeId: best.placeId,
+      placeUrl: best.placeUrl,
       matchedName: best.name,
       matchedAddress: best.address,
       distanceM: best.distanceM,
@@ -120,6 +127,8 @@ function classify(place, docs) {
     return {
       provider: 'kakao',
       status: 'weak',
+      placeId: best.placeId,
+      placeUrl: best.placeUrl,
       matchedName: best.name,
       matchedAddress: best.address,
       distanceM: best.distanceM,
@@ -133,6 +142,8 @@ function classify(place, docs) {
     return {
       provider: 'kakao',
       status: 'weak',
+      placeId: best.placeId,
+      placeUrl: best.placeUrl,
       matchedName: best.name,
       matchedAddress: best.address,
       distanceM: best.distanceM,
@@ -180,8 +191,10 @@ const rows = [...matched.data, ...unmatched.data];
 const verifications = new Map();
 let ok = 0;
 let fail = 0;
+let nextIndex = 0;
 
-for (const [index, place] of rows.entries()) {
+async function verifyPlace(index) {
+  const place = rows[index];
   try {
     if (index === 0 || (index + 1) % 10 === 0) console.log(`Kakao 검증 진행 ${index + 1}/${rows.length}: ${place.title}`);
     const docs = await kakaoKeyword(place);
@@ -201,6 +214,15 @@ for (const [index, place] of rows.entries()) {
     await sleep(250);
   }
 }
+
+async function worker() {
+  while (nextIndex < rows.length) {
+    const index = nextIndex++;
+    await verifyPlace(index);
+  }
+}
+
+await Promise.all(Array.from({ length: Math.min(CONCURRENCY, rows.length) }, worker));
 
 rewriteCollection(matched, verifications);
 rewriteCollection(unmatched, verifications);

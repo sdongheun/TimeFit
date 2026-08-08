@@ -118,7 +118,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:46.605Z"
+        "checkedAt": "2026-08-08T12:22:19.317Z"
       }
     },
     {
@@ -148,10 +148,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "43535846",
+        "placeUrl": "https://place.map.kakao.com/43535846",
         "matchedName": "흰여울 해안터널",
         "matchedAddress": "부산 영도구 영선동4가 1210-38",
         "distanceM": 383,
-        "checkedAt": "2026-08-01T15:42:46.726Z"
+        "checkedAt": "2026-08-08T12:22:19.430Z"
       }
     },
     {
@@ -183,10 +185,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "262325006",
+        "placeUrl": "https://place.map.kakao.com/262325006",
         "matchedName": "사리원냉면 신세계백화점 센텀시티점",
         "matchedAddress": "부산 해운대구 센텀남대로 35",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:46.869Z"
+        "checkedAt": "2026-08-08T12:22:19.574Z"
       }
     },
     {
@@ -216,10 +220,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "188403018",
+        "placeUrl": "https://place.map.kakao.com/188403018",
         "matchedName": "해운대블루라인파크 미포정거장",
         "matchedAddress": "부산 해운대구 달맞이길62번길 13",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:46.988Z"
+        "checkedAt": "2026-08-08T12:22:19.716Z"
       }
     },
     {
@@ -251,10 +257,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "539980307",
+        "placeUrl": "https://place.map.kakao.com/539980307",
         "matchedName": "부평깡통시장 어묵특화거리",
         "matchedAddress": "부산 중구 부평1길 48",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:47.114Z"
+        "checkedAt": "2026-08-08T12:22:19.851Z"
       }
     },
     {
@@ -286,10 +294,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10463299",
+        "placeUrl": "https://place.map.kakao.com/10463299",
         "matchedName": "부평동한복거리",
         "matchedAddress": "부산 중구 부평2길 44",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:47.225Z"
+        "checkedAt": "2026-08-08T12:22:19.965Z"
       }
     },
     {
@@ -319,10 +329,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "20204736",
+        "placeUrl": "https://place.map.kakao.com/20204736",
         "matchedName": "이가네떡볶이 본점",
         "matchedAddress": "부산 중구 부평1길 48",
         "distanceM": 15,
-        "checkedAt": "2026-08-01T15:42:47.340Z"
+        "checkedAt": "2026-08-08T12:22:20.084Z"
       }
     },
     {
@@ -355,7 +367,7 @@
         "matchedName": "송정역 (폐역)",
         "matchedAddress": "부산 해운대구 송정중앙로8번길 60",
         "distanceM": 3574,
-        "checkedAt": "2026-08-01T15:42:47.461Z"
+        "checkedAt": "2026-08-08T12:22:20.243Z"
       }
     },
     {
@@ -387,10 +399,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "17618045",
+        "placeUrl": "https://place.map.kakao.com/17618045",
         "matchedName": "국제시장새마을금고 본점",
         "matchedAddress": "부산 중구 국제시장2길 26-1",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:47.581Z"
+        "checkedAt": "2026-08-08T12:22:20.359Z"
       }
     },
     {
@@ -420,10 +434,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "12711092",
+        "placeUrl": "https://place.map.kakao.com/12711092",
         "matchedName": "국제시장먹자골목",
         "matchedAddress": "부산 중구 창선동2가 40-5",
         "distanceM": 201,
-        "checkedAt": "2026-08-01T15:42:47.703Z"
+        "checkedAt": "2026-08-08T12:22:20.489Z"
       }
     },
     {
@@ -453,10 +469,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7881359",
+        "placeUrl": "https://place.map.kakao.com/7881359",
         "matchedName": "미술의거리",
         "matchedAddress": "부산 중구 중구로 31",
         "distanceM": 10,
-        "checkedAt": "2026-08-01T15:42:47.816Z"
+        "checkedAt": "2026-08-08T12:22:20.597Z"
       }
     },
     {
@@ -488,10 +506,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "18525213",
+        "placeUrl": "https://place.map.kakao.com/18525213",
         "matchedName": "아리랑거리",
         "matchedAddress": "부산 중구 신창동3가 24-1",
         "distanceM": 23,
-        "checkedAt": "2026-08-01T15:42:47.926Z"
+        "checkedAt": "2026-08-08T12:22:20.786Z"
       }
     },
     {
@@ -521,10 +541,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1403546303",
+        "placeUrl": "https://place.map.kakao.com/1403546303",
         "matchedName": "제노아",
         "matchedAddress": "부산 중구 중구로29번길 17",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:48.039Z"
+        "checkedAt": "2026-08-08T12:22:20.894Z"
       }
     },
     {
@@ -556,10 +578,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10746021",
+        "placeUrl": "https://place.map.kakao.com/10746021",
         "matchedName": "자갈치시장번영회",
         "matchedAddress": "부산 중구 자갈치해안로 52",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:48.168Z"
+        "checkedAt": "2026-08-08T12:22:21.026Z"
       }
     },
     {
@@ -589,10 +613,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7908577",
+        "placeUrl": "https://place.map.kakao.com/7908577",
         "matchedName": "부산명물횟집",
         "matchedAddress": "부산 중구 자갈치해안로 55",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:48.284Z"
+        "checkedAt": "2026-08-08T12:22:21.151Z"
       }
     },
     {
@@ -624,10 +650,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "16901576",
+        "placeUrl": "https://place.map.kakao.com/16901576",
         "matchedName": "신동아회센터15호",
         "matchedAddress": "부산 중구 자갈치로 42",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:48.392Z"
+        "checkedAt": "2026-08-08T12:22:21.297Z"
       }
     },
     {
@@ -657,7 +685,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:48.517Z"
+        "checkedAt": "2026-08-08T12:22:21.410Z"
       }
     },
     {
@@ -687,10 +715,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1095363305",
+        "placeUrl": "https://place.map.kakao.com/1095363305",
         "matchedName": "자갈치크루즈",
         "matchedAddress": "부산 중구 자갈치해안로 60",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:48.639Z"
+        "checkedAt": "2026-08-08T12:22:21.540Z"
       }
     },
     {
@@ -720,10 +750,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8383848",
+        "placeUrl": "https://place.map.kakao.com/8383848",
         "matchedName": "부산원조꼼장어 성일집",
         "matchedAddress": "부산 중구 대교로 103",
         "distanceM": 10,
-        "checkedAt": "2026-08-01T15:42:48.758Z"
+        "checkedAt": "2026-08-08T12:22:21.660Z"
       }
     },
     {
@@ -753,10 +785,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "17556443",
+        "placeUrl": "https://place.map.kakao.com/17556443",
         "matchedName": "동백공원 최치원유적",
         "matchedAddress": "부산 해운대구 동백로 99",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:48.881Z"
+        "checkedAt": "2026-08-08T12:22:21.822Z"
       }
     },
     {
@@ -786,10 +820,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "826555454",
+        "placeUrl": "https://place.map.kakao.com/826555454",
         "matchedName": "일번지자갈치산곰장어",
         "matchedAddress": "부산 해운대구 구남로41번길 12",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:48.989Z"
+        "checkedAt": "2026-08-08T12:22:21.937Z"
       }
     },
     {
@@ -819,10 +855,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "27365831",
+        "placeUrl": "https://place.map.kakao.com/27365831",
         "matchedName": "초량밀면",
         "matchedAddress": "부산 동구 중앙대로 225",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:49.108Z"
+        "checkedAt": "2026-08-08T12:22:22.076Z"
       }
     },
     {
@@ -852,10 +890,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8257954",
+        "placeUrl": "https://place.map.kakao.com/8257954",
         "matchedName": "동백섬",
         "matchedAddress": "부산 해운대구 우동 708-3",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:49.228Z"
+        "checkedAt": "2026-08-08T12:22:22.194Z"
       }
     },
     {
@@ -885,10 +925,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1473548032",
+        "placeUrl": "https://place.map.kakao.com/1473548032",
         "matchedName": "갤러리이알디 부산",
         "matchedAddress": "부산 해운대구 해운대해변로 302",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:49.342Z"
+        "checkedAt": "2026-08-08T12:22:22.350Z"
       }
     },
     {
@@ -918,10 +960,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1366598995",
+        "placeUrl": "https://place.map.kakao.com/1366598995",
         "matchedName": "에맥앤볼리오스 롯데월드어드벤처부산점",
         "matchedAddress": "부산 기장군 기장읍 동부산관광로 42",
         "distanceM": 17,
-        "checkedAt": "2026-08-01T15:42:49.463Z"
+        "checkedAt": "2026-08-08T12:22:22.470Z"
       }
     },
     {
@@ -951,10 +995,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7900239",
+        "placeUrl": "https://place.map.kakao.com/7900239",
         "matchedName": "부산시립미술관 (휴관중)",
         "matchedAddress": "부산 해운대구 APEC로 58",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:49.591Z"
+        "checkedAt": "2026-08-08T12:22:22.587Z"
       }
     },
     {
@@ -984,10 +1030,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "858203768",
+        "placeUrl": "https://place.map.kakao.com/858203768",
         "matchedName": "신발원 외전",
         "matchedAddress": "부산 동구 대영로243번길 64",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:49.707Z"
+        "checkedAt": "2026-08-08T12:22:22.711Z"
       }
     },
     {
@@ -1017,7 +1065,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:49.814Z"
+        "checkedAt": "2026-08-08T12:22:22.857Z"
       }
     },
     {
@@ -1047,10 +1095,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "2058456587",
+        "placeUrl": "https://place.map.kakao.com/2058456587",
         "matchedName": "아홉산숲",
         "matchedAddress": "부산 기장군 철마면 미동길 37-1",
         "distanceM": 12,
-        "checkedAt": "2026-08-01T15:42:49.926Z"
+        "checkedAt": "2026-08-08T12:22:22.980Z"
       }
     },
     {
@@ -1080,10 +1130,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1878852238",
+        "placeUrl": "https://place.map.kakao.com/1878852238",
         "matchedName": "송도해상케이블카",
         "matchedAddress": "부산 서구 송도해변로 171",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:50.046Z"
+        "checkedAt": "2026-08-08T12:22:23.106Z"
       }
     },
     {
@@ -1113,10 +1165,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8672654",
+        "placeUrl": "https://place.map.kakao.com/8672654",
         "matchedName": "광복로패션거리",
         "matchedAddress": "부산 중구 광복동2가 49",
         "distanceM": 149,
-        "checkedAt": "2026-08-01T15:42:50.158Z"
+        "checkedAt": "2026-08-08T12:22:23.239Z"
       }
     },
     {
@@ -1146,10 +1200,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8708426",
+        "placeUrl": "https://place.map.kakao.com/8708426",
         "matchedName": "금수복국 해운대본점",
         "matchedAddress": "부산 해운대구 중동1로43번길 23",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:50.272Z"
+        "checkedAt": "2026-08-08T12:22:23.403Z"
       }
     },
     {
@@ -1181,10 +1237,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "827856171",
+        "placeUrl": "https://place.map.kakao.com/827856171",
         "matchedName": "분홍이네",
         "matchedAddress": "부산 수영구 광안로45번길 2",
         "distanceM": 4,
-        "checkedAt": "2026-08-01T15:42:50.391Z"
+        "checkedAt": "2026-08-08T12:22:23.513Z"
       }
     },
     {
@@ -1214,10 +1272,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "9089301",
+        "placeUrl": "https://place.map.kakao.com/9089301",
         "matchedName": "상국이네",
         "matchedAddress": "부산 해운대구 구남로41번길 40-1",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:50.497Z"
+        "checkedAt": "2026-08-08T12:22:23.638Z"
       }
     },
     {
@@ -1249,10 +1309,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "20548602",
+        "placeUrl": "https://place.map.kakao.com/20548602",
         "matchedName": "신세계사이먼 부산프리미엄아울렛",
         "matchedAddress": "부산 기장군 장안읍 정관로 1133",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:50.621Z"
+        "checkedAt": "2026-08-08T12:22:23.757Z"
       }
     },
     {
@@ -1282,10 +1344,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1582000041",
+        "placeUrl": "https://place.map.kakao.com/1582000041",
         "matchedName": "씨라이프부산아쿠아리움 전기차충전소",
         "matchedAddress": "부산 해운대구 해운대해변로 266",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:50.734Z"
+        "checkedAt": "2026-08-08T12:22:23.930Z"
       }
     },
     {
@@ -1315,10 +1379,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11047533",
+        "placeUrl": "https://place.map.kakao.com/11047533",
         "matchedName": "할매가야밀면",
         "matchedAddress": "부산 중구 광복로 56-14",
         "distanceM": 1,
-        "checkedAt": "2026-08-01T15:42:50.840Z"
+        "checkedAt": "2026-08-08T12:22:24.044Z"
       }
     },
     {
@@ -1348,10 +1414,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "27456652",
+        "placeUrl": "https://place.map.kakao.com/27456652",
         "matchedName": "미포항",
         "matchedAddress": "부산 해운대구 중동 957-22",
         "distanceM": 22,
-        "checkedAt": "2026-08-01T15:42:50.953Z"
+        "checkedAt": "2026-08-08T12:22:24.160Z"
       }
     },
     {
@@ -1381,10 +1449,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1821209334",
+        "placeUrl": "https://place.map.kakao.com/1821209334",
         "matchedName": "타이가텐푸라",
         "matchedAddress": "부산 해운대구 우동1로38번가길 15",
         "distanceM": 4,
-        "checkedAt": "2026-08-01T15:42:51.062Z"
+        "checkedAt": "2026-08-08T12:22:24.269Z"
       }
     },
     {
@@ -1414,10 +1484,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "686393837",
+        "placeUrl": "https://place.map.kakao.com/686393837",
         "matchedName": "고향연화",
         "matchedAddress": "부산 기장군 기장읍 연화길 33-8",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:51.175Z"
+        "checkedAt": "2026-08-08T12:22:24.440Z"
       }
     },
     {
@@ -1447,10 +1519,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1086385576",
+        "placeUrl": "https://place.map.kakao.com/1086385576",
         "matchedName": "광안리해양레포츠센터",
         "matchedAddress": "부산 수영구 광안해변로54번길 222",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:51.287Z"
+        "checkedAt": "2026-08-08T12:22:24.566Z"
       }
     },
     {
@@ -1480,10 +1554,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1567103628",
+        "placeUrl": "https://place.map.kakao.com/1567103628",
         "matchedName": "부산광역시 이동청소년쉼터 서면 놀이마루 후문",
         "matchedAddress": "부산 부산진구 전포대로209번길 26",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:51.401Z"
+        "checkedAt": "2026-08-08T12:22:24.687Z"
       }
     },
     {
@@ -1513,10 +1589,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10419530",
+        "placeUrl": "https://place.map.kakao.com/10419530",
         "matchedName": "무진장횟집",
         "matchedAddress": "부산 기장군 기장읍 연화1길 137",
         "distanceM": 19,
-        "checkedAt": "2026-08-01T15:42:51.521Z"
+        "checkedAt": "2026-08-08T12:22:24.799Z"
       }
     },
     {
@@ -1546,10 +1624,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11062140",
+        "placeUrl": "https://place.map.kakao.com/11062140",
         "matchedName": "미청식당",
         "matchedAddress": "부산 기장군 일광읍 기장해안로 1303",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:51.636Z"
+        "checkedAt": "2026-08-08T12:22:24.960Z"
       }
     },
     {
@@ -1579,10 +1659,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "31366256",
+        "placeUrl": "https://place.map.kakao.com/31366256",
         "matchedName": "바로해장",
         "matchedAddress": "부산 수영구 광남로94번길 2",
         "distanceM": 16,
-        "checkedAt": "2026-08-01T15:42:51.747Z"
+        "checkedAt": "2026-08-08T12:22:25.082Z"
       }
     },
     {
@@ -1612,7 +1694,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:51.858Z"
+        "checkedAt": "2026-08-08T12:22:25.198Z"
       }
     },
     {
@@ -1642,10 +1724,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "2144681902",
+        "placeUrl": "https://place.map.kakao.com/2144681902",
         "matchedName": "삼익비치 수변공원",
         "matchedAddress": "부산 수영구 남천동 148-103",
         "distanceM": 46,
-        "checkedAt": "2026-08-01T15:42:51.981Z"
+        "checkedAt": "2026-08-08T12:22:25.336Z"
       }
     },
     {
@@ -1675,10 +1759,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "272261098",
+        "placeUrl": "https://place.map.kakao.com/272261098",
         "matchedName": "솥이랑",
         "matchedAddress": "부산 부산진구 중앙대로 672",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:52.101Z"
+        "checkedAt": "2026-08-08T12:22:25.500Z"
       }
     },
     {
@@ -1708,10 +1794,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "14635779",
+        "placeUrl": "https://place.map.kakao.com/14635779",
         "matchedName": "수변최고돼지국밥 민락본점",
         "matchedAddress": "부산 수영구 광안해변로370번길 9-32",
         "distanceM": 13,
-        "checkedAt": "2026-08-01T15:42:52.210Z"
+        "checkedAt": "2026-08-08T12:22:25.626Z"
       }
     },
     {
@@ -1741,10 +1829,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "21432916",
+        "placeUrl": "https://place.map.kakao.com/21432916",
         "matchedName": "스완양분식 본점",
         "matchedAddress": "부산 동구 중앙대로236번길 7-5",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:52.325Z"
+        "checkedAt": "2026-08-08T12:22:25.738Z"
       }
     },
     {
@@ -1774,10 +1864,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1019513691",
+        "placeUrl": "https://place.map.kakao.com/1019513691",
         "matchedName": "어느멋진날",
         "matchedAddress": "부산 기장군 일광읍 기장해안로 1286",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:52.436Z"
+        "checkedAt": "2026-08-08T12:22:25.858Z"
       }
     },
     {
@@ -1807,10 +1899,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "815839272",
+        "placeUrl": "https://place.map.kakao.com/815839272",
         "matchedName": "영동밀면&돼지국밥",
         "matchedAddress": "부산 동구 중앙대로209번길 12",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:52.549Z"
+        "checkedAt": "2026-08-08T12:22:25.999Z"
       }
     },
     {
@@ -1840,10 +1934,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "9415639",
+        "placeUrl": "https://place.map.kakao.com/9415639",
         "matchedName": "장성향",
         "matchedAddress": "부산 동구 대영로243번길 29",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:52.652Z"
+        "checkedAt": "2026-08-08T12:22:26.138Z"
       }
     },
     {
@@ -1875,10 +1971,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1501845576",
+        "placeUrl": "https://place.map.kakao.com/1501845576",
         "matchedName": "주식회사 아래모래",
         "matchedAddress": "부산 사하구 감내2로 122",
         "distanceM": 73,
-        "checkedAt": "2026-08-01T15:42:52.763Z"
+        "checkedAt": "2026-08-08T12:22:26.290Z"
       }
     },
     {
@@ -1911,7 +2009,7 @@
         "matchedName": "창비이즈팰리스",
         "matchedAddress": "부산 부산진구 연수로11번길 21",
         "distanceM": 7164,
-        "checkedAt": "2026-08-01T15:42:52.872Z"
+        "checkedAt": "2026-08-08T12:22:26.482Z"
       }
     },
     {
@@ -1941,10 +2039,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1679552434",
+        "placeUrl": "https://place.map.kakao.com/1679552434",
         "matchedName": "코랄라니",
         "matchedAddress": "부산 기장군 기장읍 기장해안로 32",
         "distanceM": 23,
-        "checkedAt": "2026-08-01T15:42:52.987Z"
+        "checkedAt": "2026-08-08T12:22:26.603Z"
       }
     },
     {
@@ -1974,10 +2074,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1413103721",
+        "placeUrl": "https://place.map.kakao.com/1413103721",
         "matchedName": "푸디스트 키자니아점",
         "matchedAddress": "부산 해운대구 센텀4로 15",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:53.099Z"
+        "checkedAt": "2026-08-08T12:22:26.714Z"
       }
     },
     {
@@ -2007,7 +2109,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:53.208Z"
+        "checkedAt": "2026-08-08T12:22:26.836Z"
       }
     },
     {
@@ -2037,10 +2139,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11265687",
+        "placeUrl": "https://place.map.kakao.com/11265687",
         "matchedName": "할매복국",
         "matchedAddress": "부산 해운대구 달맞이길62번길 1",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:53.321Z"
+        "checkedAt": "2026-08-08T12:22:27.013Z"
       }
     },
     {
@@ -2070,10 +2174,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8616462",
+        "placeUrl": "https://place.map.kakao.com/8616462",
         "matchedName": "해운대기와집대구탕",
         "matchedAddress": "부산 해운대구 달맞이길50번길 4",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:53.445Z"
+        "checkedAt": "2026-08-08T12:22:27.130Z"
       }
     },
     {
@@ -2103,10 +2209,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "16839549",
+        "placeUrl": "https://place.map.kakao.com/16839549",
         "matchedName": "해운대하얀오징어집",
         "matchedAddress": "부산 해운대구 달맞이길 50",
         "distanceM": 27,
-        "checkedAt": "2026-08-01T15:42:53.553Z"
+        "checkedAt": "2026-08-08T12:22:27.237Z"
       }
     },
     {
@@ -2136,10 +2244,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7931954",
+        "placeUrl": "https://place.map.kakao.com/7931954",
         "matchedName": "18번완당집",
         "matchedAddress": "부산 중구 비프광장로 31",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:53.662Z"
+        "checkedAt": "2026-08-08T12:22:27.349Z"
       }
     },
     {
@@ -2169,10 +2279,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1371484625",
+        "placeUrl": "https://place.map.kakao.com/1371484625",
         "matchedName": "그린노마드",
         "matchedAddress": "부산 수영구 좌수영로 161-10",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:53.788Z"
+        "checkedAt": "2026-08-08T12:22:27.530Z"
       }
     },
     {
@@ -2202,10 +2314,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "12601510",
+        "placeUrl": "https://place.map.kakao.com/12601510",
         "matchedName": "급행장 본점",
         "matchedAddress": "부산 부산진구 서면문화로 4",
         "distanceM": 4,
-        "checkedAt": "2026-08-01T15:42:53.900Z"
+        "checkedAt": "2026-08-08T12:22:27.644Z"
       }
     },
     {
@@ -2235,10 +2349,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "654919659",
+        "placeUrl": "https://place.map.kakao.com/654919659",
         "matchedName": "나가하마만게츠",
         "matchedAddress": "부산 해운대구 우동1로 57",
         "distanceM": 18,
-        "checkedAt": "2026-08-01T15:42:54.015Z"
+        "checkedAt": "2026-08-08T12:22:27.768Z"
       }
     },
     {
@@ -2268,7 +2384,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:54.119Z"
+        "checkedAt": "2026-08-08T12:22:27.878Z"
       }
     },
     {
@@ -2298,10 +2414,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11486664",
+        "placeUrl": "https://place.map.kakao.com/11486664",
         "matchedName": "다대포꿈의낙조분수",
         "matchedAddress": "부산 사하구 몰운대1길 14",
         "distanceM": 106,
-        "checkedAt": "2026-08-01T15:42:54.241Z"
+        "checkedAt": "2026-08-08T12:22:28.067Z"
       }
     },
     {
@@ -2331,10 +2449,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "26312437",
+        "placeUrl": "https://place.map.kakao.com/26312437",
         "matchedName": "라꽁띠",
         "matchedAddress": "부산 해운대구 청사포로 85",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:54.352Z"
+        "checkedAt": "2026-08-08T12:22:28.177Z"
       }
     },
     {
@@ -2364,10 +2484,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1284187619",
+        "placeUrl": "https://place.map.kakao.com/1284187619",
         "matchedName": "류센소 본점",
         "matchedAddress": "부산 해운대구 구남로8번길 62",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:54.465Z"
+        "checkedAt": "2026-08-08T12:22:28.288Z"
       }
     },
     {
@@ -2399,10 +2521,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "13113524",
+        "placeUrl": "https://place.map.kakao.com/13113524",
         "matchedName": "만물의거리",
         "matchedAddress": "부산 중구 신창동4가",
         "distanceM": 186,
-        "checkedAt": "2026-08-01T15:42:54.579Z"
+        "checkedAt": "2026-08-08T12:22:28.413Z"
       }
     },
     {
@@ -2432,10 +2556,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "27446157",
+        "placeUrl": "https://place.map.kakao.com/27446157",
         "matchedName": "벡스코 제1전시장",
         "matchedAddress": "부산 해운대구 APEC로 55",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:54.699Z"
+        "checkedAt": "2026-08-08T12:22:28.582Z"
       }
     },
     {
@@ -2465,10 +2591,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "773629847",
+        "placeUrl": "https://place.map.kakao.com/773629847",
         "matchedName": "부산영화체험박물관",
         "matchedAddress": "부산 중구 대청로126번길 12",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:54.811Z"
+        "checkedAt": "2026-08-08T12:22:28.698Z"
       }
     },
     {
@@ -2500,10 +2628,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "13113517",
+        "placeUrl": "https://place.map.kakao.com/13113517",
         "matchedName": "조명의거리",
         "matchedAddress": "부산 중구 창선동2가 26-17",
         "distanceM": 18,
-        "checkedAt": "2026-08-01T15:42:54.924Z"
+        "checkedAt": "2026-08-08T12:22:28.811Z"
       }
     },
     {
@@ -2533,10 +2663,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "27535411",
+        "placeUrl": "https://place.map.kakao.com/27535411",
         "matchedName": "해운대할매집",
         "matchedAddress": "부산 해운대구 중동2로10번길 7",
         "distanceM": 19,
-        "checkedAt": "2026-08-01T15:42:55.035Z"
+        "checkedAt": "2026-08-08T12:22:28.934Z"
       }
     },
     {
@@ -2566,10 +2698,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "15555120",
+        "placeUrl": "https://place.map.kakao.com/15555120",
         "matchedName": "해운대가야밀면",
         "matchedAddress": "부산 해운대구 좌동순환로 27",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:55.153Z"
+        "checkedAt": "2026-08-08T12:22:29.104Z"
       }
     },
     {
@@ -2599,7 +2733,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:55.260Z"
+        "checkedAt": "2026-08-08T12:22:29.225Z"
       }
     },
     {
@@ -2629,10 +2763,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8668947",
+        "placeUrl": "https://place.map.kakao.com/8668947",
         "matchedName": "해운대온천센터",
         "matchedAddress": "부산 해운대구 중동2로 16",
         "distanceM": 4,
-        "checkedAt": "2026-08-01T15:42:55.374Z"
+        "checkedAt": "2026-08-08T12:22:29.348Z"
       }
     },
     {
@@ -2662,10 +2798,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "930563805",
+        "placeUrl": "https://place.map.kakao.com/930563805",
         "matchedName": "희와제과",
         "matchedAddress": "부산 부산진구 전포대로246번길 6",
         "distanceM": 22,
-        "checkedAt": "2026-08-01T15:42:55.481Z"
+        "checkedAt": "2026-08-08T12:22:29.453Z"
       }
     },
     {
@@ -2697,10 +2835,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1557551696",
+        "placeUrl": "https://place.map.kakao.com/1557551696",
         "matchedName": "고래서이뻐",
         "matchedAddress": "부산 해운대구 우동1로38번길 15-1",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:55.591Z"
+        "checkedAt": "2026-08-08T12:22:29.628Z"
       }
     },
     {
@@ -2730,10 +2870,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "12644071",
+        "placeUrl": "https://place.map.kakao.com/12644071",
         "matchedName": "광안리해변테마거리",
         "matchedAddress": "부산 수영구 민락동",
         "distanceM": 21,
-        "checkedAt": "2026-08-01T15:42:55.710Z"
+        "checkedAt": "2026-08-08T12:22:29.752Z"
       }
     },
     {
@@ -2763,10 +2905,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1092116394",
+        "placeUrl": "https://place.map.kakao.com/1092116394",
         "matchedName": "구로마쯔",
         "matchedAddress": "부산 해운대구 송정광어골로 41",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:55.820Z"
+        "checkedAt": "2026-08-08T12:22:29.862Z"
       }
     },
     {
@@ -2796,7 +2940,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:55.926Z"
+        "checkedAt": "2026-08-08T12:22:29.978Z"
       }
     },
     {
@@ -2826,10 +2970,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "1255305672",
+        "placeUrl": "https://place.map.kakao.com/1255305672",
         "matchedName": "오직전복죽 기장끝집",
         "matchedAddress": "부산 기장군 기장읍 기장해안로 895",
         "distanceM": 17,
-        "checkedAt": "2026-08-01T15:42:56.045Z"
+        "checkedAt": "2026-08-08T12:22:30.150Z"
       }
     },
     {
@@ -2859,10 +3005,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "22710785",
+        "placeUrl": "https://place.map.kakao.com/22710785",
         "matchedName": "꺼먹동네 칠암본점",
         "matchedAddress": "부산 기장군 일광읍 문오성길 509",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:56.157Z"
+        "checkedAt": "2026-08-08T12:22:30.276Z"
       }
     },
     {
@@ -2892,10 +3040,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "21546126",
+        "placeUrl": "https://place.map.kakao.com/21546126",
         "matchedName": "남선창고터",
         "matchedAddress": "부산 동구 초량동 393-1",
         "distanceM": 35,
-        "checkedAt": "2026-08-01T15:42:56.271Z"
+        "checkedAt": "2026-08-08T12:22:30.391Z"
       }
     },
     {
@@ -2925,10 +3075,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "9737271",
+        "placeUrl": "https://place.map.kakao.com/9737271",
         "matchedName": "대각사",
         "matchedAddress": "부산 중구 광복중앙로 19",
         "distanceM": 14,
-        "checkedAt": "2026-08-01T15:42:56.386Z"
+        "checkedAt": "2026-08-08T12:22:30.520Z"
       }
     },
     {
@@ -2958,7 +3110,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:56.493Z"
+        "checkedAt": "2026-08-08T12:22:30.681Z"
       }
     },
     {
@@ -2990,10 +3142,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "136545598",
+        "placeUrl": "https://place.map.kakao.com/136545598",
         "matchedName": "러브이즈기빙 하트베어 3호점",
         "matchedAddress": "부산 수영구 광안로 51",
         "distanceM": 109,
-        "checkedAt": "2026-08-01T15:42:56.604Z"
+        "checkedAt": "2026-08-08T12:22:30.791Z"
       }
     },
     {
@@ -3025,10 +3179,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1290069882",
+        "placeUrl": "https://place.map.kakao.com/1290069882",
         "matchedName": "코노미스시 롯데프리미엄아울렛동부산점",
         "matchedAddress": "부산 기장군 기장읍 기장해안로 147",
         "distanceM": 1,
-        "checkedAt": "2026-08-01T15:42:56.724Z"
+        "checkedAt": "2026-08-08T12:22:30.914Z"
       }
     },
     {
@@ -3058,10 +3214,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "25807792",
+        "placeUrl": "https://place.map.kakao.com/25807792",
         "matchedName": "범어사 성보박물관",
         "matchedAddress": "부산 금정구 범어사로 296",
         "distanceM": 842,
-        "checkedAt": "2026-08-01T15:42:56.846Z"
+        "checkedAt": "2026-08-08T12:22:31.038Z"
       }
     },
     {
@@ -3091,10 +3249,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "26324476",
+        "placeUrl": "https://place.map.kakao.com/26324476",
         "matchedName": "영화의전당 더블콘",
         "matchedAddress": "부산 해운대구 수영강변대로 120",
         "distanceM": 23,
-        "checkedAt": "2026-08-01T15:42:56.960Z"
+        "checkedAt": "2026-08-08T12:22:31.210Z"
       }
     },
     {
@@ -3124,10 +3284,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7909355",
+        "placeUrl": "https://place.map.kakao.com/7909355",
         "matchedName": "부산근현대역사관 별관",
         "matchedAddress": "부산 중구 대청로 104",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:57.074Z"
+        "checkedAt": "2026-08-08T12:22:31.321Z"
       }
     },
     {
@@ -3157,10 +3319,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "999813771",
+        "placeUrl": "https://place.map.kakao.com/999813771",
         "matchedName": "부산근현대역사관 본관",
         "matchedAddress": "부산 중구 대청로 112",
         "distanceM": 22,
-        "checkedAt": "2026-08-01T15:42:57.188Z"
+        "checkedAt": "2026-08-08T12:22:31.435Z"
       }
     },
     {
@@ -3192,10 +3356,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10998607",
+        "placeUrl": "https://place.map.kakao.com/10998607",
         "matchedName": "부산 전자종합시장 번영회",
         "matchedAddress": "부산 부산진구 부전로 196",
         "distanceM": 15,
-        "checkedAt": "2026-08-01T15:42:57.299Z"
+        "checkedAt": "2026-08-08T12:22:31.556Z"
       }
     },
     {
@@ -3225,10 +3391,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "203978281",
+        "placeUrl": "https://place.map.kakao.com/203978281",
         "matchedName": "부산타워 기프트샵",
         "matchedAddress": "부산 중구 용두산길 37-30",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:57.456Z"
+        "checkedAt": "2026-08-08T12:22:31.725Z"
       }
     },
     {
@@ -3258,10 +3426,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8404825",
+        "placeUrl": "https://place.map.kakao.com/8404825",
         "matchedName": "부전돼지국밥",
         "matchedAddress": "부산 사상구 사상로 214",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:57.580Z"
+        "checkedAt": "2026-08-08T12:22:31.880Z"
       }
     },
     {
@@ -3293,10 +3463,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "25621942",
+        "placeUrl": "https://place.map.kakao.com/25621942",
         "matchedName": "부전마켓타운",
         "matchedAddress": "부산 부산진구 중앙대로783번길 23",
         "distanceM": 117,
-        "checkedAt": "2026-08-01T15:42:57.693Z"
+        "checkedAt": "2026-08-08T12:22:31.992Z"
       }
     },
     {
@@ -3326,7 +3498,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:57.803Z"
+        "checkedAt": "2026-08-08T12:22:32.110Z"
       }
     },
     {
@@ -3356,10 +3528,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7958381",
+        "placeUrl": "https://place.map.kakao.com/7958381",
         "matchedName": "속씨원한 대구탕 미포 본점",
         "matchedAddress": "부산 해운대구 달맞이길62번길 28",
         "distanceM": 23,
-        "checkedAt": "2026-08-01T15:42:57.916Z"
+        "checkedAt": "2026-08-08T12:22:32.292Z"
       }
     },
     {
@@ -3389,10 +3563,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "744667559",
+        "placeUrl": "https://place.map.kakao.com/744667559",
         "matchedName": "송도구름산책로 송도365",
         "matchedAddress": "부산 서구 암남동 129-4",
         "distanceM": 19,
-        "checkedAt": "2026-08-01T15:42:58.027Z"
+        "checkedAt": "2026-08-08T12:22:32.405Z"
       }
     },
     {
@@ -3422,10 +3598,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1316605327",
+        "placeUrl": "https://place.map.kakao.com/1316605327",
         "matchedName": "송정물총칼국수",
         "matchedAddress": "부산 해운대구 송정중앙로6번길 184",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:58.148Z"
+        "checkedAt": "2026-08-08T12:22:32.523Z"
       }
     },
     {
@@ -3455,10 +3633,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "21540783",
+        "placeUrl": "https://place.map.kakao.com/21540783",
         "matchedName": "송정집",
         "matchedAddress": "부산 해운대구 송정광어골로 59",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:58.276Z"
+        "checkedAt": "2026-08-08T12:22:32.658Z"
       }
     },
     {
@@ -3488,10 +3668,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7963998",
+        "placeUrl": "https://place.map.kakao.com/7963998",
         "matchedName": "수민이네",
         "matchedAddress": "부산 해운대구 청사포로58번길 118",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:58.384Z"
+        "checkedAt": "2026-08-08T12:22:32.832Z"
       }
     },
     {
@@ -3521,10 +3703,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "2093385391",
+        "placeUrl": "https://place.map.kakao.com/2093385391",
         "matchedName": "수월경화 주차장",
         "matchedAddress": "부산 해운대구 송정중앙로6번길 188",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:58.492Z"
+        "checkedAt": "2026-08-08T12:22:32.944Z"
       }
     },
     {
@@ -3554,7 +3738,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:58.603Z"
+        "checkedAt": "2026-08-08T12:22:33.051Z"
       }
     },
     {
@@ -3584,10 +3768,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1494761951",
+        "placeUrl": "https://place.map.kakao.com/1494761951",
         "matchedName": "야스마루 쇼쿠도",
         "matchedAddress": "부산 부산진구 중앙대로756번길 24",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:58.714Z"
+        "checkedAt": "2026-08-08T12:22:33.181Z"
       }
     },
     {
@@ -3617,10 +3803,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1914593458",
+        "placeUrl": "https://place.map.kakao.com/1914593458",
         "matchedName": "에테르",
         "matchedAddress": "부산 영도구 절영로 234",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:58.826Z"
+        "checkedAt": "2026-08-08T12:22:33.352Z"
       }
     },
     {
@@ -3652,10 +3840,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "18525523",
+        "placeUrl": "https://place.map.kakao.com/18525523",
         "matchedName": "영도봉래시장",
         "matchedAddress": "부산 영도구 봉래동3가 196",
         "distanceM": 17,
-        "checkedAt": "2026-08-01T15:42:58.951Z"
+        "checkedAt": "2026-08-08T12:22:33.480Z"
       }
     },
     {
@@ -3685,7 +3875,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:59.061Z"
+        "checkedAt": "2026-08-08T12:22:33.599Z"
       }
     },
     {
@@ -3715,10 +3905,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "15204732",
+        "placeUrl": "https://place.map.kakao.com/15204732",
         "matchedName": "오반장",
         "matchedAddress": "부산 해운대구 구남로24번길 20",
         "distanceM": 12,
-        "checkedAt": "2026-08-01T15:42:59.177Z"
+        "checkedAt": "2026-08-08T12:22:33.711Z"
       }
     },
     {
@@ -3748,7 +3940,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:59.290Z"
+        "checkedAt": "2026-08-08T12:22:33.864Z"
       }
     },
     {
@@ -3778,10 +3970,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10070964",
+        "placeUrl": "https://place.map.kakao.com/10070964",
         "matchedName": "이재모피자 본점",
         "matchedAddress": "부산 중구 광복중앙로 31",
         "distanceM": 17,
-        "checkedAt": "2026-08-01T15:42:59.402Z"
+        "checkedAt": "2026-08-08T12:22:33.978Z"
       }
     },
     {
@@ -3811,10 +4005,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "483528978",
+        "placeUrl": "https://place.map.kakao.com/483528978",
         "matchedName": "일광정 소갈비찜",
         "matchedAddress": "부산 기장군 일광읍 일광로 645",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:59.516Z"
+        "checkedAt": "2026-08-08T12:22:34.117Z"
       }
     },
     {
@@ -3844,10 +4040,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "9368205",
+        "placeUrl": "https://place.map.kakao.com/9368205",
         "matchedName": "일품한우",
         "matchedAddress": "부산 해운대구 해운대로570번길 49",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:59.634Z"
+        "checkedAt": "2026-08-08T12:22:34.241Z"
       }
     },
     {
@@ -3877,10 +4075,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1187263066",
+        "placeUrl": "https://place.map.kakao.com/1187263066",
         "matchedName": "전포공구길",
         "matchedAddress": "부산 부산진구 전포동 868",
         "distanceM": 41,
-        "checkedAt": "2026-08-01T15:42:59.751Z"
+        "checkedAt": "2026-08-08T12:22:34.410Z"
       }
     },
     {
@@ -3910,10 +4110,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "210346769",
+        "placeUrl": "https://place.map.kakao.com/210346769",
         "matchedName": "초량온당",
         "matchedAddress": "부산 동구 초량중로 135",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:59.856Z"
+        "checkedAt": "2026-08-08T12:22:34.532Z"
       }
     },
     {
@@ -3943,10 +4145,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "566496506",
+        "placeUrl": "https://place.map.kakao.com/566496506",
         "matchedName": "칠암만장 본점",
         "matchedAddress": "부산 기장군 일광읍 일광로 648",
         "distanceM": 13,
-        "checkedAt": "2026-08-01T15:42:59.978Z"
+        "checkedAt": "2026-08-08T12:22:34.658Z"
       }
     },
     {
@@ -3976,10 +4180,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1504874222",
+        "placeUrl": "https://place.map.kakao.com/1504874222",
         "matchedName": "칠암사계",
         "matchedAddress": "부산 기장군 일광읍 칠암1길 7-10",
         "distanceM": 20,
-        "checkedAt": "2026-08-01T15:43:00.105Z"
+        "checkedAt": "2026-08-08T12:22:34.783Z"
       }
     },
     {
@@ -4009,10 +4215,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11165596",
+        "placeUrl": "https://place.map.kakao.com/11165596",
         "matchedName": "칠암일번지횟집",
         "matchedAddress": "부산 기장군 일광읍 문오성길 547",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:43:00.227Z"
+        "checkedAt": "2026-08-08T12:22:34.933Z"
       }
     },
     {
@@ -4042,10 +4250,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "704518356",
+        "placeUrl": "https://place.map.kakao.com/704518356",
         "matchedName": "톤쇼우 부산대본점",
         "matchedAddress": "부산 금정구 금강로 247-10",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:43:00.339Z"
+        "checkedAt": "2026-08-08T12:22:35.060Z"
       }
     },
     {
@@ -4075,10 +4285,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "977177107",
+        "placeUrl": "https://place.map.kakao.com/977177107",
         "matchedName": "해목",
         "matchedAddress": "부산 해운대구 구남로24번길 8",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:43:00.447Z"
+        "checkedAt": "2026-08-08T12:22:35.184Z"
       }
     },
     {
@@ -4108,10 +4320,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "1914363234",
+        "placeUrl": "https://place.map.kakao.com/1914363234",
         "matchedName": "명장정수사업소 회동수원지 입구",
         "matchedAddress": "부산 금정구 수원지로 58",
         "distanceM": 976,
-        "checkedAt": "2026-08-01T15:43:00.561Z"
+        "checkedAt": "2026-08-08T12:22:35.303Z"
       }
     }
   ],
@@ -4143,10 +4357,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8668947",
+        "placeUrl": "https://place.map.kakao.com/8668947",
         "matchedName": "해운대온천센터",
         "matchedAddress": "부산 해운대구 중동2로 16",
         "distanceM": 4,
-        "checkedAt": "2026-08-01T15:42:55.374Z"
+        "checkedAt": "2026-08-08T12:22:29.348Z"
       }
     },
     "126857": {
@@ -4176,10 +4392,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8672654",
+        "placeUrl": "https://place.map.kakao.com/8672654",
         "matchedName": "광복로패션거리",
         "matchedAddress": "부산 중구 광복동2가 49",
         "distanceM": 149,
-        "checkedAt": "2026-08-01T15:42:50.158Z"
+        "checkedAt": "2026-08-08T12:22:23.239Z"
       }
     },
     "127004": {
@@ -4209,7 +4427,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:46.605Z"
+        "checkedAt": "2026-08-08T12:22:19.317Z"
       }
     },
     "127925": {
@@ -4239,10 +4457,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "12644071",
+        "placeUrl": "https://place.map.kakao.com/12644071",
         "matchedName": "광안리해변테마거리",
         "matchedAddress": "부산 수영구 민락동",
         "distanceM": 21,
-        "checkedAt": "2026-08-01T15:42:55.710Z"
+        "checkedAt": "2026-08-08T12:22:29.752Z"
       }
     },
     "128810": {
@@ -4272,10 +4492,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "17556443",
+        "placeUrl": "https://place.map.kakao.com/17556443",
         "matchedName": "동백공원 최치원유적",
         "matchedAddress": "부산 해운대구 동백로 99",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:48.881Z"
+        "checkedAt": "2026-08-08T12:22:21.822Z"
       }
     },
     "130166": {
@@ -4305,10 +4527,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7900239",
+        "placeUrl": "https://place.map.kakao.com/7900239",
         "matchedName": "부산시립미술관 (휴관중)",
         "matchedAddress": "부산 해운대구 APEC로 58",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:49.591Z"
+        "checkedAt": "2026-08-08T12:22:22.587Z"
       }
     },
     "130668": {
@@ -4338,10 +4562,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "27446157",
+        "placeUrl": "https://place.map.kakao.com/27446157",
         "matchedName": "벡스코 제1전시장",
         "matchedAddress": "부산 해운대구 APEC로 55",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:54.699Z"
+        "checkedAt": "2026-08-08T12:22:28.582Z"
       }
     },
     "132188": {
@@ -4373,10 +4599,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "25621942",
+        "placeUrl": "https://place.map.kakao.com/25621942",
         "matchedName": "부전마켓타운",
         "matchedAddress": "부산 부산진구 중앙대로783번길 23",
         "distanceM": 117,
-        "checkedAt": "2026-08-01T15:42:57.693Z"
+        "checkedAt": "2026-08-08T12:22:31.992Z"
       }
     },
     "132190": {
@@ -4408,10 +4636,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10746021",
+        "placeUrl": "https://place.map.kakao.com/10746021",
         "matchedName": "자갈치시장번영회",
         "matchedAddress": "부산 중구 자갈치해안로 52",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:48.168Z"
+        "checkedAt": "2026-08-08T12:22:21.026Z"
       }
     },
     "132191": {
@@ -4443,10 +4673,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "17618045",
+        "placeUrl": "https://place.map.kakao.com/17618045",
         "matchedName": "국제시장새마을금고 본점",
         "matchedAddress": "부산 중구 국제시장2길 26-1",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:47.581Z"
+        "checkedAt": "2026-08-08T12:22:20.359Z"
       }
     },
     "132550": {
@@ -4478,10 +4710,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10463299",
+        "placeUrl": "https://place.map.kakao.com/10463299",
         "matchedName": "부평동한복거리",
         "matchedAddress": "부산 중구 부평2길 44",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:47.225Z"
+        "checkedAt": "2026-08-08T12:22:19.965Z"
       }
     },
     "132576": {
@@ -4513,10 +4747,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "16901576",
+        "placeUrl": "https://place.map.kakao.com/16901576",
         "matchedName": "신동아회센터15호",
         "matchedAddress": "부산 중구 자갈치로 42",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:48.392Z"
+        "checkedAt": "2026-08-08T12:22:21.297Z"
       }
     },
     "133313": {
@@ -4546,10 +4782,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7908577",
+        "placeUrl": "https://place.map.kakao.com/7908577",
         "matchedName": "부산명물횟집",
         "matchedAddress": "부산 중구 자갈치해안로 55",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:48.284Z"
+        "checkedAt": "2026-08-08T12:22:21.151Z"
       }
     },
     "133525": {
@@ -4579,10 +4817,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7931954",
+        "placeUrl": "https://place.map.kakao.com/7931954",
         "matchedName": "18번완당집",
         "matchedAddress": "부산 중구 비프광장로 31",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:53.662Z"
+        "checkedAt": "2026-08-08T12:22:27.349Z"
       }
     },
     "229912": {
@@ -4612,10 +4852,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1582000041",
+        "placeUrl": "https://place.map.kakao.com/1582000041",
         "matchedName": "씨라이프부산아쿠아리움 전기차충전소",
         "matchedAddress": "부산 해운대구 해운대해변로 266",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:50.734Z"
+        "checkedAt": "2026-08-08T12:22:23.930Z"
       }
     },
     "403957": {
@@ -4645,10 +4887,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8383848",
+        "placeUrl": "https://place.map.kakao.com/8383848",
         "matchedName": "부산원조꼼장어 성일집",
         "matchedAddress": "부산 중구 대교로 103",
         "distanceM": 10,
-        "checkedAt": "2026-08-01T15:42:48.758Z"
+        "checkedAt": "2026-08-08T12:22:21.660Z"
       }
     },
     "686419": {
@@ -4678,10 +4922,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11047533",
+        "placeUrl": "https://place.map.kakao.com/11047533",
         "matchedName": "할매가야밀면",
         "matchedAddress": "부산 중구 광복로 56-14",
         "distanceM": 1,
-        "checkedAt": "2026-08-01T15:42:50.840Z"
+        "checkedAt": "2026-08-08T12:22:24.044Z"
       }
     },
     "767084": {
@@ -4713,10 +4959,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "262325006",
+        "placeUrl": "https://place.map.kakao.com/262325006",
         "matchedName": "사리원냉면 신세계백화점 센텀시티점",
         "matchedAddress": "부산 해운대구 센텀남대로 35",
         "distanceM": 2,
-        "checkedAt": "2026-08-01T15:42:46.869Z"
+        "checkedAt": "2026-08-08T12:22:19.574Z"
       }
     },
     "769761": {
@@ -4746,10 +4994,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11486664",
+        "placeUrl": "https://place.map.kakao.com/11486664",
         "matchedName": "다대포꿈의낙조분수",
         "matchedAddress": "부산 사하구 몰운대1길 14",
         "distanceM": 106,
-        "checkedAt": "2026-08-01T15:42:54.241Z"
+        "checkedAt": "2026-08-08T12:22:28.067Z"
       }
     },
     "850093": {
@@ -4779,10 +5029,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "12601510",
+        "placeUrl": "https://place.map.kakao.com/12601510",
         "matchedName": "급행장 본점",
         "matchedAddress": "부산 부산진구 서면문화로 4",
         "distanceM": 4,
-        "checkedAt": "2026-08-01T15:42:53.900Z"
+        "checkedAt": "2026-08-08T12:22:27.644Z"
       }
     },
     "850121": {
@@ -4812,10 +5064,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "22710785",
+        "placeUrl": "https://place.map.kakao.com/22710785",
         "matchedName": "꺼먹동네 칠암본점",
         "matchedAddress": "부산 기장군 일광읍 문오성길 509",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:56.157Z"
+        "checkedAt": "2026-08-08T12:22:30.276Z"
       }
     },
     "851073": {
@@ -4845,10 +5099,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "9415639",
+        "placeUrl": "https://place.map.kakao.com/9415639",
         "matchedName": "장성향",
         "matchedAddress": "부산 동구 대영로243번길 29",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:52.652Z"
+        "checkedAt": "2026-08-08T12:22:26.138Z"
       }
     },
     "851286": {
@@ -4878,10 +5134,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "9089301",
+        "placeUrl": "https://place.map.kakao.com/9089301",
         "matchedName": "상국이네",
         "matchedAddress": "부산 해운대구 구남로41번길 40-1",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:50.497Z"
+        "checkedAt": "2026-08-08T12:22:23.638Z"
       }
     },
     "851955": {
@@ -4911,10 +5169,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "9368205",
+        "placeUrl": "https://place.map.kakao.com/9368205",
         "matchedName": "일품한우",
         "matchedAddress": "부산 해운대구 해운대로570번길 49",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:59.634Z"
+        "checkedAt": "2026-08-08T12:22:34.241Z"
       }
     },
     "851989": {
@@ -4944,10 +5204,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11265687",
+        "placeUrl": "https://place.map.kakao.com/11265687",
         "matchedName": "할매복국",
         "matchedAddress": "부산 해운대구 달맞이길62번길 1",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:53.321Z"
+        "checkedAt": "2026-08-08T12:22:27.013Z"
       }
     },
     "985921": {
@@ -4977,10 +5239,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7881359",
+        "placeUrl": "https://place.map.kakao.com/7881359",
         "matchedName": "미술의거리",
         "matchedAddress": "부산 중구 중구로 31",
         "distanceM": 10,
-        "checkedAt": "2026-08-01T15:42:47.816Z"
+        "checkedAt": "2026-08-08T12:22:20.597Z"
       }
     },
     "987810": {
@@ -5010,10 +5274,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8257954",
+        "placeUrl": "https://place.map.kakao.com/8257954",
         "matchedName": "동백섬",
         "matchedAddress": "부산 해운대구 우동 708-3",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:49.228Z"
+        "checkedAt": "2026-08-08T12:22:22.194Z"
       }
     },
     "1013694": {
@@ -5045,10 +5311,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "13113524",
+        "placeUrl": "https://place.map.kakao.com/13113524",
         "matchedName": "만물의거리",
         "matchedAddress": "부산 중구 신창동4가",
         "distanceM": 186,
-        "checkedAt": "2026-08-01T15:42:54.579Z"
+        "checkedAt": "2026-08-08T12:22:28.413Z"
       }
     },
     "1013709": {
@@ -5080,10 +5348,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "18525213",
+        "placeUrl": "https://place.map.kakao.com/18525213",
         "matchedName": "아리랑거리",
         "matchedAddress": "부산 중구 신창동3가 24-1",
         "distanceM": 23,
-        "checkedAt": "2026-08-01T15:42:47.926Z"
+        "checkedAt": "2026-08-08T12:22:20.786Z"
       }
     },
     "1013721": {
@@ -5115,10 +5385,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "13113517",
+        "placeUrl": "https://place.map.kakao.com/13113517",
         "matchedName": "조명의거리",
         "matchedAddress": "부산 중구 창선동2가 26-17",
         "distanceM": 18,
-        "checkedAt": "2026-08-01T15:42:54.924Z"
+        "checkedAt": "2026-08-08T12:22:28.811Z"
       }
     },
     "1018702": {
@@ -5148,10 +5420,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "12711092",
+        "placeUrl": "https://place.map.kakao.com/12711092",
         "matchedName": "국제시장먹자골목",
         "matchedAddress": "부산 중구 창선동2가 40-5",
         "distanceM": 201,
-        "checkedAt": "2026-08-01T15:42:47.703Z"
+        "checkedAt": "2026-08-08T12:22:20.489Z"
       }
     },
     "1277679": {
@@ -5181,10 +5455,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "203978281",
+        "placeUrl": "https://place.map.kakao.com/203978281",
         "matchedName": "부산타워 기프트샵",
         "matchedAddress": "부산 중구 용두산길 37-30",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:57.456Z"
+        "checkedAt": "2026-08-08T12:22:31.725Z"
       }
     },
     "1805656": {
@@ -5214,10 +5490,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "826555454",
+        "placeUrl": "https://place.map.kakao.com/826555454",
         "matchedName": "일번지자갈치산곰장어",
         "matchedAddress": "부산 해운대구 구남로41번길 12",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:48.989Z"
+        "checkedAt": "2026-08-08T12:22:21.937Z"
       }
     },
     "1805853": {
@@ -5247,10 +5525,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7963998",
+        "placeUrl": "https://place.map.kakao.com/7963998",
         "matchedName": "수민이네",
         "matchedAddress": "부산 해운대구 청사포로58번길 118",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:58.384Z"
+        "checkedAt": "2026-08-08T12:22:32.832Z"
       }
     },
     "1846830": {
@@ -5280,7 +5560,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:54.119Z"
+        "checkedAt": "2026-08-08T12:22:27.878Z"
       }
     },
     "1855868": {
@@ -5310,10 +5590,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8404825",
+        "placeUrl": "https://place.map.kakao.com/8404825",
         "matchedName": "부전돼지국밥",
         "matchedAddress": "부산 사상구 사상로 214",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:57.580Z"
+        "checkedAt": "2026-08-08T12:22:31.880Z"
       }
     },
     "1878218": {
@@ -5345,10 +5627,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "539980307",
+        "placeUrl": "https://place.map.kakao.com/539980307",
         "matchedName": "부평깡통시장 어묵특화거리",
         "matchedAddress": "부산 중구 부평1길 48",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:47.114Z"
+        "checkedAt": "2026-08-08T12:22:19.851Z"
       }
     },
     "1942233": {
@@ -5378,10 +5662,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "9737271",
+        "placeUrl": "https://place.map.kakao.com/9737271",
         "matchedName": "대각사",
         "matchedAddress": "부산 중구 광복중앙로 19",
         "distanceM": 14,
-        "checkedAt": "2026-08-01T15:42:56.386Z"
+        "checkedAt": "2026-08-08T12:22:30.520Z"
       }
     },
     "1942299": {
@@ -5411,10 +5697,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "21546126",
+        "placeUrl": "https://place.map.kakao.com/21546126",
         "matchedName": "남선창고터",
         "matchedAddress": "부산 동구 초량동 393-1",
         "distanceM": 35,
-        "checkedAt": "2026-08-01T15:42:56.271Z"
+        "checkedAt": "2026-08-08T12:22:30.391Z"
       }
     },
     "1942316": {
@@ -5446,10 +5734,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "18525523",
+        "placeUrl": "https://place.map.kakao.com/18525523",
         "matchedName": "영도봉래시장",
         "matchedAddress": "부산 영도구 봉래동3가 196",
         "distanceM": 17,
-        "checkedAt": "2026-08-01T15:42:58.951Z"
+        "checkedAt": "2026-08-08T12:22:33.480Z"
       }
     },
     "1942348": {
@@ -5479,7 +5769,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:49.814Z"
+        "checkedAt": "2026-08-08T12:22:22.857Z"
       }
     },
     "1957694": {
@@ -5509,7 +5799,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:48.517Z"
+        "checkedAt": "2026-08-08T12:22:21.410Z"
       }
     },
     "1993017": {
@@ -5541,10 +5831,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1290069882",
+        "placeUrl": "https://place.map.kakao.com/1290069882",
         "matchedName": "코노미스시 롯데프리미엄아울렛동부산점",
         "matchedAddress": "부산 기장군 기장읍 기장해안로 147",
         "distanceM": 1,
-        "checkedAt": "2026-08-01T15:42:56.724Z"
+        "checkedAt": "2026-08-08T12:22:30.914Z"
       }
     },
     "2385686": {
@@ -5574,10 +5866,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "2058456587",
+        "placeUrl": "https://place.map.kakao.com/2058456587",
         "matchedName": "아홉산숲",
         "matchedAddress": "부산 기장군 철마면 미동길 37-1",
         "distanceM": 12,
-        "checkedAt": "2026-08-01T15:42:49.926Z"
+        "checkedAt": "2026-08-08T12:22:22.980Z"
       }
     },
     "2456837": {
@@ -5607,10 +5901,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "26324476",
+        "placeUrl": "https://place.map.kakao.com/26324476",
         "matchedName": "영화의전당 더블콘",
         "matchedAddress": "부산 해운대구 수영강변대로 120",
         "distanceM": 23,
-        "checkedAt": "2026-08-01T15:42:56.960Z"
+        "checkedAt": "2026-08-08T12:22:31.210Z"
       }
     },
     "2470024": {
@@ -5640,7 +5936,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:57.803Z"
+        "checkedAt": "2026-08-08T12:22:32.110Z"
       }
     },
     "2496023": {
@@ -5670,10 +5966,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1413103721",
+        "placeUrl": "https://place.map.kakao.com/1413103721",
         "matchedName": "푸디스트 키자니아점",
         "matchedAddress": "부산 해운대구 센텀4로 15",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:53.099Z"
+        "checkedAt": "2026-08-08T12:22:26.714Z"
       }
     },
     "2504464": {
@@ -5703,10 +6001,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1878852238",
+        "placeUrl": "https://place.map.kakao.com/1878852238",
         "matchedName": "송도해상케이블카",
         "matchedAddress": "부산 서구 송도해변로 171",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:50.046Z"
+        "checkedAt": "2026-08-08T12:22:23.106Z"
       }
     },
     "2532877": {
@@ -5738,10 +6038,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "20548602",
+        "placeUrl": "https://place.map.kakao.com/20548602",
         "matchedName": "신세계사이먼 부산프리미엄아울렛",
         "matchedAddress": "부산 기장군 장안읍 정관로 1133",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:50.621Z"
+        "checkedAt": "2026-08-08T12:22:23.757Z"
       }
     },
     "2554068": {
@@ -5771,10 +6073,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "773629847",
+        "placeUrl": "https://place.map.kakao.com/773629847",
         "matchedName": "부산영화체험박물관",
         "matchedAddress": "부산 중구 대청로126번길 12",
         "distanceM": 11,
-        "checkedAt": "2026-08-01T15:42:54.811Z"
+        "checkedAt": "2026-08-08T12:22:28.698Z"
       }
     },
     "2554111": {
@@ -5804,10 +6108,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "25807792",
+        "placeUrl": "https://place.map.kakao.com/25807792",
         "matchedName": "범어사 성보박물관",
         "matchedAddress": "부산 금정구 범어사로 296",
         "distanceM": 842,
-        "checkedAt": "2026-08-01T15:42:56.846Z"
+        "checkedAt": "2026-08-08T12:22:31.038Z"
       }
     },
     "2557807": {
@@ -5837,10 +6143,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "744667559",
+        "placeUrl": "https://place.map.kakao.com/744667559",
         "matchedName": "송도구름산책로 송도365",
         "matchedAddress": "부산 서구 암남동 129-4",
         "distanceM": 19,
-        "checkedAt": "2026-08-01T15:42:58.027Z"
+        "checkedAt": "2026-08-08T12:22:32.405Z"
       }
     },
     "2606221": {
@@ -5870,10 +6178,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "43535846",
+        "placeUrl": "https://place.map.kakao.com/43535846",
         "matchedName": "흰여울 해안터널",
         "matchedAddress": "부산 영도구 영선동4가 1210-38",
         "distanceM": 383,
-        "checkedAt": "2026-08-01T15:42:46.726Z"
+        "checkedAt": "2026-08-08T12:22:19.430Z"
       }
     },
     "2661475": {
@@ -5903,10 +6213,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "1914363234",
+        "placeUrl": "https://place.map.kakao.com/1914363234",
         "matchedName": "명장정수사업소 회동수원지 입구",
         "matchedAddress": "부산 금정구 수원지로 58",
         "distanceM": 976,
-        "checkedAt": "2026-08-01T15:43:00.561Z"
+        "checkedAt": "2026-08-08T12:22:35.303Z"
       }
     },
     "2668102": {
@@ -5936,10 +6248,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "14635779",
+        "placeUrl": "https://place.map.kakao.com/14635779",
         "matchedName": "수변최고돼지국밥 민락본점",
         "matchedAddress": "부산 수영구 광안해변로370번길 9-32",
         "distanceM": 13,
-        "checkedAt": "2026-08-01T15:42:52.210Z"
+        "checkedAt": "2026-08-08T12:22:25.626Z"
       }
     },
     "2726193": {
@@ -5969,10 +6283,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "20204736",
+        "placeUrl": "https://place.map.kakao.com/20204736",
         "matchedName": "이가네떡볶이 본점",
         "matchedAddress": "부산 중구 부평1길 48",
         "distanceM": 15,
-        "checkedAt": "2026-08-01T15:42:47.340Z"
+        "checkedAt": "2026-08-08T12:22:20.084Z"
       }
     },
     "2753006": {
@@ -6002,10 +6318,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1019513691",
+        "placeUrl": "https://place.map.kakao.com/1019513691",
         "matchedName": "어느멋진날",
         "matchedAddress": "부산 기장군 일광읍 기장해안로 1286",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:52.436Z"
+        "checkedAt": "2026-08-08T12:22:25.858Z"
       }
     },
     "2760773": {
@@ -6035,10 +6353,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8616462",
+        "placeUrl": "https://place.map.kakao.com/8616462",
         "matchedName": "해운대기와집대구탕",
         "matchedAddress": "부산 해운대구 달맞이길50번길 4",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:53.445Z"
+        "checkedAt": "2026-08-08T12:22:27.130Z"
       }
     },
     "2763856": {
@@ -6068,10 +6388,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1567103628",
+        "placeUrl": "https://place.map.kakao.com/1567103628",
         "matchedName": "부산광역시 이동청소년쉼터 서면 놀이마루 후문",
         "matchedAddress": "부산 부산진구 전포대로209번길 26",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:51.401Z"
+        "checkedAt": "2026-08-08T12:22:24.687Z"
       }
     },
     "2773623": {
@@ -6101,10 +6423,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1494761951",
+        "placeUrl": "https://place.map.kakao.com/1494761951",
         "matchedName": "야스마루 쇼쿠도",
         "matchedAddress": "부산 부산진구 중앙대로756번길 24",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:58.714Z"
+        "checkedAt": "2026-08-08T12:22:33.181Z"
       }
     },
     "2775556": {
@@ -6134,10 +6458,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11165596",
+        "placeUrl": "https://place.map.kakao.com/11165596",
         "matchedName": "칠암일번지횟집",
         "matchedAddress": "부산 기장군 일광읍 문오성길 547",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:43:00.227Z"
+        "checkedAt": "2026-08-08T12:22:34.933Z"
       }
     },
     "2776391": {
@@ -6167,10 +6493,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "11062140",
+        "placeUrl": "https://place.map.kakao.com/11062140",
         "matchedName": "미청식당",
         "matchedAddress": "부산 기장군 일광읍 기장해안로 1303",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:51.636Z"
+        "checkedAt": "2026-08-08T12:22:24.960Z"
       }
     },
     "2776396": {
@@ -6200,10 +6528,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10419530",
+        "placeUrl": "https://place.map.kakao.com/10419530",
         "matchedName": "무진장횟집",
         "matchedAddress": "부산 기장군 기장읍 연화1길 137",
         "distanceM": 19,
-        "checkedAt": "2026-08-01T15:42:51.521Z"
+        "checkedAt": "2026-08-08T12:22:24.799Z"
       }
     },
     "2778487": {
@@ -6233,10 +6563,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "8708426",
+        "placeUrl": "https://place.map.kakao.com/8708426",
         "matchedName": "금수복국 해운대본점",
         "matchedAddress": "부산 해운대구 중동1로43번길 23",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:50.272Z"
+        "checkedAt": "2026-08-08T12:22:23.403Z"
       }
     },
     "2782626": {
@@ -6266,10 +6598,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "2144681902",
+        "placeUrl": "https://place.map.kakao.com/2144681902",
         "matchedName": "삼익비치 수변공원",
         "matchedAddress": "부산 수영구 남천동 148-103",
         "distanceM": 46,
-        "checkedAt": "2026-08-01T15:42:51.981Z"
+        "checkedAt": "2026-08-08T12:22:25.336Z"
       }
     },
     "2782628": {
@@ -6299,10 +6633,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1371484625",
+        "placeUrl": "https://place.map.kakao.com/1371484625",
         "matchedName": "그린노마드",
         "matchedAddress": "부산 수영구 좌수영로 161-10",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:53.788Z"
+        "checkedAt": "2026-08-08T12:22:27.530Z"
       }
     },
     "2782747": {
@@ -6334,10 +6670,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "827856171",
+        "placeUrl": "https://place.map.kakao.com/827856171",
         "matchedName": "분홍이네",
         "matchedAddress": "부산 수영구 광안로45번길 2",
         "distanceM": 4,
-        "checkedAt": "2026-08-01T15:42:50.391Z"
+        "checkedAt": "2026-08-08T12:22:23.513Z"
       }
     },
     "2782750": {
@@ -6369,10 +6707,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "136545598",
+        "placeUrl": "https://place.map.kakao.com/136545598",
         "matchedName": "러브이즈기빙 하트베어 3호점",
         "matchedAddress": "부산 수영구 광안로 51",
         "distanceM": 109,
-        "checkedAt": "2026-08-01T15:42:56.604Z"
+        "checkedAt": "2026-08-08T12:22:30.791Z"
       }
     },
     "2783646": {
@@ -6402,7 +6742,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:56.493Z"
+        "checkedAt": "2026-08-08T12:22:30.681Z"
       }
     },
     "2784330": {
@@ -6432,10 +6772,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "27456652",
+        "placeUrl": "https://place.map.kakao.com/27456652",
         "matchedName": "미포항",
         "matchedAddress": "부산 해운대구 중동 957-22",
         "distanceM": 22,
-        "checkedAt": "2026-08-01T15:42:50.953Z"
+        "checkedAt": "2026-08-08T12:22:24.160Z"
       }
     },
     "2784363": {
@@ -6465,10 +6807,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7909355",
+        "placeUrl": "https://place.map.kakao.com/7909355",
         "matchedName": "부산근현대역사관 별관",
         "matchedAddress": "부산 중구 대청로 104",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:57.074Z"
+        "checkedAt": "2026-08-08T12:22:31.321Z"
       }
     },
     "2785269": {
@@ -6498,10 +6842,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "2093385391",
+        "placeUrl": "https://place.map.kakao.com/2093385391",
         "matchedName": "수월경화 주차장",
         "matchedAddress": "부산 해운대구 송정중앙로6번길 188",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:58.492Z"
+        "checkedAt": "2026-08-08T12:22:32.944Z"
       }
     },
     "2785272": {
@@ -6531,10 +6877,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "686393837",
+        "placeUrl": "https://place.map.kakao.com/686393837",
         "matchedName": "고향연화",
         "matchedAddress": "부산 기장군 기장읍 연화길 33-8",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:51.175Z"
+        "checkedAt": "2026-08-08T12:22:24.440Z"
       }
     },
     "2785956": {
@@ -6564,10 +6912,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "27365831",
+        "placeUrl": "https://place.map.kakao.com/27365831",
         "matchedName": "초량밀면",
         "matchedAddress": "부산 동구 중앙대로 225",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:49.108Z"
+        "checkedAt": "2026-08-08T12:22:22.076Z"
       }
     },
     "2785965": {
@@ -6597,10 +6947,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "21540783",
+        "placeUrl": "https://place.map.kakao.com/21540783",
         "matchedName": "송정집",
         "matchedAddress": "부산 해운대구 송정광어골로 59",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:58.276Z"
+        "checkedAt": "2026-08-08T12:22:32.658Z"
       }
     },
     "2786766": {
@@ -6630,10 +6982,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "977177107",
+        "placeUrl": "https://place.map.kakao.com/977177107",
         "matchedName": "해목",
         "matchedAddress": "부산 해운대구 구남로24번길 8",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:43:00.447Z"
+        "checkedAt": "2026-08-08T12:22:35.184Z"
       }
     },
     "2786779": {
@@ -6663,10 +7017,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "15555120",
+        "placeUrl": "https://place.map.kakao.com/15555120",
         "matchedName": "해운대가야밀면",
         "matchedAddress": "부산 해운대구 좌동순환로 27",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:55.153Z"
+        "checkedAt": "2026-08-08T12:22:29.104Z"
       }
     },
     "2789488": {
@@ -6696,10 +7052,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "188403018",
+        "placeUrl": "https://place.map.kakao.com/188403018",
         "matchedName": "해운대블루라인파크 미포정거장",
         "matchedAddress": "부산 해운대구 달맞이길62번길 13",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:46.988Z"
+        "checkedAt": "2026-08-08T12:22:19.716Z"
       }
     },
     "2793181": {
@@ -6729,10 +7087,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "7958381",
+        "placeUrl": "https://place.map.kakao.com/7958381",
         "matchedName": "속씨원한 대구탕 미포 본점",
         "matchedAddress": "부산 해운대구 달맞이길62번길 28",
         "distanceM": 23,
-        "checkedAt": "2026-08-01T15:42:57.916Z"
+        "checkedAt": "2026-08-08T12:22:32.292Z"
       }
     },
     "2815627": {
@@ -6762,10 +7122,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1366598995",
+        "placeUrl": "https://place.map.kakao.com/1366598995",
         "matchedName": "에맥앤볼리오스 롯데월드어드벤처부산점",
         "matchedAddress": "부산 기장군 기장읍 동부산관광로 42",
         "distanceM": 17,
-        "checkedAt": "2026-08-01T15:42:49.463Z"
+        "checkedAt": "2026-08-08T12:22:22.470Z"
       }
     },
     "2822343": {
@@ -6795,7 +7157,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:55.260Z"
+        "checkedAt": "2026-08-08T12:22:29.225Z"
       }
     },
     "2822840": {
@@ -6825,10 +7187,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1504874222",
+        "placeUrl": "https://place.map.kakao.com/1504874222",
         "matchedName": "칠암사계",
         "matchedAddress": "부산 기장군 일광읍 칠암1길 7-10",
         "distanceM": 20,
-        "checkedAt": "2026-08-01T15:43:00.105Z"
+        "checkedAt": "2026-08-08T12:22:34.783Z"
       }
     },
     "2822910": {
@@ -6861,7 +7225,7 @@
         "matchedName": "창비이즈팰리스",
         "matchedAddress": "부산 부산진구 연수로11번길 21",
         "distanceM": 7164,
-        "checkedAt": "2026-08-01T15:42:52.872Z"
+        "checkedAt": "2026-08-08T12:22:26.482Z"
       }
     },
     "2832636": {
@@ -6891,10 +7255,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1679552434",
+        "placeUrl": "https://place.map.kakao.com/1679552434",
         "matchedName": "코랄라니",
         "matchedAddress": "부산 기장군 기장읍 기장해안로 32",
         "distanceM": 23,
-        "checkedAt": "2026-08-01T15:42:52.987Z"
+        "checkedAt": "2026-08-08T12:22:26.603Z"
       }
     },
     "2832671": {
@@ -6924,10 +7290,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "858203768",
+        "placeUrl": "https://place.map.kakao.com/858203768",
         "matchedName": "신발원 외전",
         "matchedAddress": "부산 동구 대영로243번길 64",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:49.707Z"
+        "checkedAt": "2026-08-08T12:22:22.711Z"
       }
     },
     "2834026": {
@@ -6957,10 +7325,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1473548032",
+        "placeUrl": "https://place.map.kakao.com/1473548032",
         "matchedName": "갤러리이알디 부산",
         "matchedAddress": "부산 해운대구 해운대해변로 302",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:49.342Z"
+        "checkedAt": "2026-08-08T12:22:22.350Z"
       }
     },
     "2836412": {
@@ -6990,10 +7360,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1914593458",
+        "placeUrl": "https://place.map.kakao.com/1914593458",
         "matchedName": "에테르",
         "matchedAddress": "부산 영도구 절영로 234",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:58.826Z"
+        "checkedAt": "2026-08-08T12:22:33.352Z"
       }
     },
     "2836450": {
@@ -7023,10 +7395,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10070964",
+        "placeUrl": "https://place.map.kakao.com/10070964",
         "matchedName": "이재모피자 본점",
         "matchedAddress": "부산 중구 광복중앙로 31",
         "distanceM": 17,
-        "checkedAt": "2026-08-01T15:42:59.402Z"
+        "checkedAt": "2026-08-08T12:22:33.978Z"
       }
     },
     "2841442": {
@@ -7056,10 +7430,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "704518356",
+        "placeUrl": "https://place.map.kakao.com/704518356",
         "matchedName": "톤쇼우 부산대본점",
         "matchedAddress": "부산 금정구 금강로 247-10",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:43:00.339Z"
+        "checkedAt": "2026-08-08T12:22:35.060Z"
       }
     },
     "2845123": {
@@ -7089,7 +7465,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:51.858Z"
+        "checkedAt": "2026-08-08T12:22:25.198Z"
       }
     },
     "2848939": {
@@ -7119,7 +7495,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:53.208Z"
+        "checkedAt": "2026-08-08T12:22:26.836Z"
       }
     },
     "2848949": {
@@ -7149,10 +7525,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "566496506",
+        "placeUrl": "https://place.map.kakao.com/566496506",
         "matchedName": "칠암만장 본점",
         "matchedAddress": "부산 기장군 일광읍 일광로 648",
         "distanceM": 13,
-        "checkedAt": "2026-08-01T15:42:59.978Z"
+        "checkedAt": "2026-08-08T12:22:34.658Z"
       }
     },
     "2848952": {
@@ -7182,10 +7560,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "483528978",
+        "placeUrl": "https://place.map.kakao.com/483528978",
         "matchedName": "일광정 소갈비찜",
         "matchedAddress": "부산 기장군 일광읍 일광로 645",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:59.516Z"
+        "checkedAt": "2026-08-08T12:22:34.117Z"
       }
     },
     "2858936": {
@@ -7215,10 +7595,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "16839549",
+        "placeUrl": "https://place.map.kakao.com/16839549",
         "matchedName": "해운대하얀오징어집",
         "matchedAddress": "부산 해운대구 달맞이길 50",
         "distanceM": 27,
-        "checkedAt": "2026-08-01T15:42:53.553Z"
+        "checkedAt": "2026-08-08T12:22:27.237Z"
       }
     },
     "2858974": {
@@ -7248,10 +7630,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1821209334",
+        "placeUrl": "https://place.map.kakao.com/1821209334",
         "matchedName": "타이가텐푸라",
         "matchedAddress": "부산 해운대구 우동1로38번가길 15",
         "distanceM": 4,
-        "checkedAt": "2026-08-01T15:42:51.062Z"
+        "checkedAt": "2026-08-08T12:22:24.269Z"
       }
     },
     "2859101": {
@@ -7281,10 +7665,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "654919659",
+        "placeUrl": "https://place.map.kakao.com/654919659",
         "matchedName": "나가하마만게츠",
         "matchedAddress": "부산 해운대구 우동1로 57",
         "distanceM": 18,
-        "checkedAt": "2026-08-01T15:42:54.015Z"
+        "checkedAt": "2026-08-08T12:22:27.768Z"
       }
     },
     "2860782": {
@@ -7314,10 +7700,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "15204732",
+        "placeUrl": "https://place.map.kakao.com/15204732",
         "matchedName": "오반장",
         "matchedAddress": "부산 해운대구 구남로24번길 20",
         "distanceM": 12,
-        "checkedAt": "2026-08-01T15:42:59.177Z"
+        "checkedAt": "2026-08-08T12:22:33.711Z"
       }
     },
     "2860833": {
@@ -7347,10 +7735,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1316605327",
+        "placeUrl": "https://place.map.kakao.com/1316605327",
         "matchedName": "송정물총칼국수",
         "matchedAddress": "부산 해운대구 송정중앙로6번길 184",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:58.148Z"
+        "checkedAt": "2026-08-08T12:22:32.523Z"
       }
     },
     "2865236": {
@@ -7380,10 +7770,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "930563805",
+        "placeUrl": "https://place.map.kakao.com/930563805",
         "matchedName": "희와제과",
         "matchedAddress": "부산 부산진구 전포대로246번길 6",
         "distanceM": 22,
-        "checkedAt": "2026-08-01T15:42:55.481Z"
+        "checkedAt": "2026-08-08T12:22:29.453Z"
       }
     },
     "2868655": {
@@ -7413,10 +7805,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "31366256",
+        "placeUrl": "https://place.map.kakao.com/31366256",
         "matchedName": "바로해장",
         "matchedAddress": "부산 수영구 광남로94번길 2",
         "distanceM": 16,
-        "checkedAt": "2026-08-01T15:42:51.747Z"
+        "checkedAt": "2026-08-08T12:22:25.082Z"
       }
     },
     "2869405": {
@@ -7446,10 +7840,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "815839272",
+        "placeUrl": "https://place.map.kakao.com/815839272",
         "matchedName": "영동밀면&돼지국밥",
         "matchedAddress": "부산 동구 중앙대로209번길 12",
         "distanceM": 9,
-        "checkedAt": "2026-08-01T15:42:52.549Z"
+        "checkedAt": "2026-08-08T12:22:25.999Z"
       }
     },
     "2870354": {
@@ -7479,10 +7875,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "21432916",
+        "placeUrl": "https://place.map.kakao.com/21432916",
         "matchedName": "스완양분식 본점",
         "matchedAddress": "부산 동구 중앙대로236번길 7-5",
         "distanceM": 3,
-        "checkedAt": "2026-08-01T15:42:52.325Z"
+        "checkedAt": "2026-08-08T12:22:25.738Z"
       }
     },
     "2870703": {
@@ -7512,10 +7910,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "210346769",
+        "placeUrl": "https://place.map.kakao.com/210346769",
         "matchedName": "초량온당",
         "matchedAddress": "부산 동구 초량중로 135",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:59.856Z"
+        "checkedAt": "2026-08-08T12:22:34.532Z"
       }
     },
     "2872474": {
@@ -7545,10 +7945,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "weak",
+        "placeId": "1255305672",
+        "placeUrl": "https://place.map.kakao.com/1255305672",
         "matchedName": "오직전복죽 기장끝집",
         "matchedAddress": "부산 기장군 기장읍 기장해안로 895",
         "distanceM": 17,
-        "checkedAt": "2026-08-01T15:42:56.045Z"
+        "checkedAt": "2026-08-08T12:22:30.150Z"
       }
     },
     "2873498": {
@@ -7578,10 +7980,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1092116394",
+        "placeUrl": "https://place.map.kakao.com/1092116394",
         "matchedName": "구로마쯔",
         "matchedAddress": "부산 해운대구 송정광어골로 41",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:55.820Z"
+        "checkedAt": "2026-08-08T12:22:29.862Z"
       }
     },
     "2891789": {
@@ -7611,10 +8015,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "26312437",
+        "placeUrl": "https://place.map.kakao.com/26312437",
         "matchedName": "라꽁띠",
         "matchedAddress": "부산 해운대구 청사포로 85",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:54.352Z"
+        "checkedAt": "2026-08-08T12:22:28.177Z"
       }
     },
     "2891814": {
@@ -7644,10 +8050,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1284187619",
+        "placeUrl": "https://place.map.kakao.com/1284187619",
         "matchedName": "류센소 본점",
         "matchedAddress": "부산 해운대구 구남로8번길 62",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:54.465Z"
+        "checkedAt": "2026-08-08T12:22:28.288Z"
       }
     },
     "2905141": {
@@ -7677,10 +8085,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "27535411",
+        "placeUrl": "https://place.map.kakao.com/27535411",
         "matchedName": "해운대할매집",
         "matchedAddress": "부산 해운대구 중동2로10번길 7",
         "distanceM": 19,
-        "checkedAt": "2026-08-01T15:42:55.035Z"
+        "checkedAt": "2026-08-08T12:22:28.934Z"
       }
     },
     "2952936": {
@@ -7710,10 +8120,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1403546303",
+        "placeUrl": "https://place.map.kakao.com/1403546303",
         "matchedName": "제노아",
         "matchedAddress": "부산 중구 중구로29번길 17",
         "distanceM": 7,
-        "checkedAt": "2026-08-01T15:42:48.039Z"
+        "checkedAt": "2026-08-08T12:22:20.894Z"
       }
     },
     "2991028": {
@@ -7743,10 +8155,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1086385576",
+        "placeUrl": "https://place.map.kakao.com/1086385576",
         "matchedName": "광안리해양레포츠센터",
         "matchedAddress": "부산 수영구 광안해변로54번길 222",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:51.287Z"
+        "checkedAt": "2026-08-08T12:22:24.566Z"
       }
     },
     "2994179": {
@@ -7776,10 +8190,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1187263066",
+        "placeUrl": "https://place.map.kakao.com/1187263066",
         "matchedName": "전포공구길",
         "matchedAddress": "부산 부산진구 전포동 868",
         "distanceM": 41,
-        "checkedAt": "2026-08-01T15:42:59.751Z"
+        "checkedAt": "2026-08-08T12:22:34.410Z"
       }
     },
     "3027700": {
@@ -7812,7 +8228,7 @@
         "matchedName": "송정역 (폐역)",
         "matchedAddress": "부산 해운대구 송정중앙로8번길 60",
         "distanceM": 3574,
-        "checkedAt": "2026-08-01T15:42:47.461Z"
+        "checkedAt": "2026-08-08T12:22:20.243Z"
       }
     },
     "3064821": {
@@ -7842,10 +8258,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1095363305",
+        "placeUrl": "https://place.map.kakao.com/1095363305",
         "matchedName": "자갈치크루즈",
         "matchedAddress": "부산 중구 자갈치해안로 60",
         "distanceM": 6,
-        "checkedAt": "2026-08-01T15:42:48.639Z"
+        "checkedAt": "2026-08-08T12:22:21.540Z"
       }
     },
     "3080300": {
@@ -7877,10 +8295,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "10998607",
+        "placeUrl": "https://place.map.kakao.com/10998607",
         "matchedName": "부산 전자종합시장 번영회",
         "matchedAddress": "부산 부산진구 부전로 196",
         "distanceM": 15,
-        "checkedAt": "2026-08-01T15:42:57.299Z"
+        "checkedAt": "2026-08-08T12:22:31.556Z"
       }
     },
     "3081825": {
@@ -7910,7 +8330,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:58.603Z"
+        "checkedAt": "2026-08-08T12:22:33.051Z"
       }
     },
     "3083767": {
@@ -7940,10 +8360,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "999813771",
+        "placeUrl": "https://place.map.kakao.com/999813771",
         "matchedName": "부산근현대역사관 본관",
         "matchedAddress": "부산 중구 대청로 112",
         "distanceM": 22,
-        "checkedAt": "2026-08-01T15:42:57.188Z"
+        "checkedAt": "2026-08-08T12:22:31.435Z"
       }
     },
     "3336600": {
@@ -7975,10 +8397,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1557551696",
+        "placeUrl": "https://place.map.kakao.com/1557551696",
         "matchedName": "고래서이뻐",
         "matchedAddress": "부산 해운대구 우동1로38번길 15-1",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:55.591Z"
+        "checkedAt": "2026-08-08T12:22:29.628Z"
       }
     },
     "3421909": {
@@ -8008,7 +8432,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:55.926Z"
+        "checkedAt": "2026-08-08T12:22:29.978Z"
       }
     },
     "3442923": {
@@ -8038,10 +8462,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "272261098",
+        "placeUrl": "https://place.map.kakao.com/272261098",
         "matchedName": "솥이랑",
         "matchedAddress": "부산 부산진구 중앙대로 672",
         "distanceM": 5,
-        "checkedAt": "2026-08-01T15:42:52.101Z"
+        "checkedAt": "2026-08-08T12:22:25.500Z"
       }
     },
     "3443614": {
@@ -8071,7 +8497,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:59.290Z"
+        "checkedAt": "2026-08-08T12:22:33.864Z"
       }
     },
     "3454074": {
@@ -8101,7 +8527,7 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "not_found",
-        "checkedAt": "2026-08-01T15:42:59.061Z"
+        "checkedAt": "2026-08-08T12:22:33.599Z"
       }
     },
     "3511011": {
@@ -8133,10 +8559,12 @@
       "mapVerification": {
         "provider": "kakao",
         "status": "verified",
+        "placeId": "1501845576",
+        "placeUrl": "https://place.map.kakao.com/1501845576",
         "matchedName": "주식회사 아래모래",
         "matchedAddress": "부산 사하구 감내2로 122",
         "distanceM": 73,
-        "checkedAt": "2026-08-01T15:42:52.763Z"
+        "checkedAt": "2026-08-08T12:22:26.290Z"
       }
     }
   }

@@ -54,6 +54,21 @@ test('카카오 지도 검증 실패 장소는 not_found로 분리된다', () =>
   assert.ok(counts.weak > 0, 'ambiguous but visible places should be kept as weak');
 });
 
+test('추천 가능한 카카오 검증 장소는 정확한 상세 페이지 URL을 가진다', () => {
+  const recommendable = [...matched, ...unmatched]
+    .filter((place) => ['verified', 'weak'].includes(place.mapVerification?.status));
+
+  assert.ok(recommendable.length > 500, 'recommendable places should remain available');
+  for (const place of recommendable) {
+    assert.ok(place.mapVerification.placeId, `${place.title}: missing Kakao place id`);
+    assert.match(
+      place.mapVerification.placeUrl,
+      /^https?:\/\/place\.map\.kakao\.com\/\d+$/,
+      `${place.title}: missing Kakao place detail URL`,
+    );
+  }
+});
+
 test('명백한 근접 오매칭은 bad_match로 분리된다', () => {
   const examples = [
     ['해운대온천센터', '해운대 밀면'],

@@ -5,6 +5,8 @@ import { DayType, HourBucket, MapVerificationStatus, MatchScope, OpeningHoursRel
 type MapVerification = {
   provider: 'kakao';
   status: MapVerificationStatus;
+  placeId?: string;
+  placeUrl?: string;
   matchedName?: string;
   distanceM?: number;
 };
@@ -66,6 +68,8 @@ export function resolveBusanDwell(
   openingHoursSourceName: string;
   openingHoursReliability: OpeningHoursReliability;
   mapVerificationStatus: MapVerificationStatus;
+  kakaoPlaceId?: string;
+  kakaoPlaceUrl?: string;
   mapVerificationName?: string;
   mapVerificationDistanceM?: number;
 } | null {
@@ -94,6 +98,8 @@ export function resolveBusanDwell(
     openingHoursSourceName: unmatched.openingHoursSourceName ?? unmatched.title,
     openingHoursReliability: unmatched.openingHoursReliability ?? openingReliabilityFor(unmatched),
     mapVerificationStatus: unmatched.mapVerification?.status ?? 'unverified',
+    kakaoPlaceId: unmatched.mapVerification?.placeId,
+    kakaoPlaceUrl: unmatched.mapVerification?.placeUrl,
     mapVerificationName: unmatched.mapVerification?.matchedName,
     mapVerificationDistanceM: unmatched.mapVerification?.distanceM,
   };
@@ -145,6 +151,8 @@ function effectiveBusanMatchedDwell(
   openingHoursSourceName: string;
   openingHoursReliability: OpeningHoursReliability;
   mapVerificationStatus: MapVerificationStatus;
+  kakaoPlaceId?: string;
+  kakaoPlaceUrl?: string;
   mapVerificationName?: string;
   mapVerificationDistanceM?: number;
 } {
@@ -166,6 +174,8 @@ function effectiveBusanMatchedDwell(
     openingHoursSourceName: matched.openingHoursSourceName ?? matched.title,
     openingHoursReliability: matched.openingHoursReliability ?? openingReliabilityFor(matched),
     mapVerificationStatus: matched.mapVerification?.status ?? 'unverified',
+    kakaoPlaceId: matched.mapVerification?.placeId,
+    kakaoPlaceUrl: matched.mapVerification?.placeUrl,
     mapVerificationName: matched.mapVerification?.matchedName,
     mapVerificationDistanceM: matched.mapVerification?.distanceM,
   };
