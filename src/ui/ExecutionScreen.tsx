@@ -186,7 +186,6 @@ export function ExecutionScreen({ route, navigation }: Props) {
           <Text style={s.bannerTxt}>{ctx.appointment ? `${fmtHM(endMin)} ${ctx.appointment.label} 약속` : `${fmtHM(endMin)} 복귀 목표`}</Text>
           <Text style={s.bannerBig}>여유 {course.bufferLeftMin}분</Text>
         </View>
-
         <View style={s.nowBox}>
           {isDone ? (
             <>

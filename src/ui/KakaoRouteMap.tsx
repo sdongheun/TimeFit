@@ -16,6 +16,7 @@ export type RouteMapMarker = {
   lon: number;
   label: string;
   kind?: 'origin' | 'spot' | 'appointment';
+  active?: boolean;
 };
 
 export type RouteMapSegment = {
@@ -53,10 +54,13 @@ type Props = {
   line: LatLon[];
   markers: RouteMapMarker[];
   segments?: RouteMapSegment[];
+  showMarkerLabels?: boolean;
+  boundsPadding?: { top: number; right: number; bottom: number; left: number };
+  onMarkerTap?: (index: number) => void;
   style?: StyleProp<ViewStyle>;
 };
 
-export function KakaoRouteMap({ points, line, markers, segments, style }: Props) {
+export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, boundsPadding, onMarkerTap, style }: Props) {
   const ref = useRef<WebView>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
@@ -72,9 +76,15 @@ export function KakaoRouteMap({ points, line, markers, segments, style }: Props)
 
   useEffect(() => {
     if (!ready) return;
-    const route = JSON.stringify({ markers, segments: routeSegments });
+    const route = JSON.stringify({
+      markers,
+      segments: routeSegments,
+      showMarkerLabels,
+      boundsPadding,
+      markerTapEnabled: Boolean(onMarkerTap),
+    });
     ref.current?.injectJavaScript(`setRoute(${route});true;`);
-  }, [ready, markers, routeSegments]);
+  }, [ready, markers, routeSegments, showMarkerLabels, boundsPadding, onMarkerTap]);
 
   if (!KAKAO_JS_KEY) {
     return (
@@ -105,6 +115,8 @@ export function KakaoRouteMap({ points, line, markers, segments, style }: Props)
               setError('');
             } else if (m.type === 'error') {
               setError(m.message || 'Kakao 지도 로드 실패');
+            } else if (m.type === 'marker' && typeof m.index === 'number') {
+              onMarkerTap?.(m.index);
             }
           } catch {
             // WebView 지도 이벤트는 표시 상태만 사용한다.
@@ -132,10 +144,13 @@ function buildHtml(center: LatLon): string {
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <style>
 html,body,#map{margin:0;padding:0;width:100%;height:100%;background:#111820}
+.marker{display:flex;flex-direction:column;align-items:center;border:0;background:transparent;padding:0;margin:0}
 .label{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:14px;border:2px solid #fff;color:#081019;font:900 12px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;box-shadow:0 3px 10px rgba(0,0,0,.25)}
-.origin{background:${C.accent}}
-.spot{background:#f59e0b}
-.appointment{background:${C.green}}
+.origin .label{background:${C.accent}}
+.spot .label{background:#f59e0b}
+.appointment .label{background:${C.green}}
+.marker.active .label{transform:scale(1.22);box-shadow:0 0 0 4px rgba(76,194,255,.28),0 3px 10px rgba(0,0,0,.25)}
+.marker-name{max-width:96px;margin-top:4px;padding:2px 5px;border-radius:5px;background:rgba(15,20,25,.86);color:#fff;font:700 10px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .arrow{width:26px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(255,255,255,.92);box-shadow:0 2px 7px rgba(0,0,0,.22)}
 .arrow svg{width:18px;height:18px;overflow:visible}
 .arrow path.body{fill:none;stroke:${C.accent};stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
@@ -162,6 +177,11 @@ function markerText(m, i){
   if (m.kind === 'origin') return '출';
   if (m.kind === 'appointment') return '약';
   return String(i);
+}
+function escapeHtml(value){
+  return String(value || '').replace(/[&<>'"]/g, function(char){
+    return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' })[char];
+  });
 }
 function clearRoute(){
   overlays.forEach(function(o){ o.setMap(null); });
@@ -258,18 +278,24 @@ function setRoute(data){
     var point = ll(m);
     bounds.extend(point);
     var kind = m.kind || 'spot';
-    var content = '<div class="label ' + kind + '">' + markerText(m, i) + '</div>';
+    var name = data.showMarkerLabels && kind === 'spot' ? '<span class="marker-name">' + escapeHtml(m.label) + '</span>' : '';
+    var active = m.active ? ' active' : '';
+    var click = data.markerTapEnabled ? ' onclick="post({type:&quot;marker&quot;,index:' + i + '})"' : '';
+    var content = '<button class="marker ' + kind + active + '"' + click + '><span class="label">' + markerText(m, i) + '</span>' + name + '</button>';
     var overlay = new kakao.maps.CustomOverlay({
       map: map,
       position: point,
       content: content,
       yAnchor: 0.5,
       xAnchor: 0.5,
-      clickable: false
+      clickable: !!data.markerTapEnabled
     });
     overlays.push(overlay);
   });
-  if (!bounds.isEmpty()) map.setBounds(bounds, 40, 40, 40, 40);
+  if (!bounds.isEmpty()) {
+    var pad = data.boundsPadding || { top:40, right:40, bottom:40, left:40 };
+    map.setBounds(bounds, pad.top, pad.right, pad.bottom, pad.left);
+  }
 }
 function initMap(){
   if (!window.kakao || !window.kakao.maps) {
