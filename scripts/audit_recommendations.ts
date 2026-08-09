@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { Course, DayType, HourBucket, LatLon, planTimeFit } from '../src/engine';
+import { Course, DayType, HourBucket, LatLon, Mode, planTimeFit } from '../src/engine';
 
 type Place = LatLon & { label: string };
 type Scenario = {
@@ -36,14 +36,38 @@ type CourseAudit = {
 
 type ScenarioAudit = {
   scenario: Scenario;
+  tourApiCount: number;
   candidateCount: number;
+  eligibleCount: number;
+  openingCheckCount: number;
   gatedCount: number;
   tmapCalls: number;
   courses: CourseAudit[];
+  candidateDiagnosis: CandidateDiagnosis;
   error?: string;
 };
 
-const OUT = path.resolve('docs/reports/recommendation_audit.html');
+type CandidateHealth = 'SUFFICIENT' | 'LIMITED' | 'SCARCE';
+type CandidateDiagnosis = {
+  health: CandidateHealth;
+  uniqueCount: number;
+  visibleCount: number;
+  categoryCounts: Record<string, number>;
+  strategyCounts: Record<string, number>;
+  directMatchCount: number;
+  categoryFallbackCount: number;
+  directHoursCount: number;
+  weakMapCount: number;
+  bottleneck: 'none' | 'time_direction' | 'opening_hours' | 'course_build';
+  note: string;
+  top: Array<{ title: string; category: string; strategy: string }>;
+};
+
+const modeInput = process.env.AUDIT_MODE ?? 'walk';
+const auditMode: Mode = modeInput === 'car' || modeInput === 'transit' ? modeInput : 'walk';
+const modeKorean: Record<Mode, string> = { walk: '도보', car: '차량', transit: '대중교통' };
+const coverageOnly = process.env.AUDIT_COVERAGE_ONLY === '1';
+const OUT = path.resolve(process.env.AUDIT_OUT ?? `docs/reports/recommendation_audit_${auditMode}.html`);
 const DEFAULT_MIN_STAY_MIN = 30;
 
 const RULES = [
@@ -236,6 +260,73 @@ function minStayForAudit(course: Course, remainingMin: number): number {
   return DEFAULT_MIN_STAY_MIN;
 }
 
+function diagnoseCandidates(
+  courses: Course[],
+  stages: { tourApi: number; catalog: number; eligible: number; openingChecked: number; gated: number },
+): CandidateDiagnosis {
+  const unique = new Map<string, { title: string; category: string; strategy: string; confidence: string; opening: string; map: string }>();
+  for (const course of courses) {
+    for (const spot of course.spots) {
+      if (unique.has(spot.contentId)) continue;
+      unique.set(spot.contentId, {
+        title: spot.title,
+        category: spot.category,
+        strategy: spot.strategy,
+        confidence: spot.confidence,
+        opening: spot.openingHoursReliability ?? 'unknown',
+        map: spot.mapVerificationStatus ?? 'unverified',
+      });
+    }
+  }
+  const visible = [...unique.values()].slice(0, 10);
+  const countBy = <T extends string>(values: T[]) => values.reduce((out, value) => {
+    out[value] = (out[value] ?? 0) + 1;
+    return out;
+  }, {} as Record<string, number>);
+  const categoryCounts = countBy(visible.map((spot) => spot.category));
+  const strategyCounts = countBy(visible.map((spot) => spot.strategy));
+  const categoryCount = Object.keys(categoryCounts).length;
+  const dominantCategoryCount = Math.max(0, ...Object.values(categoryCounts));
+  const health: CandidateHealth = visible.length < 3
+    ? 'SCARCE'
+    : visible.length < 5 || categoryCount < 3 || (visible.length >= 6 && dominantCategoryCount / visible.length >= 0.7)
+      ? 'LIMITED'
+      : 'SUFFICIENT';
+  const bottleneck = visible.length > 0
+    ? 'none'
+    : stages.eligible === 0
+      ? 'time_direction'
+      : stages.gated === 0 && stages.openingChecked > 0
+        ? 'opening_hours'
+        : 'course_build';
+  const note = bottleneck === 'time_direction'
+    ? `TourAPI ${stages.tourApi}곳 중 카탈로그 후보 ${stages.catalog}곳은 있었지만 시간·방향성 1차 컷을 통과한 후보가 없습니다. 장소 데이터 부족이 아니라 입력 시간과 약속 동선의 제약입니다.`
+    : bottleneck === 'opening_hours'
+      ? `시간·방향성 통과 ${stages.eligible}곳 중 운영시간 상세 확인 ${stages.openingChecked}곳이 모두 게이트에서 제외됐습니다. 운영시간·행사기간 데이터를 확인해야 합니다.`
+      : bottleneck === 'course_build'
+        ? `운영시간 통과 ${stages.gated}곳은 있었지만 코스 조립 결과가 없습니다. 최소 체류시간과 이동시간 배분 규칙을 확인해야 합니다.`
+    : health === 'SCARCE'
+      ? '시간 조건을 통과한 표시 후보가 3곳 미만입니다. 점수 조정보다 후보 데이터 범위·운영시간 게이트를 먼저 확인해야 합니다.'
+    : health === 'LIMITED'
+      ? '후보 수 또는 상단 카테고리 분포가 제한적입니다. 후보 풀 확대가 필요한지 확인 대상입니다.'
+      : '후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.';
+
+  return {
+    health,
+    uniqueCount: unique.size,
+    visibleCount: visible.length,
+    categoryCounts,
+    strategyCounts,
+    directMatchCount: visible.filter((spot) => spot.confidence === 'direct_match').length,
+    categoryFallbackCount: visible.filter((spot) => spot.confidence === 'category_fallback').length,
+    directHoursCount: visible.filter((spot) => spot.opening === 'direct').length,
+    weakMapCount: visible.filter((spot) => spot.map === 'weak' || spot.map === 'unverified').length,
+    bottleneck,
+    note,
+    top: visible.map(({ title, category, strategy }) => ({ title, category, strategy })),
+  };
+}
+
 function round1(n: number): number {
   return Math.round(n * 10) / 10;
 }
@@ -253,6 +344,14 @@ function fmtTime(min: number): string {
   return `${Math.floor(min / 60)}:${String(min % 60).padStart(2, '0')}`;
 }
 
+function seededRandom(seed: number): () => number {
+  let state = seed >>> 0;
+  return () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 0x100000000;
+  };
+}
+
 function renderHtml(audits: ScenarioAudit[]): string {
   const totalCourses = audits.reduce((n, a) => n + a.courses.length, 0);
   const counts = audits.flatMap((a) => a.courses).reduce((o, c) => {
@@ -263,6 +362,13 @@ function renderHtml(audits: ScenarioAudit[]): string {
     o[x.code] = (o[x.code] ?? 0) + 1;
     return o;
   }, {} as Record<string, number>);
+  const healthCounts = audits.reduce((out, audit) => {
+    out[audit.candidateDiagnosis.health] = (out[audit.candidateDiagnosis.health] ?? 0) + 1;
+    return out;
+  }, {} as Record<string, number>);
+  const avgVisibleCandidates = audits.length
+    ? (audits.reduce((sum, audit) => sum + audit.candidateDiagnosis.visibleCount, 0) / audits.length).toFixed(1)
+    : '0';
 
   return `<!doctype html>
 <html lang="ko">
@@ -307,6 +413,14 @@ function renderHtml(audits: ScenarioAudit[]): string {
     .issues b.warn { color:var(--warn); }
     .issueTable { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
     .chip { border:1px solid var(--line); border-radius:999px; color:var(--muted); padding:5px 8px; font-size:12px; }
+    .candidateDiag { margin:12px; padding:12px; border:1px solid rgba(76,194,255,.3); border-radius:9px; background:rgba(76,194,255,.05); }
+    .candidateDiagHead { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+    .candidateDiagTitle { font-size:13px; font-weight:800; }
+    .health { font-size:11px; font-weight:900; padding:4px 7px; border-radius:999px; white-space:nowrap; }
+    .health.SUFFICIENT { color:#d7f9dc; background:rgba(46,160,67,.7); }
+    .health.LIMITED { color:#211806; background:var(--warn); }
+    .health.SCARCE { color:white; background:var(--fail); }
+    .candidateList { color:var(--muted); font-size:12px; line-height:1.65; margin-top:8px; }
     .rules { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; margin:16px 0; }
     .rules h2 { margin:0 0 8px; font-size:16px; }
     .rulesGrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:8px; }
@@ -318,8 +432,8 @@ function renderHtml(audits: ScenarioAudit[]): string {
 </head>
 <body>
   <header>
-    <h1>TimeFit 추천 품질 감사</h1>
-    <div class="sub">생성: ${esc(new Date().toLocaleString('ko-KR'))} · PASS/WARN/FAIL은 휴리스틱 자동 진단입니다.</div>
+    <h1>TimeFit 추천 품질 감사 · ${modeKorean[auditMode]}</h1>
+    <div class="sub">생성: ${esc(new Date().toLocaleString('ko-KR'))} · 후보 풀 비교는 ${modeKorean[auditMode]} 근사 이동시간 기준입니다.${auditMode === 'transit' ? ' ODsay 정밀화는 호출하지 않습니다.' : ''}${coverageOnly ? ' TourAPI 운영시간 상세 게이트도 생략합니다.' : ''} PASS/WARN/FAIL은 휴리스틱 자동 진단입니다.</div>
   </header>
   <main>
     <section class="summary">
@@ -329,6 +443,12 @@ function renderHtml(audits: ScenarioAudit[]): string {
       <div class="tile"><b>${counts.WARN ?? 0}</b><span>WARN</span></div>
       <div class="tile"><b>${counts.FAIL ?? 0}</b><span>FAIL</span></div>
     </section>
+    <div class="issueTable">
+      <span class="chip">표시 후보 평균 ${avgVisibleCandidates}</span>
+      <span class="chip">후보 충분 ${healthCounts.SUFFICIENT ?? 0}</span>
+      <span class="chip">후보 제한 ${healthCounts.LIMITED ?? 0}</span>
+      <span class="chip">후보 부족 ${healthCounts.SCARCE ?? 0}</span>
+    </div>
     <div class="issueTable">${strategySummary(audits)}</div>
     <div class="issueTable">${Object.entries(issueCounts).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<span class="chip">${esc(k)} ${v}</span>`).join('')}</div>
     <section class="rules">
@@ -369,12 +489,29 @@ function renderScenario(a: ScenarioAudit): string {
     <div class="shead">
       <div>
         <h2>${esc(sc.id)}. ${esc(sc.title)}</h2>
-        <div class="meta">${esc(sc.origin.label)} -> ${esc(sc.destination?.label ?? '출발지 복귀')} · ${sc.remainingMin}분 · ${sc.dayType} ${fmtTime(sc.nowMin)} ${sc.hourBucket}</div>
+        <div class="meta">${esc(sc.origin.label)} -> ${esc(sc.destination?.label ?? '출발지 복귀')} · ${modeKorean[auditMode]} · ${sc.remainingMin}분 · ${sc.dayType} ${fmtTime(sc.nowMin)} ${sc.hourBucket}</div>
       </div>
-      <div class="meta">후보 ${a.candidateCount} · 영업 ${a.gatedCount} · TMAP ${a.tmapCalls}</div>
+      <div class="meta">TourAPI ${a.tourApiCount} · 카탈로그 ${a.candidateCount} · 시간/방향 ${a.eligibleCount} · ${coverageOnly ? '운영시간 생략' : `운영확인 ${a.openingCheckCount} · 영업 ${a.gatedCount}`} · 경로 API ${a.tmapCalls}</div>
     </div>
-    ${a.error ? `<div class="err">${esc(a.error)}</div>` : `<div class="courses">${a.courses.map(renderCourse).join('')}</div>`}
+    ${a.error ? `<div class="err">${esc(a.error)}</div>` : `${renderCandidateDiagnosis(a.candidateDiagnosis)}<div class="courses">${a.courses.map(renderCourse).join('')}</div>`}
   </section>`;
+}
+
+function renderCandidateDiagnosis(d: CandidateDiagnosis): string {
+  const label: Record<CandidateHealth, string> = { SUFFICIENT: '후보 충분', LIMITED: '후보 제한', SCARCE: '후보 부족' };
+  const categoryChips = Object.entries(d.categoryCounts).map(([key, count]) => `${esc(key)} ${count}`).join(' · ') || '없음';
+  const strategyChips = Object.entries(d.strategyCounts).map(([key, count]) => `${esc(strategyKorean(key))} ${count}`).join(' · ') || '없음';
+  return `<div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 ${d.uniqueCount}곳 / 목록 상단 ${d.visibleCount}곳${d.bottleneck !== 'none' ? ` · 병목 ${d.bottleneck === 'time_direction' ? '시간·방향' : d.bottleneck === 'opening_hours' ? '운영시간' : '코스 조립'}` : ''}</div>
+        <div class="meta">${esc(d.note)}</div>
+      </div>
+      <span class="health ${d.health}">${label[d.health]}</span>
+    </div>
+    <div class="candidateList">카테고리: ${categoryChips}<br />전략: ${strategyChips}<br />직접 매칭 ${d.directMatchCount} · 카테고리 폴백 ${d.categoryFallbackCount} · 운영시간 직접 근거 ${d.directHoursCount} · 지도 검증 약함 ${d.weakMapCount}</div>
+    <div class="candidateList">상단 후보: ${d.top.map((spot, index) => `${index + 1}. ${esc(spot.title)} (${esc(spot.category)} · ${esc(strategyKorean(spot.strategy))})`).join(' / ')}</div>
+  </div>`;
 }
 
 function renderCourse(ca: CourseAudit): string {
@@ -392,7 +529,7 @@ function renderCourse(ca: CourseAudit): string {
     <div class="metric">
       <div>도보 이동 ${ca.metrics.walkMoveMin}분<br />체류 가능 ${ca.metrics.walkStayMin}분</div>
       <div>자동차 이동 ${ca.metrics.carMoveMin}분<br />체류 가능 ${ca.metrics.carStayMin}분</div>
-      <div>최선 수단 ${esc(ca.metrics.bestMode === 'car' ? '자동차' : '도보')}<br />최선 체류 ${ca.metrics.bestStayMin}분</div>
+      <div>최선 수단 ${esc(ca.metrics.bestMode === 'car' ? '자동차' : ca.metrics.bestMode === 'transit' ? '대중교통' : '도보')}<br />최선 체류 ${ca.metrics.bestStayMin}분</div>
       <div>우회율 ${ca.metrics.detourRatio ?? '-'}<br />장소간 도보 ${ca.metrics.pairWalkMin ?? '-'}분</div>
     </div>
     ${ca.issues.length ? `<ul class="issues">${ca.issues.map((i) => `<li><b class="${i.level}">${esc(i.code)}</b> ${esc(i.message)}</li>`).join('')}</ul>` : '<div class="small">자동 진단 이슈 없음</div>'}
@@ -411,25 +548,41 @@ async function runScenario(sc: Scenario): Promise<ScenarioAudit> {
       origin: sc.origin,
       destination: sc.destination,
       remainingMin: sc.remainingMin,
-      mode: 'walk',
+      mode: auditMode,
+      deferTransitRefinement: auditMode === 'transit',
+      deferOpeningGate: coverageOnly,
       nowMin: sc.nowMin,
       dayType: sc.dayType,
       hourBucket: sc.hourBucket,
     });
     return {
       scenario: sc,
+      tourApiCount: result.tourApiCount,
       candidateCount: result.candidateCount,
+      eligibleCount: result.eligibleCount,
+      openingCheckCount: result.openingCheckCount,
       gatedCount: result.gatedCount,
       tmapCalls: result.tmapOk + result.tmapFail,
       courses: result.courses.map((c) => auditCourse(sc, c)),
+      candidateDiagnosis: diagnoseCandidates([...result.courses, ...result.pending], {
+        tourApi: result.tourApiCount,
+        catalog: result.candidateCount,
+        eligible: result.eligibleCount,
+        openingChecked: result.openingCheckCount,
+        gated: result.gatedCount,
+      }),
     };
   } catch (e: any) {
     return {
       scenario: sc,
+      tourApiCount: 0,
       candidateCount: 0,
+      eligibleCount: 0,
+      openingCheckCount: 0,
       gatedCount: 0,
       tmapCalls: 0,
       courses: [],
+      candidateDiagnosis: diagnoseCandidates([], { tourApi: 0, catalog: 0, eligible: 0, openingChecked: 0, gated: 0 }),
       error: e?.message ?? String(e),
     };
   }
@@ -437,17 +590,25 @@ async function runScenario(sc: Scenario): Promise<ScenarioAudit> {
 
 async function main() {
   const limit = Number.parseInt(process.env.AUDIT_LIMIT ?? '', 10);
-  const pick = Number.isFinite(limit) && limit > 0 ? scenarios.slice(0, limit) : scenarios;
+  const ids = new Set((process.env.AUDIT_IDS ?? '').split(',').map((id: string) => id.trim()).filter(Boolean));
+  const selected = ids.size ? scenarios.filter((scenario) => ids.has(scenario.id)) : scenarios;
+  const pick = Number.isFinite(limit) && limit > 0 ? selected.slice(0, limit) : selected;
   const audits: ScenarioAudit[] = [];
-  for (const [i, sc] of pick.entries()) {
-    process.stdout.write(`[${i + 1}/${pick.length}] ${sc.title} ... `);
-    const audit = await runScenario(sc);
-    audits.push(audit);
-    const counts = audit.courses.reduce((o, c) => {
-      o[c.status] = (o[c.status] ?? 0) + 1;
-      return o;
-    }, {} as Record<string, number>);
-    console.log(`courses=${audit.courses.length} pass=${counts.PASS ?? 0} warn=${counts.WARN ?? 0} fail=${counts.FAIL ?? 0} tmap=${audit.tmapCalls}`);
+  const originalRandom = Math.random;
+  Math.random = seededRandom(20260808);
+  try {
+    for (const [i, sc] of pick.entries()) {
+      process.stdout.write(`[${i + 1}/${pick.length}] ${sc.title} ... `);
+      const audit = await runScenario(sc);
+      audits.push(audit);
+      const counts = audit.courses.reduce((o, c) => {
+        o[c.status] = (o[c.status] ?? 0) + 1;
+        return o;
+      }, {} as Record<string, number>);
+      console.log(`courses=${audit.courses.length} pass=${counts.PASS ?? 0} warn=${counts.WARN ?? 0} fail=${counts.FAIL ?? 0} routeApi=${audit.tmapCalls}`);
+    }
+  } finally {
+    Math.random = originalRandom;
   }
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, renderHtml(audits));

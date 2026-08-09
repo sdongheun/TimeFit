@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Course, LatLon, Spot, travelMin, travelSrc } from '../engine';
+import { Course, hasBalancedPaidVisit, LatLon, minimumStayForCourse, minimumStayForSpot, safetyBufferMin, Spot, travelMin, travelSrc } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
 import { Chip } from './Chip';
 import { C } from './theme';
@@ -53,19 +53,10 @@ function strategyLabel(course?: Course): string {
   return '출발지 근처';
 }
 
-function minStayForSpot(spot: Spot): number {
-  if (spot.category === '카페' || spot.category === '상업지구') return 15;
-  if (spot.category === '자연관광지') return 18;
-  if (spot.category === '문화시설') return 20;
-  if (spot.category === '식당') return 25;
-  return 20;
-}
-
-function evalStatus(stayPossibleMin: number, spot: Spot, bufferLeftMin: number): CandidateStatus {
-  const minStay = minStayForSpot(spot);
-  if (stayPossibleMin < minStay || bufferLeftMin < 0) return 'over';
-  if (stayPossibleMin >= spot.dwell) return 'good';
-  if (stayPossibleMin >= Math.max(minStay, Math.round(spot.dwell * 0.55))) return 'short';
+function evalStatus(stayPossibleMin: number, minStay: number, dwellMin: number, bufferLeftMin: number, paidBalanced: boolean, courseMinimumMet: boolean): CandidateStatus {
+  if (stayPossibleMin < minStay || bufferLeftMin < 0 || !paidBalanced || !courseMinimumMet) return 'over';
+  if (stayPossibleMin >= dwellMin) return 'good';
+  if (stayPossibleMin >= Math.max(minStay, Math.round(dwellMin * 0.55))) return 'short';
   return 'tight';
 }
 
@@ -140,6 +131,16 @@ function routeMoveMin(spots: Spot[], origin: LatLon, target: LatLon, mode: Cours
   return total;
 }
 
+function courseApproachMins(spots: Spot[], origin: LatLon, mode: Course['bestMode']): number[] {
+  const travelMode = mode ?? 'walk';
+  let cur = origin;
+  return spots.map((spot) => {
+    const min = travelMin(cur, spot, travelMode);
+    cur = spot;
+    return min;
+  });
+}
+
 // 후보를 담을 때만 사용한다. 경로 API를 호출하지 않고 캐시/거리 근사값으로 순서를 정한다.
 function optimizeSpotOrder(spots: Spot[], origin: LatLon, target: LatLon, mode: Course['bestMode']): Spot[] {
   if (spots.length < 2) return spots;
@@ -184,7 +185,7 @@ function openKakaoPlaceDetail(spot: Spot) {
 }
 
 function buildBasketCourse(selected: Spot[], origin: LatLon, target: LatLon, ctx: Props['route']['params']['ctx']): Course {
-  const buffer = Math.max(10, Math.round(ctx.remainingMin * 0.12));
+  const buffer = safetyBufferMin(ctx.mode);
   const budget = ctx.remainingMin - buffer;
   const moveMin = routeMoveMin(selected, origin, target, ctx.mode);
   const stayPool = Math.max(0, budget - moveMin);
@@ -213,6 +214,9 @@ function buildBasketCourse(selected: Spot[], origin: LatLon, target: LatLon, ctx
   });
 
   const totalStay = stayPool - allocatedLeft;
+  const directMove = ctx.appointment ? travelMin(origin, target, ctx.mode) : 0;
+  const addedMove = Math.max(0, moveMin - directMove);
+  const minStay = minimumStayForCourse(selected, courseApproachMins(selected, origin, ctx.mode));
   const mobility = {
     [ctx.mode]: {
       mode: ctx.mode,
@@ -220,7 +224,7 @@ function buildBasketCourse(selected: Spot[], origin: LatLon, target: LatLon, ctx
       stayMin: stayPool,
       totalMin: moveMin + totalStay,
       bufferLeftMin: ctx.remainingMin - moveMin - totalStay,
-      ok: stayPool >= selected.reduce((n, spot) => n + minStayForSpot(spot), 0),
+      ok: stayPool >= minStay && hasBalancedPaidVisit(selected, totalStay, addedMove),
       legs,
     },
   } as Course['mobility'];
@@ -256,7 +260,7 @@ export function ResultsScreen({ route, navigation }: Props) {
   const recommendationById = useMemo(() => candidateRecommendations(allCourses), [allCourses]);
   const selected = useMemo(() => selectedIds.map((id) => spots.find((sp) => sp.contentId === id)).filter(Boolean) as Spot[], [selectedIds, spots]);
   const selectedMoveMin = routeMoveMin(selected, origin, target, ctx.mode);
-  const buffer = Math.max(10, Math.round(ctx.remainingMin * 0.12));
+  const buffer = safetyBufferMin(ctx.mode);
   const budget = ctx.remainingMin - buffer;
   const selectedStayPool = Math.max(0, budget - selectedMoveMin);
   const selectedBufferLeft = Math.max(0, ctx.remainingMin - selectedMoveMin - Math.min(selectedStayPool, selected.reduce((n, sp) => n + sp.dwell, 0)));
@@ -276,15 +280,24 @@ export function ResultsScreen({ route, navigation }: Props) {
       const moveMin = routeMoveMin(trial, origin, target, ctx.mode);
       const stayPool = Math.max(0, budget - moveMin);
       const dwellTotal = trial.reduce((n, sp) => n + sp.dwell, 0);
+      const approachMins = courseApproachMins(trial, origin, ctx.mode);
+      const trialMinStay = minimumStayForCourse(trial, approachMins);
       const candidateStay = isSelected
         ? Math.min(spot.dwell, stayPool)
         : Math.max(0, Math.round(stayPool * (spot.dwell / Math.max(dwellTotal, 1))));
       const bufferLeftMin = ctx.remainingMin - moveMin - Math.min(stayPool, dwellTotal);
-      const status = isSelected ? 'good' : evalStatus(candidateStay, spot, bufferLeftMin);
+      const directMove = ctx.appointment ? travelMin(origin, target, ctx.mode) : 0;
+      const addedMove = Math.max(0, moveMin - directMove);
+      const paidBalanced = hasBalancedPaidVisit(trial, Math.min(stayPool, dwellTotal), addedMove);
+      const candidateIndex = trial.findIndex((item) => item.contentId === spot.contentId);
+      const candidateMinStay = minimumStayForSpot(spot, approachMins[candidateIndex] ?? Infinity);
+      const status = isSelected ? 'good' : evalStatus(candidateStay, candidateMinStay, spot.dwell, bufferLeftMin, paidBalanced, stayPool >= trialMinStay);
       const reason = isSelected
         ? '이미 담은 장소입니다'
         : status === 'over'
-          ? `담으면 약 ${Math.abs(Math.min(bufferLeftMin, candidateStay - minStayForSpot(spot)))}분 부족해요`
+          ? !paidBalanced
+            ? '시설형 장소는 추가 이동시간보다 체류시간이 길어야 해요'
+            : `담으면 약 ${Math.abs(Math.min(bufferLeftMin, candidateStay - candidateMinStay))}분 부족해요`
           : `담으면 약 ${candidateStay}분 머물 수 있어요`;
       const recommendation = recommendationById.get(spot.contentId);
       return {

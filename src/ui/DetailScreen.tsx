@@ -169,7 +169,7 @@ export function DetailScreen({ route, navigation }: Props) {
             <Text key={i} style={s.leg}>{lg.label} — <Text style={s.legMin}>{lg.min}분</Text> <Text style={s.legSrc}>[{lg.src}]</Text></Text>
           ))}
         </View>
-        <Text style={s.why}>▶ 선택한 이동수단에 따라 머물 수 있는 시간이 달라져요. 최소 30분 이상 체류 가능한 코스만 추천합니다.</Text>
+        <Text style={s.why}>▶ 선택한 이동수단별 여유시간과 장소 성격에 맞는 최소 체류시간을 반영했어요.</Text>
 
         {source === 'builder' ? (
           <Pressable style={s.saveBtn} onPress={saveCurrentCourse}>

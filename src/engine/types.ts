@@ -19,6 +19,10 @@ export type PlanInput = {
   hourBucket: HourBucket;
   mode: Mode;
   radiusM?: number;
+  // 자동진단에서만 사용: 후보 풀 비교를 위해 ODsay 정밀화를 생략한다.
+  deferTransitRefinement?: boolean;
+  // 자동진단에서만 사용: 후보 데이터 범위 비교를 위해 TourAPI 운영시간 상세 조회를 생략한다.
+  deferOpeningGate?: boolean;
 };
 
 export type Spot = {
@@ -75,8 +79,11 @@ export type Course = {
 export type PlanResult = {
   budgetMin: number;
   bufferMin: number;
-  candidateCount: number;
-  gatedCount: number;
+  tourApiCount: number; // 검색 중심 전체에서 중복 제거한 TourAPI 응답 후보
+  candidateCount: number; // TourAPI 응답 중 TimeFit A/B 카탈로그 체류 근거가 있는 후보
+  eligibleCount: number; // 시간·방향성 1차 컷 통과 후보
+  openingCheckCount: number; // 운영시간 상세 조회 대상
+  gatedCount: number; // 운영시간 게이트 통과 후보
   tmapOk: number;
   tmapFail: number;
   courses: Course[]; // 추천 배치(≤10, 목록 단계는 haversine 추정)

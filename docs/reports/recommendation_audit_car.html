@@ -1,0 +1,3665 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TimeFit 추천 품질 감사</title>
+  <style>
+    :root { --bg:#0f1419; --panel:#171d26; --line:#2a3340; --txt:#e6edf3; --muted:#9aa7b4; --pass:#2ea043; --warn:#d29922; --fail:#f85149; --accent:#4cc2ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--txt); font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",sans-serif; }
+    header { position:sticky; top:0; background:rgba(15,20,25,.96); border-bottom:1px solid var(--line); padding:18px 22px; z-index:2; }
+    h1 { margin:0; font-size:22px; }
+    .sub { color:var(--muted); margin-top:6px; font-size:13px; }
+    main { padding:18px 22px 40px; max-width:1280px; margin:0 auto; }
+    .summary { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin:14px 0 18px; }
+    .tile, .scenario, .course { background:var(--panel); border:1px solid var(--line); border-radius:10px; }
+    .tile { padding:13px; }
+    .tile b { display:block; font-size:22px; margin-bottom:2px; }
+    .tile span { color:var(--muted); font-size:12px; }
+    .scenario { margin:16px 0; overflow:hidden; }
+    .shead { padding:14px 16px; border-bottom:1px solid var(--line); display:flex; gap:12px; justify-content:space-between; align-items:flex-start; }
+    .shead h2 { margin:0; font-size:17px; }
+    .meta { color:var(--muted); font-size:12px; margin-top:4px; }
+    .courses { display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:10px; padding:12px; }
+    .course { padding:12px; }
+    .top { display:flex; justify-content:space-between; gap:8px; align-items:center; margin-bottom:8px; }
+    .status { font-weight:800; font-size:12px; border-radius:999px; padding:4px 8px; }
+    .PASS { color:white; background:var(--pass); }
+    .WARN { color:#111; background:var(--warn); }
+    .FAIL { color:white; background:var(--fail); }
+    .title { font-weight:800; line-height:1.35; }
+    .spots { margin:8px 0; }
+    .spot { padding:7px 0; border-top:1px solid rgba(42,51,64,.7); }
+    .spot:first-child { border-top:0; }
+    .small { color:var(--muted); font-size:12px; line-height:1.55; }
+    .metric { display:grid; grid-template-columns:1fr 1fr; gap:6px; color:var(--muted); font-size:12px; margin:8px 0; }
+    .metric div { background:#10161d; border:1px solid rgba(42,51,64,.7); border-radius:8px; padding:7px; }
+    .issues { margin:8px 0 0; padding:0; list-style:none; }
+    .issues li { margin-top:5px; font-size:12px; line-height:1.4; }
+    .issues b.fail { color:var(--fail); }
+    .issues b.warn { color:var(--warn); }
+    .issueTable { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .chip { border:1px solid var(--line); border-radius:999px; color:var(--muted); padding:5px 8px; font-size:12px; }
+    .candidateDiag { margin:12px; padding:12px; border:1px solid rgba(76,194,255,.3); border-radius:9px; background:rgba(76,194,255,.05); }
+    .candidateDiagHead { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+    .candidateDiagTitle { font-size:13px; font-weight:800; }
+    .health { font-size:11px; font-weight:900; padding:4px 7px; border-radius:999px; white-space:nowrap; }
+    .health.SUFFICIENT { color:#d7f9dc; background:rgba(46,160,67,.7); }
+    .health.LIMITED { color:#211806; background:var(--warn); }
+    .health.SCARCE { color:white; background:var(--fail); }
+    .candidateList { color:var(--muted); font-size:12px; line-height:1.65; margin-top:8px; }
+    .rules { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; margin:16px 0; }
+    .rules h2 { margin:0 0 8px; font-size:16px; }
+    .rulesGrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:8px; }
+    .rule { border:1px solid rgba(42,51,64,.8); border-radius:8px; padding:9px; background:#10161d; }
+    .rule b { font-size:12px; }
+    .rule .desc { color:var(--muted); font-size:12px; margin-top:4px; line-height:1.45; }
+    .err { color:var(--fail); padding:14px 16px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TimeFit 추천 품질 감사 · 차량</h1>
+    <div class="sub">생성: 2026. 8. 8. 오후 11:32:36 · 후보 풀 비교는 차량 근사 이동시간 기준입니다. TourAPI 운영시간 상세 게이트도 생략합니다. PASS/WARN/FAIL은 휴리스틱 자동 진단입니다.</div>
+  </header>
+  <main>
+    <section class="summary">
+      <div class="tile"><b>20</b><span>시나리오</span></div>
+      <div class="tile"><b>182</b><span>추천 코스</span></div>
+      <div class="tile"><b>25</b><span>PASS</span></div>
+      <div class="tile"><b>80</b><span>WARN</span></div>
+      <div class="tile"><b>77</b><span>FAIL</span></div>
+    </section>
+    <div class="issueTable">
+      <span class="chip">표시 후보 평균 8.8</span>
+      <span class="chip">후보 충분 17</span>
+      <span class="chip">후보 제한 2</span>
+      <span class="chip">후보 부족 1</span>
+    </div>
+    <div class="issueTable"><span class="chip">가는 길 중간 36</span><span class="chip">출발지 근처 34</span><span class="chip">약속지 근처 112</span></div>
+    <div class="issueTable"><span class="chip">fallback_only_course 104</span><span class="chip">walk_too_long 82</span><span class="chip">car_only 77</span><span class="chip">detour_medium 53</span><span class="chip">low_stay_margin 20</span><span class="chip">far_pair 13</span><span class="chip">detour_high 9</span><span class="chip">duplicate_category_pair 3</span><span class="chip">move_over_stay 2</span></div>
+    <section class="rules">
+      <h2>판정 기준</h2>
+      <div class="sub">100점에서 이슈별 penalty를 차감합니다. fail 이슈가 하나라도 있거나 60점 미만이면 FAIL, warn 이슈만 있으면 WARN, 이슈가 없으면 PASS입니다.</div>
+      <div class="rulesGrid">
+        <div class="rule">
+          <b class="fail">lodging_keyword · FAIL · -100</b>
+          <div class="desc">숙박성 키워드 포함</div>
+        </div><div class="rule">
+          <b class="fail">utility_keyword · FAIL · -90</b>
+          <div class="desc">주차장/병원/주유소 등 부적합 시설 키워드 포함</div>
+        </div><div class="rule">
+          <b class="fail">same_food_pair · FAIL · -45</b>
+          <div class="desc">식당 2곳 코스</div>
+        </div><div class="rule">
+          <b class="fail">far_pair · FAIL · -60</b>
+          <div class="desc">2개 장소 사이 도보 12분 초과</div>
+        </div><div class="rule">
+          <b class="fail">detour_high · FAIL · -45</b>
+          <div class="desc">직행 대비 우회율 1.8배 이상</div>
+        </div><div class="rule">
+          <b class="warn">same_cafe_pair · WARN · -25</b>
+          <div class="desc">카페 2곳 코스</div>
+        </div><div class="rule">
+          <b class="warn">duplicate_category_pair · WARN · -15</b>
+          <div class="desc">같은 카테고리 2곳 코스</div>
+        </div><div class="rule">
+          <b class="warn">detour_medium · WARN · -20</b>
+          <div class="desc">직행 대비 우회율 1.45배 이상</div>
+        </div><div class="rule">
+          <b class="warn">walk_too_long · WARN · -15</b>
+          <div class="desc">도보 총 이동시간 60분 초과</div>
+        </div><div class="rule">
+          <b class="warn">car_only · WARN · -20</b>
+          <div class="desc">자동차로만 30분 이상 체류 가능</div>
+        </div><div class="rule">
+          <b class="warn">low_stay_margin · WARN · -20</b>
+          <div class="desc">최선 수단 체류 가능 시간 40분 미만</div>
+        </div><div class="rule">
+          <b class="warn">move_over_stay · WARN · -15</b>
+          <div class="desc">이동시간이 체류 가능 시간보다 김</div>
+        </div><div class="rule">
+          <b class="warn">fallback_only_course · WARN · -10</b>
+          <div class="desc">모든 장소가 카테고리 폴백 데이터</div>
+        </div>
+      </div>
+    </section>
+    <section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S01. 서면 -&gt; 부산역 60분</h2>
+        <div class="meta">서면역 -> 부산역 · 차량 · 60분 · 평일 14:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 103 · 카탈로그 56 · 시간/방향 14 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 14곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 문화시설 2 · 상업지구 3 · 자연관광지 4 · 카페 1<br />전략: 가는 길 중간 6 · 출발지 근처 2 · 약속지 근처 2<br />직접 매칭 1 · 카테고리 폴백 8 · 운영시간 직접 근거 3 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 부산 동구도서관 (문화시설 · 가는 길 중간) / 2. 부전마켓타운 (상업지구 · 출발지 근처) / 3. 묘심사(부산) (자연관광지 · 약속지 근처) / 4. 희와제과 (카페 · 출발지 근처) / 5. 부산 중앙시장 (상업지구 · 가는 길 중간) / 6. 커넥트현대 (자연관광지 · 가는 길 중간) / 7. 장기려기념 더 나눔센터 (문화시설 · 약속지 근처) / 8. 보광사(부산) (자연관광지 · 가는 길 중간) / 9. 좌천동 가구거리 (상업지구 · 가는 길 중간) / 10. 범일 이중섭거리 (자연관광지 · 가는 길 중간)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 동구도서관</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 28분 · 오후 적합 100% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 동구도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 0분</div>
+      <div>자동차 이동 22분<br />체류 가능 28분</div>
+      <div>최선 수단 자동차<br />최선 체류 28분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 25분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 28분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부전마켓타운</div>
+      <span class="status FAIL">FAIL 10</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 21분 · 오후 적합 90% · 경유 효율 34%</div>
+    <div class="spots"><div class="spot">
+      <div>부전마켓타운</div>
+      <div class="small">상업지구 · 권장 30분 · area_context_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 102분<br />체류 가능 0분</div>
+      <div>자동차 이동 29분<br />체류 가능 21분</div>
+      <div>최선 수단 자동차<br />최선 체류 21분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 102분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 20분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 21분입니다.</li><li><b class="warn">move_over_stay</b> 이동시간이 체류 가능 시간보다 깁니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 묘심사(부산)</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 28분 · 오후 적합 100% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>묘심사(부산)</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 87분<br />체류 가능 0분</div>
+      <div>자동차 이동 22분<br />체류 가능 28분</div>
+      <div>최선 수단 자동차<br />최선 체류 28분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 87분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 25분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 28분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 희와제과</div>
+      <span class="status FAIL">FAIL 10</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 20분 · 오후 적합 80% · 경유 효율 28%</div>
+    <div class="spots"><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 98분<br />체류 가능 0분</div>
+      <div>자동차 이동 30분<br />체류 가능 20분</div>
+      <div>최선 수단 자동차<br />최선 체류 20분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 98분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 20분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 20분입니다.</li><li><b class="warn">move_over_stay</b> 이동시간이 체류 가능 시간보다 깁니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 중앙시장</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 28분 · 오후 적합 90% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 중앙시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 87분<br />체류 가능 0분</div>
+      <div>자동차 이동 22분<br />체류 가능 28분</div>
+      <div>최선 수단 자동차<br />최선 체류 28분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 87분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 20분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 28분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 커넥트현대</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 28분 · 오후 적합 100% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>커넥트현대</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 86분<br />체류 가능 0분</div>
+      <div>자동차 이동 22분<br />체류 가능 28분</div>
+      <div>최선 수단 자동차<br />최선 체류 28분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 86분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 25분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 28분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 장기려기념 더 나눔센터</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 25분 · 오후 적합 100% · 경유 효율 61%</div>
+    <div class="spots"><div class="spot">
+      <div>장기려기념 더 나눔센터</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 98분<br />체류 가능 0분</div>
+      <div>자동차 이동 25분<br />체류 가능 25분</div>
+      <div>최선 수단 자동차<br />최선 체류 25분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 98분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 25분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 25분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 보광사(부산)</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 28분 · 오후 적합 100% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>보광사(부산)</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 86분<br />체류 가능 0분</div>
+      <div>자동차 이동 22분<br />체류 가능 28분</div>
+      <div>최선 수단 자동차<br />최선 체류 28분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 86분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 25분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 28분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 좌천동 가구거리</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 28분 · 오후 적합 90% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>좌천동 가구거리</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 86분<br />체류 가능 0분</div>
+      <div>자동차 이동 22분<br />체류 가능 28분</div>
+      <div>최선 수단 자동차<br />최선 체류 28분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 86분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 20분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 28분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 범일 이중섭거리</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 29분 · 오후 적합 100% · 경유 효율 87%</div>
+    <div class="spots"><div class="spot">
+      <div>범일 이중섭거리</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 0분</div>
+      <div>자동차 이동 21분<br />체류 가능 29분</div>
+      <div>최선 수단 자동차<br />최선 체류 29분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 25분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 29분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S02. 서면 -&gt; 부산역 120분</h2>
+        <div class="meta">서면역 -> 부산역 · 차량 · 120분 · 평일 14:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 120 · 카탈로그 72 · 시간/방향 65 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 15곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 식당 2 · 문화시설 2 · 카페 1 · 자연관광지 3 · 상업지구 2<br />전략: 약속지 근처 3 · 가는 길 중간 6 · 출발지 근처 1<br />직접 매칭 3 · 카테고리 폴백 7 · 운영시간 직접 근거 5 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 영동밀면&amp;돼지국밥 (식당 · 약속지 근처) / 2. 부산 동구도서관 (문화시설 · 가는 길 중간) / 3. 희와제과 (카페 · 출발지 근처) / 4. 커넥트현대 (자연관광지 · 가는 길 중간) / 5. 좌천동 가구거리 (상업지구 · 가는 길 중간) / 6. 초량온당 (식당 · 약속지 근처) / 7. 부산 중앙시장 (상업지구 · 가는 길 중간) / 8. 장기려기념 더 나눔센터 (문화시설 · 약속지 근처) / 9. 범일 이중섭거리 (자연관광지 · 가는 길 중간) / 10. 보광사(부산) (자연관광지 · 가는 길 중간)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 영동밀면&amp;돼지국밥</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 84분 · 오후 적합 40% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>영동밀면&amp;돼지국밥</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 87분<br />체류 가능 19분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 87분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 동구도서관</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 84분 · 오후 적합 100% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 동구도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 22분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 희와제과</div>
+      <span class="status FAIL">FAIL 45</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 76분 · 오후 적합 80% · 경유 효율 28%</div>
+    <div class="spots"><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 98분<br />체류 가능 8분</div>
+      <div>자동차 이동 30분<br />체류 가능 76분</div>
+      <div>최선 수단 자동차<br />최선 체류 76분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 98분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 커넥트현대</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 84분 · 오후 적합 100% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>커넥트현대</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 86분<br />체류 가능 20분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 86분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 좌천동 가구거리</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 84분 · 오후 적합 90% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>좌천동 가구거리</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 86분<br />체류 가능 20분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 86분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 초량온당</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 84분 · 오후 적합 40% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>초량온당</div>
+      <div class="small">식당 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 22분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 중앙시장</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 84분 · 오후 적합 90% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 중앙시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 87분<br />체류 가능 19분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 87분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 장기려기념 더 나눔센터</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 81분 · 오후 적합 100% · 경유 효율 61%</div>
+    <div class="spots"><div class="spot">
+      <div>장기려기념 더 나눔센터</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 98분<br />체류 가능 8분</div>
+      <div>자동차 이동 25분<br />체류 가능 81분</div>
+      <div>최선 수단 자동차<br />최선 체류 81분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 98분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 범일 이중섭거리</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 85분 · 오후 적합 100% · 경유 효율 87%</div>
+    <div class="spots"><div class="spot">
+      <div>범일 이중섭거리</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 22분</div>
+      <div>자동차 이동 21분<br />체류 가능 85분</div>
+      <div>최선 수단 자동차<br />최선 체류 85분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 희와제과 + 부산 동구도서관</div>
+      <span class="status FAIL">FAIL 0</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 73분 · 오후 적합 90% · 경유 효율 8%</div>
+    <div class="spots"><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div><div class="spot">
+      <div>부산 동구도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 99분<br />체류 가능 7분</div>
+      <div>자동차 이동 33분<br />체류 가능 73분</div>
+      <div>최선 수단 자동차<br />최선 체류 73분</div>
+      <div>우회율 1.7<br />장소간 도보 43분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 43분입니다.</li><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 99분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S03. 서면 왕복 90분</h2>
+        <div class="meta">서면역 -> 출발지 복귀 · 차량 · 90분 · 주말 14:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 60 · 카탈로그 36 · 시간/방향 36 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 21곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 상업지구 2 · 카페 1 · 자연관광지 3 · 문화시설 2 · 식당 2<br />전략: 출발지 근처 10<br />직접 매칭 1 · 카테고리 폴백 7 · 운영시간 직접 근거 5 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 부전마켓타운 (상업지구 · 출발지 근처) / 2. 희와제과 (카페 · 출발지 근처) / 3. 전포 삼거리 (자연관광지 · 출발지 근처) / 4. 부산 동구도서관 (문화시설 · 출발지 근처) / 5. 늘해랑 (식당 · 출발지 근처) / 6. 부산전자종합시장 (상업지구 · 출발지 근처) / 7. 커넥트현대 (자연관광지 · 출발지 근처) / 8. 부산광역시립 시민도서관 (문화시설 · 출발지 근처) / 9. 조방본가낙지 (식당 · 출발지 근처) / 10. 성암사(부산) (자연관광지 · 출발지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부전마켓타운</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 61분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>부전마켓타운</div>
+      <div class="small">상업지구 · 권장 30분 · area_context_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 18분<br />체류 가능 61분</div>
+      <div>자동차 이동 18분<br />체류 가능 61분</div>
+      <div>최선 수단 자동차<br />최선 체류 61분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 희와제과</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 59분 · 오후 적합 80%</div>
+    <div class="spots"><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 20분<br />체류 가능 59분</div>
+      <div>자동차 이동 20분<br />체류 가능 59분</div>
+      <div>최선 수단 자동차<br />최선 체류 59분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 전포 삼거리</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 65분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>전포 삼거리</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 42분<br />체류 가능 37분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 동구도서관</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 59분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 동구도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 76분<br />체류 가능 3분</div>
+      <div>자동차 이동 20분<br />체류 가능 59분</div>
+      <div>최선 수단 자동차<br />최선 체류 59분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 76분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 늘해랑</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 61분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>늘해랑</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 66분<br />체류 가능 13분</div>
+      <div>자동차 이동 18분<br />체류 가능 61분</div>
+      <div>최선 수단 자동차<br />최선 체류 61분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 66분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산전자종합시장</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 55분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>부산전자종합시장</div>
+      <div class="small">상업지구 · 권장 30분 · area_context_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 24분<br />체류 가능 55분</div>
+      <div>자동차 이동 24분<br />체류 가능 55분</div>
+      <div>최선 수단 자동차<br />최선 체류 55분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 커넥트현대</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 61분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>커넥트현대</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 62분<br />체류 가능 17분</div>
+      <div>자동차 이동 18분<br />체류 가능 61분</div>
+      <div>최선 수단 자동차<br />최선 체류 61분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 62분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산광역시립 시민도서관</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 55분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>부산광역시립 시민도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 96분<br />체류 가능 0분</div>
+      <div>자동차 이동 24분<br />체류 가능 55분</div>
+      <div>최선 수단 자동차<br />최선 체류 55분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 96분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 조방본가낙지</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 63분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>조방본가낙지</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 58분<br />체류 가능 21분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 부산 동구도서관 + 희와제과</div>
+      <span class="status FAIL">FAIL 5</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 48분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 동구도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 91분<br />체류 가능 0분</div>
+      <div>자동차 이동 31분<br />체류 가능 48분</div>
+      <div>최선 수단 자동차<br />최선 체류 48분</div>
+      <div>우회율 -<br />장소간 도보 43분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 43분입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 91분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S04. 해운대 -&gt; 벡스코 90분</h2>
+        <div class="meta">해운대역 -> 벡스코 · 차량 · 90분 · 평일 15:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 102 · 카탈로그 52 · 시간/방향 15 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 15곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 문화시설 1 · 식당 6 · 상업지구 1 · 자연관광지 2<br />전략: 약속지 근처 9 · 가는 길 중간 1<br />직접 매칭 5 · 카테고리 폴백 5 · 운영시간 직접 근거 8 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 부산시립미술관 (문화시설 · 약속지 근처) / 2. 타이가텐푸라 (식당 · 약속지 근처) / 3. 고래서이뻐 (상업지구 · 약속지 근처) / 4. 부산 영화의 거리 (자연관광지 · 약속지 근처) / 5. 해목 (식당 · 가는 길 중간) / 6. 류센소 본점 (식당 · 약속지 근처) / 7. 마린시티 (자연관광지 · 약속지 근처) / 8. 우봉 (식당 · 약속지 근처) / 9. 아미산 (식당 · 약속지 근처) / 10. 동백섬횟집 (식당 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산시립미술관</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 66분 · 오후 적합 100% · 경유 효율 44%</div>
+    <div class="spots"><div class="spot">
+      <div>부산시립미술관</div>
+      <div class="small">문화시설 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 36분<br />체류 가능 43분</div>
+      <div>자동차 이동 13분<br />체류 가능 66분</div>
+      <div>최선 수단 자동차<br />최선 체류 66분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 타이가텐푸라</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 67분 · 오후 적합 40% · 경유 효율 58%</div>
+    <div class="spots"><div class="spot">
+      <div>타이가텐푸라</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 37분<br />체류 가능 42분</div>
+      <div>자동차 이동 12분<br />체류 가능 67분</div>
+      <div>최선 수단 자동차<br />최선 체류 67분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 고래서이뻐</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 90% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>고래서이뻐</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 39분<br />체류 가능 40분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 영화의 거리</div>
+      <span class="status FAIL">FAIL 25</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 63분 · 오후 적합 100% · 경유 효율 3%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 영화의 거리</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 54분<br />체류 가능 25분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.8<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">detour_high</b> 직행 대비 우회율이 1.8배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해목</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 66분 · 오후 적합 40% · 경유 효율 44%</div>
+    <div class="spots"><div class="spot">
+      <div>해목</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 41분<br />체류 가능 38분</div>
+      <div>자동차 이동 13분<br />체류 가능 66분</div>
+      <div>최선 수단 자동차<br />최선 체류 66분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 류센소 본점</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 66분 · 오후 적합 40% · 경유 효율 44%</div>
+    <div class="spots"><div class="spot">
+      <div>류센소 본점</div>
+      <div class="small">식당 · 권장 45분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 37분<br />체류 가능 42분</div>
+      <div>자동차 이동 13분<br />체류 가능 66분</div>
+      <div>최선 수단 자동차<br />최선 체류 66분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 마린시티</div>
+      <span class="status FAIL">FAIL 25</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 63분 · 오후 적합 100% · 경유 효율 3%</div>
+    <div class="spots"><div class="spot">
+      <div>마린시티</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 51분<br />체류 가능 28분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.8<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">detour_high</b> 직행 대비 우회율이 1.8배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 타이가텐푸라 + 고래서이뻐</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 65% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>타이가텐푸라</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div><div class="spot">
+      <div>고래서이뻐</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 39분<br />체류 가능 40분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.6<br />장소간 도보 2분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 우봉</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 40% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>우봉</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 46분<br />체류 가능 33분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 아미산</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 40% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>아미산</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 44분<br />체류 가능 35분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S05. 광안리 -&gt; 센텀 120분</h2>
+        <div class="meta">광안리해수욕장 -> 센텀시티역 · 차량 · 120분 · 주말 15:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 78 · 카탈로그 42 · 시간/방향 17 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 16곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 상업지구 3 · 자연관광지 4 · 식당 2 · 문화시설 1<br />전략: 약속지 근처 10<br />직접 매칭 4 · 카테고리 폴백 6 · 운영시간 직접 근거 4 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 신세계백화점 센텀시티점 (상업지구 · 약속지 근처) / 2. 광안리해변 테마거리 (자연관광지 · 약속지 근처) / 3. 수변최고돼지국밥 민락본점 (식당 · 약속지 근처) / 4. 분홍이네 (상업지구 · 약속지 근처) / 5. 책방오월 (문화시설 · 약속지 근처) / 6. 옥련선원 (자연관광지 · 약속지 근처) / 7. 수영 돼지국밥 (식당 · 약속지 근처) / 8. 수영팔도시장 (상업지구 · 약속지 근처) / 9. 부산영화촬영스튜디오 (자연관광지 · 약속지 근처) / 10. 해운대리버크루즈 (자연관광지 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 신세계백화점 센텀시티점</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 94분 · 오후 적합 90% · 경유 효율 75%</div>
+    <div class="spots"><div class="spot">
+      <div>신세계백화점 센텀시티점</div>
+      <div class="small">상업지구 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 36분<br />체류 가능 70분</div>
+      <div>자동차 이동 12분<br />체류 가능 94분</div>
+      <div>최선 수단 자동차<br />최선 체류 94분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 광안리해변 테마거리</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 92분 · 오후 적합 100% · 경유 효율 50%</div>
+    <div class="spots"><div class="spot">
+      <div>광안리해변 테마거리</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 35분<br />체류 가능 71분</div>
+      <div>자동차 이동 14분<br />체류 가능 92분</div>
+      <div>최선 수단 자동차<br />최선 체류 92분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 수변최고돼지국밥 민락본점</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 91분 · 오후 적합 40% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>수변최고돼지국밥 민락본점</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 48분<br />체류 가능 58분</div>
+      <div>자동차 이동 15분<br />체류 가능 91분</div>
+      <div>최선 수단 자동차<br />최선 체류 91분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 분홍이네</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 92분 · 오후 적합 90% · 경유 효율 50%</div>
+    <div class="spots"><div class="spot">
+      <div>분홍이네</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 38분<br />체류 가능 68분</div>
+      <div>자동차 이동 14분<br />체류 가능 92분</div>
+      <div>최선 수단 자동차<br />최선 체류 92분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 책방오월</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 91분 · 오후 적합 100% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>책방오월</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 51분<br />체류 가능 55분</div>
+      <div>자동차 이동 15분<br />체류 가능 91분</div>
+      <div>최선 수단 자동차<br />최선 체류 91분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 옥련선원</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 93분 · 오후 적합 100% · 경유 효율 63%</div>
+    <div class="spots"><div class="spot">
+      <div>옥련선원</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 35분<br />체류 가능 71분</div>
+      <div>자동차 이동 13분<br />체류 가능 93분</div>
+      <div>최선 수단 자동차<br />최선 체류 93분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 수영 돼지국밥</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 92분 · 오후 적합 40% · 경유 효율 50%</div>
+    <div class="spots"><div class="spot">
+      <div>수영 돼지국밥</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 46분<br />체류 가능 60분</div>
+      <div>자동차 이동 14분<br />체류 가능 92분</div>
+      <div>최선 수단 자동차<br />최선 체류 92분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 수영팔도시장</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 90분 · 오후 적합 90% · 경유 효율 25%</div>
+    <div class="spots"><div class="spot">
+      <div>수영팔도시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 54분<br />체류 가능 52분</div>
+      <div>자동차 이동 16분<br />체류 가능 90분</div>
+      <div>최선 수단 자동차<br />최선 체류 90분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산영화촬영스튜디오</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 91분 · 오후 적합 100% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>부산영화촬영스튜디오</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 49분<br />체류 가능 57분</div>
+      <div>자동차 이동 15분<br />체류 가능 91분</div>
+      <div>최선 수단 자동차<br />최선 체류 91분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 분홍이네 + 신세계백화점 센텀시티점</div>
+      <span class="status FAIL">FAIL 5</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 89분 · 오후 적합 90% · 경유 효율 13%</div>
+    <div class="spots"><div class="spot">
+      <div>분홍이네</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div><div class="spot">
+      <div>신세계백화점 센텀시티점</div>
+      <div class="small">상업지구 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 39분<br />체류 가능 67분</div>
+      <div>자동차 이동 17분<br />체류 가능 89분</div>
+      <div>최선 수단 자동차<br />최선 체류 89분</div>
+      <div>우회율 1.7<br />장소간 도보 31분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">duplicate_category_pair</b> 같은 카테고리 2곳 코스입니다.</li><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 31분입니다.</li><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S06. 부산역 -&gt; 남포 90분</h2>
+        <div class="meta">부산역 -> 남포역 · 차량 · 90분 · 평일 14:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 92 · 카탈로그 54 · 시간/방향 22 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 21곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 자연관광지 3 · 식당 2 · 상업지구 3 · 문화시설 2<br />전략: 약속지 근처 7 · 가는 길 중간 2 · 출발지 근처 1<br />직접 매칭 6 · 카테고리 폴백 4 · 운영시간 직접 근거 4 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 광복로패션거리 (자연관광지 · 약속지 근처) / 2. 신발원 (식당 · 가는 길 중간) / 3. 부산 자갈치시장 (상업지구 · 약속지 근처) / 4. 부산광역시립 중앙도서관 (문화시설 · 약속지 근처) / 5. 부산영화체험박물관 (자연관광지 · 약속지 근처) / 6. 부평깡통시장 (상업지구 · 약속지 근처) / 7. 영동밀면&amp;돼지국밥 (식당 · 가는 길 중간) / 8. 장기려기념 더 나눔센터 (문화시설 · 출발지 근처) / 9. 남포동건어물도매시장 (상업지구 · 약속지 근처) / 10. 민주공원 (자연관광지 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 광복로패션거리</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 68분 · 오후 적합 100% · 경유 효율 72%</div>
+    <div class="spots"><div class="spot">
+      <div>광복로패션거리</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 35분<br />체류 가능 44분</div>
+      <div>자동차 이동 11분<br />체류 가능 68분</div>
+      <div>최선 수단 자동차<br />최선 체류 68분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 신발원</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 66분 · 오후 적합 40% · 경유 효율 44%</div>
+    <div class="spots"><div class="spot">
+      <div>신발원</div>
+      <div class="small">식당 · 권장 45분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 35분<br />체류 가능 44분</div>
+      <div>자동차 이동 13분<br />체류 가능 66분</div>
+      <div>최선 수단 자동차<br />최선 체류 66분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 자갈치시장</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 63분 · 오후 적합 90% · 경유 효율 3%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 자갈치시장</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 44분<br />체류 가능 35분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.8<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">detour_high</b> 직행 대비 우회율이 1.8배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산광역시립 중앙도서관</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 100% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>부산광역시립 중앙도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 48분<br />체류 가능 31분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산영화체험박물관</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 100% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>부산영화체험박물관</div>
+      <div class="small">자연관광지 · 권장 105분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 33분<br />체류 가능 46분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부평깡통시장</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 64분 · 오후 적합 90% · 경유 효율 17%</div>
+    <div class="spots"><div class="spot">
+      <div>부평깡통시장</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 47분<br />체류 가능 32분</div>
+      <div>자동차 이동 15분<br />체류 가능 64분</div>
+      <div>최선 수단 자동차<br />최선 체류 64분</div>
+      <div>우회율 1.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 영동밀면&amp;돼지국밥</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 66분 · 오후 적합 40% · 경유 효율 44%</div>
+    <div class="spots"><div class="spot">
+      <div>영동밀면&amp;돼지국밥</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 38분<br />체류 가능 41분</div>
+      <div>자동차 이동 13분<br />체류 가능 66분</div>
+      <div>최선 수단 자동차<br />최선 체류 66분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 장기려기념 더 나눔센터</div>
+      <span class="status FAIL">FAIL 25</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 63분 · 오후 적합 100% · 경유 효율 3%</div>
+    <div class="spots"><div class="spot">
+      <div>장기려기념 더 나눔센터</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 52분<br />체류 가능 27분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.8<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">detour_high</b> 직행 대비 우회율이 1.8배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 남포동건어물도매시장</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 68분 · 오후 적합 90% · 경유 효율 72%</div>
+    <div class="spots"><div class="spot">
+      <div>남포동건어물도매시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 36분<br />체류 가능 43분</div>
+      <div>자동차 이동 11분<br />체류 가능 68분</div>
+      <div>최선 수단 자동차<br />최선 체류 68분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 민주공원 + 부산광역시립 중앙도서관</div>
+      <span class="status FAIL">FAIL 45</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 63분 · 오후 적합 100% · 경유 효율 3%</div>
+    <div class="spots"><div class="spot">
+      <div>민주공원</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>부산광역시립 중앙도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 49분<br />체류 가능 30분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.8<br />장소간 도보 2분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">detour_high</b> 직행 대비 우회율이 1.8배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S07. 남포 -&gt; 자갈치 60분</h2>
+        <div class="meta">남포역 -> 자갈치역 · 차량 · 60분 · 주말 12:00 점심</div>
+      </div>
+      <div class="meta">TourAPI 65 · 카탈로그 37 · 시간/방향 35 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 22곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 식당 3 · 상업지구 3 · 자연관광지 2 · 카페 1 · 문화시설 1<br />전략: 약속지 근처 10<br />직접 매칭 5 · 카테고리 폴백 4 · 운영시간 직접 근거 5 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 18번완당집 (식당 · 약속지 근처) / 2. 부산 자갈치시장 (상업지구 · 약속지 근처) / 3. 광복로패션거리 (자연관광지 · 약속지 근처) / 4. 부평깡통시장 (상업지구 · 약속지 근처) / 5. 부산영화체험박물관 (자연관광지 · 약속지 근처) / 6. 오구카페 (카페 · 약속지 근처) / 7. 부산광역시립 중앙도서관 (문화시설 · 약속지 근처) / 8. 물꽁식당 (식당 · 약속지 근처) / 9. 조명의거리 (상업지구 · 약속지 근처) / 10. 한우뭉치 (식당 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 18번완당집</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 37분 · 점심 적합 100% · 경유 효율 77%</div>
+    <div class="spots"><div class="spot">
+      <div>18번완당집</div>
+      <div class="small">식당 · 권장 45분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 13분<br />체류 가능 37분</div>
+      <div>자동차 이동 13분<br />체류 가능 37분</div>
+      <div>최선 수단 자동차<br />최선 체류 37분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 37분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 자갈치시장</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 38분 · 점심 적합 60% · 경유 효율 89%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 자갈치시장</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 12분<br />체류 가능 38분</div>
+      <div>자동차 이동 12분<br />체류 가능 38분</div>
+      <div>최선 수단 자동차<br />최선 체류 38분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 38분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 광복로패션거리</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 39분 · 점심 적합 60% · 경유 효율 100%</div>
+    <div class="spots"><div class="spot">
+      <div>광복로패션거리</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 11분<br />체류 가능 39분</div>
+      <div>자동차 이동 11분<br />체류 가능 39분</div>
+      <div>최선 수단 자동차<br />최선 체류 39분</div>
+      <div>우회율 1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 39분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부평깡통시장</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 36분 · 점심 적합 60% · 경유 효율 66%</div>
+    <div class="spots"><div class="spot">
+      <div>부평깡통시장</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 21분<br />체류 가능 29분</div>
+      <div>자동차 이동 14분<br />체류 가능 36분</div>
+      <div>최선 수단 자동차<br />최선 체류 36분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 36분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산영화체험박물관</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 38분 · 점심 적합 60% · 경유 효율 89%</div>
+    <div class="spots"><div class="spot">
+      <div>부산영화체험박물관</div>
+      <div class="small">자연관광지 · 권장 105분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 19분<br />체류 가능 31분</div>
+      <div>자동차 이동 12분<br />체류 가능 38분</div>
+      <div>최선 수단 자동차<br />최선 체류 38분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 38분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 오구카페</div>
+      <span class="status FAIL">FAIL 30</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 34분 · 점심 적합 70% · 경유 효율 43%</div>
+    <div class="spots"><div class="spot">
+      <div>오구카페</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 49분<br />체류 가능 1분</div>
+      <div>자동차 이동 16분<br />체류 가능 34분</div>
+      <div>최선 수단 자동차<br />최선 체류 34분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 20분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 34분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산광역시립 중앙도서관</div>
+      <span class="status FAIL">FAIL 50</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 36분 · 점심 적합 60% · 경유 효율 66%</div>
+    <div class="spots"><div class="spot">
+      <div>부산광역시립 중앙도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 48분<br />체류 가능 2분</div>
+      <div>자동차 이동 14분<br />체류 가능 36분</div>
+      <div>최선 수단 자동차<br />최선 체류 36분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">car_only</b> 자동차로만 최소 체류 25분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 36분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 물꽁식당</div>
+      <span class="status FAIL">FAIL 50</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 38분 · 점심 적합 100% · 경유 효율 89%</div>
+    <div class="spots"><div class="spot">
+      <div>물꽁식당</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 32분<br />체류 가능 18분</div>
+      <div>자동차 이동 12분<br />체류 가능 38분</div>
+      <div>최선 수단 자동차<br />최선 체류 38분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 38분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 조명의거리</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 36분 · 점심 적합 60% · 경유 효율 66%</div>
+    <div class="spots"><div class="spot">
+      <div>조명의거리</div>
+      <div class="small">상업지구 · 권장 45분 · area_context_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 14분<br />체류 가능 36분</div>
+      <div>자동차 이동 14분<br />체류 가능 36분</div>
+      <div>최선 수단 자동차<br />최선 체류 36분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 36분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 한우뭉치</div>
+      <span class="status FAIL">FAIL 50</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 37분 · 점심 적합 100% · 경유 효율 77%</div>
+    <div class="spots"><div class="spot">
+      <div>한우뭉치</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 40분<br />체류 가능 10분</div>
+      <div>자동차 이동 13분<br />체류 가능 37분</div>
+      <div>최선 수단 자동차<br />최선 체류 37분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">low_stay_margin</b> 최선 수단 기준 체류 가능 시간이 37분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S08. 사상 -&gt; 김해공항 120분</h2>
+        <div class="meta">사상역 -> 김해공항 · 차량 · 120분 · 평일 15:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 28 · 카탈로그 25 · 시간/방향 13 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 12곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 식당 3 · 레저/스포츠 1 · 문화시설 1 · 상업지구 3 · 자연관광지 2<br />전략: 가는 길 중간 8 · 약속지 근처 2<br />직접 매칭 0 · 카테고리 폴백 10 · 운영시간 직접 근거 5 · 지도 검증 약함 2</div>
+    <div class="candidateList">상단 후보: 1. 대궐안집 (식당 · 가는 길 중간) / 2. 삼락강변체육공원인라인스케이트장 (레저/스포츠 · 약속지 근처) / 3. 부산점자도서관 (문화시설 · 가는 길 중간) / 4. 부산 르네시떼 (상업지구 · 약속지 근처) / 5. 약수암(부산) (자연관광지 · 가는 길 중간) / 6. 덕포시장 (상업지구 · 가는 길 중간) / 7. 해물왕창칼국수 (식당 · 가는 길 중간) / 8. 사상근린공원 (자연관광지 · 가는 길 중간) / 9. 부산새벽시장 (상업지구 · 가는 길 중간) / 10. 77돌곱창 (식당 · 가는 길 중간)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 대궐안집</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 88분 · 오후 적합 40% · 경유 효율 93%</div>
+    <div class="spots"><div class="spot">
+      <div>대궐안집</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 78분<br />체류 가능 28분</div>
+      <div>자동차 이동 18분<br />체류 가능 88분</div>
+      <div>최선 수단 자동차<br />최선 체류 88분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 78분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 삼락강변체육공원인라인스케이트장</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 85분 · 오후 적합 90% · 경유 효율 71%</div>
+    <div class="spots"><div class="spot">
+      <div>삼락강변체육공원인라인스케이트장</div>
+      <div class="small">레저/스포츠 · 권장 90분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 81분<br />체류 가능 25분</div>
+      <div>자동차 이동 21분<br />체류 가능 85분</div>
+      <div>최선 수단 자동차<br />최선 체류 85분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 81분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산점자도서관</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 79분 · 오후 적합 100% · 경유 효율 26%</div>
+    <div class="spots"><div class="spot">
+      <div>부산점자도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 108분<br />체류 가능 0분</div>
+      <div>자동차 이동 27분<br />체류 가능 79분</div>
+      <div>최선 수단 자동차<br />최선 체류 79분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 108분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 르네시떼</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 80분 · 오후 적합 90% · 경유 효율 34%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 르네시떼</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 78분<br />체류 가능 28분</div>
+      <div>자동차 이동 26분<br />체류 가능 80분</div>
+      <div>최선 수단 자동차<br />최선 체류 80분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 78분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 약수암(부산)</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 77분 · 오후 적합 100% · 경유 효율 12%</div>
+    <div class="spots"><div class="spot">
+      <div>약수암(부산)</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 123분<br />체류 가능 0분</div>
+      <div>자동차 이동 29분<br />체류 가능 77분</div>
+      <div>최선 수단 자동차<br />최선 체류 77분</div>
+      <div>우회율 1.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 123분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 덕포시장</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 84분 · 오후 적합 90% · 경유 효율 63%</div>
+    <div class="spots"><div class="spot">
+      <div>덕포시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 22분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해물왕창칼국수</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 83분 · 오후 적합 40% · 경유 효율 56%</div>
+    <div class="spots"><div class="spot">
+      <div>해물왕창칼국수</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 89분<br />체류 가능 17분</div>
+      <div>자동차 이동 23분<br />체류 가능 83분</div>
+      <div>최선 수단 자동차<br />최선 체류 83분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 89분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 사상근린공원</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 81분 · 오후 적합 100% · 경유 효율 41%</div>
+    <div class="spots"><div class="spot">
+      <div>사상근린공원</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 100분<br />체류 가능 6분</div>
+      <div>자동차 이동 25분<br />체류 가능 81분</div>
+      <div>최선 수단 자동차<br />최선 체류 81분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 100분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산새벽시장</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 82분 · 오후 적합 90% · 경유 효율 49%</div>
+    <div class="spots"><div class="spot">
+      <div>부산새벽시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 99분<br />체류 가능 7분</div>
+      <div>자동차 이동 24분<br />체류 가능 82분</div>
+      <div>최선 수단 자동차<br />최선 체류 82분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 99분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 사상근린공원 + 삼락강변체육공원인라인스케이트장</div>
+      <span class="status FAIL">FAIL 0</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 79분 · 오후 적합 95% · 경유 효율 26%</div>
+    <div class="spots"><div class="spot">
+      <div>사상근린공원</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>삼락강변체육공원인라인스케이트장</div>
+      <div class="small">레저/스포츠 · 권장 90분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 101분<br />체류 가능 5분</div>
+      <div>자동차 이동 27분<br />체류 가능 79분</div>
+      <div>최선 수단 자동차<br />최선 체류 79분</div>
+      <div>우회율 1.6<br />장소간 도보 18분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 18분입니다.</li><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 101분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S09. 동래 -&gt; 온천장 90분</h2>
+        <div class="meta">동래역 -> 온천장역 · 차량 · 90분 · 평일 14:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 71 · 카탈로그 64 · 시간/방향 14 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 13곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 카페 2 · 문화시설 1 · 자연관광지 3 · 식당 4<br />전략: 약속지 근처 10<br />직접 매칭 0 · 카테고리 폴백 10 · 운영시간 직접 근거 7 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 모모스커피 본점 (카페 · 약속지 근처) / 2. 동래문화원 (문화시설 · 약속지 근처) / 3. 법륜사(부산) (자연관광지 · 약속지 근처) / 4. 타이빈 (식당 · 약속지 근처) / 5. 부산 복천동 고분군 (자연관광지 · 약속지 근처) / 6. 깃발집 국수전골 (식당 · 약속지 근처) / 7. 수안커피컴퍼니 커피하우스 (카페 · 약속지 근처) / 8. 동래향교 (자연관광지 · 약속지 근처) / 9. 303화덕 동래온천장점 (식당 · 약속지 근처) / 10. 미미루 (식당 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 모모스커피 본점</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 70분 · 오후 적합 80% · 경유 효율 100%</div>
+    <div class="spots"><div class="spot">
+      <div>모모스커피 본점</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 29분<br />체류 가능 50분</div>
+      <div>자동차 이동 9분<br />체류 가능 70분</div>
+      <div>최선 수단 자동차<br />최선 체류 70분</div>
+      <div>우회율 1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 동래문화원</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 66분 · 오후 적합 100% · 경유 효율 44%</div>
+    <div class="spots"><div class="spot">
+      <div>동래문화원</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 38분<br />체류 가능 41분</div>
+      <div>자동차 이동 13분<br />체류 가능 66분</div>
+      <div>최선 수단 자동차<br />최선 체류 66분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 법륜사(부산)</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 64분 · 오후 적합 100% · 경유 효율 17%</div>
+    <div class="spots"><div class="spot">
+      <div>법륜사(부산)</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 45분<br />체류 가능 34분</div>
+      <div>자동차 이동 15분<br />체류 가능 64분</div>
+      <div>최선 수단 자동차<br />최선 체류 64분</div>
+      <div>우회율 1.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 타이빈</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 66분 · 오후 적합 40% · 경유 효율 44%</div>
+    <div class="spots"><div class="spot">
+      <div>타이빈</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 35분<br />체류 가능 44분</div>
+      <div>자동차 이동 13분<br />체류 가능 66분</div>
+      <div>최선 수단 자동차<br />최선 체류 66분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 복천동 고분군</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 100% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 복천동 고분군</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 44분<br />체류 가능 35분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 깃발집 국수전골</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 67분 · 오후 적합 40% · 경유 효율 58%</div>
+    <div class="spots"><div class="spot">
+      <div>깃발집 국수전골</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 33분<br />체류 가능 46분</div>
+      <div>자동차 이동 12분<br />체류 가능 67분</div>
+      <div>최선 수단 자동차<br />최선 체류 67분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 수안커피컴퍼니 커피하우스</div>
+      <span class="status FAIL">FAIL 45</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 63분 · 오후 적합 80% · 경유 효율 3%</div>
+    <div class="spots"><div class="spot">
+      <div>수안커피컴퍼니 커피하우스</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 53분<br />체류 가능 26분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.8<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">detour_high</b> 직행 대비 우회율이 1.8배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 동래향교</div>
+      <span class="status FAIL">FAIL 45</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 63분 · 오후 적합 100% · 경유 효율 3%</div>
+    <div class="spots"><div class="spot">
+      <div>동래향교</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 32분<br />체류 가능 47분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.8<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">detour_high</b> 직행 대비 우회율이 1.8배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 303화덕 동래온천장점</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 66분 · 오후 적합 40% · 경유 효율 44%</div>
+    <div class="spots"><div class="spot">
+      <div>303화덕 동래온천장점</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 37분<br />체류 가능 42분</div>
+      <div>자동차 이동 13분<br />체류 가능 66분</div>
+      <div>최선 수단 자동차<br />최선 체류 66분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 동래문화원 + 모모스커피 본점</div>
+      <span class="status FAIL">FAIL 10</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 90% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>동래문화원</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>모모스커피 본점</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 38분<br />체류 가능 41분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.6<br />장소간 도보 15분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 15분입니다.</li><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S10. 부산대 -&gt; 동래 120분</h2>
+        <div class="meta">부산대역 -> 동래역 · 차량 · 120분 · 주말 15:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 75 · 카탈로그 67 · 시간/방향 26 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 16곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 문화시설 2 · 자연관광지 2 · 카페 2 · 식당 2 · 상업지구 2<br />전략: 약속지 근처 10<br />직접 매칭 0 · 카테고리 폴백 10 · 운영시간 직접 근거 6 · 지도 검증 약함 1</div>
+    <div class="candidateList">상단 후보: 1. 동래문화원 (문화시설 · 약속지 근처) / 2. 금강식물원 (자연관광지 · 약속지 근처) / 3. 모모스커피 본점 (카페 · 약속지 근처) / 4. 토비코 (식당 · 약속지 근처) / 5. 서동미로시장 (상업지구 · 약속지 근처) / 6. 법륜사(부산) (자연관광지 · 약속지 근처) / 7. 부산대학교 박물관 (문화시설 · 약속지 근처) / 8. 303화덕 동래온천장점 (식당 · 약속지 근처) / 9. 수안커피컴퍼니 커피하우스 (카페 · 약속지 근처) / 10. 부곡상가시장 (상업지구 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 동래문화원</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 90분 · 오후 적합 100% · 경유 효율 58%</div>
+    <div class="spots"><div class="spot">
+      <div>동래문화원</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 56분<br />체류 가능 50분</div>
+      <div>자동차 이동 16분<br />체류 가능 90분</div>
+      <div>최선 수단 자동차<br />최선 체류 90분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 금강식물원</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 90분 · 오후 적합 100% · 경유 효율 58%</div>
+    <div class="spots"><div class="spot">
+      <div>금강식물원</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 57분<br />체류 가능 49분</div>
+      <div>자동차 이동 16분<br />체류 가능 90분</div>
+      <div>최선 수단 자동차<br />최선 체류 90분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 모모스커피 본점</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 91분 · 오후 적합 80% · 경유 효율 69%</div>
+    <div class="spots"><div class="spot">
+      <div>모모스커피 본점</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 48분<br />체류 가능 58분</div>
+      <div>자동차 이동 15분<br />체류 가능 91분</div>
+      <div>최선 수단 자동차<br />최선 체류 91분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 토비코</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 91분 · 오후 적합 40% · 경유 효율 69%</div>
+    <div class="spots"><div class="spot">
+      <div>토비코</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 49분<br />체류 가능 57분</div>
+      <div>자동차 이동 15분<br />체류 가능 91분</div>
+      <div>최선 수단 자동차<br />최선 체류 91분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 서동미로시장</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 86분 · 오후 적합 90% · 경유 효율 17%</div>
+    <div class="spots"><div class="spot">
+      <div>서동미로시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 75분<br />체류 가능 31분</div>
+      <div>자동차 이동 20분<br />체류 가능 86분</div>
+      <div>최선 수단 자동차<br />최선 체류 86분</div>
+      <div>우회율 1.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 75분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 법륜사(부산)</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 88분 · 오후 적합 100% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>법륜사(부산)</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 64분<br />체류 가능 42분</div>
+      <div>자동차 이동 18분<br />체류 가능 88분</div>
+      <div>최선 수단 자동차<br />최선 체류 88분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 64분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산대학교 박물관</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 87분 · 오후 적합 100% · 경유 효율 27%</div>
+    <div class="spots"><div class="spot">
+      <div>부산대학교 박물관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 66분<br />체류 가능 40분</div>
+      <div>자동차 이동 19분<br />체류 가능 87분</div>
+      <div>최선 수단 자동차<br />최선 체류 87분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 66분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 303화덕 동래온천장점</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 91분 · 오후 적합 40% · 경유 효율 69%</div>
+    <div class="spots"><div class="spot">
+      <div>303화덕 동래온천장점</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 51분<br />체류 가능 55분</div>
+      <div>자동차 이동 15분<br />체류 가능 91분</div>
+      <div>최선 수단 자동차<br />최선 체류 91분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 수안커피컴퍼니 커피하우스</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 86분 · 오후 적합 80% · 경유 효율 17%</div>
+    <div class="spots"><div class="spot">
+      <div>수안커피컴퍼니 커피하우스</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 72분<br />체류 가능 34분</div>
+      <div>자동차 이동 20분<br />체류 가능 86분</div>
+      <div>최선 수단 자동차<br />최선 체류 86분</div>
+      <div>우회율 1.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 72분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 모모스커피 본점 + 동래문화원</div>
+      <span class="status FAIL">FAIL 10</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 86분 · 오후 적합 90% · 경유 효율 17%</div>
+    <div class="spots"><div class="spot">
+      <div>모모스커피 본점</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>동래문화원</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 57분<br />체류 가능 49분</div>
+      <div>자동차 이동 20분<br />체류 가능 86분</div>
+      <div>최선 수단 자동차<br />최선 체류 86분</div>
+      <div>우회율 1.7<br />장소간 도보 15분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 15분입니다.</li><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S11. 수영 -&gt; 광안리 75분</h2>
+        <div class="meta">수영역 -> 광안리해수욕장 · 차량 · 75분 · 평일 18:00 저녁</div>
+      </div>
+      <div class="meta">TourAPI 73 · 카탈로그 36 · 시간/방향 7 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 7곳 / 목록 상단 7곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 상업지구 1 · 식당 4 · 자연관광지 2<br />전략: 약속지 근처 7<br />직접 매칭 2 · 카테고리 폴백 5 · 운영시간 직접 근거 5 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 분홍이네 (상업지구 · 약속지 근처) / 2. 엄용백 돼지국밥 (식당 · 약속지 근처) / 3. 광안리해변 테마거리 (자연관광지 · 약속지 근처) / 4. 우성삼계탕 (식당 · 약속지 근처) / 5. 타타에스프레소바 (식당 · 약속지 근처) / 6. 옥련선원 (자연관광지 · 약속지 근처) / 7. 자매국밥 (식당 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 분홍이네</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 53분 · 저녁 적합 80% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>분홍이네</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 26분<br />체류 가능 39분</div>
+      <div>자동차 이동 12분<br />체류 가능 53분</div>
+      <div>최선 수단 자동차<br />최선 체류 53분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 엄용백 돼지국밥</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 54분 · 저녁 적합 100% · 경유 효율 53%</div>
+    <div class="spots"><div class="spot">
+      <div>엄용백 돼지국밥</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 27분<br />체류 가능 38분</div>
+      <div>자동차 이동 11분<br />체류 가능 54분</div>
+      <div>최선 수단 자동차<br />최선 체류 54분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 광안리해변 테마거리</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 52분 · 저녁 적합 60% · 경유 효율 22%</div>
+    <div class="spots"><div class="spot">
+      <div>광안리해변 테마거리</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 30분<br />체류 가능 35분</div>
+      <div>자동차 이동 13분<br />체류 가능 52분</div>
+      <div>최선 수단 자동차<br />최선 체류 52분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 우성삼계탕</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 55분 · 저녁 적합 100% · 경유 효율 69%</div>
+    <div class="spots"><div class="spot">
+      <div>우성삼계탕</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 29분<br />체류 가능 36분</div>
+      <div>자동차 이동 10분<br />체류 가능 55분</div>
+      <div>최선 수단 자동차<br />최선 체류 55분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 타타에스프레소바</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 52분 · 저녁 적합 100% · 경유 효율 22%</div>
+    <div class="spots"><div class="spot">
+      <div>타타에스프레소바</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 26분<br />체류 가능 39분</div>
+      <div>자동차 이동 13분<br />체류 가능 52분</div>
+      <div>최선 수단 자동차<br />최선 체류 52분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 옥련선원</div>
+      <span class="status FAIL">FAIL 25</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 51분 · 저녁 적합 60% · 경유 효율 6%</div>
+    <div class="spots"><div class="spot">
+      <div>옥련선원</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 39분<br />체류 가능 26분</div>
+      <div>자동차 이동 14분<br />체류 가능 51분</div>
+      <div>최선 수단 자동차<br />최선 체류 51분</div>
+      <div>우회율 1.8<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">detour_high</b> 직행 대비 우회율이 1.8배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 자매국밥</div>
+      <span class="status FAIL">FAIL 50</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 52분 · 저녁 적합 100% · 경유 효율 22%</div>
+    <div class="spots"><div class="spot">
+      <div>자매국밥</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 36분<br />체류 가능 29분</div>
+      <div>자동차 이동 13분<br />체류 가능 52분</div>
+      <div>최선 수단 자동차<br />최선 체류 52분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 우성삼계탕 + 분홍이네</div>
+      <span class="status FAIL">FAIL 0</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 51분 · 저녁 적합 90% · 경유 효율 6%</div>
+    <div class="spots"><div class="spot">
+      <div>우성삼계탕</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>분홍이네</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 29분<br />체류 가능 36분</div>
+      <div>자동차 이동 14분<br />체류 가능 51분</div>
+      <div>최선 수단 자동차<br />최선 체류 51분</div>
+      <div>우회율 1.8<br />장소간 도보 22분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 22분입니다.</li><li><b class="fail">detour_high</b> 직행 대비 우회율이 1.8배입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S12. 경성대 -&gt; 광안리 90분</h2>
+        <div class="meta">경성대부경대역 -> 광안리해수욕장 · 차량 · 90분 · 주말 18:00 저녁</div>
+      </div>
+      <div class="meta">TourAPI 86 · 카탈로그 52 · 시간/방향 7 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 7곳 / 목록 상단 7곳</div>
+        <div class="meta">후보 수 또는 상단 카테고리 분포가 제한적입니다. 후보 풀 확대가 필요한지 확인 대상입니다.</div>
+      </div>
+      <span class="health LIMITED">후보 제한</span>
+    </div>
+    <div class="candidateList">카테고리: 상업지구 2 · 식당 5<br />전략: 약속지 근처 7<br />직접 매칭 2 · 카테고리 폴백 5 · 운영시간 직접 근거 6 · 지도 검증 약함 2</div>
+    <div class="candidateList">상단 후보: 1. 분홍이네 (상업지구 · 약속지 근처) / 2. 바로해장 (식당 · 약속지 근처) / 3. 신센 (식당 · 약속지 근처) / 4. 남천 해변시장 (상업지구 · 약속지 근처) / 5. 송원일식 (식당 · 약속지 근처) / 6. 남천녹차팥빙수 (식당 · 약속지 근처) / 7. 나막집 (식당 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 분홍이네</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 63분 · 저녁 적합 80% · 경유 효율 25%</div>
+    <div class="spots"><div class="spot">
+      <div>분홍이네</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 47분<br />체류 가능 32분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 바로해장</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 62분 · 저녁 적합 100% · 경유 효율 13%</div>
+    <div class="spots"><div class="spot">
+      <div>바로해장</div>
+      <div class="small">식당 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 40분<br />체류 가능 39분</div>
+      <div>자동차 이동 17분<br />체류 가능 62분</div>
+      <div>최선 수단 자동차<br />최선 체류 62분</div>
+      <div>우회율 1.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 신센</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 저녁 적합 100% · 경유 효율 50%</div>
+    <div class="spots"><div class="spot">
+      <div>신센</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 40분<br />체류 가능 39분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 남천 해변시장</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 64분 · 저녁 적합 80% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>남천 해변시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 43분<br />체류 가능 36분</div>
+      <div>자동차 이동 15분<br />체류 가능 64분</div>
+      <div>최선 수단 자동차<br />최선 체류 64분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 송원일식</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 저녁 적합 100% · 경유 효율 50%</div>
+    <div class="spots"><div class="spot">
+      <div>송원일식</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 41분<br />체류 가능 38분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 남천녹차팥빙수</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 저녁 적합 100% · 경유 효율 50%</div>
+    <div class="spots"><div class="spot">
+      <div>남천녹차팥빙수</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 42분<br />체류 가능 37분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 나막집</div>
+      <span class="status FAIL">FAIL 50</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 62분 · 저녁 적합 100% · 경유 효율 13%</div>
+    <div class="spots"><div class="spot">
+      <div>나막집</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 55분<br />체류 가능 24분</div>
+      <div>자동차 이동 17분<br />체류 가능 62분</div>
+      <div>최선 수단 자동차<br />최선 체류 62분</div>
+      <div>우회율 1.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 남천 해변시장 + 남천녹차팥빙수</div>
+      <span class="status WARN">WARN 70</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 62분 · 저녁 적합 90% · 경유 효율 13%</div>
+    <div class="spots"><div class="spot">
+      <div>남천 해변시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>남천녹차팥빙수</div>
+      <div class="small">식당 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 44분<br />체류 가능 35분</div>
+      <div>자동차 이동 17분<br />체류 가능 62분</div>
+      <div>최선 수단 자동차<br />최선 체류 62분</div>
+      <div>우회율 1.7<br />장소간 도보 3분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S13. 영도 -&gt; 부산역 90분</h2>
+        <div class="meta">영도대교 -> 부산역 · 차량 · 90분 · 평일 14:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 92 · 카탈로그 54 · 시간/방향 28 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 22곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 문화시설 2 · 식당 3 · 상업지구 3 · 자연관광지 2<br />전략: 약속지 근처 10<br />직접 매칭 8 · 카테고리 폴백 1 · 운영시간 직접 근거 5 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 부산근현대역사관 별관 (문화시설 · 약속지 근처) / 2. 이재모피자 본점 (식당 · 약속지 근처) / 3. 국제시장 (상업지구 · 약속지 근처) / 4. 국제시장 먹자골목 (자연관광지 · 약속지 근처) / 5. 아리랑거리 (상업지구 · 약속지 근처) / 6. 영동밀면&amp;돼지국밥 (식당 · 약속지 근처) / 7. 신발원 (식당 · 약속지 근처) / 8. 광복로패션거리 (자연관광지 · 약속지 근처) / 9. 부산광역시립 중앙도서관 (문화시설 · 약속지 근처) / 10. 부평깡통시장 (상업지구 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 부산근현대역사관 별관 + 이재모피자 본점</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 64분 · 오후 적합 70% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>부산근현대역사관 별관</div>
+      <div class="small">문화시설 · 권장 30분 · direct_match</div>
+    </div><div class="spot">
+      <div>이재모피자 본점</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 45분<br />체류 가능 34분</div>
+      <div>자동차 이동 15분<br />체류 가능 64분</div>
+      <div>최선 수단 자동차<br />최선 체류 64분</div>
+      <div>우회율 1.5<br />장소간 도보 1분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 국제시장 + 국제시장 먹자골목</div>
+      <span class="status WARN">WARN 60</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 63분 · 오후 적합 95% · 경유 효율 25%</div>
+    <div class="spots"><div class="spot">
+      <div>국제시장</div>
+      <div class="small">상업지구 · 권장 60분 · direct_match</div>
+    </div><div class="spot">
+      <div>국제시장 먹자골목</div>
+      <div class="small">자연관광지 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 51분<br />체류 가능 28분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.6<br />장소간 도보 1분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산근현대역사관 별관</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 100% · 경유 효율 50%</div>
+    <div class="spots"><div class="spot">
+      <div>부산근현대역사관 별관</div>
+      <div class="small">문화시설 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 43분<br />체류 가능 36분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 국제시장 먹자골목</div>
+      <span class="status WARN">WARN 60</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 64분 · 오후 적합 100% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>국제시장 먹자골목</div>
+      <div class="small">자연관광지 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 50분<br />체류 가능 29분</div>
+      <div>자동차 이동 15분<br />체류 가능 64분</div>
+      <div>최선 수단 자동차<br />최선 체류 64분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 아리랑거리</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 64분 · 오후 적합 90% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>아리랑거리</div>
+      <div class="small">상업지구 · 권장 45분 · area_context_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 48분<br />체류 가능 31분</div>
+      <div>자동차 이동 15분<br />체류 가능 64분</div>
+      <div>최선 수단 자동차<br />최선 체류 64분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 영동밀면&amp;돼지국밥</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 65분 · 오후 적합 40% · 경유 효율 50%</div>
+    <div class="spots"><div class="spot">
+      <div>영동밀면&amp;돼지국밥</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 41분<br />체류 가능 38분</div>
+      <div>자동차 이동 14분<br />체류 가능 65분</div>
+      <div>최선 수단 자동차<br />최선 체류 65분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 국제시장</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 64분 · 오후 적합 90% · 경유 효율 38%</div>
+    <div class="spots"><div class="spot">
+      <div>국제시장</div>
+      <div class="small">상업지구 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 49분<br />체류 가능 30분</div>
+      <div>자동차 이동 15분<br />체류 가능 64분</div>
+      <div>최선 수단 자동차<br />최선 체류 64분</div>
+      <div>우회율 1.5<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.5배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 신발원</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 66분 · 오후 적합 40% · 경유 효율 63%</div>
+    <div class="spots"><div class="spot">
+      <div>신발원</div>
+      <div class="small">식당 · 권장 45분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 38분<br />체류 가능 41분</div>
+      <div>자동차 이동 13분<br />체류 가능 66분</div>
+      <div>최선 수단 자동차<br />최선 체류 66분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 광복로패션거리</div>
+      <span class="status WARN">WARN 80</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 62분 · 오후 적합 100% · 경유 효율 13%</div>
+    <div class="spots"><div class="spot">
+      <div>광복로패션거리</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 41분<br />체류 가능 38분</div>
+      <div>자동차 이동 17분<br />체류 가능 62분</div>
+      <div>최선 수단 자동차<br />최선 체류 62분</div>
+      <div>우회율 1.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산광역시립 중앙도서관</div>
+      <span class="status FAIL">FAIL 50</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 63분 · 오후 적합 100% · 경유 효율 25%</div>
+    <div class="spots"><div class="spot">
+      <div>부산광역시립 중앙도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 54분<br />체류 가능 25분</div>
+      <div>자동차 이동 16분<br />체류 가능 63분</div>
+      <div>최선 수단 자동차<br />최선 체류 63분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S14. 송정 -&gt; 해운대 120분</h2>
+        <div class="meta">송정해수욕장 -> 해운대역 · 차량 · 120분 · 주말 15:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 120 · 카탈로그 73 · 시간/방향 64 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 16곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 상업지구 2 · 레저/스포츠 2 · 식당 2 · 문화시설 2 · 자연관광지 1 · 카페 1<br />전략: 약속지 근처 6 · 가는 길 중간 3 · 출발지 근처 1<br />직접 매칭 4 · 카테고리 폴백 6 · 운영시간 직접 근거 8 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 고래서이뻐 (상업지구 · 약속지 근처) / 2. 미포정거장 (레저/스포츠 · 약속지 근처) / 3. 해운대하얀오징어집 (식당 · 약속지 근처) / 4. 책방봄봄 (문화시설 · 약속지 근처) / 5. 장산 (부산 국가지질공원) (자연관광지 · 가는 길 중간) / 6. 해운대기와집대구탕 (식당 · 약속지 근처) / 7. 조현화랑 (문화시설 · 가는 길 중간) / 8. 공극샌드커피 (카페 · 출발지 근처) / 9. 해운대 로데오거리 (상업지구 · 약속지 근처) / 10. 문탠로드 (레저/스포츠 · 가는 길 중간)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 고래서이뻐</div>
+      <span class="status WARN">WARN 85</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 85분 · 오후 적합 90% · 경유 효율 61%</div>
+    <div class="spots"><div class="spot">
+      <div>고래서이뻐</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 72분<br />체류 가능 34분</div>
+      <div>자동차 이동 21분<br />체류 가능 85분</div>
+      <div>최선 수단 자동차<br />최선 체류 85분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 72분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 미포정거장</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 85분 · 오후 적합 90% · 경유 효율 61%</div>
+    <div class="spots"><div class="spot">
+      <div>미포정거장</div>
+      <div class="small">레저/스포츠 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 80분<br />체류 가능 26분</div>
+      <div>자동차 이동 21분<br />체류 가능 85분</div>
+      <div>최선 수단 자동차<br />최선 체류 85분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 80분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해운대하얀오징어집</div>
+      <span class="status WARN">WARN 85</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 87분 · 오후 적합 40% · 경유 효율 77%</div>
+    <div class="spots"><div class="spot">
+      <div>해운대하얀오징어집</div>
+      <div class="small">식당 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 74분<br />체류 가능 32분</div>
+      <div>자동차 이동 19분<br />체류 가능 87분</div>
+      <div>최선 수단 자동차<br />최선 체류 87분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 74분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 책방봄봄</div>
+      <span class="status WARN">WARN 75</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 87분 · 오후 적합 100% · 경유 효율 77%</div>
+    <div class="spots"><div class="spot">
+      <div>책방봄봄</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 70분<br />체류 가능 36분</div>
+      <div>자동차 이동 19분<br />체류 가능 87분</div>
+      <div>최선 수단 자동차<br />최선 체류 87분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 70분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 장산 (부산 국가지질공원)</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 84분 · 오후 적합 100% · 경유 효율 53%</div>
+    <div class="spots"><div class="spot">
+      <div>장산 (부산 국가지질공원)</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 85분<br />체류 가능 21분</div>
+      <div>자동차 이동 22분<br />체류 가능 84분</div>
+      <div>최선 수단 자동차<br />최선 체류 84분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 85분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해운대기와집대구탕</div>
+      <span class="status WARN">WARN 85</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 87분 · 오후 적합 40% · 경유 효율 77%</div>
+    <div class="spots"><div class="spot">
+      <div>해운대기와집대구탕</div>
+      <div class="small">식당 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 74분<br />체류 가능 32분</div>
+      <div>자동차 이동 19분<br />체류 가능 87분</div>
+      <div>최선 수단 자동차<br />최선 체류 87분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 74분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 조현화랑</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 85분 · 오후 적합 100% · 경유 효율 61%</div>
+    <div class="spots"><div class="spot">
+      <div>조현화랑</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 86분<br />체류 가능 20분</div>
+      <div>자동차 이동 21분<br />체류 가능 85분</div>
+      <div>최선 수단 자동차<br />최선 체류 85분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 86분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 공극샌드커피</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 79분 · 오후 적합 80% · 경유 효율 14%</div>
+    <div class="spots"><div class="spot">
+      <div>공극샌드커피</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 116분<br />체류 가능 0분</div>
+      <div>자동차 이동 27분<br />체류 가능 79분</div>
+      <div>최선 수단 자동차<br />최선 체류 79분</div>
+      <div>우회율 1.7<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 116분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해운대 로데오거리</div>
+      <span class="status WARN">WARN 75</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 87분 · 오후 적합 90% · 경유 효율 77%</div>
+    <div class="spots"><div class="spot">
+      <div>해운대 로데오거리</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 72분<br />체류 가능 34분</div>
+      <div>자동차 이동 19분<br />체류 가능 87분</div>
+      <div>최선 수단 자동차<br />최선 체류 87분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 72분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 문탠로드 + 미포정거장</div>
+      <span class="status FAIL">FAIL 30</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 81분 · 오후 적합 90% · 경유 효율 30%</div>
+    <div class="spots"><div class="spot">
+      <div>문탠로드</div>
+      <div class="small">레저/스포츠 · 권장 90분 · category_fallback</div>
+    </div><div class="spot">
+      <div>미포정거장</div>
+      <div class="small">레저/스포츠 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 82분<br />체류 가능 24분</div>
+      <div>자동차 이동 25분<br />체류 가능 81분</div>
+      <div>최선 수단 자동차<br />최선 체류 81분</div>
+      <div>우회율 1.6<br />장소간 도보 4분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">duplicate_category_pair</b> 같은 카테고리 2곳 코스입니다.</li><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 82분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S15. 다대포 왕복 120분</h2>
+        <div class="meta">다대포해수욕장역 -> 출발지 복귀 · 차량 · 120분 · 주말 15:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 5 · 카탈로그 3 · 시간/방향 3 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 3곳 / 목록 상단 3곳</div>
+        <div class="meta">후보 수 또는 상단 카테고리 분포가 제한적입니다. 후보 풀 확대가 필요한지 확인 대상입니다.</div>
+      </div>
+      <span class="health LIMITED">후보 제한</span>
+    </div>
+    <div class="candidateList">카테고리: 자연관광지 1 · 상업지구 2<br />전략: 출발지 근처 3<br />직접 매칭 0 · 카테고리 폴백 2 · 운영시간 직접 근거 1 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 다대포 꿈의 낙조분수 (자연관광지 · 출발지 근처) / 2. 다대씨파크 (상업지구 · 출발지 근처) / 3. 장림골목시장 (상업지구 · 출발지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 다대포 꿈의 낙조분수</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 94분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>다대포 꿈의 낙조분수</div>
+      <div class="small">자연관광지 · 권장 30분 · area_context_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 12분<br />체류 가능 94분</div>
+      <div>자동차 이동 12분<br />체류 가능 94분</div>
+      <div>최선 수단 자동차<br />최선 체류 94분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 다대씨파크</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 94분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>다대씨파크</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 30분<br />체류 가능 76분</div>
+      <div>자동차 이동 12분<br />체류 가능 94분</div>
+      <div>최선 수단 자동차<br />최선 체류 94분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 장림골목시장</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 78분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>장림골목시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 120분<br />체류 가능 0분</div>
+      <div>자동차 이동 28분<br />체류 가능 78분</div>
+      <div>최선 수단 자동차<br />최선 체류 78분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 120분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 다대씨파크 + 다대포 꿈의 낙조분수</div>
+      <span class="status FAIL">FAIL 40</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 88분 · 오후 적합 95%</div>
+    <div class="spots"><div class="spot">
+      <div>다대씨파크</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>다대포 꿈의 낙조분수</div>
+      <div class="small">자연관광지 · 권장 30분 · area_context_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 38분<br />체류 가능 68분</div>
+      <div>자동차 이동 18분<br />체류 가능 88분</div>
+      <div>최선 수단 자동차<br />최선 체류 88분</div>
+      <div>우회율 -<br />장소간 도보 17분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 17분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 장림골목시장 + 다대포 꿈의 낙조분수</div>
+      <span class="status FAIL">FAIL 5</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 71분 · 오후 적합 95%</div>
+    <div class="spots"><div class="spot">
+      <div>장림골목시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>다대포 꿈의 낙조분수</div>
+      <div class="small">자연관광지 · 권장 30분 · area_context_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 130분<br />체류 가능 0분</div>
+      <div>자동차 이동 35분<br />체류 가능 71분</div>
+      <div>최선 수단 자동차<br />최선 체류 71분</div>
+      <div>우회율 -<br />장소간 도보 64분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 64분입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 130분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 장림골목시장 + 다대씨파크</div>
+      <span class="status FAIL">FAIL 0</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 74분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>장림골목시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>다대씨파크</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 123분<br />체류 가능 0분</div>
+      <div>자동차 이동 32분<br />체류 가능 74분</div>
+      <div>최선 수단 자동차<br />최선 체류 74분</div>
+      <div>우회율 -<br />장소간 도보 48분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">duplicate_category_pair</b> 같은 카테고리 2곳 코스입니다.</li><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 48분입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 123분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S16. 기장 -&gt; 오시리아 120분</h2>
+        <div class="meta">기장역 -> 오시리아역 · 차량 · 120분 · 평일 14:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 81 · 카탈로그 63 · 시간/방향 44 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 15곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 자연관광지 2 · 식당 3 · 상업지구 2 · 문화시설 1 · 카페 2<br />전략: 약속지 근처 9 · 가는 길 중간 1<br />직접 매칭 4 · 카테고리 폴백 6 · 운영시간 직접 근거 6 · 지도 검증 약함 1</div>
+    <div class="candidateList">상단 후보: 1. 롯데월드 어드벤처 부산 (자연관광지 · 약속지 근처) / 2. 고향연화 (식당 · 약속지 근처) / 3. 롯데프리미엄아울렛 동부산점 (상업지구 · 약속지 근처) / 4. 기장문화원 (문화시설 · 가는 길 중간) / 5. 카페공지 (카페 · 약속지 근처) / 6. 무진장횟집 (식당 · 약속지 근처) / 7. 해광사 (자연관광지 · 약속지 근처) / 8. 팜카페 (카페 · 약속지 근처) / 9. 대변시장 (상업지구 · 약속지 근처) / 10. 향유정 속초이모네찜 (식당 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 롯데월드 어드벤처 부산</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 79분 · 오후 적합 100% · 경유 효율 56%</div>
+    <div class="spots"><div class="spot">
+      <div>롯데월드 어드벤처 부산</div>
+      <div class="small">자연관광지 · 권장 240분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 98분<br />체류 가능 8분</div>
+      <div>자동차 이동 27분<br />체류 가능 79분</div>
+      <div>최선 수단 자동차<br />최선 체류 79분</div>
+      <div>우회율 1.4<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 98분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 고향연화</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 81분 · 오후 적합 40% · 경유 효율 69%</div>
+    <div class="spots"><div class="spot">
+      <div>고향연화</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 98분<br />체류 가능 8분</div>
+      <div>자동차 이동 25분<br />체류 가능 81분</div>
+      <div>최선 수단 자동차<br />최선 체류 81분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 98분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 롯데프리미엄아울렛 동부산점</div>
+      <span class="status FAIL">FAIL 45</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 75분 · 오후 적합 90% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>롯데프리미엄아울렛 동부산점</div>
+      <div class="small">상업지구 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 108분<br />체류 가능 0분</div>
+      <div>자동차 이동 31분<br />체류 가능 75분</div>
+      <div>최선 수단 자동차<br />최선 체류 75분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 108분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 기장문화원</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 83분 · 오후 적합 100% · 경유 효율 81%</div>
+    <div class="spots"><div class="spot">
+      <div>기장문화원</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 93분<br />체류 가능 13분</div>
+      <div>자동차 이동 23분<br />체류 가능 83분</div>
+      <div>최선 수단 자동차<br />최선 체류 83분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 93분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 카페공지</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 82분 · 오후 적합 80% · 경유 효율 75%</div>
+    <div class="spots"><div class="spot">
+      <div>카페공지</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 98분<br />체류 가능 8분</div>
+      <div>자동차 이동 24분<br />체류 가능 82분</div>
+      <div>최선 수단 자동차<br />최선 체류 82분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 98분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 무진장횟집</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 81분 · 오후 적합 40% · 경유 효율 69%</div>
+    <div class="spots"><div class="spot">
+      <div>무진장횟집</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 100분<br />체류 가능 6분</div>
+      <div>자동차 이동 25분<br />체류 가능 81분</div>
+      <div>최선 수단 자동차<br />최선 체류 81분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 100분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해광사</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 80분 · 오후 적합 100% · 경유 효율 63%</div>
+    <div class="spots"><div class="spot">
+      <div>해광사</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 104분<br />체류 가능 2분</div>
+      <div>자동차 이동 26분<br />체류 가능 80분</div>
+      <div>최선 수단 자동차<br />최선 체류 80분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 104분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 팜카페</div>
+      <span class="status FAIL">FAIL 35</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 75분 · 오후 적합 80% · 경유 효율 31%</div>
+    <div class="spots"><div class="spot">
+      <div>팜카페</div>
+      <div class="small">카페 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 91분<br />체류 가능 15분</div>
+      <div>자동차 이동 31분<br />체류 가능 75분</div>
+      <div>최선 수단 자동차<br />최선 체류 75분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 91분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 대변시장</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 81분 · 오후 적합 90% · 경유 효율 69%</div>
+    <div class="spots"><div class="spot">
+      <div>대변시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 103분<br />체류 가능 3분</div>
+      <div>자동차 이동 25분<br />체류 가능 81분</div>
+      <div>최선 수단 자동차<br />최선 체류 81분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 103분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 기장문화원 + 롯데프리미엄아울렛 동부산점</div>
+      <span class="status FAIL">FAIL 0</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 72분 · 오후 적합 95% · 경유 효율 13%</div>
+    <div class="spots"><div class="spot">
+      <div>기장문화원</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>롯데프리미엄아울렛 동부산점</div>
+      <div class="small">상업지구 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 109분<br />체류 가능 0분</div>
+      <div>자동차 이동 34분<br />체류 가능 72분</div>
+      <div>최선 수단 자동차<br />최선 체류 72분</div>
+      <div>우회율 1.7<br />장소간 도보 81분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 81분입니다.</li><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 109분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S17. 센텀 -&gt; 벡스코 60분</h2>
+        <div class="meta">센텀시티역 -> 벡스코 · 차량 · 60분 · 평일 10:00 아침</div>
+      </div>
+      <div class="meta">TourAPI 73 · 카탈로그 41 · 시간/방향 0 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 0곳 / 목록 상단 0곳 · 병목 시간·방향</div>
+        <div class="meta">TourAPI 73곳 중 카탈로그 후보 41곳은 있었지만 시간·방향성 1차 컷을 통과한 후보가 없습니다. 장소 데이터 부족이 아니라 입력 시간과 약속 동선의 제약입니다.</div>
+      </div>
+      <span class="health SCARCE">후보 부족</span>
+    </div>
+    <div class="candidateList">카테고리: 없음<br />전략: 없음<br />직접 매칭 0 · 카테고리 폴백 0 · 운영시간 직접 근거 0 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: </div>
+  </div><div class="courses"></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S18. 부산역 -&gt; 서면 180분</h2>
+        <div class="meta">부산역 -> 서면역 · 차량 · 180분 · 평일 14:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 120 · 카탈로그 72 · 시간/방향 65 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 16곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 식당 2 · 자연관광지 3 · 카페 1 · 문화시설 2 · 상업지구 2<br />전략: 가는 길 중간 3 · 약속지 근처 7<br />직접 매칭 3 · 카테고리 폴백 7 · 운영시간 직접 근거 5 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 초량온당 (식당 · 가는 길 중간) / 2. 범일 이중섭거리 (자연관광지 · 약속지 근처) / 3. 희와제과 (카페 · 약속지 근처) / 4. 부산 동구도서관 (문화시설 · 약속지 근처) / 5. 좌천동 가구거리 (상업지구 · 약속지 근처) / 6. 초량밀면 (식당 · 가는 길 중간) / 7. 보광사(부산) (자연관광지 · 약속지 근처) / 8. 장기려기념 더 나눔센터 (문화시설 · 가는 길 중간) / 9. 부산 중앙시장 (상업지구 · 약속지 근처) / 10. 커넥트현대 (자연관광지 · 약속지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 초량온당</div>
+      <span class="status WARN">WARN 85</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 136분 · 오후 적합 40% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>초량온당</div>
+      <div class="small">식당 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 74분</div>
+      <div>자동차 이동 22분<br />체류 가능 136분</div>
+      <div>최선 수단 자동차<br />최선 체류 136분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 범일 이중섭거리</div>
+      <span class="status WARN">WARN 75</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 137분 · 오후 적합 100% · 경유 효율 87%</div>
+    <div class="spots"><div class="spot">
+      <div>범일 이중섭거리</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 74분</div>
+      <div>자동차 이동 21분<br />체류 가능 137분</div>
+      <div>최선 수단 자동차<br />최선 체류 137분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 희와제과</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 128분 · 오후 적합 80% · 경유 효율 28%</div>
+    <div class="spots"><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 98분<br />체류 가능 60분</div>
+      <div>자동차 이동 30분<br />체류 가능 128분</div>
+      <div>최선 수단 자동차<br />최선 체류 128분</div>
+      <div>우회율 1.6<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.6배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 98분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 동구도서관</div>
+      <span class="status WARN">WARN 75</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 136분 · 오후 적합 100% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 동구도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 74분</div>
+      <div>자동차 이동 22분<br />체류 가능 136분</div>
+      <div>최선 수단 자동차<br />최선 체류 136분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 좌천동 가구거리</div>
+      <span class="status WARN">WARN 75</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 136분 · 오후 적합 90% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>좌천동 가구거리</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 86분<br />체류 가능 72분</div>
+      <div>자동차 이동 22분<br />체류 가능 136분</div>
+      <div>최선 수단 자동차<br />최선 체류 136분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 86분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 초량밀면</div>
+      <span class="status WARN">WARN 85</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 136분 · 오후 적합 40% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>초량밀면</div>
+      <div class="small">식당 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 84분<br />체류 가능 74분</div>
+      <div>자동차 이동 22분<br />체류 가능 136분</div>
+      <div>최선 수단 자동차<br />최선 체류 136분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 84분입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 보광사(부산)</div>
+      <span class="status WARN">WARN 75</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 136분 · 오후 적합 100% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>보광사(부산)</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 86분<br />체류 가능 72분</div>
+      <div>자동차 이동 22분<br />체류 가능 136분</div>
+      <div>최선 수단 자동차<br />최선 체류 136분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 86분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 장기려기념 더 나눔센터</div>
+      <span class="status WARN">WARN 75</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 133분 · 오후 적합 100% · 경유 효율 61%</div>
+    <div class="spots"><div class="spot">
+      <div>장기려기념 더 나눔센터</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 98분<br />체류 가능 60분</div>
+      <div>자동차 이동 25분<br />체류 가능 133분</div>
+      <div>최선 수단 자동차<br />최선 체류 133분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 98분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산 중앙시장</div>
+      <span class="status WARN">WARN 75</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 136분 · 오후 적합 90% · 경유 효율 80%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 중앙시장</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 87분<br />체류 가능 71분</div>
+      <div>자동차 이동 22분<br />체류 가능 136분</div>
+      <div>최선 수단 자동차<br />최선 체류 136분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 87분입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 부산 동구도서관 + 희와제과</div>
+      <span class="status FAIL">FAIL 5</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 125분 · 오후 적합 90% · 경유 효율 8%</div>
+    <div class="spots"><div class="spot">
+      <div>부산 동구도서관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 99분<br />체류 가능 59분</div>
+      <div>자동차 이동 33분<br />체류 가능 125분</div>
+      <div>최선 수단 자동차<br />최선 체류 125분</div>
+      <div>우회율 1.7<br />장소간 도보 43분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 43분입니다.</li><li><b class="warn">detour_medium</b> 직행 대비 우회율이 1.7배입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 99분입니다.</li></ul>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S19. 해운대 왕복 150분</h2>
+        <div class="meta">해운대역 -> 출발지 복귀 · 차량 · 150분 · 주말 15:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 60 · 카탈로그 30 · 시간/방향 30 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 16곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 레저/스포츠 1 · 자연관광지 2 · 문화시설 2 · 상업지구 2 · 식당 3<br />전략: 출발지 근처 10<br />직접 매칭 7 · 카테고리 폴백 3 · 운영시간 직접 근거 7 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 미포정거장 (레저/스포츠 · 출발지 근처) / 2. 해운대 동백섬 (자연관광지 · 출발지 근처) / 3. 누리마루 APEC하우스 (문화시설 · 출발지 근처) / 4. 고래서이뻐 (상업지구 · 출발지 근처) / 5. 타이가텐푸라 (식당 · 출발지 근처) / 6. 씨라이프부산아쿠아리움 (자연관광지 · 출발지 근처) / 7. 금수복국 해운대본점 (식당 · 출발지 근처) / 8. 책방봄봄 (문화시설 · 출발지 근처) / 9. 해운대 로데오거리 (상업지구 · 출발지 근처) / 10. 해목 (식당 · 출발지 근처)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 미포정거장</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 116분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>미포정거장</div>
+      <div class="small">레저/스포츠 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 48분<br />체류 가능 84분</div>
+      <div>자동차 이동 16분<br />체류 가능 116분</div>
+      <div>최선 수단 자동차<br />최선 체류 116분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 해운대 동백섬 + 누리마루 APEC하우스</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 115분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>해운대 동백섬</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div><div class="spot">
+      <div>누리마루 APEC하우스</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 44분<br />체류 가능 88분</div>
+      <div>자동차 이동 17분<br />체류 가능 115분</div>
+      <div>최선 수단 자동차<br />최선 체류 115분</div>
+      <div>우회율 -<br />장소간 도보 3분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 고래서이뻐</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 122분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>고래서이뻐</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 10분<br />체류 가능 122분</div>
+      <div>자동차 이동 10분<br />체류 가능 122분</div>
+      <div>최선 수단 자동차<br />최선 체류 122분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 타이가텐푸라</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 126분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>타이가텐푸라</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 6분<br />체류 가능 126분</div>
+      <div>자동차 이동 6분<br />체류 가능 126분</div>
+      <div>최선 수단 자동차<br />최선 체류 126분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 씨라이프부산아쿠아리움</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 116분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>씨라이프부산아쿠아리움</div>
+      <div class="small">자연관광지 · 권장 90분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 16분<br />체류 가능 116분</div>
+      <div>자동차 이동 16분<br />체류 가능 116분</div>
+      <div>최선 수단 자동차<br />최선 체류 116분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 금수복국 해운대본점</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 112분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>금수복국 해운대본점</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 20분<br />체류 가능 112분</div>
+      <div>자동차 이동 20분<br />체류 가능 112분</div>
+      <div>최선 수단 자동차<br />최선 체류 112분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 책방봄봄</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 120분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>책방봄봄</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 36분<br />체류 가능 96분</div>
+      <div>자동차 이동 12분<br />체류 가능 120분</div>
+      <div>최선 수단 자동차<br />최선 체류 120분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해운대 동백섬</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 118분 · 오후 적합 100%</div>
+    <div class="spots"><div class="spot">
+      <div>해운대 동백섬</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 38분<br />체류 가능 94분</div>
+      <div>자동차 이동 14분<br />체류 가능 118분</div>
+      <div>최선 수단 자동차<br />최선 체류 118분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해운대 로데오거리</div>
+      <span class="status WARN">WARN 90</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 120분 · 오후 적합 90%</div>
+    <div class="spots"><div class="spot">
+      <div>해운대 로데오거리</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 36분<br />체류 가능 96분</div>
+      <div>자동차 이동 12분<br />체류 가능 120분</div>
+      <div>최선 수단 자동차<br />최선 체류 120분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해목</div>
+      <span class="status PASS">PASS 100</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 126분 · 오후 적합 40%</div>
+    <div class="spots"><div class="spot">
+      <div>해목</div>
+      <div class="small">식당 · 권장 60분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 6분<br />체류 가능 126분</div>
+      <div>자동차 이동 6분<br />체류 가능 126분</div>
+      <div>최선 수단 자동차<br />최선 체류 126분</div>
+      <div>우회율 -<br />장소간 도보 -분</div>
+    </div>
+    <div class="small">자동 진단 이슈 없음</div>
+  </article></div>
+  </section><section class="scenario">
+    <div class="shead">
+      <div>
+        <h2>S20. 광안리 -&gt; 부산역 180분</h2>
+        <div class="meta">광안리해수욕장 -> 부산역 · 차량 · 180분 · 주말 15:00 오후</div>
+      </div>
+      <div class="meta">TourAPI 171 · 카탈로그 98 · 시간/방향 98 · 운영시간 생략 · 경로 API 0</div>
+    </div>
+    <div class="candidateDiag">
+    <div class="candidateDiagHead">
+      <div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 15곳 / 목록 상단 10곳</div>
+        <div class="meta">후보 수와 상단 카테고리 분포가 기본 탐색에 충분합니다.</div>
+      </div>
+      <span class="health SUFFICIENT">후보 충분</span>
+    </div>
+    <div class="candidateList">카테고리: 식당 2 · 자연관광지 2 · 상업지구 2 · 카페 1 · 문화시설 3<br />전략: 약속지 근처 2 · 출발지 근처 2 · 가는 길 중간 6<br />직접 매칭 5 · 카테고리 폴백 5 · 운영시간 직접 근거 7 · 지도 검증 약함 0</div>
+    <div class="candidateList">상단 후보: 1. 신발원 (식당 · 약속지 근처) / 2. 광안리해변 테마거리 (자연관광지 · 출발지 근처) / 3. 분홍이네 (상업지구 · 출발지 근처) / 4. 희와제과 (카페 · 가는 길 중간) / 5. 부산문화회관 (문화시설 · 가는 길 중간) / 6. 초량밀면 (식당 · 약속지 근처) / 7. 해성아트베이 (문화시설 · 가는 길 중간) / 8. UN조각공원 (자연관광지 · 가는 길 중간) / 9. 좌천동 가구거리 (상업지구 · 가는 길 중간) / 10. 부산 동구도서관 (문화시설 · 가는 길 중간)</div>
+  </div><div class="courses"><article class="course">
+    <div class="top">
+      <div class="title">단일 · 신발원</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 125분 · 오후 적합 40% · 경유 효율 83%</div>
+    <div class="spots"><div class="spot">
+      <div>신발원</div>
+      <div class="small">식당 · 권장 45분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 144분<br />체류 가능 14분</div>
+      <div>자동차 이동 33분<br />체류 가능 125분</div>
+      <div>최선 수단 자동차<br />최선 체류 125분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 144분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 광안리해변 테마거리</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 122분 · 오후 적합 100% · 경유 효율 70%</div>
+    <div class="spots"><div class="spot">
+      <div>광안리해변 테마거리</div>
+      <div class="small">자연관광지 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 149분<br />체류 가능 9분</div>
+      <div>자동차 이동 36분<br />체류 가능 122분</div>
+      <div>최선 수단 자동차<br />최선 체류 122분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 149분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 분홍이네</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">출발지 근처 · 출발지 근처 · 차량 기준 체류가능 124분 · 오후 적합 90% · 경유 효율 78%</div>
+    <div class="spots"><div class="spot">
+      <div>분홍이네</div>
+      <div class="small">상업지구 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 142분<br />체류 가능 16분</div>
+      <div>자동차 이동 34분<br />체류 가능 124분</div>
+      <div>최선 수단 자동차<br />최선 체류 124분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 142분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 희와제과</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 120분 · 오후 적합 80% · 경유 효율 61%</div>
+    <div class="spots"><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 169분<br />체류 가능 0분</div>
+      <div>자동차 이동 38분<br />체류 가능 120분</div>
+      <div>최선 수단 자동차<br />최선 체류 120분</div>
+      <div>우회율 1.3<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 169분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 부산문화회관</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 125분 · 오후 적합 100% · 경유 효율 83%</div>
+    <div class="spots"><div class="spot">
+      <div>부산문화회관</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 142분<br />체류 가능 16분</div>
+      <div>자동차 이동 33분<br />체류 가능 125분</div>
+      <div>최선 수단 자동차<br />최선 체류 125분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 142분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 초량밀면</div>
+      <span class="status WARN">WARN 65</span>
+    </div>
+    <div class="small">약속지 근처 · 약속지 근처 · 차량 기준 체류가능 126분 · 오후 적합 40% · 경유 효율 87%</div>
+    <div class="spots"><div class="spot">
+      <div>초량밀면</div>
+      <div class="small">식당 · 권장 30분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 139분<br />체류 가능 19분</div>
+      <div>자동차 이동 32분<br />체류 가능 126분</div>
+      <div>최선 수단 자동차<br />최선 체류 126분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 139분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 해성아트베이</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 123분 · 오후 적합 100% · 경유 효율 74%</div>
+    <div class="spots"><div class="spot">
+      <div>해성아트베이</div>
+      <div class="small">문화시설 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 155분<br />체류 가능 3분</div>
+      <div>자동차 이동 35분<br />체류 가능 123분</div>
+      <div>최선 수단 자동차<br />최선 체류 123분</div>
+      <div>우회율 1.2<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 155분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · UN조각공원</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 125분 · 오후 적합 100% · 경유 효율 83%</div>
+    <div class="spots"><div class="spot">
+      <div>UN조각공원</div>
+      <div class="small">자연관광지 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 144분<br />체류 가능 14분</div>
+      <div>자동차 이동 33분<br />체류 가능 125분</div>
+      <div>최선 수단 자동차<br />최선 체류 125분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 144분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">단일 · 좌천동 가구거리</div>
+      <span class="status FAIL">FAIL 55</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 125분 · 오후 적합 90% · 경유 효율 83%</div>
+    <div class="spots"><div class="spot">
+      <div>좌천동 가구거리</div>
+      <div class="small">상업지구 · 권장 60분 · category_fallback</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 144분<br />체류 가능 14분</div>
+      <div>자동차 이동 33분<br />체류 가능 125분</div>
+      <div>최선 수단 자동차<br />최선 체류 125분</div>
+      <div>우회율 1.1<br />장소간 도보 -분</div>
+    </div>
+    <ul class="issues"><li><b class="warn">walk_too_long</b> 도보 총 이동이 144분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li><li><b class="warn">fallback_only_course</b> 모든 장소가 카테고리 폴백 데이터입니다.</li></ul>
+  </article><article class="course">
+    <div class="top">
+      <div class="title">미니코스 · 희와제과 + 신발원</div>
+      <span class="status FAIL">FAIL 5</span>
+    </div>
+    <div class="small">가는 길 중간 · 가는 길 중간 · 차량 기준 체류가능 116분 · 오후 적합 60% · 경유 효율 44%</div>
+    <div class="spots"><div class="spot">
+      <div>희와제과</div>
+      <div class="small">카페 · 권장 30분 · direct_match</div>
+    </div><div class="spot">
+      <div>신발원</div>
+      <div class="small">식당 · 권장 45분 · direct_match</div>
+    </div></div>
+    <div class="metric">
+      <div>도보 이동 176분<br />체류 가능 0분</div>
+      <div>자동차 이동 42분<br />체류 가능 116분</div>
+      <div>최선 수단 자동차<br />최선 체류 116분</div>
+      <div>우회율 1.4<br />장소간 도보 91분</div>
+    </div>
+    <ul class="issues"><li><b class="fail">far_pair</b> 두 장소 사이 도보 추정이 91분입니다.</li><li><b class="warn">walk_too_long</b> 도보 총 이동이 176분입니다.</li><li><b class="warn">car_only</b> 자동차로만 최소 체류 30분 이상 가능한 코스입니다.</li></ul>
+  </article></div>
+  </section>
+  </main>
+</body>
+</html>

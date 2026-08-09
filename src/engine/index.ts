@@ -1,4 +1,5 @@
 export * from './types';
+export { hasBalancedPaidVisit, isPaidFacilityLike, isQuickBrowseSpot, isTravelHeavyBrowse, minimumStayForCourse, minimumStayForSpot, safetyBufferMin } from './recommendationPolicy';
 export { planTimeFit, refineCourses, timeContext, timeContextManual } from './planner';
 export { geocodeAddr, getOdsayTransitUsage, getTmapRouteUsage, poiSearch, poiSearchMulti, reverseGeocode, travelMin, travelSrc, type Poi } from './travel';
 export { hasKakaoRestKey, kakaoGeocodeAddr, kakaoPoiSearchMulti, kakaoReverseGeocode } from './kakao';

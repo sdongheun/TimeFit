@@ -3,9 +3,9 @@ import { Course, LatLon, Mode, MobilityOption, PlanInput, PlanResult, RoadMode, 
 import { resolveBusanDwell } from './data';
 import { detailIntro, isOpenDuring, locationBased } from './tourapi';
 import { haversineMin, precompute, precomputeTransit, transitMeta, travelGeo, travelMin, travelSrc } from './travel';
+import { hasBalancedPaidVisit, isTravelHeavyBrowse, minimumStayForCourse, safetyBufferMin } from './recommendationPolicy';
 
 const ROAD_MODES: RoadMode[] = ['walk', 'car'];
-const DEFAULT_MIN_STAY_MIN = 30;
 const HARD_DETOUR_RATIO = 1.8;
 const INITIAL_TMAP_REFINE_COUNT = 0;
 const INITIAL_RESULT_COUNT = 10;
@@ -20,16 +20,18 @@ const STRATEGY_LABEL: Record<Strategy, string> = {
 export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   const primaryMode = input.mode;
   const radiusM = input.radiusM ?? radiusFor(primaryMode, input.remainingMin);
-  const buffer = Math.max(10, Math.round(input.remainingMin * 0.12));
+  const buffer = safetyBufferMin(primaryMode);
   const budget = input.remainingMin - buffer;
   const target: LatLon = input.destination ?? input.origin;
 
   // 1) 후보: 출발지 근처 + 약속지 근처 + 이동 중간 후보를 함께 수집
   const cands: Spot[] = [];
   const seenCand = new Map<string, Spot>();
+  const seenTourApi = new Set<string>();
   for (const center of searchCenters(input.origin, input.destination ?? null)) {
     const raw = await locationBased(center.lat, center.lon, radiusM);
     for (const it of raw) {
+      seenTourApi.add(String(it.contentid));
       const d = resolveBusanDwell(it.contentid, input.dayType, input.hourBucket);
       if (!d) continue;
       const lat = parseFloat(it.mapy), lon = parseFloat(it.mapx);
@@ -63,11 +65,17 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
 
   // 3) 운영시간 게이트 (상위만 detailIntro2)
   const gated: Spot[] = [];
-  for (const s of gateQueue.slice(0, gateLimitFor(primaryMode, input.remainingMin))) {
-    const intro = await detailIntro(s.contentId, s.typeId);
-    const start = input.nowMin + Math.min(haversineMin(input.origin, s, 'walk'), haversineMin(input.origin, s, 'car'));
-    const g = isOpenDuring(intro, s.typeId, start, s.dwell);
-    if (g.ok) gated.push({ ...s, openNote: g.note });
+  const openingTargets = gateQueue.slice(0, gateLimitFor(primaryMode, input.remainingMin));
+  if (input.deferOpeningGate) {
+    // 후보 풀 비교용. 실제 앱 추천에서는 항상 아래 상세 운영시간 게이트를 사용한다.
+    gated.push(...openingTargets.map((spot) => ({ ...spot, openNote: '운영시간 자동진단 생략' })));
+  } else {
+    for (const s of openingTargets) {
+      const intro = await detailIntro(s.contentId, s.typeId);
+      const start = input.nowMin + Math.min(haversineMin(input.origin, s, 'walk'), haversineMin(input.origin, s, 'car'));
+      const g = isOpenDuring(intro, s.typeId, start, s.dwell);
+      if (g.ok) gated.push({ ...s, openNote: g.note });
+    }
   }
 
   // 4) 시간적응형 코스 조립 — 이 단계는 haversine 추정만 사용 (TMAP 미호출)
@@ -98,14 +106,16 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
 
   // 5) 지연 정밀화 — API 사용량 보호를 위해 추천 목록에서는 TMAP 경로 API를 호출하지 않는다.
   //    나머지는 haversine 추정값으로 먼저 보여주고, 상세/확정 단계에서 정밀화하는 구조로 확장한다.
-  const r = primaryMode === 'transit'
+  const r = primaryMode === 'transit' && !input.deferTransitRefinement
     ? await refineTransitCandidates(ranked, input.origin, input.destination ?? null, input.remainingMin, input.hourBucket, budget)
     : await refineCourses(ranked, input.origin, input.destination ?? null, input.mode, input.remainingMin, INITIAL_TMAP_REFINE_COUNT);
   const visibleCourses = [...r.courses, ...r.rest.slice(0, Math.max(0, INITIAL_RESULT_COUNT - r.courses.length))];
   const pendingCourses = r.rest.slice(Math.max(0, INITIAL_RESULT_COUNT - r.courses.length));
 
   return {
-    budgetMin: budget, bufferMin: buffer, candidateCount: cands.length,
+    budgetMin: budget, bufferMin: buffer, tourApiCount: seenTourApi.size, candidateCount: cands.length,
+    eligibleCount: pre.length,
+    openingCheckCount: openingTargets.length,
     gatedCount: gated.length, tmapOk: r.ok, tmapFail: r.fail, courses: visibleCourses, pending: pendingCourses,
   };
 }
@@ -132,7 +142,7 @@ async function refineTransitCandidates(
 }
 
 // ───────────────── 랭킹 v1 (결정적·설명가능) ─────────────────
-// score = 0.4·체류비율 + 0.3·시간활용 + 0.3·시간대적합 + 0.05·(스팟수−1) − 0.15·카테고리중복(그리디)
+// score = 0.30·체류여유 + 0.20·체류비율 + 0.20·시간대적합 + 0.15·신뢰도 + 0.15·밀집도 + 보너스/감점
 // · 체류비율: 이동 낭비 벌점 — "멀리 걷게 하는 코스가 상위" 왜곡 제거 (A2)
 // · 시간대적합: 오후 3시 뷔페 같은 부조화 감점 (A4)
 // · 그리디 다양성: 위에서부터 뽑을 때 이미 뽑힌 카테고리는 감점 → 상위 10개 골고루 (A3)
@@ -187,11 +197,10 @@ function rankCourses(
     const bestMove = primary?.moveMin ?? Infinity;
     const dwell = Math.min(c.spots.reduce((n, s) => n + s.dwell, 0), bestStay);
     const ratio = dwell / Math.max(bestMove + dwell, 1);                // 체류비율(이동낭비 벌점)
-    const use = Math.min(1, (bestMove + dwell) / budget);               // 시간활용(알차게)
     const fit = c.spots.reduce((n, s) => n + timeFitOf(bucket, s.category), 0) / c.spots.length; // 시간대적합
     const conf = c.spots.reduce((n, s) => n + confidenceScore(s.confidence), 0) / c.spots.length;
     const compact = c.spots.length === 1 ? 0.7 : Math.max(0, 1 - haversineMin(c.spots[0], c.spots[1], 'walk') / 12);
-    const minStay = minStayForCourse(c.spots, remainingMin);
+    const minStay = minimumStayForCourse(c.spots, approachMins(c.spots, origin, primaryMode));
     const carOnlyPenalty = primaryMode === 'walk' && (c.mobility?.walk?.stayMin ?? 0) < minStay && (c.mobility?.car?.stayMin ?? 0) >= minStay ? 0.12 : 0;
     const fallbackOnlyPenalty = c.spots.every((s) => s.confidence === 'category_fallback') ? 0.12 : 0;
     const openingReliabilityPenalty = c.spots.reduce((n, s) => n + openingReliabilityPenaltyOf(s.openingHoursReliability), 0) / c.spots.length;
@@ -203,9 +212,12 @@ function rankCourses(
     const transitReliabilityPenalty = primaryMode === 'transit' ? transitFallbackPenalty(c) : 0;
     const direction = directionEfficiency(c.spots, origin, destination, primaryMode);
     const detourPenalty = destination ? (1 - direction.score) * 0.14 : 0;
+    const directMove = destination ? travelMin(origin, destination, primaryMode) : 0;
+    const addedMove = Math.max(0, bestMove - directMove);
+    const browseImbalancePenalty = isTravelHeavyBrowse(c.spots, dwell, addedMove) ? 0.05 : 0;
     const score = 0.3 * Math.min(1, bestStay / 60) + 0.2 * ratio + 0.2 * fit + 0.15 * conf + 0.15 * compact
       + strategyBonus + shortGapBonus + transitRailBonus
-      - carOnlyPenalty - fallbackOnlyPenalty - openingReliabilityPenalty - mapVerificationPenalty - duplicatePairPenalty - transitReliabilityPenalty - detourPenalty;
+      - carOnlyPenalty - fallbackOnlyPenalty - openingReliabilityPenalty - mapVerificationPenalty - duplicatePairPenalty - transitReliabilityPenalty - detourPenalty - browseImbalancePenalty;
     const modeLabel = primaryMode === 'car' ? '차량' : primaryMode === 'transit' ? '대중교통' : '도보';
     const directionNote = destination ? ` · 경유 효율 ${Math.round(direction.score * 100)}%` : '';
     const why = `${c.strategy ? STRATEGY_LABEL[c.strategy] + ' · ' : ''}${modeLabel} 기준 체류가능 ${bestStay}분 · ${bucket} 적합 ${Math.round(fit * 100)}%${directionNote}`;
@@ -292,7 +304,7 @@ function prioritizeOpeningGate(
 ): Spot[] {
   const scored = candidates.map((spot) => {
     const moveMin = moveOnlyMin([spot], origin, destination ?? origin, mode, Boolean(destination));
-    const minStay = minStayForCourse([spot], remainingMin);
+    const minStay = minimumStayForCourse([spot], [travelMin(origin, spot, mode)]);
     const stayMargin = Math.max(0, Math.min(1, (budget - moveMin - minStay) / 60));
     const confidence = confidenceScore(spot.confidence);
     const verification = spot.mapVerificationStatus === 'verified' ? 1 : spot.mapVerificationStatus === 'weak' ? 0.75 : 0.55;
@@ -319,8 +331,17 @@ function prioritizeOpeningGate(
   return ordered;
 }
 
-function hasStayOpportunity(spots: Spot[], origin: LatLon, target: LatLon, viaAppointment: boolean, budget: number, mode: Mode, remainingMin: number): boolean {
-  return moveOnlyMin(spots, origin, target, mode, viaAppointment) <= budget - minStayForCourse(spots, remainingMin);
+function hasStayOpportunity(spots: Spot[], origin: LatLon, target: LatLon, viaAppointment: boolean, budget: number, mode: Mode, _remainingMin: number): boolean {
+  return moveOnlyMin(spots, origin, target, mode, viaAppointment) <= budget - minimumStayForCourse(spots, approachMins(spots, origin, mode));
+}
+
+function approachMins(spots: Spot[], origin: LatLon, mode: Mode): number[] {
+  let current = origin;
+  return spots.map((spot) => {
+    const min = travelMin(current, spot, mode);
+    current = spot;
+    return min;
+  });
 }
 
 function isAllowedPair(a: Spot, b: Spot): boolean {
@@ -360,9 +381,9 @@ function moveOnlyMin(spots: Spot[], origin: LatLon, target: LatLon, mode: Mode, 
 function buildCourse(
   spots: Spot[], origin: LatLon, target: LatLon, viaAppointment: boolean, remainingMin: number, primaryMode: Mode,
 ): Omit<Course, 'type'> | null {
-  const buffer = Math.max(10, Math.round(remainingMin * 0.12));
+  const buffer = safetyBufferMin(primaryMode);
   const budget = remainingMin - buffer;
-  const minStay = minStayForCourse(spots, remainingMin);
+  const minStay = minimumStayForCourse(spots, approachMins(spots, origin, primaryMode));
   const modes = Array.from(new Set<Mode>([...ROAD_MODES, primaryMode]));
   const mobility = Object.fromEntries(modes.map((mode) => {
     const moveMin = moveOnlyMin(spots, origin, target, mode, viaAppointment);
@@ -379,19 +400,12 @@ function buildCourse(
   const bestMode = primaryMode;
   const best = mobility[bestMode];
   if (!best.ok) return null;
+  const directMove = viaAppointment ? travelMin(origin, target, bestMode) : 0;
+  const addedMove = Math.max(0, best.moveMin - directMove);
+  const allocatedStay = Math.min(sumDwell(spots), best.stayMin);
+  if (!hasBalancedPaidVisit(spots, allocatedStay, addedMove)) return null;
   if (viaAppointment && detourRatio(spots, origin, target, bestMode) >= HARD_DETOUR_RATIO) return null;
   return { spots, totalMin: best.totalMin, legs: best.legs, bufferLeftMin: best.bufferLeftMin, bestMode, mobility };
-}
-
-function minStayForCourse(spots: Spot[], remainingMin: number): number {
-  if (spots.length > 1) return DEFAULT_MIN_STAY_MIN;
-  const category = spots[0]?.category;
-  if (remainingMin <= 60) {
-    if (category === '카페' || category === '상업지구') return 20;
-    if (category === '문화시설' || category === '자연관광지') return 25;
-  }
-  if (remainingMin <= 90 && (category === '카페' || category === '상업지구')) return 25;
-  return DEFAULT_MIN_STAY_MIN;
 }
 
 function shortGapCategoryBonus(course: Course): number {
@@ -475,7 +489,7 @@ export async function refineCourses(
       }
     }
     const rebuilt = buildCourse(c.spots, origin, target, !!destination, remainingMin, mode);
-    if (!rebuilt) continue; // 정밀화 후 두 수단 모두 체류 30분 미만이면 탈락
+    if (!rebuilt) continue; // 정밀화 후 선택 수단의 최소 체류·이동 대비 체류 규칙을 충족하지 못하면 탈락
     out.push({ ...c, ...rebuilt });
   }
   return { courses: out, rest: cands.slice(i), ok, fail };
