@@ -45,6 +45,9 @@ export type Spot = {
   kakaoPlaceUrl?: string;
   mapVerificationName?: string;
   mapVerificationDistanceM?: number;
+  tourapiContentId?: string;
+  tourapiContentTypeId?: string;
+  operatingHours?: string[];
   mult: number;
   openNote: string;
   confidence: SpotConfidence;
@@ -79,8 +82,8 @@ export type Course = {
 export type PlanResult = {
   budgetMin: number;
   bufferMin: number;
-  tourApiCount: number; // 검색 중심 전체에서 중복 제거한 TourAPI 응답 후보
-  candidateCount: number; // TourAPI 응답 중 TimeFit A/B 카탈로그 체류 근거가 있는 후보
+  tourApiCount: number; // 후보 중 TourAPI contentId가 있어 운영시간 상세 조회가 가능한 장소 수
+  candidateCount: number; // 로컬 부산 카탈로그에서 좌표 반경 조건을 통과한 후보
   eligibleCount: number; // 시간·방향성 1차 컷 통과 후보
   openingCheckCount: number; // 운영시간 상세 조회 대상
   gatedCount: number; // 운영시간 게이트 통과 후보

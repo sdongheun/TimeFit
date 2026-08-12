@@ -491,7 +491,7 @@ function renderScenario(a: ScenarioAudit): string {
         <h2>${esc(sc.id)}. ${esc(sc.title)}</h2>
         <div class="meta">${esc(sc.origin.label)} -> ${esc(sc.destination?.label ?? '출발지 복귀')} · ${modeKorean[auditMode]} · ${sc.remainingMin}분 · ${sc.dayType} ${fmtTime(sc.nowMin)} ${sc.hourBucket}</div>
       </div>
-      <div class="meta">TourAPI ${a.tourApiCount} · 카탈로그 ${a.candidateCount} · 시간/방향 ${a.eligibleCount} · ${coverageOnly ? '운영시간 생략' : `운영확인 ${a.openingCheckCount} · 영업 ${a.gatedCount}`} · 경로 API ${a.tmapCalls}</div>
+      <div class="meta">TourAPI 운영확인 가능 ${a.tourApiCount} · 로컬 카탈로그 ${a.candidateCount} · 시간/방향 ${a.eligibleCount} · ${coverageOnly ? '운영시간 생략' : `운영확인 ${a.openingCheckCount} · 영업 ${a.gatedCount}`} · 경로 API ${a.tmapCalls}</div>
     </div>
     ${a.error ? `<div class="err">${esc(a.error)}</div>` : `${renderCandidateDiagnosis(a.candidateDiagnosis)}<div class="courses">${a.courses.map(renderCourse).join('')}</div>`}
   </section>`;

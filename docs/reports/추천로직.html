@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TimeFit 추천 로직 현행 사양</title>
+  <style>
+    :root {
+      --bg: #f4f7f8;
+      --surface: #ffffff;
+      --surface-muted: #eef3f3;
+      --text: #152029;
+      --muted: #64727c;
+      --line: #d9e2e4;
+      --ink: #14343b;
+      --teal: #007f78;
+      --teal-soft: #d9f0ec;
+      --blue: #1769aa;
+      --blue-soft: #e6f0f9;
+      --orange: #a84b12;
+      --orange-soft: #fce9dd;
+      --green: #23734b;
+      --green-soft: #e1f2e8;
+      --yellow: #8b6411;
+      --yellow-soft: #fff3d5;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+    a { color: inherit; }
+    .top {
+      background: var(--ink);
+      color: #fff;
+      padding: 36px max(24px, calc((100vw - 1180px) / 2));
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #9ed9d2;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 42px); line-height: 1.2; letter-spacing: 0; }
+    .lead { max-width: 760px; margin: 14px 0 0; color: #d2e2e2; font-size: 16px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .meta span { border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 4px 10px; font-size: 12px; color: #e5f0f0; }
+    .layout { max-width: 1180px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 205px minmax(0, 1fr); gap: 26px; }
+    nav { position: sticky; top: 18px; align-self: start; }
+    nav a { display: block; padding: 7px 10px; color: var(--muted); font-size: 13px; font-weight: 700; text-decoration: none; border-left: 2px solid transparent; }
+    nav a:hover { color: var(--teal); border-left-color: var(--teal); }
+    main { min-width: 0; }
+    section { margin-bottom: 34px; scroll-margin-top: 18px; }
+    h2 { margin: 0 0 14px; color: var(--ink); font-size: 23px; line-height: 1.35; }
+    h3 { margin: 24px 0 9px; color: var(--ink); font-size: 17px; }
+    p { margin: 8px 0; }
+    .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 20px; }
+    .note { border-left: 4px solid var(--teal); background: var(--teal-soft); padding: 13px 15px; margin: 12px 0; color: #174f4a; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .card h3 { margin: 0 0 6px; font-size: 15px; }
+    .card p { color: var(--muted); font-size: 13px; }
+    .tag { display: inline-block; margin: 3px 4px 0 0; border-radius: 999px; padding: 3px 8px; background: var(--surface-muted); color: #46555f; font-size: 12px; font-weight: 700; }
+    .tag.ok { background: var(--green-soft); color: var(--green); }
+    .tag.plan { background: var(--yellow-soft); color: var(--yellow); }
+    .tag.no { background: var(--orange-soft); color: var(--orange); }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+    th, td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+    th { background: var(--surface-muted); color: #43515a; font-weight: 800; }
+    td { color: #34424c; }
+    tr:last-child td { border-bottom: 0; }
+    .flow { display: grid; gap: 10px; counter-reset: step; }
+    .flow-item { display: grid; grid-template-columns: 38px minmax(0,1fr); gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+    .flow-item::before { counter-increment: step; content: counter(step); width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: var(--teal-soft); color: var(--teal); font-weight: 900; }
+    .flow-item strong { color: var(--ink); }
+    .flow-item div { color: var(--muted); font-size: 13px; }
+    code, .formula { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .formula { white-space: pre-wrap; background: #102026; color: #dcf6f2; padding: 16px; border-radius: 8px; font-size: 13px; line-height: 1.65; overflow-x: auto; }
+    .score { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 8px; }
+    .score div { background: var(--surface); border: 1px solid var(--line); padding: 12px; border-radius: 8px; min-height: 92px; }
+    .score b { display: block; color: var(--teal); font-size: 20px; }
+    .score span { color: var(--muted); font-size: 12px; }
+    .status { font-weight: 800; }
+    .done { color: var(--green); }
+    .pending { color: var(--yellow); }
+    ul { margin: 8px 0; padding-left: 20px; }
+    li { margin: 5px 0; }
+    footer { max-width: 1180px; margin: 0 auto; padding: 0 24px 42px; color: var(--muted); font-size: 12px; }
+    @media (max-width: 860px) {
+      .layout { display: block; padding: 18px; }
+      nav { display: none; }
+      .grid, .grid.two, .score { grid-template-columns: 1fr; }
+      .top { padding: 30px 20px; }
+      th, td { min-width: 112px; }
+      .panel { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <p class="eyebrow">TimeFit · 부산 자투리 시간 추천</p>
+    <h1>추천 로직 현행 사양</h1>
+    <p class="lead">약속 또는 다음 일정에 늦지 않는 것을 하드 조건으로 고정하고, 이동·체류·시간대·데이터 신뢰도·다양성으로 장소 후보를 정렬합니다.</p>
+    <div class="meta">
+      <span>기준일 2026-08-08</span>
+      <span>기준 문서 추천로직.md</span>
+      <span>기준 코드 src/engine/planner.ts · data.ts</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav aria-label="문서 목차">
+      <a href="#summary">핵심 원칙</a>
+      <a href="#data">후보 데이터</a>
+      <a href="#time">시간·체류 정책</a>
+      <a href="#pipeline">7단계 파이프라인</a>
+      <a href="#ranking">랭킹 v1</a>
+      <a href="#ux">장바구니와 지도</a>
+      <a href="#limits">보장 범위와 약점</a>
+      <a href="#roadmap">다음 개선</a>
+    </nav>
+
+    <main>
+      <section id="summary">
+        <h2>핵심 원칙</h2>
+        <div class="panel">
+          <div class="note"><strong>결과의 기본 단위는 완성 코스가 아니라 장소 후보입니다.</strong><br />사용자는 후보를 장바구니에 담고, TimeFit은 선택이 바뀔 때마다 이동·체류·약속 도착 여유를 다시 계산합니다.</div>
+          <div class="grid">
+            <article class="card">
+              <h3>1순위: 약속 지연 방지</h3>
+              <p>선택한 이동수단으로 이동하고 최소 체류시간을 확보한 뒤, 안전 여유시간을 남기고 약속 장소에 도착하거나 출발지로 복귀할 수 있어야 합니다.</p>
+            </article>
+            <article class="card">
+              <h3>2순위: 설명 가능한 랭킹</h3>
+              <p>체류 여유, 이동 대비 체류, 시간대 적합도, AIHub 매칭 신뢰도, 장소 간 밀집도와 카테고리 다양성을 점수화합니다.</p>
+            </article>
+            <article class="card">
+              <h3>사용자 확인의 역할</h3>
+              <p>운영시간·메뉴·가격·사진·후기는 카카오맵 상세 링크에서 확인합니다. 앱은 이를 확인하지 못했을 때 영업 중이라고 단정하지 않습니다.</p>
+            </article>
+          </div>
+          <p>
+            <span class="tag">도보</span>
+            <span class="tag">대중교통</span>
+            <span class="tag">차량</span>
+            <span class="tag">카페·식당</span>
+            <span class="tag">자연·문화·상업·레저</span>
+          </p>
+        </div>
+      </section>
+
+      <section id="data">
+        <h2>후보 데이터 범위</h2>
+        <div class="panel">
+          <table>
+            <thead><tr><th>등급</th><th>런타임 추천</th><th>체류시간 근거</th><th>처리 원칙</th></tr></thead>
+            <tbody>
+              <tr><td><strong>A</strong></td><td><span class="tag ok">사용</span></td><td>AIHub 개별 매칭 장소 중앙값</td><td><code>bad_match</code>, Kakao <code>not_found</code>는 제외. 지역·상권 맥락 매칭은 별도 신뢰도 처리</td></tr>
+              <tr><td><strong>B</strong></td><td><span class="tag ok">사용</span></td><td>AIHub 카테고리 중앙값</td><td>AIHub 개별 매칭이 없는 TourAPI 장소. Kakao <code>not_found</code>는 제외</td></tr>
+              <tr><td><strong>C</strong><br />카카오 확장</td><td><span class="tag no">미사용</span></td><td>카테고리 중앙값 적용 가능</td><td>TourAPI contentId·AIHub A/B 체류 근거 계약 밖. 검토용 JSON만 보관하고 런타임 후보에서는 제외</td></tr>
+            </tbody>
+          </table>
+          <p>운영시간 미확인은 A/B 후보의 일괄 제외 사유가 아닙니다. 운영시간을 파싱할 수 있을 때만 게이트로 사용하고, 그렇지 않으면 카카오맵 상세 확인으로 연결합니다.</p>
+        </div>
+      </section>
+
+      <section id="time">
+        <h2>시간 안전·체류 정책</h2>
+        <div class="panel">
+          <div class="formula">buffer = 이동수단별 고정 안전 여유시간
+budget = 남은시간 - buffer
+
+계산 경로 = 현재 위치 → 담은 장소들 → 약속 장소
+약속이 없으면 = 현재 위치로 복귀</div>
+          <table>
+            <thead><tr><th>이동수단</th><th>안전 여유시간</th><th>의미</th></tr></thead>
+            <tbody>
+              <tr><td>도보</td><td><strong>15분</strong></td><td>신호와 보행 속도 차이 대응</td></tr>
+              <tr><td>대중교통</td><td><strong>20분</strong></td><td>접근 도보, 환승, 배차 변동 대응</td></tr>
+              <tr><td>차량</td><td><strong>10분</strong></td><td>교통 변수는 있으나 경로 재탐색이 쉬움</td></tr>
+            </tbody>
+          </table>
+
+          <h3>최소 체류시간</h3>
+          <div class="grid two">
+            <article class="card">
+              <h3>기본 시설형 장소</h3>
+              <p>카페, 식당, 문화시설, 레저/스포츠, 개별 상점·아울렛은 기본 <strong>30분</strong>입니다.</p>
+            </article>
+            <article class="card">
+              <h3>가볍게 둘러보는 장소</h3>
+              <p>자연관광지와 거리·골목·광장·시장 성격의 상업지구는 접근 시간이 10분 이하면 15분, 11~15분이면 20분, 16분 이상이면 30분입니다.</p>
+            </article>
+          </div>
+
+          <h3>이동 대비 체류 판단</h3>
+          <ul>
+            <li>약속지까지 원래 가야 하는 이동시간은 불이익으로 계산하지 않습니다.</li>
+            <li>시설형·유료 성격 장소는 <strong>경유로 추가된 이동시간보다 배정 체류시간이 짧으면</strong> 추천과 장바구니 추가에서 제외합니다.</li>
+            <li>자연·거리·광장 등은 최소 체류시간만 충족하면 표시합니다. 추가 이동이 더 길면 제외하지 않고 순위만 낮춥니다.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="pipeline">
+        <h2>추천 파이프라인</h2>
+        <div class="flow">
+          <article class="flow-item"><div><strong>예산 계산</strong><br />입력한 남은 시간에서 이동수단별 안전 여유시간을 빼고, 약속 장소 또는 복귀 지점을 목표로 정합니다.</div></article>
+          <article class="flow-item"><div><strong>후보 수집</strong><br />TourAPI <code>locationBasedList2</code>에서 이동수단·남은시간별 반경으로 모읍니다. 중심당 최대 60건이며, 부산 A/B 카탈로그 contentId만 통과합니다.</div></article>
+          <article class="flow-item"><div><strong>1차 컷</strong><br />선택 수단 기준 최소 체류시간과 방향성(우회율)을 만족하는 후보만 통과합니다. 원시 후보 수와 통과 수를 자동진단에 남깁니다.</div></article>
+          <article class="flow-item"><div><strong>운영시간·축제 게이트</strong><br />상위 후보만 TourAPI 상세를 확인합니다. 운영시간을 파싱할 수 있으면 체류 구간을 확인하고, 축제는 행사 기간이 필수입니다.</div></article>
+          <article class="flow-item"><div><strong>코스 조립</strong><br />경로 API를 호출하지 않고 캐시 또는 haversine 근사로 단일 장소와 2곳 미니코스의 이동 부담·우회율·체류 적합성을 판단합니다.</div></article>
+          <article class="flow-item"><div><strong>랭킹과 다양성</strong><br />점수화한 뒤 상위 24개 대기열에서 동일 카테고리가 반복되지 않도록 완만하게 재배치합니다.</div></article>
+          <article class="flow-item"><div><strong>지연 정밀화와 출력</strong><br />도보·차량 추천 목록은 TMAP 0건을 유지합니다. 대중교통은 상위 후보만 ODsay로 정밀화·재랭킹하고, 화면에서는 중복을 제거한 장소 후보를 보여줍니다.</div></article>
+        </div>
+
+        <h3>후보 수집 반경</h3>
+        <div class="panel">
+          <table>
+            <thead><tr><th>남은 시간</th><th>도보</th><th>차량</th><th>대중교통</th></tr></thead>
+            <tbody>
+              <tr><td>60분 이하</td><td>1,000m</td><td>2,000m</td><td>1,500m</td></tr>
+              <tr><td>61~120분</td><td>1,000m</td><td>4,000m</td><td>3,000m</td></tr>
+              <tr><td>120분 초과</td><td>1,500m</td><td>8,000m</td><td>6,000m</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="ranking">
+        <h2>랭킹 v1: 결정적이고 설명 가능한 점수</h2>
+        <div class="panel">
+          <div class="score">
+            <div><b>30%</b><span>체류 여유</span></div>
+            <div><b>20%</b><span>이동 대비 체류</span></div>
+            <div><b>20%</b><span>시간대 적합도</span></div>
+            <div><b>15%</b><span>AIHub 매칭 신뢰도</span></div>
+            <div><b>15%</b><span>장소 간 밀집도</span></div>
+          </div>
+          <div class="formula">기본 점수 = 0.30 × min(1, 체류 가능 시간 / 60)
+          + 0.20 × 체류시간 / (이동시간 + 체류시간)
+          + 0.20 × 시간대 적합도
+          + 0.15 × AIHub 매칭 신뢰도
+          + 0.15 × 장소 간 밀집도
+          + 전략·짧은 시간·지하철 보너스
+          - 카테고리 폴백·운영시간 신뢰도·지도 검증·우회·대중교통 폴백 감점
+
+그리디 다양성: 이미 선택된 동일 카테고리당 -0.15
+약한 순환: 점수 차이 0.035 이내 후보만</div>
+          <p><strong>시간 활용률</strong> <code>(이동시간 + 체류시간) / budget</code>은 현재 계산만 하며 최종 점수에는 반영하지 않습니다.</p>
+
+          <h3>시간대 적합도</h3>
+          <table>
+            <thead><tr><th>시간대</th><th>가점이 큰 카테고리</th><th>기본값</th></tr></thead>
+            <tbody>
+              <tr><td>아침</td><td>카페 1.0, 자연 0.9</td><td>그 외 0.6</td></tr>
+              <tr><td>점심</td><td>식당 1.0</td><td>그 외 0.6</td></tr>
+              <tr><td>오후</td><td>자연·문화 1.0, 상업·레저·축제 0.9</td><td>그 외 0.6</td></tr>
+              <tr><td>저녁</td><td>식당 1.0, 카페·상업 0.8</td><td>그 외 0.6</td></tr>
+              <tr><td>야간</td><td>카페·상업·축제 0.8</td><td>그 외 0.6</td></tr>
+            </tbody>
+          </table>
+          <p>각 코스에는 <code>why</code>를 남깁니다. 예: <code>체류 85% · 오후 적합 100%</code>. 점수 내역으로 설명할 수 없는 랭킹 변경은 허용하지 않습니다.</p>
+        </div>
+      </section>
+
+      <section id="ux">
+        <h2>지도·장바구니에서의 재계산</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>후보 지도</h3>
+            <p>현재 위치·약속 장소·시간 조건을 통과한 후보 마커를 표시합니다. 지도에 있는 모든 후보가 강한 자동 추천이라는 뜻은 아닙니다.</p>
+          </article>
+          <article class="card">
+            <h3>장바구니 추가</h3>
+            <p>첫 장소부터 <code>origin → 담은 장소들 → target</code> 전체를 다시 계산합니다. 추가 불가 후보는 시간 초과와 부족 사유를 보이고 추가를 막습니다.</p>
+          </article>
+          <article class="card">
+            <h3>방문 순서</h3>
+            <p>초기 순서는 이동시간이 짧은 순서로 제안합니다. 사용자는 순서를 바꾸거나 최적 순서 정렬을 실행할 수 있으며, 매번 시간 적합성을 다시 확인합니다.</p>
+          </article>
+        </div>
+        <div class="panel" style="margin-top:12px">
+          <ul>
+            <li>장소 수는 1~2곳으로 고정하지 않습니다. 시간 조건을 통과하는 동안 3곳 이상도 담을 수 있습니다.</li>
+            <li>같은 입력에서 같은 장소가 재표시될 수 있습니다. 다만 점수가 매우 가까운 후보는 약하게 순환하고, 지도·필터·장바구니로 사용자가 탐색합니다.</li>
+            <li>실제 길안내와 실시간 버스·지하철 정보는 카카오맵에 위임합니다.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="limits">
+        <h2>보장 범위와 남은 약점</h2>
+        <div class="panel">
+          <table>
+            <thead><tr><th>항목</th><th>상태</th><th>현재 의미</th></tr></thead>
+            <tbody>
+              <tr><td>수단별 반경·안전 여유시간</td><td class="status done">해결</td><td>도보·차량·대중교통의 후보 범위와 시간 제약을 분리</td></tr>
+              <tr><td>약속 반대 방향 후보</td><td class="status done">해결</td><td>직행 대비 우회율 1.8배 이상은 게이트 전 제외, 그 이하는 부드럽게 감점</td></tr>
+              <tr><td>카카오맵 상세 연결</td><td class="status done">해결</td><td>추천 가능 장소의 정확한 Place ID 또는 상세 URL로 연결</td></tr>
+              <tr><td>3곳 이상 장바구니</td><td class="status done">해결</td><td>자동·수동 순서 변경과 즉시 재계산 지원</td></tr>
+              <tr><td>장소 매력</td><td class="status pending">수집 기반만 있음</td><td>로컬 후기 수집은 구현됐으나, 표본 수와 보정 규칙을 정한 뒤에만 랭킹에 반영</td></tr>
+              <tr><td>취향 칩 랭킹 반영</td><td class="status pending">진행 예정</td><td>현재는 사후 필터 성격이며, 선택 카테고리 가점으로 승격 필요</td></tr>
+              <tr><td>체류시간 폴백 세분화</td><td class="status pending">백로그</td><td>카테고리 중앙값만으로는 장소 성격 차이를 충분히 설명하기 어려움</td></tr>
+            </tbody>
+          </table>
+          <div class="note"><strong>정확도 경계</strong><br />도보·차량 이동시간은 선택 코스 상세에서 TMAP 실경로로 정밀화합니다. 추천 목록 단계는 API 호출을 아끼기 위해 캐시·거리 근사값을 사용합니다. 운영시간이 미확인인 장소의 영업 여부는 사용자가 카카오맵에서 최종 확인합니다.</div>
+        </div>
+      </section>
+
+      <section id="roadmap">
+        <h2>다음 개선 순서</h2>
+        <div class="panel">
+          <ol>
+            <li><strong>시간 활용 점수 반영 여부 결정:</strong> 체류 여유 점수만으로 충분한지 자동진단 결과를 기준으로 판단</li>
+            <li><strong>후기 기반 장소 매력 반영:</strong> DB 도입 후 최소 표본 수와 평점 보정 규칙을 확정한 뒤 2순위 랭킹 요소로 추가</li>
+            <li><strong>지도 마커 클러스터링:</strong> 후보 데이터가 늘어 마커가 실제로 겹치는 시점에만 추가</li>
+          </ol>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    원본: <a href="../03_product/추천로직.md">docs/03_product/추천로직.md</a> · 추천 로직을 수정할 때 원본 Markdown과 이 HTML을 함께 갱신한다.
+  </footer>
+</body>
+</html>

@@ -1,6 +1,6 @@
-// 부산 TourAPI ↔ AI-Hub 매칭/폴백 장소 파라미터 (앱 번들)
+// 부산 정제 후보 카탈로그와 체류시간 정책. 앱은 이 로컬 카탈로그를 좌표 반경으로 탐색한다.
 import busanPoiCatalog from '../data/busan_poi_catalog.json';
-import { DayType, HourBucket, MapVerificationStatus, MatchScope, OpeningHoursReliability, SpotConfidence } from './types';
+import { DayType, HourBucket, MapVerificationStatus, MatchScope, OpeningHoursReliability, SpotConfidence, LatLon } from './types';
 
 type MapVerification = {
   provider: 'kakao';
@@ -11,50 +11,31 @@ type MapVerification = {
   distanceM?: number;
 };
 
-type BusanMatchedRec = {
-  contentId: string;
-  title: string;
-  aihubName?: string;
-  aihubCategory?: string;
-  matchType?: string;
-  matchDistanceM?: number;
-  subCategory?: string;
-  matchScope?: MatchScope;
-  dwellSourceName?: string;
-  openingHoursSourceName?: string;
-  openingHoursReliability?: OpeningHoursReliability;
-  mapVerification?: MapVerification;
-  category: string;
-  dwell: { count: number; median: number; p25: number; p75: number; mean: number };
-};
-
-type BusanUnmatchedRec = {
+export type BusanCatalogPlace = {
   contentId: string;
   title: string;
   contentTypeId: string;
   category: string;
   subCategory?: string;
-  matchScope?: MatchScope;
+  addr1: string;
+  lat: number;
+  lon: number;
+  matchScope: MatchScope;
   dwellSourceName?: string;
   openingHoursSourceName?: string;
   openingHoursReliability?: OpeningHoursReliability;
+  operatingHours?: string[];
   mapVerification?: MapVerification;
-  lat: number;
-  lon: number;
+  tourapiContentId?: string;
+  tourapiContentTypeId?: string;
+  aihubName?: string;
+  aihubCategory?: string;
+  matchType?: string;
+  matchDistanceM?: number;
+  dwell?: { count: number; median: number; p25?: number | null; p75?: number | null; mean?: number | null };
 };
 
-const catalog = busanPoiCatalog as any;
-const busanMatched = catalog.matched.byContentId as Record<string, BusanMatchedRec>;
-const busanUnmatched = catalog.unmatched.byContentId as Record<string, BusanUnmatchedRec>;
-const categoryStats = catalog.categoryDwell as Record<string, { count: number; median: number }>;
-
-export function resolveBusanMatched(contentId: string): BusanMatchedRec | null {
-  return busanMatched[String(contentId)] ?? null;
-}
-
-export function resolveBusanDwell(
-  contentId: string, _dayType: DayType, _hourBucket: HourBucket,
-): {
+export type ResolvedBusanDwell = {
   title: string;
   category: string;
   eff: number;
@@ -72,7 +53,32 @@ export function resolveBusanDwell(
   kakaoPlaceUrl?: string;
   mapVerificationName?: string;
   mapVerificationDistanceM?: number;
-} | null {
+  tourapiContentId?: string;
+  tourapiContentTypeId?: string;
+  operatingHours?: string[];
+};
+
+const catalog = busanPoiCatalog as any;
+const busanMatched = catalog.matched.byContentId as Record<string, BusanCatalogPlace>;
+const busanUnmatched = catalog.unmatched.byContentId as Record<string, BusanCatalogPlace>;
+const allPlaces = [...Object.values(busanMatched), ...Object.values(busanUnmatched)];
+const categoryStats = catalog.categoryDwell as Record<string, { count: number; median: number }>;
+
+export function resolveBusanMatched(contentId: string): BusanCatalogPlace | null {
+  return busanMatched[String(contentId)] ?? null;
+}
+
+export function listBusanPoiCandidatesNear(center: LatLon, radiusM: number): Array<{ place: BusanCatalogPlace; dwell: ResolvedBusanDwell }> {
+  return allPlaces.flatMap((place) => {
+    if (distanceM(center, place) > radiusM) return [];
+    const dwell = resolveBusanDwell(place.contentId, '평일', '오후');
+    return dwell ? [{ place, dwell }] : [];
+  });
+}
+
+export function resolveBusanDwell(
+  contentId: string, _dayType: DayType, _hourBucket: HourBucket,
+): ResolvedBusanDwell | null {
   const matched = busanMatched[String(contentId)];
   if (matched) {
     if (isLowConfidenceMatched(matched)) return null;
@@ -80,8 +86,7 @@ export function resolveBusanDwell(
   }
 
   const unmatched = busanUnmatched[String(contentId)];
-  if (!unmatched) return null;
-  if (unmatched.mapVerification?.status === 'not_found') return null;
+  if (!unmatched || unmatched.mapVerification?.status === 'not_found') return null;
   const stat = categoryStats[unmatched.category];
   if (!stat?.median) return null;
   return {
@@ -102,71 +107,30 @@ export function resolveBusanDwell(
     kakaoPlaceUrl: unmatched.mapVerification?.placeUrl,
     mapVerificationName: unmatched.mapVerification?.matchedName,
     mapVerificationDistanceM: unmatched.mapVerification?.distanceM,
+    tourapiContentId: unmatched.tourapiContentId,
+    tourapiContentTypeId: unmatched.tourapiContentTypeId,
+    operatingHours: unmatched.operatingHours,
   };
 }
 
-function isLowConfidenceMatched(matched: BusanMatchedRec): boolean {
-  if (matched.matchScope === 'bad_match') return true;
-  if (matched.mapVerification?.status === 'not_found') return true;
-  if (matched.matchScope === 'area_context') return false;
-
-  const risks = [
-    matched.matchType === 'coord',
-    (matched.matchDistanceM ?? 0) > 50,
-    (matched.dwell?.count ?? 0) < 5,
-    !!matched.aihubName && !isSimilarPlaceName(matched.title, matched.aihubName),
-    !!matched.aihubCategory && matched.aihubCategory !== matched.category,
-  ];
-  return risks.filter(Boolean).length >= 4;
+function isLowConfidenceMatched(matched: BusanCatalogPlace): boolean {
+  // 최종 매칭은 독립 장소의 이름+좌표 또는 포괄 장소의 지역 맥락으로 이미 정제됐다.
+  // 기존 카카오 검증에서 명확히 찾지 못한 TourAPI 장소만 추천 후보에서 막는다.
+  return matched.mapVerification?.status === 'not_found';
 }
 
-function isSimilarPlaceName(a: string, b: string): boolean {
-  const na = normalizePlaceName(a);
-  const nb = normalizePlaceName(b);
-  if (!na || !nb) return false;
-  return na.includes(nb) || nb.includes(na);
-}
-
-function normalizePlaceName(value: string): string {
-  return value
-    .toLowerCase()
-    .replace(/\[[^\]]*]|\([^)]*\)/g, '')
-    .replace(/부산|광역시|본점|지점|점|센터|관|카페|coffee|cafe/g, '')
-    .replace(/[^0-9a-z가-힣]/g, '');
-}
-
-function effectiveBusanMatchedDwell(
-  matched: BusanMatchedRec,
-): {
-  title: string;
-  category: string;
-  eff: number;
-  base: number;
-  mult: number;
-  src: string;
-  confidence: SpotConfidence;
-  subCategory?: string;
-  matchScope: MatchScope;
-  dwellSourceName: string;
-  openingHoursSourceName: string;
-  openingHoursReliability: OpeningHoursReliability;
-  mapVerificationStatus: MapVerificationStatus;
-  kakaoPlaceId?: string;
-  kakaoPlaceUrl?: string;
-  mapVerificationName?: string;
-  mapVerificationDistanceM?: number;
-} {
-  const base = matched.dwell.median;
-  const matchScope = matched.matchScope ?? 'direct_place';
-  const eff = effectiveDwellByScope(matched, base);
+function effectiveBusanMatchedDwell(matched: BusanCatalogPlace): ResolvedBusanDwell {
+  const base = matched.dwell?.median;
+  if (!base) throw new Error(`${matched.title}: matched place must have dwell median`);
+  const matchScope = matched.matchScope;
   const dwellSourceName = matched.dwellSourceName ?? matched.aihubName ?? matched.title;
   return {
     title: matched.title,
     category: matched.category,
-    eff,
+    eff: base,
     base,
     mult: 1,
-    src: `AI-Hub:${dwellSourceName}(${matchScope},n=${matched.dwell.count})`,
+    src: `AI-Hub:${dwellSourceName}(${matchScope},n=${matched.dwell?.count ?? 0})`,
     confidence: matchScope === 'area_context' ? 'area_context_match' : 'direct_match',
     subCategory: matched.subCategory,
     matchScope,
@@ -178,21 +142,22 @@ function effectiveBusanMatchedDwell(
     kakaoPlaceUrl: matched.mapVerification?.placeUrl,
     mapVerificationName: matched.mapVerification?.matchedName,
     mapVerificationDistanceM: matched.mapVerification?.distanceM,
+    tourapiContentId: matched.tourapiContentId,
+    tourapiContentTypeId: matched.tourapiContentTypeId,
+    operatingHours: matched.operatingHours,
   };
 }
 
-function effectiveDwellByScope(matched: BusanMatchedRec, base: number): number {
-  if (matched.matchScope !== 'area_context') return base;
-  if (matched.subCategory === '개별상점') return Math.min(base, 30);
-  if (matched.subCategory === '전문상가' || matched.subCategory === '거리/골목상권') return Math.min(base, 45);
-  return base;
+function openingReliabilityFor(place: Pick<BusanCatalogPlace, 'category' | 'matchScope' | 'operatingHours'>): OpeningHoursReliability {
+  if (place.category === '자연관광지') return 'unknown';
+  if (place.matchScope === 'area_context') return 'area_uncertain';
+  return place.operatingHours?.length ? 'direct' : 'unknown';
 }
 
-function openingReliabilityFor(place: { title: string; category: string; subCategory?: string }): OpeningHoursReliability {
-  if (place.category === '자연관광지') return 'unknown';
-  if (['전통시장', '전문상가', '거리/골목상권'].includes(place.subCategory ?? '')) return 'area_uncertain';
-  if (/시장|거리|골목|상권|마을|해수욕장|해변|공원|광장|지하상가|먹자골목|로데오/.test(place.title)) {
-    return 'area_uncertain';
-  }
-  return 'direct';
+function distanceM(a: LatLon, b: LatLon): number {
+  const rad = Math.PI / 180;
+  const dLat = (b.lat - a.lat) * rad;
+  const dLon = (b.lon - a.lon) * rad;
+  const x = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLon / 2) ** 2;
+  return 6371000 * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
 }

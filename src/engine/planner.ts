@@ -1,7 +1,7 @@
 // 시간-적합 플래너 (결정적). 스파이크 engine_spike.mjs 로직 이식.
 import { Course, LatLon, Mode, MobilityOption, PlanInput, PlanResult, RoadMode, Spot, Strategy } from './types';
-import { resolveBusanDwell } from './data';
-import { detailIntro, isOpenDuring, locationBased } from './tourapi';
+import { listBusanPoiCandidatesNear } from './data';
+import { detailIntro, isOpenDuring } from './tourapi';
 import { haversineMin, precompute, precomputeTransit, transitMeta, travelGeo, travelMin, travelSrc } from './travel';
 import { hasBalancedPaidVisit, isTravelHeavyBrowse, minimumStayForCourse, safetyBufferMin } from './recommendationPolicy';
 
@@ -29,17 +29,13 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   const seenCand = new Map<string, Spot>();
   const seenTourApi = new Set<string>();
   for (const center of searchCenters(input.origin, input.destination ?? null)) {
-    const raw = await locationBased(center.lat, center.lon, radiusM);
-    for (const it of raw) {
-      seenTourApi.add(String(it.contentid));
-      const d = resolveBusanDwell(it.contentid, input.dayType, input.hourBucket);
-      if (!d) continue;
-      const lat = parseFloat(it.mapy), lon = parseFloat(it.mapx);
-      if (isNaN(lat) || isNaN(lon)) continue;
-      const contentId = String(it.contentid);
+    const local = listBusanPoiCandidatesNear(center, radiusM);
+    for (const { place, dwell: d } of local) {
+      if (place.tourapiContentId) seenTourApi.add(place.tourapiContentId);
+      const contentId = place.contentId;
       const spot: Spot = {
-        title: it.title, contentId, typeId: it.contenttypeid, category: d.category, subCategory: d.subCategory,
-        lat, lon, dwell: d.eff, dwellBase: d.base, dwellSrc: d.src, mult: d.mult,
+        title: place.title, contentId, typeId: place.contentTypeId, category: d.category, subCategory: d.subCategory,
+        lat: place.lat, lon: place.lon, dwell: d.eff, dwellBase: d.base, dwellSrc: d.src, mult: d.mult,
         dwellSourceName: d.dwellSourceName,
         openingHoursSourceName: d.openingHoursSourceName,
         openingHoursReliability: d.openingHoursReliability,
@@ -49,6 +45,9 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
         kakaoPlaceUrl: d.kakaoPlaceUrl,
         mapVerificationName: d.mapVerificationName,
         mapVerificationDistanceM: d.mapVerificationDistanceM,
+        tourapiContentId: d.tourapiContentId,
+        tourapiContentTypeId: d.tourapiContentTypeId,
+        operatingHours: d.operatingHours,
         openNote: '', confidence: d.confidence, strategy: center.strategy,
       };
       const prev = seenCand.get(contentId);
@@ -63,7 +62,7 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
     .filter((c) => directionEfficiency([c], input.origin, input.destination ?? null, primaryMode).viable);
   const gateQueue = prioritizeOpeningGate(pre, input.origin, input.destination ?? null, budget, input.hourBucket, primaryMode, input.remainingMin);
 
-  // 3) 운영시간 게이트 (상위만 detailIntro2)
+  // 3) 운영시간 게이트 (TourAPI 원본이 있는 상위 후보만 detailIntro2)
   const gated: Spot[] = [];
   const openingTargets = gateQueue.slice(0, gateLimitFor(primaryMode, input.remainingMin));
   if (input.deferOpeningGate) {
@@ -71,9 +70,14 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
     gated.push(...openingTargets.map((spot) => ({ ...spot, openNote: '운영시간 자동진단 생략' })));
   } else {
     for (const s of openingTargets) {
-      const intro = await detailIntro(s.contentId, s.typeId);
+      if (!s.tourapiContentId || !s.tourapiContentTypeId) {
+        const officialHours = s.operatingHours?.[0];
+        gated.push({ ...s, openNote: officialHours ? `공식 운영시간: ${officialHours}` : '운영시간 미확인' });
+        continue;
+      }
+      const intro = await detailIntro(s.tourapiContentId, s.tourapiContentTypeId);
       const start = input.nowMin + Math.min(haversineMin(input.origin, s, 'walk'), haversineMin(input.origin, s, 'car'));
-      const g = isOpenDuring(intro, s.typeId, start, s.dwell);
+      const g = isOpenDuring(intro, s.tourapiContentTypeId, start, s.dwell);
       if (g.ok) gated.push({ ...s, openNote: g.note });
     }
   }
