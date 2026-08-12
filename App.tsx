@@ -4,14 +4,15 @@ import {
   Theme,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Feather } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { Pressable } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { RootStackParamList } from "./src/ui/nav";
 import { HomeScreen } from "./src/ui/HomeScreen";
 import { TimeSetupScreen } from "./src/ui/TimeSetupScreen";
 import { ResultsScreen } from "./src/ui/ResultsScreen";
-import { DetailScreen } from "./src/ui/DetailScreen";
 import { ExecutionScreen } from "./src/ui/ExecutionScreen";
 import { FeedbackScreen } from "./src/ui/FeedbackScreen";
 import { ProfileScreen } from "./src/ui/ProfileScreen";
@@ -20,6 +21,7 @@ import { AuthProvider } from "./src/ui/AuthContext";
 import { MyCoursesScreen } from "./src/ui/MyCoursesScreen";
 import { C } from "./src/ui/theme";
 import { initializeNotifications } from "./src/services/courseNotifications";
+import { resetToMyCourses } from "./src/ui/mainTabNavigation";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -76,11 +78,6 @@ export default function App() {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="Detail"
-                component={DetailScreen}
-                options={{ title: "코스 상세" }}
-              />
-              <Stack.Screen
                 name="MyCourses"
                 component={MyCoursesScreen}
                 options={{ headerShown: false }}
@@ -88,7 +85,26 @@ export default function App() {
               <Stack.Screen
                 name="Execution"
                 component={ExecutionScreen}
-                options={{ title: "코스 진행 중", headerBackTitle: "상세" }}
+                options={({ navigation }) => ({
+                  title: "코스 진행 중",
+                  headerBackVisible: false,
+                  headerLeft: () => (
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel="내 코스로 돌아가기"
+                      hitSlop={8}
+                      onPress={() => resetToMyCourses(navigation)}
+                      style={{
+                        width: 42,
+                        height: 42,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Feather name="arrow-left" size={21} color={C.txt} />
+                    </Pressable>
+                  ),
+                })}
               />
               <Stack.Screen
                 name="Feedback"

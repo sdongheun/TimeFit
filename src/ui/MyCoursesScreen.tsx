@@ -22,7 +22,7 @@ export function MyCoursesScreen({ navigation }: Props) {
         {flow.savedCourses.length === 0 ? (
           <View style={s.emptyBox}>
             <Text style={s.emptyTitle}>저장한 코스가 없습니다</Text>
-            <Text style={s.emptyTxt}>메인에서 장소를 담고 코스 상세에서 저장하면 여기에 쌓입니다.</Text>
+            <Text style={s.emptyTxt}>메인에서 장소를 담아 코스를 확정하면 여기에 저장됩니다.</Text>
             <Pressable style={s.emptyBtn} onPress={() => resetToMain(navigation)}>
               <Text style={s.emptyBtnTxt}>코스 만들러 가기</Text>
             </Pressable>
@@ -34,17 +34,15 @@ export function MyCoursesScreen({ navigation }: Props) {
               <View key={item.id} style={s.card}>
                 <Pressable
                   style={s.cardBody}
-                  onPress={() => navigation.navigate('Detail', {
+                  onPress={() => navigation.navigate('Execution', {
                     course: item.course,
                     origin: item.origin,
                     ctx: item.ctx,
-                    source: 'saved',
-                    savedCourseId: item.id,
                   })}
                 >
                   <View style={s.cardHead}>
                     <Text style={s.cardTitle} numberOfLines={1}>{item.title}</Text>
-                    <Text style={s.cardAction}>보기</Text>
+                    <Text style={s.cardAction}>시작</Text>
                   </View>
                   <Text style={s.cardMeta}>
                     {item.ctx.modeLabel} · {item.course.spots.length}곳 · {fmtHM(item.ctx.startMin)}-{fmtHM(endMin)}

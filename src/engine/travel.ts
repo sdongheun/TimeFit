@@ -323,12 +323,18 @@ const getCache = (k: string): CacheEntry | undefined => {
 export type PrecomputeStat = { ok: number; fail: number; skipped?: number };
 
 // 필요한 좌표쌍을 TMAP로 채움(실패 시 haversine 캐시) — 지연 정밀화: 최종 코스 구간에만 호출
-export async function precompute(pairs: [LatLon, LatLon][], mode: RoadMode): Promise<PrecomputeStat> {
+export async function precompute(
+  pairs: [LatLon, LatLon][],
+  mode: RoadMode,
+  options: { retryFallback?: boolean } = {},
+): Promise<PrecomputeStat> {
   let ok = 0, fail = 0;
   let cacheHit = 0;
   for (const [a, b] of pairs) {
     const k = ckey(a, b, mode);
-    if (getCache(k)) { cacheHit++; continue; }
+    const cached = getCache(k);
+    // TMAP 오류로 저장된 직선 추정값은 장바구니 최종 검토에서만 다시 시도한다.
+    if (cached && !(options.retryFallback && cached.src === 'haversine')) { cacheHit++; continue; }
     const t = await tmapTravel(a, b, mode);
     if (t != null) { cache.set(k, { min: t.min, src: 'TMAP', geo: t.geo, ts: Date.now() }); ok++; }
     else { cache.set(k, { min: haversineMin(a, b, mode), src: 'haversine', ts: Date.now() }); fail++; }
