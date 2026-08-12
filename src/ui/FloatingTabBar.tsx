@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { C } from './theme';
 
 export type MainTabKey = 'main' | 'course' | 'profile';
@@ -17,6 +18,7 @@ const TABS: { key: MainTabKey; label: string; mark: string }[] = [
 ];
 
 export function FloatingTabBar({ active, onMain, onCourse, onProfile }: Props) {
+  const insets = useSafeAreaInsets();
   const handlers: Record<MainTabKey, () => void> = {
     main: onMain,
     course: onCourse,
@@ -24,7 +26,7 @@ export function FloatingTabBar({ active, onMain, onCourse, onProfile }: Props) {
   };
 
   return (
-    <View pointerEvents="box-none" style={s.wrap}>
+    <View pointerEvents="box-none" style={[s.wrap, { bottom: Math.max(insets.bottom, 18) }]}>
       <View style={s.bar}>
         {TABS.map((tab) => {
           const isActive = active === tab.key;
@@ -45,7 +47,7 @@ export function FloatingTabBar({ active, onMain, onCourse, onProfile }: Props) {
 }
 
 const s = StyleSheet.create({
-  wrap: { position: 'absolute', left: 16, right: 16, bottom: 18 },
+  wrap: { position: 'absolute', left: 16, right: 16 },
   bar: {
     flexDirection: 'row',
     backgroundColor: 'rgba(21,27,35,0.96)',

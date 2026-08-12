@@ -73,7 +73,7 @@ export default function App() {
               <Stack.Screen
                 name="Results"
                 component={ResultsScreen}
-                options={{ title: "코스 만들기" }}
+                options={{ headerShown: false }}
               />
               <Stack.Screen
                 name="Detail"

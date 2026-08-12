@@ -250,8 +250,8 @@ const s = StyleSheet.create({
   legMin: { color: C.txt, fontWeight: '700' },
   legSrc: { color: '#6e7d8c', fontSize: 11 },
   why: { color: C.accent, fontSize: 13.5, marginTop: 12, fontWeight: '600' },
-  saveBtn: { marginTop: 18, backgroundColor: 'rgba(76,194,255,0.12)', borderColor: 'rgba(76,194,255,0.45)', borderWidth: 1, borderRadius: 14, paddingVertical: 15, alignItems: 'center' },
-  saveBtnTxt: { color: C.accent, fontSize: 15, fontWeight: '900' },
-  cta: { marginTop: 18, backgroundColor: C.accent, borderRadius: 14, paddingVertical: 15, alignItems: 'center' },
-  ctaTxt: { color: '#fff', fontSize: 15, fontWeight: '800' },
+  saveBtn: { minHeight: 52, marginTop: 18, backgroundColor: 'rgba(76,194,255,0.12)', borderColor: 'rgba(76,194,255,0.45)', borderWidth: 1, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  saveBtnTxt: { color: C.accent, fontSize: 16, fontWeight: '800' },
+  cta: { minHeight: 52, marginTop: 12, backgroundColor: C.accent, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  ctaTxt: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
 });

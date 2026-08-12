@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
@@ -10,10 +11,11 @@ type Props = NativeStackScreenProps<RootStackParamList, 'MyCourses'>;
 
 export function MyCoursesScreen({ navigation }: Props) {
   const flow = useAppFlow();
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={s.root}>
-      <ScrollView contentContainerStyle={s.scroll}>
+      <ScrollView contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]}>
         <Text style={s.h1}>내 코스</Text>
         <Text style={s.sub}>저장한 코스를 다시 확인하고 길찾기를 시작하세요.</Text>
 
@@ -72,14 +74,14 @@ export function MyCoursesScreen({ navigation }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  scroll: { padding: 22, paddingTop: 64 },
+  scroll: { padding: 22 },
   h1: { color: C.txt, fontSize: 30, fontWeight: '900' },
   sub: { color: C.muted, fontSize: 14.5, marginTop: 5, marginBottom: 18 },
   emptyBox: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 18 },
   emptyTitle: { color: C.txt, fontSize: 17, fontWeight: '900' },
   emptyTxt: { color: C.muted, fontSize: 13, lineHeight: 19, marginTop: 6 },
-  emptyBtn: { marginTop: 14, backgroundColor: '#2ea043', borderRadius: 12, paddingVertical: 12, alignItems: 'center' },
-  emptyBtnTxt: { color: '#fff', fontSize: 14, fontWeight: '900' },
+  emptyBtn: { minHeight: 52, marginTop: 14, backgroundColor: C.accent, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  emptyBtnTxt: { color: C.onAccent, fontSize: 15, fontWeight: '800' },
   card: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 15, marginBottom: 11 },
   cardBody: { paddingBottom: 12 },
   cardHead: { flexDirection: 'row', alignItems: 'center', gap: 10 },

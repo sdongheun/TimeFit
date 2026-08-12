@@ -353,10 +353,10 @@ const s = StyleSheet.create({
   alert: { color: C.txt2, fontSize: 13, marginVertical: 3 },
   alertTime: { color: C.accent, fontWeight: '800' },
   alertNote: { color: '#6e7d8c', fontSize: 11, marginTop: 8 },
-  btn: { borderRadius: 13, paddingVertical: 14, alignItems: 'center' },
-  btnMain: { flex: 1, backgroundColor: '#2ea043' },
+  btn: { minHeight: 52, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  btnMain: { flex: 1, backgroundColor: C.accent },
   btnArriveMain: { backgroundColor: C.accent },
-  btnMainTxt: { color: '#fff', fontSize: 14.5, fontWeight: '800' },
+  btnMainTxt: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
   btnSub: { marginTop: 10, paddingHorizontal: 18, backgroundColor: 'transparent', borderWidth: 1, borderColor: C.line },
   btnSubTxt: { color: C.txt2, fontSize: 13.5, fontWeight: '600' },
 });

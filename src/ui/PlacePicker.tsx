@@ -2,6 +2,7 @@
 // 검색어 하나로 Kakao Local 우선 + TMAP 폴백 POI/주소 지오코딩을 조회해 합쳐 보여준다.
 import { useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import {
   LatLon,
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export function PlacePicker({ visible, title, center, showGps = true, onClose, onConfirm }: Props) {
+  const insets = useSafeAreaInsets();
   const [q, setQ] = useState('');
   const [cands, setCands] = useState<Poi[]>([]);
   const [sel, setSel] = useState(-1);
@@ -75,7 +77,7 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
       <View style={s.root}>
-        <View style={s.head}>
+        <View style={[s.head, { paddingTop: insets.top + 12 }]}>
           <Text style={s.title}>{title}</Text>
           <Pressable onPress={onClose} hitSlop={12}><Text style={s.close}>✕</Text></Pressable>
         </View>
@@ -139,7 +141,7 @@ function mergePois(list: Poi[]): Poi[] {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 18, paddingTop: 60, paddingBottom: 10 },
+  head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 18, paddingBottom: 10 },
   title: { color: C.txt, fontSize: 18, fontWeight: '800' },
   close: { color: C.muted, fontSize: 20, fontWeight: '700' },
   searchRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 18, paddingBottom: 10 },
@@ -154,7 +156,7 @@ const s = StyleSheet.create({
   rowAddr: { color: C.muted, fontSize: 12, marginTop: 1 },
   tag: { color: C.muted, fontSize: 10.5, fontWeight: '700', borderWidth: 1, borderColor: C.line, borderRadius: 6, paddingVertical: 2, paddingHorizontal: 6 },
   footer: { padding: 14, paddingBottom: 28, borderTopWidth: 1, borderTopColor: C.line },
-  cta: { backgroundColor: '#2ea043', borderRadius: 13, paddingVertical: 14, alignItems: 'center', paddingHorizontal: 12 },
+  cta: { minHeight: 52, backgroundColor: C.accent, borderRadius: 12, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 12 },
   ctaOff: { backgroundColor: C.panel2 },
-  ctaTxt: { color: '#fff', fontSize: 14.5, fontWeight: '800' },
+  ctaTxt: { color: C.onAccent, fontSize: 15, fontWeight: '800' },
 });

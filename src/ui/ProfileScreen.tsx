@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { FloatingTabBar } from './FloatingTabBar';
@@ -11,6 +12,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
 export function ProfileScreen({ navigation }: Props) {
   const { session, isLoading, signIn, signOut, signUp } = useAuth();
+  const insets = useSafeAreaInsets();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -74,7 +76,7 @@ export function ProfileScreen({ navigation }: Props) {
 
   return (
     <View style={s.root}>
-      <ScrollView contentContainerStyle={s.scroll}>
+      <ScrollView contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]}>
         <Text style={s.h1}>{session ? '내정보' : '로그인'}</Text>
         <Text style={s.sub}>{session ? '테스트 계정이 연결되어 있습니다.' : '저장과 개인화 기능을 사용하려면 로그인하세요.'}</Text>
 
@@ -127,7 +129,7 @@ export function ProfileScreen({ navigation }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  scroll: { padding: 22, paddingTop: 64 },
+  scroll: { padding: 22 },
   h1: { color: C.txt, fontSize: 30, fontWeight: '900' },
   sub: { color: C.muted, fontSize: 14.5, marginTop: 5, marginBottom: 18 },
   card: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 16, marginBottom: 12 },
@@ -144,8 +146,8 @@ const s = StyleSheet.create({
   label: { color: C.txt2, fontSize: 13, fontWeight: '800', marginBottom: 7, marginTop: 12 },
   input: { minHeight: 48, borderWidth: 1, borderColor: C.line, backgroundColor: C.bg, borderRadius: 10, paddingHorizontal: 13, color: C.txt, fontSize: 15 },
   notice: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 14 },
-  primaryButton: { minHeight: 50, borderRadius: 11, backgroundColor: C.accent, justifyContent: 'center', alignItems: 'center', marginTop: 20 },
-  primaryButtonText: { color: C.bg, fontSize: 15, fontWeight: '900' },
+  primaryButton: { minHeight: 52, borderRadius: 12, backgroundColor: C.accent, justifyContent: 'center', alignItems: 'center', marginTop: 20 },
+  primaryButtonText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
   secondaryButton: { minHeight: 46, borderRadius: 10, borderWidth: 1, borderColor: C.line, justifyContent: 'center', alignItems: 'center', marginTop: 18 },
   secondaryButtonText: { color: C.txt2, fontSize: 14, fontWeight: '800' },
   buttonDisabled: { opacity: 0.55 },

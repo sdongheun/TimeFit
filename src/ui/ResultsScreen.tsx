@@ -1,6 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, Linking, PanResponder, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Course, hasBalancedPaidVisit, LatLon, minimumStayForCourse, minimumStayForSpot, safetyBufferMin, Spot, travelMin, travelSrc } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
 import { Chip } from './Chip';
@@ -13,6 +15,7 @@ import { KakaoRouteMap } from './KakaoRouteMap';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Results'>;
 type CandidateStatus = 'good' | 'short' | 'tight' | 'over';
+type SheetPosition = 'collapsed' | 'default' | 'expanded';
 type CandidateEval = {
   spot: Spot;
   moveMin: number;
@@ -242,6 +245,8 @@ function buildBasketCourse(selected: Spot[], origin: LatLon, target: LatLon, ctx
 }
 
 export function ResultsScreen({ route, navigation }: Props) {
+  const insets = useSafeAreaInsets();
+  const { height: windowHeight } = useWindowDimensions();
   const { result, usedTimeLabel, origin, ctx } = route.params;
   const flow = useAppFlow();
   const { setLatestResults } = flow;
@@ -250,8 +255,62 @@ export function ResultsScreen({ route, navigation }: Props) {
   const [selectedIds, setSelectedIds] = useState<string[]>(route.params.selectedIds ?? []);
   const [page, setPage] = useState<'recommend' | 'basket'>(route.params.initialPage ?? 'recommend');
   const [focusedSpotId, setFocusedSpotId] = useState<string | null>(null);
+  const expandedSheetHeight = Math.min(Math.round(windowHeight * 0.9), windowHeight - (insets.top + 8));
+  const defaultSheetHeight = Math.round(windowHeight * 0.56);
+  const defaultSheetOffset = expandedSheetHeight - defaultSheetHeight;
+  const collapsedSheetOffset = Math.max(0, expandedSheetHeight - (insets.bottom + 82));
+  const [sheetPosition, setSheetPosition] = useState<SheetPosition>('default');
   const candidateListRef = useRef<ScrollView>(null);
   const candidateOffsets = useRef(new Map<string, number>());
+  const sheetTranslateY = useRef(new Animated.Value(defaultSheetOffset)).current;
+  const sheetStartOffset = useRef(0);
+
+  const moveSheet = useCallback((position: SheetPosition) => {
+    setSheetPosition(position);
+    const toValue = position === 'expanded'
+      ? 0
+      : position === 'collapsed'
+        ? collapsedSheetOffset
+        : defaultSheetOffset;
+    Animated.spring(sheetTranslateY, {
+      toValue,
+      useNativeDriver: true,
+      stiffness: 240,
+      damping: 28,
+    }).start();
+  }, [collapsedSheetOffset, defaultSheetOffset, sheetTranslateY]);
+
+  const sheetPanResponder = useMemo(() => PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponderCapture: (_, gesture) => Math.abs(gesture.dy) > 4 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
+    onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dy) > 6 && Math.abs(gesture.dy) > Math.abs(gesture.dx),
+    onPanResponderGrant: () => {
+      sheetTranslateY.stopAnimation((value) => {
+        sheetStartOffset.current = value;
+      });
+    },
+    onPanResponderMove: (_, gesture) => {
+      const nextOffset = Math.max(0, Math.min(collapsedSheetOffset, sheetStartOffset.current + gesture.dy));
+      sheetTranslateY.setValue(nextOffset);
+    },
+    onPanResponderRelease: (_, gesture) => {
+      if (Math.abs(gesture.dx) < 8 && Math.abs(gesture.dy) < 8) {
+        moveSheet(sheetPosition === 'collapsed' ? 'default' : sheetPosition === 'default' ? 'expanded' : 'default');
+        return;
+      }
+      const currentOffset = Math.max(0, Math.min(collapsedSheetOffset, sheetStartOffset.current + gesture.dy));
+      const nextPosition: SheetPosition = gesture.vy > 0.3
+        ? (currentOffset >= defaultSheetOffset ? 'collapsed' : 'default')
+        : gesture.vy < -0.3
+          ? (currentOffset <= defaultSheetOffset ? 'expanded' : 'default')
+          : [
+              { position: 'expanded' as const, offset: 0 },
+              { position: 'default' as const, offset: defaultSheetOffset },
+              { position: 'collapsed' as const, offset: collapsedSheetOffset },
+            ].reduce((nearest, candidate) => Math.abs(candidate.offset - currentOffset) < Math.abs(nearest.offset - currentOffset) ? candidate : nearest).position;
+      moveSheet(nextPosition);
+    },
+  }), [collapsedSheetOffset, defaultSheetOffset, moveSheet, sheetPosition, sheetTranslateY]);
 
   const target = ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : origin;
   const endMin = ctx.startMin + ctx.remainingMin;
@@ -264,6 +323,13 @@ export function ResultsScreen({ route, navigation }: Props) {
   const budget = ctx.remainingMin - buffer;
   const selectedStayPool = Math.max(0, budget - selectedMoveMin);
   const selectedBufferLeft = Math.max(0, ctx.remainingMin - selectedMoveMin - Math.min(selectedStayPool, selected.reduce((n, sp) => n + sp.dwell, 0)));
+
+  useEffect(() => {
+    if (page !== 'recommend') {
+      sheetTranslateY.setValue(defaultSheetOffset);
+      setSheetPosition('default');
+    }
+  }, [defaultSheetOffset, page, sheetTranslateY]);
 
   useEffect(() => {
     setLatestResults(route.params);
@@ -409,30 +475,72 @@ export function ResultsScreen({ route, navigation }: Props) {
           line={[]}
           markers={candidateMapMarkers}
           showMarkerLabels
-          boundsPadding={{ top: 24, right: 20, bottom: 24, left: 20 }}
+          boundsPadding={{
+            top: 132,
+            right: 20,
+            bottom: sheetPosition === 'expanded'
+              ? expandedSheetHeight + 16
+              : sheetPosition === 'collapsed'
+                ? insets.bottom + 92
+                : defaultSheetHeight + 16,
+            left: 20,
+          }}
           onMarkerTap={focusCandidate}
         />
       ) : null}
-      {page === 'recommend' ? (
-        <View style={s.mapTopBar}>
+      {page === 'recommend' && sheetPosition !== 'expanded' ? (
+        <View style={[s.mapTopBar, { top: insets.top + 8 }]}>
           <Pressable style={s.mapBackButton} onPress={() => navigation.goBack()} accessibilityLabel="시간 설정으로 돌아가기">
-            <Text style={s.mapBackText}>‹</Text>
+            <Feather color={C.txt} name="arrow-left" size={22} />
           </Pressable>
+          <Text style={s.mapTitle}>코스 만들기</Text>
           <View style={s.timePill}>
             <Text style={s.timePillLabel}>남은 자투리</Text>
             <Text style={s.timePillValue}>{ctx.remainingMin}분 남음</Text>
           </View>
-          <Pressable style={s.mapCartButton} onPress={() => setPage('basket')}>
-            <Text style={s.mapCartText}>담은 곳 {selected.length}</Text>
+          <Pressable style={s.mapCartButton} onPress={() => setPage('basket')} accessibilityLabel={`장바구니, ${selected.length}곳 선택됨`}>
+            <Feather color={C.txt} name="shopping-bag" size={21} />
+            <View style={s.mapCartCount}><Text style={s.mapCartCountText}>{selected.length}</Text></View>
           </Pressable>
         </View>
       ) : null}
-      <ScrollView
-        ref={page === 'recommend' ? candidateListRef : undefined}
-        style={page === 'recommend' ? s.candidateSheet : undefined}
-        contentContainerStyle={[s.scroll, page === 'recommend' && s.candidateSheetScroll]}
+      <Animated.View
+        style={page === 'recommend'
+          ? [s.candidateSheet, sheetPosition === 'expanded' && s.candidateSheetExpanded, { height: expandedSheetHeight, transform: [{ translateY: sheetTranslateY }] }]
+          : s.pageSurface}
       >
-        {page === 'recommend' ? <View style={s.sheetHandle} /> : null}
+        {page === 'recommend' ? (
+          <View style={s.sheetTop}>
+            <View
+              {...sheetPanResponder.panHandlers}
+              accessibilityLabel={sheetPosition === 'collapsed' ? '장소 목록 펼치기' : sheetPosition === 'expanded' ? '장소 목록 기본 크기로 줄이기' : '장소 목록 펼치기'}
+              style={s.sheetDragArea}
+            >
+              <View style={s.sheetHandle} />
+            </View>
+            {sheetPosition === 'expanded' ? (
+              <View style={s.expandedHeader}>
+                <Pressable style={s.expandedHeaderButton} onPress={() => navigation.goBack()} accessibilityLabel="시간 설정으로 돌아가기">
+                  <Feather color={C.txt} name="arrow-left" size={21} />
+                </Pressable>
+                <Text style={s.expandedHeaderTitle}>장소 후보 {filtered.length}</Text>
+                <Pressable style={s.expandedHeaderButton} onPress={() => setPage('basket')} accessibilityLabel={`장바구니, ${selected.length}곳 선택됨`}>
+                  <Feather color={C.txt} name="shopping-bag" size={20} />
+                  <View style={s.mapCartCount}><Text style={s.mapCartCountText}>{selected.length}</Text></View>
+                </Pressable>
+              </View>
+            ) : null}
+          </View>
+        ) : null}
+        <ScrollView
+          ref={page === 'recommend' ? candidateListRef : undefined}
+          style={s.contentScroll}
+          contentContainerStyle={[
+            s.scroll,
+            page === 'recommend' && s.candidateSheetScroll,
+            page === 'basket' && { paddingTop: insets.top + 18 },
+          ]}
+        >
         <View style={s.banner}>
           <View style={{ flex: 1 }}>
             <Text style={s.bannerTxt}>
@@ -440,10 +548,6 @@ export function ResultsScreen({ route, navigation }: Props) {
             </Text>
             <Text style={s.bannerBig}>{page === 'recommend' ? '지도에서 장소를 골라보세요' : '담은 장소로 코스를 만드세요'}</Text>
           </View>
-          <Pressable style={s.cartBadge} onPress={() => setPage(page === 'recommend' ? 'basket' : 'recommend')}>
-            <Text style={s.cartBadgeNum}>{selected.length}</Text>
-            <Text style={s.cartBadgeTxt}>{page === 'recommend' ? '장바구니' : '추천 보기'}</Text>
-          </Pressable>
         </View>
         <Text style={s.meta}>⏱ {usedTimeLabel} · 후보 장소 {page === 'recommend' ? filtered.length : spots.length} · 영업시간 확인 {result.gatedCount}</Text>
 
@@ -562,7 +666,8 @@ export function ResultsScreen({ route, navigation }: Props) {
           </>
         )}
         <View style={{ height: 120 }} />
-      </ScrollView>
+        </ScrollView>
+      </Animated.View>
       <FloatingTabBar
         active="main"
         onMain={() => resetToMain(navigation)}
@@ -575,29 +680,36 @@ export function ResultsScreen({ route, navigation }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  candidateMap: { position: 'absolute', top: 0, right: 0, bottom: '56%', left: 0, zIndex: 0 },
-  mapTopBar: { position: 'absolute', top: 58, left: 16, right: 16, zIndex: 3, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  pageSurface: { flex: 1 },
+  candidateMap: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 0 },
+  mapTopBar: { position: 'absolute', left: 16, right: 16, zIndex: 3, flexDirection: 'row', alignItems: 'center', gap: 8 },
   mapBackButton: { width: 42, height: 42, borderRadius: 12, borderColor: C.line, borderWidth: 1, backgroundColor: 'rgba(31,32,35,0.92)', alignItems: 'center', justifyContent: 'center' },
-  mapBackText: { color: C.txt, fontSize: 31, fontWeight: '400', lineHeight: 34, marginTop: -4 },
-  timePill: { flex: 1, minHeight: 42, paddingHorizontal: 14, justifyContent: 'center', borderRadius: 12, borderColor: C.line, borderWidth: 1, backgroundColor: 'rgba(31,32,35,0.92)' },
+  mapTitle: { color: C.txt, fontSize: 15, fontWeight: '800', flexShrink: 0 },
+  timePill: { flex: 1, height: 42, paddingHorizontal: 11, justifyContent: 'center', borderRadius: 12, borderColor: C.line, borderWidth: 1, backgroundColor: 'rgba(31,32,35,0.92)' },
   timePillLabel: { color: C.muted, fontSize: 10.5, fontWeight: '700' },
   timePillValue: { color: C.txt, fontSize: 14, fontWeight: '800', marginTop: 1 },
-  mapCartButton: { minHeight: 42, paddingHorizontal: 13, borderRadius: 12, justifyContent: 'center', borderColor: C.line, borderWidth: 1, backgroundColor: 'rgba(31,32,35,0.92)' },
-  mapCartText: { color: C.txt, fontSize: 13, fontWeight: '800' },
+  mapCartButton: { width: 42, height: 42, borderRadius: 12, justifyContent: 'center', alignItems: 'center', borderColor: C.line, borderWidth: 1, backgroundColor: 'rgba(31,32,35,0.92)' },
+  mapCartCount: { position: 'absolute', top: -6, right: -6, minWidth: 19, height: 19, paddingHorizontal: 4, borderRadius: 10, backgroundColor: C.accent, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: C.bg },
+  mapCartCountText: { color: C.onAccent, fontSize: 10.5, fontWeight: '900' },
   candidateSheet: {
-    position: 'absolute', left: 0, right: 0, bottom: 0, height: '56%', zIndex: 1,
+    position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 1,
     backgroundColor: C.panel, borderTopWidth: 1, borderColor: C.line,
     borderTopLeftRadius: 22, borderTopRightRadius: 22,
   },
+  candidateSheetExpanded: { zIndex: 4 },
+  contentScroll: { flex: 1 },
   scroll: { padding: 18, paddingTop: 8 },
-  candidateSheetScroll: { paddingTop: 8, paddingBottom: 120 },
-  sheetHandle: { alignSelf: 'center', width: 36, height: 4, borderRadius: 2, backgroundColor: '#4a4c52', marginBottom: 10 },
-  banner: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 12, paddingVertical: 11, paddingHorizontal: 14, marginBottom: 8 },
+  candidateSheetScroll: { paddingTop: 0, paddingBottom: 120 },
+  sheetTop: { backgroundColor: C.panel },
+  // 시트 최상단만 높이 전환 제스처를 받고, 후보 카드 영역은 목록 스크롤만 처리한다.
+  sheetDragArea: { minHeight: 48, alignItems: 'center', justifyContent: 'center' },
+  sheetHandle: { width: 36, height: 4, borderRadius: 2, backgroundColor: '#4a4c52' },
+  expandedHeader: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 18, borderBottomWidth: 1, borderBottomColor: C.line },
+  expandedHeaderButton: { width: 42, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2 },
+  expandedHeaderTitle: { flex: 1, color: C.txt, fontSize: 17, fontWeight: '800' },
+  banner: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 12, paddingVertical: 11, paddingHorizontal: 14, marginBottom: 8 },
   bannerTxt: { color: C.txt2, fontSize: 12.5 },
   bannerBig: { color: C.accent, fontSize: 15, fontWeight: '800' },
-  cartBadge: { minWidth: 54, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(76,194,255,0.42)', borderRadius: 11, paddingVertical: 6, paddingHorizontal: 9, backgroundColor: C.panel },
-  cartBadgeNum: { color: C.txt, fontSize: 16, fontWeight: '900' },
-  cartBadgeTxt: { color: C.muted, fontSize: 10.5, fontWeight: '800' },
   meta: { color: C.muted, fontSize: 11.5, marginBottom: 10 },
   pageBlock: { marginTop: 4 },
   pageHead: { flexDirection: 'row', alignItems: 'center', gap: 12, marginBottom: 12 },
@@ -626,9 +738,9 @@ const s = StyleSheet.create({
   stat: { flex: 1, backgroundColor: C.panel2, borderRadius: 10, paddingVertical: 9, paddingHorizontal: 8 },
   statLbl: { color: C.muted, fontSize: 10.5, fontWeight: '800', marginBottom: 2 },
   statVal: { color: C.txt, fontSize: 13.5, fontWeight: '900' },
-  cta: { marginTop: 12, backgroundColor: C.accent, borderRadius: 12, paddingVertical: 13, alignItems: 'center' },
+  cta: { minHeight: 52, marginTop: 12, backgroundColor: C.accent, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
   ctaOff: { backgroundColor: C.panel2 },
-  ctaTxt: { color: '#fff', fontSize: 14, fontWeight: '900' },
+  ctaTxt: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
   flabel: { color: C.txt2, fontSize: 13, fontWeight: '700', marginTop: 12, marginBottom: 6 },
   row: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   countRow: { marginTop: 16, marginBottom: 4 },

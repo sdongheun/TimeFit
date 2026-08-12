@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
@@ -22,11 +23,12 @@ function durationLabel(minutes: number) {
 
 export function HomeScreen({ navigation }: Props) {
   const { activeCourse } = useAppFlow();
+  const insets = useSafeAreaInsets();
   const openSetup = (presetMin?: number) => navigation.navigate('TimeSetup', presetMin ? { presetMin } : undefined);
 
   return (
     <View style={s.root}>
-      <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]} showsVerticalScrollIndicator={false}>
         <Text style={s.h1}>약속까지 남은 시간,{`\n`}어떻게 쓸까요?</Text>
 
         <View style={s.primaryCard}>
@@ -84,7 +86,7 @@ export function HomeScreen({ navigation }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  scroll: { paddingTop: 68, paddingHorizontal: 20 },
+  scroll: { paddingHorizontal: 20 },
   h1: { color: C.txt, fontSize: 28, lineHeight: 37, fontWeight: '800' },
   primaryCard: { marginTop: 20, borderRadius: 16, padding: 20, backgroundColor: C.panel, borderWidth: 1, borderColor: C.line },
   primaryTitle: { color: C.txt, fontSize: 18, lineHeight: 27, fontWeight: '800' },

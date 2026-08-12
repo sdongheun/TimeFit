@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import { HourBucket, kakaoReverseGeocode, Mode, planTimeFit, reverseGeocode, timeContext } from '../engine';
 import { Appointment, fmtHM, RootStackParamList } from './nav';
@@ -34,6 +35,7 @@ function bufferFor(mode: Mode) {
 
 export function TimeSetupScreen({ navigation, route }: Props) {
   const flow = useAppFlow();
+  const insets = useSafeAreaInsets();
   const now = useMemo(() => timeContext(new Date()), []);
   const roundedNow = Math.min(23 * 60 + 55, Math.ceil(now.nowMin / STEP_MINUTES) * STEP_MINUTES);
   const initialDuration = route.params?.presetMin ?? 120;
@@ -148,8 +150,19 @@ export function TimeSetupScreen({ navigation, route }: Props) {
 
   return (
     <View style={s.root}>
-      <View style={s.nav}>
-        <Pressable onPress={() => navigation.goBack()} hitSlop={12}><Text style={s.cancel}>취소</Text></Pressable>
+      <View style={[s.nav, { height: insets.top + 52, paddingTop: insets.top }]}>
+        <Pressable
+          accessibilityLabel="메인으로 돌아가기"
+          hitSlop={12}
+          onPress={() => {
+            if (navigation.canGoBack()) navigation.goBack();
+            else navigation.navigate('Home');
+          }}
+          style={s.backButton}
+        >
+          <Text style={s.backArrow}>‹</Text>
+          <Text style={s.backLabel}>메인</Text>
+        </Pressable>
         <Text style={s.navTitle}>자투리 시간 설정</Text>
         <View style={s.navSpacer} />
       </View>
@@ -222,8 +235,10 @@ export function TimeSetupScreen({ navigation, route }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  nav: { height: 64, paddingTop: 16, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomColor: C.line, borderBottomWidth: 1 },
-  cancel: { color: C.txt2, fontSize: 15, fontWeight: '600' },
+  nav: { paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomColor: C.line, borderBottomWidth: 1 },
+  backButton: { width: 58, flexDirection: 'row', alignItems: 'center', gap: 2, paddingVertical: 8 },
+  backArrow: { color: C.txt, fontSize: 32, fontWeight: '400', lineHeight: 32 },
+  backLabel: { color: C.txt2, fontSize: 14, fontWeight: '700' },
   navTitle: { color: C.txt, fontSize: 16, fontWeight: '800' },
   navSpacer: { width: 42 },
   body: { padding: 20, paddingBottom: 28, gap: 12 },

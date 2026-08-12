@@ -345,8 +345,8 @@ const s = StyleSheet.create({
   errorTxt: { color: C.txt2, fontSize: 11, lineHeight: 16 },
   legend: {
     position: 'absolute',
-    left: 10,
-    top: 10,
+    right: 10,
+    bottom: 10,
     gap: 6,
     paddingHorizontal: 10,
     paddingVertical: 8,

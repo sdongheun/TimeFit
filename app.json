@@ -13,7 +13,8 @@
     "plugins": [
       "./plugins/withoutPushEntitlement.cjs",
       "expo-notifications",
-      "expo-status-bar"
+      "expo-status-bar",
+      "expo-font"
     ],
     "userInterfaceStyle": "light",
     "ios": {
