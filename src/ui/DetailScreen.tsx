@@ -33,6 +33,11 @@ export function DetailScreen({ route, navigation }: Props) {
   const walk = activeCourse.mobility?.walk;
   const car = activeCourse.mobility?.car;
   const transit = activeCourse.mobility?.transit;
+  const totalMoveMin = travelLegs.reduce((sum, leg) => sum + leg.min, 0);
+  const totalStayMin = activeCourse.legs
+    .filter((leg) => leg.label.startsWith('체류'))
+    .reduce((sum, leg) => sum + leg.min, 0);
+  const usedRatio = Math.min(100, Math.max(0, ((totalMoveMin + totalStayMin) / Math.max(ctx.remainingMin, 1)) * 100));
 
   function cancelBuilderCourse() {
     flow.setActiveCourse(null);
@@ -92,19 +97,21 @@ export function DetailScreen({ route, navigation }: Props) {
 
   return (
     <View style={s.root}>
-      <KakaoRouteMap
-        style={s.map}
-        points={pts}
-        line={line}
-        segments={routeSegments}
-        markers={[
-          { ...origin, label: '출발지', kind: 'origin' },
-          ...activeCourse.spots.map((sp) => ({ ...sp, label: sp.title, kind: 'spot' as const })),
-          ...(ctx.appointment ? [{ ...target, label: ctx.appointment.label, kind: 'appointment' as const }] : []),
-        ]}
-      />
+      {source === 'saved' ? (
+        <KakaoRouteMap
+          style={s.map}
+          points={pts}
+          line={line}
+          segments={routeSegments}
+          markers={[
+            { ...origin, label: '출발지', kind: 'origin' },
+            ...activeCourse.spots.map((sp) => ({ ...sp, label: sp.title, kind: 'spot' as const })),
+            ...(ctx.appointment ? [{ ...target, label: ctx.appointment.label, kind: 'appointment' as const }] : []),
+          ]}
+        />
+      ) : null}
 
-      <ScrollView contentContainerStyle={s.scroll}>
+      <ScrollView contentContainerStyle={[s.scroll, source === 'builder' && s.builderScroll]}>
         <View style={s.head}>
           <View style={{ flex: 1 }}>
             <Text style={s.type}>{source === 'saved' ? '내 코스' : '코스 상세'} · {activeCourse.type} {activeCourse.spots.length}곳</Text>
@@ -126,6 +133,18 @@ export function DetailScreen({ route, navigation }: Props) {
             <Text style={s.preciseTxt}>{refineNote}</Text>
           </View>
         ) : null}
+
+        <View style={s.budgetCard}>
+          <View style={s.budgetHeader}>
+            <Text style={s.budgetLabel}>약속 도착 여유</Text>
+            <Text style={[s.budgetValue, activeCourse.bufferLeftMin < 15 && s.budgetValueTight]}>+{Math.max(0, Math.round(activeCourse.bufferLeftMin))}분</Text>
+          </View>
+          <View style={s.budgetTrack}><View style={[s.budgetFill, { width: `${usedRatio}%` }]} /></View>
+          <View style={s.budgetMetaRow}>
+            <Text style={s.budgetMeta}>이동 {totalMoveMin}분 · 체류 {totalStayMin}분</Text>
+            <Text style={s.budgetMeta}>{ctx.remainingMin}분 중</Text>
+          </View>
+        </View>
 
         {activeCourse.spots.map((sp, i) => (
           <View key={i} style={s.spot}>
@@ -195,6 +214,7 @@ const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   map: { width: '100%', height: 280 },
   scroll: { padding: 18 },
+  builderScroll: { paddingTop: 28 },
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 12 },
   type: { color: C.txt, fontWeight: '800', fontSize: 18 },
   total: { color: C.txt2, fontSize: 14, marginTop: 3 },
@@ -204,6 +224,15 @@ const s = StyleSheet.create({
   listBtnTxt: { color: C.accent, fontSize: 12.5, fontWeight: '900' },
   preciseBox: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: 'rgba(76,194,255,0.08)', borderColor: 'rgba(76,194,255,0.22)', borderWidth: 1, borderRadius: 12, padding: 10, marginBottom: 10 },
   preciseTxt: { color: C.txt2, fontSize: 12.5, flex: 1 },
+  budgetCard: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 16, padding: 17, marginBottom: 14 },
+  budgetHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
+  budgetLabel: { color: C.muted, fontSize: 13, fontWeight: '700' },
+  budgetValue: { color: C.green, fontSize: 21, fontWeight: '900' },
+  budgetValueTight: { color: C.amber },
+  budgetTrack: { height: 6, overflow: 'hidden', borderRadius: 3, backgroundColor: C.panel2 },
+  budgetFill: { height: '100%', borderRadius: 3, backgroundColor: C.accent },
+  budgetMetaRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 9, gap: 12 },
+  budgetMeta: { color: C.muted, fontSize: 12, fontWeight: '600' },
   spot: { flexDirection: 'row', gap: 11, alignItems: 'center', backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 13, marginBottom: 9 },
   badge: { width: 26, height: 26, borderRadius: 9, backgroundColor: C.accent, alignItems: 'center', justifyContent: 'center' },
   badgeTxt: { color: C.bg, fontWeight: '800', fontSize: 13 },
@@ -223,6 +252,6 @@ const s = StyleSheet.create({
   why: { color: C.accent, fontSize: 13.5, marginTop: 12, fontWeight: '600' },
   saveBtn: { marginTop: 18, backgroundColor: 'rgba(76,194,255,0.12)', borderColor: 'rgba(76,194,255,0.45)', borderWidth: 1, borderRadius: 14, paddingVertical: 15, alignItems: 'center' },
   saveBtnTxt: { color: C.accent, fontSize: 15, fontWeight: '900' },
-  cta: { marginTop: 18, backgroundColor: '#2ea043', borderRadius: 14, paddingVertical: 15, alignItems: 'center' },
+  cta: { marginTop: 18, backgroundColor: C.accent, borderRadius: 14, paddingVertical: 15, alignItems: 'center' },
   ctaTxt: { color: '#fff', fontSize: 15, fontWeight: '800' },
 });

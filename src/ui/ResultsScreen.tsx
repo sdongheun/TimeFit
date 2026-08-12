@@ -413,6 +413,20 @@ export function ResultsScreen({ route, navigation }: Props) {
           onMarkerTap={focusCandidate}
         />
       ) : null}
+      {page === 'recommend' ? (
+        <View style={s.mapTopBar}>
+          <Pressable style={s.mapBackButton} onPress={() => navigation.goBack()} accessibilityLabel="시간 설정으로 돌아가기">
+            <Text style={s.mapBackText}>‹</Text>
+          </Pressable>
+          <View style={s.timePill}>
+            <Text style={s.timePillLabel}>남은 자투리</Text>
+            <Text style={s.timePillValue}>{ctx.remainingMin}분 남음</Text>
+          </View>
+          <Pressable style={s.mapCartButton} onPress={() => setPage('basket')}>
+            <Text style={s.mapCartText}>담은 곳 {selected.length}</Text>
+          </Pressable>
+        </View>
+      ) : null}
       <ScrollView
         ref={page === 'recommend' ? candidateListRef : undefined}
         style={page === 'recommend' ? s.candidateSheet : undefined}
@@ -561,16 +575,24 @@ export function ResultsScreen({ route, navigation }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  candidateMap: { position: 'absolute', top: 0, right: 0, bottom: '55%', left: 0, zIndex: 0 },
+  candidateMap: { position: 'absolute', top: 0, right: 0, bottom: '56%', left: 0, zIndex: 0 },
+  mapTopBar: { position: 'absolute', top: 58, left: 16, right: 16, zIndex: 3, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  mapBackButton: { width: 42, height: 42, borderRadius: 12, borderColor: C.line, borderWidth: 1, backgroundColor: 'rgba(31,32,35,0.92)', alignItems: 'center', justifyContent: 'center' },
+  mapBackText: { color: C.txt, fontSize: 31, fontWeight: '400', lineHeight: 34, marginTop: -4 },
+  timePill: { flex: 1, minHeight: 42, paddingHorizontal: 14, justifyContent: 'center', borderRadius: 12, borderColor: C.line, borderWidth: 1, backgroundColor: 'rgba(31,32,35,0.92)' },
+  timePillLabel: { color: C.muted, fontSize: 10.5, fontWeight: '700' },
+  timePillValue: { color: C.txt, fontSize: 14, fontWeight: '800', marginTop: 1 },
+  mapCartButton: { minHeight: 42, paddingHorizontal: 13, borderRadius: 12, justifyContent: 'center', borderColor: C.line, borderWidth: 1, backgroundColor: 'rgba(31,32,35,0.92)' },
+  mapCartText: { color: C.txt, fontSize: 13, fontWeight: '800' },
   candidateSheet: {
-    position: 'absolute', left: 0, right: 0, bottom: 0, height: '55%', zIndex: 1,
-    backgroundColor: C.bg, borderTopWidth: 1, borderColor: C.line,
-    borderTopLeftRadius: 18, borderTopRightRadius: 18,
+    position: 'absolute', left: 0, right: 0, bottom: 0, height: '56%', zIndex: 1,
+    backgroundColor: C.panel, borderTopWidth: 1, borderColor: C.line,
+    borderTopLeftRadius: 22, borderTopRightRadius: 22,
   },
   scroll: { padding: 18, paddingTop: 8 },
   candidateSheetScroll: { paddingTop: 8, paddingBottom: 120 },
-  sheetHandle: { alignSelf: 'center', width: 36, height: 4, borderRadius: 2, backgroundColor: '#506070', marginBottom: 10 },
-  banner: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12, backgroundColor: 'rgba(76,194,255,0.08)', borderColor: 'rgba(76,194,255,0.3)', borderWidth: 1, borderRadius: 12, paddingVertical: 11, paddingHorizontal: 14, marginBottom: 8 },
+  sheetHandle: { alignSelf: 'center', width: 36, height: 4, borderRadius: 2, backgroundColor: '#4a4c52', marginBottom: 10 },
+  banner: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 12, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 12, paddingVertical: 11, paddingHorizontal: 14, marginBottom: 8 },
   bannerTxt: { color: C.txt2, fontSize: 12.5 },
   bannerBig: { color: C.accent, fontSize: 15, fontWeight: '800' },
   cartBadge: { minWidth: 54, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(76,194,255,0.42)', borderRadius: 11, paddingVertical: 6, paddingHorizontal: 9, backgroundColor: C.panel },
@@ -604,7 +626,7 @@ const s = StyleSheet.create({
   stat: { flex: 1, backgroundColor: C.panel2, borderRadius: 10, paddingVertical: 9, paddingHorizontal: 8 },
   statLbl: { color: C.muted, fontSize: 10.5, fontWeight: '800', marginBottom: 2 },
   statVal: { color: C.txt, fontSize: 13.5, fontWeight: '900' },
-  cta: { marginTop: 12, backgroundColor: '#2ea043', borderRadius: 12, paddingVertical: 13, alignItems: 'center' },
+  cta: { marginTop: 12, backgroundColor: C.accent, borderRadius: 12, paddingVertical: 13, alignItems: 'center' },
   ctaOff: { backgroundColor: C.panel2 },
   ctaTxt: { color: '#fff', fontSize: 14, fontWeight: '900' },
   flabel: { color: C.txt2, fontSize: 13, fontWeight: '700', marginTop: 12, marginBottom: 6 },

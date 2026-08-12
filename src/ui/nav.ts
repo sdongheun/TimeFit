@@ -22,6 +22,7 @@ export const modeIcon = (label: string) =>
 
 export type RootStackParamList = {
   Home: undefined;
+  TimeSetup: { presetMin?: number } | undefined;
   Results: {
     result: PlanResult;
     usedTimeLabel: string;
