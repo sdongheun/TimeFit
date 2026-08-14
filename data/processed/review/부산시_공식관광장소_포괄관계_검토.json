@@ -1,0 +1,2918 @@
+{
+  "meta": {
+    "version": "2026-08-10",
+    "purpose": "시장·거리·골목 등 포괄 장소를 우선 추천하고, 그 내부의 개별 음식·쇼핑 장소가 포괄 장소 체류시간을 잘못 승계하지 않도록 분리한다.",
+    "method": "포괄 장소는 이름 기반으로 확정했다. 내부 장소는 지도 경계 데이터가 없어 포괄 장소 중심점의 유형별 반경 안에 있는 부산맛집·부산쇼핑 장소만 검토 대상으로 분류했다.",
+    "limitation": "내부장소_검토는 행정·상권 경계가 아닌 좌표 반경 추정이다. 자동 제거 전에 reviewStatus와 실제 주소를 확인해야 한다."
+  },
+  "summary": {
+    "counts": {
+      "독립장소": 484,
+      "포괄장소": 93,
+      "내부장소_검토": 79
+    },
+    "parentKinds": {
+      "문화마을": 15,
+      "해변·해안": 9,
+      "시장": 14,
+      "공원·정원": 32,
+      "거리·골목": 9,
+      "쇼핑복합공간": 14
+    },
+    "internalReviewByConfidence": {
+      "medium": 13,
+      "low": 66
+    }
+  },
+  "parents": [
+    {
+      "candidateKey": "감천문화마을",
+      "title": "감천문화마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 365,
+          "ADDR1": "부산광역시 사하구 감내2로 203",
+          "LAT": 35.095787,
+          "LNG": 129.00926
+        }
+      ]
+    },
+    {
+      "candidateKey": "강서구중사도중사도마을",
+      "title": "강서구 중사도, 중사도 마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2275,
+          "ADDR1": "부산광역시 강서구 식만동",
+          "LAT": 35.20947,
+          "LNG": 128.91457
+        }
+      ]
+    },
+    {
+      "candidateKey": "광안리해수욕장",
+      "title": "광안리 해수욕장",
+      "kind": "해변·해안",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 377,
+          "ADDR1": "부산광역시 수영구 광안해변로 219",
+          "LAT": 35.15318,
+          "LNG": 129.11887
+        }
+      ]
+    },
+    {
+      "candidateKey": "광안종합시장",
+      "title": "광안종합시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1305,
+          "ADDR1": "부산광역시 수영구 무학로49번길 71",
+          "LAT": 35.164215,
+          "LNG": 129.11816
+        }
+      ]
+    },
+    {
+      "candidateKey": "구덕문화공원",
+      "title": "구덕문화공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 859,
+          "ADDR1": "부산광역시 서구 꽃마을로163번길 73 ",
+          "LAT": 35.12617,
+          "LNG": 129.00514
+        }
+      ]
+    },
+    {
+      "candidateKey": "구포어린이교통공원",
+      "title": "구포어린이교통공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 313,
+          "ADDR1": "부산광역시 북구 낙동북로 687",
+          "LAT": 35.200676,
+          "LNG": 129.0009
+        }
+      ]
+    },
+    {
+      "candidateKey": "금강공원식물원",
+      "title": "금강공원/식물원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 397,
+          "ADDR1": "부산 동래구 우장춘로 175-146 칠성암",
+          "LAT": 35.22047,
+          "LNG": 129.07494
+        }
+      ]
+    },
+    {
+      "candidateKey": "깡깡이예술마을",
+      "title": "깡깡이 예술마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 256,
+          "ADDR1": "부산광역시 영도구 대평북로 36 깡깡이 안내센터",
+          "LAT": 35.092648,
+          "LNG": 129.03255
+        }
+      ]
+    },
+    {
+      "candidateKey": "남포지하도상가광복지하도상가",
+      "title": "남포지하도상가, 광복지하도상가",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2491,
+          "ADDR1": "남포지하도상가: 부산광역시 중구 구덕로 지하44 (남포동5가)\n광복지하도상가: 부산광역시 중구 중앙대로 29번길 8 (중앙동1가)",
+          "LAT": 35.097282,
+          "LNG": 129.02728
+        }
+      ]
+    },
+    {
+      "candidateKey": "다대포바다누리길다대포동측해안",
+      "title": "다대포 바다누리길, 다대포 동측해안",
+      "kind": "해변·해안",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2157,
+          "ADDR1": "부산광역시 사하구 다대동 468-6 (다대포 바다누리길 광장)",
+          "LAT": 35.046967,
+          "LNG": 128.96936
+        }
+      ]
+    },
+    {
+      "candidateKey": "다대포해수욕장",
+      "title": "다대포 해수욕장",
+      "kind": "해변·해안",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 366,
+          "ADDR1": "부산광역시 사하구 몰운대1길 14",
+          "LAT": 35.04652,
+          "LNG": 128.96283
+        }
+      ]
+    },
+    {
+      "candidateKey": "다대포해변공원",
+      "title": "다대포해변공원 ",
+      "kind": "해변·해안",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1718,
+          "ADDR1": "부산광역시 사하구 다대동 1674",
+          "LAT": 35.04586,
+          "LNG": 128.96655
+        }
+      ]
+    },
+    {
+      "candidateKey": "닥밭골벽화마을",
+      "title": "닥밭골 벽화마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2104,
+          "ADDR1": "부산광역시 서구 동대신동2가 87-218",
+          "LAT": 35.114338,
+          "LNG": 129.02371
+        }
+      ]
+    },
+    {
+      "candidateKey": "대룡마을",
+      "title": "대룡마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 450,
+          "ADDR1": "부산광역시 기장군 장안읍 대룡1길 17",
+          "LAT": 35.371174,
+          "LNG": 129.26433
+        },
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2408,
+          "ADDR1": "부산광역시 기장군 장안읍 대룡1길 17",
+          "LAT": 35.370792,
+          "LNG": 129.2628
+        }
+      ]
+    },
+    {
+      "candidateKey": "대신공원",
+      "title": "대신공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 456,
+          "ADDR1": "부산광역시 서구 대신공원로 37-18",
+          "LAT": 35.121544,
+          "LNG": 129.01619
+        }
+      ]
+    },
+    {
+      "candidateKey": "대저생태공원",
+      "title": "대저생태공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1673,
+          "ADDR1": "부산 강서구 대저1동 1-5",
+          "LAT": 35.20406,
+          "LNG": 128.98305
+        }
+      ]
+    },
+    {
+      "candidateKey": "대항어촌마을정거마을",
+      "title": "대항어촌마을, 정거마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1014,
+          "ADDR1": "대항어촌마을\n부산광역시 강서구 가덕해안로1207번길 9-2\n정거마을\n부산광역시 강서구 눌차동",
+          "LAT": 35.012188,
+          "LNG": 128.82697
+        }
+      ]
+    },
+    {
+      "candidateKey": "맥도생태공원",
+      "title": "맥도생태공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1674,
+          "ADDR1": "부산광역시 강서구 대저2동 1200-32",
+          "LAT": 35.152267,
+          "LNG": 128.95494
+        }
+      ]
+    },
+    {
+      "candidateKey": "민락수변공원",
+      "title": "민락수변공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 285,
+          "ADDR1": "부산광역시 수영구 민락동 110-19",
+          "LAT": 35.15487,
+          "LNG": 129.13399
+        }
+      ]
+    },
+    {
+      "candidateKey": "반여초록공원장산계곡초록공원롤러슬라이드휴여가녹지",
+      "title": "반여 초록공원 장산 계곡, 초록공원 롤러슬라이드, 휴 여가녹지",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2013,
+          "ADDR1": "부산광역시 해운대구 반여동 산111-2",
+          "LAT": 35.203255,
+          "LNG": 129.13632
+        }
+      ]
+    },
+    {
+      "candidateKey": "보수동책방골목",
+      "title": "보수동책방골목",
+      "kind": "거리·골목",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 272,
+          "ADDR1": "부산광역시 중구 보수동1가 151-1",
+          "LAT": 35.103367,
+          "LNG": 129.02663
+        }
+      ]
+    },
+    {
+      "candidateKey": "부산시민공원",
+      "title": "부산시민공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 354,
+          "ADDR1": "부산광역시 부산진구 시민공원로 73",
+          "LAT": 35.16841,
+          "LNG": 129.05739
+        }
+      ]
+    },
+    {
+      "candidateKey": "부산시민공원역사문화관",
+      "title": "부산시민공원 역사문화관",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2155,
+          "ADDR1": "부산광역시 부산진구 시민공원로 73",
+          "LAT": 35.168602,
+          "LNG": 129.05751
+        }
+      ]
+    },
+    {
+      "candidateKey": "부산어린이대공원",
+      "title": "부산어린이대공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 344,
+          "ADDR1": "부산광역시 부산진구 새싹로 295",
+          "LAT": 35.184998,
+          "LNG": 129.04153
+        }
+      ]
+    },
+    {
+      "candidateKey": "부산어린이대공원치유의숲",
+      "title": "부산어린이대공원 치유의 숲",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2240,
+          "ADDR1": "부산광역시 부산진구 새싹로 295",
+          "LAT": 35.185402,
+          "LNG": 129.04234
+        }
+      ]
+    },
+    {
+      "candidateKey": "북항친수공원",
+      "title": "북항 친수공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2081,
+          "ADDR1": "부산광역시 동구 이순신대로 164",
+          "LAT": 35.11442,
+          "LNG": 129.04637
+        }
+      ]
+    },
+    {
+      "candidateKey": "삼락생태공원",
+      "title": "삼락생태공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 325,
+          "ADDR1": "부산광역시 사상구 삼락동 29-46",
+          "LAT": 35.16884,
+          "LNG": 128.97397
+        }
+      ]
+    },
+    {
+      "candidateKey": "상해거리",
+      "title": "상해거리",
+      "kind": "거리·골목",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 415,
+          "ADDR1": "부산광역시 동구 중앙대로179번길 1\n",
+          "LAT": 35.113808,
+          "LNG": 129.03786
+        }
+      ]
+    },
+    {
+      "candidateKey": "색채마을",
+      "title": "색채마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2106,
+          "ADDR1": "부산광역시 중구 망양로327-1",
+          "LAT": 35.106995,
+          "LNG": 129.02943
+        }
+      ]
+    },
+    {
+      "candidateKey": "송도해상케이블카송도해수욕장송도구름산책로송도용궁구름다리",
+      "title": "송도해상케이블카, 송도해수욕장, 송도구름산책로, 송도용궁구름다리",
+      "kind": "거리·골목",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1422,
+          "ADDR1": "부산광역시 서구 송도해변로 171",
+          "LAT": 35.076286,
+          "LNG": 129.02365
+        }
+      ]
+    },
+    {
+      "candidateKey": "송도해수욕장",
+      "title": "송도해수욕장",
+      "kind": "해변·해안",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 286,
+          "ADDR1": "부산광역시 서구 송도해변로 100",
+          "LAT": 35.07595,
+          "LNG": 129.01694
+        }
+      ]
+    },
+    {
+      "candidateKey": "송정해수욕장죽도공원",
+      "title": "송정해수욕장, 죽도공원",
+      "kind": "해변·해안",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 280,
+          "ADDR1": "부산광역시 해운대구 송정해변로 62",
+          "LAT": 35.1786,
+          "LNG": 129.19966
+        }
+      ]
+    },
+    {
+      "candidateKey": "수영사적공원",
+      "title": "수영사적공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 301,
+          "ADDR1": "부산광역시 수영구 수영성로 43",
+          "LAT": 35.170967,
+          "LNG": 129.1143
+        }
+      ]
+    },
+    {
+      "candidateKey": "신평소공원",
+      "title": "신평소공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 757,
+          "ADDR1": "부산광역시 기장군 일광면 신평리 11-1 ",
+          "LAT": 35.29337,
+          "LNG": 129.26012
+        }
+      ]
+    },
+    {
+      "candidateKey": "아미동비석마을",
+      "title": "아미동 비석마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 288,
+          "ADDR1": "부산광역시 서구 아미로49",
+          "LAT": 35.099068,
+          "LNG": 129.0127
+        },
+        {
+          "source": "부산명소",
+          "UC_SEQ": 876,
+          "ADDR1": "부산광역시 서구 아미로49",
+          "LAT": 35.09903,
+          "LNG": 129.0126
+        }
+      ]
+    },
+    {
+      "candidateKey": "암남공원송도해안볼레길",
+      "title": "암남공원/송도해안볼레길",
+      "kind": "해변·해안",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 326,
+          "ADDR1": "부산광역시 서구 암남동 산193",
+          "LAT": 35.058804,
+          "LNG": 129.01566
+        }
+      ]
+    },
+    {
+      "candidateKey": "영도봉산마을",
+      "title": "영도 봉산마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1179,
+          "ADDR1": "영도구 오동꽃길 32 베리베리굿봉산센터",
+          "LAT": 35.09309,
+          "LNG": 129.05125
+        }
+      ]
+    },
+    {
+      "candidateKey": "영도태종대자동차극장흰여울문화마을깡깡이예술마을",
+      "title": "영도, 태종대, 자동차극장, 흰여울문화마을, 깡깡이예술마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1440,
+          "ADDR1": "CGV DRIVE IN 영도 : 부산광역시 영도구 동삼동 1009\n태종대 : 부산광역시 영도구 전망로 24\n흰여울문화마을 : 부산광역시영도구 영선동4가 605-3\n절영해안산책로 : 부산광역시 영도구 해안산책길 52\n깡깡이예술마을 : 부산광역시 영도구 대평북로 36",
+          "LAT": 35.062366,
+          "LNG": 129.08342
+        }
+      ]
+    },
+    {
+      "candidateKey": "영화의거리",
+      "title": "영화의 거리",
+      "kind": "거리·골목",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 361,
+          "ADDR1": "부산광역시 해운대구 마린시티1로 91",
+          "LAT": 35.154633,
+          "LNG": 129.14278
+        }
+      ]
+    },
+    {
+      "candidateKey": "오랑대공원",
+      "title": "오랑대공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 290,
+          "ADDR1": "부산 기장군 기장읍 시랑리 산1-18",
+          "LAT": 35.205246,
+          "LNG": 129.22583
+        }
+      ]
+    },
+    {
+      "candidateKey": "오시리아해안산책로",
+      "title": "오시리아 해안 산책로",
+      "kind": "거리·골목",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2172,
+          "ADDR1": "부산광역시 기장군 기장읍 시랑리 62-22",
+          "LAT": 35.198395,
+          "LNG": 129.22993
+        }
+      ]
+    },
+    {
+      "candidateKey": "용두산공원",
+      "title": "용두산공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 368,
+          "ADDR1": "부산광역시 중구 용두산길 37-55",
+          "LAT": 35.100723,
+          "LNG": 129.03264
+        }
+      ]
+    },
+    {
+      "candidateKey": "용소웰빙공원",
+      "title": "용소웰빙공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2065,
+          "ADDR1": "부산광역시 기장군 기장읍 서부리 산7-2",
+          "LAT": 35.24623,
+          "LNG": 129.20415
+        }
+      ]
+    },
+    {
+      "candidateKey": "용호별빛공원",
+      "title": "용호 별빛공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2133,
+          "ADDR1": "부산광역시 남구 분포로 66-40, 용호 별빛공원 (용호동)",
+          "LAT": 35.1328,
+          "LNG": 129.12
+        }
+      ]
+    },
+    {
+      "candidateKey": "우암동소막마을",
+      "title": "우암동 소막마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 483,
+          "ADDR1": "부산광역시 남구 우암번영로 19",
+          "LAT": 35.1256,
+          "LNG": 129.07018
+        },
+        {
+          "source": "부산명소",
+          "UC_SEQ": 838,
+          "ADDR1": "부산광역시 남구 우암번영로 40-1",
+          "LAT": 35.126194,
+          "LNG": 129.07597
+        }
+      ]
+    },
+    {
+      "candidateKey": "유엔기념공원유엔평화기념관",
+      "title": "유엔기념공원, 유엔평화기념관",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 277,
+          "ADDR1": "유엔기념공원 : 부산광역시 남구 유엔평화로 93 \n유엔평화기념관 : 부산광역시 남구 홍곡로320번길 106",
+          "LAT": 35.1277,
+          "LNG": 129.09775
+        },
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1016,
+          "ADDR1": "유엔기념공원 부산광역시 남구 유엔평화로 93\n유엔평화기념관 부산광역시 남구 홍곡로320번길 106",
+          "LAT": 35.127785,
+          "LNG": 129.09766
+        }
+      ]
+    },
+    {
+      "candidateKey": "유엔평화공원",
+      "title": "유엔평화공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1731,
+          "ADDR1": "부산광역시 남구 대연동 707",
+          "LAT": 35.125774,
+          "LNG": 129.10027
+        }
+      ]
+    },
+    {
+      "candidateKey": "이중섭문화거리",
+      "title": "이중섭문화거리",
+      "kind": "거리·골목",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 418,
+          "ADDR1": "부산광역시 동구 증산로 168",
+          "LAT": 35.14069,
+          "LNG": 129.05289
+        }
+      ]
+    },
+    {
+      "candidateKey": "일광광산마을",
+      "title": "일광 광산마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2186,
+          "ADDR1": "부산광역시 기장군 일광읍 원리 663-7",
+          "LAT": 35.30874,
+          "LNG": 129.22404
+        }
+      ]
+    },
+    {
+      "candidateKey": "일광해수욕장",
+      "title": "일광해수욕장",
+      "kind": "해변·해안",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 265,
+          "ADDR1": "부산광역시 기장군 일광읍 삼성리 143-10",
+          "LAT": 35.259953,
+          "LNG": 129.23373
+        }
+      ]
+    },
+    {
+      "candidateKey": "임랑해수욕장",
+      "title": "임랑해수욕장",
+      "kind": "해변·해안",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 262,
+          "ADDR1": "부산광역시 기장군 장안읍 임랑리",
+          "LAT": 35.31905,
+          "LNG": 129.26451
+        }
+      ]
+    },
+    {
+      "candidateKey": "정중앙공원",
+      "title": "정중앙공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1772,
+          "ADDR1": "부산광역시 부산진구 부암동 541-9",
+          "LAT": 35.17038,
+          "LNG": 129.03691
+        }
+      ]
+    },
+    {
+      "candidateKey": "중앙공원민주공원",
+      "title": "중앙공원, 민주공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 370,
+          "ADDR1": "중앙공원 부산광역시 서구 망양로 193번길 187\n민주공원 부산광역시 중구 민주공원길 19",
+          "LAT": 35.112125,
+          "LNG": 129.02792
+        }
+      ]
+    },
+    {
+      "candidateKey": "중앙공원대신계곡편백나무숲구덕수원지",
+      "title": "중앙공원(구 대신공원) 대신계곡, 편백나무숲, 구덕수원지",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2019,
+          "ADDR1": "부산광역시 서구 보수대로320번길 59",
+          "LAT": 35.121838,
+          "LNG": 129.01567
+        }
+      ]
+    },
+    {
+      "candidateKey": "충무동해안시장",
+      "title": "충무동 해안시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2588,
+          "ADDR1": "부산 서구 해안새벽시장길 7",
+          "LAT": 35.095985,
+          "LNG": 129.0255
+        }
+      ]
+    },
+    {
+      "candidateKey": "해광사오랑대공원용왕단",
+      "title": "해광사, 오랑대공원, 용왕단",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2220,
+          "ADDR1": "부산광역시 기장군 기장읍 기장해안로 340",
+          "LAT": 35.205593,
+          "LNG": 129.22546
+        }
+      ]
+    },
+    {
+      "candidateKey": "해운대수목원",
+      "title": "해운대 수목원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1142,
+          "ADDR1": "부산광역시 해운대구 석대동 77",
+          "LAT": 35.22992,
+          "LNG": 129.1327
+        }
+      ]
+    },
+    {
+      "candidateKey": "호천마을",
+      "title": "호천마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 358,
+          "ADDR1": "부산광역시 부산진구 엄광로 491",
+          "LAT": 35.144295,
+          "LNG": 129.05106
+        }
+      ]
+    },
+    {
+      "candidateKey": "화명수목원",
+      "title": "화명수목원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 457,
+          "ADDR1": "부산광역시 북구 산성로 299",
+          "LAT": 35.25257,
+          "LNG": 129.04205
+        }
+      ]
+    },
+    {
+      "candidateKey": "화명장미원화명생태공원",
+      "title": "화명장미원, 화명생태공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 1434,
+          "ADDR1": "화명장미원  부산광역시 북구 화명동 2280\n화명생태공원  부산광역시 북구 화명동 1718-17",
+          "LAT": 35.22568,
+          "LNG": 129.00327
+        }
+      ]
+    },
+    {
+      "candidateKey": "황령산레포츠공원",
+      "title": "황령산레포츠공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 2299,
+          "ADDR1": "부산광역시 부산진구 진남로328번길 99",
+          "LAT": 35.15709,
+          "LNG": 129.07631
+        }
+      ]
+    },
+    {
+      "candidateKey": "흰여울문화마을",
+      "title": "흰여울문화마을",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 255,
+          "ADDR1": "부산광역시 영도구 흰여울길",
+          "LAT": 35.07885,
+          "LNG": 129.04402
+        }
+      ]
+    },
+    {
+      "candidateKey": "apec나루공원",
+      "title": "APEC나루공원",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 362,
+          "ADDR1": "부산광역시 해운대구 수영강변대로 85\n",
+          "LAT": 35.170307,
+          "LNG": 129.12564
+        }
+      ]
+    },
+    {
+      "candidateKey": "광복로패션거리",
+      "title": "광복로패션거리",
+      "kind": "거리·골목",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 413,
+          "ADDR1": "부산 중구 광복로 72-1",
+          "LAT": 35.098682,
+          "LNG": 129.03531
+        }
+      ]
+    },
+    {
+      "candidateKey": "구포시장",
+      "title": "구포시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 363,
+          "ADDR1": "부산광역시 북구 구포시장2길 7",
+          "LAT": 35.209274,
+          "LNG": 129.00357
+        }
+      ]
+    },
+    {
+      "candidateKey": "국제시장",
+      "title": "국제시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 399,
+          "ADDR1": "부산광역시 중구 중구로 32",
+          "LAT": 35.101543,
+          "LNG": 129.02809
+        }
+      ]
+    },
+    {
+      "candidateKey": "기장시장",
+      "title": "기장시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 292,
+          "ADDR1": "부산 기장군 기장읍 대라리 72-3",
+          "LAT": 35.243847,
+          "LNG": 129.21524
+        }
+      ]
+    },
+    {
+      "candidateKey": "남항시장봉래시장",
+      "title": "남항시장 / 봉래시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 300,
+          "ADDR1": "남항시장 : 부산 영도구 영선동2가 245\n봉래시장 : 부산 영도구 태종로 159-15",
+          "LAT": 35.08876,
+          "LNG": 129.04222
+        }
+      ]
+    },
+    {
+      "candidateKey": "동래시장",
+      "title": "동래시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 422,
+          "ADDR1": "부산광역시 동래구 동래시장길 14 ",
+          "LAT": 35.20391,
+          "LNG": 129.08588
+        }
+      ]
+    },
+    {
+      "candidateKey": "롯데면세점김해공항점",
+      "title": "롯데면세점 김해공항점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 540,
+          "ADDR1": "부산광역시 강서구 공항진입로 108 김해공항 국제선청사 2층",
+          "LAT": 35.173695,
+          "LNG": 128.94626
+        }
+      ]
+    },
+    {
+      "candidateKey": "롯데면세점부산점",
+      "title": "롯데면세점 부산점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 537,
+          "ADDR1": "부산광역시 부산진구 가야대로 772 롯데백화점 부산점 8층",
+          "LAT": 35.15664,
+          "LNG": 129.05534
+        }
+      ]
+    },
+    {
+      "candidateKey": "롯데백화점광복점",
+      "title": "롯데백화점 광복점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 545,
+          "ADDR1": "부산광역시 중구 중앙대로 2",
+          "LAT": 35.098164,
+          "LNG": 129.03685
+        }
+      ]
+    },
+    {
+      "candidateKey": "롯데백화점동래점",
+      "title": "롯데백화점 동래점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 547,
+          "ADDR1": "부산광역시 동래구 중앙대로1393",
+          "LAT": 35.211323,
+          "LNG": 129.07771
+        }
+      ]
+    },
+    {
+      "candidateKey": "롯데백화점부산본점",
+      "title": "롯데백화점 부산본점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 541,
+          "ADDR1": "부산광역시 부산진구 가야대로 772",
+          "LAT": 35.15665,
+          "LNG": 129.05655
+        }
+      ]
+    },
+    {
+      "candidateKey": "롯데백화점센텀시티점",
+      "title": "롯데백화점 센텀시티점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 546,
+          "ADDR1": "부산광역시 해운대구 센텀남대로 59",
+          "LAT": 35.169735,
+          "LNG": 129.13115
+        }
+      ]
+    },
+    {
+      "candidateKey": "롯데프리미엄아울렛동부산점",
+      "title": "롯데프리미엄아울렛 동부산점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 506,
+          "ADDR1": "부산광역시 기장군 기장읍 당사리 524",
+          "LAT": 35.191364,
+          "LNG": 129.21237
+        }
+      ]
+    },
+    {
+      "candidateKey": "문현동골동품거리",
+      "title": "문현동 골동품거리",
+      "kind": "거리·골목",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 2589,
+          "ADDR1": "부산광역시 남구 자유평화로57번길 33",
+          "LAT": 35.14279,
+          "LNG": 129.06499
+        }
+      ]
+    },
+    {
+      "candidateKey": "밀락더마켓",
+      "title": "밀락더마켓 ",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 1323,
+          "ADDR1": "부산광역시 수영구 민락수변로17번길 56",
+          "LAT": 35.154293,
+          "LNG": 129.12698
+        }
+      ]
+    },
+    {
+      "candidateKey": "백화점",
+      "title": "백화점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": false,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 505,
+          "ADDR1": "",
+          "LAT": 35.156654,
+          "LNG": 129.05635
+        }
+      ]
+    },
+    {
+      "candidateKey": "부산면세점용두산점",
+      "title": "부산면세점 용두산점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 539,
+          "ADDR1": "부산광역시 중구 용두산길 37-55",
+          "LAT": 35.101048,
+          "LNG": 129.03249
+        }
+      ]
+    },
+    {
+      "candidateKey": "부산프리미엄아울렛",
+      "title": "부산프리미엄아울렛",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 552,
+          "ADDR1": "부산광역시 기장군 장안읍 정관로 1133",
+          "LAT": 35.323696,
+          "LNG": 129.23563
+        }
+      ]
+    },
+    {
+      "candidateKey": "부전마켓타운",
+      "title": "부전마켓타운",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 327,
+          "ADDR1": "부산광역시 부산진구 중앙대로 786 10",
+          "LAT": 35.162804,
+          "LNG": 129.06134
+        }
+      ]
+    },
+    {
+      "candidateKey": "부평깡통시장",
+      "title": "부평깡통시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 400,
+          "ADDR1": "부산광역시 중구 부평1길 48",
+          "LAT": 35.102184,
+          "LNG": 129.02582
+        }
+      ]
+    },
+    {
+      "candidateKey": "서면시장",
+      "title": "서면시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 328,
+          "ADDR1": "부산광역시 부산진구 서면로 56",
+          "LAT": 35.155655,
+          "LNG": 129.05817
+        }
+      ]
+    },
+    {
+      "candidateKey": "신세계백화점센텀시티점",
+      "title": "신세계백화점 센텀시티점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 548,
+          "ADDR1": "부산광역시 해운대구 센텀남대로 35",
+          "LAT": 35.168625,
+          "LNG": 129.12907
+        }
+      ]
+    },
+    {
+      "candidateKey": "자갈치시장",
+      "title": "자갈치시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 412,
+          "ADDR1": "부산광역시 중구 자갈치해안로 52",
+          "LAT": 35.096664,
+          "LNG": 129.03055
+        }
+      ]
+    },
+    {
+      "candidateKey": "해운대시장",
+      "title": "해운대시장",
+      "kind": "시장",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 294,
+          "ADDR1": "부산 해운대구 중동1로 42-16",
+          "LAT": 35.16165,
+          "LNG": 129.1621
+        }
+      ]
+    },
+    {
+      "candidateKey": "현대백화점부산점커넥트현대",
+      "title": "현대백화점 부산점, 커넥트현대",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 549,
+          "ADDR1": "부산광역시 동구 범일로 125",
+          "LAT": 35.141224,
+          "LNG": 129.05864
+        }
+      ]
+    },
+    {
+      "candidateKey": "nc백화점부산대점",
+      "title": "NC백화점 부산대점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 555,
+          "ADDR1": "부산광역시 금정구 부산대학로 63번길 2",
+          "LAT": 35.232323,
+          "LNG": 129.08401
+        }
+      ]
+    },
+    {
+      "candidateKey": "nc백화점해운대점",
+      "title": "NC백화점 해운대점",
+      "kind": "쇼핑복합공간",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 554,
+          "ADDR1": "부산광역시 해운대구 해운대로 813",
+          "LAT": 35.170517,
+          "LNG": 129.17708
+        }
+      ]
+    },
+    {
+      "candidateKey": "1966정원천성항점",
+      "title": "1966정원 천성항점",
+      "kind": "공원·정원",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산맛집",
+          "UC_SEQ": 1458,
+          "ADDR1": "강서구 가덕해안로 787-1 1,2층",
+          "LAT": 35.028156,
+          "LNG": 128.81578
+        }
+      ]
+    },
+    {
+      "candidateKey": "골목포차",
+      "title": "골목포차",
+      "kind": "거리·골목",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산맛집",
+          "UC_SEQ": 1825,
+          "ADDR1": "수영구 광안로7번길 52",
+          "LAT": 35.159405,
+          "LNG": 129.11446
+        }
+      ]
+    },
+    {
+      "candidateKey": "몽실종가돼지국밥감천문화마을본점",
+      "title": "몽실종가돼지국밥 감천문화마을 본점",
+      "kind": "문화마을",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "hasUsageHours": true,
+      "records": [
+        {
+          "source": "부산맛집",
+          "UC_SEQ": 961,
+          "ADDR1": "서구 까치고개로 197번길 3, 1층",
+          "LAT": 35.10019,
+          "LNG": 129.01718
+        }
+      ]
+    }
+  ],
+  "internalReview": [
+    {
+      "candidateKey": "동백상회",
+      "title": "동백상회",
+      "parent": {
+        "candidateKey": "상해거리",
+        "title": "상해거리",
+        "kind": "거리·골목",
+        "distanceM": 189
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "ADDR1": "부산광역시 동구 중앙대로 210, 106호"
+    },
+    {
+      "candidateKey": "딜라이트프로젝트해운대점",
+      "title": "딜라이트 프로젝트 해운대점",
+      "parent": {
+        "candidateKey": "해운대시장",
+        "title": "해운대시장",
+        "kind": "시장",
+        "distanceM": 158
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "ADDR1": "부산 해운대구 구남로 42 101호"
+    },
+    {
+      "candidateKey": "부산브랜드숍bigshop빅숍",
+      "title": "부산브랜드숍, BIG shop, 빅숍",
+      "parent": {
+        "candidateKey": "광복로패션거리",
+        "title": "광복로패션거리",
+        "kind": "거리·골목",
+        "distanceM": 76
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "ADDR1": "부산광역시 중구 광복로 87-1 부산광복동우체국"
+    },
+    {
+      "candidateKey": "분홍이네",
+      "title": "분홍이네",
+      "parent": {
+        "candidateKey": "광안리해수욕장",
+        "title": "광안리 해수욕장",
+        "kind": "해변·해안",
+        "distanceM": 292
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "ADDR1": "부산광역시 수영구 광안로45번길 2 지하1층"
+    },
+    {
+      "candidateKey": "삼영그릇",
+      "title": "삼영그릇",
+      "parent": {
+        "candidateKey": "해운대시장",
+        "title": "해운대시장",
+        "kind": "시장",
+        "distanceM": 99
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "ADDR1": "부산 해운대구 구남로41번길 5"
+    },
+    {
+      "candidateKey": "센티카",
+      "title": "센티카",
+      "parent": {
+        "candidateKey": "광안리해수욕장",
+        "title": "광안리 해수욕장",
+        "kind": "해변·해안",
+        "distanceM": 465
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "ADDR1": "광안점: 부산 수영구 광안로 25\n전포점: 부산 부산진구 전포대로199번길 12"
+    },
+    {
+      "candidateKey": "여가거가광안리",
+      "title": "여가~거가! 광안리",
+      "parent": {
+        "candidateKey": "광안리해수욕장",
+        "title": "광안리 해수욕장",
+        "kind": "해변·해안",
+        "distanceM": 31
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "ADDR1": "부산광역시 수영구 광안해변로 219, 수영구생활문화센터 1층"
+    },
+    {
+      "candidateKey": "1969부원동칼국수부산본점",
+      "title": "1969부원동칼국수 부산본점",
+      "parent": {
+        "candidateKey": "광복로패션거리",
+        "title": "광복로패션거리",
+        "kind": "거리·골목",
+        "distanceM": 213
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 구덕로22번길3 1층"
+    },
+    {
+      "candidateKey": "거인통닭",
+      "title": "거인통닭",
+      "parent": {
+        "candidateKey": "부평깡통시장",
+        "title": "부평깡통시장",
+        "kind": "시장",
+        "distanceM": 33
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 중구로47번길34"
+    },
+    {
+      "candidateKey": "고민끝에여기",
+      "title": "고민끝에여기",
+      "parent": {
+        "candidateKey": "상해거리",
+        "title": "상해거리",
+        "kind": "거리·골목",
+        "distanceM": 143
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "대영로239번길 12, 1층"
+    },
+    {
+      "candidateKey": "광명집",
+      "title": "광명집",
+      "parent": {
+        "candidateKey": "유엔평화공원",
+        "title": "유엔평화공원",
+        "kind": "공원·정원",
+        "distanceM": 63
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "남구 신선로 458"
+    },
+    {
+      "candidateKey": "금랑횟집",
+      "title": "금랑횟집",
+      "parent": {
+        "candidateKey": "민락수변공원",
+        "title": "민락수변공원",
+        "kind": "공원·정원",
+        "distanceM": 271
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 수영구 광안해변로344번길 17-5 (민락동)"
+    },
+    {
+      "candidateKey": "금랑횟집광안리본점",
+      "title": "금랑횟집 광안리본점",
+      "parent": {
+        "candidateKey": "민락수변공원",
+        "title": "민락수변공원",
+        "kind": "공원·정원",
+        "distanceM": 274
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "광안해변로344번길 17-5, 마린리치건물 6층"
+    },
+    {
+      "candidateKey": "기장손칼국수",
+      "title": "기장손칼국수",
+      "parent": {
+        "candidateKey": "서면시장",
+        "title": "서면시장",
+        "kind": "시장",
+        "distanceM": 3
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산진구 서면로 56"
+    },
+    {
+      "candidateKey": "김해식당",
+      "title": "김해식당",
+      "parent": {
+        "candidateKey": "자갈치시장",
+        "title": "자갈치시장",
+        "kind": "시장",
+        "distanceM": 106
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 자갈치로 51-2"
+    },
+    {
+      "candidateKey": "까치횟집",
+      "title": "까치횟집",
+      "parent": {
+        "candidateKey": "민락수변공원",
+        "title": "민락수변공원",
+        "kind": "공원·정원",
+        "distanceM": 208
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "수영구 광안해변로344번길 17-20 풍경타워"
+    },
+    {
+      "candidateKey": "남포삼계탕",
+      "title": "남포삼계탕",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 289
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "남포길 16"
+    },
+    {
+      "candidateKey": "더스모코",
+      "title": "더스모코",
+      "parent": {
+        "candidateKey": "밀락더마켓",
+        "title": "밀락더마켓 ",
+        "kind": "시장",
+        "distanceM": 96
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "수영구 광안해변로 294번길 36 1층"
+    },
+    {
+      "candidateKey": "돌솥밥집",
+      "title": "돌솥밥집",
+      "parent": {
+        "candidateKey": "국제시장",
+        "title": "국제시장",
+        "kind": "시장",
+        "distanceM": 196
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 광복로 37번길 7-1"
+    },
+    {
+      "candidateKey": "동래할매파전",
+      "title": "동래할매파전",
+      "parent": {
+        "candidateKey": "동래시장",
+        "title": "동래시장",
+        "kind": "시장",
+        "distanceM": 199
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "동래구 명륜로 94번길 43-10"
+    },
+    {
+      "candidateKey": "동삼정",
+      "title": "동삼정",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 111
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 광복중앙로 14-62 1층"
+    },
+    {
+      "candidateKey": "디에이블부산송도점",
+      "title": "디에이블 부산송도점",
+      "parent": {
+        "candidateKey": "송도해수욕장",
+        "title": "송도해수욕장",
+        "kind": "해변·해안",
+        "distanceM": 86
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 서구 충무대로 47 3층 \n"
+    },
+    {
+      "candidateKey": "램지",
+      "title": "램지",
+      "parent": {
+        "candidateKey": "밀락더마켓",
+        "title": "밀락더마켓 ",
+        "kind": "시장",
+        "distanceM": 198
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "수영구 광안해변로284번길 38 해링턴타워광안 304호"
+    },
+    {
+      "candidateKey": "랩24바이쿠무다",
+      "title": "랩24 바이 쿠무다",
+      "parent": {
+        "candidateKey": "송정해수욕장죽도공원",
+        "title": "송정해수욕장, 죽도공원",
+        "kind": "해변·해안",
+        "distanceM": 261
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "해운대구 송정 광어골로 41 4층"
+    },
+    {
+      "candidateKey": "맛사랑채",
+      "title": "맛사랑채",
+      "parent": {
+        "candidateKey": "기장시장",
+        "title": "기장시장",
+        "kind": "시장",
+        "distanceM": 177
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "기장읍 읍내로 93-6"
+    },
+    {
+      "candidateKey": "못난이식당해운대점",
+      "title": "못난이식당 해운대점",
+      "parent": {
+        "candidateKey": "영화의거리",
+        "title": "영화의 거리",
+        "kind": "거리·골목",
+        "distanceM": 160
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "해운대구 마린시티1로 91, 101동 201호"
+    },
+    {
+      "candidateKey": "몽뜰",
+      "title": "몽뜰",
+      "parent": {
+        "candidateKey": "롯데백화점동래점",
+        "title": "롯데백화점 동래점",
+        "kind": "쇼핑복합공간",
+        "distanceM": 152
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "동래구 중앙대로 1381번길 33 "
+    },
+    {
+      "candidateKey": "물꽁식당",
+      "title": "물꽁식당",
+      "parent": {
+        "candidateKey": "보수동책방골목",
+        "title": "보수동책방골목",
+        "kind": "거리·골목",
+        "distanceM": 239
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 흑교로59번길 3"
+    },
+    {
+      "candidateKey": "물레방아즉석구이",
+      "title": "물레방아 즉석구이",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 229
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 중앙대로41번길 11-1"
+    },
+    {
+      "candidateKey": "미청식당",
+      "title": "미청식당",
+      "parent": {
+        "candidateKey": "일광해수욕장",
+        "title": "일광해수욕장",
+        "kind": "해변·해안",
+        "distanceM": 59
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "기장군 일광읍 기장해안로 1303"
+    },
+    {
+      "candidateKey": "배종관동래삼계탕",
+      "title": "배종관동래삼계탕",
+      "parent": {
+        "candidateKey": "동래시장",
+        "title": "동래시장",
+        "kind": "시장",
+        "distanceM": 182
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "동래구 동래로 116번길 39"
+    },
+    {
+      "candidateKey": "베지나랑",
+      "title": "베지나랑",
+      "parent": {
+        "candidateKey": "민락수변공원",
+        "title": "민락수변공원",
+        "kind": "공원·정원",
+        "distanceM": 211
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "수영구 광안해변로370번길 9-32 노블스카이 9층"
+    },
+    {
+      "candidateKey": "부다면옥",
+      "title": "부다면옥",
+      "parent": {
+        "candidateKey": "해운대시장",
+        "title": "해운대시장",
+        "kind": "시장",
+        "distanceM": 114
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "해운대구 중동1로 36 2층"
+    },
+    {
+      "candidateKey": "부산꼼장어맛집성일집",
+      "title": "부산꼼장어맛집 성일집",
+      "parent": {
+        "candidateKey": "롯데백화점광복점",
+        "title": "롯데백화점 광복점",
+        "kind": "쇼핑복합공간",
+        "distanceM": 152
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 대교로 103"
+    },
+    {
+      "candidateKey": "부산명물횟집",
+      "title": "부산명물횟집",
+      "parent": {
+        "candidateKey": "자갈치시장",
+        "title": "자갈치시장",
+        "kind": "시장",
+        "distanceM": 79
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 자갈치해안로 55 "
+    },
+    {
+      "candidateKey": "삼송초밥부산남포본점",
+      "title": "삼송초밥 부산남포본점",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 278
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 광복로55번길 13"
+    },
+    {
+      "candidateKey": "삼오불고기",
+      "title": "삼오불고기",
+      "parent": {
+        "candidateKey": "골목포차",
+        "title": "골목포차",
+        "kind": "거리·골목",
+        "distanceM": 80
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 수영구 수영로610번길 24-2 (광안동)"
+    },
+    {
+      "candidateKey": "새진주식당",
+      "title": "새진주식당",
+      "parent": {
+        "candidateKey": "보수동책방골목",
+        "title": "보수동책방골목",
+        "kind": "거리·골목",
+        "distanceM": 222
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산광역시 중구 흑교로 60 (보수동1가)"
+    },
+    {
+      "candidateKey": "서울깍두기",
+      "title": "서울깍두기",
+      "parent": {
+        "candidateKey": "보수동책방골목",
+        "title": "보수동책방골목",
+        "kind": "거리·골목",
+        "distanceM": 222
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 중구 남포길 33 (남포동2가)"
+    },
+    {
+      "candidateKey": "소문난원조조방낙지본점",
+      "title": "소문난원조조방낙지본점",
+      "parent": {
+        "candidateKey": "동래시장",
+        "title": "동래시장",
+        "kind": "시장",
+        "distanceM": 178
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "동래구 명륜로 94번길 37"
+    },
+    {
+      "candidateKey": "소수인",
+      "title": "소수인",
+      "parent": {
+        "candidateKey": "롯데면세점부산점",
+        "title": "롯데면세점 부산점",
+        "kind": "쇼핑복합공간",
+        "distanceM": 137
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산진구 가야대로750번길 17"
+    },
+    {
+      "candidateKey": "송정3대국밥",
+      "title": "송정3대국밥",
+      "parent": {
+        "candidateKey": "서면시장",
+        "title": "서면시장",
+        "kind": "시장",
+        "distanceM": 34
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 부산진구 서면로68번길 33 (부전동)"
+    },
+    {
+      "candidateKey": "스시미르네본점",
+      "title": "스시미르네 본점",
+      "parent": {
+        "candidateKey": "nc백화점해운대점",
+        "title": "NC백화점 해운대점",
+        "kind": "쇼핑복합공간",
+        "distanceM": 90
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "해운대구 세실로 75 일진빌딩 1층 100호"
+    },
+    {
+      "candidateKey": "스톤스트리트",
+      "title": "스톤스트리트",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 197
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 중구 용두산길 12 1층"
+    },
+    {
+      "candidateKey": "신가네호떡김밥떡볶이",
+      "title": "신가네 호떡 김밥 떡볶이",
+      "parent": {
+        "candidateKey": "동래시장",
+        "title": "동래시장",
+        "kind": "시장",
+        "distanceM": 81
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "동래구 충렬대로 249번길 61"
+    },
+    {
+      "candidateKey": "신발원",
+      "title": "신발원",
+      "parent": {
+        "candidateKey": "상해거리",
+        "title": "상해거리",
+        "kind": "거리·골목",
+        "distanceM": 137
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 동구 대영로243번길62"
+    },
+    {
+      "candidateKey": "신흥관",
+      "title": "신흥관",
+      "parent": {
+        "candidateKey": "해운대시장",
+        "title": "해운대시장",
+        "kind": "시장",
+        "distanceM": 152
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 해운대구 중동1로 31-1 (중동)"
+    },
+    {
+      "candidateKey": "신흥반점",
+      "title": "신흥반점",
+      "parent": {
+        "candidateKey": "충무동해안시장",
+        "title": "충무동 해안시장",
+        "kind": "시장",
+        "distanceM": 79
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "서구 충무대로 284-1"
+    },
+    {
+      "candidateKey": "아쁘앙",
+      "title": "아쁘앙",
+      "parent": {
+        "candidateKey": "오시리아해안산책로",
+        "title": "오시리아 해안 산책로",
+        "kind": "거리·골목",
+        "distanceM": 218
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 기장군 기장읍 기장해안로 268-31"
+    },
+    {
+      "candidateKey": "야키토리백탄",
+      "title": "야키토리 백탄",
+      "parent": {
+        "candidateKey": "광안리해수욕장",
+        "title": "광안리 해수욕장",
+        "kind": "해변·해안",
+        "distanceM": 407
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "수영구 민락로13번길 21, 2층"
+    },
+    {
+      "candidateKey": "양평칼국수본점",
+      "title": "양평칼국수 본점",
+      "parent": {
+        "candidateKey": "다대포바다누리길다대포동측해안",
+        "title": "다대포 바다누리길, 다대포 동측해안",
+        "kind": "해변·해안",
+        "distanceM": 271
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "사하구 다대로 680-1"
+    },
+    {
+      "candidateKey": "어가초밥",
+      "title": "어가초밥",
+      "parent": {
+        "candidateKey": "남포지하도상가광복지하도상가",
+        "title": "남포지하도상가, 광복지하도상가",
+        "kind": "시장",
+        "distanceM": 140
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "자갈치로 41"
+    },
+    {
+      "candidateKey": "에테르",
+      "title": "에테르",
+      "parent": {
+        "candidateKey": "흰여울문화마을",
+        "title": "흰여울문화마을",
+        "kind": "문화마을",
+        "distanceM": 282
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 영도구 절영로 234\n"
+    },
+    {
+      "candidateKey": "연경재",
+      "title": "연경재",
+      "parent": {
+        "candidateKey": "광복로패션거리",
+        "title": "광복로패션거리",
+        "kind": "거리·골목",
+        "distanceM": 194
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 중앙대로 29번길 6"
+    },
+    {
+      "candidateKey": "영변횟집",
+      "title": "영변횟집",
+      "parent": {
+        "candidateKey": "송정해수욕장죽도공원",
+        "title": "송정해수욕장, 죽도공원",
+        "kind": "해변·해안",
+        "distanceM": 385
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 해운대구 송정강변로 15"
+    },
+    {
+      "candidateKey": "우토피아",
+      "title": "우토피아",
+      "parent": {
+        "candidateKey": "광안리해수욕장",
+        "title": "광안리 해수욕장",
+        "kind": "해변·해안",
+        "distanceM": 303
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "수영구 광안해변로 249 3층"
+    },
+    {
+      "candidateKey": "원산면옥1953",
+      "title": "원산면옥 1953",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 242
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 광복로 56-8"
+    },
+    {
+      "candidateKey": "원조바다집",
+      "title": "원조 바다집",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 250
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 광복로 43번길 18-5"
+    },
+    {
+      "candidateKey": "원조할매낙지",
+      "title": "원조할매낙지",
+      "parent": {
+        "candidateKey": "현대백화점부산점커넥트현대",
+        "title": "현대백화점 부산점, 커넥트현대",
+        "kind": "쇼핑복합공간",
+        "distanceM": 171
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 부산진구 골드테마길 10 (범천동)"
+    },
+    {
+      "candidateKey": "원조할매집",
+      "title": "원조할매집",
+      "parent": {
+        "candidateKey": "현대백화점부산점커넥트현대",
+        "title": "현대백화점 부산점, 커넥트현대",
+        "kind": "쇼핑복합공간",
+        "distanceM": 173
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산진구 골드테마길 10"
+    },
+    {
+      "candidateKey": "이가네떡볶이",
+      "title": "이가네떡볶이",
+      "parent": {
+        "candidateKey": "부평깡통시장",
+        "title": "부평깡통시장",
+        "kind": "시장",
+        "distanceM": 72
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 부평1길 48"
+    },
+    {
+      "candidateKey": "이재모피자",
+      "title": "이재모피자",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 241
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 광복중앙로 31"
+    },
+    {
+      "candidateKey": "중앙모밀",
+      "title": "중앙모밀",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 272
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 중앙대로 49번길 9-1 "
+    },
+    {
+      "candidateKey": "칠성횟집",
+      "title": "칠성횟집",
+      "parent": {
+        "candidateKey": "광안리해수욕장",
+        "title": "광안리 해수욕장",
+        "kind": "해변·해안",
+        "distanceM": 439
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 수영구 광안해변로 263 (민락동)"
+    },
+    {
+      "candidateKey": "팔레드신",
+      "title": "팔레드신",
+      "parent": {
+        "candidateKey": "해운대시장",
+        "title": "해운대시장",
+        "kind": "시장",
+        "distanceM": 200
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 해운대구 해운대해변로 292 (중동)"
+    },
+    {
+      "candidateKey": "팔레트",
+      "title": "팔레트",
+      "parent": {
+        "candidateKey": "용호별빛공원",
+        "title": "용호 별빛공원",
+        "kind": "공원·정원",
+        "distanceM": 131
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 해운대구 달맞이길65번길 154 3층"
+    },
+    {
+      "candidateKey": "편의방",
+      "title": "편의방",
+      "parent": {
+        "candidateKey": "대신공원",
+        "title": "대신공원",
+        "kind": "공원·정원",
+        "distanceM": 266
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "서구 대신공원로 13-5\n"
+    },
+    {
+      "candidateKey": "평산옥",
+      "title": "평산옥",
+      "parent": {
+        "candidateKey": "상해거리",
+        "title": "상해거리",
+        "kind": "거리·골목",
+        "distanceM": 88
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "동구 초량중로 26"
+    },
+    {
+      "candidateKey": "할매가야밀면",
+      "title": "할매가야밀면",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 237
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 광복로 56-14"
+    },
+    {
+      "candidateKey": "할매재첩국부산본점",
+      "title": "할매재첩국부산본점",
+      "parent": {
+        "candidateKey": "광안리해수욕장",
+        "title": "광안리 해수욕장",
+        "kind": "해변·해안",
+        "distanceM": 269
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "수영구 광남로120번길 8"
+    },
+    {
+      "candidateKey": "할매집회국수",
+      "title": "할매집회국수",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 234
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 남포길 25-3"
+    },
+    {
+      "candidateKey": "함흥보쌈사계절냉면",
+      "title": "함흥보쌈사계절냉면",
+      "parent": {
+        "candidateKey": "남항시장봉래시장",
+        "title": "남항시장 / 봉래시장",
+        "kind": "시장",
+        "distanceM": 109
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "영도구 남항로 42"
+    },
+    {
+      "candidateKey": "홍성방본점",
+      "title": "홍성방 본점",
+      "parent": {
+        "candidateKey": "상해거리",
+        "title": "상해거리",
+        "kind": "거리·골목",
+        "distanceM": 5
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "동구 중앙대로 179번길 16"
+    },
+    {
+      "candidateKey": "화국반점",
+      "title": "화국반점",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 246
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 백산길3 "
+    },
+    {
+      "candidateKey": "그리다부부",
+      "title": "그리다부부",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 270
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 광복중앙로 35-1 1층"
+    },
+    {
+      "candidateKey": "맥퀸즈라운지",
+      "title": "맥퀸즈라운지",
+      "parent": {
+        "candidateKey": "오시리아해안산책로",
+        "title": "오시리아 해안 산책로",
+        "kind": "거리·골목",
+        "distanceM": 125
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 기장군 기장읍 기장해안로 268-32"
+    },
+    {
+      "candidateKey": "바우노바",
+      "title": "바우노바",
+      "parent": {
+        "candidateKey": "광복로패션거리",
+        "title": "광복로패션거리",
+        "kind": "거리·골목",
+        "distanceM": 59
+      },
+      "confidence": "medium",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "중구 광복로 97번길 6"
+    },
+    {
+      "candidateKey": "블랙업커피",
+      "title": "블랙업커피",
+      "parent": {
+        "candidateKey": "서면시장",
+        "title": "서면시장",
+        "kind": "시장",
+        "distanceM": 170
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산 부산진구 서전로10번길 41 (부전동)"
+    },
+    {
+      "candidateKey": "비엔씨",
+      "title": "비엔씨",
+      "parent": {
+        "candidateKey": "용두산공원",
+        "title": "용두산공원",
+        "kind": "공원·정원",
+        "distanceM": 299
+      },
+      "confidence": "low",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "ADDR1": "부산광역시 중구 광복로39번길 6 (창선동)"
+    }
+  ]
+}

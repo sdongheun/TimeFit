@@ -1,0 +1,1981 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-14T17:24:14.508Z",
+    "sourceCatalog": "src/data/busan_poi_catalog.json",
+    "purpose": "시장·거리·골목·문화마을의 핵심 경험이 가능한 시간대를 공식 근거로만 관리하기 위한 자료",
+    "rule": "가게별 상이·상시·시간 미기재는 자동 추천 게이트의 통과 근거가 아니다. 개별 식당·카페는 권역형 장소가 아니라 개별 시설 운영시간 정책으로 처리한다."
+  },
+  "summary": {
+    "total": 87,
+    "byStatus": {
+      "운영시간미기재_공식근거탐색": 57,
+      "시간문구_대표안내추가확인": 16,
+      "공식시간_추천가능시간대초안": 11,
+      "개별시설_권역정책제외": 3
+    },
+    "byPriority": {
+      "1순위": 57,
+      "2순위": 19,
+      "즉시적용검토": 11
+    }
+  },
+  "data": [
+    {
+      "contentId": "poi_932",
+      "title": "골목포차",
+      "category": "식당",
+      "subCategory": "거리·골목",
+      "address": "수영구 광안로7번길 52",
+      "currentOperatingHours": [
+        "15:00-24:00\n(23:00 라스트오더)"
+      ],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "busan_food",
+          "sourceId": "1825"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/2052137996",
+      "status": "개별시설_권역정책제외",
+      "priority": "2순위",
+      "requiredEvidence": "개별 시설 운영시간 정책으로 처리",
+      "availability": null
+    },
+    {
+      "contentId": "poi_864",
+      "title": "몽실종가돼지국밥 감천문화마을 본점",
+      "category": "식당",
+      "subCategory": "문화마을",
+      "address": "서구 까치고개로 197번길 3, 1층",
+      "currentOperatingHours": [
+        "09:00-20:00"
+      ],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "busan_food",
+          "sourceId": "961"
+        }
+      ],
+      "kakaoPlaceUrl": null,
+      "status": "개별시설_권역정책제외",
+      "priority": "2순위",
+      "requiredEvidence": "개별 시설 운영시간 정책으로 처리",
+      "availability": null
+    },
+    {
+      "contentId": "poi_438",
+      "title": "서대시장족발",
+      "category": "식당",
+      "subCategory": "시장",
+      "address": "부산광역시 서구 대영로 43-2",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2867598"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/21339909",
+      "status": "개별시설_권역정책제외",
+      "priority": "2순위",
+      "requiredEvidence": "개별 시설 운영시간 정책으로 처리",
+      "availability": null
+    },
+    {
+      "contentId": "poi_287",
+      "title": "구포시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 북구 구포시장2길 7 (구포동)",
+      "currentOperatingHours": [
+        "08:00~20:00"
+      ],
+      "currentHolidays": [
+        "가게별 상이"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "1250885"
+        },
+        {
+          "provider": "busan_shopping",
+          "sourceId": "363"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/319142045",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "08:00~20:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_787",
+      "title": "기장시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산 기장군 기장읍 대라리 72-3",
+      "currentOperatingHours": [
+        "매일 07:00~22:00"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_shopping",
+          "sourceId": "292"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1486238534",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "매일 07:00~22:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_142",
+      "title": "깡깡이 예술마을",
+      "category": "자연관광지",
+      "subCategory": "문화마을",
+      "address": "부산광역시 영도구 대평북로 36",
+      "currentOperatingHours": [
+        "평일, 주말 10:00~17:00\n가급적 평일 낮 시간 제외, 주말 혹은 통합투어 프로그램 이용 요망"
+      ],
+      "currentHolidays": [
+        "매주 월요일 (투어 등 시설)"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2554070"
+        },
+        {
+          "provider": "busan_attraction",
+          "sourceId": "256"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/169956269",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "평일, 주말 10:00~17:00\n가급적 평일 낮 시간 제외, 주말 혹은 통합투어 프로그램 이용 요망"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_790",
+      "title": "남항시장 / 봉래시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "남항시장 : 부산 영도구 영선동2가 245\n봉래시장 : 부산 영도구 태종로 159-15",
+      "currentOperatingHours": [
+        "매일(휴무일 제외) 09:00~21:00"
+      ],
+      "currentHolidays": [
+        "1, 3주 일요일"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_shopping",
+          "sourceId": "300"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/496366461",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "매일(휴무일 제외) 09:00~21:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_744",
+      "title": "닥밭골 벽화마을",
+      "category": "문화시설",
+      "subCategory": "문화마을",
+      "address": "부산광역시 서구 동대신동2가 87-218",
+      "currentOperatingHours": [
+        "소망계단 모노레일 : 평일 07:30~20:00 주말 10:00~17:30\n닥밭골 벽화마을 : 매일 00:00~24:00"
+      ],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "2104"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/20457010",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "소망계단 모노레일 : 평일 07:30~20:00 주말 10:00~17:30\n닥밭골 벽화마을 : 매일 00:00~24:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_809",
+      "title": "밀락더마켓 ",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 수영구 민락수변로17번길 56",
+      "currentOperatingHours": [
+        "매일 10:00-24:00"
+      ],
+      "currentHolidays": [
+        "가게별 상이"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_shopping",
+          "sourceId": "1323"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/852075435",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "매일 10:00-24:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_13",
+      "title": "부산 자갈치시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 중구 자갈치해안로 52",
+      "currentOperatingHours": [
+        "05:00~22:00"
+      ],
+      "currentHolidays": [
+        "매달 1,3,5번째 화요일"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "132190"
+        },
+        {
+          "provider": "busan_shopping",
+          "sourceId": "412"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/10746021",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "05:00~22:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_4",
+      "title": "부평깡통시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 중구 부평1길 48",
+      "currentOperatingHours": [
+        "매일 19:30-24:00"
+      ],
+      "currentHolidays": [
+        "연중무휴(가게별 상이)"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "1878218"
+        },
+        {
+          "provider": "busan_shopping",
+          "sourceId": "400"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/539980307",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "매일 19:30-24:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_187",
+      "title": "색채마을",
+      "category": "자연관광지",
+      "subCategory": "문화마을",
+      "address": "부산광역시 중구 망양로 327-1 (대청동4가)",
+      "currentOperatingHours": [
+        "매일 00:00~24:00"
+      ],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "3064931"
+        },
+        {
+          "provider": "busan_attraction",
+          "sourceId": "2106"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/25452724",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "매일 00:00~24:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_702",
+      "title": "영도 봉산마을",
+      "category": "자연관광지",
+      "subCategory": "문화마을",
+      "address": "영도구 오동꽃길 32 베리베리굿봉산센터",
+      "currentOperatingHours": [
+        "월요일 ~ 토요일 08:00 ~ 18:00"
+      ],
+      "currentHolidays": [
+        "일요일"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "1179"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1830799635",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "월요일 ~ 토요일 08:00 ~ 18:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_789",
+      "title": "해운대시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산 해운대구 중동1로 42-16",
+      "currentOperatingHours": [
+        "09:00 - 22:00"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_shopping",
+          "sourceId": "294"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1802884698",
+      "status": "공식시간_추천가능시간대초안",
+      "priority": "즉시적용검토",
+      "requiredEvidence": "원본 공식 API의 시간 문구를 재확인한 뒤 추천 게이트에 반영",
+      "availability": {
+        "status": "candidate",
+        "raw": [
+          "09:00 - 22:00"
+        ],
+        "source": "current_official_dataset"
+      }
+    },
+    {
+      "contentId": "poi_30",
+      "title": "광복로패션거리",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 중구 광복로 72-1 (광복동2가)",
+      "currentOperatingHours": [
+        "상시(가게별 상이)"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "126857"
+        },
+        {
+          "provider": "busan_shopping",
+          "sourceId": "413"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/8672654",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_704",
+      "title": "광안종합시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 수영구 무학로49번길 71",
+      "currentOperatingHours": [
+        "가게별 상이"
+      ],
+      "currentHolidays": [
+        "가게별 상이"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "1305"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18526000",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_8",
+      "title": "국제시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 중구 신창로4가 일원",
+      "currentOperatingHours": [
+        "09:00 - 20:00(가게별 상이)"
+      ],
+      "currentHolidays": [
+        "매주 일요일"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "132191"
+        },
+        {
+          "provider": "busan_shopping",
+          "sourceId": "399"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/17618045",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_684",
+      "title": "대룡마을",
+      "category": "상업지구",
+      "subCategory": "문화마을",
+      "address": "부산광역시 기장군 장안읍 대룡1길 17",
+      "currentOperatingHours": [
+        "상시"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "450"
+        },
+        {
+          "provider": "busan_attraction",
+          "sourceId": "2408"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/10244891",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_793",
+      "title": "동래시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 동래구 동래시장길 14 ",
+      "currentOperatingHours": [
+        "08:00 ~ 20:00(가게별 상이)"
+      ],
+      "currentHolidays": [
+        "토,일 "
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_shopping",
+          "sourceId": "422"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/20055712",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_618",
+      "title": "보수동책방골목",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 중구 보수동1가 151-1",
+      "currentOperatingHours": [
+        "가게별 상이(20:00 전후 업무 종료)"
+      ],
+      "currentHolidays": [
+        "첫째주, 셋째주 화요일 (신정, 구청, 추석있는 주는 무휴) / 신정 당일하루 / 구정, 추석은 당일과 다음날까지 2일"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "272"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/427198875",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_96",
+      "title": "부전마켓타운",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 부산진구 중앙대로755번길 21",
+      "currentOperatingHours": [
+        "월~일 07:00~19:00(가게별 상이) "
+      ],
+      "currentHolidays": [
+        "가게별 상이"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "132188"
+        },
+        {
+          "provider": "busan_shopping",
+          "sourceId": "327"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/25621942",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_673",
+      "title": "상해거리",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 동구 중앙대로179번길 1\n",
+      "currentOperatingHours": [
+        "상시(가게별 상이)"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "415"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/7932717",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_791",
+      "title": "서면시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 부산진구 서면로 56",
+      "currentOperatingHours": [
+        "가게별 상이"
+      ],
+      "currentHolidays": [
+        "가게별 상이"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_shopping",
+          "sourceId": "328"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1179022297",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_631",
+      "title": "아미동 비석마을",
+      "category": "문화시설",
+      "subCategory": "문화마을",
+      "address": "부산광역시 서구 아미로49",
+      "currentOperatingHours": [
+        "상시",
+        "매일"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "288"
+        },
+        {
+          "provider": "busan_attraction",
+          "sourceId": "876"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1623342604",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_659",
+      "title": "영화의 거리",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 해운대구 마린시티1로 91",
+      "currentOperatingHours": [
+        "상시"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "361"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/26454001",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_687",
+      "title": "우암동 소막마을",
+      "category": "문화시설",
+      "subCategory": "문화마을",
+      "address": "부산광역시 남구 우암번영로 19",
+      "currentOperatingHours": [
+        "상시"
+      ],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "483"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/912848907",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_697",
+      "title": "우암동 소막마을",
+      "category": "자연관광지",
+      "subCategory": "문화마을",
+      "address": "부산광역시 남구 우암번영로 40-1",
+      "currentOperatingHours": [
+        "매일"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "838"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/912848907",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_674",
+      "title": "이중섭문화거리",
+      "category": "문화시설",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 동구 증산로 168",
+      "currentOperatingHours": [
+        "상시"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "418"
+        }
+      ],
+      "kakaoPlaceUrl": null,
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_113",
+      "title": "전포공구길",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 부산진구 서전로37번길 20",
+      "currentOperatingHours": [
+        "가게별 상이"
+      ],
+      "currentHolidays": [
+        "가게별 상이"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2994179"
+        },
+        {
+          "provider": "busan_attraction",
+          "sourceId": "1329"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1187263066",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_657",
+      "title": "호천마을",
+      "category": "문화시설",
+      "subCategory": "문화마을",
+      "address": "부산광역시 부산진구 엄광로 491",
+      "currentOperatingHours": [
+        "상시"
+      ],
+      "currentHolidays": [
+        "연중무휴"
+      ],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "358"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/267777731",
+      "status": "시간문구_대표안내추가확인",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_122",
+      "title": "가톨릭 특성화 거리",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 금정구 부곡동",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "1935608"
+        }
+      ],
+      "kakaoPlaceUrl": null,
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_127",
+      "title": "공수어촌체험마을",
+      "category": "자연관광지",
+      "subCategory": "문화마을",
+      "address": "부산광역시 기장군 기장읍 공수해안길 13-2",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "128610"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/12684138",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_285",
+      "title": "광복 지하도상가",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 중구 중앙대로 지하17 (중앙동6가)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "132574"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/25413672",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_79",
+      "title": "광안리해변 테마거리",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 수영구 민락동",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "127925"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/12644071",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_286",
+      "title": "구서오시게시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 금정구 구서로 12",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "1303759"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/484731958",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_9",
+      "title": "국제시장 먹자골목",
+      "category": "자연관광지",
+      "subCategory": "시장",
+      "address": "부산광역시 중구 중구로 36",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "1018702"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/12711092",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_140",
+      "title": "금정산성마을 먹거리촌",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 금정구 금성동",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2643873"
+        }
+      ],
+      "kakaoPlaceUrl": null,
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_288",
+      "title": "남산시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 금정구 금강로 700",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2788830"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/15289998",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_289",
+      "title": "남천 해변시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 수영구 광안해변로15번길 77",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "1303784"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/15386794",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_290",
+      "title": "남포동 지하도상가",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 중구 구덕로 지하 44",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "132187"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/58512974",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_291",
+      "title": "남포동건어물도매시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 중구 용미길8번길 4-1",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "986063"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18525517",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_292",
+      "title": "남항시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 영도구 절영로49번길 73-5",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "1942298"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/9721234",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_294",
+      "title": "대변시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 기장군 기장읍 대변리 444-72",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2796940"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/26202483",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_153",
+      "title": "대항 어촌체험 휴양마을",
+      "category": "자연관광지",
+      "subCategory": "문화마을",
+      "address": "부산광역시 강서구 가덕해안로1207번길 9-2",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "128564"
+        }
+      ],
+      "kakaoPlaceUrl": null,
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_295",
+      "title": "덕포시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 사상구 사상로285번길 8-5",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2785611"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/13250864",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_154",
+      "title": "동래온천길(온천천 카페거리)",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 동래구 온천천로 451",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2822334"
+        }
+      ],
+      "kakaoPlaceUrl": null,
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_69",
+      "title": "만물의거리",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 중구 국제시장2길 20-1",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "1013694"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/13113524",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_297",
+      "title": "명지시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 강서구 신포길 13-10 (명지동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2742601"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/13114094",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_828",
+      "title": "문현동 골동품거리",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 남구 자유평화로57번길 33",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "busan_shopping",
+          "sourceId": "2589"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1845153966",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_10",
+      "title": "미술의거리",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 중구 신창동4가",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "985921"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/7881359",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_298",
+      "title": "반송3동골목시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 해운대구 아랫반송로39번길 18-12 신발집",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2875862"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18525988",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_168",
+      "title": "범일 이중섭거리",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 동구 범일동",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2708108"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1027127679",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_299",
+      "title": "부곡상가시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 금정구 부곡로 107",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2763881"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18525997",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_301",
+      "title": "부산 엄궁농산물도매시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 사상구 농산물시장로9번길 11 (엄궁동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "132524"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/703310556",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_174",
+      "title": "부산 영화의 거리",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 해운대구 마린시티1로 91 (우동, 마린시티두산위브포세이돈)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2946508"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/26454001",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_175",
+      "title": "부산 자갈치 양곱창 골목",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 중구 구덕로 73",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "1960620"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1814376214",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_302",
+      "title": "부산 자유도매시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 동구 조방로 48",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "132499"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/16225091",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_303",
+      "title": "부산 중앙시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 부산진구 중앙번영로20번길 34-3",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "132572"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/13231468",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_304",
+      "title": "부산새벽시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 사상구 새벽로 141 (감전동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2787128"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/11269922",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_93",
+      "title": "부산전자종합시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 부산진구 부전로 196 (부전동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "3080300"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/10998607",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_305",
+      "title": "부산진시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 동구 진시장로 24",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "132189"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1021042722",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_5",
+      "title": "부평동한복거리",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 중구 부평2길 44",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "132550"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/10463299",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_306",
+      "title": "서동미로시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 금정구 서동로141번길 16 (서동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2763981"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18525240",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_99",
+      "title": "송도 구름산책로",
+      "category": "레저/스포츠",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 서구 암남동 129-4",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "2557807"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/744667559",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_192",
+      "title": "송도마을",
+      "category": "자연관광지",
+      "subCategory": "문화마을",
+      "address": "부산광역시 서구 충무대로 47 (암남동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "129093"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/12657022",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_307",
+      "title": "송정전통재래시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 기장군 철마면 두송길 7-31",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "1117817"
+        }
+      ],
+      "kakaoPlaceUrl": null,
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_308",
+      "title": "수영팔도시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 수영구 수영동",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2869279"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/27532534",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_15",
+      "title": "신동아 수산물시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 중구 자갈치로 42",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "132576"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/16901576",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_309",
+      "title": "신평종합시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 사하구 신평동",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2867542"
+        }
+      ],
+      "kakaoPlaceUrl": null,
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_11",
+      "title": "아리랑거리",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 중구 광복로35번길 11 (신창동3가)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "1013709"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18525213",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_199",
+      "title": "안데르센 동화마을",
+      "category": "자연관광지",
+      "subCategory": "문화마을",
+      "address": "부산광역시 기장군 장안읍 장안로 211",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2661452"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1708194202",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_310",
+      "title": "연동시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 연제구 연동로8번길 22 (연산동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2788444"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18525094",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_107",
+      "title": "영도봉래시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 영도구 태종로113번길 39",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "1942316"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18525523",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_755",
+      "title": "오시리아 해안 산책로",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 기장군 기장읍 시랑리 62-22",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "2172"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/2072859197",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_757",
+      "title": "일광 광산마을",
+      "category": "자연관광지",
+      "subCategory": "문화마을",
+      "address": "부산광역시 기장군 일광읍 원리 663-7",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "2186"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/25181652",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_311",
+      "title": "장림골목시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 사하구 장림번영로 22 (장림동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2788451"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/9896749",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_213",
+      "title": "전포 삼거리",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 부산진구 진남로 320 (전포동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2944033"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/26916148",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_214",
+      "title": "절영해안산책로",
+      "category": "자연관광지",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 영도구 해안산책길 52",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "252561"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/584965844",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "2순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_312",
+      "title": "정관신도시시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 기장군 정관읍 정관6로 5-20",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2776286"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/2032697483",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_72",
+      "title": "조명의거리",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 중구 국제시장2길 5",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_aihub",
+          "sourceId": "1013721"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/13113517",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_313",
+      "title": "좌동재래시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 해운대구 좌동로91번길 20 (좌동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2875886"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/16752705",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_314",
+      "title": "좌천동 가구거리",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 동구 중앙대로460번나길 24 (좌천동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "1304515"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/25625218",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_317",
+      "title": "청학시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 영도구 태종로316번길 1 (청학동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2790483"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/14974374",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_318",
+      "title": "초량시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 동구 초량로13번길 8",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2869135"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/1890342085",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_319",
+      "title": "충무동 새벽시장",
+      "category": "상업지구",
+      "subCategory": "시장",
+      "address": "부산광역시 서구 해안새벽시장길 68 (남부민동)",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "2744582"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18525064",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_781",
+      "title": "충무동 해안시장",
+      "category": "자연관광지",
+      "subCategory": "시장",
+      "address": "부산 서구 해안새벽시장길 7",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "busan_attraction",
+          "sourceId": "2588"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/18525216",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    },
+    {
+      "contentId": "poi_320",
+      "title": "해운대 로데오거리",
+      "category": "상업지구",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 해운대구 좌동순환로 473",
+      "currentOperatingHours": [],
+      "currentHolidays": [],
+      "sourceEvidence": [
+        {
+          "provider": "tourapi_fallback",
+          "sourceId": "1304431"
+        }
+      ],
+      "kakaoPlaceUrl": "https://place.map.kakao.com/25738725",
+      "status": "운영시간미기재_공식근거탐색",
+      "priority": "1순위",
+      "requiredEvidence": "부산시 관광·구청·상인회·대표 안내시설의 공식 페이지 또는 TourAPI 상세 정보",
+      "availability": null
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-09T17:19:32.178Z",
+    "sourceFiles": [
+      "data/processed/부산시_명소정보.json",
+      "data/processed/부산시_쇼핑정보.json",
+      "data/processed/부산시_맛집정보.json"
+    ],
+    "description": "부산시 공식 관광 데이터 통합 후보에서 숙박·교통·의료·주차 규칙으로 제외한 항목.",
+    "deduplication": "PLACE 또는 MAIN_TITLE의 괄호·공백·슬래시·언어표기 제거 후 동일 이름을 하나의 후보로 통합했다. 좌표·주소 기준의 추가 중복 검토는 남아 있다.",
+    "hardExclusions": "숙박·의료·주차시설 및 공항·역·터미널 등 교통시설 그 자체를 제외한다. 하나의 콘텐츠에 복수의 서로 다른 장소가 묶인 경우도 추천 좌표가 불명확하므로 별도 보류한다.",
+    "notRuntimeCatalog": "검토용 파일이며 src/data/busan_poi_catalog.json과 앱 추천에는 아직 병합하지 않았다."
+  },
+  "summary": {
+    "records": 3,
+    "byReason": {
+      "숙박": 1,
+      "교통시설": 0,
+      "의료시설": 1,
+      "주차시설": 0,
+      "복수 장소 묶음": 1
+    }
+  },
+  "data": [
+    {
+      "candidateKey": "롯데면세점부산점롯데면세점김해공항점부산면세점용두산점",
+      "title": "롯데면세점 부산점, 롯데면세점 김해공항점, 부산면세점 용두산점",
+      "sourceTypes": [
+        "부산쇼핑"
+      ],
+      "sourceRecordIds": [
+        504
+      ],
+      "suggestedCategory": "상업지구",
+      "hasUsageHours": false,
+      "existingCatalogMatchStatuses": [
+        "unmatched"
+      ],
+      "reviewStatus": "REVIEW",
+      "selection": "",
+      "reviewNote": "부산시 공식 관광 데이터 후보. 현재 A/B 중복 여부와 관계없이 포함했으며, 장소 유형·자투리 적합성·체류시간 정책을 검토한 뒤 선택한다.",
+      "records": [
+        {
+          "source": "부산쇼핑",
+          "UC_SEQ": 504,
+          "MAIN_TITLE": "면세점",
+          "PLACE": "롯데면세점 부산점, 롯데면세점 김해공항점, 부산면세점 용두산점",
+          "TITLE": "해외여행의 꽃, 면세점",
+          "GUGUN_NM": "부산진구",
+          "LAT": 35.156605,
+          "LNG": 129.05595,
+          "ADDR1": "",
+          "USAGE_DAY_WEEK_AND_TIME": "",
+          "HLDY_INFO": "",
+          "USAGE_AMOUNT": "",
+          "HOMEPAGE_URL": "",
+          "MAIN_IMG_NORMAL": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200102134544560_ttiel",
+          "ITEMCNTNTS": "\n롯데면세점 부산점\n부산 관광쇼핑의 중심 서면에 자리하고 있다. 호텔, 백화점, 레스토랑, 영화관이 한곳에 어우러져 면세점과 함께 관광, 휴식, 쇼핑을 동시에 즐길 수 있다.\n전화 051-810-3880\n주소 부산광역시 부산진구 가야대로 772 롯데백화점 부산점 8층\n이용시간 10:30~19:30(연중무휴)\n\n롯데면세점 김해공항점\n100여개의 다양한 브랜드가 입점해 있어 김해공항을 이용하는 여행자들에게 즐거운 면세 쇼핑을 제공한다. \n전화 1688-3000\n주소 부산광역시 강서구 공항진입로 108 김해공항 국제청사 2층\n이용시간 매일 06:30~21:30\n\n\n\n부산면세점 용두산점\n용두산공원 부산타워에 위치한 부산면세점은 남포동, 국제시장 등 시내 주요 관광지와 근접해 있어 편리한 면세점 이용이 가능하며, 특히 부산만의 특화된 브랜드를 구입할 수 있는 면세점이다.\n전화  051-460-1900\n주소 부산광역시 중구 용두산길 37-55\n이용시간 09:00~18:00(연중무휴)\n\n\n",
+          "suggestedCategory": "상업지구",
+          "catalogMatch": {
+            "status": "unmatched",
+            "dwellPolicy": "review_required",
+            "note": "현재 A/B 카탈로그와 직접 이름 매칭이 없다. 신규 후보 검토 시 장소 유형·카테고리 체류시간을 검토한다.",
+            "matches": []
+          }
+        }
+      ],
+      "exclusionReasons": [
+        "복수 장소 묶음"
+      ]
+    },
+    {
+      "candidateKey": "롯데호텔부산블루헤이븐",
+      "title": "롯데호텔 부산 블루헤이븐",
+      "sourceTypes": [
+        "부산맛집"
+      ],
+      "sourceRecordIds": [
+        2332
+      ],
+      "suggestedCategory": "식당",
+      "hasUsageHours": true,
+      "existingCatalogMatchStatuses": [
+        "unmatched"
+      ],
+      "reviewStatus": "REVIEW",
+      "selection": "",
+      "reviewNote": "부산시 공식 관광 데이터 후보. 현재 A/B 중복 여부와 관계없이 포함했으며, 장소 유형·자투리 적합성·체류시간 정책을 검토한 뒤 선택한다.",
+      "records": [
+        {
+          "source": "부산맛집",
+          "UC_SEQ": 2332,
+          "MAIN_TITLE": "롯데호텔 부산 블루헤이븐",
+          "PLACE": "롯데호텔 부산 블루헤이븐",
+          "TITLE": "롯데호텔 부산 블루헤이븐",
+          "GUGUN_NM": "부산진구",
+          "LAT": 35.15663,
+          "LNG": 129.05563,
+          "ADDR1": "부산진구 가야대로 772 롯데호텔 부산 7층",
+          "USAGE_DAY_WEEK_AND_TIME": "12:00-22:00",
+          "RPRSNTV_MENU": "Lunch Course ￦67,000\nDinner Course ￦85,000-135,000\n→ Course Menu로 제공되며 식재료에 따라 메뉴 변동 있음",
+          "HOMEPAGE_URL": "",
+          "MAIN_IMG_NORMAL": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250408100151107_ttiel",
+          "ITEMCNTNTS": "낮에는 휴양지의 편안하고 여유로운 분위기를 밤에는 도심 속 야경과 함께 은은한 조명의 정원이로맨틱한 분위기를 연출하는 이곳은 캐주얼 다이닝 메뉴와 칵테일 와인 등 다양한 음료가 준비되어 있다.\n",
+          "suggestedCategory": "식당",
+          "catalogMatch": {
+            "status": "unmatched",
+            "dwellPolicy": "review_required",
+            "note": "현재 A/B 카탈로그와 직접 이름 매칭이 없다. 신규 후보 검토 시 장소 유형·카테고리 체류시간을 검토한다.",
+            "matches": []
+          }
+        }
+      ],
+      "exclusionReasons": [
+        "숙박"
+      ]
+    },
+    {
+      "candidateKey": "구백제병원",
+      "title": "구 백제병원",
+      "sourceTypes": [
+        "부산명소"
+      ],
+      "sourceRecordIds": [
+        266
+      ],
+      "suggestedCategory": "명소_검토필요",
+      "hasUsageHours": true,
+      "existingCatalogMatchStatuses": [
+        "unmatched"
+      ],
+      "reviewStatus": "REVIEW",
+      "selection": "",
+      "reviewNote": "부산시 공식 관광 데이터 후보. 현재 A/B 중복 여부와 관계없이 포함했으며, 장소 유형·자투리 적합성·체류시간 정책을 검토한 뒤 선택한다.",
+      "records": [
+        {
+          "source": "부산명소",
+          "UC_SEQ": 266,
+          "MAIN_TITLE": "구 백제병원 (한,영,중간,중번,일)",
+          "PLACE": "구 백제병원",
+          "TITLE": "구 백제병원",
+          "GUGUN_NM": "동구",
+          "LAT": 35.116383,
+          "LNG": 129.03917,
+          "ADDR1": "부산광역시 동구 중앙대로209번길 16",
+          "USAGE_DAY_WEEK_AND_TIME": "브라운핸즈백제 10:00 - 21:30 (라스트 오더 21:20)\n갤러리 이비나인 11:00 - 18:00 ",
+          "HLDY_INFO": "브라운핸즈백제 연중무휴\n갤러리 이비나인 월요일 휴무",
+          "USAGE_AMOUNT": "",
+          "HOMEPAGE_URL": "",
+          "MAIN_IMG_NORMAL": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191225145805369_ttiel",
+          "ITEMCNTNTS": "부산원도심 이바구길 시작점에 서 있는 붉은 벽돌색 건물 하나. 부산최초의 근대식 종합병원이었던 구 백제병원이다. 1922년 개원하여 당시 최고의 병원으로 유명세를 탔으나 1932년 폐업 이후 중국요리점, 일본군 장교숙소, 부산치안사령부 등을 거치며 굴곡진 부산의 역사와 함께 그 세월을 고스란히 견뎌왔다.\n\n현재 1층에는 구 백제병원의 내‧외부 건물구조와 흔적을 그대로 보존한 카페가 성업 중이다. 은은하게 퍼지는 커피향 즐기며 1920년대의 공간 속으로 함께 들어가 보자.\n3층은 '갤러리 이비나인'으로 운영되고 있다.\n\n",
+          "catalogMatch": {
+            "status": "unmatched",
+            "dwellPolicy": "review_required",
+            "note": "현재 A/B 카탈로그와 직접 이름 매칭이 없다. 신규 후보 검토 시 장소 유형·카테고리 체류시간을 검토한다.",
+            "matches": []
+          }
+        }
+      ],
+      "exclusionReasons": [
+        "의료시설"
+      ]
+    }
+  ]
+}

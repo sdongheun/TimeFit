@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-14T17:47:59.965Z",
+    "purpose": "새벽 게이트를 우회할 수 있는 자연관광지 오분류 후보를 검토한다.",
+    "rule": "시설형·상권형으로 확정한 장소는 자연관광지 예외를 제거하고 운영시간 게이트 대상이 된다."
+  },
+  "summary": {
+    "total": 21,
+    "byAction": {
+      "상권형재분류": 5,
+      "시설형재분류": 8,
+      "야외유지검토": 4,
+      "수동판단필요": 3,
+      "제외검토": 1
+    }
+  },
+  "data": [
+    {
+      "contentId": "poi_9",
+      "title": "국제시장 먹자골목",
+      "address": "부산광역시 중구 중구로 36",
+      "aihubCategory": "상업지구",
+      "mapVerification": "verified",
+      "operatingHours": [],
+      "action": "상권형재분류",
+      "reason": "상점·상권 중심의 거리 또는 관광특구 성격"
+    },
+    {
+      "contentId": "poi_10",
+      "title": "미술의거리",
+      "address": "부산광역시 중구 신창동4가",
+      "aihubCategory": "상업지구",
+      "mapVerification": "verified",
+      "operatingHours": [],
+      "action": "상권형재분류",
+      "reason": "상점·상권 중심의 거리 또는 관광특구 성격"
+    },
+    {
+      "contentId": "poi_16",
+      "title": "용두산 자갈치 관광특구",
+      "address": "부산광역시 중구 자갈치해안로 52",
+      "aihubCategory": "상업지구",
+      "mapVerification": "not_found",
+      "operatingHours": [],
+      "action": "상권형재분류",
+      "reason": "상점·상권 중심의 거리 또는 관광특구 성격"
+    },
+    {
+      "contentId": "poi_17",
+      "title": "자갈치 크루즈",
+      "address": "부산광역시 중구 자갈치해안로 60 (남포동4가)",
+      "aihubCategory": "상업지구",
+      "mapVerification": "verified",
+      "operatingHours": [],
+      "action": "시설형재분류",
+      "reason": "입장·프로그램·운영시간이 필요한 시설 성격"
+    },
+    {
+      "contentId": "poi_24",
+      "title": "롯데월드 어드벤처 부산",
+      "address": "부산광역시 기장군 동부산관광로 42",
+      "aihubCategory": "테마시설",
+      "mapVerification": "verified",
+      "operatingHours": [
+        "10:00 ~ 20:00 (월~금)\n10:00 ~ 21:00 (토~일)\n*자세한 운영시간은 홈페이지 참조"
+      ],
+      "action": "시설형재분류",
+      "reason": "입장·프로그램·운영시간이 필요한 시설 성격"
+    },
+    {
+      "contentId": "poi_28",
+      "title": "아홉산숲",
+      "address": "부산광역시 기장군 철마면 미동길 37-1",
+      "aihubCategory": "역사/유적/종교",
+      "mapVerification": "verified",
+      "operatingHours": [
+        "평일, 주말 09:00~18:00 (입장마감 17시 00분)"
+      ],
+      "action": "야외유지검토",
+      "reason": "공원·숲·항구·산책로 등 야외 접근 성격"
+    },
+    {
+      "contentId": "poi_30",
+      "title": "광복로패션거리",
+      "address": "부산광역시 중구 광복로 72-1 (광복동2가)",
+      "aihubCategory": "상업지구",
+      "mapVerification": "verified",
+      "operatingHours": [
+        "상시(가게별 상이)"
+      ],
+      "action": "상권형재분류",
+      "reason": "상점·상권 중심의 거리 또는 관광특구 성격"
+    },
+    {
+      "contentId": "poi_35",
+      "title": "씨라이프부산아쿠아리움",
+      "address": "부산광역시 해운대구 해운대해변로 266",
+      "aihubCategory": "문화시설",
+      "mapVerification": "verified",
+      "operatingHours": [],
+      "action": "시설형재분류",
+      "reason": "입장·프로그램·운영시간이 필요한 시설 성격"
+    },
+    {
+      "contentId": "poi_37",
+      "title": "미포항",
+      "address": "부산광역시 해운대구 중동",
+      "aihubCategory": "식당",
+      "mapVerification": "verified",
+      "operatingHours": [],
+      "action": "수동판단필요",
+      "reason": "이름만으로 야외·시설 여부를 확정할 수 없음"
+    },
+    {
+      "contentId": "poi_46",
+      "title": "삼익비치수변공원",
+      "address": "부산광역시 수영구 남천동",
+      "aihubCategory": "레저/스포츠",
+      "mapVerification": "verified",
+      "operatingHours": [],
+      "action": "야외유지검토",
+      "reason": "공원·숲·항구·산책로 등 야외 접근 성격"
+    },
+    {
+      "contentId": "poi_56",
+      "title": "키자니아 부산",
+      "address": "부산광역시 해운대구 센텀4로 15 센텀시티 몰",
+      "aihubCategory": "상업지구",
+      "mapVerification": "verified",
+      "operatingHours": [],
+      "action": "시설형재분류",
+      "reason": "입장·프로그램·운영시간이 필요한 시설 성격"
+    },
+    {
+      "contentId": "poi_65",
+      "title": "남도해양열차 에스트레인(S-train)",
+      "address": "부산광역시 동구 중앙대로 206",
+      "aihubCategory": "식당",
+      "mapVerification": "not_found",
+      "operatingHours": [],
+      "action": "제외검토",
+      "reason": "교통수단 또는 운행 서비스 성격"
+    },
+    {
+      "contentId": "poi_75",
+      "title": "해운대 그린레일웨이 (미포~송정 구간)",
+      "address": "부산광역시 해운대구 청사포로 116 (중동)",
+      "aihubCategory": "테마시설",
+      "mapVerification": "not_found",
+      "operatingHours": [],
+      "action": "야외유지검토",
+      "reason": "공원·숲·항구·산책로 등 야외 접근 성격"
+    },
+    {
+      "contentId": "poi_76",
+      "title": "해운대온천센터",
+      "address": "부산광역시 해운대구 중동2로 16",
+      "aihubCategory": "식당",
+      "mapVerification": "verified",
+      "operatingHours": [],
+      "action": "시설형재분류",
+      "reason": "입장·프로그램·운영시간이 필요한 시설 성격"
+    },
+    {
+      "contentId": "poi_81",
+      "title": "그런고로",
+      "address": "부산광역시 부산진구 서전로 40 (전포동)",
+      "aihubCategory": "상업지구",
+      "mapVerification": "not_found",
+      "operatingHours": [],
+      "action": "수동판단필요",
+      "reason": "이름만으로 야외·시설 여부를 확정할 수 없음"
+    },
+    {
+      "contentId": "poi_84",
+      "title": "남선창고터",
+      "address": "부산광역시 동구 초량로13번길 53",
+      "aihubCategory": "식당",
+      "mapVerification": "verified",
+      "operatingHours": [],
+      "action": "수동판단필요",
+      "reason": "이름만으로 야외·시설 여부를 확정할 수 없음"
+    },
+    {
+      "contentId": "poi_94",
+      "title": "부산타워",
+      "address": "부산광역시 중구 용두산길 37-30 (광복동2가)",
+      "aihubCategory": "테마시설",
+      "mapVerification": "verified",
+      "operatingHours": [
+        "10:00 - 22:00(발권마감 21:30)"
+      ],
+      "action": "시설형재분류",
+      "reason": "입장·프로그램·운영시간이 필요한 시설 성격"
+    },
+    {
+      "contentId": "poi_97",
+      "title": "삼진어묵 체험·역사과학관",
+      "address": "부산광역시 영도구 절영로7번길 41-1 (봉래동2가)",
+      "aihubCategory": "식당",
+      "mapVerification": "not_found",
+      "operatingHours": [],
+      "action": "시설형재분류",
+      "reason": "입장·프로그램·운영시간이 필요한 시설 성격"
+    },
+    {
+      "contentId": "poi_650",
+      "title": "국립부산과학관",
+      "address": "부산광역시 기장군 기장읍 동부산관광6로 59",
+      "aihubCategory": "문화시설",
+      "mapVerification": "verified",
+      "operatingHours": [
+        "화~일 09:30~17:30(입장 16:30분까지) "
+      ],
+      "action": "시설형재분류",
+      "reason": "입장·프로그램·운영시간이 필요한 시설 성격"
+    },
+    {
+      "contentId": "poi_660",
+      "title": "APEC나루공원",
+      "address": "부산광역시 해운대구 수영강변대로 85\n",
+      "aihubCategory": "문화시설",
+      "mapVerification": "verified",
+      "operatingHours": [
+        "상시"
+      ],
+      "action": "야외유지검토",
+      "reason": "공원·숲·항구·산책로 등 야외 접근 성격"
+    },
+    {
+      "contentId": "poi_673",
+      "title": "상해거리",
+      "address": "부산광역시 동구 중앙대로179번길 1\n",
+      "aihubCategory": "상업지구",
+      "mapVerification": "verified",
+      "operatingHours": [
+        "상시(가게별 상이)"
+      ],
+      "action": "상권형재분류",
+      "reason": "상점·상권 중심의 거리 또는 관광특구 성격"
+    }
+  ]
+}

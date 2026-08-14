@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-12T17:27:14.989Z",
+    "purpose": "권역형 장소를 시간대 근거 없이 자동 추천하지 않기 위한 공식 출처 조사 대기열",
+    "acceptanceRule": "전체 장소 또는 권역의 반복 이용 가능 시간이 명시된 공식 출처만 area_availability_policy.json에 추가한다."
+  },
+  "summary": {
+    "total": 16,
+    "byStatus": {
+      "공식시간근거확인_갱신필요": 1,
+      "공식시간근거조사대기": 12,
+      "공식장소근거확인_시간근거없음": 3
+    }
+  },
+  "data": [
+    {
+      "contentId": "poi_704",
+      "title": "광안종합시장",
+      "subCategory": "시장",
+      "address": "부산광역시 수영구 무학로49번길 71",
+      "district": "수영구",
+      "requiredSource": "상인회·전통시장 공식 채널 또는 구청 전통시장 담당 부서",
+      "status": "공식시간근거확인_갱신필요",
+      "initialFinding": {
+        "sourceUrl": "https://www.suyeong.go.kr/board/view.suyeong?boardId=LIFE&dataSid=532&menuCd=DOM_000000113003000000&startPage=1",
+        "sourceName": "수영구청 - 광안종합시장 전통시장 정보",
+        "finding": "구청 전통시장 페이지에 10:00~20:00이 명시됐지만 최종 수정일이 2019-10-16이다. 최신성 확인 전까지 추천 시간대에 사용하지 않음.",
+        "timeEvidence": "시간 범위 있음, 갱신 필요"
+      }
+    },
+    {
+      "contentId": "poi_684",
+      "title": "대룡마을",
+      "subCategory": "문화마을",
+      "address": "부산광역시 기장군 장안읍 대룡1길 17",
+      "district": "기장군",
+      "requiredSource": "구·군 문화관광 부서 또는 마을 운영 주체",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_793",
+      "title": "동래시장",
+      "subCategory": "시장",
+      "address": "부산광역시 동래구 동래시장길 14 ",
+      "district": "동래구",
+      "requiredSource": "상인회·전통시장 공식 채널 또는 구청 전통시장 담당 부서",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_618",
+      "title": "보수동책방골목",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 중구 보수동1가 151-1",
+      "district": "중구",
+      "requiredSource": "구·군 문화관광 부서 또는 공식 관광 안내 페이지",
+      "status": "공식장소근거확인_시간근거없음",
+      "initialFinding": {
+        "sourceUrl": "https://www.busan.go.kr/futureheritage/future02/view?bbsNo=11&curPage=1&dataNo=5733",
+        "sourceName": "부산미래유산 - 보수동 책방골목",
+        "finding": "부산시 미래유산이자 2020년 전통시장 등록 장소임을 확인했으나, 전체 골목의 운영시간은 제공하지 않음.",
+        "timeEvidence": "없음"
+      }
+    },
+    {
+      "contentId": "poi_673",
+      "title": "상해거리",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 동구 중앙대로179번길 1\n",
+      "district": "동구",
+      "requiredSource": "구·군 문화관광 부서 또는 공식 관광 안내 페이지",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_791",
+      "title": "서면시장",
+      "subCategory": "시장",
+      "address": "부산광역시 부산진구 서면로 56",
+      "district": "부산진구",
+      "requiredSource": "상인회·전통시장 공식 채널 또는 구청 전통시장 담당 부서",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_631",
+      "title": "아미동 비석마을",
+      "subCategory": "문화마을",
+      "address": "부산광역시 서구 아미로49",
+      "district": "서구",
+      "requiredSource": "구·군 문화관광 부서 또는 마을 운영 주체",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_659",
+      "title": "영화의 거리",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 해운대구 마린시티1로 91",
+      "district": "해운대구",
+      "requiredSource": "구·군 문화관광 부서 또는 공식 관광 안내 페이지",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_687",
+      "title": "우암동 소막마을",
+      "subCategory": "문화마을",
+      "address": "부산광역시 남구 우암번영로 19",
+      "district": "남구",
+      "requiredSource": "구·군 문화관광 부서 또는 마을 운영 주체",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_697",
+      "title": "우암동 소막마을",
+      "subCategory": "문화마을",
+      "address": "부산광역시 남구 우암번영로 40-1",
+      "district": "남구",
+      "requiredSource": "구·군 문화관광 부서 또는 마을 운영 주체",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_674",
+      "title": "이중섭문화거리",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 동구 증산로 168",
+      "district": "동구",
+      "requiredSource": "구·군 문화관광 부서 또는 공식 관광 안내 페이지",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_657",
+      "title": "호천마을",
+      "subCategory": "문화마을",
+      "address": "부산광역시 부산진구 엄광로 491",
+      "district": "부산진구",
+      "requiredSource": "구·군 문화관광 부서 또는 마을 운영 주체",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_828",
+      "title": "문현동 골동품거리",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 남구 자유평화로57번길 33",
+      "district": "남구",
+      "requiredSource": "구·군 문화관광 부서 또는 공식 관광 안내 페이지",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_755",
+      "title": "오시리아 해안 산책로",
+      "subCategory": "거리·골목",
+      "address": "부산광역시 기장군 기장읍 시랑리 62-22",
+      "district": "기장군",
+      "requiredSource": "구·군 문화관광 부서 또는 공식 관광 안내 페이지",
+      "status": "공식장소근거확인_시간근거없음",
+      "initialFinding": {
+        "sourceUrl": "https://www.gijang.go.kr/tour/index.gijang?menuCd=DOM_000000306003000000",
+        "sourceName": "기장군 문화관광 - 오시리아 관광단지",
+        "finding": "기장군 공식 관광 페이지에 오시리아 해안산책로의 위치가 수록됐으나, 접근 또는 이용 시간은 제공하지 않음.",
+        "timeEvidence": "없음"
+      }
+    },
+    {
+      "contentId": "poi_757",
+      "title": "일광 광산마을",
+      "subCategory": "문화마을",
+      "address": "부산광역시 기장군 일광읍 원리 663-7",
+      "district": "기장군",
+      "requiredSource": "구·군 문화관광 부서 또는 마을 운영 주체",
+      "status": "공식시간근거조사대기",
+      "initialFinding": null
+    },
+    {
+      "contentId": "poi_781",
+      "title": "충무동 해안시장",
+      "subCategory": "시장",
+      "address": "부산 서구 해안새벽시장길 7",
+      "district": "서구",
+      "requiredSource": "상인회·전통시장 공식 채널 또는 구청 전통시장 담당 부서",
+      "status": "공식장소근거확인_시간근거없음",
+      "initialFinding": {
+        "sourceUrl": "https://www.busan.go.kr/nbtnewsBU/1516232?curPage=751&srchBeginDt=&srchCtgry=&srchEndDt=&srchKey=&srchText=",
+        "sourceName": "부산광역시 보도자료 - 충무동 새벽·해안시장 현장 방문",
+        "finding": "새벽 시간대에 시장 활동이 있었던 과거 행사 기록이며, 반복 운영시간 근거가 아니므로 추천 시간대에 사용하지 않음.",
+        "timeEvidence": "행사·현장 기록만 있음"
+      }
+    }
+  ]
+}

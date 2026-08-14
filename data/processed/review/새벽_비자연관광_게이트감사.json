@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-14T17:41:53.300Z",
+    "rule": "자연관광지 외에는 시간 범위 또는 별도 권역형 정책이 없으면 자정 추천에서 제외되어야 한다."
+  },
+  "summary": {
+    "checked": 4,
+    "byStatus": {
+      "새벽차단가능_시간범위확인": 3,
+      "새벽우회위험": 1
+    }
+  },
+  "data": [
+    {
+      "contentId": "poi_34",
+      "title": "신세계사이먼 부산 프리미엄 아울렛",
+      "category": "상업지구",
+      "subCategory": "쇼핑복합공간",
+      "catalogHours": [],
+      "tourapiHours": "[하절기 (5월~10월)]<br>- 10:30~21:00<br>[동절기 (11월~4월)]<br>- 평일(월요일~목요일) 10:30~20:30<br>- 주말(금요일~일요일) 10:30~21:00",
+      "status": "새벽차단가능_시간범위확인",
+      "reason": "TourAPI 시간 10:30~21:00"
+    },
+    {
+      "contentId": "poi_796",
+      "title": "백화점",
+      "category": "상업지구",
+      "subCategory": "쇼핑복합공간",
+      "catalogHours": [],
+      "tourapiHours": null,
+      "status": "새벽우회위험",
+      "reason": "시설형·권역형 분류 밖이며 시간 범위가 없음"
+    },
+    {
+      "contentId": "poi_293",
+      "title": "다대씨파크",
+      "category": "상업지구",
+      "subCategory": null,
+      "catalogHours": [],
+      "tourapiHours": "11:00~21:00 (점포별 상이)",
+      "status": "새벽차단가능_시간범위확인",
+      "reason": "TourAPI 시간 11:00~21:00"
+    },
+    {
+      "contentId": "poi_296",
+      "title": "데팡스가든센터",
+      "category": "상업지구",
+      "subCategory": null,
+      "catalogHours": [],
+      "tourapiHours": "09:00~18:00",
+      "status": "새벽차단가능_시간범위확인",
+      "reason": "TourAPI 시간 09:00~18:00"
+    }
+  ]
+}

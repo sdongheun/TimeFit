@@ -1,0 +1,3351 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-09T17:45:29.450Z",
+    "purpose": "시장·거리·골목 등 포괄 관광지의 AIHub 체류시간이 내부 개별 장소에 잘못 적용되지 않도록 기존 A 장소를 재분류한다.",
+    "method": "부산 공식 데이터와 같은 포괄 장소 키워드 및 유형별 반경 규칙을 적용했다. 내부 장소는 현재 추천에서 제외하고, 독립 장소의 좌표 단독 AIHub 매칭은 카테고리 체류시간으로 폴백한다.",
+    "limitation": "반경 기반 내부장소 판정은 검토용이다. 실제 상권 경계가 없어 주소·지도 확인 후 확정해야 한다."
+  },
+  "summary": {
+    "total": 122,
+    "scope": {
+      "포괄장소": 22,
+      "내부장소_검토": 25,
+      "독립장소": 75
+    },
+    "dwellPolicy": {
+      "category_dwell_fallback": 53,
+      "area_dwell_from_existing_aihub_match": 22,
+      "do_not_inherit_parent_dwell": 25,
+      "individual_dwell_from_aihub": 22
+    },
+    "originalMatchType": {
+      "coord": 86,
+      "name+coord": 35,
+      "name": 1
+    }
+  },
+  "data": [
+    {
+      "contentId": "127004",
+      "title": "해운대 관광특구",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구",
+      "aihubName": "해운대해수욕장",
+      "matchType": "coord",
+      "matchDistanceM": 10,
+      "dwell": {
+        "count": 110,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2606221",
+      "title": "영도 흰여울해안터널",
+      "category": "자연관광지",
+      "addr1": "부산광역시 영도구 영선동4가 1044-6",
+      "aihubName": "흰 여울 문화마을",
+      "matchType": "coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 48,
+        "median": 60,
+        "p25": 30,
+        "p75": 120,
+        "mean": 87
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "해변·해안",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 해변·해안 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "767084",
+      "title": "신세계백화점 센텀시티점",
+      "category": "상업지구",
+      "addr1": "부산광역시 해운대구 센텀남대로 35",
+      "aihubName": "신세계백화점 센텀시티점",
+      "matchType": "name+coord",
+      "matchDistanceM": 63,
+      "dwell": {
+        "count": 42,
+        "median": 60,
+        "p25": 60,
+        "p75": 150,
+        "mean": 105
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 쇼핑복합공간 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "2789488",
+      "title": "미포정거장",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 13 (중동)",
+      "aihubName": "해운대 블루라인파크 미포 정거장",
+      "matchType": "coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 63
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "1878218",
+      "title": "부평깡통시장",
+      "category": "상업지구",
+      "addr1": "부산광역시 중구 부평1길 48",
+      "aihubName": "부평 깡통시장",
+      "matchType": "name+coord",
+      "matchDistanceM": 60,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "132550",
+      "title": "부평동한복거리",
+      "category": "상업지구",
+      "addr1": "부산광역시 중구 부평2길 44",
+      "aihubName": "부평 깡통시장",
+      "matchType": "coord",
+      "matchDistanceM": 98,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "2726193",
+      "title": "이가네떡볶이",
+      "category": "식당",
+      "addr1": "부산광역시 중구 부평1길 48",
+      "aihubName": "부평 깡통시장",
+      "matchType": "coord",
+      "matchDistanceM": 60,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "TourAPI",
+          "id": "132550",
+          "title": "부평동한복거리",
+          "kind": "거리·골목",
+          "distanceM": 51
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "3027700",
+      "title": "청사포 기찻길",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 13 (중동)",
+      "aihubName": "해운대 블루라인파크 미포 정거장",
+      "matchType": "coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 63
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "132191",
+      "title": "국제시장",
+      "category": "상업지구",
+      "addr1": "부산광역시 중구 신창로4가 일원",
+      "aihubName": "국제시장",
+      "matchType": "name+coord",
+      "matchDistanceM": 73,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "1018702",
+      "title": "국제시장 먹자골목",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 중구로 36",
+      "aihubName": "국제시장",
+      "matchType": "coord",
+      "matchDistanceM": 1,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "985921",
+      "title": "미술의거리",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 신창동4가",
+      "aihubName": "국제시장",
+      "matchType": "coord",
+      "matchDistanceM": 56,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "1013709",
+      "title": "아리랑거리",
+      "category": "상업지구",
+      "addr1": "부산광역시 중구 광복로35번길 11 (신창동3가)",
+      "aihubName": "국제시장",
+      "matchType": "coord",
+      "matchDistanceM": 114,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "2952936",
+      "title": "카페제노아",
+      "category": "카페",
+      "addr1": "부산광역시 중구 중구로29번길 17 (부평동1가)",
+      "aihubName": "국제시장",
+      "matchType": "coord",
+      "matchDistanceM": 127,
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": 30,
+        "p75": 83,
+        "mean": 63
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "TourAPI",
+          "id": "985921",
+          "title": "미술의거리",
+          "kind": "거리·골목",
+          "distanceM": 88
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 카페 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "132190",
+      "title": "부산 자갈치시장",
+      "category": "상업지구",
+      "addr1": "부산광역시 중구 자갈치해안로 52",
+      "aihubName": "자갈치시장",
+      "matchType": "coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 56
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "133313",
+      "title": "부산명물횟집",
+      "category": "식당",
+      "addr1": "부산광역시 중구 자갈치해안로 55",
+      "aihubName": "자갈치시장",
+      "matchType": "coord",
+      "matchDistanceM": 77,
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 56
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "TourAPI",
+          "id": "132190",
+          "title": "부산 자갈치시장",
+          "kind": "시장",
+          "distanceM": 72
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "132576",
+      "title": "신동아 수산물시장",
+      "category": "상업지구",
+      "addr1": "부산광역시 중구 자갈치로 42",
+      "aihubName": "자갈치시장",
+      "matchType": "coord",
+      "matchDistanceM": 139,
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 56
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "1957694",
+      "title": "용두산 자갈치 관광특구",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 자갈치해안로 52",
+      "aihubName": "자갈치시장",
+      "matchType": "coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 56
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "3064821",
+      "title": "자갈치 크루즈",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 자갈치해안로 60 (남포동4가)",
+      "aihubName": "자갈치시장",
+      "matchType": "coord",
+      "matchDistanceM": 104,
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 56
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "403957",
+      "title": "성일집",
+      "category": "식당",
+      "addr1": "부산광역시 중구 대교로 103",
+      "aihubName": "롯데백화점 광복점",
+      "matchType": "coord",
+      "matchDistanceM": 143,
+      "dwell": {
+        "count": 14,
+        "median": 60,
+        "p25": 38,
+        "p75": 90,
+        "mean": 73
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "롯데백화점광복점",
+          "title": "롯데백화점 광복점",
+          "kind": "쇼핑복합공간",
+          "distanceM": 153
+        },
+        "evidence": "쇼핑복합공간 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "128810",
+      "title": "동백공원",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 동백로 99 (우동)",
+      "aihubName": "동백섬",
+      "matchType": "coord",
+      "matchDistanceM": 32,
+      "dwell": {
+        "count": 11,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 44
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 공원·정원 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "1805656",
+      "title": "일번지자갈치산곰장어",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로41번길 12",
+      "aihubName": "해운대 전통시장",
+      "matchType": "coord",
+      "matchDistanceM": 48,
+      "dwell": {
+        "count": 11,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 46
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "해운대시장",
+          "title": "해운대시장",
+          "kind": "시장",
+          "distanceM": 68
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2785956",
+      "title": "초량밀면",
+      "category": "식당",
+      "addr1": "부산광역시 동구 중앙대로 225 (초량동)",
+      "aihubName": "초량 밀면",
+      "matchType": "name+coord",
+      "matchDistanceM": 10,
+      "dwell": {
+        "count": 11,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 44
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "987810",
+      "title": "해운대 동백섬",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 동백로 67",
+      "aihubName": "동백섬",
+      "matchType": "coord",
+      "matchDistanceM": 11,
+      "dwell": {
+        "count": 11,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 44
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2834026",
+      "title": "갤러리이알디 부산",
+      "category": "문화시설",
+      "addr1": "부산광역시 해운대구 해운대해변로 302 (중동, 대림맨션)",
+      "aihubName": "라이언 홀리데이 인 부산",
+      "matchType": "coord",
+      "matchDistanceM": 126,
+      "dwell": {
+        "count": 10,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 51
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2815627",
+      "title": "롯데월드 어드벤처 부산",
+      "category": "자연관광지",
+      "addr1": "부산광역시 기장군 동부산관광로 42",
+      "aihubName": "롯데월드 어드벤처 부산",
+      "matchType": "name+coord",
+      "matchDistanceM": 19,
+      "dwell": {
+        "count": 10,
+        "median": 240,
+        "p25": 180,
+        "p75": 323,
+        "mean": 243
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "130166",
+      "title": "부산시립미술관",
+      "category": "문화시설",
+      "addr1": "부산광역시 해운대구 APEC로 58",
+      "aihubName": "부산 시립미술관",
+      "matchType": "name+coord",
+      "matchDistanceM": 2,
+      "dwell": {
+        "count": 10,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 51
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2832671",
+      "title": "신발원",
+      "category": "식당",
+      "addr1": "부산광역시 동구 대영로243번길 62 (초량동)",
+      "aihubName": "신발원",
+      "matchType": "name+coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 10,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 51
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "상해거리",
+          "title": "상해거리",
+          "kind": "거리·골목",
+          "distanceM": 141
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "1942348",
+      "title": "관수옥과 초량왜관 터",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 용두산길 37-55",
+      "aihubName": "용두산공원",
+      "matchType": "coord",
+      "matchDistanceM": 52,
+      "dwell": {
+        "count": 9,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2385686",
+      "title": "아홉산숲",
+      "category": "자연관광지",
+      "addr1": "부산광역시 기장군 철마면 미동길 37-1",
+      "aihubName": "아홉 살 숲",
+      "matchType": "name+coord",
+      "matchDistanceM": 12,
+      "dwell": {
+        "count": 9,
+        "median": 90,
+        "p25": 60,
+        "p75": 120,
+        "mean": 93
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2504464",
+      "title": "부산 송도해상케이블카",
+      "category": "자연관광지",
+      "addr1": "부산광역시 서구 송도해변로 171",
+      "aihubName": "송도 해상 케이블카 송도 베이 스테이션",
+      "matchType": "coord",
+      "matchDistanceM": 50,
+      "dwell": {
+        "count": 8,
+        "median": 90,
+        "p25": 53,
+        "p75": 120,
+        "mean": 83
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "126857",
+      "title": "광복로패션거리",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 광복로 72-1 (광복동2가)",
+      "aihubName": "광복로 패션거리",
+      "matchType": "name+coord",
+      "matchDistanceM": 149,
+      "dwell": {
+        "count": 7,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 39
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "2778487",
+      "title": "금수복국 해운대본점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 중동1로43번길 23",
+      "aihubName": "금수복국 해운대본점",
+      "matchType": "name+coord",
+      "matchDistanceM": 9,
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 56
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2782747",
+      "title": "분홍이네",
+      "category": "상업지구",
+      "addr1": "부산광역시 수영구 광안로45번길 2 (광안동, 광안비취빌리지)",
+      "aihubName": "분홍이네",
+      "matchType": "name+coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 7,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 39
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "광안리해수욕장",
+          "title": "광안리 해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 284
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 상업지구 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "851286",
+      "title": "상국이네",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로41번길 40-1",
+      "aihubName": "상국이네",
+      "matchType": "name+coord",
+      "matchDistanceM": 7,
+      "dwell": {
+        "count": 7,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 34
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "해운대시장",
+          "title": "해운대시장",
+          "kind": "시장",
+          "distanceM": 87
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2532877",
+      "title": "신세계사이먼 부산 프리미엄 아울렛",
+      "category": "상업지구",
+      "addr1": "부산광역시 기장군 정관로 1133 부산프리미엄아울렛",
+      "aihubName": "신세계 프리미엄 아웃렛 부산",
+      "matchType": "coord",
+      "matchDistanceM": 10,
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 77
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 쇼핑복합공간 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "229912",
+      "title": "씨라이프부산아쿠아리움",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 해운대해변로 266",
+      "aihubName": "씨라 이르 부산아쿠아리움",
+      "matchType": "name+coord",
+      "matchDistanceM": 18,
+      "dwell": {
+        "count": 7,
+        "median": 90,
+        "p25": 60,
+        "p75": 105,
+        "mean": 86
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "686419",
+      "title": "할매가야밀면",
+      "category": "식당",
+      "addr1": "부산광역시 중구 광복로 56-14",
+      "aihubName": "광복로 패션거리",
+      "matchType": "coord",
+      "matchDistanceM": 39,
+      "dwell": {
+        "count": 7,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 39
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "TourAPI",
+          "id": "126857",
+          "title": "광복로패션거리",
+          "kind": "거리·골목",
+          "distanceM": 141
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2784330",
+      "title": "미포항",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 중동",
+      "aihubName": "호랑이 젤라 떡",
+      "matchType": "coord",
+      "matchDistanceM": 95,
+      "dwell": {
+        "count": 6,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2858974",
+      "title": "타이가텐푸라",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 우동1로38번가길 15 (우동)",
+      "aihubName": "금송덕미 행리단길점",
+      "matchType": "coord",
+      "matchDistanceM": 9,
+      "dwell": {
+        "count": 6,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 60
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2785272",
+      "title": "고향연화",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 연화길 33-8",
+      "aihubName": "고향 연화",
+      "matchType": "name+coord",
+      "matchDistanceM": 29,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2991028",
+      "title": "광안리 해양레포츠센터",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 수영구 광안해변로54번길 222 광안리 해양레포츠센터",
+      "aihubName": "광안리해양레포츠센터",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 5,
+        "median": 90,
+        "p25": 90,
+        "p75": 210,
+        "mean": 138
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2763856",
+      "title": "놀이마루",
+      "category": "문화시설",
+      "addr1": "부산광역시 부산진구 전포대로209번길 26",
+      "aihubName": "NC백화점 서면점",
+      "matchType": "coord",
+      "matchDistanceM": 90,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 36
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2776396",
+      "title": "무진장횟집",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 연화1길 137",
+      "aihubName": "고향 연화",
+      "matchType": "coord",
+      "matchDistanceM": 126,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2776391",
+      "title": "미청식당",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광면 기장해안로 1303",
+      "aihubName": "일광해수욕장",
+      "matchType": "coord",
+      "matchDistanceM": 68,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 66
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "일광해수욕장",
+          "title": "일광해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 63
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2868655",
+      "title": "바로해장",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광남로94번길 2 (광안동, 광일)",
+      "aihubName": "랜디스 도넛 광안리점",
+      "matchType": "coord",
+      "matchDistanceM": 41,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 36
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2845123",
+      "title": "본가딸부자전복죽집",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 연화2길 14-1",
+      "aihubName": "고향 연화",
+      "matchType": "coord",
+      "matchDistanceM": 113,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2782626",
+      "title": "삼익비치수변공원",
+      "category": "자연관광지",
+      "addr1": "부산광역시 수영구 남천동",
+      "aihubName": "광안리해양레포츠센터",
+      "matchType": "coord",
+      "matchDistanceM": 147,
+      "dwell": {
+        "count": 5,
+        "median": 90,
+        "p25": 90,
+        "p75": 210,
+        "mean": 138
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 공원·정원 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "3442923",
+      "title": "솥이랑 서면점",
+      "category": "식당",
+      "addr1": "부산광역시 부산진구 중앙대로 672 (부전동)",
+      "aihubName": "런닝맨 부산점",
+      "matchType": "coord",
+      "matchDistanceM": 4,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 84
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2668102",
+      "title": "수변최고돼지국밥 민락본점",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광안해변로370번길 9-32",
+      "aihubName": "수변 최고 돼지국밥 민락 본점",
+      "matchType": "name+coord",
+      "matchDistanceM": 13,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 48
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "민락수변공원",
+          "title": "민락수변공원",
+          "kind": "공원·정원",
+          "distanceM": 215
+        },
+        "evidence": "공원·정원 중심점 반경 300m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2870354",
+      "title": "스완양분식",
+      "category": "식당",
+      "addr1": "부산광역시 동구 중앙대로236번길 7-5 (초량동)",
+      "aihubName": "대건 명가 돼지국밥",
+      "matchType": "coord",
+      "matchDistanceM": 113,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 60
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2753006",
+      "title": "어느멋진날",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 기장해안로 1286",
+      "aihubName": "일광해수욕장",
+      "matchType": "coord",
+      "matchDistanceM": 131,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 66
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "일광해수욕장",
+          "title": "일광해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 136
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2869405",
+      "title": "영동밀면&돼지국밥",
+      "category": "식당",
+      "addr1": "부산광역시 동구 중앙대로209번길 12 (초량동)",
+      "aihubName": "영동 밀면 영동 국밥",
+      "matchType": "coord",
+      "matchDistanceM": 13,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 54
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "851073",
+      "title": "장성향",
+      "category": "식당",
+      "addr1": "부산광역시 동구 대영로243번길 29",
+      "aihubName": "초량 차이나타운",
+      "matchType": "coord",
+      "matchDistanceM": 23,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 54
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "상해거리",
+          "title": "상해거리",
+          "kind": "거리·골목",
+          "distanceM": 29
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "3511011",
+      "title": "주식회사아래모래",
+      "category": "상업지구",
+      "addr1": "부산광역시 사하구 감내2로 100 (감천동)",
+      "aihubName": "감천문화마을",
+      "matchType": "coord",
+      "matchDistanceM": 142,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 72
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "감천문화마을",
+          "title": "감천문화마을",
+          "kind": "문화마을",
+          "distanceM": 170
+        },
+        "evidence": "문화마을 중심점 반경 350m 이내의 개별 상업지구 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2822910",
+      "title": "창비부산",
+      "category": "문화시설",
+      "addr1": "부산광역시 동구 중앙대로209번길 16",
+      "aihubName": "영동 밀면 영동 국밥",
+      "matchType": "coord",
+      "matchDistanceM": 24,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 30,
+        "p75": 60,
+        "mean": 54
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2832636",
+      "title": "코랄라니",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 기장해안로 32",
+      "aihubName": "코랄 라느니",
+      "matchType": "name+coord",
+      "matchDistanceM": 23,
+      "dwell": {
+        "count": 5,
+        "median": 90,
+        "p25": 60,
+        "p75": 90,
+        "mean": 78
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2496023",
+      "title": "키자니아 부산",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 센텀4로 15 센텀시티 몰",
+      "aihubName": "신세계 센텀시티몰",
+      "matchType": "coord",
+      "matchDistanceM": 8,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 54
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2848939",
+      "title": "튼튼장어 무한리필",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장해안로 1301",
+      "aihubName": "일광해수욕장",
+      "matchType": "coord",
+      "matchDistanceM": 59,
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 66
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "일광해수욕장",
+          "title": "일광해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 55
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "851989",
+      "title": "할매복국",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 1",
+      "aihubName": "바다마루 전복죽",
+      "matchType": "coord",
+      "matchDistanceM": 58,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2760773",
+      "title": "해운대기와집대구탕",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길50번길 4 (중동)",
+      "aihubName": "바다마루 전복죽",
+      "matchType": "coord",
+      "matchDistanceM": 130,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2858936",
+      "title": "해운대하얀오징어집",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길50번길 4",
+      "aihubName": "바다마루 전복죽",
+      "matchType": "coord",
+      "matchDistanceM": 130,
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "133525",
+      "title": "18번완당집",
+      "category": "식당",
+      "addr1": "부산광역시 중구 비프광장로 31",
+      "aihubName": "18번 완당집",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 45
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "TourAPI",
+          "id": "1013721",
+          "title": "조명의거리",
+          "kind": "거리·골목",
+          "distanceM": 76
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2782628",
+      "title": "그린노마드",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 좌수영로 161-10 (망미동)",
+      "aihubName": "코스트코 부산점",
+      "matchType": "coord",
+      "matchDistanceM": 138,
+      "dwell": {
+        "count": 4,
+        "median": 60,
+        "p25": 53,
+        "p75": 75,
+        "mean": 68
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "850093",
+      "title": "급행장",
+      "category": "식당",
+      "addr1": "부산광역시 부산진구 서면문화로 4",
+      "aihubName": "서면 지하상가",
+      "matchType": "coord",
+      "matchDistanceM": 108,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 68,
+        "mean": 53
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2859101",
+      "title": "나가하마만게츠",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 우동1로 57 (우동)",
+      "aihubName": "산리 오러 버스 클럽",
+      "matchType": "coord",
+      "matchDistanceM": 56,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "1846830",
+      "title": "남도해양열차 에스트레인(S-train)",
+      "category": "자연관광지",
+      "addr1": "부산광역시 동구 중앙대로 206",
+      "aihubName": "부산역",
+      "matchType": "coord",
+      "matchDistanceM": 94,
+      "dwell": {
+        "count": 4,
+        "median": 60,
+        "p25": 53,
+        "p75": 75,
+        "mean": 68
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "769761",
+      "title": "다대포 꿈의 낙조분수",
+      "category": "자연관광지",
+      "addr1": "부산광역시 사하구 몰운대1길 14 (다대동)",
+      "aihubName": "다대포 해변공원",
+      "matchType": "coord",
+      "matchDistanceM": 134,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2891789",
+      "title": "라꽁띠",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 청사포로 85",
+      "aihubName": "심미안",
+      "matchType": "coord",
+      "matchDistanceM": 126,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 45
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2891814",
+      "title": "류센소 본점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로8번길 62",
+      "aihubName": "류센소 본점",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 60,
+        "mean": 45
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "1013694",
+      "title": "만물의거리",
+      "category": "상업지구",
+      "addr1": "부산광역시 중구 국제시장2길 20-1",
+      "aihubName": "국제시장 먹자골목",
+      "matchType": "coord",
+      "matchDistanceM": 56,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "130668",
+      "title": "벡스코(BEXCO)",
+      "category": "문화시설",
+      "addr1": "부산광역시 해운대구 APEC로 55",
+      "aihubName": "벡스코",
+      "matchType": "coord",
+      "matchDistanceM": 10,
+      "dwell": {
+        "count": 4,
+        "median": 60,
+        "p25": 53,
+        "p75": 75,
+        "mean": 68
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2554068",
+      "title": "부산영화체험박물관",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 대청로126번길 12",
+      "aihubName": "부산영화체험 박물관",
+      "matchType": "name+coord",
+      "matchDistanceM": 11,
+      "dwell": {
+        "count": 4,
+        "median": 105,
+        "p25": 83,
+        "p75": 135,
+        "mean": 113
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "1013721",
+      "title": "조명의거리",
+      "category": "상업지구",
+      "addr1": "부산광역시 중구 국제시장2길 5",
+      "aihubName": "국제시장 먹자골목",
+      "matchType": "coord",
+      "matchDistanceM": 66,
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "2905141",
+      "title": "할매집",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 중동2로10번길 7",
+      "aihubName": "해운대 밀면",
+      "matchType": "coord",
+      "matchDistanceM": 69,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2786779",
+      "title": "해운대 가야밀면",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 좌동순환로 27 (좌동)",
+      "aihubName": "해운대 가야 밀면",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2822343",
+      "title": "해운대 그린레일웨이 (미포~송정 구간)",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 청사포로 116 (중동)",
+      "aihubName": "해운대 블루라인",
+      "matchType": "coord",
+      "matchDistanceM": 9,
+      "dwell": {
+        "count": 4,
+        "median": 75,
+        "p25": 53,
+        "p75": 105,
+        "mean": 83
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "126108",
+      "title": "해운대온천센터",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 중동2로 16",
+      "aihubName": "해운대 밀면",
+      "matchType": "coord",
+      "matchDistanceM": 92,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2865236",
+      "title": "희와제과",
+      "category": "카페",
+      "addr1": "부산광역시 부산진구 전포대로246번길 6 (전포동, 동양팰리스)",
+      "aihubName": "회와 제과",
+      "matchType": "name+coord",
+      "matchDistanceM": 22,
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": 30,
+        "p75": 38,
+        "mean": 38
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "3336600",
+      "title": "고래서이뻐",
+      "category": "상업지구",
+      "addr1": "부산광역시 해운대구 우동1로38번길 15-1 (우동)",
+      "aihubName": "고래서 이뻐",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "127925",
+      "title": "광안리해변 테마거리",
+      "category": "자연관광지",
+      "addr1": "부산광역시 수영구 민락동",
+      "aihubName": "광안리 해변 테마거리",
+      "matchType": "name+coord",
+      "matchDistanceM": 21,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "2873498",
+      "title": "구로마쯔",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정광어골로 41 (송정동)",
+      "aihubName": "서프 짐",
+      "matchType": "coord",
+      "matchDistanceM": 58,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 256
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "3421909",
+      "title": "그런고로",
+      "category": "자연관광지",
+      "addr1": "부산광역시 부산진구 서전로 40 (전포동)",
+      "aihubName": "포셋 전포점",
+      "matchType": "coord",
+      "matchDistanceM": 97,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2872474",
+      "title": "기장끝집 죽성본점",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 기장읍 기장해안로 895",
+      "aihubName": "오직 전복죽 기장 끝 집",
+      "matchType": "coord",
+      "matchDistanceM": 17,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "850121",
+      "title": "꺼먹동네횟집",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 문오성길 509",
+      "aihubName": "칠암 삼계",
+      "matchType": "coord",
+      "matchDistanceM": 142,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "1942299",
+      "title": "남선창고터",
+      "category": "자연관광지",
+      "addr1": "부산광역시 동구 초량로13번길 53",
+      "aihubName": "설빙 부산역점",
+      "matchType": "coord",
+      "matchDistanceM": 46,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 60,
+        "mean": 60
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "1942233",
+      "title": "대각사(부산)",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 광복중앙로 19 (신창동1가)",
+      "aihubName": "이재모 피자 본점",
+      "matchType": "coord",
+      "matchDistanceM": 107,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2783646",
+      "title": "러브얼스",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광안로49번길 32-1 (광안동)",
+      "aihubName": "러브 이즈 기방 1호점",
+      "matchType": "coord",
+      "matchDistanceM": 55,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "광안리해수욕장",
+          "title": "광안리 해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 366
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2782750",
+      "title": "러브이즈기빙",
+      "category": "상업지구",
+      "addr1": "부산광역시 수영구 광안로49번길 24 (광안동)",
+      "aihubName": "러브 이즈 기방 1호점",
+      "matchType": "coord",
+      "matchDistanceM": 7,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "광안리해수욕장",
+          "title": "광안리 해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 326
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 상업지구 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "1993017",
+      "title": "롯데프리미엄아울렛 동부산점",
+      "category": "상업지구",
+      "addr1": "부산광역시 기장군 기장읍 기장해안로 147",
+      "aihubName": "롯데 프리미엄 아울렛 동부산점",
+      "matchType": "name+coord",
+      "matchDistanceM": 67,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 90,
+        "mean": 70
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 쇼핑복합공간 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "2554111",
+      "title": "범어사 성보박물관",
+      "category": "문화시설",
+      "addr1": "부산광역시 금정구 범어사로 250",
+      "aihubName": "범어사",
+      "matchType": "coord",
+      "matchDistanceM": 60,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2456837",
+      "title": "부산 영화의 전당",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 수영강변대로 120",
+      "aihubName": "영화의 전당",
+      "matchType": "coord",
+      "matchDistanceM": 26,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2784363",
+      "title": "부산근현대역사관 별관",
+      "category": "문화시설",
+      "addr1": "부산광역시 중구 대청로 104",
+      "aihubName": "부산 근현대 역사관 별관",
+      "matchType": "name+coord",
+      "matchDistanceM": 3,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "3083767",
+      "title": "부산근현대역사관 본관",
+      "category": "문화시설",
+      "addr1": "부산광역시 중구 대청로 112 (대청동1가)",
+      "aihubName": "부산 근현대 역사관 별관",
+      "matchType": "coord",
+      "matchDistanceM": 89,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "3080300",
+      "title": "부산전자종합시장",
+      "category": "상업지구",
+      "addr1": "부산광역시 부산진구 부전로 196 (부전동)",
+      "aihubName": "부전시장",
+      "matchType": "coord",
+      "matchDistanceM": 149,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "1277679",
+      "title": "부산타워",
+      "category": "자연관광지",
+      "addr1": "부산광역시 중구 용두산길 37-30 (광복동2가)",
+      "aihubName": "부산타워",
+      "matchType": "name+coord",
+      "matchDistanceM": 26,
+      "dwell": {
+        "count": 3,
+        "median": 90,
+        "p25": 60,
+        "p75": 90,
+        "mean": 70
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "1855868",
+      "title": "부전돼지국밥",
+      "category": "식당",
+      "addr1": "부산광역시 사상구 사상로 214",
+      "aihubName": "애플 아웃렛",
+      "matchType": "coord",
+      "matchDistanceM": 124,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "132188",
+      "title": "부전마켓타운",
+      "category": "상업지구",
+      "addr1": "부산광역시 부산진구 중앙대로755번길 21",
+      "aihubName": "부전시장",
+      "matchType": "coord",
+      "matchDistanceM": 34,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 75,
+        "mean": 60
+      },
+      "existingMatchScope": "area_context",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "2470024",
+      "title": "삼진어묵 체험·역사과학관",
+      "category": "자연관광지",
+      "addr1": "부산광역시 영도구 절영로7번길 41-1 (봉래동2가)",
+      "aihubName": "삼진 어묵 영도 본점",
+      "matchType": "coord",
+      "matchDistanceM": 17,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2793181",
+      "title": "속씨원한대구탕미포본점",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 달맞이길62번길 28 (중동)",
+      "aihubName": "수변 최고 돼지국밥 미포점",
+      "matchType": "coord",
+      "matchDistanceM": 33,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2557807",
+      "title": "송도 구름산책로",
+      "category": "레저/스포츠",
+      "addr1": "부산광역시 서구 암남동 129-4",
+      "aihubName": "송도 구름 산책로",
+      "matchType": "name+coord",
+      "matchDistanceM": 19,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "2860833",
+      "title": "송정물총칼국수",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정중앙로6번길 184 명신횟집",
+      "aihubName": "서프 짐",
+      "matchType": "coord",
+      "matchDistanceM": 75,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 368
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2785965",
+      "title": "송정집",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정광어골로 59 (송정동)",
+      "aihubName": "서프 짐",
+      "matchType": "coord",
+      "matchDistanceM": 102,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 400
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "1805853",
+      "title": "수민이네",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 청사포로58번길 118",
+      "aihubName": "앨리스 도넛 청사포 본점",
+      "matchType": "coord",
+      "matchDistanceM": 20,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2785269",
+      "title": "수월경화",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 송정중앙로6번길 188",
+      "aihubName": "서프 짐",
+      "matchType": "coord",
+      "matchDistanceM": 101,
+      "dwell": {
+        "count": 3,
+        "median": 120,
+        "p25": 75,
+        "p75": 180,
+        "mean": 130
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 389
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "3081825",
+      "title": "아트모이지",
+      "category": "식당",
+      "addr1": "부산광역시 수영구 광안해변로294번길 26 (민락동)",
+      "aihubName": "개미집 광안리점",
+      "matchType": "coord",
+      "matchDistanceM": 94,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "밀락더마켓",
+          "title": "밀락더마켓 ",
+          "kind": "시장",
+          "distanceM": 135
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2773623",
+      "title": "야스마루",
+      "category": "식당",
+      "addr1": "부산광역시 부산진구 중앙대로756번길 24 (부전동)",
+      "aihubName": "오브젝트 에디트",
+      "matchType": "coord",
+      "matchDistanceM": 99,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2836412",
+      "title": "에테르",
+      "category": "식당",
+      "addr1": "부산광역시 영도구 절영로 234",
+      "aihubName": "에테르",
+      "matchType": "name+coord",
+      "matchDistanceM": 7,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "TourAPI",
+          "id": "2606221",
+          "title": "영도 흰여울해안터널",
+          "kind": "해변·해안",
+          "distanceM": 132
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "1942316",
+      "title": "영도봉래시장",
+      "category": "상업지구",
+      "addr1": "부산광역시 영도구 태종로113번길 39",
+      "aihubName": "삼진 어묵 영도 본점",
+      "matchType": "coord",
+      "matchDistanceM": 108,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
+      }
+    },
+    {
+      "contentId": "3454074",
+      "title": "영화의전당 라이브러리 자료실",
+      "category": "자연관광지",
+      "addr1": "부산광역시 해운대구 수영강변대로 120 (우동)",
+      "aihubName": "영화의 전당",
+      "matchType": "coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2860782",
+      "title": "오반장",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로24번길 20 (우동)",
+      "aihubName": "해목",
+      "matchType": "coord",
+      "matchDistanceM": 51,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "3443614",
+      "title": "원시학",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 우동1로20번가길 31 (우동)",
+      "aihubName": "원에 학",
+      "matchType": "name+coord",
+      "matchDistanceM": 113,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 90,
+        "mean": 80
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2836450",
+      "title": "이재모피자 본점",
+      "category": "식당",
+      "addr1": "부산광역시 중구 광복중앙로 31 (신창동1가, 중앙아파트)",
+      "aihubName": "이재모 피자 본점",
+      "matchType": "name+coord",
+      "matchDistanceM": 17,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "용두산공원",
+          "title": "용두산공원",
+          "kind": "공원·정원",
+          "distanceM": 243
+        },
+        "evidence": "공원·정원 중심점 반경 300m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
+      }
+    },
+    {
+      "contentId": "2848952",
+      "title": "일광정",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 일광로 645",
+      "aihubName": "칠암 삼계",
+      "matchType": "coord",
+      "matchDistanceM": 103,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "851955",
+      "title": "일품한우",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 해운대로570번길 49",
+      "aihubName": "맥도날드 해운대 DT점",
+      "matchType": "coord",
+      "matchDistanceM": 21,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 30,
+        "mean": 30
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2994179",
+      "title": "전포공구길",
+      "category": "자연관광지",
+      "addr1": "부산광역시 부산진구 서전로37번길 20",
+      "aihubName": "오브젝트 에디트",
+      "matchType": "coord",
+      "matchDistanceM": 122,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2870703",
+      "title": "초량온당",
+      "category": "식당",
+      "addr1": "부산광역시 동구 초량중로 135 (수정동)",
+      "aihubName": "초량 온당",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2848949",
+      "title": "칠암만장",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광읍 일광로 648",
+      "aihubName": "칠암 삼계",
+      "matchType": "coord",
+      "matchDistanceM": 85,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "bad_match",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2822840",
+      "title": "칠암사계",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 칠암1길 7-10",
+      "aihubName": "칠암 삼계",
+      "matchType": "name+coord",
+      "matchDistanceM": 20,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2775556",
+      "title": "칠암일번지횟집",
+      "category": "식당",
+      "addr1": "부산광역시 기장군 일광면 문오성길 547",
+      "aihubName": "칠암 삼계",
+      "matchType": "coord",
+      "matchDistanceM": 49,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 60,
+        "mean": 50
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2841442",
+      "title": "톤쇼우",
+      "category": "식당",
+      "addr1": "부산광역시 금정구 금강로 247-10 (장전동)",
+      "aihubName": "톤쇼우",
+      "matchType": "name+coord",
+      "matchDistanceM": 5,
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": 30,
+        "p75": 45,
+        "mean": 40
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2786766",
+      "title": "해목",
+      "category": "식당",
+      "addr1": "부산광역시 해운대구 구남로24번길 8 (우동)",
+      "aihubName": "해목",
+      "matchType": "name+coord",
+      "matchDistanceM": 6,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 60,
+        "p75": 75,
+        "mean": 70
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    },
+    {
+      "contentId": "2661475",
+      "title": "회동수원지",
+      "category": "자연관광지",
+      "addr1": "부산광역시 금정구 개좌로 147",
+      "aihubName": "회동수원지",
+      "matchType": "name",
+      "matchDistanceM": 3759,
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": 45,
+        "p75": 75,
+        "mean": 60
+      },
+      "existingMatchScope": "direct_place",
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
+      }
+    }
+  ]
+}

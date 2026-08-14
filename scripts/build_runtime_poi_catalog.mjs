@@ -7,6 +7,11 @@ const FINAL_MATCHED = 'data/processed/부산_최종매칭장소.json';
 const FINAL_UNMATCHED = 'data/processed/부산_최종미매칭장소.json';
 const LEGACY = 'src/data/busan_poi_catalog.legacy.json';
 const OUTPUT = 'src/data/busan_poi_catalog.json';
+const OFFICIAL_SOURCES = {
+  busan_attraction: 'data/processed/부산시_명소정보.json',
+  busan_shopping: 'data/processed/부산시_쇼핑정보.json',
+  busan_food: 'data/processed/부산시_맛집정보.json',
+};
 
 const read = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const write = (file, value) => fs.writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
@@ -18,6 +23,11 @@ const legacyByContentId = new Map(legacyPlaces.map((place) => [String(place.cont
 const existingPlaces = existing ? [...existing.matched.data, ...existing.unmatched.data] : [];
 const existingByContentId = new Map(existingPlaces.map((place) => [String(place.contentId), place]));
 const categoryDwell = legacy.categoryDwell;
+const officialBySource = Object.fromEntries(Object.entries(OFFICIAL_SOURCES).map(([source, file]) => {
+  const payload = read(file);
+  const rows = Array.isArray(payload) ? payload : payload.data ?? payload.items ?? [];
+  return [source, new Map(rows.map((row) => [String(row.UC_SEQ), row]))];
+}));
 
 const contentTypeForCategory = {
   자연관광지: '12',
@@ -43,6 +53,18 @@ function kakaoSearchUrl(title) {
   return `https://map.kakao.com/link/search/${encodeURIComponent(title)}`;
 }
 
+function officialImage(place) {
+  for (const evidence of place.sourceEvidence ?? []) {
+    const source = officialBySource[evidence.source];
+    const row = source?.get(String(evidence.sourceId));
+    const url = row?.MAIN_IMG_THUMB ?? row?.MAIN_IMG_NORMAL;
+    if (typeof url === 'string' && url.startsWith('https://')) {
+      return { imageUrl: url, imageSource: 'busan_official' };
+    }
+  }
+  return null;
+}
+
 function toRuntime(place, group) {
   const tourapiContentId = sourceTourApiId(place);
   const legacyPlace = tourapiContentId ? legacyByContentId.get(String(tourapiContentId)) : null;
@@ -58,6 +80,10 @@ function toRuntime(place, group) {
     status: 'unverified',
     placeUrl: kakaoSearchUrl(place.title),
   };
+  const image = officialImage(place) ?? (existingPlace?.imageUrl ? {
+    imageUrl: existingPlace.imageUrl,
+    imageSource: existingPlace.imageSource,
+  } : null);
 
   return {
     contentId: place.id,
@@ -66,10 +92,14 @@ function toRuntime(place, group) {
     contentTypeName: legacyPlace?.contentTypeName ?? '부산 공식 관광 데이터',
     category: place.category,
     subCategory: place.scope?.kind ?? legacyPlace?.subCategory,
+    availabilityProfile: place.availabilityProfile,
     addr1: place.address ?? '',
     lat: place.lat,
     lon: place.lon,
     aliases: place.aliases ?? [],
+    mergedPlaceIds: place.mergedPlaceIds ?? [],
+    siteGroupId: place.siteGroupId,
+    siteRole: place.siteRole,
     sourceEvidence: place.sourceEvidence ?? [],
     tourapiContentId: tourapiContentId ? String(tourapiContentId) : undefined,
     tourapiContentTypeId: tourapiContentId ? legacyPlace?.contentTypeId : undefined,
@@ -80,6 +110,7 @@ function toRuntime(place, group) {
     operatingHours: place.operatingHours ?? [],
     holidays: place.holidays ?? [],
     mapVerification,
+    ...(image ?? {}),
     ...(group === 'matched' ? {
       aihubName: place.aihubMatch?.name,
       aihubCategory: place.aihubMatch?.category,

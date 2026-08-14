@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-15T00:00:00.000Z",
+    "purpose": "최종 추천 후보에서 제거한 동일 장소·일반명 중복 레코드 보관"
+  },
+  "summary": {
+    "records": 1
+  },
+  "data": [
+    {
+      "id": "poi_796",
+      "title": "백화점",
+      "category": "상업지구",
+      "subCategory": "쇼핑복합공간",
+      "lat": 35.156654,
+      "lon": 129.05635,
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "505"
+        }
+      ],
+      "duplicateOf": "poi_801",
+      "representativeTitle": "롯데백화점 부산본점",
+      "reason": "일반명 백화점 레코드가 롯데백화점 부산본점과 23m 이내로 중복되고, 운영시간·주소가 없어 더 구체적인 대표 장소만 추천에 유지"
+    }
+  ]
+}

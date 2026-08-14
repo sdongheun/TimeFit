@@ -1,9 +1,10 @@
 // 시간-적합 플래너 (결정적). 스파이크 engine_spike.mjs 로직 이식.
 import { Course, LatLon, Mode, MobilityOption, PlanInput, PlanResult, RoadMode, Spot, Strategy } from './types';
 import { listBusanPoiCandidatesNear } from './data';
-import { detailIntro, isOpenDuring } from './tourapi';
+import { detailIntro, isOpenDuring, isOpenDuringText } from './tourapi';
 import { haversineMin, precompute, precomputeTransit, transitMeta, travelGeo, travelMin, travelSrc } from './travel';
-import { hasBalancedPaidVisit, isTravelHeavyBrowse, minimumStayForCourse, safetyBufferMin } from './recommendationPolicy';
+import { hasBalancedPaidVisit, isPaidFacilityLike, isTravelHeavyBrowse, minimumStayForCourse, safetyBufferMin } from './recommendationPolicy';
+import { areaAvailabilityDuring } from './areaAvailability';
 
 const ROAD_MODES: RoadMode[] = ['walk', 'car'];
 const HARD_DETOUR_RATIO = 1.8;
@@ -11,6 +12,8 @@ const INITIAL_TMAP_REFINE_COUNT = 0;
 const INITIAL_RESULT_COUNT = 10;
 const TRANSIT_REFINE_COUNT = 18;
 const RANKING_VARIATION_WINDOW = 0.035;
+// 추천 목록은 경로 API를 호출하지 않으므로, 근사 이동시간 오차를 운영시간 판단에 보수적으로 반영한다.
+const CANDIDATE_OPENING_MARGIN_MIN = 10;
 const STRATEGY_LABEL: Record<Strategy, string> = {
   origin_area: '출발지 근처',
   destination_area: '약속지 근처',
@@ -34,7 +37,8 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
       if (place.tourapiContentId) seenTourApi.add(place.tourapiContentId);
       const contentId = place.contentId;
       const spot: Spot = {
-        title: place.title, contentId, typeId: place.contentTypeId, category: d.category, subCategory: d.subCategory,
+        title: place.title, contentId, typeId: place.contentTypeId, category: d.category, subCategory: d.subCategory, availabilityProfile: d.availabilityProfile,
+        siteGroupId: d.siteGroupId, siteRole: d.siteRole,
         lat: place.lat, lon: place.lon, dwell: d.eff, dwellBase: d.base, dwellSrc: d.src, mult: d.mult,
         dwellSourceName: d.dwellSourceName,
         openingHoursSourceName: d.openingHoursSourceName,
@@ -48,6 +52,7 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
         tourapiContentId: d.tourapiContentId,
         tourapiContentTypeId: d.tourapiContentTypeId,
         operatingHours: d.operatingHours,
+        imageUrl: d.imageUrl,
         openNote: '', confidence: d.confidence, strategy: center.strategy,
       };
       const prev = seenCand.get(contentId);
@@ -70,14 +75,20 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
     gated.push(...openingTargets.map((spot) => ({ ...spot, openNote: '운영시간 자동진단 생략' })));
   } else {
     for (const s of openingTargets) {
+      const start = input.nowMin + haversineMin(input.origin, s, primaryMode) + CANDIDATE_OPENING_MARGIN_MIN;
+      const areaAvailability = areaAvailabilityDuring(s, start, s.dwell);
+      if (areaAvailability) {
+        if (areaAvailability.ok) gated.push({ ...s, openNote: areaAvailability.note });
+        continue;
+      }
       if (!s.tourapiContentId || !s.tourapiContentTypeId) {
         const officialHours = s.operatingHours?.[0];
-        gated.push({ ...s, openNote: officialHours ? `공식 운영시간: ${officialHours}` : '운영시간 미확인' });
+        const g = isOpenDuringText(officialHours, start, s.dwell, isPaidFacilityLike(s));
+        if (g.ok) gated.push({ ...s, openNote: officialHours ? `공식 운영시간: ${g.note}` : g.note });
         continue;
       }
       const intro = await detailIntro(s.tourapiContentId, s.tourapiContentTypeId);
-      const start = input.nowMin + Math.min(haversineMin(input.origin, s, 'walk'), haversineMin(input.origin, s, 'car'));
-      const g = isOpenDuring(intro, s.tourapiContentTypeId, start, s.dwell);
+      const g = isOpenDuring(intro, s.tourapiContentTypeId, start, s.dwell, undefined, isPaidFacilityLike(s));
       if (g.ok) gated.push({ ...s, openNote: g.note });
     }
   }
@@ -122,6 +133,61 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
     openingCheckCount: openingTargets.length,
     gatedCount: gated.length, tmapOk: r.ok, tmapFail: r.fail, courses: visibleCourses, pending: pendingCourses,
   };
+}
+
+export type CourseOpeningValidation = {
+  ok: boolean;
+  exactRoute: boolean;
+  reason?: string;
+};
+
+// 장바구니 확정 직전: 이미 정밀화한 선택 구간의 실제 이동시간을 누적해 각 장소의 체류 종료시각을 다시 검사한다.
+export async function validateCourseOpening(
+  spots: Spot[], origin: LatLon, target: LatLon, mode: Mode, startMin: number, stayMins: number[],
+): Promise<CourseOpeningValidation> {
+  let current = origin;
+  let visitStart = startMin;
+  let exactRoute = true;
+
+  for (let index = 0; index < spots.length; index++) {
+    const spot = spots[index];
+    const src = travelSrc(current, spot, mode);
+    const isExact = mode === 'transit'
+      ? src === 'ODsay' || src === 'walk_short'
+      : src === 'TMAP';
+    if (!isExact) exactRoute = false;
+
+    visitStart += travelMin(current, spot, mode);
+    const dwell = Math.max(0, stayMins[index] ?? spot.dwell);
+    const areaAvailability = areaAvailabilityDuring(spot, visitStart, dwell);
+    if (areaAvailability) {
+      if (!areaAvailability.ok) return { ok: false, exactRoute, reason: `${spot.title}: ${areaAvailability.note}` };
+      current = spot;
+      visitStart += dwell;
+      continue;
+    }
+
+    if (!spot.tourapiContentId || !spot.tourapiContentTypeId) {
+      const checked = isOpenDuringText(spot.operatingHours?.[0], visitStart, dwell, isPaidFacilityLike(spot));
+      if (!checked.ok) return { ok: false, exactRoute, reason: `${spot.title}: ${checked.note}` };
+    } else {
+      const intro = await detailIntro(spot.tourapiContentId, spot.tourapiContentTypeId);
+      const checked = isOpenDuring(intro, spot.tourapiContentTypeId, visitStart, dwell, undefined, isPaidFacilityLike(spot));
+      if (!checked.ok) return { ok: false, exactRoute, reason: `${spot.title}: ${checked.note}` };
+    }
+
+    current = spot;
+    visitStart += dwell;
+  }
+
+  // 약속 장소(또는 왕복 출발지)까지의 마지막 구간도 실제 경로 응답이 있어야 전체 시간 예산을 확정할 수 있다.
+  const finalSrc = travelSrc(current, target, mode);
+  const finalIsExact = mode === 'transit'
+    ? finalSrc === 'ODsay' || finalSrc === 'walk_short'
+    : finalSrc === 'TMAP';
+  if (!finalIsExact) exactRoute = false;
+
+  return { ok: true, exactRoute };
 }
 
 async function refineTransitCandidates(
@@ -349,6 +415,7 @@ function approachMins(spots: Spot[], origin: LatLon, mode: Mode): number[] {
 }
 
 function isAllowedPair(a: Spot, b: Spot): boolean {
+  if (a.siteGroupId && a.siteGroupId === b.siteGroupId) return false;
   if (a.category === '식당' && b.category === '식당') return false;
   if (a.category === '카페' && b.category === '카페') return false;
   return true;

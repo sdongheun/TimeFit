@@ -8,6 +8,8 @@ export function safetyBufferMin(mode: Mode): number {
 }
 
 export function isQuickBrowseSpot(spot: Spot): boolean {
+  if (spot.availabilityProfile === 'outdoor') return true;
+  if (spot.availabilityProfile === 'facility' || spot.availabilityProfile === 'area') return false;
   if (spot.category === '자연관광지') return true;
   if (spot.category !== '상업지구') return false;
   return /거리|골목|상권/.test(spot.subCategory ?? '') || /거리|길|골목|광장|시장/.test(spot.title);
@@ -15,8 +17,9 @@ export function isQuickBrowseSpot(spot: Spot): boolean {
 
 // 지출 또는 입장 행위가 전제되는 장소는 짧은 체류보다 이동이 길면 추천하지 않는다.
 export function isPaidFacilityLike(spot: Spot): boolean {
+  if (spot.availabilityProfile === 'facility') return true;
   if (['카페', '식당', '문화시설', '레저/스포츠'].includes(spot.category)) return true;
-  return spot.category === '상업지구' && /개별상점|아울렛/.test(spot.subCategory ?? '');
+  return spot.category === '상업지구' && /개별상점|아울렛|쇼핑복합공간/.test(spot.subCategory ?? '');
 }
 
 // 자연·거리·광장처럼 가볍게 둘러볼 수 있는 곳만 접근 시간이 짧을 때 체류 하한을 낮춘다.

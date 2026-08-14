@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-14T18:40:11.919Z",
+    "purpose": "자연관광지 오분류 정제에서 추천 대상 제외한 교통성 장소 보관"
+  },
+  "summary": {
+    "records": 1
+  },
+  "data": [
+    {
+      "id": "poi_65",
+      "title": "남도해양열차 에스트레인(S-train)",
+      "aliases": [
+        "남도해양열차 에스트레인(S-train)",
+        "부산역"
+      ],
+      "address": "부산광역시 동구 중앙대로 206",
+      "lat": 35.1152715223,
+      "lon": 129.0424332391,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1846830"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 94,
+        "name": "부산역",
+        "category": "식당",
+        "dwell": {
+          "count": 4,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "exclusionReason": "관광 활동 장소가 아닌 철도 운행 서비스"
+    }
+  ]
+}

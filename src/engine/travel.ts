@@ -502,13 +502,17 @@ async function odsayTransit(a: LatLon, b: LatLon): Promise<{ min: number; meta: 
   }
 }
 
-export async function precomputeTransit(pairs: [LatLon, LatLon][]): Promise<PrecomputeStat> {
+export async function precomputeTransit(
+  pairs: [LatLon, LatLon][],
+  options: { retryFallback?: boolean } = {},
+): Promise<PrecomputeStat> {
   let ok = 0, fail = 0;
   let cacheHit = 0;
   let skipped = 0;
   for (const [a, b] of pairs) {
     const k = transitKey(a, b);
-    if (getTransitCache(k)) { cacheHit++; continue; }
+    const cached = getTransitCache(k);
+    if (cached && !(options.retryFallback && cached.src === 'transit_fallback')) { cacheHit++; continue; }
     if (shouldUseWalkForShortTransit(a, b)) {
       transitCache.set(k, { min: haversineMin(a, b, 'walk'), src: 'walk_short', ts: Date.now() });
       skipped++;

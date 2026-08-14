@@ -1,0 +1,305 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-09T17:53:48.139Z",
+    "kind": "제외",
+    "sourceFiles": [
+      "data/processed/부산_매칭장소.json",
+      "data/processed/부산_미매칭_TourAPI장소.json",
+      "data/processed/부산시_명소정보.json",
+      "data/processed/부산시_쇼핑정보.json",
+      "data/processed/부산시_맛집정보.json"
+    ],
+    "matchingRule": "AIHub 부산 허용 방문지 표본 3건 이상. 포괄 장소는 AIHub 매칭 시 권역 체류시간, 독립 장소는 이름+좌표 일치 시에만 개별 체류시간을 사용한다.",
+    "note": "숙박·교통·의료·주차 시설 규칙으로 제외한 후보.",
+    "notRuntimeCatalog": "정제 결과 검토용 파일이며 src/data/busan_poi_catalog.json은 변경하지 않았다."
+  },
+  "summary": {
+    "records": 6,
+    "byCategory": {
+      "레저/스포츠": 1,
+      "미분류": 1,
+      "식당": 1,
+      "상업지구": 3
+    },
+    "byScope": {
+      "없음": 3,
+      "포괄장소": 1,
+      "독립장소": 2
+    }
+  },
+  "data": [
+    {
+      "source": "tourapi_aihub",
+      "sourceId": "2789488",
+      "title": "미포정거장",
+      "aliases": [
+        "미포정거장",
+        "해운대 블루라인파크 미포 정거장"
+      ],
+      "address": "부산광역시 해운대구 달맞이길62번길 13 (중동)",
+      "lat": 35.1581969059,
+      "lon": 129.172851279,
+      "category": "레저/스포츠",
+      "hours": "",
+      "holiday": "",
+      "sourceMatch": {
+        "aihubName": "해운대 블루라인파크 미포 정거장",
+        "matchType": "coord",
+        "dwell": {
+          "count": 30,
+          "median": 30,
+          "p25": 30,
+          "p75": 60,
+          "mean": 63
+        }
+      },
+      "raw": {
+        "contentId": "2789488",
+        "title": "미포정거장",
+        "contentTypeId": "28",
+        "contentTypeName": "레포츠",
+        "category": "레저/스포츠",
+        "addr1": "부산광역시 해운대구 달맞이길62번길 13 (중동)",
+        "lat": 35.1581969059,
+        "lon": 129.172851279,
+        "aihubName": "해운대 블루라인파크 미포 정거장",
+        "aihubCategory": "체험활동관광지",
+        "matchType": "coord",
+        "matchDistanceM": 6,
+        "dwell": {
+          "count": 30,
+          "median": 30,
+          "p25": 30,
+          "p75": 60,
+          "mean": 63
+        },
+        "matchScope": "direct_place",
+        "dwellSourceName": "해운대 블루라인파크 미포 정거장",
+        "openingHoursSourceName": "미포정거장",
+        "openingHoursReliability": "direct",
+        "mapVerification": {
+          "provider": "kakao",
+          "status": "verified",
+          "placeId": "188403018",
+          "placeUrl": "https://place.map.kakao.com/188403018",
+          "matchedName": "해운대블루라인파크 미포정거장",
+          "matchedAddress": "부산 해운대구 달맞이길62번길 13",
+          "distanceM": 6,
+          "checkedAt": "2026-08-08T12:22:19.716Z"
+        },
+        "scopeRemap": {
+          "type": "독립장소",
+          "kind": null,
+          "confidence": "medium",
+          "parent": null,
+          "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+          "dwellPolicy": "category_dwell_fallback",
+          "recommendationPolicy": "allow_with_dwell_policy"
+        }
+      },
+      "exclusionReason": "교통시설"
+    },
+    {
+      "source": "busan_attraction",
+      "sourceId": "266",
+      "title": "구 백제병원",
+      "aliases": [
+        "구 백제병원 (한,영,중간,중번,일)",
+        "구 백제병원"
+      ],
+      "address": "부산광역시 동구 중앙대로209번길 16",
+      "lat": 35.116383,
+      "lon": 129.03917,
+      "category": null,
+      "hours": "브라운핸즈백제 10:00 - 21:30 (라스트 오더 21:20)\n갤러리 이비나인 11:00 - 18:00 ",
+      "holiday": "브라운핸즈백제 연중무휴\n갤러리 이비나인 월요일 휴무",
+      "sourceMatch": null,
+      "raw": {
+        "UC_SEQ": 266,
+        "MAIN_TITLE": "구 백제병원 (한,영,중간,중번,일)",
+        "GUGUN_NM": "동구",
+        "LAT": 35.116383,
+        "LNG": 129.03917,
+        "PLACE": "구 백제병원",
+        "TITLE": "구 백제병원",
+        "SUBTITLE": "",
+        "ADDR1": "부산광역시 동구 중앙대로209번길 16",
+        "CNTCT_TEL": "브라운핸즈백제 051-464-0332\n갤러리 이비나인 0507-1317-8918",
+        "HOMEPAGE_URL": "",
+        "TRFC_INFO": "도시철도 1호선 부산역 7번출구 도보 2분\n버스 26, 27, 40, 41, 59, 81, 87, 1003, 1004 부산역 하차 도보 2분",
+        "USAGE_DAY": "",
+        "HLDY_INFO": "브라운핸즈백제 연중무휴\n갤러리 이비나인 월요일 휴무",
+        "USAGE_DAY_WEEK_AND_TIME": "브라운핸즈백제 10:00 - 21:30 (라스트 오더 21:20)\n갤러리 이비나인 11:00 - 18:00 ",
+        "USAGE_AMOUNT": "",
+        "MIDDLE_SIZE_RM1": "",
+        "MAIN_IMG_NORMAL": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191225145805369_ttiel",
+        "MAIN_IMG_THUMB": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191225145805369_thumbL",
+        "ITEMCNTNTS": "부산원도심 이바구길 시작점에 서 있는 붉은 벽돌색 건물 하나. 부산최초의 근대식 종합병원이었던 구 백제병원이다. 1922년 개원하여 당시 최고의 병원으로 유명세를 탔으나 1932년 폐업 이후 중국요리점, 일본군 장교숙소, 부산치안사령부 등을 거치며 굴곡진 부산의 역사와 함께 그 세월을 고스란히 견뎌왔다.\n\n현재 1층에는 구 백제병원의 내‧외부 건물구조와 흔적을 그대로 보존한 카페가 성업 중이다. 은은하게 퍼지는 커피향 즐기며 1920년대의 공간 속으로 함께 들어가 보자.\n3층은 '갤러리 이비나인'으로 운영되고 있다.\n\n",
+        "catalogMatch": {
+          "status": "unmatched",
+          "dwellPolicy": "review_required",
+          "note": "현재 A/B 카탈로그와 직접 이름 매칭이 없다. 신규 후보 검토 시 장소 유형·카테고리 체류시간을 검토한다.",
+          "matches": []
+        }
+      },
+      "exclusionReason": "의료시설"
+    },
+    {
+      "source": "busan_food",
+      "sourceId": "2332",
+      "title": "롯데호텔 부산 블루헤이븐",
+      "aliases": [
+        "롯데호텔 부산 블루헤이븐",
+        "롯데호텔 부산 블루헤이븐"
+      ],
+      "address": "부산진구 가야대로 772 롯데호텔 부산 7층",
+      "lat": 35.15663,
+      "lon": 129.05563,
+      "category": "식당",
+      "hours": "12:00-22:00",
+      "holiday": "",
+      "sourceMatch": null,
+      "raw": {
+        "UC_SEQ": 2332,
+        "MAIN_TITLE": "롯데호텔 부산 블루헤이븐",
+        "GUGUN_NM": "부산진구",
+        "LAT": 35.15663,
+        "LNG": 129.05563,
+        "PLACE": "롯데호텔 부산 블루헤이븐",
+        "TITLE": "롯데호텔 부산 블루헤이븐",
+        "SUBTITLE": "",
+        "ADDR1": "부산진구 가야대로 772 롯데호텔 부산 7층",
+        "ADDR2": "",
+        "CNTCT_TEL": "051-810-6300",
+        "HOMEPAGE_URL": "",
+        "USAGE_DAY_WEEK_AND_TIME": "12:00-22:00",
+        "RPRSNTV_MENU": "Lunch Course ￦67,000\nDinner Course ￦85,000-135,000\n→ Course Menu로 제공되며 식재료에 따라 메뉴 변동 있음",
+        "MAIN_IMG_NORMAL": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250408100151107_ttiel",
+        "MAIN_IMG_THUMB": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250408100151107_thumbL",
+        "ITEMCNTNTS": "낮에는 휴양지의 편안하고 여유로운 분위기를 밤에는 도심 속 야경과 함께 은은한 조명의 정원이로맨틱한 분위기를 연출하는 이곳은 캐주얼 다이닝 메뉴와 칵테일 와인 등 다양한 음료가 준비되어 있다.\n",
+        "suggestedCategory": "식당",
+        "catalogMatch": {
+          "status": "unmatched",
+          "dwellPolicy": "review_required",
+          "note": "현재 A/B 카탈로그와 직접 이름 매칭이 없다. 신규 후보 검토 시 장소 유형·카테고리 체류시간을 검토한다.",
+          "matches": []
+        }
+      },
+      "exclusionReason": "숙박"
+    },
+    {
+      "id": "poi_795",
+      "title": "롯데면세점 부산점, 롯데면세점 김해공항점, 부산면세점 용두산점",
+      "aliases": [
+        "면세점",
+        "롯데면세점 부산점, 롯데면세점 김해공항점, 부산면세점 용두산점"
+      ],
+      "address": "",
+      "lat": 35.156605,
+      "lon": 129.05595,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "504"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 47,
+        "name": "롯데백화점 부산본점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 24,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 24,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "exclusionReason": "복수 장소가 하나의 레코드로 제공됨"
+    },
+    {
+      "id": "poi_813",
+      "title": "부산사이다(한,영,중간,중번,일)",
+      "aliases": [
+        "부산사이다(한,영,중간,중번,일)"
+      ],
+      "address": "",
+      "lat": 35.103943,
+      "lon": 129.03543,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "1681"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": null,
+      "dwellPolicy": "category_dwell_fallback",
+      "dwell": null,
+      "matchReason": "AIHub 개별 장소 매칭 없음",
+      "exclusionReason": "장소가 아닌 기념품·상품성 원천 레코드"
+    },
+    {
+      "id": "poi_814",
+      "title": "2022 부산 관광 기념품 2기 (한,영,중간,중번,일)",
+      "aliases": [
+        "2022 부산 관광 기념품 2기 (한,영,중간,중번,일)"
+      ],
+      "address": "",
+      "lat": 35.159042,
+      "lon": 129.16005,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "1736"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 60,
+        "name": "해운대해수욕장",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 110,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "category_dwell_fallback",
+      "dwell": null,
+      "matchReason": "좌표 단독 또는 원거리 이름 매칭은 개별 체류시간으로 사용하지 않음",
+      "exclusionReason": "장소가 아닌 기념품·상품성 원천 레코드"
+    }
+  ]
+}

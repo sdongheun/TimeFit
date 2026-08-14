@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-12T16:56:30.168Z",
+    "sourceCatalog": "src/data/busan_poi_catalog.json",
+    "purpose": "현재 추천 후보의 동일 장소 중복과 포괄 장소/내부 시설 관계를 구분하는 검토 자료",
+    "rule": "대표 이름 정규화, 주소 정규화, 좌표 150m 이내를 모두 본다. 자동 삭제 전 카카오 장소 ID 또는 실제 장소 페이지로 최종 확인한다."
+  },
+  "summary": {
+    "reviewPairCount": 4,
+    "duplicateCandidateCount": 0,
+    "confirmedNameDuplicateCount": 0,
+    "nameVariantDuplicateCount": 0,
+    "parentChildReviewCount": 4
+  },
+  "data": [
+    {
+      "classification": "포괄장소_내부시설_검토",
+      "distanceM": 23,
+      "sameCanonicalName": false,
+      "sameCanonicalAddress": true,
+      "first": {
+        "contentId": "poi_90",
+        "title": "부산 영화의 전당",
+        "category": "자연관광지",
+        "subCategory": null,
+        "addr1": "부산광역시 해운대구 수영강변대로 120",
+        "lat": 35.170794647,
+        "lon": 129.1270576924,
+        "sourceEvidence": [
+          "tourapi_aihub",
+          "busan_attraction"
+        ],
+        "kakaoPlaceUrl": "https://place.map.kakao.com/26324476"
+      },
+      "second": {
+        "contentId": "poi_108",
+        "title": "영화의전당 라이브러리 자료실",
+        "category": "자연관광지",
+        "subCategory": null,
+        "addr1": "부산광역시 해운대구 수영강변대로 120 (우동)",
+        "lat": 35.1710029572,
+        "lon": 129.1270687971,
+        "sourceEvidence": [
+          "tourapi_aihub"
+        ],
+        "kakaoPlaceUrl": null
+      }
+    },
+    {
+      "classification": "포괄장소_내부시설_검토",
+      "distanceM": 24,
+      "sameCanonicalName": false,
+      "sameCanonicalAddress": true,
+      "first": {
+        "contentId": "poi_656",
+        "title": "부산시민공원",
+        "category": "자연관광지",
+        "subCategory": "공원·정원",
+        "addr1": "부산광역시 부산진구 시민공원로 73",
+        "lat": 35.16841,
+        "lon": 129.05739,
+        "sourceEvidence": [
+          "busan_attraction"
+        ],
+        "kakaoPlaceUrl": "https://place.map.kakao.com/11585715"
+      },
+      "second": {
+        "contentId": "poi_752",
+        "title": "부산시민공원 역사문화관",
+        "category": "문화시설",
+        "subCategory": "공원·정원",
+        "addr1": "부산광역시 부산진구 시민공원로 73",
+        "lat": 35.168602,
+        "lon": 129.05751,
+        "sourceEvidence": [
+          "busan_attraction"
+        ],
+        "kakaoPlaceUrl": "https://place.map.kakao.com/24406057"
+      }
+    },
+    {
+      "classification": "포괄장소_내부시설_검토",
+      "distanceM": 76,
+      "sameCanonicalName": false,
+      "sameCanonicalAddress": true,
+      "first": {
+        "contentId": "poi_91",
+        "title": "부산근현대역사관 별관",
+        "category": "문화시설",
+        "subCategory": null,
+        "addr1": "부산광역시 중구 대청로 104",
+        "lat": 35.1026838356,
+        "lon": 129.0312012262,
+        "sourceEvidence": [
+          "tourapi_aihub"
+        ],
+        "kakaoPlaceUrl": "https://place.map.kakao.com/7909355"
+      },
+      "second": {
+        "contentId": "poi_709",
+        "title": "부산근현대역사관",
+        "category": "문화시설",
+        "subCategory": null,
+        "addr1": "부산광역시 중구 대청로 104",
+        "lat": 35.10258,
+        "lon": 129.03203,
+        "sourceEvidence": [
+          "busan_attraction"
+        ],
+        "kakaoPlaceUrl": "https://place.map.kakao.com/2093038590"
+      }
+    },
+    {
+      "classification": "포괄장소_내부시설_검토",
+      "distanceM": 86,
+      "sameCanonicalName": false,
+      "sameCanonicalAddress": true,
+      "first": {
+        "contentId": "poi_652",
+        "title": "부산어린이대공원",
+        "category": "자연관광지",
+        "subCategory": "공원·정원",
+        "addr1": "부산광역시 부산진구 새싹로 295",
+        "lat": 35.184998,
+        "lon": 129.04153,
+        "sourceEvidence": [
+          "busan_attraction"
+        ],
+        "kakaoPlaceUrl": "https://place.map.kakao.com/8425160"
+      },
+      "second": {
+        "contentId": "poi_771",
+        "title": "부산어린이대공원 치유의 숲",
+        "category": "자연관광지",
+        "subCategory": "공원·정원",
+        "addr1": "부산광역시 부산진구 새싹로 295",
+        "lat": 35.185402,
+        "lon": 129.04234,
+        "sourceEvidence": [
+          "busan_attraction"
+        ],
+        "kakaoPlaceUrl": null
+      }
+    }
+  ]
+}

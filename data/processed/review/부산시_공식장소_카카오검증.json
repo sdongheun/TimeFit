@@ -1,0 +1,6403 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-09T18:27:57.229Z",
+    "provider": "Kakao Local keyword search",
+    "target": "부산시 공식 데이터 단독 후보",
+    "rule": "name similar + 500m=verified, area/name context + 1500m=weak, otherwise not_found"
+  },
+  "summary": {
+    "targetTotal": 0,
+    "processed": 0,
+    "remaining": 0,
+    "result": {
+      "verified": 314,
+      "not_found": 62,
+      "weak": 8
+    }
+  },
+  "data": [
+    {
+      "contentId": "poi_608",
+      "title": "국립해양박물관",
+      "category": "문화시설",
+      "lat": 35.078728,
+      "lon": 129.08018,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "631384263",
+        "placeUrl": "https://place.map.kakao.com/631384263",
+        "matchedName": "국립해양박물관 해양도서관",
+        "matchedAddress": "부산 영도구 해양로301번길 45",
+        "distanceM": 13,
+        "checkedAt": "2026-08-09T18:23:59.481Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_618",
+      "title": "보수동책방골목",
+      "category": "상업지구",
+      "lat": 35.103367,
+      "lon": 129.02663,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "427198875",
+        "placeUrl": "https://place.map.kakao.com/427198875",
+        "matchedName": "보수동책방골목",
+        "matchedAddress": "부산 중구 책방골목길 16",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:23:59.478Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_628",
+      "title": "민락수변공원",
+      "category": "자연관광지",
+      "lat": 35.15487,
+      "lon": 129.13399,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7887457",
+        "placeUrl": "https://place.map.kakao.com/7887457",
+        "matchedName": "민락수변공원",
+        "matchedAddress": "부산 수영구 민락동 110-19",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:23:59.623Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_629",
+      "title": "송도해수욕장",
+      "category": "자연관광지",
+      "lat": 35.07595,
+      "lon": 129.01694,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "25041637",
+        "placeUrl": "https://place.map.kakao.com/25041637",
+        "matchedName": "송도해수욕장",
+        "matchedAddress": "부산 서구 암남동 135-5",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:23:59.762Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_650",
+      "title": "국립부산과학관",
+      "category": "자연관광지",
+      "lat": 35.20468,
+      "lon": 129.2127,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26923074",
+        "placeUrl": "https://place.map.kakao.com/26923074",
+        "matchedName": "국립부산과학관",
+        "matchedAddress": "부산 기장군 기장읍 동부산관광6로 59",
+        "distanceM": 30,
+        "checkedAt": "2026-08-09T18:26:52.708Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_656",
+      "title": "부산시민공원",
+      "category": "자연관광지",
+      "lat": 35.16841,
+      "lon": 129.05739,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "11585715",
+        "placeUrl": "https://place.map.kakao.com/11585715",
+        "matchedName": "부산시민공원",
+        "matchedAddress": "부산 부산진구 시민공원로 73",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:26:52.709Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_660",
+      "title": "APEC나루공원",
+      "category": "자연관광지",
+      "lat": 35.170307,
+      "lon": 129.12564,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27575157",
+        "placeUrl": "https://place.map.kakao.com/27575157",
+        "matchedName": "APEC나루공원 야외무대",
+        "matchedAddress": "부산 해운대구 우동 1494",
+        "distanceM": 34,
+        "checkedAt": "2026-08-09T18:26:52.701Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_662",
+      "title": "다대포 해수욕장",
+      "category": "자연관광지",
+      "lat": 35.04652,
+      "lon": 128.96283,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8214103",
+        "placeUrl": "https://place.map.kakao.com/8214103",
+        "matchedName": "다대포해수욕장",
+        "matchedAddress": "부산 사하구 다대동",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:26:52.707Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_667",
+      "title": "F1963",
+      "category": "문화시설",
+      "lat": 35.176933,
+      "lon": 129.11496,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1440701601",
+        "placeUrl": "https://place.map.kakao.com/1440701601",
+        "matchedName": "F1963",
+        "matchedAddress": "부산 수영구 구락로123번길 20",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:52.832Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_669",
+      "title": "광안리 해수욕장",
+      "category": "자연관광지",
+      "lat": 35.15318,
+      "lon": 129.11887,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8202423",
+        "placeUrl": "https://place.map.kakao.com/8202423",
+        "matchedName": "광안리해수욕장",
+        "matchedAddress": "부산 수영구 광안해변로 219",
+        "distanceM": 10,
+        "checkedAt": "2026-08-09T18:26:52.844Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_673",
+      "title": "상해거리",
+      "category": "자연관광지",
+      "lat": 35.113808,
+      "lon": 129.03786,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7932717",
+        "placeUrl": "https://place.map.kakao.com/7932717",
+        "matchedName": "초량상해거리",
+        "matchedAddress": "부산 동구 초량동 1109",
+        "distanceM": 70,
+        "checkedAt": "2026-08-09T18:26:52.831Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_703",
+      "title": "KT&G상상마당 부산",
+      "category": "문화시설",
+      "lat": 35.15431,
+      "lon": 129.05728,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1817160004",
+        "placeUrl": "https://place.map.kakao.com/1817160004",
+        "matchedName": "KT&G상상마당 부산스테이",
+        "matchedAddress": "부산 부산진구 서면로 39",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:52.839Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_709",
+      "title": "부산근현대역사관",
+      "category": "문화시설",
+      "lat": 35.10258,
+      "lon": 129.03203,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2093038590",
+        "placeUrl": "https://place.map.kakao.com/2093038590",
+        "matchedName": "부산근현대역사관 어린이체험실 들락날락",
+        "matchedAddress": "부산 중구 대청로 112",
+        "distanceM": 9,
+        "checkedAt": "2026-08-09T18:26:52.960Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_711",
+      "title": "서면미술관",
+      "category": "문화시설",
+      "lat": 35.153927,
+      "lon": 129.06252,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "647108299",
+        "placeUrl": "https://place.map.kakao.com/647108299",
+        "matchedName": "부산진구청 동천문화홀",
+        "matchedAddress": "부산 부산진구 중앙대로666번길 50",
+        "distanceM": 360,
+        "checkedAt": "2026-08-09T18:26:52.973Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_712",
+      "title": "부산현대미술관",
+      "category": "문화시설",
+      "lat": 35.109245,
+      "lon": 128.94263,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1257896804",
+        "placeUrl": "https://place.map.kakao.com/1257896804",
+        "matchedName": "부산현대미술관",
+        "matchedAddress": "부산 사하구 낙동남로 1191",
+        "distanceM": 9,
+        "checkedAt": "2026-08-09T18:26:52.972Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_752",
+      "title": "부산시민공원 역사문화관",
+      "category": "문화시설",
+      "lat": 35.168602,
+      "lon": 129.05751,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "24406057",
+        "placeUrl": "https://place.map.kakao.com/24406057",
+        "matchedName": "부산시민공원 역사관",
+        "matchedAddress": "부산 부산진구 시민공원로 73",
+        "distanceM": 327,
+        "checkedAt": "2026-08-09T18:26:52.970Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_789",
+      "title": "해운대시장",
+      "category": "상업지구",
+      "lat": 35.16165,
+      "lon": 129.1621,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1802884698",
+        "placeUrl": "https://place.map.kakao.com/1802884698",
+        "matchedName": "해운대시장 공영주차장",
+        "matchedAddress": "부산 해운대구 구남로29번길 20-11",
+        "distanceM": 66,
+        "checkedAt": "2026-08-09T18:26:53.121Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_791",
+      "title": "서면시장",
+      "category": "상업지구",
+      "lat": 35.155655,
+      "lon": 129.05817,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1179022297",
+        "placeUrl": "https://place.map.kakao.com/1179022297",
+        "matchedName": "파크짐플레이스 서면역서면시장 물품보관함",
+        "matchedAddress": "부산 부산진구 서면로 56",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:53.111Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_796",
+      "title": "백화점",
+      "category": "상업지구",
+      "lat": 35.156654,
+      "lon": 129.05635,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "814106571",
+        "placeUrl": "https://place.map.kakao.com/814106571",
+        "matchedName": "시스템옴므 롯데백화점부산본점",
+        "matchedAddress": "부산 부산진구 가야대로 772",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:53.099Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_798",
+      "title": "롯데면세점 부산점",
+      "category": "상업지구",
+      "lat": 35.15664,
+      "lon": 129.05534,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1100431087",
+        "placeUrl": "https://place.map.kakao.com/1100431087",
+        "matchedName": "입생로랑 롯데면세점 부산점",
+        "matchedAddress": "부산 부산진구 가야대로 772",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:26:53.121Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_799",
+      "title": "부산면세점 용두산점",
+      "category": "상업지구",
+      "lat": 35.101048,
+      "lon": 129.03249,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "669540099",
+        "placeUrl": "https://place.map.kakao.com/669540099",
+        "matchedName": "더즌익스체인지 부산면세점 용두산점",
+        "matchedAddress": "부산 중구 용두산길 37-55",
+        "distanceM": 15,
+        "checkedAt": "2026-08-09T18:26:53.225Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_801",
+      "title": "롯데백화점 부산본점",
+      "category": "상업지구",
+      "lat": 35.15665,
+      "lon": 129.05655,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "515600245",
+        "placeUrl": "https://place.map.kakao.com/515600245",
+        "matchedName": "오센트 롯데백화점부산본점",
+        "matchedAddress": "부산 부산진구 가야대로 772",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:53.246Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_802",
+      "title": "롯데백화점 센텀시티점",
+      "category": "상업지구",
+      "lat": 35.169735,
+      "lon": 129.13115,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1568419663",
+        "placeUrl": "https://place.map.kakao.com/1568419663",
+        "matchedName": "안다르 롯데백화점 센텀시티점",
+        "matchedAddress": "부산 해운대구 센텀남대로 59",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:53.256Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_805",
+      "title": "부산프리미엄아울렛",
+      "category": "상업지구",
+      "lat": 35.323696,
+      "lon": 129.23563,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1813598494",
+        "placeUrl": "https://place.map.kakao.com/1813598494",
+        "matchedName": "룩옵틱스 신세계사이먼부산프리미엄아울렛",
+        "matchedAddress": "부산 기장군 장안읍 정관로 1133",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:26:53.252Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_806",
+      "title": "NC백화점 해운대점",
+      "category": "상업지구",
+      "lat": 35.170517,
+      "lon": 129.17708,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2065261730",
+        "placeUrl": "https://place.map.kakao.com/2065261730",
+        "matchedName": "큐큐면관 NC백화점 해운대점",
+        "matchedAddress": "부산 해운대구 해운대로 813",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:53.362Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_807",
+      "title": "NC백화점 부산대점",
+      "category": "상업지구",
+      "lat": 35.232323,
+      "lon": 129.08401,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "54451569",
+        "placeUrl": "https://place.map.kakao.com/54451569",
+        "matchedName": "인디고뱅크키즈 NC백화점부산대점",
+        "matchedAddress": "부산 금정구 부산대학로63번길 2",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:53.385Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_809",
+      "title": "밀락더마켓 ",
+      "category": "상업지구",
+      "lat": 35.154293,
+      "lon": 129.12698,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "852075435",
+        "placeUrl": "https://place.map.kakao.com/852075435",
+        "matchedName": "밀락더마켓",
+        "matchedAddress": "부산 수영구 민락수변로17번길 56",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:53.385Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_819",
+      "title": "페이퍼가든",
+      "category": "상업지구",
+      "lat": 35.15533,
+      "lon": 129.066,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1370822329",
+        "placeUrl": "https://place.map.kakao.com/1370822329",
+        "matchedName": "페이퍼가든",
+        "matchedAddress": "부산 부산진구 전포대로210번길 8",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:53.389Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_821",
+      "title": "오브젝트 서면점",
+      "category": "상업지구",
+      "lat": 35.155327,
+      "lon": 129.06444,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "127128791",
+        "placeUrl": "https://place.map.kakao.com/127128791",
+        "matchedName": "오브젝트 서면점",
+        "matchedAddress": "부산 부산진구 전포대로 203",
+        "distanceM": 84,
+        "checkedAt": "2026-08-09T18:26:53.498Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_838",
+      "title": "금수복국",
+      "category": "식당",
+      "lat": 35.16243,
+      "lon": 129.1645,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8708426",
+        "placeUrl": "https://place.map.kakao.com/8708426",
+        "matchedName": "금수복국 해운대본점",
+        "matchedAddress": "부산 해운대구 중동1로43번길 23",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:26:53.518Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_975",
+      "title": "톤쇼우 광안점",
+      "category": "식당",
+      "lat": 35.15631,
+      "lon": 129.12474,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1339778799",
+        "placeUrl": "https://place.map.kakao.com/1339778799",
+        "matchedName": "텐퍼센트커피 톤쇼우광안점",
+        "matchedAddress": "부산 수영구 광안해변로279번길 13",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:53.518Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1047",
+      "title": "웨이브온커피",
+      "category": "카페",
+      "lat": 35.32225,
+      "lon": 129.26979,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "528293263",
+        "placeUrl": "https://place.map.kakao.com/528293263",
+        "matchedName": "웨이브온커피",
+        "matchedAddress": "부산 기장군 장안읍 해맞이로 286",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:53.516Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1102",
+      "title": "해운대암소갈비집",
+      "category": "식당",
+      "lat": 35.163258,
+      "lon": 129.16626,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8149130",
+        "placeUrl": "https://place.map.kakao.com/8149130",
+        "matchedName": "해운대암소갈비집",
+        "matchedAddress": "부산 해운대구 해운대해변로 333",
+        "distanceM": 25,
+        "checkedAt": "2026-08-09T18:26:53.627Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_610",
+      "title": "죽성성당",
+      "category": "문화시설",
+      "lat": 35.241013,
+      "lon": 129.24864,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "19182882",
+        "placeUrl": "https://place.map.kakao.com/19182882",
+        "matchedName": "죽성드림세트장",
+        "matchedAddress": "부산 기장군 기장읍 죽성리",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:53.647Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_612",
+      "title": "임랑해수욕장",
+      "category": "자연관광지",
+      "lat": 35.31905,
+      "lon": 129.26451,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8532178",
+        "placeUrl": "https://place.map.kakao.com/8532178",
+        "matchedName": "임랑해수욕장",
+        "matchedAddress": "부산 기장군 장안읍 임랑리",
+        "distanceM": 22,
+        "checkedAt": "2026-08-09T18:26:53.646Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_614",
+      "title": "백산기념관",
+      "category": "문화시설",
+      "lat": 35.101955,
+      "lon": 129.03456,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8314240",
+        "placeUrl": "https://place.map.kakao.com/8314240",
+        "matchedName": "백산기념관",
+        "matchedAddress": "부산 중구 백산길 11",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:53.654Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_615",
+      "title": "한성1918 부산생활문화센터",
+      "category": "문화시설",
+      "lat": 35.10178,
+      "lon": 129.03444,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "143495649",
+        "placeUrl": "https://place.map.kakao.com/143495649",
+        "matchedName": "한성1918 부산생활문화센터",
+        "matchedAddress": "부산 중구 백산길 13",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:53.749Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_616",
+      "title": "조선통신사역사관",
+      "category": "문화시설",
+      "lat": 35.135754,
+      "lon": 129.06203,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "25044602",
+        "placeUrl": "https://place.map.kakao.com/25044602",
+        "matchedName": "조선통신사역사관",
+        "matchedAddress": "부산 동구 자성로 99",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:53.770Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_617",
+      "title": "부산해양자연사박물관",
+      "category": "문화시설",
+      "lat": 35.22178,
+      "lon": 129.07591,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10465316",
+        "placeUrl": "https://place.map.kakao.com/10465316",
+        "matchedName": "부산해양자연사박물관",
+        "matchedAddress": "부산 동래구 우장춘로 175",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:53.770Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_619",
+      "title": "임시수도기념관",
+      "category": "문화시설",
+      "lat": 35.103527,
+      "lon": 129.01735,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27019549",
+        "placeUrl": "https://place.map.kakao.com/27019549",
+        "matchedName": "임시수도기념관",
+        "matchedAddress": "부산 서구 임시수도기념로 45",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:53.778Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_620",
+      "title": "동아대학교 석당박물관",
+      "category": "문화시설",
+      "lat": 35.10497,
+      "lon": 129.01926,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "11970192",
+        "placeUrl": "https://place.map.kakao.com/11970192",
+        "matchedName": "동아대학교 석당박물관",
+        "matchedAddress": "부산 서구 구덕로 225",
+        "distanceM": 22,
+        "checkedAt": "2026-08-09T18:26:53.889Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_621",
+      "title": "국립일제강제동원역사관",
+      "category": "문화시설",
+      "lat": 35.124355,
+      "lon": 129.09192,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1822480182",
+        "placeUrl": "https://place.map.kakao.com/1822480182",
+        "matchedName": "국립일제강제동원역사관",
+        "matchedAddress": "부산 남구 홍곡로320번길 100",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:53.891Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_622",
+      "title": "부산박물관",
+      "category": "문화시설",
+      "lat": 35.12957,
+      "lon": 129.09451,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "21428595",
+        "placeUrl": "https://place.map.kakao.com/21428595",
+        "matchedName": "부산박물관 카페테리아",
+        "matchedAddress": "부산 남구 유엔평화로 63",
+        "distanceM": 19,
+        "checkedAt": "2026-08-09T18:26:53.896Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_630",
+      "title": "아미산전망대",
+      "category": "자연관광지",
+      "lat": 35.052727,
+      "lon": 128.96075,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "756508469",
+        "placeUrl": "https://place.map.kakao.com/756508469",
+        "matchedName": "아미산전망대 카페드림",
+        "matchedAddress": "부산 사하구 다대낙조2길 77",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:53.911Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_631",
+      "title": "아미동 비석마을",
+      "category": "문화시설",
+      "lat": 35.099068,
+      "lon": 129.0127,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1623342604",
+        "placeUrl": "https://place.map.kakao.com/1623342604",
+        "matchedName": "아미비석문화마을 안내센터",
+        "matchedAddress": "부산 서구 아미로 51",
+        "distanceM": 84,
+        "checkedAt": "2026-08-09T18:26:54.016Z",
+        "status": "weak"
+      }
+    },
+    {
+      "contentId": "poi_632",
+      "title": "오랑대공원",
+      "category": "자연관광지",
+      "lat": 35.205246,
+      "lon": 129.22583,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "20519500",
+        "placeUrl": "https://place.map.kakao.com/20519500",
+        "matchedName": "오랑대공원 공영주차장",
+        "matchedAddress": "부산 기장군 기장읍 연화리 산 64-26",
+        "distanceM": 87,
+        "checkedAt": "2026-08-09T18:26:54.021Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_633",
+      "title": "국립수산과학관",
+      "category": "자연관광지",
+      "lat": 35.193687,
+      "lon": 129.22423,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "917787760",
+        "placeUrl": "https://place.map.kakao.com/917787760",
+        "matchedName": "국립수산과학관 공중화장실",
+        "matchedAddress": "부산 기장군 기장읍 기장해안로 216",
+        "distanceM": 36,
+        "checkedAt": "2026-08-09T18:26:54.023Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_636",
+      "title": "우장춘 기념관",
+      "category": "문화시설",
+      "lat": 35.213547,
+      "lon": 129.07202,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8020510",
+        "placeUrl": "https://place.map.kakao.com/8020510",
+        "matchedName": "우장춘기념관",
+        "matchedAddress": "부산 동래구 우장춘로62번길 7",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:54.039Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_637",
+      "title": "누리바라기전망대",
+      "category": "자연관광지",
+      "lat": 35.09092,
+      "lon": 129.02019,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27541678",
+        "placeUrl": "https://place.map.kakao.com/27541678",
+        "matchedName": "누리바라기전망대",
+        "matchedAddress": "부산 서구 남부민동 50-40",
+        "distanceM": 15,
+        "checkedAt": "2026-08-09T18:26:54.142Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_639",
+      "title": "수영사적공원",
+      "category": "자연관광지",
+      "lat": 35.170967,
+      "lon": 129.1143,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7967345",
+        "placeUrl": "https://place.map.kakao.com/7967345",
+        "matchedName": "수영사적공원",
+        "matchedAddress": "부산 수영구 수영성로 43",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:54.157Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_640",
+      "title": "부산기상관측소",
+      "category": "문화시설",
+      "lat": 35.104973,
+      "lon": 129.03218,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27307043",
+        "placeUrl": "https://place.map.kakao.com/27307043",
+        "matchedName": "부산기상관측소",
+        "matchedAddress": "부산 중구 복병산길32번길 5-11",
+        "distanceM": 20,
+        "checkedAt": "2026-08-09T18:26:54.157Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_641",
+      "title": "을숙도",
+      "category": "문화시설",
+      "lat": 35.107143,
+      "lon": 128.94283,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27471901",
+        "placeUrl": "https://place.map.kakao.com/27471901",
+        "matchedName": "을숙도 피크닉광장",
+        "matchedAddress": "부산 사하구 낙동남로 1240-2",
+        "distanceM": 21,
+        "checkedAt": "2026-08-09T18:26:54.173Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_642",
+      "title": "부산시청자미디어센터",
+      "category": "자연관광지",
+      "lat": 35.17255,
+      "lon": 129.1302,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7971713",
+        "placeUrl": "https://place.map.kakao.com/7971713",
+        "matchedName": "부산시청자미디어센터",
+        "matchedAddress": "부산 해운대구 센텀중앙로 42",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:54.271Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_643",
+      "title": "부산솔로몬로파크",
+      "category": "자연관광지",
+      "lat": 35.200798,
+      "lon": 129.00198,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26313887",
+        "placeUrl": "https://place.map.kakao.com/26313887",
+        "matchedName": "부산솔로몬로파크",
+        "matchedAddress": "부산 북구 낙동북로 755",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:26:54.282Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_644",
+      "title": "부산어촌민속관",
+      "category": "문화시설",
+      "lat": 35.234074,
+      "lon": 129.00859,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9807027",
+        "placeUrl": "https://place.map.kakao.com/9807027",
+        "matchedName": "부산어촌민속관",
+        "matchedAddress": "부산 북구 학사로 128",
+        "distanceM": 38,
+        "checkedAt": "2026-08-09T18:26:54.279Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_645",
+      "title": "삼락생태공원",
+      "category": "자연관광지",
+      "lat": 35.16884,
+      "lon": 128.97397,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1192673361",
+        "placeUrl": "https://place.map.kakao.com/1192673361",
+        "matchedName": "삼락생태공원 화장실 1-6",
+        "matchedAddress": "부산 사상구 삼락동 29-44",
+        "distanceM": 54,
+        "checkedAt": "2026-08-09T18:26:54.330Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_646",
+      "title": "암남공원/송도해안볼레길",
+      "category": "자연관광지",
+      "lat": 35.058804,
+      "lon": 129.01566,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26558837",
+        "placeUrl": "https://place.map.kakao.com/26558837",
+        "matchedName": "그린웨이서구일주로 1코스(송도해안볼레길)",
+        "matchedAddress": "부산 서구 암남동",
+        "distanceM": 579,
+        "checkedAt": "2026-08-09T18:26:54.396Z",
+        "status": "weak"
+      }
+    },
+    {
+      "contentId": "poi_648",
+      "title": "가덕도",
+      "category": "자연관광지",
+      "lat": 35.022896,
+      "lon": 128.8172,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "25502548",
+        "placeUrl": "https://place.map.kakao.com/25502548",
+        "matchedName": "가덕도해벽",
+        "matchedAddress": "부산 강서구 천성동",
+        "distanceM": 459,
+        "checkedAt": "2026-08-09T18:26:54.408Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_649",
+      "title": "렛츠런파크 부산경남",
+      "category": "자연관광지",
+      "lat": 35.1566,
+      "lon": 128.87521,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8134580",
+        "placeUrl": "https://place.map.kakao.com/8134580",
+        "matchedName": "렛츠런파크 부산경남",
+        "matchedAddress": "부산 강서구 가락대로 929",
+        "distanceM": 11,
+        "checkedAt": "2026-08-09T18:26:54.410Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_652",
+      "title": "부산어린이대공원",
+      "category": "자연관광지",
+      "lat": 35.184998,
+      "lon": 129.04153,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8425160",
+        "placeUrl": "https://place.map.kakao.com/8425160",
+        "matchedName": "어린이대공원 약수터",
+        "matchedAddress": "부산 부산진구 새싹로 295",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:54.464Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_653",
+      "title": "국립부산국악원",
+      "category": "자연관광지",
+      "lat": 35.17132,
+      "lon": 129.05424,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9663960",
+        "placeUrl": "https://place.map.kakao.com/9663960",
+        "matchedName": "국립부산국악원",
+        "matchedAddress": "부산 부산진구 국악로 2",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:26:54.534Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_657",
+      "title": "호천마을",
+      "category": "문화시설",
+      "lat": 35.144295,
+      "lon": 129.05106,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "267777731",
+        "placeUrl": "https://place.map.kakao.com/267777731",
+        "matchedName": "호천마을 방재공원",
+        "matchedAddress": "부산 부산진구 엄광로497번길 13",
+        "distanceM": 89,
+        "checkedAt": "2026-08-09T18:26:54.539Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_658",
+      "title": "봉래산",
+      "category": "자연관광지",
+      "lat": 35.08219,
+      "lon": 129.05524,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7903485",
+        "placeUrl": "https://place.map.kakao.com/7903485",
+        "matchedName": "봉래산",
+        "matchedAddress": "부산 영도구 청학동 산 54-10",
+        "distanceM": 39,
+        "checkedAt": "2026-08-09T18:26:54.551Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_659",
+      "title": "영화의 거리",
+      "category": "상업지구",
+      "lat": 35.154633,
+      "lon": 129.14278,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26454001",
+        "placeUrl": "https://place.map.kakao.com/26454001",
+        "matchedName": "해운대 영화의거리",
+        "matchedAddress": "부산 해운대구 마린시티1로 91",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:54.595Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_661",
+      "title": "40계단",
+      "category": "문화시설",
+      "lat": 35.103977,
+      "lon": 129.0346,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1302798230",
+        "placeUrl": "https://place.map.kakao.com/1302798230",
+        "matchedName": "40계단",
+        "matchedAddress": "부산 중구 대청로135번길 13",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:54.663Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_666",
+      "title": "황령산 전망쉼터",
+      "category": "자연관광지",
+      "lat": 35.158115,
+      "lon": 129.08269,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27135397",
+        "placeUrl": "https://place.map.kakao.com/27135397",
+        "matchedName": "황령산전망쉼터",
+        "matchedAddress": "부산 남구 황령산로 391-39",
+        "distanceM": 26,
+        "checkedAt": "2026-08-09T18:26:54.666Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_668",
+      "title": "해운대",
+      "category": "자연관광지",
+      "lat": 35.158474,
+      "lon": 129.15987,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "22986661",
+        "placeUrl": "https://place.map.kakao.com/22986661",
+        "matchedName": "해운대북극곰축제",
+        "matchedAddress": "부산 해운대구 우동 621-6",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:54.693Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_670",
+      "title": "금정산",
+      "category": "자연관광지",
+      "lat": 35.280136,
+      "lon": 129.0512,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26350704",
+        "placeUrl": "https://place.map.kakao.com/26350704",
+        "matchedName": "금정산 고모당",
+        "matchedAddress": "부산 금정구 금성동",
+        "distanceM": 45,
+        "checkedAt": "2026-08-09T18:26:54.746Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_671",
+      "title": "금강공원/식물원",
+      "category": "자연관광지",
+      "lat": 35.22047,
+      "lon": 129.07494,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "23714660",
+        "placeUrl": "https://place.map.kakao.com/23714660",
+        "matchedName": "금강식물원",
+        "matchedAddress": "부산 동래구 우장춘로 221",
+        "distanceM": 651,
+        "checkedAt": "2026-08-09T18:26:54.796Z",
+        "status": "weak"
+      }
+    },
+    {
+      "contentId": "poi_672",
+      "title": "동래읍성",
+      "category": "자연관광지",
+      "lat": 35.20975,
+      "lon": 129.08997,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26860101",
+        "placeUrl": "https://place.map.kakao.com/26860101",
+        "matchedName": "동래읍성 북문",
+        "matchedAddress": "부산 동래구 복천동 538-1",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:54.796Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_674",
+      "title": "이중섭문화거리",
+      "category": "문화시설",
+      "lat": 35.14069,
+      "lon": 129.05289,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:54.819Z"
+      }
+    },
+    {
+      "contentId": "poi_676",
+      "title": "장안사",
+      "category": "자연관광지",
+      "lat": 35.37473,
+      "lon": 129.2329,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "776334949",
+        "placeUrl": "https://place.map.kakao.com/776334949",
+        "matchedName": "장안사부처님사리탑",
+        "matchedAddress": "부산 기장군 장안읍 장안사로 108",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:54.875Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_677",
+      "title": "백양산",
+      "category": "자연관광지",
+      "lat": 35.182827,
+      "lon": 129.02196,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7893817",
+        "placeUrl": "https://place.map.kakao.com/7893817",
+        "matchedName": "백양산",
+        "matchedAddress": "부산 부산진구 초읍동 산 98-1",
+        "distanceM": 56,
+        "checkedAt": "2026-08-09T18:26:54.927Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_679",
+      "title": "장산",
+      "category": "자연관광지",
+      "lat": 35.193577,
+      "lon": 129.14497,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2111753931",
+        "placeUrl": "https://place.map.kakao.com/2111753931",
+        "matchedName": "장산구립공원",
+        "matchedAddress": "부산 해운대구 장산로 331-187",
+        "distanceM": 32,
+        "checkedAt": "2026-08-09T18:26:54.930Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_683",
+      "title": "승학산 억새평원",
+      "category": "자연관광지",
+      "lat": 35.116604,
+      "lon": 128.97968,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:54.942Z"
+      }
+    },
+    {
+      "contentId": "poi_684",
+      "title": "대룡마을",
+      "category": "상업지구",
+      "lat": 35.371174,
+      "lon": 129.26433,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10244891",
+        "placeUrl": "https://place.map.kakao.com/10244891",
+        "matchedName": "대룡마을 복합문화회관",
+        "matchedAddress": "부산 기장군 장안읍 대룡1길 17",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:55.005Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_685",
+      "title": "대신공원",
+      "category": "자연관광지",
+      "lat": 35.121544,
+      "lon": 129.01619,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8929746",
+        "placeUrl": "https://place.map.kakao.com/8929746",
+        "matchedName": "대신공원 관리사무소",
+        "matchedAddress": "부산 서구 대신공원로 37-18",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:26:55.059Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_687",
+      "title": "우암동 소막마을",
+      "category": "문화시설",
+      "lat": 35.1256,
+      "lon": 129.07018,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "912848907",
+        "placeUrl": "https://place.map.kakao.com/912848907",
+        "matchedName": "소막마을",
+        "matchedAddress": "부산 남구 우암동 189-414",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:55.065Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_689",
+      "title": "부산커피박물관",
+      "category": "문화시설",
+      "lat": 35.15433,
+      "lon": 129.06453,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "692118803",
+        "placeUrl": "https://place.map.kakao.com/692118803",
+        "matchedName": "부산커피박물관",
+        "matchedAddress": "부산 부산진구 동천로 70",
+        "distanceM": 182,
+        "checkedAt": "2026-08-09T18:26:55.077Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_690",
+      "title": "사상생활사박물관",
+      "category": "문화시설",
+      "lat": 35.172,
+      "lon": 128.97871,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27454550",
+        "placeUrl": "https://place.map.kakao.com/27454550",
+        "matchedName": "사상생활사박물관",
+        "matchedAddress": "부산 사상구 낙동대로1258번길 36",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:55.132Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_691",
+      "title": "사직야구장",
+      "category": "자연관광지",
+      "lat": 35.194107,
+      "lon": 129.06151,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8396881",
+        "placeUrl": "https://place.map.kakao.com/8396881",
+        "matchedName": "부산사직종합운동장 사직야구장",
+        "matchedAddress": "부산 동래구 사직로 45",
+        "distanceM": 10,
+        "checkedAt": "2026-08-09T18:26:55.205Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_692",
+      "title": "신평소공원",
+      "category": "자연관광지",
+      "lat": 35.29337,
+      "lon": 129.26012,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "521523688",
+        "placeUrl": "https://place.map.kakao.com/521523688",
+        "matchedName": "신평소공원 배조형물전망대",
+        "matchedAddress": "부산 기장군 일광읍 신평리",
+        "distanceM": 42,
+        "checkedAt": "2026-08-09T18:26:55.204Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_693",
+      "title": "기장 도예 관광 힐링촌 테마숲",
+      "category": "자연관광지",
+      "lat": 35.360134,
+      "lon": 129.23999,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "817214653",
+        "placeUrl": "https://place.map.kakao.com/817214653",
+        "matchedName": "기장도예관광힐링촌 테마숲",
+        "matchedAddress": "부산 기장군 장안읍 기룡리 산 133",
+        "distanceM": 311,
+        "checkedAt": "2026-08-09T18:26:55.202Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_694",
+      "title": "부산신발이야기",
+      "category": "자연관광지",
+      "lat": 35.141808,
+      "lon": 129.0536,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1741321653",
+        "placeUrl": "https://place.map.kakao.com/1741321653",
+        "matchedName": "우리동네 신발이야기",
+        "matchedAddress": "부산 기장군 기장읍 대청로 24",
+        "distanceM": 17978,
+        "checkedAt": "2026-08-09T18:26:55.262Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_697",
+      "title": "우암동 소막마을",
+      "category": "자연관광지",
+      "lat": 35.126194,
+      "lon": 129.07597,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "912848907",
+        "placeUrl": "https://place.map.kakao.com/912848907",
+        "matchedName": "소막마을",
+        "matchedAddress": "부산 남구 우암동 189-414",
+        "distanceM": 530,
+        "checkedAt": "2026-08-09T18:26:55.345Z",
+        "status": "weak"
+      }
+    },
+    {
+      "contentId": "poi_699",
+      "title": "기장 달음산 자연휴양림",
+      "category": "자연관광지",
+      "lat": 35.30242,
+      "lon": 129.18535,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1502438348",
+        "placeUrl": "https://place.map.kakao.com/1502438348",
+        "matchedName": "국립달음산자연휴양림",
+        "matchedAddress": "부산 기장군 일광읍 화용길 299-106",
+        "distanceM": 32,
+        "checkedAt": "2026-08-09T18:26:55.339Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_700",
+      "title": "부산도서관",
+      "category": "자연관광지",
+      "lat": 35.172737,
+      "lon": 128.98526,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1015809371",
+        "placeUrl": "https://place.map.kakao.com/1015809371",
+        "matchedName": "부산도서관",
+        "matchedAddress": "부산 사상구 사상로310번길 33",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:55.342Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_701",
+      "title": "해운대 수목원",
+      "category": "자연관광지",
+      "lat": 35.22992,
+      "lon": 129.1327,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "457869538",
+        "placeUrl": "https://place.map.kakao.com/457869538",
+        "matchedName": "해운대수목원",
+        "matchedAddress": "부산 해운대구 석대동 26",
+        "distanceM": 17,
+        "checkedAt": "2026-08-09T18:26:55.414Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_702",
+      "title": "영도 봉산마을",
+      "category": "자연관광지",
+      "lat": 35.09309,
+      "lon": 129.05125,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1830799635",
+        "placeUrl": "https://place.map.kakao.com/1830799635",
+        "matchedName": "봉산마을",
+        "matchedAddress": "부산 영도구 나팔꽃길 2",
+        "distanceM": 17,
+        "checkedAt": "2026-08-09T18:26:55.459Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_704",
+      "title": "광안종합시장",
+      "category": "상업지구",
+      "lat": 35.164215,
+      "lon": 129.11816,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "18526000",
+        "placeUrl": "https://place.map.kakao.com/18526000",
+        "matchedName": "광안 종합시장",
+        "matchedAddress": "부산 수영구 무학로49번길 71",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:55.473Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_705",
+      "title": "현대 모터스튜디오 부산",
+      "category": "문화시설",
+      "lat": 35.17674,
+      "lon": 129.11513,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "224222491",
+        "placeUrl": "https://place.map.kakao.com/224222491",
+        "matchedName": "현대 모터스튜디오 부산",
+        "matchedAddress": "부산 수영구 구락로123번길 20",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:55.473Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_710",
+      "title": "우암동도시숲",
+      "category": "자연관광지",
+      "lat": 35.127033,
+      "lon": 129.07382,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "18420413",
+        "placeUrl": "https://place.map.kakao.com/18420413",
+        "matchedName": "우암동도시숲",
+        "matchedAddress": "부산 남구 우암동 12",
+        "distanceM": 30,
+        "checkedAt": "2026-08-09T18:26:55.556Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_713",
+      "title": "대저생태공원",
+      "category": "자연관광지",
+      "lat": 35.20406,
+      "lon": 128.98305,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "24765522",
+        "placeUrl": "https://place.map.kakao.com/24765522",
+        "matchedName": "대저생태공원 주차장4",
+        "matchedAddress": "부산 강서구 대저1동 1-23",
+        "distanceM": 448,
+        "checkedAt": "2026-08-09T18:26:55.617Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_714",
+      "title": "맥도생태공원",
+      "category": "자연관광지",
+      "lat": 35.152267,
+      "lon": 128.95494,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "720873166",
+        "placeUrl": "https://place.map.kakao.com/720873166",
+        "matchedName": "맥도생태공원 관리사무소",
+        "matchedAddress": "부산 강서구 대저2동 1200-28",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:55.606Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_718",
+      "title": "유엔평화공원",
+      "category": "자연관광지",
+      "lat": 35.125774,
+      "lon": 129.10027,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10094213",
+        "placeUrl": "https://place.map.kakao.com/10094213",
+        "matchedName": "평화공원",
+        "matchedAddress": "부산 남구 대연동 706-5",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:55.599Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_719",
+      "title": "정중앙공원",
+      "category": "자연관광지",
+      "lat": 35.17038,
+      "lon": 129.03691,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "381518750",
+        "placeUrl": "https://place.map.kakao.com/381518750",
+        "matchedName": "부산정중앙공원",
+        "matchedAddress": "부산 부산진구 백양순환로 75",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:55.683Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_722",
+      "title": "땅뫼산 황토숲길",
+      "category": "자연관광지",
+      "lat": 35.247078,
+      "lon": 129.12192,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:55.725Z"
+      }
+    },
+    {
+      "contentId": "poi_723",
+      "title": "부산 인도문화원",
+      "category": "문화시설",
+      "lat": 35.13031,
+      "lon": 129.09508,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:55.728Z"
+      }
+    },
+    {
+      "contentId": "poi_724",
+      "title": "KF아세안문화원",
+      "category": "문화시설",
+      "lat": 35.17519,
+      "lon": 129.18196,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27562522",
+        "placeUrl": "https://place.map.kakao.com/27562522",
+        "matchedName": "아세안문화원",
+        "matchedAddress": "부산 해운대구 좌동로 162",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:55.745Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_726",
+      "title": "한국 이슬람 부산성원",
+      "category": "자연관광지",
+      "lat": 35.259975,
+      "lon": 129.09227,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8550883",
+        "placeUrl": "https://place.map.kakao.com/8550883",
+        "matchedName": "한국이슬람교 부산성원",
+        "matchedAddress": "부산 금정구 금단로 113-13",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:55.812Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_728",
+      "title": "부산트래블라운지",
+      "category": "자연관광지",
+      "lat": 35.113834,
+      "lon": 129.03818,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1927458486",
+        "placeUrl": "https://place.map.kakao.com/1927458486",
+        "matchedName": "부산트래블라운지",
+        "matchedAddress": "부산 동구 대영로243번길 38",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:55.855Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_732",
+      "title": "범어사 용성계곡",
+      "category": "자연관광지",
+      "lat": 35.283524,
+      "lon": 129.06847,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:55.869Z"
+      }
+    },
+    {
+      "contentId": "poi_733",
+      "title": "용소웰빙공원",
+      "category": "자연관광지",
+      "lat": 35.24623,
+      "lon": 129.20415,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "12108463",
+        "placeUrl": "https://place.map.kakao.com/12108463",
+        "matchedName": "용소웰빙공원",
+        "matchedAddress": "부산 기장군 기장읍 서부리 223-6",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:55.883Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_734",
+      "title": "국립부산국악원 국악체험관",
+      "category": "자연관광지",
+      "lat": 35.171013,
+      "lon": 129.05438,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1013919974",
+        "placeUrl": "https://place.map.kakao.com/1013919974",
+        "matchedName": "국립부산국악원 국악체험관",
+        "matchedAddress": "부산 부산진구 국악로 2",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:55.937Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_735",
+      "title": "부산 수학문화관",
+      "category": "문화시설",
+      "lat": 35.15666,
+      "lon": 129.0513,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "738009418",
+        "placeUrl": "https://place.map.kakao.com/738009418",
+        "matchedName": "부산수학문화관",
+        "matchedAddress": "부산 부산진구 부전동 376",
+        "distanceM": 11,
+        "checkedAt": "2026-08-09T18:26:55.988Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_738",
+      "title": "북항 친수공원",
+      "category": "자연관광지",
+      "lat": 35.11442,
+      "lon": 129.04637,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1455608727",
+        "placeUrl": "https://place.map.kakao.com/1455608727",
+        "matchedName": "북항친수공원",
+        "matchedAddress": "부산 동구 이순신대로 164",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:55.996Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_740",
+      "title": "문화예술플랫폼",
+      "category": "문화시설",
+      "lat": 35.206764,
+      "lon": 128.99797,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26538865",
+        "placeUrl": "https://place.map.kakao.com/26538865",
+        "matchedName": "문화예술플랫폼B",
+        "matchedAddress": "부산 북구 구포만세길 113",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:26:56.012Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_743",
+      "title": "망양로 산복도로 전시관",
+      "category": "자연관광지",
+      "lat": 35.117672,
+      "lon": 129.0332,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1643714726",
+        "placeUrl": "https://place.map.kakao.com/1643714726",
+        "matchedName": "망양로산복도로전시관",
+        "matchedAddress": "부산 동구 망양로 488",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:56.078Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_744",
+      "title": "닥밭골 벽화마을",
+      "category": "문화시설",
+      "lat": 35.114338,
+      "lon": 129.02371,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "20457010",
+        "placeUrl": "https://place.map.kakao.com/20457010",
+        "matchedName": "닥밭골벽화마을",
+        "matchedAddress": "부산 서구 동대신동2가 79-51",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:56.111Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_745",
+      "title": "대청스카이전망대",
+      "category": "자연관광지",
+      "lat": 35.107513,
+      "lon": 129.02963,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:56.173Z"
+      }
+    },
+    {
+      "contentId": "poi_746",
+      "title": "뮤직컴플렉스 서울 부산점",
+      "category": "자연관광지",
+      "lat": 35.193672,
+      "lon": 129.21411,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "625367644",
+        "placeUrl": "https://place.map.kakao.com/625367644",
+        "matchedName": "뮤직컴플렉스서울 부산점",
+        "matchedAddress": "부산 기장군 기장읍 동부산관광로 34",
+        "distanceM": 31,
+        "checkedAt": "2026-08-09T18:26:56.142Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_747",
+      "title": "부산 워케이션 거점센터",
+      "category": "자연관광지",
+      "lat": 35.116238,
+      "lon": 129.04184,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "408983664",
+        "placeUrl": "https://place.map.kakao.com/408983664",
+        "matchedName": "부산워케이션거점센터",
+        "matchedAddress": "부산 동구 중앙대로214번길 7-8",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:56.201Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_751",
+      "title": "도모헌",
+      "category": "자연관광지",
+      "lat": 35.147057,
+      "lon": 129.10724,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1412881268",
+        "placeUrl": "https://place.map.kakao.com/1412881268",
+        "matchedName": "도모헌",
+        "matchedAddress": "부산 수영구 황령산로7번길 60",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:56.246Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_755",
+      "title": "오시리아 해안 산책로",
+      "category": "자연관광지",
+      "lat": 35.198395,
+      "lon": 129.22993,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2072859197",
+        "placeUrl": "https://place.map.kakao.com/2072859197",
+        "matchedName": "오시리아해안산책로",
+        "matchedAddress": "부산 기장군 기장읍 시랑리 62-17",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:56.274Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_757",
+      "title": "일광 광산마을",
+      "category": "자연관광지",
+      "lat": 35.30874,
+      "lon": 129.22404,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "25181652",
+        "placeUrl": "https://place.map.kakao.com/25181652",
+        "matchedName": "광산",
+        "matchedAddress": "부산 기장군 일광읍 원리",
+        "distanceM": 342,
+        "checkedAt": "2026-08-09T18:26:56.295Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_758",
+      "title": " 부산항 제 1부두",
+      "category": "자연관광지",
+      "lat": 35.10498,
+      "lon": 129.04028,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8067060",
+        "placeUrl": "https://place.map.kakao.com/8067060",
+        "matchedName": "부산항 제1부두",
+        "matchedAddress": "부산 중구 충장대로 26",
+        "distanceM": 16,
+        "checkedAt": "2026-08-09T18:26:56.330Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_759",
+      "title": "유엔평화기념관",
+      "category": "문화시설",
+      "lat": 35.127697,
+      "lon": 129.09593,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1311761869",
+        "placeUrl": "https://place.map.kakao.com/1311761869",
+        "matchedName": "유엔평화기념관 4D영상관",
+        "matchedAddress": "부산 남구 홍곡로320번길 106",
+        "distanceM": 402,
+        "checkedAt": "2026-08-09T18:26:56.373Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_761",
+      "title": "포디움다이브엠",
+      "category": "문화시설",
+      "lat": 35.148014,
+      "lon": 129.11356,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "263429575",
+        "placeUrl": "https://place.map.kakao.com/263429575",
+        "matchedName": "포디움다이브엠",
+        "matchedAddress": "부산 수영구 광남로 96",
+        "distanceM": 302,
+        "checkedAt": "2026-08-09T18:26:56.404Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_762",
+      "title": "갤러리 수정",
+      "category": "자연관광지",
+      "lat": 35.12573,
+      "lon": 129.04266,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2072512481",
+        "placeUrl": "https://place.map.kakao.com/2072512481",
+        "matchedName": "갤러리수정",
+        "matchedAddress": "부산 동구 수정공원남로 28",
+        "distanceM": 461,
+        "checkedAt": "2026-08-09T18:26:56.427Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_764",
+      "title": "디오티 미술관",
+      "category": "문화시설",
+      "lat": 35.228886,
+      "lon": 129.07677,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1972634119",
+        "placeUrl": "https://place.map.kakao.com/1972634119",
+        "matchedName": "디오티미술관",
+        "matchedAddress": "부산 금정구 금샘로 35",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:26:56.460Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_766",
+      "title": "갤러리 플레이리스트",
+      "category": "자연관광지",
+      "lat": 35.102535,
+      "lon": 129.03517,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1182032307",
+        "placeUrl": "https://place.map.kakao.com/1182032307",
+        "matchedName": "갤러리플레이리스트",
+        "matchedAddress": "부산 중구 대청로138번길 3",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:26:56.502Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_769",
+      "title": "륜빌리지",
+      "category": "문화시설",
+      "lat": 35.24763,
+      "lon": 129.11644,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "561326418",
+        "placeUrl": "https://place.map.kakao.com/561326418",
+        "matchedName": "륜플레이스",
+        "matchedAddress": "부산 금정구 오륜대로 262",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:56.532Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_771",
+      "title": "부산어린이대공원 치유의 숲",
+      "category": "자연관광지",
+      "lat": 35.185402,
+      "lon": 129.04234,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:56.559Z"
+      }
+    },
+    {
+      "contentId": "poi_773",
+      "title": "BNK부산은행 아트시네마 모퉁이극장",
+      "category": "자연관광지",
+      "lat": 35.1006,
+      "lon": 129.0309,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:56.581Z"
+      }
+    },
+    {
+      "contentId": "poi_775",
+      "title": "황령산레포츠공원",
+      "category": "자연관광지",
+      "lat": 35.15709,
+      "lon": 129.07631,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8684261",
+        "placeUrl": "https://place.map.kakao.com/8684261",
+        "matchedName": "황령산레포츠공원",
+        "matchedAddress": "부산 부산진구 진남로328번길 99",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:56.630Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_778",
+      "title": "황령산봉수전망대",
+      "category": "자연관광지",
+      "lat": 35.157204,
+      "lon": 129.08163,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:56.649Z"
+      }
+    },
+    {
+      "contentId": "poi_781",
+      "title": "충무동 해안시장",
+      "category": "자연관광지",
+      "lat": 35.095985,
+      "lon": 129.0255,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "18525216",
+        "placeUrl": "https://place.map.kakao.com/18525216",
+        "matchedName": "충무동해안시장",
+        "matchedAddress": "부산 서구 충무동1가 43-1",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:26:56.694Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_783",
+      "title": "고려제강기념관",
+      "category": "문화시설",
+      "lat": 35.177723,
+      "lon": 129.11348,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "24063959",
+        "placeUrl": "https://place.map.kakao.com/24063959",
+        "matchedName": "고려제강 기념관",
+        "matchedAddress": "부산 수영구 구락로141번길 63",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:56.710Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_784",
+      "title": "회동수원지",
+      "category": "자연관광지",
+      "lat": 35.245823,
+      "lon": 129.11913,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "383727359",
+        "placeUrl": "https://place.map.kakao.com/383727359",
+        "matchedName": "회동수원지 실증파일럿플랜트 연구센터",
+        "matchedAddress": "부산 금정구 오륜동 산 113",
+        "distanceM": 1137,
+        "checkedAt": "2026-08-09T18:26:56.762Z",
+        "status": "weak"
+      }
+    },
+    {
+      "contentId": "poi_785",
+      "title": "리틀 프린스 하우스",
+      "category": "문화시설",
+      "lat": 35.09775,
+      "lon": 129.00851,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "646367063",
+        "placeUrl": "https://place.map.kakao.com/646367063",
+        "matchedName": "리틀프린스하우스",
+        "matchedAddress": "부산 사하구 감내1로 200",
+        "distanceM": 186,
+        "checkedAt": "2026-08-09T18:26:56.776Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_787",
+      "title": "기장시장",
+      "category": "상업지구",
+      "lat": 35.243847,
+      "lon": 129.21524,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1486238534",
+        "placeUrl": "https://place.map.kakao.com/1486238534",
+        "matchedName": "기장시장장군족발",
+        "matchedAddress": "부산 기장군 기장읍 읍내로104번길 16",
+        "distanceM": 29,
+        "checkedAt": "2026-08-09T18:26:56.827Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_790",
+      "title": "남항시장 / 봉래시장",
+      "category": "상업지구",
+      "lat": 35.08876,
+      "lon": 129.04222,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "496366461",
+        "placeUrl": "https://place.map.kakao.com/496366461",
+        "matchedName": "LG유플러스 대교동2가 봉래시장점",
+        "matchedAddress": "부산 영도구 태종로 99-1",
+        "distanceM": 310,
+        "checkedAt": "2026-08-09T18:26:56.849Z",
+        "status": "weak"
+      }
+    },
+    {
+      "contentId": "poi_792",
+      "title": "부산대학교 앞",
+      "category": "상업지구",
+      "lat": 35.23344,
+      "lon": 129.0785,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "928914232",
+        "placeUrl": "https://place.map.kakao.com/928914232",
+        "matchedName": "G car zone 동아대학교 앞",
+        "matchedAddress": "부산 사하구 낙동대로 542",
+        "distanceM": 16974,
+        "checkedAt": "2026-08-09T18:26:56.899Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_793",
+      "title": "동래시장",
+      "category": "상업지구",
+      "lat": 35.20391,
+      "lon": 129.08588,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "20055712",
+        "placeUrl": "https://place.map.kakao.com/20055712",
+        "matchedName": "동래시장번영회",
+        "matchedAddress": "부산 동래구 동래시장길 14",
+        "distanceM": 11,
+        "checkedAt": "2026-08-09T18:26:56.910Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_797",
+      "title": "부산 그대로를 담은 부산관광기념품",
+      "category": "상업지구",
+      "lat": 35.23304,
+      "lon": 129.07872,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:56.960Z"
+      }
+    },
+    {
+      "contentId": "poi_800",
+      "title": "롯데면세점 김해공항점",
+      "category": "상업지구",
+      "lat": 35.173695,
+      "lon": 128.94626,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1046288249",
+        "placeUrl": "https://place.map.kakao.com/1046288249",
+        "matchedName": "바닐라코 롯데면세점김해공항점",
+        "matchedAddress": "부산 강서구 공항진입로 108",
+        "distanceM": 67,
+        "checkedAt": "2026-08-09T18:26:56.979Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_803",
+      "title": "롯데백화점 동래점",
+      "category": "상업지구",
+      "lat": 35.211323,
+      "lon": 129.07771,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "600155808",
+        "placeUrl": "https://place.map.kakao.com/600155808",
+        "matchedName": "트레몰로 롯데백화점동래점",
+        "matchedAddress": "부산 동래구 중앙대로 1393",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:57.032Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_808",
+      "title": "IKEA동부산점",
+      "category": "상업지구",
+      "lat": 35.190292,
+      "lon": 129.21034,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "359337315",
+        "placeUrl": "https://place.map.kakao.com/359337315",
+        "matchedName": "이케아레스토랑 동부산점",
+        "matchedAddress": "부산 기장군 기장읍 동부산관광3로 17",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:26:57.042Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_811",
+      "title": "해운대 선물가게",
+      "category": "상업지구",
+      "lat": 35.16377,
+      "lon": 129.15858,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "637809463",
+        "placeUrl": "https://place.map.kakao.com/637809463",
+        "matchedName": "해운대선물가게",
+        "matchedAddress": "부산 해운대구 해운대해변로 264",
+        "distanceM": 546,
+        "checkedAt": "2026-08-09T18:26:57.093Z",
+        "status": "weak"
+      }
+    },
+    {
+      "contentId": "poi_816",
+      "title": "부산",
+      "category": "상업지구",
+      "lat": 35.179615,
+      "lon": 129.07797,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "368639302",
+        "placeUrl": "https://place.map.kakao.com/368639302",
+        "matchedName": "시청앞행복주택1단지아파트",
+        "matchedAddress": "부산 연제구 연산동 2408",
+        "distanceM": 28,
+        "checkedAt": "2026-08-09T18:26:57.144Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_817",
+      "title": "아비베르컴퍼니",
+      "category": "상업지구",
+      "lat": 35.15461,
+      "lon": 129.06255,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "919242783",
+        "placeUrl": "https://place.map.kakao.com/919242783",
+        "matchedName": "아비베르",
+        "matchedAddress": "부산 부산진구 동천로 66",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:57.167Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_822",
+      "title": "오월상점",
+      "category": "상업지구",
+      "lat": 35.155327,
+      "lon": 129.06458,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1992965295",
+        "placeUrl": "https://place.map.kakao.com/1992965295",
+        "matchedName": "오월상점 부산점",
+        "matchedAddress": "부산 부산진구 전포대로209번길 9",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:26:57.167Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_823",
+      "title": "포셋 전포",
+      "category": "상업지구",
+      "lat": 35.156708,
+      "lon": 129.0641,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1464120302",
+        "placeUrl": "https://place.map.kakao.com/1464120302",
+        "matchedName": "포셋 전포",
+        "matchedAddress": "부산 부산진구 전포대로223번길 20",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:57.218Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_824",
+      "title": "부산슈퍼 청사포점",
+      "category": "상업지구",
+      "lat": 35.161224,
+      "lon": 129.19183,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "137202918",
+        "placeUrl": "https://place.map.kakao.com/137202918",
+        "matchedName": "부산슈퍼 청사포점",
+        "matchedAddress": "부산 해운대구 청사포로 120",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:26:57.274Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_825",
+      "title": "미피카페 부산",
+      "category": "상업지구",
+      "lat": 35.088093,
+      "lon": 129.0609,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1905406624",
+        "placeUrl": "https://place.map.kakao.com/1905406624",
+        "matchedName": "미피카페 부산점",
+        "matchedAddress": "부산 영도구 와치로51번길 2",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:57.295Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_826",
+      "title": "부산샌드",
+      "category": "상업지구",
+      "lat": 35.163223,
+      "lon": 129.15552,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2039635228",
+        "placeUrl": "https://place.map.kakao.com/2039635228",
+        "matchedName": "부산샌드",
+        "matchedAddress": "부산 해운대구 우동1로 13-29",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:57.296Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_828",
+      "title": "문현동 골동품거리",
+      "category": "상업지구",
+      "lat": 35.14279,
+      "lon": 129.06499,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1845153966",
+        "placeUrl": "https://place.map.kakao.com/1845153966",
+        "matchedName": "문현동골동품거리",
+        "matchedAddress": "부산 남구 자유평화로57번길 13",
+        "distanceM": 48,
+        "checkedAt": "2026-08-09T18:26:57.344Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_830",
+      "title": "르네시떼",
+      "category": "상업지구",
+      "lat": 35.164616,
+      "lon": 128.97768,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8944193",
+        "placeUrl": "https://place.map.kakao.com/8944193",
+        "matchedName": "르네시떼",
+        "matchedAddress": "부산 사상구 광장로 7",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:57.399Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_831",
+      "title": "만드리곤드레밥",
+      "category": "식당",
+      "lat": 35.177387,
+      "lon": 128.95245,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26938579",
+        "placeUrl": "https://place.map.kakao.com/26938579",
+        "matchedName": "만드리곤드레밥",
+        "matchedAddress": "부산 강서구 공항앞길85번길 13",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:57.415Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_832",
+      "title": "민물가든",
+      "category": "식당",
+      "lat": 35.16055,
+      "lon": 128.89468,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16871401",
+        "placeUrl": "https://place.map.kakao.com/16871401",
+        "matchedName": "안동민물가든",
+        "matchedAddress": "부산 수영구 망미번영로 55",
+        "distanceM": 19589,
+        "checkedAt": "2026-08-09T18:26:57.426Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_833",
+      "title": "국제밀면본점",
+      "category": "식당",
+      "lat": 35.19689,
+      "lon": 129.07785,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "25041331",
+        "placeUrl": "https://place.map.kakao.com/25041331",
+        "matchedName": "국제밀면 본점",
+        "matchedAddress": "부산 연제구 중앙대로1235번길 23-6",
+        "distanceM": 9,
+        "checkedAt": "2026-08-09T18:26:57.472Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_836",
+      "title": "배비장보쌈",
+      "category": "식당",
+      "lat": 35.245174,
+      "lon": 129.09143,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "17721060",
+        "placeUrl": "https://place.map.kakao.com/17721060",
+        "matchedName": "배비장보쌈 구서본점",
+        "matchedAddress": "부산 금정구 금정로 239",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:26:57.527Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_837",
+      "title": "장수장 꼬리곰탕",
+      "category": "식당",
+      "lat": 35.19576,
+      "lon": 128.99043,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9414955",
+        "placeUrl": "https://place.map.kakao.com/9414955",
+        "matchedName": "장수장꼬리곰탕",
+        "matchedAddress": "부산 북구 사상로 577",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:57.537Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_839",
+      "title": "다온 한정식",
+      "category": "식당",
+      "lat": 35.158123,
+      "lon": 129.14853,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "14980284",
+        "placeUrl": "https://place.map.kakao.com/14980284",
+        "matchedName": "해운대 다온한정식",
+        "matchedAddress": "부산 해운대구 해운대해변로 154",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:57.556Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_840",
+      "title": "할매재첩국집",
+      "category": "식당",
+      "lat": 35.193363,
+      "lon": 128.98607,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1531629877",
+        "placeUrl": "https://place.map.kakao.com/1531629877",
+        "matchedName": "할매재첩국",
+        "matchedAddress": "부산 사상구 낙동대로1530번길 20-15",
+        "distanceM": 18,
+        "checkedAt": "2026-08-09T18:26:57.601Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_841",
+      "title": "예이제",
+      "category": "식당",
+      "lat": 35.16123,
+      "lon": 129.16664,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8006946",
+        "placeUrl": "https://place.map.kakao.com/8006946",
+        "matchedName": "예이제",
+        "matchedAddress": "부산 해운대구 해운대해변로298번길 29",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:57.655Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_842",
+      "title": "합천일류돼지국밥",
+      "category": "식당",
+      "lat": 35.16191,
+      "lon": 128.98045,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10928210",
+        "placeUrl": "https://place.map.kakao.com/10928210",
+        "matchedName": "합천일류돼지국밥 사상점",
+        "matchedAddress": "부산 사상구 광장로 34",
+        "distanceM": 52,
+        "checkedAt": "2026-08-09T18:26:57.668Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_843",
+      "title": "신창국밥",
+      "category": "식당",
+      "lat": 35.10093,
+      "lon": 129.02254,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7979137",
+        "placeUrl": "https://place.map.kakao.com/7979137",
+        "matchedName": "신창국밥 본점",
+        "matchedAddress": "부산 서구 보수대로 53",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:57.697Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_844",
+      "title": "평안도족발",
+      "category": "식당",
+      "lat": 35.161945,
+      "lon": 129.16637,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10883875",
+        "placeUrl": "https://place.map.kakao.com/10883875",
+        "matchedName": "평안도족발",
+        "matchedAddress": "부산 해운대구 달맞이길 14",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:57.722Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_845",
+      "title": "한우숯불양곱창",
+      "category": "식당",
+      "lat": 35.165897,
+      "lon": 129.17079,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16237844",
+        "placeUrl": "https://place.map.kakao.com/16237844",
+        "matchedName": "한우숯불양곱창",
+        "matchedAddress": "부산 해운대구 해운대해변로 385",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:57.780Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_847",
+      "title": "석화한정식",
+      "category": "식당",
+      "lat": 35.13881,
+      "lon": 129.06189,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9165299",
+        "placeUrl": "https://place.map.kakao.com/9165299",
+        "matchedName": "석화한정식",
+        "matchedAddress": "부산 동구 조방로 21",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:57.792Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_848",
+      "title": "내당",
+      "category": "식당",
+      "lat": 35.219814,
+      "lon": 129.08208,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26068501",
+        "placeUrl": "https://place.map.kakao.com/26068501",
+        "matchedName": "내당",
+        "matchedAddress": "부산 동래구 금강공원로20번길 23",
+        "distanceM": 49,
+        "checkedAt": "2026-08-09T18:26:57.836Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_849",
+      "title": "봉식당",
+      "category": "식당",
+      "lat": 35.221752,
+      "lon": 129.08357,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1679524259",
+        "placeUrl": "https://place.map.kakao.com/1679524259",
+        "matchedName": "봉식당",
+        "matchedAddress": "부산 동래구 온천장로119번길 26",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:57.851Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_850",
+      "title": "60년 전통 할매국밥",
+      "category": "식당",
+      "lat": 35.141018,
+      "lon": 129.05618,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16694746",
+        "placeUrl": "https://place.map.kakao.com/16694746",
+        "matchedName": "70년전통 할매국밥",
+        "matchedAddress": "부산 동구 중앙대로533번길 4",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:57.907Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_851",
+      "title": "함경면옥",
+      "category": "식당",
+      "lat": 35.216976,
+      "lon": 129.08171,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8147361",
+        "placeUrl": "https://place.map.kakao.com/8147361",
+        "matchedName": "함경면옥 함흥냉면전문점 동래본점",
+        "matchedAddress": "부산 동래구 온천장로 64",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:26:57.922Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_852",
+      "title": "왔다식당",
+      "category": "식당",
+      "lat": 35.094036,
+      "lon": 129.05635,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9291686",
+        "placeUrl": "https://place.map.kakao.com/9291686",
+        "matchedName": "왔다식당",
+        "matchedAddress": "부산 영도구 하나길 811",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:57.963Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_853",
+      "title": "구포촌국수",
+      "category": "식당",
+      "lat": 35.266575,
+      "lon": 129.08475,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "11817591",
+        "placeUrl": "https://place.map.kakao.com/11817591",
+        "matchedName": "구포촌국수",
+        "matchedAddress": "부산 금정구 금샘로 490",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:57.986Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_854",
+      "title": "얼크니손칼국수",
+      "category": "식당",
+      "lat": 35.255756,
+      "lon": 129.21614,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1362181883",
+        "placeUrl": "https://place.map.kakao.com/1362181883",
+        "matchedName": "얼크니손칼국수 주차장",
+        "matchedAddress": "부산 기장군 기장읍 교리 25-1",
+        "distanceM": 24,
+        "checkedAt": "2026-08-09T18:26:58.044Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_855",
+      "title": "곤국",
+      "category": "식당",
+      "lat": 35.1477,
+      "lon": 129.06758,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "658240245",
+        "placeUrl": "https://place.map.kakao.com/658240245",
+        "matchedName": "곤국",
+        "matchedAddress": "부산 수영구 수영로 506",
+        "distanceM": 3997,
+        "checkedAt": "2026-08-09T18:26:58.043Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_856",
+      "title": "해남식당",
+      "category": "식당",
+      "lat": 35.134193,
+      "lon": 129.11122,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "515706452",
+        "placeUrl": "https://place.map.kakao.com/515706452",
+        "matchedName": "해남식당 부산용호동 W스퀘어점",
+        "matchedAddress": "부산 남구 분포로 145",
+        "distanceM": 11,
+        "checkedAt": "2026-08-09T18:26:58.112Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_857",
+      "title": "범일빈대떡",
+      "category": "식당",
+      "lat": 35.139576,
+      "lon": 129.05621,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10389420",
+        "placeUrl": "https://place.map.kakao.com/10389420",
+        "matchedName": "범일빈대떡",
+        "matchedAddress": "부산 동구 중앙대로 519",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:58.120Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_858",
+      "title": "석화정",
+      "category": "식당",
+      "lat": 35.07709,
+      "lon": 129.07228,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16553557",
+        "placeUrl": "https://place.map.kakao.com/16553557",
+        "matchedName": "석화정",
+        "matchedAddress": "부산 영도구 동삼로42번길 16-11",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:58.172Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_859",
+      "title": "옻바다전복삼계탕",
+      "category": "식당",
+      "lat": 35.18473,
+      "lon": 129.08128,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "17037946",
+        "placeUrl": "https://place.map.kakao.com/17037946",
+        "matchedName": "옻바다전복삼계탕 연산점",
+        "matchedAddress": "부산 연제구 월드컵대로119번길 16",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:58.176Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_860",
+      "title": "다리집",
+      "category": "식당",
+      "lat": 35.146637,
+      "lon": 129.11076,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8849564",
+        "placeUrl": "https://place.map.kakao.com/8849564",
+        "matchedName": "다리집 본점",
+        "matchedAddress": "부산 수영구 남천바다로10번길 70",
+        "distanceM": 17,
+        "checkedAt": "2026-08-09T18:26:58.245Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_861",
+      "title": "광안리 언양불고기부산집",
+      "category": "식당",
+      "lat": 35.1479,
+      "lon": 129.11357,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7992853",
+        "placeUrl": "https://place.map.kakao.com/7992853",
+        "matchedName": "언양불고기 부산집",
+        "matchedAddress": "부산 수영구 남천바다로 32",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:58.247Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_862",
+      "title": "식당 3선 덕천점",
+      "category": "식당",
+      "lat": 35.21927,
+      "lon": 129.00708,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "252046416",
+        "placeUrl": "https://place.map.kakao.com/252046416",
+        "matchedName": "식당3선 덕천점",
+        "matchedAddress": "부산 북구 금곡대로 112",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:26:58.316Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_863",
+      "title": "함경면옥 덕천점",
+      "category": "식당",
+      "lat": 35.21178,
+      "lon": 129.00423,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16400102",
+        "placeUrl": "https://place.map.kakao.com/16400102",
+        "matchedName": "함경면옥 덕천점",
+        "matchedAddress": "부산 북구 금곡대로 21",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:58.312Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_864",
+      "title": "몽실종가돼지국밥 감천문화마을 본점",
+      "category": "식당",
+      "lat": 35.10019,
+      "lon": 129.01718,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:58.371Z"
+      }
+    },
+    {
+      "contentId": "poi_866",
+      "title": "괘법쭈꾸미전문점",
+      "category": "식당",
+      "lat": 35.163906,
+      "lon": 128.98459,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1856085069",
+        "placeUrl": "https://place.map.kakao.com/1856085069",
+        "matchedName": "괘법쭈꾸미전문점",
+        "matchedAddress": "부산 사상구 광장로81번길 33",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:58.377Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_868",
+      "title": "명품외식 육면정",
+      "category": "식당",
+      "lat": 35.148415,
+      "lon": 129.09482,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:58.439Z"
+      }
+    },
+    {
+      "contentId": "poi_870",
+      "title": "공감식당",
+      "category": "식당",
+      "lat": 35.16551,
+      "lon": 129.03838,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27387736",
+        "placeUrl": "https://place.map.kakao.com/27387736",
+        "matchedName": "공감식당",
+        "matchedAddress": "부산 부산진구 동평로 81",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:58.442Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_871",
+      "title": "다옴 서면 삼정타워점",
+      "category": "식당",
+      "lat": 35.152874,
+      "lon": 129.05957,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "869330389",
+        "placeUrl": "https://place.map.kakao.com/869330389",
+        "matchedName": "바보주막",
+        "matchedAddress": "부산 부산진구 새싹로 21-7",
+        "distanceM": 772,
+        "checkedAt": "2026-08-09T18:26:58.497Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_872",
+      "title": "당감밀면",
+      "category": "식당",
+      "lat": 35.162247,
+      "lon": 129.03975,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8844884",
+        "placeUrl": "https://place.map.kakao.com/8844884",
+        "matchedName": "당감밀면",
+        "matchedAddress": "부산 부산진구 당감로 5",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:26:58.507Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_874",
+      "title": "영진돼지국밥 본점",
+      "category": "식당",
+      "lat": 35.09664,
+      "lon": 128.95784,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16867846",
+        "placeUrl": "https://place.map.kakao.com/16867846",
+        "matchedName": "영진돼지국밥 본점",
+        "matchedAddress": "부산 사하구 하신번영로157번길 39",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:58.568Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_875",
+      "title": "동원숯불갈비",
+      "category": "식당",
+      "lat": 35.188595,
+      "lon": 129.09715,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8974303",
+        "placeUrl": "https://place.map.kakao.com/8974303",
+        "matchedName": "동원숯불갈비",
+        "matchedAddress": "부산 연제구 과정로276번길 9",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:58.571Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_876",
+      "title": "도날드즉석떡볶이",
+      "category": "식당",
+      "lat": 35.085815,
+      "lon": 129.04295,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10312241",
+        "placeUrl": "https://place.map.kakao.com/10312241",
+        "matchedName": "도날드",
+        "matchedAddress": "부산 영도구 꿈나무길 267",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:58.626Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_879",
+      "title": "개미집신도시점",
+      "category": "식당",
+      "lat": 35.167637,
+      "lon": 129.17154,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10130712",
+        "placeUrl": "https://place.map.kakao.com/10130712",
+        "matchedName": "개미집 신도시점",
+        "matchedAddress": "부산 해운대구 좌동로10번길 51-5",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:58.636Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_880",
+      "title": "만포밀면옥",
+      "category": "식당",
+      "lat": 35.245934,
+      "lon": 129.21597,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8339097",
+        "placeUrl": "https://place.map.kakao.com/8339097",
+        "matchedName": "만포밀면옥",
+        "matchedAddress": "부산 기장군 기장읍 차성로322번길 40",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:58.704Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_882",
+      "title": "우정까망촌돼지",
+      "category": "식당",
+      "lat": 35.08081,
+      "lon": 128.97154,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "575975652",
+        "placeUrl": "https://place.map.kakao.com/575975652",
+        "matchedName": "우정까망촌돼지",
+        "matchedAddress": "부산 사하구 장림번영로 53",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:58.696Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_883",
+      "title": "배꼽시계",
+      "category": "식당",
+      "lat": 35.30255,
+      "lon": 129.24944,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "89589031",
+        "placeUrl": "https://place.map.kakao.com/89589031",
+        "matchedName": "배꼽시계",
+        "matchedAddress": "부산 기장군 일광읍 장곡길 63-14",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:58.755Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_884",
+      "title": "사랑도횟집",
+      "category": "식당",
+      "lat": 35.247726,
+      "lon": 129.21346,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "12525810",
+        "placeUrl": "https://place.map.kakao.com/12525810",
+        "matchedName": "사랑도횟집",
+        "matchedAddress": "부산 기장군 기장읍 차성로 337-1",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:26:58.766Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_889",
+      "title": "소우닭계",
+      "category": "식당",
+      "lat": 35.13942,
+      "lon": 129.0646,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "24205059",
+        "placeUrl": "https://place.map.kakao.com/24205059",
+        "matchedName": "소우닭계 부산본점",
+        "matchedAddress": "부산 동구 조방로16번길 20",
+        "distanceM": 38,
+        "checkedAt": "2026-08-09T18:26:58.826Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_890",
+      "title": "양지추어탕",
+      "category": "식당",
+      "lat": 35.130672,
+      "lon": 129.04565,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1031296935",
+        "placeUrl": "https://place.map.kakao.com/1031296935",
+        "matchedName": "양지",
+        "matchedAddress": "부산 서구 꽃마을로 165-3",
+        "distanceM": 3546,
+        "checkedAt": "2026-08-09T18:26:58.838Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_893",
+      "title": "세연정",
+      "category": "식당",
+      "lat": 35.20514,
+      "lon": 129.07704,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "937371801",
+        "placeUrl": "https://place.map.kakao.com/937371801",
+        "matchedName": "세연정 동래점 주차장",
+        "matchedAddress": "부산 동래구 충렬대로 149",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:58.884Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_894",
+      "title": "조방낙지마당",
+      "category": "식당",
+      "lat": 35.19913,
+      "lon": 129.05907,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16521815",
+        "placeUrl": "https://place.map.kakao.com/16521815",
+        "matchedName": "조방낙지마당",
+        "matchedAddress": "부산 동래구 사직북로47번길 14-4",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:58.892Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_895",
+      "title": "초록담미역국",
+      "category": "식당",
+      "lat": 35.194927,
+      "lon": 129.05788,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "826472820",
+        "placeUrl": "https://place.map.kakao.com/826472820",
+        "matchedName": "초록담미역",
+        "matchedAddress": "부산 동래구 사직로 73",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:58.949Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_896",
+      "title": "동백아가씨1961 서면점",
+      "category": "식당",
+      "lat": 35.158566,
+      "lon": 129.064,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1610698592",
+        "placeUrl": "https://place.map.kakao.com/1610698592",
+        "matchedName": "동백아가씨 1961 서면점",
+        "matchedAddress": "부산 부산진구 서전로37번길 18",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:58.964Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_897",
+      "title": "전통음식점 원양",
+      "category": "식당",
+      "lat": 35.172222,
+      "lon": 129.06995,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "20859459",
+        "placeUrl": "https://place.map.kakao.com/20859459",
+        "matchedName": "원양",
+        "matchedAddress": "부산 부산진구 동평로420번길 23",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:26:59.009Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_898",
+      "title": "구공탄",
+      "category": "식당",
+      "lat": 35.165436,
+      "lon": 129.03777,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16241444",
+        "placeUrl": "https://place.map.kakao.com/16241444",
+        "matchedName": "구공탄 당감동본점",
+        "matchedAddress": "부산 부산진구 동평로 75",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:26:59.013Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_899",
+      "title": "웅천집",
+      "category": "식당",
+      "lat": 35.26257,
+      "lon": 129.0153,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9955031",
+        "placeUrl": "https://place.map.kakao.com/9955031",
+        "matchedName": "웅천집",
+        "matchedAddress": "부산 북구 금곡대로616번길 7-14",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.079Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_900",
+      "title": "평양집",
+      "category": "식당",
+      "lat": 35.212116,
+      "lon": 129.00589,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "12293207",
+        "placeUrl": "https://place.map.kakao.com/12293207",
+        "matchedName": "평양집 덕천food",
+        "matchedAddress": "부산 북구 금곡대로20번길 21",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:26:59.086Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_901",
+      "title": "대왕불맛",
+      "category": "식당",
+      "lat": 35.17614,
+      "lon": 128.99005,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2035593195",
+        "placeUrl": "https://place.map.kakao.com/2035593195",
+        "matchedName": "대왕불맛 부산사상점",
+        "matchedAddress": "부산 사상구 덕상로 54",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.135Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_902",
+      "title": "전골그집 주례본점",
+      "category": "식당",
+      "lat": 35.149475,
+      "lon": 129.00208,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:59.136Z"
+      }
+    },
+    {
+      "contentId": "poi_903",
+      "title": "함양본가어탕국수",
+      "category": "식당",
+      "lat": 35.159695,
+      "lon": 128.98518,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8600853",
+        "placeUrl": "https://place.map.kakao.com/8600853",
+        "matchedName": "함양본가어탕국수",
+        "matchedAddress": "부산 사상구 사상로181번길 36",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:59.203Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_904",
+      "title": "우연횟집",
+      "category": "식당",
+      "lat": 35.11137,
+      "lon": 128.96355,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1487249195",
+        "placeUrl": "https://place.map.kakao.com/1487249195",
+        "matchedName": "우연횟집 장림본점",
+        "matchedAddress": "부산 사하구 다대로 240",
+        "distanceM": 3567,
+        "checkedAt": "2026-08-09T18:26:59.212Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_905",
+      "title": "삼성밀면",
+      "category": "식당",
+      "lat": 35.181423,
+      "lon": 129.05115,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27304266",
+        "placeUrl": "https://place.map.kakao.com/27304266",
+        "matchedName": "삼성밀면",
+        "matchedAddress": "부산 부산진구 월드컵대로449번길 47",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:26:59.275Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_906",
+      "title": "부산약콩밀면 이기대본점",
+      "category": "식당",
+      "lat": 35.123108,
+      "lon": 129.11333,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:26:59.266Z"
+      }
+    },
+    {
+      "contentId": "poi_907",
+      "title": "면채움",
+      "category": "식당",
+      "lat": 35.24463,
+      "lon": 129.0901,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26093894",
+        "placeUrl": "https://place.map.kakao.com/26093894",
+        "matchedName": "면채움",
+        "matchedAddress": "부산 금정구 금정로231번길 11",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:26:59.331Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_908",
+      "title": "대연밀면",
+      "category": "식당",
+      "lat": 35.13132,
+      "lon": 129.08981,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16697877",
+        "placeUrl": "https://place.map.kakao.com/16697877",
+        "matchedName": "대연밀면",
+        "matchedAddress": "부산 남구 천제등로 55",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:59.342Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_909",
+      "title": "정짓간 돼지국밥 & 막국수",
+      "category": "식당",
+      "lat": 35.095695,
+      "lon": 128.96248,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1372738122",
+        "placeUrl": "https://place.map.kakao.com/1372738122",
+        "matchedName": "정짓간 신평본점",
+        "matchedAddress": "부산 사하구 비봉로 6",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.391Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_911",
+      "title": "부광돼지국밥",
+      "category": "식당",
+      "lat": 35.104244,
+      "lon": 129.03506,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16575858",
+        "placeUrl": "https://place.map.kakao.com/16575858",
+        "matchedName": "부광돼지국밥",
+        "matchedAddress": "부산 중구 대청로141번길 15-1",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.405Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_912",
+      "title": "행복을 짓는 수향촌밥상",
+      "category": "식당",
+      "lat": 35.053585,
+      "lon": 128.97047,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "202516270",
+        "placeUrl": "https://place.map.kakao.com/202516270",
+        "matchedName": "행복을짓는 수향촌밥상",
+        "matchedAddress": "부산 사하구 다대로 592",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:26:59.465Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_915",
+      "title": "원조꼬리곰집",
+      "category": "식당",
+      "lat": 35.216038,
+      "lon": 129.08095,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9366545",
+        "placeUrl": "https://place.map.kakao.com/9366545",
+        "matchedName": "원조꼬리곰집",
+        "matchedAddress": "부산 동래구 온천장로 52",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:26:59.464Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_916",
+      "title": "삼락하동재첩국",
+      "category": "식당",
+      "lat": 35.19344,
+      "lon": 128.98584,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "21311722",
+        "placeUrl": "https://place.map.kakao.com/21311722",
+        "matchedName": "하동재첩국",
+        "matchedAddress": "부산 사상구 낙동대로1518번길 33",
+        "distanceM": 20,
+        "checkedAt": "2026-08-09T18:26:59.525Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_917",
+      "title": "장안집",
+      "category": "식당",
+      "lat": 35.369785,
+      "lon": 129.24432,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9366020",
+        "placeUrl": "https://place.map.kakao.com/9366020",
+        "matchedName": "장안집",
+        "matchedAddress": "부산 기장군 장안읍 장안로 365",
+        "distanceM": 11,
+        "checkedAt": "2026-08-09T18:26:59.539Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_918",
+      "title": "이가네칼국수",
+      "category": "식당",
+      "lat": 35.163177,
+      "lon": 128.97974,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "916681054",
+        "placeUrl": "https://place.map.kakao.com/916681054",
+        "matchedName": "이가네칼국수",
+        "matchedAddress": "부산 사상구 광장로 27",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:26:59.591Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_920",
+      "title": "조광심민속왕순대",
+      "category": "식당",
+      "lat": 35.20074,
+      "lon": 129.09787,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9775214",
+        "placeUrl": "https://place.map.kakao.com/9775214",
+        "matchedName": "조광심민속왕순대",
+        "matchedAddress": "부산 동래구 반송로 223",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.590Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_922",
+      "title": "나탄약선요리",
+      "category": "식당",
+      "lat": 35.18711,
+      "lon": 129.04843,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "366840949",
+        "placeUrl": "https://place.map.kakao.com/366840949",
+        "matchedName": "나탄약선요리",
+        "matchedAddress": "부산 부산진구 성지곡로51번길 4",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.657Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_924",
+      "title": "본 고갈비",
+      "category": "식당",
+      "lat": 35.20054,
+      "lon": 129.08878,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "916051946",
+        "placeUrl": "https://place.map.kakao.com/916051946",
+        "matchedName": "본고갈비 본점",
+        "matchedAddress": "부산 동래구 충렬대로272번길 2",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:59.667Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_926",
+      "title": "맹여사육전육회",
+      "category": "식당",
+      "lat": 35.165836,
+      "lon": 128.9835,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "447828978",
+        "placeUrl": "https://place.map.kakao.com/447828978",
+        "matchedName": "맹여사육전육회 본점",
+        "matchedAddress": "부산 사상구 광장로81번길 79",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.718Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_928",
+      "title": "올바릇 본점",
+      "category": "식당",
+      "lat": 35.282795,
+      "lon": 129.25926,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "262646861",
+        "placeUrl": "https://place.map.kakao.com/262646861",
+        "matchedName": "올바릇 본점",
+        "matchedAddress": "부산 기장군 일광읍 문오성길 61",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.718Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_929",
+      "title": "알천순대곱창전골전문점",
+      "category": "식당",
+      "lat": 35.138542,
+      "lon": 129.1047,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9895451",
+        "placeUrl": "https://place.map.kakao.com/9895451",
+        "matchedName": "알천순대곱창전골전문점 알천본점",
+        "matchedAddress": "부산 남구 용소로7번길 88",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:59.788Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_931",
+      "title": "두번째 늘해랑",
+      "category": "식당",
+      "lat": 35.17058,
+      "lon": 129.07031,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "19677665",
+        "placeUrl": "https://place.map.kakao.com/19677665",
+        "matchedName": "두번째늘해랑",
+        "matchedAddress": "부산 부산진구 양지로5번길 24",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.795Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_932",
+      "title": "골목포차",
+      "category": "식당",
+      "lat": 35.159405,
+      "lon": 129.11446,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2052137996",
+        "placeUrl": "https://place.map.kakao.com/2052137996",
+        "matchedName": "골목포차",
+        "matchedAddress": "부산 수영구 광안로7번길 52",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:59.845Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_933",
+      "title": "백가백반",
+      "category": "식당",
+      "lat": 35.13379,
+      "lon": 129.11293,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "659282242",
+        "placeUrl": "https://place.map.kakao.com/659282242",
+        "matchedName": "백가백반",
+        "matchedAddress": "부산 남구 분포로 145",
+        "distanceM": 102,
+        "checkedAt": "2026-08-09T18:26:59.847Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_936",
+      "title": "손내향미",
+      "category": "식당",
+      "lat": 35.153034,
+      "lon": 129.06851,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1670953089",
+        "placeUrl": "https://place.map.kakao.com/1670953089",
+        "matchedName": "손내향미",
+        "matchedAddress": "부산 부산진구 동성로30번길 4",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.915Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_937",
+      "title": "수블",
+      "category": "식당",
+      "lat": 35.159527,
+      "lon": 129.17055,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1348930294",
+        "placeUrl": "https://place.map.kakao.com/1348930294",
+        "matchedName": "엘부스 바이 수블",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 49",
+        "distanceM": 250,
+        "checkedAt": "2026-08-09T18:26:59.919Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_940",
+      "title": "남천면가",
+      "category": "식당",
+      "lat": 35.139626,
+      "lon": 129.10675,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "62995342",
+        "placeUrl": "https://place.map.kakao.com/62995342",
+        "matchedName": "남천면가",
+        "matchedAddress": "부산 수영구 황령대로473번길 14-2",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:26:59.976Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_941",
+      "title": "닭발의 지존",
+      "category": "식당",
+      "lat": 35.170143,
+      "lon": 129.11069,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "18906737",
+        "placeUrl": "https://place.map.kakao.com/18906737",
+        "matchedName": "닭발의지존",
+        "matchedAddress": "부산 수영구 연수로 374",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:26:59.976Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_942",
+      "title": "백일평냉",
+      "category": "식당",
+      "lat": 35.148556,
+      "lon": 129.11166,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1174747976",
+        "placeUrl": "https://place.map.kakao.com/1174747976",
+        "matchedName": "백일평냉",
+        "matchedAddress": "부산 수영구 남천바다로10번길 29",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:00.039Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_943",
+      "title": "청산1954",
+      "category": "식당",
+      "lat": 35.148266,
+      "lon": 129.10788,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1394506016",
+        "placeUrl": "https://place.map.kakao.com/1394506016",
+        "matchedName": "청산1954",
+        "matchedAddress": "부산 수영구 황령산로 29",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:00.049Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_945",
+      "title": "북경",
+      "category": "식당",
+      "lat": 35.18377,
+      "lon": 129.08086,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1434186110",
+        "placeUrl": "https://place.map.kakao.com/1434186110",
+        "matchedName": "북경",
+        "matchedAddress": "부산 연제구 중앙대로1076번길 11",
+        "distanceM": 9,
+        "checkedAt": "2026-08-09T18:27:00.108Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_946",
+      "title": "북경의 자전거",
+      "category": "식당",
+      "lat": 35.230934,
+      "lon": 129.00957,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8939783",
+        "placeUrl": "https://place.map.kakao.com/8939783",
+        "matchedName": "북경의자전거",
+        "matchedAddress": "부산 북구 용당로5번길 14",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:00.101Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_949",
+      "title": "화국반점",
+      "category": "식당",
+      "lat": 35.10253,
+      "lon": 129.0342,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10971841",
+        "placeUrl": "https://place.map.kakao.com/10971841",
+        "matchedName": "화국반점",
+        "matchedAddress": "부산 중구 백산길 3",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:27:00.169Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_951",
+      "title": "금용만두",
+      "category": "식당",
+      "lat": 35.205463,
+      "lon": 128.99666,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8792300",
+        "placeUrl": "https://place.map.kakao.com/8792300",
+        "matchedName": "금용",
+        "matchedAddress": "부산 북구 구포만세길 75",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:00.174Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_952",
+      "title": "굿모닝홍콩",
+      "category": "식당",
+      "lat": 35.158752,
+      "lon": 129.06444,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "291787605",
+        "placeUrl": "https://place.map.kakao.com/291787605",
+        "matchedName": "굿모닝홍콩",
+        "matchedAddress": "부산 부산진구 서전로47번길 19",
+        "distanceM": 22,
+        "checkedAt": "2026-08-09T18:27:00.226Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_953",
+      "title": "반핀 서면전포점",
+      "category": "식당",
+      "lat": 35.15839,
+      "lon": 129.06279,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:00.227Z"
+      }
+    },
+    {
+      "contentId": "poi_954",
+      "title": "산동완탕교자관",
+      "category": "식당",
+      "lat": 35.119602,
+      "lon": 129.04268,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:00.305Z"
+      }
+    },
+    {
+      "contentId": "poi_955",
+      "title": "삼형제오리 부산1호점",
+      "category": "식당",
+      "lat": 35.09349,
+      "lon": 129.03928,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:00.303Z"
+      }
+    },
+    {
+      "contentId": "poi_956",
+      "title": "동광동 석기시대 본점",
+      "category": "식당",
+      "lat": 35.106155,
+      "lon": 129.03487,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16975065",
+        "placeUrl": "https://place.map.kakao.com/16975065",
+        "matchedName": "석기시대 본점",
+        "matchedAddress": "부산 중구 동광길 75-1",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:00.359Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_957",
+      "title": "칸웨이",
+      "category": "식당",
+      "lat": 35.08141,
+      "lon": 128.90326,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "25771468",
+        "placeUrl": "https://place.map.kakao.com/25771468",
+        "matchedName": "칸웨이 본점",
+        "matchedAddress": "부산 강서구 명지오션시티4로 84",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:00.355Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_958",
+      "title": "태화반점",
+      "category": "식당",
+      "lat": 35.13219,
+      "lon": 129.11273,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1280007833",
+        "placeUrl": "https://place.map.kakao.com/1280007833",
+        "matchedName": "태화반점",
+        "matchedAddress": "부산 남구 분포로 115",
+        "distanceM": 38,
+        "checkedAt": "2026-08-09T18:27:00.433Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_959",
+      "title": "동화반점",
+      "category": "식당",
+      "lat": 35.10579,
+      "lon": 129.02345,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8949801",
+        "placeUrl": "https://place.map.kakao.com/8949801",
+        "matchedName": "동화반점",
+        "matchedAddress": "부산 중구 흑교로75번길 3",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:00.428Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_960",
+      "title": "유원",
+      "category": "식당",
+      "lat": 35.10799,
+      "lon": 129.03767,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9345733",
+        "placeUrl": "https://place.map.kakao.com/9345733",
+        "matchedName": "유원",
+        "matchedAddress": "부산 중구 충장대로9번길 29",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:00.484Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_961",
+      "title": "문스시",
+      "category": "식당",
+      "lat": 35.17031,
+      "lon": 129.16615,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "24572966",
+        "placeUrl": "https://place.map.kakao.com/24572966",
+        "matchedName": "문스시",
+        "matchedAddress": "부산 해운대구 좌동순환로 43",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:27:00.492Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_962",
+      "title": "젠스시",
+      "category": "식당",
+      "lat": 35.170803,
+      "lon": 129.17145,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "22511181",
+        "placeUrl": "https://place.map.kakao.com/22511181",
+        "matchedName": "젠스시",
+        "matchedAddress": "부산 해운대구 대천로42번길 28-5",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:00.552Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_963",
+      "title": "백산키친",
+      "category": "식당",
+      "lat": 35.13873,
+      "lon": 129.06345,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1783974848",
+        "placeUrl": "https://place.map.kakao.com/1783974848",
+        "matchedName": "백산키친",
+        "matchedAddress": "부산 동구 조방로 14",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:00.565Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_965",
+      "title": "식당 토성동",
+      "category": "식당",
+      "lat": 35.097954,
+      "lon": 129.02257,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "898491483",
+        "placeUrl": "https://place.map.kakao.com/898491483",
+        "matchedName": "식당토성동 본점",
+        "matchedAddress": "부산 서구 구덕로124번길 27",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:27:00.696Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_966",
+      "title": "청죽",
+      "category": "식당",
+      "lat": 35.11293,
+      "lon": 129.01305,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "11293072",
+        "placeUrl": "https://place.map.kakao.com/11293072",
+        "matchedName": "청죽",
+        "matchedAddress": "부산 서구 망양로 23",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:27:00.624Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_969",
+      "title": "난파센",
+      "category": "식당",
+      "lat": 35.14674,
+      "lon": 129.11339,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "260469734",
+        "placeUrl": "https://place.map.kakao.com/260469734",
+        "matchedName": "난파센",
+        "matchedAddress": "부산 수영구 남천동로108번길 43",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:27:00.681Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_970",
+      "title": "본참치",
+      "category": "식당",
+      "lat": 35.10548,
+      "lon": 129.03526,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "21590983",
+        "placeUrl": "https://place.map.kakao.com/21590983",
+        "matchedName": "이정태본참치",
+        "matchedAddress": "부산 중구 중앙대로81번길 9",
+        "distanceM": 87,
+        "checkedAt": "2026-08-09T18:27:00.722Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_973",
+      "title": "명송초밥",
+      "category": "식당",
+      "lat": 35.101738,
+      "lon": 129.03586,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26841635",
+        "placeUrl": "https://place.map.kakao.com/26841635",
+        "matchedName": "명송",
+        "matchedAddress": "부산 중구 해관로 32",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:00.757Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_974",
+      "title": "다께",
+      "category": "식당",
+      "lat": 35.138863,
+      "lon": 129.06076,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16811158",
+        "placeUrl": "https://place.map.kakao.com/16811158",
+        "matchedName": "다께",
+        "matchedAddress": "부산 동구 범일로102번길 12",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:00.813Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_976",
+      "title": "경찰서옆초밥집",
+      "category": "식당",
+      "lat": 35.159702,
+      "lon": 129.05392,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1925321572",
+        "placeUrl": "https://place.map.kakao.com/1925321572",
+        "matchedName": "경찰서옆초밥집",
+        "matchedAddress": "부산 부산진구 부전로 92",
+        "distanceM": 182,
+        "checkedAt": "2026-08-09T18:27:00.830Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_977",
+      "title": "고옥",
+      "category": "식당",
+      "lat": 35.143585,
+      "lon": 129.10974,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "15206679",
+        "placeUrl": "https://place.map.kakao.com/15206679",
+        "matchedName": "고옥",
+        "matchedAddress": "부산 수영구 광남로 6",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:27:00.849Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_978",
+      "title": "글라스앤보틀",
+      "category": "식당",
+      "lat": 35.188755,
+      "lon": 129.0872,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "946433654",
+        "placeUrl": "https://place.map.kakao.com/946433654",
+        "matchedName": "글라스앤보틀",
+        "matchedAddress": "부산 연제구 쌍미천로 179-1",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:00.886Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_979",
+      "title": "교토돈부리 본점",
+      "category": "식당",
+      "lat": 35.137672,
+      "lon": 129.10362,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:00.942Z"
+      }
+    },
+    {
+      "contentId": "poi_981",
+      "title": "동경밥상",
+      "category": "식당",
+      "lat": 35.148396,
+      "lon": 129.11385,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1281283194",
+        "placeUrl": "https://place.map.kakao.com/1281283194",
+        "matchedName": "동경밥상",
+        "matchedAddress": "부산 수영구 남천바다로 34-6",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:27:00.961Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_982",
+      "title": "슌",
+      "category": "식당",
+      "lat": 35.25241,
+      "lon": 129.217,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1146326735",
+        "placeUrl": "https://place.map.kakao.com/1146326735",
+        "matchedName": "슌",
+        "matchedAddress": "부산 기장군 기장읍 차성동로 163",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:27:00.972Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_984",
+      "title": "스시심 타카이",
+      "category": "식당",
+      "lat": 35.230793,
+      "lon": 129.08801,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1241565835",
+        "placeUrl": "https://place.map.kakao.com/1241565835",
+        "matchedName": "스시심타카이",
+        "matchedAddress": "부산 금정구 부산대학로 29",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:01.014Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_985",
+      "title": "야스마루 쇼쿠도",
+      "category": "식당",
+      "lat": 35.159283,
+      "lon": 129.06197,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1494761951",
+        "placeUrl": "https://place.map.kakao.com/1494761951",
+        "matchedName": "야스마루 쇼쿠도",
+        "matchedAddress": "부산 부산진구 중앙대로756번길 24",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:01.066Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_986",
+      "title": "중앙모밀",
+      "category": "식당",
+      "lat": 35.101845,
+      "lon": 129.0353,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8532756",
+        "placeUrl": "https://place.map.kakao.com/8532756",
+        "matchedName": "중앙모밀",
+        "matchedAddress": "부산 중구 중앙대로49번길 9-1",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:27:01.097Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_987",
+      "title": "킹콩스시",
+      "category": "식당",
+      "lat": 35.1689,
+      "lon": 129.11972,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "804758789",
+        "placeUrl": "https://place.map.kakao.com/804758789",
+        "matchedName": "킹콩초밥",
+        "matchedAddress": "부산 수영구 구락로 8-4",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:01.092Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_988",
+      "title": "톤쇼우 부산대점",
+      "category": "식당",
+      "lat": 35.230446,
+      "lon": 129.08427,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "704518356",
+        "placeUrl": "https://place.map.kakao.com/704518356",
+        "matchedName": "톤쇼우 부산대본점",
+        "matchedAddress": "부산 금정구 금강로 247-10",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:01.145Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_989",
+      "title": "다이도코로 광안리본점",
+      "category": "식당",
+      "lat": 35.1466,
+      "lon": 129.11255,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27220570",
+        "placeUrl": "https://place.map.kakao.com/27220570",
+        "matchedName": "다이도코로",
+        "matchedAddress": "부산 수영구 남천동로108번길 27",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:01.199Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_990",
+      "title": "샤브남바완",
+      "category": "식당",
+      "lat": 35.153236,
+      "lon": 129.12465,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "846293253",
+        "placeUrl": "https://place.map.kakao.com/846293253",
+        "matchedName": "샤브남바완",
+        "matchedAddress": "부산 수영구 민락수변로 29",
+        "distanceM": 15,
+        "checkedAt": "2026-08-09T18:27:01.224Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_991",
+      "title": "제로베이스",
+      "category": "식당",
+      "lat": 35.15741,
+      "lon": 129.12096,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "964331363",
+        "placeUrl": "https://place.map.kakao.com/964331363",
+        "matchedName": "제로베이스",
+        "matchedAddress": "부산 수영구 민락로33번길 17",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:01.225Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_992",
+      "title": "김정연분식 면옥향천",
+      "category": "식당",
+      "lat": 35.170124,
+      "lon": 129.13939,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:01.275Z"
+      }
+    },
+    {
+      "contentId": "poi_993",
+      "title": "모리",
+      "category": "식당",
+      "lat": 35.160202,
+      "lon": 129.16658,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1338618871",
+        "placeUrl": "https://place.map.kakao.com/1338618871",
+        "matchedName": "모리",
+        "matchedAddress": "부산 해운대구 해운대해변로298번길 24",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:01.339Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_994",
+      "title": "쇼진",
+      "category": "식당",
+      "lat": 35.163307,
+      "lon": 129.1596,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1357345445",
+        "placeUrl": "https://place.map.kakao.com/1357345445",
+        "matchedName": "쇼진",
+        "matchedAddress": "부산 해운대구 구남로 9",
+        "distanceM": 11,
+        "checkedAt": "2026-08-09T18:27:01.347Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_995",
+      "title": "우봉 샤브 청사포점",
+      "category": "식당",
+      "lat": 35.160713,
+      "lon": 129.19269,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:01.346Z"
+      }
+    },
+    {
+      "contentId": "poi_996",
+      "title": "하레마",
+      "category": "식당",
+      "lat": 35.157204,
+      "lon": 129.14482,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "249612197",
+        "placeUrl": "https://place.map.kakao.com/249612197",
+        "matchedName": "하레마",
+        "matchedAddress": "부산 해운대구 마린시티2로 33",
+        "distanceM": 107,
+        "checkedAt": "2026-08-09T18:27:01.397Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_998",
+      "title": "쥬가",
+      "category": "식당",
+      "lat": 35.165016,
+      "lon": 129.15915,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1045494579",
+        "placeUrl": "https://place.map.kakao.com/1045494579",
+        "matchedName": "앤쥬영어교습소",
+        "matchedAddress": "부산 수영구 수영로 711",
+        "distanceM": 3828,
+        "checkedAt": "2026-08-09T18:27:01.466Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_999",
+      "title": "쿠지라멘",
+      "category": "식당",
+      "lat": 35.166203,
+      "lon": 129.16014,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1031443847",
+        "placeUrl": "https://place.map.kakao.com/1031443847",
+        "matchedName": "쿠지라멘",
+        "matchedAddress": "부산 해운대구 우동2로 17",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:27:01.473Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1000",
+      "title": "고등어연구소 본점",
+      "category": "식당",
+      "lat": 35.104816,
+      "lon": 129.03603,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1240308093",
+        "placeUrl": "https://place.map.kakao.com/1240308093",
+        "matchedName": "고등어 연구소 본점",
+        "matchedAddress": "부산 중구 중앙대로 79-1",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:01.474Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1001",
+      "title": "야스마루 닌니쿠",
+      "category": "식당",
+      "lat": 35.15606,
+      "lon": 129.06438,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:01.520Z"
+      }
+    },
+    {
+      "contentId": "poi_1002",
+      "title": "지즈",
+      "category": "식당",
+      "lat": 35.15622,
+      "lon": 129.06595,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "474598513",
+        "placeUrl": "https://place.map.kakao.com/474598513",
+        "matchedName": "지즈",
+        "matchedAddress": "부산 부산진구 서전로58번길 34-1",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:27:01.594Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1003",
+      "title": "순사이쿠보",
+      "category": "식당",
+      "lat": 35.240913,
+      "lon": 129.01465,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:01.603Z"
+      }
+    },
+    {
+      "contentId": "poi_1005",
+      "title": "야키토리 해공",
+      "category": "식당",
+      "lat": 35.158234,
+      "lon": 129.1271,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1061132382",
+        "placeUrl": "https://place.map.kakao.com/1061132382",
+        "matchedName": "야키토리해공",
+        "matchedAddress": "부산 수영구 민락본동로19번길 30-5",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:01.602Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1006",
+      "title": "으뜸이로리바타",
+      "category": "식당",
+      "lat": 35.141987,
+      "lon": 129.10915,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1227688599",
+        "placeUrl": "https://place.map.kakao.com/1227688599",
+        "matchedName": "으뜸이로리바타",
+        "matchedAddress": "부산 해운대구 구남로 21",
+        "distanceM": 5189,
+        "checkedAt": "2026-08-09T18:27:01.648Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1007",
+      "title": "조이풀조이풀(골드핀치by조이풀조이풀)",
+      "category": "식당",
+      "lat": 35.157604,
+      "lon": 129.1274,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "539451236",
+        "placeUrl": "https://place.map.kakao.com/539451236",
+        "matchedName": "골드핀치by조이풀조이풀",
+        "matchedAddress": "부산 수영구 민락본동로11번길 21",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:01.718Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1008",
+      "title": "양귀빈식당 수영점",
+      "category": "식당",
+      "lat": 35.163265,
+      "lon": 129.116,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1629962533",
+        "placeUrl": "https://place.map.kakao.com/1629962533",
+        "matchedName": "양귀빈식당 수영점",
+        "matchedAddress": "부산 수영구 수영로646번길 15",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:01.736Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1009",
+      "title": "오공떵번",
+      "category": "식당",
+      "lat": 35.105663,
+      "lon": 128.9738,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1578285328",
+        "placeUrl": "https://place.map.kakao.com/1578285328",
+        "matchedName": "오공떵번 남천점",
+        "matchedAddress": "부산 수영구 남천동로108번길 31",
+        "distanceM": 13441,
+        "checkedAt": "2026-08-09T18:27:01.730Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1010",
+      "title": "부산대 포맨티코 본점",
+      "category": "식당",
+      "lat": 35.22843,
+      "lon": 129.08781,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:01.772Z"
+      }
+    },
+    {
+      "contentId": "poi_1011",
+      "title": "달타이",
+      "category": "식당",
+      "lat": 35.158108,
+      "lon": 129.18246,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27293054",
+        "placeUrl": "https://place.map.kakao.com/27293054",
+        "matchedName": "달타이",
+        "matchedAddress": "부산 해운대구 달맞이길 193",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:01.843Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1012",
+      "title": "란아한",
+      "category": "식당",
+      "lat": 35.15837,
+      "lon": 129.06421,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1034655937",
+        "placeUrl": "https://place.map.kakao.com/1034655937",
+        "matchedName": "란아한",
+        "matchedAddress": "부산 부산진구 서전로37번길 14-1",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:27:01.858Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1013",
+      "title": "바오하우스",
+      "category": "식당",
+      "lat": 35.154896,
+      "lon": 129.06335,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "950075258",
+        "placeUrl": "https://place.map.kakao.com/950075258",
+        "matchedName": "바오하우스",
+        "matchedAddress": "부산 부산진구 서전로38번길 62-9",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:01.859Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1015",
+      "title": "르꽁비브",
+      "category": "식당",
+      "lat": 35.176777,
+      "lon": 129.12552,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27418950",
+        "placeUrl": "https://place.map.kakao.com/27418950",
+        "matchedName": "르꽁비브",
+        "matchedAddress": "부산 해운대구 센텀북대로 60",
+        "distanceM": 9,
+        "checkedAt": "2026-08-09T18:27:01.903Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1017",
+      "title": "다이닝센 부산본점",
+      "category": "식당",
+      "lat": 35.124435,
+      "lon": 129.11235,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "24937817",
+        "placeUrl": "https://place.map.kakao.com/24937817",
+        "matchedName": "다이닝센 부산본점",
+        "matchedAddress": "부산 남구 용호로 88",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:27:01.969Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1019",
+      "title": "버거샵 서면",
+      "category": "식당",
+      "lat": 35.15856,
+      "lon": 129.06306,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1648529818",
+        "placeUrl": "https://place.map.kakao.com/1648529818",
+        "matchedName": "버거샵 서면점",
+        "matchedAddress": "부산 부산진구 동천로108번길 11",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:02.002Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1020",
+      "title": "영도우",
+      "category": "식당",
+      "lat": 35.08781,
+      "lon": 129.06128,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:01.982Z"
+      }
+    },
+    {
+      "contentId": "poi_1021",
+      "title": "로얄경양식&스테이크 광안점",
+      "category": "식당",
+      "lat": 35.153294,
+      "lon": 129.12462,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1720438329",
+        "placeUrl": "https://place.map.kakao.com/1720438329",
+        "matchedName": "로얄경양식&스테이크 광안점",
+        "matchedAddress": "부산 수영구 민락수변로 29",
+        "distanceM": 9,
+        "checkedAt": "2026-08-09T18:27:02.036Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1022",
+      "title": "솔리보",
+      "category": "식당",
+      "lat": 35.26711,
+      "lon": 129.23145,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "84404111",
+        "placeUrl": "https://place.map.kakao.com/84404111",
+        "matchedName": "솔리보",
+        "matchedAddress": "부산 기장군 일광읍 해송4로 21",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:27:02.098Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1025",
+      "title": "밀보스79",
+      "category": "식당",
+      "lat": 35.2058,
+      "lon": 129.08028,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1145030295",
+        "placeUrl": "https://place.map.kakao.com/1145030295",
+        "matchedName": "밀보스79",
+        "matchedAddress": "부산 동래구 명륜로129번나길 11",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:02.117Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1026",
+      "title": "1966정원 천성항점",
+      "category": "식당",
+      "lat": 35.028156,
+      "lon": 128.81578,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1129136947",
+        "placeUrl": "https://place.map.kakao.com/1129136947",
+        "matchedName": "1966정원 천성항점",
+        "matchedAddress": "부산 강서구 가덕해안로 787-1",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:27:02.131Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1027",
+      "title": "명란브랜드연구소",
+      "category": "식당",
+      "lat": 35.1171,
+      "lon": 129.03499,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "709474973",
+        "placeUrl": "https://place.map.kakao.com/709474973",
+        "matchedName": "명란브랜드연구소",
+        "matchedAddress": "부산 동구 영초윗길 22-1",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:02.165Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1028",
+      "title": "버거인뉴욕",
+      "category": "식당",
+      "lat": 35.16093,
+      "lon": 129.16469,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "22379193",
+        "placeUrl": "https://place.map.kakao.com/22379193",
+        "matchedName": "버거인뉴욕",
+        "matchedAddress": "부산 해운대구 해운대해변로298번길 9",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:02.234Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1029",
+      "title": "쉐프리",
+      "category": "식당",
+      "lat": 35.159615,
+      "lon": 129.15382,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1374316661",
+        "placeUrl": "https://place.map.kakao.com/1374316661",
+        "matchedName": "쉐프리",
+        "matchedAddress": "부산 해운대구 해운대해변로209번길 13",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:02.248Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1031",
+      "title": "음주양식당 오스테리아 어부",
+      "category": "식당",
+      "lat": 35.160614,
+      "lon": 129.15663,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:02.254Z"
+      }
+    },
+    {
+      "contentId": "poi_1033",
+      "title": "공담 파스타",
+      "category": "식당",
+      "lat": 35.215736,
+      "lon": 129.08414,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1871542688",
+        "placeUrl": "https://place.map.kakao.com/1871542688",
+        "matchedName": "공담파스타",
+        "matchedAddress": "부산 동래구 명륜로250번길 2",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:27:02.295Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1034",
+      "title": "코르 파스타 바",
+      "category": "식당",
+      "lat": 35.15265,
+      "lon": 129.06767,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1424438871",
+        "placeUrl": "https://place.map.kakao.com/1424438871",
+        "matchedName": "코르 파스타바",
+        "matchedAddress": "부산 부산진구 동성로25번길 13",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:02.360Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1035",
+      "title": "611WoodFire",
+      "category": "식당",
+      "lat": 35.147713,
+      "lon": 129.10889,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1415027729",
+        "placeUrl": "https://place.map.kakao.com/1415027729",
+        "matchedName": "611우드파이어",
+        "matchedAddress": "부산 수영구 황령산로 14-1",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:02.379Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1039",
+      "title": "아웃트로바이비토",
+      "category": "식당",
+      "lat": 35.15835,
+      "lon": 129.12785,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "932522914",
+        "placeUrl": "https://place.map.kakao.com/932522914",
+        "matchedName": "아웃트로바이비토",
+        "matchedAddress": "부산 수영구 민락본동로19번길 18",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:02.380Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1042",
+      "title": "팔레트",
+      "category": "식당",
+      "lat": 35.156513,
+      "lon": 129.17834,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1549531252",
+        "placeUrl": "https://place.map.kakao.com/1549531252",
+        "matchedName": "팔레트",
+        "matchedAddress": "부산 해운대구 달맞이길65번길 154",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:02.423Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1043",
+      "title": "델리봉",
+      "category": "식당",
+      "lat": 35.19158,
+      "lon": 129.09442,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1647204259",
+        "placeUrl": "https://place.map.kakao.com/1647204259",
+        "matchedName": "델리봉",
+        "matchedAddress": "부산 수영구 민락로27번길 4",
+        "distanceM": 4513,
+        "checkedAt": "2026-08-09T18:27:02.487Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1044",
+      "title": "아펙트",
+      "category": "식당",
+      "lat": 35.159874,
+      "lon": 129.12129,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1310839489",
+        "placeUrl": "https://place.map.kakao.com/1310839489",
+        "matchedName": "아펙트",
+        "matchedAddress": "부산 수영구 무학로64번길 31",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:02.505Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1045",
+      "title": "모모스커피",
+      "category": "카페",
+      "lat": 35.21928,
+      "lon": 129.08643,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27259030",
+        "placeUrl": "https://place.map.kakao.com/27259030",
+        "matchedName": "모모스커피 부산본점",
+        "matchedAddress": "부산 금정구 오시게로 20",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:27:02.499Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1046",
+      "title": "파니니브런치",
+      "category": "식당",
+      "lat": 35.12544,
+      "lon": 128.96982,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "400979153",
+        "placeUrl": "https://place.map.kakao.com/400979153",
+        "matchedName": "파니니브런치",
+        "matchedAddress": "부산 사상구 엄궁남로 15",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:02.554Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1049",
+      "title": "피아크 카페&베이커리",
+      "category": "카페",
+      "lat": 35.08665,
+      "lon": 129.077,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "770936841",
+        "placeUrl": "https://place.map.kakao.com/770936841",
+        "matchedName": "피아크 카페엔베이커리",
+        "matchedAddress": "부산 영도구 해양로195번길 180",
+        "distanceM": 38,
+        "checkedAt": "2026-08-09T18:27:02.613Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1050",
+      "title": "큐제",
+      "category": "식당",
+      "lat": 35.26486,
+      "lon": 129.08542,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1493120676",
+        "placeUrl": "https://place.map.kakao.com/1493120676",
+        "matchedName": "큐제",
+        "matchedAddress": "부산 연제구 중앙대로1043번길 34",
+        "distanceM": 9297,
+        "checkedAt": "2026-08-09T18:27:02.620Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1051",
+      "title": "커피스가모 인 서면",
+      "category": "카페",
+      "lat": 35.15878,
+      "lon": 129.05403,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2073861584",
+        "placeUrl": "https://place.map.kakao.com/2073861584",
+        "matchedName": "커피스가모인서면",
+        "matchedAddress": "부산 부산진구 가야대로755번길 23",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:27:02.632Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1052",
+      "title": "이흥용과자점 부산대직영점",
+      "category": "카페",
+      "lat": 35.23029,
+      "lon": 129.08397,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "819373419",
+        "placeUrl": "https://place.map.kakao.com/819373419",
+        "matchedName": "이흥용과자점 부산대직영점",
+        "matchedAddress": "부산 금정구 부산대학로63번길 30",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:27:02.683Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1053",
+      "title": "용호동할매팥빙수단팥죽 본점",
+      "category": "식당",
+      "lat": 35.124126,
+      "lon": 129.11104,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "14510750",
+        "placeUrl": "https://place.map.kakao.com/14510750",
+        "matchedName": "할매팥빙수단팥죽 용호동본점",
+        "matchedAddress": "부산 남구 용호로90번길 24",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:27:02.758Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1054",
+      "title": "올드머그",
+      "category": "식당",
+      "lat": 35.17039,
+      "lon": 129.19714,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "370454381",
+        "placeUrl": "https://place.map.kakao.com/370454381",
+        "matchedName": "올드머그",
+        "matchedAddress": "부산 해운대구 송정구덕포길 122",
+        "distanceM": 14,
+        "checkedAt": "2026-08-09T18:27:02.753Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1055",
+      "title": "빌라빌레쿨라",
+      "category": "식당",
+      "lat": 35.198376,
+      "lon": 129.06964,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1573410590",
+        "placeUrl": "https://place.map.kakao.com/1573410590",
+        "matchedName": "빌라빌레쿨라",
+        "matchedAddress": "부산 동래구 여고로63번나길 8",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:27:02.759Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1056",
+      "title": "bread365",
+      "category": "식당",
+      "lat": 35.135845,
+      "lon": 129.08633,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1682566342",
+        "placeUrl": "https://place.map.kakao.com/1682566342",
+        "matchedName": "브레드365",
+        "matchedAddress": "부산 남구 못골로41번길 13",
+        "distanceM": 22,
+        "checkedAt": "2026-08-09T18:27:02.809Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1057",
+      "title": "보리종파티세리 본점",
+      "category": "카페",
+      "lat": 35.233204,
+      "lon": 129.09138,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1366849652",
+        "placeUrl": "https://place.map.kakao.com/1366849652",
+        "matchedName": "보리종파티세리 본점",
+        "matchedAddress": "부산 금정구 중앙대로 1667",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:02.878Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1059",
+      "title": "토북베이커리",
+      "category": "카페",
+      "lat": 35.11187,
+      "lon": 128.87785,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2111691321",
+        "placeUrl": "https://place.map.kakao.com/2111691321",
+        "matchedName": "토북베이커리카페",
+        "matchedAddress": "부산 강서구 낙동남로 526-1",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:02.890Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1060",
+      "title": "카페호밀",
+      "category": "카페",
+      "lat": 35.22877,
+      "lon": 129.07726,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1128230303",
+        "placeUrl": "https://place.map.kakao.com/1128230303",
+        "matchedName": "카페호밀",
+        "matchedAddress": "부산 금정구 금샘로 34",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:02.878Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1062",
+      "title": "프랑스 과자점 브리앙",
+      "category": "식당",
+      "lat": 35.221756,
+      "lon": 129.08356,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "63821452",
+        "placeUrl": "https://place.map.kakao.com/63821452",
+        "matchedName": "브리앙",
+        "matchedAddress": "부산 동래구 온천장로119번길 26",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:27:02.937Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1063",
+      "title": "베르크로스터스",
+      "category": "식당",
+      "lat": 35.152615,
+      "lon": 129.06628,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1618885359",
+        "placeUrl": "https://place.map.kakao.com/1618885359",
+        "matchedName": "베르크로스터스",
+        "matchedAddress": "부산 수영구 수영로 566",
+        "distanceM": 4264,
+        "checkedAt": "2026-08-09T18:27:03.001Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1064",
+      "title": "무슈뱅상",
+      "category": "식당",
+      "lat": 35.146374,
+      "lon": 129.11293,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1547332567",
+        "placeUrl": "https://place.map.kakao.com/1547332567",
+        "matchedName": "무슈뱅상",
+        "matchedAddress": "부산 수영구 광남로48번길 19",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:27:03.012Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1065",
+      "title": "그리다부부",
+      "category": "카페",
+      "lat": 35.102577,
+      "lon": 129.03072,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "68040813",
+        "placeUrl": "https://place.map.kakao.com/68040813",
+        "matchedName": "그리다부부",
+        "matchedAddress": "부산 중구 광복중앙로 35-1",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:03.011Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1067",
+      "title": "비비비당",
+      "category": "식당",
+      "lat": 35.16249,
+      "lon": 129.18504,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "18451449",
+        "placeUrl": "https://place.map.kakao.com/18451449",
+        "matchedName": "비비비당",
+        "matchedAddress": "부산 해운대구 달맞이길 239-16",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:27:03.061Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1068",
+      "title": "보느파티쓰리",
+      "category": "카페",
+      "lat": 35.19527,
+      "lon": 129.07895,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1726616696",
+        "placeUrl": "https://place.map.kakao.com/1726616696",
+        "matchedName": "보느파티쓰리",
+        "matchedAddress": "부산 연제구 교대로 7",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:03.129Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1069",
+      "title": "데일리럭키",
+      "category": "식당",
+      "lat": 35.153927,
+      "lon": 129.11264,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1521380547",
+        "placeUrl": "https://place.map.kakao.com/1521380547",
+        "matchedName": "데일리럭키",
+        "matchedAddress": "부산 수영구 수영로540번길 7",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:27:03.137Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1070",
+      "title": "연화제과",
+      "category": "카페",
+      "lat": 35.179752,
+      "lon": 129.04688,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1261418525",
+        "placeUrl": "https://place.map.kakao.com/1261418525",
+        "matchedName": "연화제과",
+        "matchedAddress": "부산 부산진구 새싹로265번길 12",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:27:03.134Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1071",
+      "title": "히떼로스터리 전포점",
+      "category": "카페",
+      "lat": 35.15574,
+      "lon": 129.06819,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "674785352",
+        "placeUrl": "https://place.map.kakao.com/674785352",
+        "matchedName": "히떼로스터리",
+        "matchedAddress": "부산 부산진구 동성로 59",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:03.186Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1072",
+      "title": "부흥식당",
+      "category": "식당",
+      "lat": 35.085815,
+      "lon": 129.04071,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10461585",
+        "placeUrl": "https://place.map.kakao.com/10461585",
+        "matchedName": "부흥식당",
+        "matchedAddress": "부산 영도구 절영로 104",
+        "distanceM": 9,
+        "checkedAt": "2026-08-09T18:27:03.289Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1075",
+      "title": "대티물꽁",
+      "category": "식당",
+      "lat": 35.10239,
+      "lon": 129.00041,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "12094991",
+        "placeUrl": "https://place.map.kakao.com/12094991",
+        "matchedName": "대티물꽁",
+        "matchedAddress": "부산 사하구 낙동대로135번안길 15",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:27:03.259Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1077",
+      "title": "초원복국",
+      "category": "식당",
+      "lat": 35.137794,
+      "lon": 129.10591,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8099717",
+        "placeUrl": "https://place.map.kakao.com/8099717",
+        "matchedName": "초원복국 대연점",
+        "matchedAddress": "부산 남구 황령대로492번길 30",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:27:03.255Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1078",
+      "title": "무궁화",
+      "category": "식당",
+      "lat": 35.14778,
+      "lon": 129.10925,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16896389",
+        "placeUrl": "https://place.map.kakao.com/16896389",
+        "matchedName": "무궁화",
+        "matchedAddress": "부산 수영구 황령산로8번길 5",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:27:03.317Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1080",
+      "title": "궁중해물탕 조씨집 대연본점",
+      "category": "식당",
+      "lat": 35.13556,
+      "lon": 129.09119,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:03.388Z"
+      }
+    },
+    {
+      "contentId": "poi_1083",
+      "title": "오대양횟집",
+      "category": "식당",
+      "lat": 35.150047,
+      "lon": 129.01125,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16231105",
+        "placeUrl": "https://place.map.kakao.com/16231105",
+        "matchedName": "오대양횟집",
+        "matchedAddress": "부산 사상구 주례로 12",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:27:03.390Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1085",
+      "title": "일미아구찜",
+      "category": "식당",
+      "lat": 35.25894,
+      "lon": 129.24767,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9368015",
+        "placeUrl": "https://place.map.kakao.com/9368015",
+        "matchedName": "일미아구찜",
+        "matchedAddress": "부산 기장군 일광읍 학리등대로 102",
+        "distanceM": 5,
+        "checkedAt": "2026-08-09T18:27:03.425Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1086",
+      "title": "무진장횟집 기장점",
+      "category": "식당",
+      "lat": 35.216946,
+      "lon": 129.22612,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10419530",
+        "placeUrl": "https://place.map.kakao.com/10419530",
+        "matchedName": "무진장횟집",
+        "matchedAddress": "부산 기장군 기장읍 연화1길 137",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:03.448Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1087",
+      "title": "고등어다찌  연산본점",
+      "category": "식당",
+      "lat": 35.187637,
+      "lon": 129.08607,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "12743016",
+        "placeUrl": "https://place.map.kakao.com/12743016",
+        "matchedName": "고등어다찌 연산동본점",
+        "matchedAddress": "부산 연제구 고분로31번길 42",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:03.518Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1088",
+      "title": "우리포차",
+      "category": "식당",
+      "lat": 35.161915,
+      "lon": 129.11087,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16870107",
+        "placeUrl": "https://place.map.kakao.com/16870107",
+        "matchedName": "우리포차 본점",
+        "matchedAddress": "부산 수영구 광일로29번길 9",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:27:03.525Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1089",
+      "title": "옛날오막집",
+      "category": "식당",
+      "lat": 35.108913,
+      "lon": 129.0199,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "25050154",
+        "placeUrl": "https://place.map.kakao.com/25050154",
+        "matchedName": "옛날오막집",
+        "matchedAddress": "부산 서구 구덕로274번길 14",
+        "distanceM": 4,
+        "checkedAt": "2026-08-09T18:27:03.556Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1090",
+      "title": "오륙도 가원",
+      "category": "식당",
+      "lat": 35.106773,
+      "lon": 129.11171,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1690966111",
+        "placeUrl": "https://place.map.kakao.com/1690966111",
+        "matchedName": "베이커리카페 가원",
+        "matchedAddress": "부산 남구 백운포로 14",
+        "distanceM": 33,
+        "checkedAt": "2026-08-09T18:27:03.577Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1091",
+      "title": "남촌",
+      "category": "식당",
+      "lat": 35.21074,
+      "lon": 129.00595,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1632450848",
+        "placeUrl": "https://place.map.kakao.com/1632450848",
+        "matchedName": "고향소갈비찜&남촌흑돼지",
+        "matchedAddress": "부산 북구 금곡대로8번길 14",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:03.653Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1092",
+      "title": "호포갈비 문현점",
+      "category": "식당",
+      "lat": 35.13401,
+      "lon": 129.06631,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "374603357",
+        "placeUrl": "https://place.map.kakao.com/374603357",
+        "matchedName": "호포갈비 문현점",
+        "matchedAddress": "부산 남구 우암로 359",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:03.656Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1094",
+      "title": "장어촌",
+      "category": "식당",
+      "lat": 35.15863,
+      "lon": 129.05667,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "190887578",
+        "placeUrl": "https://place.map.kakao.com/190887578",
+        "matchedName": "장어촌",
+        "matchedAddress": "부산 부산진구 부전로96번길 36",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:03.681Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1095",
+      "title": "육화목",
+      "category": "식당",
+      "lat": 35.16929,
+      "lon": 129.17072,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "26434591",
+        "placeUrl": "https://place.map.kakao.com/26434591",
+        "matchedName": "육화목",
+        "matchedAddress": "부산 해운대구 좌동순환로8번길 78",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:03.702Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1097",
+      "title": "앙탄",
+      "category": "식당",
+      "lat": 35.204876,
+      "lon": 128.90659,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "2012872650",
+        "placeUrl": "https://place.map.kakao.com/2012872650",
+        "matchedName": "앙탄",
+        "matchedAddress": "부산 강서구 식만로 118-1",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:03.779Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1098",
+      "title": "88돼지갈비",
+      "category": "식당",
+      "lat": 35.128063,
+      "lon": 129.04562,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10888880",
+        "placeUrl": "https://place.map.kakao.com/10888880",
+        "matchedName": "88돼지숯불갈비",
+        "matchedAddress": "부산 동구 고관로 101-1",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:03.784Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1099",
+      "title": "초필살돼지구이 해운대 본점",
+      "category": "식당",
+      "lat": 35.156647,
+      "lon": 129.14693,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27485287",
+        "placeUrl": "https://place.map.kakao.com/27485287",
+        "matchedName": "초필살돼지구이 본점",
+        "matchedAddress": "부산 해운대구 마린시티3로 23",
+        "distanceM": 36,
+        "checkedAt": "2026-08-09T18:27:03.815Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1101",
+      "title": "30년전통가마솥석쇠돼지갈비",
+      "category": "식당",
+      "lat": 35.1689,
+      "lon": 129.17159,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:03.859Z"
+      }
+    },
+    {
+      "contentId": "poi_1103",
+      "title": "고기형",
+      "category": "식당",
+      "lat": 35.166687,
+      "lon": 129.11377,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "948507484",
+        "placeUrl": "https://place.map.kakao.com/948507484",
+        "matchedName": "고기형",
+        "matchedAddress": "부산 수영구 수영로679번길 22",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:03.908Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1104",
+      "title": "우봉샤브",
+      "category": "식당",
+      "lat": 35.1607,
+      "lon": 129.19267,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1173785106",
+        "placeUrl": "https://place.map.kakao.com/1173785106",
+        "matchedName": "우봉",
+        "matchedAddress": "부산 해운대구 우동 1434-2",
+        "distanceM": 4037,
+        "checkedAt": "2026-08-09T18:27:03.917Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1105",
+      "title": "쌍둥이돼지국밥",
+      "category": "식당",
+      "lat": 35.13177,
+      "lon": 129.0923,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "349525135",
+        "placeUrl": "https://place.map.kakao.com/349525135",
+        "matchedName": "쌍둥이돼지국밥 본점",
+        "matchedAddress": "부산 남구 유엔평화로 35-1",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:03.947Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1107",
+      "title": "언양불고기부산집",
+      "category": "식당",
+      "lat": 35.14793,
+      "lon": 129.11354,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7992853",
+        "placeUrl": "https://place.map.kakao.com/7992853",
+        "matchedName": "언양불고기 부산집",
+        "matchedAddress": "부산 수영구 남천바다로 32",
+        "distanceM": 3,
+        "checkedAt": "2026-08-09T18:27:03.989Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1108",
+      "title": "은해갈치",
+      "category": "식당",
+      "lat": 35.157005,
+      "lon": 129.12592,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1445749584",
+        "placeUrl": "https://place.map.kakao.com/1445749584",
+        "matchedName": "은해갈치구이",
+        "matchedAddress": "부산 수영구 광안해변로295번길 4-7",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:04.035Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1109",
+      "title": "새총횟집",
+      "category": "식당",
+      "lat": 35.205696,
+      "lon": 129.12448,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "16630029",
+        "placeUrl": "https://place.map.kakao.com/16630029",
+        "matchedName": "새총횟집",
+        "matchedAddress": "부산 해운대구 반여로155번길 25",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:04.040Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1110",
+      "title": "초필살돼지구이",
+      "category": "식당",
+      "lat": 35.156647,
+      "lon": 129.14693,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27485287",
+        "placeUrl": "https://place.map.kakao.com/27485287",
+        "matchedName": "초필살돼지구이 본점",
+        "matchedAddress": "부산 해운대구 마린시티3로 23",
+        "distanceM": 36,
+        "checkedAt": "2026-08-09T18:27:04.069Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1111",
+      "title": "거대숯불구이",
+      "category": "식당",
+      "lat": 35.161602,
+      "lon": 129.16695,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "971507163",
+        "placeUrl": "https://place.map.kakao.com/971507163",
+        "matchedName": "거대숯불구이 주차장",
+        "matchedAddress": "부산 해운대구 좌동순환로 459",
+        "distanceM": 345,
+        "checkedAt": "2026-08-09T18:27:04.115Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1112",
+      "title": "아저씨대구탕",
+      "category": "식당",
+      "lat": 35.158676,
+      "lon": 129.17163,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8425381",
+        "placeUrl": "https://place.map.kakao.com/8425381",
+        "matchedName": "아저씨대구탕",
+        "matchedAddress": "부산 해운대구 달맞이길62번가길 31",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:27:04.158Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1113",
+      "title": "모즈",
+      "category": "식당",
+      "lat": 35.15704,
+      "lon": 129.14333,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "271923747",
+        "placeUrl": "https://place.map.kakao.com/271923747",
+        "matchedName": "필모즈&메리티 해운대점",
+        "matchedAddress": "부산 해운대구 대천로 187",
+        "distanceM": 3542,
+        "checkedAt": "2026-08-09T18:27:04.161Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1114",
+      "title": "스시이루카",
+      "category": "식당",
+      "lat": 35.15704,
+      "lon": 129.14333,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1215331584",
+        "placeUrl": "https://place.map.kakao.com/1215331584",
+        "matchedName": "스시이루카",
+        "matchedAddress": "부산 해운대구 마린시티2로 38",
+        "distanceM": 148,
+        "checkedAt": "2026-08-09T18:27:04.207Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1115",
+      "title": "떼떼오네",
+      "category": "식당",
+      "lat": 35.152622,
+      "lon": 129.06642,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:04.244Z"
+      }
+    },
+    {
+      "contentId": "poi_1116",
+      "title": "레땅",
+      "category": "식당",
+      "lat": 35.172516,
+      "lon": 129.05516,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1825553538",
+        "placeUrl": "https://place.map.kakao.com/1825553538",
+        "matchedName": "레땅",
+        "matchedAddress": "부산 부산진구 성지로 22",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:04.290Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1117",
+      "title": "라이옥",
+      "category": "식당",
+      "lat": 35.138275,
+      "lon": 129.10408,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "27572026",
+        "placeUrl": "https://place.map.kakao.com/27572026",
+        "matchedName": "라이옥 본점",
+        "matchedAddress": "부산 남구 용소로7번길 76",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:04.290Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1118",
+      "title": "알로이타이레스토랑",
+      "category": "식당",
+      "lat": 35.16252,
+      "lon": 129.12901,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "58867433",
+        "placeUrl": "https://place.map.kakao.com/58867433",
+        "matchedName": "알로이",
+        "matchedAddress": "부산 수영구 민락수변로239번길 26",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:04.347Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1119",
+      "title": "쥬가정효",
+      "category": "식당",
+      "lat": 35.165035,
+      "lon": 129.15915,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "647928144",
+        "placeUrl": "https://place.map.kakao.com/647928144",
+        "matchedName": "쥬가정효",
+        "matchedAddress": "부산 해운대구 해운대로 620",
+        "distanceM": 239,
+        "checkedAt": "2026-08-09T18:27:04.371Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1121",
+      "title": "거북선횟집",
+      "category": "식당",
+      "lat": 35.156822,
+      "lon": 129.17397,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8169194",
+        "placeUrl": "https://place.map.kakao.com/8169194",
+        "matchedName": "거북선횟집",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 69",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:04.423Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1122",
+      "title": "고스락",
+      "category": "식당",
+      "lat": 35.322273,
+      "lon": 129.26978,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "19083817",
+        "placeUrl": "https://place.map.kakao.com/19083817",
+        "matchedName": "고스락",
+        "matchedAddress": "부산 기장군 장안읍 해맞이로 286",
+        "distanceM": 61,
+        "checkedAt": "2026-08-09T18:27:04.414Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1123",
+      "title": "규우정",
+      "category": "식당",
+      "lat": 35.15723,
+      "lon": 129.17676,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "218776646",
+        "placeUrl": "https://place.map.kakao.com/218776646",
+        "matchedName": "규우정",
+        "matchedAddress": "부산 해운대구 해운대해변로298번길 24",
+        "distanceM": 983,
+        "checkedAt": "2026-08-09T18:27:04.468Z",
+        "status": "weak"
+      }
+    },
+    {
+      "contentId": "poi_1128",
+      "title": "남풍",
+      "category": "식당",
+      "lat": 35.16022,
+      "lon": 129.16527,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7913134",
+        "placeUrl": "https://place.map.kakao.com/7913134",
+        "matchedName": "남풍 파라다이스호텔 부산점",
+        "matchedAddress": "부산 해운대구 해운대해변로 296",
+        "distanceM": 7,
+        "checkedAt": "2026-08-09T18:27:04.494Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1129",
+      "title": "마이클어반팜테이블",
+      "category": "식당",
+      "lat": 35.176235,
+      "lon": 129.11557,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "209315714",
+        "placeUrl": "https://place.map.kakao.com/209315714",
+        "matchedName": "마이클 어반팜테이블",
+        "matchedAddress": "부산 수영구 구락로123번길 20",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:04.538Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1131",
+      "title": "사까에",
+      "category": "식당",
+      "lat": 35.16022,
+      "lon": 129.16527,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "11054936",
+        "placeUrl": "https://place.map.kakao.com/11054936",
+        "matchedName": "부산파라다이스호텔 사까에",
+        "matchedAddress": "부산 해운대구 해운대해변로 296",
+        "distanceM": 6,
+        "checkedAt": "2026-08-09T18:27:04.545Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1132",
+      "title": "셔블",
+      "category": "식당",
+      "lat": 35.155994,
+      "lon": 129.15404,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "21335696",
+        "placeUrl": "https://place.map.kakao.com/21335696",
+        "matchedName": "웨스틴조선부산 셔블",
+        "matchedAddress": "부산 해운대구 동백로 67",
+        "distanceM": 12,
+        "checkedAt": "2026-08-09T18:27:04.591Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1134",
+      "title": "아오모리",
+      "category": "식당",
+      "lat": 35.167812,
+      "lon": 129.13281,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "7990875",
+        "placeUrl": "https://place.map.kakao.com/7990875",
+        "matchedName": "아오모리",
+        "matchedAddress": "부산 해운대구 센텀3로 20",
+        "distanceM": 18,
+        "checkedAt": "2026-08-09T18:27:04.631Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1135",
+      "title": "율링",
+      "category": "식당",
+      "lat": 35.158867,
+      "lon": 129.1706,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1310091322",
+        "placeUrl": "https://place.map.kakao.com/1310091322",
+        "matchedName": "율링",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 28",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:04.664Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1136",
+      "title": "차오란",
+      "category": "식당",
+      "lat": 35.16133,
+      "lon": 129.16801,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1656483020",
+        "placeUrl": "https://place.map.kakao.com/1656483020",
+        "matchedName": "차오란",
+        "matchedAddress": "부산 해운대구 달맞이길 30",
+        "distanceM": 218,
+        "checkedAt": "2026-08-09T18:27:04.659Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1138",
+      "title": "금용",
+      "category": "식당",
+      "lat": 35.205463,
+      "lon": 128.99666,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8792300",
+        "placeUrl": "https://place.map.kakao.com/8792300",
+        "matchedName": "금용",
+        "matchedAddress": "부산 북구 구포만세길 75",
+        "distanceM": 0,
+        "checkedAt": "2026-08-09T18:27:04.716Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1140",
+      "title": "박옥희할매집원조복국",
+      "category": "식당",
+      "lat": 35.158867,
+      "lon": 129.1706,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "10925715",
+        "placeUrl": "https://place.map.kakao.com/10925715",
+        "matchedName": "박옥희할매집원조복국",
+        "matchedAddress": "부산 해운대구 달맞이길62번길 28",
+        "distanceM": 10,
+        "checkedAt": "2026-08-09T18:27:04.763Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1141",
+      "title": "백구당",
+      "category": "카페",
+      "lat": 35.10482,
+      "lon": 129.03575,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "9821843",
+        "placeUrl": "https://place.map.kakao.com/9821843",
+        "matchedName": "백구당",
+        "matchedAddress": "부산 중구 중앙대로81번길 3",
+        "distanceM": 2,
+        "checkedAt": "2026-08-09T18:27:04.781Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1149",
+      "title": "할매재첩국",
+      "category": "식당",
+      "lat": 35.193363,
+      "lon": 128.98607,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1531629877",
+        "placeUrl": "https://place.map.kakao.com/1531629877",
+        "matchedName": "할매재첩국",
+        "matchedAddress": "부산 사상구 낙동대로1530번길 20-15",
+        "distanceM": 18,
+        "checkedAt": "2026-08-09T18:27:04.793Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1150",
+      "title": "해운대소문난암소갈비집",
+      "category": "식당",
+      "lat": 35.163235,
+      "lon": 129.16628,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "8149130",
+        "placeUrl": "https://place.map.kakao.com/8149130",
+        "matchedName": "해운대암소갈비집",
+        "matchedAddress": "부산 해운대구 해운대해변로 333",
+        "distanceM": 22,
+        "checkedAt": "2026-08-09T18:27:04.848Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1152",
+      "title": "머그디저트랩",
+      "category": "카페",
+      "lat": 35.15704,
+      "lon": 129.14333,
+      "mapVerification": {
+        "provider": "kakao",
+        "status": "not_found",
+        "checkedAt": "2026-08-09T18:27:04.888Z"
+      }
+    },
+    {
+      "contentId": "poi_1153",
+      "title": "보느파티쓰 리",
+      "category": "카페",
+      "lat": 35.195267,
+      "lon": 35.195267,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1726616696",
+        "placeUrl": "https://place.map.kakao.com/1726616696",
+        "matchedName": "보느파티쓰리",
+        "matchedAddress": "부산 연제구 교대로 7",
+        "distanceM": 8153216,
+        "checkedAt": "2026-08-09T18:27:04.905Z",
+        "status": "not_found"
+      }
+    },
+    {
+      "contentId": "poi_1154",
+      "title": "브레드365",
+      "category": "카페",
+      "lat": 35.135815,
+      "lon": 129.08633,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "1682566342",
+        "placeUrl": "https://place.map.kakao.com/1682566342",
+        "matchedName": "브레드365",
+        "matchedAddress": "부산 남구 못골로41번길 13",
+        "distanceM": 22,
+        "checkedAt": "2026-08-09T18:27:04.911Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1155",
+      "title": "브리앙",
+      "category": "식당",
+      "lat": 35.221756,
+      "lon": 129.08356,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "63821452",
+        "placeUrl": "https://place.map.kakao.com/63821452",
+        "matchedName": "브리앙",
+        "matchedAddress": "부산 동래구 온천장로119번길 26",
+        "distanceM": 8,
+        "checkedAt": "2026-08-09T18:27:04.981Z",
+        "status": "verified"
+      }
+    },
+    {
+      "contentId": "poi_1158",
+      "title": "히떼로스터리",
+      "category": "카페",
+      "lat": 35.155754,
+      "lon": 129.0682,
+      "mapVerification": {
+        "provider": "kakao",
+        "placeId": "674785352",
+        "placeUrl": "https://place.map.kakao.com/674785352",
+        "matchedName": "히떼로스터리",
+        "matchedAddress": "부산 부산진구 동성로 59",
+        "distanceM": 1,
+        "checkedAt": "2026-08-09T18:27:05.025Z",
+        "status": "verified"
+      }
+    }
+  ]
+}

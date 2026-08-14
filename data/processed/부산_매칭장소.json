@@ -34,7 +34,13 @@
       "호스텔",
       "콘도"
     ],
-    "note": "AI-Hub 원본 미탑재. 부산 TourAPI 장소 중 AI-Hub 부산 방문지와 매칭된 후보를 앱 번들용 집계 파라미터로 사용. 음식점/카페는 추천 가능 여부보다 이동 후 체류 가능 시간 안내를 중심으로 사용."
+    "note": "AI-Hub 원본 미탑재. 부산 TourAPI 장소 중 AI-Hub 부산 방문지와 매칭된 후보를 앱 번들용 집계 파라미터로 사용. 음식점/카페는 추천 가능 여부보다 이동 후 체류 가능 시간 안내를 중심으로 사용.",
+    "scopeRemap": {
+      "generatedAt": "2026-08-09T17:45:29.450Z",
+      "purpose": "시장·거리·골목 등 포괄 관광지의 AIHub 체류시간이 내부 개별 장소에 잘못 적용되지 않도록 기존 A 장소를 재분류한다.",
+      "method": "부산 공식 데이터와 같은 포괄 장소 키워드 및 유형별 반경 규칙을 적용했다. 내부 장소는 현재 추천에서 제외하고, 독립 장소의 좌표 단독 AIHub 매칭은 카테고리 체류시간으로 폴백한다.",
+      "limitation": "반경 기반 내부장소 판정은 검토용이다. 실제 상권 경계가 없어 주소·지도 확인 후 확정해야 한다."
+    }
   },
   "summary": {
     "tourCandidates": 610,
@@ -88,6 +94,25 @@
       "not_found": 15,
       "verified": 102,
       "weak": 5
+    },
+    "scopeRemap": {
+      "total": 122,
+      "scope": {
+        "포괄장소": 22,
+        "내부장소_검토": 25,
+        "독립장소": 75
+      },
+      "dwellPolicy": {
+        "category_dwell_fallback": 53,
+        "area_dwell_from_existing_aihub_match": 22,
+        "do_not_inherit_parent_dwell": 25,
+        "individual_dwell_from_aihub": 22
+      },
+      "originalMatchType": {
+        "coord": 86,
+        "name+coord": 35,
+        "name": 1
+      }
     }
   },
   "data": [
@@ -119,6 +144,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:19.317Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -154,6 +188,15 @@
         "matchedAddress": "부산 영도구 영선동4가 1210-38",
         "distanceM": 383,
         "checkedAt": "2026-08-08T12:22:19.430Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "해변·해안",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 해변·해안 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -191,6 +234,15 @@
         "matchedAddress": "부산 해운대구 센텀남대로 35",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:19.574Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 쇼핑복합공간 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -226,6 +278,15 @@
         "matchedAddress": "부산 해운대구 달맞이길62번길 13",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:19.716Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -263,6 +324,15 @@
         "matchedAddress": "부산 중구 부평1길 48",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:19.851Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -300,6 +370,15 @@
         "matchedAddress": "부산 중구 부평2길 44",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:19.965Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -335,6 +414,21 @@
         "matchedAddress": "부산 중구 부평1길 48",
         "distanceM": 15,
         "checkedAt": "2026-08-08T12:22:20.084Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "TourAPI",
+          "id": "132550",
+          "title": "부평동한복거리",
+          "kind": "거리·골목",
+          "distanceM": 51
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -368,6 +462,15 @@
         "matchedAddress": "부산 해운대구 송정중앙로8번길 60",
         "distanceM": 3574,
         "checkedAt": "2026-08-08T12:22:20.243Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -405,6 +508,15 @@
         "matchedAddress": "부산 중구 국제시장2길 26-1",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:20.359Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -440,6 +552,15 @@
         "matchedAddress": "부산 중구 창선동2가 40-5",
         "distanceM": 201,
         "checkedAt": "2026-08-08T12:22:20.489Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -475,6 +596,15 @@
         "matchedAddress": "부산 중구 중구로 31",
         "distanceM": 10,
         "checkedAt": "2026-08-08T12:22:20.597Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -512,6 +642,15 @@
         "matchedAddress": "부산 중구 신창동3가 24-1",
         "distanceM": 23,
         "checkedAt": "2026-08-08T12:22:20.786Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -547,6 +686,21 @@
         "matchedAddress": "부산 중구 중구로29번길 17",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:20.894Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "TourAPI",
+          "id": "985921",
+          "title": "미술의거리",
+          "kind": "거리·골목",
+          "distanceM": 88
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 카페 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -584,6 +738,15 @@
         "matchedAddress": "부산 중구 자갈치해안로 52",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:21.026Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -619,6 +782,21 @@
         "matchedAddress": "부산 중구 자갈치해안로 55",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:21.151Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "TourAPI",
+          "id": "132190",
+          "title": "부산 자갈치시장",
+          "kind": "시장",
+          "distanceM": 72
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -656,6 +834,15 @@
         "matchedAddress": "부산 중구 자갈치로 42",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:21.297Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -686,6 +873,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:21.410Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -721,6 +917,15 @@
         "matchedAddress": "부산 중구 자갈치해안로 60",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:21.540Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -756,6 +961,21 @@
         "matchedAddress": "부산 중구 대교로 103",
         "distanceM": 10,
         "checkedAt": "2026-08-08T12:22:21.660Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "롯데백화점광복점",
+          "title": "롯데백화점 광복점",
+          "kind": "쇼핑복합공간",
+          "distanceM": 153
+        },
+        "evidence": "쇼핑복합공간 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -791,6 +1011,15 @@
         "matchedAddress": "부산 해운대구 동백로 99",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:21.822Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 공원·정원 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -826,6 +1055,21 @@
         "matchedAddress": "부산 해운대구 구남로41번길 12",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:21.937Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "해운대시장",
+          "title": "해운대시장",
+          "kind": "시장",
+          "distanceM": 68
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -861,6 +1105,15 @@
         "matchedAddress": "부산 동구 중앙대로 225",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:22.076Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -896,6 +1149,15 @@
         "matchedAddress": "부산 해운대구 우동 708-3",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:22.194Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -931,6 +1193,15 @@
         "matchedAddress": "부산 해운대구 해운대해변로 302",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:22.350Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -966,6 +1237,15 @@
         "matchedAddress": "부산 기장군 기장읍 동부산관광로 42",
         "distanceM": 17,
         "checkedAt": "2026-08-08T12:22:22.470Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1001,6 +1281,15 @@
         "matchedAddress": "부산 해운대구 APEC로 58",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:22.587Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1036,6 +1325,21 @@
         "matchedAddress": "부산 동구 대영로243번길 64",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:22.711Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "상해거리",
+          "title": "상해거리",
+          "kind": "거리·골목",
+          "distanceM": 141
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -1066,6 +1370,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:22.857Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1101,6 +1414,15 @@
         "matchedAddress": "부산 기장군 철마면 미동길 37-1",
         "distanceM": 12,
         "checkedAt": "2026-08-08T12:22:22.980Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1136,6 +1458,15 @@
         "matchedAddress": "부산 서구 송도해변로 171",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:23.106Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1171,6 +1502,15 @@
         "matchedAddress": "부산 중구 광복동2가 49",
         "distanceM": 149,
         "checkedAt": "2026-08-08T12:22:23.239Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -1206,6 +1546,15 @@
         "matchedAddress": "부산 해운대구 중동1로43번길 23",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:23.403Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1243,6 +1592,21 @@
         "matchedAddress": "부산 수영구 광안로45번길 2",
         "distanceM": 4,
         "checkedAt": "2026-08-08T12:22:23.513Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "광안리해수욕장",
+          "title": "광안리 해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 284
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 상업지구 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -1278,6 +1642,21 @@
         "matchedAddress": "부산 해운대구 구남로41번길 40-1",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:23.638Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "해운대시장",
+          "title": "해운대시장",
+          "kind": "시장",
+          "distanceM": 87
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -1315,6 +1694,15 @@
         "matchedAddress": "부산 기장군 장안읍 정관로 1133",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:23.757Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 쇼핑복합공간 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -1350,6 +1738,15 @@
         "matchedAddress": "부산 해운대구 해운대해변로 266",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:23.930Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1385,6 +1782,21 @@
         "matchedAddress": "부산 중구 광복로 56-14",
         "distanceM": 1,
         "checkedAt": "2026-08-08T12:22:24.044Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "TourAPI",
+          "id": "126857",
+          "title": "광복로패션거리",
+          "kind": "거리·골목",
+          "distanceM": 141
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -1420,6 +1832,15 @@
         "matchedAddress": "부산 해운대구 중동 957-22",
         "distanceM": 22,
         "checkedAt": "2026-08-08T12:22:24.160Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1455,6 +1876,15 @@
         "matchedAddress": "부산 해운대구 우동1로38번가길 15",
         "distanceM": 4,
         "checkedAt": "2026-08-08T12:22:24.269Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1490,6 +1920,15 @@
         "matchedAddress": "부산 기장군 기장읍 연화길 33-8",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:24.440Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1525,6 +1964,15 @@
         "matchedAddress": "부산 수영구 광안해변로54번길 222",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:24.566Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1560,6 +2008,15 @@
         "matchedAddress": "부산 부산진구 전포대로209번길 26",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:24.687Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1595,6 +2052,15 @@
         "matchedAddress": "부산 기장군 기장읍 연화1길 137",
         "distanceM": 19,
         "checkedAt": "2026-08-08T12:22:24.799Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1630,6 +2096,21 @@
         "matchedAddress": "부산 기장군 일광읍 기장해안로 1303",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:24.960Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "일광해수욕장",
+          "title": "일광해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 63
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -1665,6 +2146,15 @@
         "matchedAddress": "부산 수영구 광남로94번길 2",
         "distanceM": 16,
         "checkedAt": "2026-08-08T12:22:25.082Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1695,6 +2185,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:25.198Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1730,6 +2229,15 @@
         "matchedAddress": "부산 수영구 남천동 148-103",
         "distanceM": 46,
         "checkedAt": "2026-08-08T12:22:25.336Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 공원·정원 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -1765,6 +2273,15 @@
         "matchedAddress": "부산 부산진구 중앙대로 672",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:25.500Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1800,6 +2317,21 @@
         "matchedAddress": "부산 수영구 광안해변로370번길 9-32",
         "distanceM": 13,
         "checkedAt": "2026-08-08T12:22:25.626Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "민락수변공원",
+          "title": "민락수변공원",
+          "kind": "공원·정원",
+          "distanceM": 215
+        },
+        "evidence": "공원·정원 중심점 반경 300m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -1835,6 +2367,15 @@
         "matchedAddress": "부산 동구 중앙대로236번길 7-5",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:25.738Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1870,6 +2411,21 @@
         "matchedAddress": "부산 기장군 일광읍 기장해안로 1286",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:25.858Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "일광해수욕장",
+          "title": "일광해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 136
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -1905,6 +2461,15 @@
         "matchedAddress": "부산 동구 중앙대로209번길 12",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:25.999Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -1940,6 +2505,21 @@
         "matchedAddress": "부산 동구 대영로243번길 29",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:26.138Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "상해거리",
+          "title": "상해거리",
+          "kind": "거리·골목",
+          "distanceM": 29
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -1977,6 +2557,21 @@
         "matchedAddress": "부산 사하구 감내2로 122",
         "distanceM": 73,
         "checkedAt": "2026-08-08T12:22:26.290Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "감천문화마을",
+          "title": "감천문화마을",
+          "kind": "문화마을",
+          "distanceM": 170
+        },
+        "evidence": "문화마을 중심점 반경 350m 이내의 개별 상업지구 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -2010,6 +2605,15 @@
         "matchedAddress": "부산 부산진구 연수로11번길 21",
         "distanceM": 7164,
         "checkedAt": "2026-08-08T12:22:26.482Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2045,6 +2649,15 @@
         "matchedAddress": "부산 기장군 기장읍 기장해안로 32",
         "distanceM": 23,
         "checkedAt": "2026-08-08T12:22:26.603Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2080,6 +2693,15 @@
         "matchedAddress": "부산 해운대구 센텀4로 15",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:26.714Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2110,6 +2732,21 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:26.836Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "일광해수욕장",
+          "title": "일광해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 55
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -2145,6 +2782,15 @@
         "matchedAddress": "부산 해운대구 달맞이길62번길 1",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:27.013Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2180,6 +2826,15 @@
         "matchedAddress": "부산 해운대구 달맞이길50번길 4",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:27.130Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2215,6 +2870,15 @@
         "matchedAddress": "부산 해운대구 달맞이길 50",
         "distanceM": 27,
         "checkedAt": "2026-08-08T12:22:27.237Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2250,6 +2914,21 @@
         "matchedAddress": "부산 중구 비프광장로 31",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:27.349Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "TourAPI",
+          "id": "1013721",
+          "title": "조명의거리",
+          "kind": "거리·골목",
+          "distanceM": 76
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -2285,6 +2964,15 @@
         "matchedAddress": "부산 수영구 좌수영로 161-10",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:27.530Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2320,6 +3008,15 @@
         "matchedAddress": "부산 부산진구 서면문화로 4",
         "distanceM": 4,
         "checkedAt": "2026-08-08T12:22:27.644Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2355,6 +3052,15 @@
         "matchedAddress": "부산 해운대구 우동1로 57",
         "distanceM": 18,
         "checkedAt": "2026-08-08T12:22:27.768Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2385,6 +3091,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:27.878Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2420,6 +3135,15 @@
         "matchedAddress": "부산 사하구 몰운대1길 14",
         "distanceM": 106,
         "checkedAt": "2026-08-08T12:22:28.067Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2455,6 +3179,15 @@
         "matchedAddress": "부산 해운대구 청사포로 85",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:28.177Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2490,6 +3223,15 @@
         "matchedAddress": "부산 해운대구 구남로8번길 62",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:28.288Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2527,6 +3269,15 @@
         "matchedAddress": "부산 중구 신창동4가",
         "distanceM": 186,
         "checkedAt": "2026-08-08T12:22:28.413Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -2562,6 +3313,15 @@
         "matchedAddress": "부산 해운대구 APEC로 55",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:28.582Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2597,6 +3357,15 @@
         "matchedAddress": "부산 중구 대청로126번길 12",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:28.698Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2634,6 +3403,15 @@
         "matchedAddress": "부산 중구 창선동2가 26-17",
         "distanceM": 18,
         "checkedAt": "2026-08-08T12:22:28.811Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -2669,6 +3447,15 @@
         "matchedAddress": "부산 해운대구 중동2로10번길 7",
         "distanceM": 19,
         "checkedAt": "2026-08-08T12:22:28.934Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2704,6 +3491,15 @@
         "matchedAddress": "부산 해운대구 좌동순환로 27",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:29.104Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2734,6 +3530,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:29.225Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2769,6 +3574,15 @@
         "matchedAddress": "부산 해운대구 중동2로 16",
         "distanceM": 4,
         "checkedAt": "2026-08-08T12:22:29.348Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2804,6 +3618,15 @@
         "matchedAddress": "부산 부산진구 전포대로246번길 6",
         "distanceM": 22,
         "checkedAt": "2026-08-08T12:22:29.453Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2841,6 +3664,15 @@
         "matchedAddress": "부산 해운대구 우동1로38번길 15-1",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:29.628Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2876,6 +3708,15 @@
         "matchedAddress": "부산 수영구 민락동",
         "distanceM": 21,
         "checkedAt": "2026-08-08T12:22:29.752Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -2911,6 +3752,21 @@
         "matchedAddress": "부산 해운대구 송정광어골로 41",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:29.862Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 256
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -2941,6 +3797,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:29.978Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -2976,6 +3841,15 @@
         "matchedAddress": "부산 기장군 기장읍 기장해안로 895",
         "distanceM": 17,
         "checkedAt": "2026-08-08T12:22:30.150Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3011,6 +3885,15 @@
         "matchedAddress": "부산 기장군 일광읍 문오성길 509",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:30.276Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3046,6 +3929,15 @@
         "matchedAddress": "부산 동구 초량동 393-1",
         "distanceM": 35,
         "checkedAt": "2026-08-08T12:22:30.391Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3081,6 +3973,15 @@
         "matchedAddress": "부산 중구 광복중앙로 19",
         "distanceM": 14,
         "checkedAt": "2026-08-08T12:22:30.520Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3111,6 +4012,21 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:30.681Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "광안리해수욕장",
+          "title": "광안리 해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 366
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -3148,6 +4064,21 @@
         "matchedAddress": "부산 수영구 광안로 51",
         "distanceM": 109,
         "checkedAt": "2026-08-08T12:22:30.791Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "광안리해수욕장",
+          "title": "광안리 해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 326
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 상업지구 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -3185,6 +4116,15 @@
         "matchedAddress": "부산 기장군 기장읍 기장해안로 147",
         "distanceM": 1,
         "checkedAt": "2026-08-08T12:22:30.914Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 쇼핑복합공간 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -3220,6 +4160,15 @@
         "matchedAddress": "부산 금정구 범어사로 296",
         "distanceM": 842,
         "checkedAt": "2026-08-08T12:22:31.038Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3255,6 +4204,15 @@
         "matchedAddress": "부산 해운대구 수영강변대로 120",
         "distanceM": 23,
         "checkedAt": "2026-08-08T12:22:31.210Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3290,6 +4248,15 @@
         "matchedAddress": "부산 중구 대청로 104",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:31.321Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3325,6 +4292,15 @@
         "matchedAddress": "부산 중구 대청로 112",
         "distanceM": 22,
         "checkedAt": "2026-08-08T12:22:31.435Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3362,6 +4338,15 @@
         "matchedAddress": "부산 부산진구 부전로 196",
         "distanceM": 15,
         "checkedAt": "2026-08-08T12:22:31.556Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -3397,6 +4382,15 @@
         "matchedAddress": "부산 중구 용두산길 37-30",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:31.725Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3432,6 +4426,15 @@
         "matchedAddress": "부산 사상구 사상로 214",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:31.880Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3469,6 +4472,15 @@
         "matchedAddress": "부산 부산진구 중앙대로783번길 23",
         "distanceM": 117,
         "checkedAt": "2026-08-08T12:22:31.992Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -3499,6 +4511,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:32.110Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3534,6 +4555,15 @@
         "matchedAddress": "부산 해운대구 달맞이길62번길 28",
         "distanceM": 23,
         "checkedAt": "2026-08-08T12:22:32.292Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3569,6 +4599,15 @@
         "matchedAddress": "부산 서구 암남동 129-4",
         "distanceM": 19,
         "checkedAt": "2026-08-08T12:22:32.405Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -3604,6 +4643,21 @@
         "matchedAddress": "부산 해운대구 송정중앙로6번길 184",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:32.523Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 368
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -3639,6 +4693,21 @@
         "matchedAddress": "부산 해운대구 송정광어골로 59",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:32.658Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 400
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -3674,6 +4743,15 @@
         "matchedAddress": "부산 해운대구 청사포로58번길 118",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:32.832Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3709,6 +4787,21 @@
         "matchedAddress": "부산 해운대구 송정중앙로6번길 188",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:32.944Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 389
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -3739,6 +4832,21 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:33.051Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "밀락더마켓",
+          "title": "밀락더마켓 ",
+          "kind": "시장",
+          "distanceM": 135
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -3774,6 +4882,15 @@
         "matchedAddress": "부산 부산진구 중앙대로756번길 24",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:33.181Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3809,6 +4926,21 @@
         "matchedAddress": "부산 영도구 절영로 234",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:33.352Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "TourAPI",
+          "id": "2606221",
+          "title": "영도 흰여울해안터널",
+          "kind": "해변·해안",
+          "distanceM": 132
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -3846,6 +4978,15 @@
         "matchedAddress": "부산 영도구 봉래동3가 196",
         "distanceM": 17,
         "checkedAt": "2026-08-08T12:22:33.480Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     {
@@ -3876,6 +5017,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:33.599Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3911,6 +5061,15 @@
         "matchedAddress": "부산 해운대구 구남로24번길 20",
         "distanceM": 12,
         "checkedAt": "2026-08-08T12:22:33.711Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3941,6 +5100,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:33.864Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -3976,6 +5144,21 @@
         "matchedAddress": "부산 중구 광복중앙로 31",
         "distanceM": 17,
         "checkedAt": "2026-08-08T12:22:33.978Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "용두산공원",
+          "title": "용두산공원",
+          "kind": "공원·정원",
+          "distanceM": 243
+        },
+        "evidence": "공원·정원 중심점 반경 300m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     {
@@ -4011,6 +5194,15 @@
         "matchedAddress": "부산 기장군 일광읍 일광로 645",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:34.117Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -4046,6 +5238,15 @@
         "matchedAddress": "부산 해운대구 해운대로570번길 49",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:34.241Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -4081,6 +5282,15 @@
         "matchedAddress": "부산 부산진구 전포동 868",
         "distanceM": 41,
         "checkedAt": "2026-08-08T12:22:34.410Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -4116,6 +5326,15 @@
         "matchedAddress": "부산 동구 초량중로 135",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:34.532Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -4151,6 +5370,15 @@
         "matchedAddress": "부산 기장군 일광읍 일광로 648",
         "distanceM": 13,
         "checkedAt": "2026-08-08T12:22:34.658Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -4186,6 +5414,15 @@
         "matchedAddress": "부산 기장군 일광읍 칠암1길 7-10",
         "distanceM": 20,
         "checkedAt": "2026-08-08T12:22:34.783Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -4221,6 +5458,15 @@
         "matchedAddress": "부산 기장군 일광읍 문오성길 547",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:34.933Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -4256,6 +5502,15 @@
         "matchedAddress": "부산 금정구 금강로 247-10",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:35.060Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -4291,6 +5546,15 @@
         "matchedAddress": "부산 해운대구 구남로24번길 8",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:35.184Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     {
@@ -4326,6 +5590,15 @@
         "matchedAddress": "부산 금정구 수원지로 58",
         "distanceM": 976,
         "checkedAt": "2026-08-08T12:22:35.303Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     }
   ],
@@ -4363,6 +5636,15 @@
         "matchedAddress": "부산 해운대구 중동2로 16",
         "distanceM": 4,
         "checkedAt": "2026-08-08T12:22:29.348Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "126857": {
@@ -4398,6 +5680,15 @@
         "matchedAddress": "부산 중구 광복동2가 49",
         "distanceM": 149,
         "checkedAt": "2026-08-08T12:22:23.239Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "127004": {
@@ -4428,6 +5719,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:19.317Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "127925": {
@@ -4463,6 +5763,15 @@
         "matchedAddress": "부산 수영구 민락동",
         "distanceM": 21,
         "checkedAt": "2026-08-08T12:22:29.752Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "128810": {
@@ -4498,6 +5807,15 @@
         "matchedAddress": "부산 해운대구 동백로 99",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:21.822Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 공원·정원 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "130166": {
@@ -4533,6 +5851,15 @@
         "matchedAddress": "부산 해운대구 APEC로 58",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:22.587Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "130668": {
@@ -4568,6 +5895,15 @@
         "matchedAddress": "부산 해운대구 APEC로 55",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:28.582Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "132188": {
@@ -4605,6 +5941,15 @@
         "matchedAddress": "부산 부산진구 중앙대로783번길 23",
         "distanceM": 117,
         "checkedAt": "2026-08-08T12:22:31.992Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "132190": {
@@ -4642,6 +5987,15 @@
         "matchedAddress": "부산 중구 자갈치해안로 52",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:21.026Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "132191": {
@@ -4679,6 +6033,15 @@
         "matchedAddress": "부산 중구 국제시장2길 26-1",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:20.359Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "132550": {
@@ -4716,6 +6079,15 @@
         "matchedAddress": "부산 중구 부평2길 44",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:19.965Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "132576": {
@@ -4753,6 +6125,15 @@
         "matchedAddress": "부산 중구 자갈치로 42",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:21.297Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "133313": {
@@ -4788,6 +6169,21 @@
         "matchedAddress": "부산 중구 자갈치해안로 55",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:21.151Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "TourAPI",
+          "id": "132190",
+          "title": "부산 자갈치시장",
+          "kind": "시장",
+          "distanceM": 72
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "133525": {
@@ -4823,6 +6219,21 @@
         "matchedAddress": "부산 중구 비프광장로 31",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:27.349Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "TourAPI",
+          "id": "1013721",
+          "title": "조명의거리",
+          "kind": "거리·골목",
+          "distanceM": 76
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "229912": {
@@ -4858,6 +6269,15 @@
         "matchedAddress": "부산 해운대구 해운대해변로 266",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:23.930Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "403957": {
@@ -4893,6 +6313,21 @@
         "matchedAddress": "부산 중구 대교로 103",
         "distanceM": 10,
         "checkedAt": "2026-08-08T12:22:21.660Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "롯데백화점광복점",
+          "title": "롯데백화점 광복점",
+          "kind": "쇼핑복합공간",
+          "distanceM": 153
+        },
+        "evidence": "쇼핑복합공간 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "686419": {
@@ -4928,6 +6363,21 @@
         "matchedAddress": "부산 중구 광복로 56-14",
         "distanceM": 1,
         "checkedAt": "2026-08-08T12:22:24.044Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "TourAPI",
+          "id": "126857",
+          "title": "광복로패션거리",
+          "kind": "거리·골목",
+          "distanceM": 141
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "767084": {
@@ -4965,6 +6415,15 @@
         "matchedAddress": "부산 해운대구 센텀남대로 35",
         "distanceM": 2,
         "checkedAt": "2026-08-08T12:22:19.574Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 쇼핑복합공간 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "769761": {
@@ -5000,6 +6459,15 @@
         "matchedAddress": "부산 사하구 몰운대1길 14",
         "distanceM": 106,
         "checkedAt": "2026-08-08T12:22:28.067Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "850093": {
@@ -5035,6 +6503,15 @@
         "matchedAddress": "부산 부산진구 서면문화로 4",
         "distanceM": 4,
         "checkedAt": "2026-08-08T12:22:27.644Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "850121": {
@@ -5070,6 +6547,15 @@
         "matchedAddress": "부산 기장군 일광읍 문오성길 509",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:30.276Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "851073": {
@@ -5105,6 +6591,21 @@
         "matchedAddress": "부산 동구 대영로243번길 29",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:26.138Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "상해거리",
+          "title": "상해거리",
+          "kind": "거리·골목",
+          "distanceM": 29
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "851286": {
@@ -5140,6 +6641,21 @@
         "matchedAddress": "부산 해운대구 구남로41번길 40-1",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:23.638Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "해운대시장",
+          "title": "해운대시장",
+          "kind": "시장",
+          "distanceM": 87
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "851955": {
@@ -5175,6 +6691,15 @@
         "matchedAddress": "부산 해운대구 해운대로570번길 49",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:34.241Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "851989": {
@@ -5210,6 +6735,15 @@
         "matchedAddress": "부산 해운대구 달맞이길62번길 1",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:27.013Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "985921": {
@@ -5245,6 +6779,15 @@
         "matchedAddress": "부산 중구 중구로 31",
         "distanceM": 10,
         "checkedAt": "2026-08-08T12:22:20.597Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "987810": {
@@ -5280,6 +6823,15 @@
         "matchedAddress": "부산 해운대구 우동 708-3",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:22.194Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "1013694": {
@@ -5317,6 +6869,15 @@
         "matchedAddress": "부산 중구 신창동4가",
         "distanceM": 186,
         "checkedAt": "2026-08-08T12:22:28.413Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "1013709": {
@@ -5354,6 +6915,15 @@
         "matchedAddress": "부산 중구 신창동3가 24-1",
         "distanceM": 23,
         "checkedAt": "2026-08-08T12:22:20.786Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "1013721": {
@@ -5391,6 +6961,15 @@
         "matchedAddress": "부산 중구 창선동2가 26-17",
         "distanceM": 18,
         "checkedAt": "2026-08-08T12:22:28.811Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "1018702": {
@@ -5426,6 +7005,15 @@
         "matchedAddress": "부산 중구 창선동2가 40-5",
         "distanceM": 201,
         "checkedAt": "2026-08-08T12:22:20.489Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "1277679": {
@@ -5461,6 +7049,15 @@
         "matchedAddress": "부산 중구 용두산길 37-30",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:31.725Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "1805656": {
@@ -5496,6 +7093,21 @@
         "matchedAddress": "부산 해운대구 구남로41번길 12",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:21.937Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "해운대시장",
+          "title": "해운대시장",
+          "kind": "시장",
+          "distanceM": 68
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "1805853": {
@@ -5531,6 +7143,15 @@
         "matchedAddress": "부산 해운대구 청사포로58번길 118",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:32.832Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "1846830": {
@@ -5561,6 +7182,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:27.878Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "1855868": {
@@ -5596,6 +7226,15 @@
         "matchedAddress": "부산 사상구 사상로 214",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:31.880Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "1878218": {
@@ -5633,6 +7272,15 @@
         "matchedAddress": "부산 중구 부평1길 48",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:19.851Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "1942233": {
@@ -5668,6 +7316,15 @@
         "matchedAddress": "부산 중구 광복중앙로 19",
         "distanceM": 14,
         "checkedAt": "2026-08-08T12:22:30.520Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "1942299": {
@@ -5703,6 +7360,15 @@
         "matchedAddress": "부산 동구 초량동 393-1",
         "distanceM": 35,
         "checkedAt": "2026-08-08T12:22:30.391Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "1942316": {
@@ -5740,6 +7406,15 @@
         "matchedAddress": "부산 영도구 봉래동3가 196",
         "distanceM": 17,
         "checkedAt": "2026-08-08T12:22:33.480Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "1942348": {
@@ -5770,6 +7445,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:22.857Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "1957694": {
@@ -5800,6 +7484,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:21.410Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "1993017": {
@@ -5837,6 +7530,15 @@
         "matchedAddress": "부산 기장군 기장읍 기장해안로 147",
         "distanceM": 1,
         "checkedAt": "2026-08-08T12:22:30.914Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 쇼핑복합공간 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "2385686": {
@@ -5872,6 +7574,15 @@
         "matchedAddress": "부산 기장군 철마면 미동길 37-1",
         "distanceM": 12,
         "checkedAt": "2026-08-08T12:22:22.980Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2456837": {
@@ -5907,6 +7618,15 @@
         "matchedAddress": "부산 해운대구 수영강변대로 120",
         "distanceM": 23,
         "checkedAt": "2026-08-08T12:22:31.210Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2470024": {
@@ -5937,6 +7657,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:32.110Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2496023": {
@@ -5972,6 +7701,15 @@
         "matchedAddress": "부산 해운대구 센텀4로 15",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:26.714Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2504464": {
@@ -6007,6 +7745,15 @@
         "matchedAddress": "부산 서구 송도해변로 171",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:23.106Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2532877": {
@@ -6044,6 +7791,15 @@
         "matchedAddress": "부산 기장군 장안읍 정관로 1133",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:23.757Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 쇼핑복합공간 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "2554068": {
@@ -6079,6 +7835,15 @@
         "matchedAddress": "부산 중구 대청로126번길 12",
         "distanceM": 11,
         "checkedAt": "2026-08-08T12:22:28.698Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2554111": {
@@ -6114,6 +7879,15 @@
         "matchedAddress": "부산 금정구 범어사로 296",
         "distanceM": 842,
         "checkedAt": "2026-08-08T12:22:31.038Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2557807": {
@@ -6149,6 +7923,15 @@
         "matchedAddress": "부산 서구 암남동 129-4",
         "distanceM": 19,
         "checkedAt": "2026-08-08T12:22:32.405Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 거리·골목 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "2606221": {
@@ -6184,6 +7967,15 @@
         "matchedAddress": "부산 영도구 영선동4가 1210-38",
         "distanceM": 383,
         "checkedAt": "2026-08-08T12:22:19.430Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "해변·해안",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 해변·해안 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "2661475": {
@@ -6219,6 +8011,15 @@
         "matchedAddress": "부산 금정구 수원지로 58",
         "distanceM": 976,
         "checkedAt": "2026-08-08T12:22:35.303Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2668102": {
@@ -6254,6 +8055,21 @@
         "matchedAddress": "부산 수영구 광안해변로370번길 9-32",
         "distanceM": 13,
         "checkedAt": "2026-08-08T12:22:25.626Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "민락수변공원",
+          "title": "민락수변공원",
+          "kind": "공원·정원",
+          "distanceM": 215
+        },
+        "evidence": "공원·정원 중심점 반경 300m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2726193": {
@@ -6289,6 +8105,21 @@
         "matchedAddress": "부산 중구 부평1길 48",
         "distanceM": 15,
         "checkedAt": "2026-08-08T12:22:20.084Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "TourAPI",
+          "id": "132550",
+          "title": "부평동한복거리",
+          "kind": "거리·골목",
+          "distanceM": 51
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2753006": {
@@ -6324,6 +8155,21 @@
         "matchedAddress": "부산 기장군 일광읍 기장해안로 1286",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:25.858Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "일광해수욕장",
+          "title": "일광해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 136
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2760773": {
@@ -6359,6 +8205,15 @@
         "matchedAddress": "부산 해운대구 달맞이길50번길 4",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:27.130Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2763856": {
@@ -6394,6 +8249,15 @@
         "matchedAddress": "부산 부산진구 전포대로209번길 26",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:24.687Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2773623": {
@@ -6429,6 +8293,15 @@
         "matchedAddress": "부산 부산진구 중앙대로756번길 24",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:33.181Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2775556": {
@@ -6464,6 +8337,15 @@
         "matchedAddress": "부산 기장군 일광읍 문오성길 547",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:34.933Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2776391": {
@@ -6499,6 +8381,21 @@
         "matchedAddress": "부산 기장군 일광읍 기장해안로 1303",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:24.960Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "일광해수욕장",
+          "title": "일광해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 63
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2776396": {
@@ -6534,6 +8431,15 @@
         "matchedAddress": "부산 기장군 기장읍 연화1길 137",
         "distanceM": 19,
         "checkedAt": "2026-08-08T12:22:24.799Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2778487": {
@@ -6569,6 +8475,15 @@
         "matchedAddress": "부산 해운대구 중동1로43번길 23",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:23.403Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2782626": {
@@ -6604,6 +8519,15 @@
         "matchedAddress": "부산 수영구 남천동 148-103",
         "distanceM": 46,
         "checkedAt": "2026-08-08T12:22:25.336Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 공원·정원 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "2782628": {
@@ -6639,6 +8563,15 @@
         "matchedAddress": "부산 수영구 좌수영로 161-10",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:27.530Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2782747": {
@@ -6676,6 +8609,21 @@
         "matchedAddress": "부산 수영구 광안로45번길 2",
         "distanceM": 4,
         "checkedAt": "2026-08-08T12:22:23.513Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "광안리해수욕장",
+          "title": "광안리 해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 284
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 상업지구 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2782750": {
@@ -6713,6 +8661,21 @@
         "matchedAddress": "부산 수영구 광안로 51",
         "distanceM": 109,
         "checkedAt": "2026-08-08T12:22:30.791Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "광안리해수욕장",
+          "title": "광안리 해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 326
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 상업지구 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2783646": {
@@ -6743,6 +8706,21 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:30.681Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "광안리해수욕장",
+          "title": "광안리 해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 366
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2784330": {
@@ -6778,6 +8756,15 @@
         "matchedAddress": "부산 해운대구 중동 957-22",
         "distanceM": 22,
         "checkedAt": "2026-08-08T12:22:24.160Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2784363": {
@@ -6813,6 +8800,15 @@
         "matchedAddress": "부산 중구 대청로 104",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:31.321Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2785269": {
@@ -6848,6 +8844,21 @@
         "matchedAddress": "부산 해운대구 송정중앙로6번길 188",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:32.944Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 389
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2785272": {
@@ -6883,6 +8894,15 @@
         "matchedAddress": "부산 기장군 기장읍 연화길 33-8",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:24.440Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2785956": {
@@ -6918,6 +8938,15 @@
         "matchedAddress": "부산 동구 중앙대로 225",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:22.076Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2785965": {
@@ -6953,6 +8982,21 @@
         "matchedAddress": "부산 해운대구 송정광어골로 59",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:32.658Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 400
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2786766": {
@@ -6988,6 +9032,15 @@
         "matchedAddress": "부산 해운대구 구남로24번길 8",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:35.184Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2786779": {
@@ -7023,6 +9076,15 @@
         "matchedAddress": "부산 해운대구 좌동순환로 27",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:29.104Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2789488": {
@@ -7058,6 +9120,15 @@
         "matchedAddress": "부산 해운대구 달맞이길62번길 13",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:19.716Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2793181": {
@@ -7093,6 +9164,15 @@
         "matchedAddress": "부산 해운대구 달맞이길62번길 28",
         "distanceM": 23,
         "checkedAt": "2026-08-08T12:22:32.292Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2815627": {
@@ -7128,6 +9208,15 @@
         "matchedAddress": "부산 기장군 기장읍 동부산관광로 42",
         "distanceM": 17,
         "checkedAt": "2026-08-08T12:22:22.470Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2822343": {
@@ -7158,6 +9247,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:29.225Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2822840": {
@@ -7193,6 +9291,15 @@
         "matchedAddress": "부산 기장군 일광읍 칠암1길 7-10",
         "distanceM": 20,
         "checkedAt": "2026-08-08T12:22:34.783Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2822910": {
@@ -7226,6 +9333,15 @@
         "matchedAddress": "부산 부산진구 연수로11번길 21",
         "distanceM": 7164,
         "checkedAt": "2026-08-08T12:22:26.482Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2832636": {
@@ -7261,6 +9377,15 @@
         "matchedAddress": "부산 기장군 기장읍 기장해안로 32",
         "distanceM": 23,
         "checkedAt": "2026-08-08T12:22:26.603Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2832671": {
@@ -7296,6 +9421,21 @@
         "matchedAddress": "부산 동구 대영로243번길 64",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:22.711Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "상해거리",
+          "title": "상해거리",
+          "kind": "거리·골목",
+          "distanceM": 141
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2834026": {
@@ -7331,6 +9471,15 @@
         "matchedAddress": "부산 해운대구 해운대해변로 302",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:22.350Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2836412": {
@@ -7366,6 +9515,21 @@
         "matchedAddress": "부산 영도구 절영로 234",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:33.352Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "TourAPI",
+          "id": "2606221",
+          "title": "영도 흰여울해안터널",
+          "kind": "해변·해안",
+          "distanceM": 132
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2836450": {
@@ -7401,6 +9565,21 @@
         "matchedAddress": "부산 중구 광복중앙로 31",
         "distanceM": 17,
         "checkedAt": "2026-08-08T12:22:33.978Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "용두산공원",
+          "title": "용두산공원",
+          "kind": "공원·정원",
+          "distanceM": 243
+        },
+        "evidence": "공원·정원 중심점 반경 300m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2841442": {
@@ -7436,6 +9615,15 @@
         "matchedAddress": "부산 금정구 금강로 247-10",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:35.060Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2845123": {
@@ -7466,6 +9654,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:25.198Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2848939": {
@@ -7496,6 +9693,21 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:26.836Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "medium",
+        "parent": {
+          "source": "부산공식",
+          "id": "일광해수욕장",
+          "title": "일광해수욕장",
+          "kind": "해변·해안",
+          "distanceM": 55
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2848949": {
@@ -7531,6 +9743,15 @@
         "matchedAddress": "부산 기장군 일광읍 일광로 648",
         "distanceM": 13,
         "checkedAt": "2026-08-08T12:22:34.658Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2848952": {
@@ -7566,6 +9787,15 @@
         "matchedAddress": "부산 기장군 일광읍 일광로 645",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:34.117Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2858936": {
@@ -7601,6 +9831,15 @@
         "matchedAddress": "부산 해운대구 달맞이길 50",
         "distanceM": 27,
         "checkedAt": "2026-08-08T12:22:27.237Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2858974": {
@@ -7636,6 +9875,15 @@
         "matchedAddress": "부산 해운대구 우동1로38번가길 15",
         "distanceM": 4,
         "checkedAt": "2026-08-08T12:22:24.269Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2859101": {
@@ -7671,6 +9919,15 @@
         "matchedAddress": "부산 해운대구 우동1로 57",
         "distanceM": 18,
         "checkedAt": "2026-08-08T12:22:27.768Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2860782": {
@@ -7706,6 +9963,15 @@
         "matchedAddress": "부산 해운대구 구남로24번길 20",
         "distanceM": 12,
         "checkedAt": "2026-08-08T12:22:33.711Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2860833": {
@@ -7741,6 +10007,21 @@
         "matchedAddress": "부산 해운대구 송정중앙로6번길 184",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:32.523Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 368
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2865236": {
@@ -7776,6 +10057,15 @@
         "matchedAddress": "부산 부산진구 전포대로246번길 6",
         "distanceM": 22,
         "checkedAt": "2026-08-08T12:22:29.453Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2868655": {
@@ -7811,6 +10101,15 @@
         "matchedAddress": "부산 수영구 광남로94번길 2",
         "distanceM": 16,
         "checkedAt": "2026-08-08T12:22:25.082Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2869405": {
@@ -7846,6 +10145,15 @@
         "matchedAddress": "부산 동구 중앙대로209번길 12",
         "distanceM": 9,
         "checkedAt": "2026-08-08T12:22:25.999Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2870354": {
@@ -7881,6 +10189,15 @@
         "matchedAddress": "부산 동구 중앙대로236번길 7-5",
         "distanceM": 3,
         "checkedAt": "2026-08-08T12:22:25.738Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2870703": {
@@ -7916,6 +10233,15 @@
         "matchedAddress": "부산 동구 초량중로 135",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:34.532Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2872474": {
@@ -7951,6 +10277,15 @@
         "matchedAddress": "부산 기장군 기장읍 기장해안로 895",
         "distanceM": 17,
         "checkedAt": "2026-08-08T12:22:30.150Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2873498": {
@@ -7986,6 +10321,21 @@
         "matchedAddress": "부산 해운대구 송정광어골로 41",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:29.862Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "송정해수욕장죽도공원",
+          "title": "송정해수욕장, 죽도공원",
+          "kind": "해변·해안",
+          "distanceM": 256
+        },
+        "evidence": "해변·해안 중심점 반경 500m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2891789": {
@@ -8021,6 +10371,15 @@
         "matchedAddress": "부산 해운대구 청사포로 85",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:28.177Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2891814": {
@@ -8056,6 +10415,15 @@
         "matchedAddress": "부산 해운대구 구남로8번길 62",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:28.288Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2905141": {
@@ -8091,6 +10459,15 @@
         "matchedAddress": "부산 해운대구 중동2로10번길 7",
         "distanceM": 19,
         "checkedAt": "2026-08-08T12:22:28.934Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2952936": {
@@ -8126,6 +10503,21 @@
         "matchedAddress": "부산 중구 중구로29번길 17",
         "distanceM": 7,
         "checkedAt": "2026-08-08T12:22:20.894Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "TourAPI",
+          "id": "985921",
+          "title": "미술의거리",
+          "kind": "거리·골목",
+          "distanceM": 88
+        },
+        "evidence": "거리·골목 중심점 반경 250m 이내의 개별 카페 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "2991028": {
@@ -8161,6 +10553,15 @@
         "matchedAddress": "부산 수영구 광안해변로54번길 222",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:24.566Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "2994179": {
@@ -8196,6 +10597,15 @@
         "matchedAddress": "부산 부산진구 전포동 868",
         "distanceM": 41,
         "checkedAt": "2026-08-08T12:22:34.410Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "3027700": {
@@ -8229,6 +10639,15 @@
         "matchedAddress": "부산 해운대구 송정중앙로8번길 60",
         "distanceM": 3574,
         "checkedAt": "2026-08-08T12:22:20.243Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "3064821": {
@@ -8264,6 +10683,15 @@
         "matchedAddress": "부산 중구 자갈치해안로 60",
         "distanceM": 6,
         "checkedAt": "2026-08-08T12:22:21.540Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "3080300": {
@@ -8301,6 +10729,15 @@
         "matchedAddress": "부산 부산진구 부전로 196",
         "distanceM": 15,
         "checkedAt": "2026-08-08T12:22:31.556Z"
+      },
+      "scopeRemap": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "confidence": "high",
+        "parent": null,
+        "evidence": "TourAPI 장소명 기반 시장 분류",
+        "dwellPolicy": "area_dwell_from_existing_aihub_match",
+        "recommendationPolicy": "recommend_parent"
       }
     },
     "3081825": {
@@ -8331,6 +10768,21 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:33.051Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "밀락더마켓",
+          "title": "밀락더마켓 ",
+          "kind": "시장",
+          "distanceM": 135
+        },
+        "evidence": "시장 중심점 반경 200m 이내의 개별 식당 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     },
     "3083767": {
@@ -8366,6 +10818,15 @@
         "matchedAddress": "부산 중구 대청로 112",
         "distanceM": 22,
         "checkedAt": "2026-08-08T12:22:31.435Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "3336600": {
@@ -8403,6 +10864,15 @@
         "matchedAddress": "부산 해운대구 우동1로38번길 15-1",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:29.628Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "3421909": {
@@ -8433,6 +10903,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:29.978Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "3442923": {
@@ -8468,6 +10947,15 @@
         "matchedAddress": "부산 부산진구 중앙대로 672",
         "distanceM": 5,
         "checkedAt": "2026-08-08T12:22:25.500Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "3443614": {
@@ -8498,6 +10986,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:33.864Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "high",
+        "parent": null,
+        "evidence": "기존 AIHub 이름 기반 매칭 유지",
+        "dwellPolicy": "individual_dwell_from_aihub",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "3454074": {
@@ -8528,6 +11025,15 @@
         "provider": "kakao",
         "status": "not_found",
         "checkedAt": "2026-08-08T12:22:33.599Z"
+      },
+      "scopeRemap": {
+        "type": "독립장소",
+        "kind": null,
+        "confidence": "medium",
+        "parent": null,
+        "evidence": "포괄 장소·내부 장소 조건에 해당하지 않음",
+        "dwellPolicy": "category_dwell_fallback",
+        "recommendationPolicy": "allow_with_dwell_policy"
       }
     },
     "3511011": {
@@ -8565,6 +11071,21 @@
         "matchedAddress": "부산 사하구 감내2로 122",
         "distanceM": 73,
         "checkedAt": "2026-08-08T12:22:26.290Z"
+      },
+      "scopeRemap": {
+        "type": "내부장소_검토",
+        "kind": null,
+        "confidence": "low",
+        "parent": {
+          "source": "부산공식",
+          "id": "감천문화마을",
+          "title": "감천문화마을",
+          "kind": "문화마을",
+          "distanceM": 170
+        },
+        "evidence": "문화마을 중심점 반경 350m 이내의 개별 상업지구 장소",
+        "dwellPolicy": "do_not_inherit_parent_dwell",
+        "recommendationPolicy": "exclude_until_parent_scope_verified"
       }
     }
   }

@@ -9,6 +9,7 @@ export type MatchScope = "direct_place" | "area_context" | "category_fallback" |
 export type OpeningHoursReliability = "direct" | "area_uncertain" | "unknown";
 export type SpotConfidence = "direct_match" | "area_context_match" | "category_fallback";
 export type MapVerificationStatus = "verified" | "weak" | "not_found" | "unverified";
+export type AvailabilityProfile = 'facility' | 'area' | 'outdoor' | 'hold';
 
 export type PlanInput = {
   origin: LatLon;
@@ -31,6 +32,9 @@ export type Spot = {
   typeId: string;
   category: string;
   subCategory?: string;
+  availabilityProfile?: AvailabilityProfile;
+  siteGroupId?: string;
+  siteRole?: 'parent' | 'child';
   lat: number;
   lon: number;
   dwell: number; // 유효 체류(분, 혼잡반영)
@@ -48,6 +52,7 @@ export type Spot = {
   tourapiContentId?: string;
   tourapiContentTypeId?: string;
   operatingHours?: string[];
+  imageUrl?: string;
   mult: number;
   openNote: string;
   confidence: SpotConfidence;

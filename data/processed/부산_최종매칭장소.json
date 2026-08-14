@@ -1,0 +1,5844 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-14T18:40:11.913Z",
+    "kind": "최종매칭장소",
+    "sourceFiles": [
+      "data/processed/부산_매칭장소.json",
+      "data/processed/부산_미매칭_TourAPI장소.json",
+      "data/processed/부산시_명소정보.json",
+      "data/processed/부산시_쇼핑정보.json",
+      "data/processed/부산시_맛집정보.json"
+    ],
+    "matchingRule": "AIHub 부산 허용 방문지 표본 3건 이상. 포괄 장소는 AIHub 매칭 시 권역 체류시간, 독립 장소는 이름+좌표 일치 시에만 개별 체류시간을 사용한다.",
+    "note": "AIHub 체류시간을 장소 또는 포괄 관광권에 사용할 수 있는 후보.",
+    "notRuntimeCatalog": "정제 결과 검토용 파일이며 src/data/busan_poi_catalog.json은 변경하지 않았다.",
+    "normalization": "동일 장소 11쌍을 대표명·별칭·출처·운영시간으로 병합하고 포괄-내부 4쌍에 siteGroupId를 부여했다.",
+    "availabilityClassification": "시설형·권역형·야외상시형·보류 성격을 명시해 운영시간 게이트에 사용한다."
+  },
+  "summary": {
+    "records": 123,
+    "byCategory": {
+      "문화시설": 23,
+      "상업지구": 34,
+      "자연관광지": 20,
+      "레저/스포츠": 6,
+      "식당": 38,
+      "카페": 2
+    },
+    "byScope": {
+      "독립장소": 77,
+      "포괄장소": 43,
+      "내부장소": 3
+    }
+  },
+  "data": [
+    {
+      "id": "poi_1",
+      "title": "해운대 관광특구",
+      "aliases": [
+        "해운대 관광특구",
+        "해운대해수욕장"
+      ],
+      "address": "부산광역시 해운대구",
+      "lat": 35.1584383046,
+      "lon": 129.1598690678,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "127004"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 10,
+        "name": "해운대해수욕장",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 110,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 110,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_2",
+      "title": "영도 흰여울해안터널",
+      "aliases": [
+        "영도 흰여울해안터널",
+        "흰 여울 문화마을",
+        "흰여울문화마을"
+      ],
+      "address": "부산광역시 영도구 영선동4가 1044-6",
+      "lat": 35.0779590845,
+      "lon": 129.0453201165,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2606221"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "255"
+        }
+      ],
+      "operatingHours": [
+        "매일"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "해변·해안",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 6,
+        "name": "흰 여울 문화마을",
+        "category": "역사/유적/종교",
+        "dwell": {
+          "count": 48,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 48,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_3",
+      "title": "신세계백화점 센텀시티점",
+      "aliases": [
+        "신세계백화점 센텀시티점"
+      ],
+      "address": "부산광역시 해운대구 센텀남대로 35",
+      "lat": 35.1687865886,
+      "lon": 129.1297408475,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "767084"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "548"
+        }
+      ],
+      "operatingHours": [
+        "월-목 10:30~20:00\n금-일 10:30~20:30"
+      ],
+      "holidays": [
+        "월1회 휴점"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 62,
+        "name": "센텀시티 스파랜드",
+        "category": "상업지구",
+        "dwell": {
+          "count": 6,
+          "median": 240,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 6,
+        "median": 240,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_4",
+      "title": "부평깡통시장",
+      "aliases": [
+        "부평깡통시장",
+        "부평 깡통시장"
+      ],
+      "address": "부산광역시 중구 부평1길 48",
+      "lat": 35.1015921962,
+      "lon": 129.0260517037,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1878218"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "400"
+        }
+      ],
+      "operatingHours": [
+        "매일 19:30-24:00"
+      ],
+      "holidays": [
+        "연중무휴(가게별 상이)"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 60,
+        "name": "부평 깡통시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 30,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_5",
+      "title": "부평동한복거리",
+      "aliases": [
+        "부평동한복거리",
+        "부평 깡통시장"
+      ],
+      "address": "부산광역시 중구 부평2길 44",
+      "lat": 35.1014505558,
+      "lon": 129.0265905492,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "132550"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 98,
+        "name": "부평 깡통시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 30,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_7",
+      "title": "청사포 기찻길",
+      "aliases": [
+        "청사포 기찻길",
+        "해운대 블루라인파크 미포 정거장"
+      ],
+      "address": "부산광역시 해운대구 달맞이길62번길 13 (중동)",
+      "lat": 35.1581969059,
+      "lon": 129.172851279,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3027700"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 6,
+        "name": "해운대 블루라인파크 미포 정거장",
+        "category": "체험활동관광지",
+        "dwell": {
+          "count": 30,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 30,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_8",
+      "title": "국제시장",
+      "aliases": [
+        "국제시장"
+      ],
+      "address": "부산광역시 중구 신창로4가 일원",
+      "lat": 35.1016422372,
+      "lon": 129.0285792599,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "132191"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "399"
+        }
+      ],
+      "operatingHours": [
+        "09:00 - 20:00(가게별 상이)"
+      ],
+      "holidays": [
+        "매주 일요일"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 73,
+        "name": "국제시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 22,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_9",
+      "title": "국제시장 먹자골목",
+      "aliases": [
+        "국제시장 먹자골목",
+        "국제시장"
+      ],
+      "address": "부산광역시 중구 중구로 36",
+      "lat": 35.1011311741,
+      "lon": 129.0280793175,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1018702"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 1,
+        "name": "국제시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 22,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "area",
+      "availabilityReason": "시장 상권 이용 성격"
+    },
+    {
+      "id": "poi_10",
+      "title": "미술의거리",
+      "aliases": [
+        "미술의거리",
+        "국제시장"
+      ],
+      "address": "부산광역시 중구 신창동4가",
+      "lat": 35.1006395595,
+      "lon": 129.0279265666,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "985921"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 56,
+        "name": "국제시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 22,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "area",
+      "availabilityReason": "거리 상권 이용 성격"
+    },
+    {
+      "id": "poi_11",
+      "title": "아리랑거리",
+      "aliases": [
+        "아리랑거리",
+        "국제시장"
+      ],
+      "address": "부산광역시 중구 광복로35번길 11 (신창동3가)",
+      "lat": 35.100281283,
+      "lon": 129.0287931674,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1013709"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 114,
+        "name": "국제시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 22,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 22,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_13",
+      "title": "부산 자갈치시장",
+      "aliases": [
+        "부산 자갈치시장",
+        "자갈치시장"
+      ],
+      "address": "부산광역시 중구 자갈치해안로 52",
+      "lat": 35.0966511661,
+      "lon": 129.0306042201,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "132190"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "412"
+        }
+      ],
+      "operatingHours": [
+        "05:00~22:00"
+      ],
+      "holidays": [
+        "매달 1,3,5번째 화요일"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 4,
+        "name": "자갈치시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 16,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_15",
+      "title": "신동아 수산물시장",
+      "aliases": [
+        "신동아 수산물시장",
+        "자갈치시장"
+      ],
+      "address": "부산광역시 중구 자갈치로 42",
+      "lat": 35.096851116,
+      "lon": 129.0290793478,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "132576"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 139,
+        "name": "자갈치시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 16,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_16",
+      "title": "용두산 자갈치 관광특구",
+      "aliases": [
+        "용두산 자갈치 관광특구",
+        "자갈치시장"
+      ],
+      "address": "부산광역시 중구 자갈치해안로 52",
+      "lat": 35.0966650543,
+      "lon": 129.0306014426,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1957694"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "관광특구",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 5,
+        "name": "자갈치시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 16,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "area",
+      "availabilityReason": "관광특구·상권 이용 성격"
+    },
+    {
+      "id": "poi_17",
+      "title": "자갈치 크루즈",
+      "aliases": [
+        "자갈치 크루즈",
+        "자갈치시장"
+      ],
+      "address": "부산광역시 중구 자갈치해안로 60 (남포동4가)",
+      "lat": 35.0967261783,
+      "lon": 129.0317124553,
+      "category": "레저/스포츠",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3064821"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 104,
+        "name": "자갈치시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 16,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 16,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "facility",
+      "availabilityReason": "운항·탑승 프로그램 시설"
+    },
+    {
+      "id": "poi_19",
+      "title": "동백공원",
+      "aliases": [
+        "동백공원",
+        "동백섬",
+        "동백섬(한,영,중간,중번,일)"
+      ],
+      "address": "부산광역시 해운대구 동백로 99 (우동)",
+      "lat": 35.1536609221,
+      "lon": 129.1523226328,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "128810"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "2274"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 32,
+        "name": "동백섬",
+        "category": "산책로/둘레길",
+        "dwell": {
+          "count": 11,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 11,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_22",
+      "title": "해운대 동백섬",
+      "aliases": [
+        "해운대 동백섬",
+        "동백섬"
+      ],
+      "address": "부산광역시 해운대구 동백로 67",
+      "lat": 35.153991438,
+      "lon": 129.1521809693,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "987810"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 11,
+        "name": "동백섬",
+        "category": "산책로/둘레길",
+        "dwell": {
+          "count": 11,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 11,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_23",
+      "title": "갤러리이알디 부산",
+      "aliases": [
+        "갤러리이알디 부산",
+        "라이언 홀리데이 인 부산"
+      ],
+      "address": "부산광역시 해운대구 해운대해변로 302 (중동, 대림맨션)",
+      "lat": 35.1610686425,
+      "lon": 129.1639936365,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2834026"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 126,
+        "name": "라이언 홀리데이 인 부산",
+        "category": "체험활동관광지",
+        "dwell": {
+          "count": 10,
+          "median": 45,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 10,
+        "median": 45,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_24",
+      "title": "롯데월드 어드벤처 부산",
+      "aliases": [
+        "롯데월드 어드벤처 부산",
+        "롯데월드 어드벤처 부산 (한,영,중간,중번,일) "
+      ],
+      "address": "부산광역시 기장군 동부산관광로 42",
+      "lat": 35.1960684107,
+      "lon": 129.212999524,
+      "category": "레저/스포츠",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2815627"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "1310"
+        }
+      ],
+      "operatingHours": [
+        "10:00 ~ 20:00 (월~금)\n10:00 ~ 21:00 (토~일)\n*자세한 운영시간은 홈페이지 참조"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 19,
+        "name": "롯데월드 어드벤처 부산",
+        "category": "테마시설",
+        "dwell": {
+          "count": 10,
+          "median": 240,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 10,
+        "median": 240,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "facility",
+      "availabilityReason": "입장형 테마파크 시설"
+    },
+    {
+      "id": "poi_25",
+      "title": "부산시립미술관",
+      "aliases": [
+        "부산시립미술관",
+        "부산 시립미술관"
+      ],
+      "address": "부산광역시 해운대구 APEC로 58",
+      "lat": 35.1666980687,
+      "lon": 129.1370458254,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "130166"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "289"
+        }
+      ],
+      "operatingHours": [
+        "본관/ 화요일~일요일 10:00~18:00 \n이우환 공간(별관) /화요일~일요일 10:00~18:00(입장 17:30까지) "
+      ],
+      "holidays": [
+        "1월 1일, 매주 월요일\n※ 월요일이 공휴일인 경우 그 다음날 휴관합니다."
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 2,
+        "name": "부산 시립미술관",
+        "category": "문화시설",
+        "dwell": {
+          "count": 10,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 10,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_27",
+      "title": "관수옥과 초량왜관 터",
+      "aliases": [
+        "관수옥과 초량왜관 터",
+        "용두산공원",
+        "용두산공원(한,영,중간,중번,일)"
+      ],
+      "address": "부산광역시 중구 용두산길 37-55",
+      "lat": 35.1005396593,
+      "lon": 129.0327483723,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1942348"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "368"
+        }
+      ],
+      "operatingHours": [
+        "부산타워 10:00~22:00(발권마감 21:30)"
+      ],
+      "holidays": [
+        "연중무휴(부산타워는 기상 등의 이유로 변경될 수 있음)"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 52,
+        "name": "용두산공원",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 9,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 9,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_28",
+      "title": "아홉산숲",
+      "aliases": [
+        "아홉산숲",
+        "아홉 살 숲",
+        "아홉산 숲 (한,영,중간,중번,일)",
+        "아홉산 숲"
+      ],
+      "address": "부산광역시 기장군 철마면 미동길 37-1",
+      "lat": 35.2871407693,
+      "lon": 129.1715589466,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2385686"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "260"
+        }
+      ],
+      "operatingHours": [
+        "평일, 주말 09:00~18:00 (입장마감 17시 00분)"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 12,
+        "name": "아홉 살 숲",
+        "category": "역사/유적/종교",
+        "dwell": {
+          "count": 9,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 9,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "facility",
+      "availabilityReason": "입장 마감이 있는 관리형 숲"
+    },
+    {
+      "id": "poi_29",
+      "title": "부산 송도해상케이블카",
+      "aliases": [
+        "부산 송도해상케이블카",
+        "송도 해상 케이블카 송도 베이 스테이션"
+      ],
+      "address": "부산광역시 서구 송도해변로 171",
+      "lat": 35.0766810472,
+      "lon": 129.0234248332,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2504464"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 50,
+        "name": "송도 해상 케이블카 송도 베이 스테이션",
+        "category": "체험활동관광지",
+        "dwell": {
+          "count": 8,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 8,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_30",
+      "title": "광복로패션거리",
+      "aliases": [
+        "광복로패션거리",
+        "광복로 패션거리"
+      ],
+      "address": "부산광역시 중구 광복로 72-1 (광복동2가)",
+      "lat": 35.0986398717,
+      "lon": 129.0327400915,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "126857"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "413"
+        }
+      ],
+      "operatingHours": [
+        "상시(가게별 상이)"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 90,
+        "name": "남포지하쇼핑센터",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "area",
+      "availabilityReason": "거리 상권 이용 성격"
+    },
+    {
+      "id": "poi_31",
+      "title": "금수복국 해운대본점",
+      "aliases": [
+        "금수복국 해운대본점",
+        "금수복국"
+      ],
+      "address": "부산광역시 해운대구 중동1로43번길 23",
+      "lat": 35.1624573857,
+      "lon": 129.1645185529,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2778487"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "146"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1604"
+        }
+      ],
+      "operatingHours": [
+        "24시간",
+        "1층 금수복국 00:00-24:00\n2층 복요리 전문점 11:00-22:00\n2층 (15:00-17:00 브레이크 타임 / 13:00, 20:30 라스트 오더)"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 9,
+        "name": "금수복국 해운대본점",
+        "category": "식당",
+        "dwell": {
+          "count": 7,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "mergedPlaceIds": [
+        "poi_838"
+      ]
+    },
+    {
+      "id": "poi_34",
+      "title": "신세계사이먼 부산 프리미엄 아울렛",
+      "aliases": [
+        "신세계사이먼 부산 프리미엄 아울렛",
+        "신세계 프리미엄 아웃렛 부산"
+      ],
+      "address": "부산광역시 기장군 정관로 1133 부산프리미엄아울렛",
+      "lat": 35.3238517233,
+      "lon": 129.2349940728,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2532877"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 10,
+        "name": "신세계 프리미엄 아웃렛 부산",
+        "category": "상업지구",
+        "dwell": {
+          "count": 7,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_35",
+      "title": "씨라이프부산아쿠아리움",
+      "aliases": [
+        "씨라이프부산아쿠아리움",
+        "씨라 이르 부산아쿠아리움"
+      ],
+      "address": "부산광역시 해운대구 해운대해변로 266",
+      "lat": 35.159196575,
+      "lon": 129.1610328343,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "229912"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 18,
+        "name": "씨라 이르 부산아쿠아리움",
+        "category": "문화시설",
+        "dwell": {
+          "count": 7,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 7,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "facility",
+      "availabilityReason": "입장형 아쿠아리움 시설"
+    },
+    {
+      "id": "poi_37",
+      "title": "미포항",
+      "aliases": [
+        "미포항",
+        "호랑이 젤라 떡"
+      ],
+      "address": "부산광역시 해운대구 중동",
+      "lat": 35.1580385696,
+      "lon": 129.1717291585,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2784330"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 95,
+        "name": "호랑이 젤라 떡",
+        "category": "식당",
+        "dwell": {
+          "count": 6,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 6,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "hold",
+      "availabilityReason": "항구 이용 가능 시간 근거 수동 확인 전 보류"
+    },
+    {
+      "id": "poi_38",
+      "title": "타이가텐푸라",
+      "aliases": [
+        "타이가텐푸라",
+        "금송덕미 행리단길점",
+        "타이가 텐푸라"
+      ],
+      "address": "부산광역시 해운대구 우동1로38번가길 15 (우동)",
+      "lat": 35.1648042324,
+      "lon": 129.1584217967,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2858974"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1505"
+        }
+      ],
+      "operatingHours": [
+        "월-금 11:00-15:30 / 17:00-20:00\n토-일 11:00-20:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 9,
+        "name": "금송덕미 행리단길점",
+        "category": "식당",
+        "dwell": {
+          "count": 6,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 6,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_39",
+      "title": "고향연화",
+      "aliases": [
+        "고향연화",
+        "고향 연화"
+      ],
+      "address": "부산광역시 기장군 기장읍 연화길 33-8",
+      "lat": 35.2172384782,
+      "lon": 129.2245979306,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2785272"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1804"
+        }
+      ],
+      "operatingHours": [
+        "월-금 11:30-15:00 / 17:30-20:30\n(19:45 라스트오더)\n토-일 11:00-15:30 / 17:10-20:30\n(19:45 라스트오더)"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 29,
+        "name": "고향 연화",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_40",
+      "title": "광안리 해양레포츠센터",
+      "aliases": [
+        "광안리 해양레포츠센터",
+        "광안리해양레포츠센터"
+      ],
+      "address": "부산광역시 수영구 광안해변로54번길 222 광안리 해양레포츠센터",
+      "lat": 35.1461832972,
+      "lon": 129.11535383,
+      "category": "레저/스포츠",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2991028"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 6,
+        "name": "광안리해양레포츠센터",
+        "category": "레저/스포츠",
+        "dwell": {
+          "count": 5,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_41",
+      "title": "놀이마루",
+      "aliases": [
+        "놀이마루",
+        "NC백화점 서면점"
+      ],
+      "address": "부산광역시 부산진구 전포대로209번길 26",
+      "lat": 35.1564089608,
+      "lon": 129.0628997796,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2763856"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 90,
+        "name": "NC백화점 서면점",
+        "category": "상점",
+        "dwell": {
+          "count": 5,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_42",
+      "title": "무진장횟집 기장점",
+      "aliases": [
+        "무진장횟집",
+        "고향 연화",
+        "무진장횟집 기장점"
+      ],
+      "address": "부산광역시 기장군 기장읍 연화1길 137",
+      "lat": 35.2171162986,
+      "lon": 129.2261339112,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2776396"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1553"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1806"
+        }
+      ],
+      "operatingHours": [
+        "11:00~21:00",
+        "11:00-21:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 126,
+        "name": "고향 연화",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "mergedPlaceIds": [
+        "poi_1086"
+      ]
+    },
+    {
+      "id": "poi_43",
+      "title": "미청식당",
+      "aliases": [
+        "미청식당",
+        "일광해수욕장",
+        "부산바다의 과거와 현재, 일광해수욕장"
+      ],
+      "address": "부산광역시 기장군 일광면 기장해안로 1303",
+      "lat": 35.2603115904,
+      "lon": 129.2331904364,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2776391"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "265"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1441"
+        }
+      ],
+      "operatingHours": [
+        "09:00~18:00 (개장 중 입수가능 시간)",
+        "월-금 : 10:00-20:00\n(15:00-17:00 브레이크 타임)\n(19:40 라스트 오더)\n토-일 : 10:00-20:00\n(19:40 라스트 오더)"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 68,
+        "name": "일광해수욕장",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_44",
+      "title": "바로해장",
+      "aliases": [
+        "바로해장",
+        "랜디스 도넛 광안리점"
+      ],
+      "address": "부산광역시 수영구 광남로94번길 2 (광안동, 광일)",
+      "lat": 35.15014673,
+      "lon": 129.1146787801,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2868655"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 41,
+        "name": "랜디스 도넛 광안리점",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_45",
+      "title": "본가딸부자전복죽집",
+      "aliases": [
+        "본가딸부자전복죽집",
+        "고향 연화"
+      ],
+      "address": "부산광역시 기장군 기장읍 연화2길 14-1",
+      "lat": 35.2175468041,
+      "lon": 129.2260450183,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2845123"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 113,
+        "name": "고향 연화",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_46",
+      "title": "삼익비치수변공원",
+      "aliases": [
+        "삼익비치수변공원",
+        "광안리해양레포츠센터"
+      ],
+      "address": "부산광역시 수영구 남천동",
+      "lat": 35.1462388759,
+      "lon": 129.1169286916,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2782626"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 147,
+        "name": "광안리해양레포츠센터",
+        "category": "레저/스포츠",
+        "dwell": {
+          "count": 5,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "outdoor",
+      "availabilityReason": "야외 수변공원 접근형 장소"
+    },
+    {
+      "id": "poi_47",
+      "title": "솥이랑 서면점",
+      "aliases": [
+        "솥이랑 서면점",
+        "런닝맨 부산점"
+      ],
+      "address": "부산광역시 부산진구 중앙대로 672 (부전동)",
+      "lat": 35.1530453881,
+      "lon": 129.0596334885,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3442923"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 4,
+        "name": "런닝맨 부산점",
+        "category": "테마시설",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_49",
+      "title": "스완양분식",
+      "aliases": [
+        "스완양분식",
+        "대건 명가 돼지국밥"
+      ],
+      "address": "부산광역시 동구 중앙대로236번길 7-5 (초량동)",
+      "lat": 35.1181073148,
+      "lon": 129.042383166,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2870354"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 113,
+        "name": "대건 명가 돼지국밥",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_50",
+      "title": "어느멋진날",
+      "aliases": [
+        "어느멋진날",
+        "일광해수욕장"
+      ],
+      "address": "부산광역시 기장군 일광읍 기장해안로 1286",
+      "lat": 35.2588256667,
+      "lon": 129.2343181572,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2753006"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 131,
+        "name": "일광해수욕장",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_51",
+      "title": "영동밀면&돼지국밥",
+      "aliases": [
+        "영동밀면&돼지국밥",
+        "영동 밀면 영동 국밥"
+      ],
+      "address": "부산광역시 동구 중앙대로209번길 12 (초량동)",
+      "lat": 35.1163102386,
+      "lon": 129.0393473684,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2869405"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 13,
+        "name": "영동 밀면 영동 국밥",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_53",
+      "title": "주식회사아래모래",
+      "aliases": [
+        "주식회사아래모래",
+        "감천문화마을"
+      ],
+      "address": "부산광역시 사하구 감내2로 100 (감천동)",
+      "lat": 35.0969979358,
+      "lon": 129.0081228329,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3511011"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "365"
+        }
+      ],
+      "operatingHours": [
+        "09:00 ~ 18:00 (3월-10월)\n09:00 ~ 17:00 (11월-2월)"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 142,
+        "name": "감천문화마을",
+        "category": "체험활동관광지",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_54",
+      "title": "창비부산",
+      "aliases": [
+        "창비부산",
+        "영동 밀면 영동 국밥"
+      ],
+      "address": "부산광역시 동구 중앙대로209번길 16",
+      "lat": 35.1163768939,
+      "lon": 129.0391696039,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2822910"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 24,
+        "name": "영동 밀면 영동 국밥",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_56",
+      "title": "키자니아 부산",
+      "aliases": [
+        "키자니아 부산",
+        "신세계 센텀시티몰"
+      ],
+      "address": "부산광역시 해운대구 센텀4로 15 센텀시티 몰",
+      "lat": 35.1699003261,
+      "lon": 129.1283187187,
+      "category": "레저/스포츠",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2496023"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 8,
+        "name": "신세계 센텀시티몰",
+        "category": "상업지구",
+        "dwell": {
+          "count": 5,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "facility",
+      "availabilityReason": "입장형 체험 시설"
+    },
+    {
+      "id": "poi_57",
+      "title": "튼튼장어 무한리필",
+      "aliases": [
+        "튼튼장어 무한리필",
+        "일광해수욕장"
+      ],
+      "address": "부산광역시 기장군 기장해안로 1301",
+      "lat": 35.2601393874,
+      "lon": 129.2331682209,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2848939"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 59,
+        "name": "일광해수욕장",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_58",
+      "title": "할매복국",
+      "aliases": [
+        "할매복국",
+        "바다마루 전복죽"
+      ],
+      "address": "부산광역시 해운대구 달맞이길62번길 1",
+      "lat": 35.1609243536,
+      "lon": 129.1715207639,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "851989"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "190"
+        }
+      ],
+      "operatingHours": [
+        "오픈 07:00 / 마감 21:30\n(break time 15:00~17:00) \n(Last order 14:00, 20:30)"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 58,
+        "name": "바다마루 전복죽",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_59",
+      "title": "해운대기와집대구탕",
+      "aliases": [
+        "해운대기와집대구탕",
+        "바다마루 전복죽"
+      ],
+      "address": "부산광역시 해운대구 달맞이길50번길 4 (중동)",
+      "lat": 35.1611742976,
+      "lon": 129.1700125548,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2760773"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 130,
+        "name": "바다마루 전복죽",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_60",
+      "title": "해운대하얀오징어집",
+      "aliases": [
+        "해운대하얀오징어집",
+        "바다마루 전복죽"
+      ],
+      "address": "부산광역시 해운대구 달맞이길50번길 4",
+      "lat": 35.1611742976,
+      "lon": 129.1700125548,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2858936"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 130,
+        "name": "바다마루 전복죽",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_62",
+      "title": "그린노마드",
+      "aliases": [
+        "그린노마드",
+        "코스트코 부산점"
+      ],
+      "address": "부산광역시 수영구 좌수영로 161-10 (망미동)",
+      "lat": 35.1784130482,
+      "lon": 129.1167972647,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2782628"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 138,
+        "name": "코스트코 부산점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 4,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_63",
+      "title": "급행장",
+      "aliases": [
+        "급행장",
+        "서면 지하상가"
+      ],
+      "address": "부산광역시 부산진구 서면문화로 4",
+      "lat": 35.1581031257,
+      "lon": 129.0580307117,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "850093"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 108,
+        "name": "서면 지하상가",
+        "category": "상업지구",
+        "dwell": {
+          "count": 4,
+          "median": 45,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_64",
+      "title": "나가하마만게츠",
+      "aliases": [
+        "나가하마만게츠",
+        "산리 오러 버스 클럽"
+      ],
+      "address": "부산광역시 해운대구 우동1로 57 (우동)",
+      "lat": 35.1667289995,
+      "lon": 129.1574801581,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2859101"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1496"
+        }
+      ],
+      "operatingHours": [
+        "월-금 11:00-15:30 / 16:30-20:30"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 56,
+        "name": "산리 오러 버스 클럽",
+        "category": "식당",
+        "dwell": {
+          "count": 4,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_66",
+      "title": "다대포 꿈의 낙조분수",
+      "aliases": [
+        "다대포 꿈의 낙조분수",
+        "다대포 해변공원",
+        "다대포해변공원(한,영,중간,중번,일)",
+        "다대포해변공원 "
+      ],
+      "address": "부산광역시 사하구 몰운대1길 14 (다대동)",
+      "lat": 35.0463945293,
+      "lon": 128.9680471374,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "769761"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "1718"
+        }
+      ],
+      "operatingHours": [
+        "상시 "
+      ],
+      "holidays": [
+        "연중무휴 "
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 134,
+        "name": "다대포 해변공원",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 4,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_67",
+      "title": "라꽁띠",
+      "aliases": [
+        "라꽁띠",
+        "심미안"
+      ],
+      "address": "부산광역시 해운대구 청사포로 85",
+      "lat": 35.1626050452,
+      "lon": 129.1890108643,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2891789"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1566"
+        }
+      ],
+      "operatingHours": [
+        "12:00~15:00/17:30~22:00(마지막 주문 20:30)"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 126,
+        "name": "심미안",
+        "category": "식당",
+        "dwell": {
+          "count": 4,
+          "median": 45,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_68",
+      "title": "류센소 본점",
+      "aliases": [
+        "류센소 본점"
+      ],
+      "address": "부산광역시 해운대구 구남로8번길 62",
+      "lat": 35.1616267696,
+      "lon": 129.1562304075,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2891814"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 6,
+        "name": "류센소 본점",
+        "category": "식당",
+        "dwell": {
+          "count": 4,
+          "median": 45,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_69",
+      "title": "만물의거리",
+      "aliases": [
+        "만물의거리",
+        "국제시장 먹자골목"
+      ],
+      "address": "부산광역시 중구 국제시장2길 20-1",
+      "lat": 35.0996507962,
+      "lon": 129.0286987483,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1013694"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 56,
+        "name": "국제시장 먹자골목",
+        "category": "상업지구",
+        "dwell": {
+          "count": 4,
+          "median": 45,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_70",
+      "title": "벡스코(BEXCO)",
+      "aliases": [
+        "벡스코(BEXCO)",
+        "벡스코"
+      ],
+      "address": "부산광역시 해운대구 APEC로 55",
+      "lat": 35.1691116738,
+      "lon": 129.1363347095,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "130668"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "420"
+        }
+      ],
+      "operatingHours": [
+        "행사별 상이(홈페이지 참조)"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 10,
+        "name": "벡스코",
+        "category": "문화시설",
+        "dwell": {
+          "count": 4,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_71",
+      "title": "부산영화체험박물관",
+      "aliases": [
+        "부산영화체험박물관",
+        "부산영화체험 박물관"
+      ],
+      "address": "부산광역시 중구 대청로126번길 12",
+      "lat": 35.1017589855,
+      "lon": 129.0336899238,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2554068"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 11,
+        "name": "부산영화체험 박물관",
+        "category": "체험활동관광지",
+        "dwell": {
+          "count": 4,
+          "median": 105,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 105,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_72",
+      "title": "조명의거리",
+      "aliases": [
+        "조명의거리",
+        "국제시장 먹자골목"
+      ],
+      "address": "부산광역시 중구 국제시장2길 5",
+      "lat": 35.0996591215,
+      "lon": 129.0283348915,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1013721"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 66,
+        "name": "국제시장 먹자골목",
+        "category": "상업지구",
+        "dwell": {
+          "count": 4,
+          "median": 45,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 45,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_73",
+      "title": "할매집",
+      "aliases": [
+        "할매집",
+        "해운대 밀면"
+      ],
+      "address": "부산광역시 해운대구 중동2로10번길 7",
+      "lat": 35.1630962099,
+      "lon": 129.1649018354,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2905141"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 69,
+        "name": "해운대 밀면",
+        "category": "식당",
+        "dwell": {
+          "count": 4,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_74",
+      "title": "해운대 가야밀면",
+      "aliases": [
+        "해운대 가야밀면",
+        "해운대 가야 밀면"
+      ],
+      "address": "부산광역시 해운대구 좌동순환로 27 (좌동)",
+      "lat": 35.1688900329,
+      "lon": 129.1663598827,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2786779"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 6,
+        "name": "해운대 가야 밀면",
+        "category": "식당",
+        "dwell": {
+          "count": 4,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_75",
+      "title": "해운대 그린레일웨이 (미포~송정 구간)",
+      "aliases": [
+        "해운대 그린레일웨이 (미포~송정 구간)",
+        "해운대 블루라인"
+      ],
+      "address": "부산광역시 해운대구 청사포로 116 (중동)",
+      "lat": 35.1612857933,
+      "lon": 129.1914273569,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2822343"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 9,
+        "name": "해운대 블루라인",
+        "category": "테마시설",
+        "dwell": {
+          "count": 4,
+          "median": 75,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 75,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "outdoor",
+      "availabilityReason": "야외 산책로 성격. 카카오 미확인 상태라 별도 추천 제외 유지"
+    },
+    {
+      "id": "poi_76",
+      "title": "해운대온천센터",
+      "aliases": [
+        "해운대온천센터",
+        "해운대 밀면"
+      ],
+      "address": "부산광역시 해운대구 중동2로 16",
+      "lat": 35.1634406103,
+      "lon": 129.1645768542,
+      "category": "레저/스포츠",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "126108"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 92,
+        "name": "해운대 밀면",
+        "category": "식당",
+        "dwell": {
+          "count": 4,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "facility",
+      "availabilityReason": "온천 이용 시설"
+    },
+    {
+      "id": "poi_77",
+      "title": "희와제과",
+      "aliases": [
+        "희와제과",
+        "회와 제과"
+      ],
+      "address": "부산광역시 부산진구 전포대로246번길 6 (전포동, 동양팰리스)",
+      "lat": 35.1584310105,
+      "lon": 129.0658105816,
+      "category": "카페",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2865236"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 22,
+        "name": "회와 제과",
+        "category": "식당",
+        "dwell": {
+          "count": 4,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 4,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_78",
+      "title": "고래서이뻐",
+      "aliases": [
+        "고래서이뻐",
+        "고래서 이뻐"
+      ],
+      "address": "부산광역시 해운대구 우동1로38번길 15-1 (우동)",
+      "lat": 35.1657319056,
+      "lon": 129.1583856629,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3336600"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "2581"
+        }
+      ],
+      "operatingHours": [
+        "매일 10:00~21:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 5,
+        "name": "고래서 이뻐",
+        "category": "상점",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_79",
+      "title": "광안리해변 테마거리",
+      "aliases": [
+        "광안리해변 테마거리",
+        "광안리 해변 테마거리"
+      ],
+      "address": "부산광역시 수영구 민락동",
+      "lat": 35.1551657503,
+      "lon": 129.1221363273,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "127925"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 21,
+        "name": "광안리 해변 테마거리",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_81",
+      "title": "그런고로",
+      "aliases": [
+        "그런고로",
+        "포셋 전포점"
+      ],
+      "address": "부산광역시 부산진구 서전로 40 (전포동)",
+      "lat": 35.1575588567,
+      "lon": 129.0642468527,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3421909"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 97,
+        "name": "포셋 전포점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "hold",
+      "availabilityReason": "장소 실체·이용 성격 수동 확인 전 보류"
+    },
+    {
+      "id": "poi_82",
+      "title": "기장끝집 죽성본점",
+      "aliases": [
+        "기장끝집 죽성본점",
+        "오직 전복죽 기장 끝 집"
+      ],
+      "address": "부산광역시 기장군 기장읍 기장해안로 895",
+      "lat": 35.2348590788,
+      "lon": 129.2435319086,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2872474"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 17,
+        "name": "오직 전복죽 기장 끝 집",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_83",
+      "title": "꺼먹동네횟집",
+      "aliases": [
+        "꺼먹동네횟집",
+        "칠암 삼계"
+      ],
+      "address": "부산광역시 기장군 일광읍 문오성길 509",
+      "lat": 35.2985883478,
+      "lon": 129.2595731906,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "850121"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 142,
+        "name": "칠암 삼계",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_84",
+      "title": "남선창고터",
+      "aliases": [
+        "남선창고터",
+        "설빙 부산역점"
+      ],
+      "address": "부산광역시 동구 초량로13번길 53",
+      "lat": 35.1167962983,
+      "lon": 129.0395112298,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1942299"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 46,
+        "name": "설빙 부산역점",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "outdoor",
+      "availabilityReason": "상시 접근 가능한 야외 역사 유적"
+    },
+    {
+      "id": "poi_88",
+      "title": "롯데프리미엄아울렛 동부산점",
+      "aliases": [
+        "롯데프리미엄아울렛 동부산점",
+        "롯데 프리미엄 아울렛 동부산점"
+      ],
+      "address": "부산광역시 기장군 기장읍 기장해안로 147",
+      "lat": 35.1922299485,
+      "lon": 129.2127940917,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1993017"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "506"
+        }
+      ],
+      "operatingHours": [
+        "-본관 : 매일 10:30~21:00\n※ 동절기(11~2월) 주중 10:30~20:30 l 주말·공휴일 10:30~21:00\n\n-메종관 : 주중 10:30~20:00 l 주말·공휴일 10:30~20:30"
+      ],
+      "holidays": [
+        "연중 2회"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 67,
+        "name": "롯데 프리미엄 아울렛 동부산점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_89",
+      "title": "범어사 성보박물관",
+      "aliases": [
+        "범어사 성보박물관",
+        "범어사",
+        "범어사 (한,영,중간,중번,일)"
+      ],
+      "address": "부산광역시 금정구 범어사로 250",
+      "lat": 35.2839753157,
+      "lon": 129.0681152667,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2554111"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "402"
+        }
+      ],
+      "operatingHours": [
+        "매일 08:00 - 17:00"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 60,
+        "name": "범어사",
+        "category": "역사/유적/종교",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_90",
+      "title": "부산 영화의 전당",
+      "aliases": [
+        "부산 영화의 전당",
+        "영화의 전당",
+        "영화의 전당(한,영,중간,중번,일)"
+      ],
+      "address": "부산광역시 해운대구 수영강변대로 120",
+      "lat": 35.170794647,
+      "lon": 129.1270576924,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2456837"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "421"
+        }
+      ],
+      "operatingHours": [
+        "매일 / 프로그램별 상이(홈페이지 참조)"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 26,
+        "name": "영화의 전당",
+        "category": "문화시설",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "siteGroupId": "site_movie_hall",
+      "siteRole": "parent"
+    },
+    {
+      "id": "poi_91",
+      "title": "부산근현대역사관 별관",
+      "aliases": [
+        "부산근현대역사관 별관",
+        "부산 근현대 역사관 별관"
+      ],
+      "address": "부산광역시 중구 대청로 104",
+      "lat": 35.1026838356,
+      "lon": 129.0312012262,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2784363"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "내부장소",
+        "kind": null,
+        "parent": "부산근현대역사관"
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 3,
+        "name": "부산 근현대 역사관 별관",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "siteGroupId": "site_busan_modern_history_museum",
+      "siteRole": "child"
+    },
+    {
+      "id": "poi_92",
+      "title": "부산근현대역사관 본관",
+      "aliases": [
+        "부산근현대역사관 본관",
+        "부산 근현대 역사관 별관",
+        "부산근현대역사관 본관(한,영,중간,중번,일)"
+      ],
+      "address": "부산광역시 중구 대청로 112 (대청동1가)",
+      "lat": 35.1027616225,
+      "lon": 129.032190027,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3083767"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "1881"
+        }
+      ],
+      "operatingHours": [
+        "매주 화요일~일요일 09:00~18:00"
+      ],
+      "holidays": [
+        "매주 월요일 휴관\n(월요일이 공휴일인 경우 그 다음날)"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 89,
+        "name": "부산 근현대 역사관 별관",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_93",
+      "title": "부산전자종합시장",
+      "aliases": [
+        "부산전자종합시장",
+        "부전시장"
+      ],
+      "address": "부산광역시 부산진구 부전로 196 (부전동)",
+      "lat": 35.1637636841,
+      "lon": 129.0624412844,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3080300"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 149,
+        "name": "부전시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_94",
+      "title": "부산타워",
+      "aliases": [
+        "부산타워",
+        "부산타워(한,영,중간,중번,일)"
+      ],
+      "address": "부산광역시 중구 용두산길 37-30 (광복동2가)",
+      "lat": 35.1011951345,
+      "lon": 129.0323594995,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1277679"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "550"
+        }
+      ],
+      "operatingHours": [
+        "10:00 - 22:00(발권마감 21:30)"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 26,
+        "name": "부산타워",
+        "category": "테마시설",
+        "dwell": {
+          "count": 3,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "facility",
+      "availabilityReason": "전망대 입장 시설"
+    },
+    {
+      "id": "poi_95",
+      "title": "부전돼지국밥",
+      "aliases": [
+        "부전돼지국밥",
+        "애플 아웃렛"
+      ],
+      "address": "부산광역시 사상구 사상로 214",
+      "lat": 35.1642344065,
+      "lon": 128.9839369933,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1855868"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 124,
+        "name": "애플 아웃렛",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_96",
+      "title": "부전마켓타운",
+      "aliases": [
+        "부전마켓타운",
+        "부전시장"
+      ],
+      "address": "부산광역시 부산진구 중앙대로755번길 21",
+      "lat": 35.1624610334,
+      "lon": 129.0614025211,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "132188"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "327"
+        }
+      ],
+      "operatingHours": [
+        "월~일 07:00~19:00(가게별 상이) "
+      ],
+      "holidays": [
+        "가게별 상이"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 34,
+        "name": "부전시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_97",
+      "title": "삼진어묵 체험·역사과학관",
+      "aliases": [
+        "삼진어묵 체험·역사과학관",
+        "삼진 어묵 영도 본점"
+      ],
+      "address": "부산광역시 영도구 절영로7번길 41-1 (봉래동2가)",
+      "lat": 35.0928101531,
+      "lon": 129.0427254928,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2470024"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 17,
+        "name": "삼진 어묵 영도 본점",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "facility",
+      "availabilityReason": "체험·역사관 시설"
+    },
+    {
+      "id": "poi_98",
+      "title": "속씨원한대구탕미포본점",
+      "aliases": [
+        "속씨원한대구탕미포본점",
+        "수변 최고 돼지국밥 미포점"
+      ],
+      "address": "부산광역시 해운대구 달맞이길62번길 28 (중동)",
+      "lat": 35.1589051184,
+      "lon": 129.1706181201,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2793181"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 33,
+        "name": "수변 최고 돼지국밥 미포점",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_99",
+      "title": "송도 구름산책로",
+      "aliases": [
+        "송도 구름산책로",
+        "송도 구름 산책로"
+      ],
+      "address": "부산광역시 서구 암남동 129-4",
+      "lat": 35.0753645109,
+      "lon": 129.0224999494,
+      "category": "레저/스포츠",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2557807"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 19,
+        "name": "송도 구름 산책로",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_102",
+      "title": "수민이네",
+      "aliases": [
+        "수민이네",
+        "앨리스 도넛 청사포 본점"
+      ],
+      "address": "부산광역시 해운대구 청사포로58번길 118",
+      "lat": 35.1606275259,
+      "lon": 129.1909968571,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1805853"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 20,
+        "name": "앨리스 도넛 청사포 본점",
+        "category": "상점",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_105",
+      "title": "야스마루",
+      "aliases": [
+        "야스마루",
+        "오브젝트 에디트"
+      ],
+      "address": "부산광역시 부산진구 중앙대로756번길 24 (부전동)",
+      "lat": 35.1593225066,
+      "lon": 129.0619942225,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2773623"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 99,
+        "name": "오브젝트 에디트",
+        "category": "상점",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_107",
+      "title": "영도봉래시장",
+      "aliases": [
+        "영도봉래시장",
+        "삼진 어묵 영도 본점"
+      ],
+      "address": "부산광역시 영도구 태종로113번길 39",
+      "lat": 35.0927462941,
+      "lon": 129.0439559432,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1942316"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 108,
+        "name": "삼진 어묵 영도 본점",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_108",
+      "title": "영화의전당 라이브러리 자료실",
+      "aliases": [
+        "영화의전당 라이브러리 자료실",
+        "영화의 전당"
+      ],
+      "address": "부산광역시 해운대구 수영강변대로 120 (우동)",
+      "lat": 35.1710029572,
+      "lon": 129.1270687971,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3454074"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "내부장소",
+        "kind": null,
+        "parent": "부산 영화의 전당"
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 6,
+        "name": "영화의 전당",
+        "category": "문화시설",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "siteGroupId": "site_movie_hall",
+      "siteRole": "child"
+    },
+    {
+      "id": "poi_109",
+      "title": "오반장",
+      "aliases": [
+        "오반장",
+        "해목"
+      ],
+      "address": "부산광역시 해운대구 구남로24번길 20 (우동)",
+      "lat": 35.1614851749,
+      "lon": 129.1592634811,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2860782"
+        },
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2786766"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 51,
+        "name": "해목",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_111",
+      "title": "일광정",
+      "aliases": [
+        "일광정",
+        "칠암 삼계"
+      ],
+      "address": "부산광역시 기장군 일광읍 일광로 645",
+      "lat": 35.2996881955,
+      "lon": 129.2580316277,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2848952"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 103,
+        "name": "칠암 삼계",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_112",
+      "title": "일품한우",
+      "aliases": [
+        "일품한우",
+        "맥도날드 해운대 DT점"
+      ],
+      "address": "부산광역시 해운대구 해운대로570번길 49",
+      "lat": 35.1602575377,
+      "lon": 129.1594329447,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "851955"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 21,
+        "name": "맥도날드 해운대 DT점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_114",
+      "title": "초량온당",
+      "aliases": [
+        "초량온당",
+        "초량 온당"
+      ],
+      "address": "부산광역시 동구 초량중로 135 (수정동)",
+      "lat": 35.1234594789,
+      "lon": 129.0415747569,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2870703"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1450"
+        }
+      ],
+      "operatingHours": [
+        "화-토 : 12:00-19:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 5,
+        "name": "초량 온당",
+        "category": "상점",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_115",
+      "title": "칠암만장",
+      "aliases": [
+        "칠암만장",
+        "칠암 삼계"
+      ],
+      "address": "부산광역시 기장군 일광읍 일광로 648",
+      "lat": 35.2999631688,
+      "lon": 129.258231602,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2848949"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 85,
+        "name": "칠암 삼계",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_116",
+      "title": "칠암사계",
+      "aliases": [
+        "칠암사계",
+        "칠암 삼계"
+      ],
+      "address": "부산광역시 기장군 칠암1길 7-10",
+      "lat": 35.2999215202,
+      "lon": 129.2589676506,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2822840"
+        },
+        {
+          "source": "busan_food",
+          "sourceId": "1448"
+        }
+      ],
+      "operatingHours": [
+        "월-일 : 10:00-21:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 20,
+        "name": "칠암 삼계",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_117",
+      "title": "칠암일번지횟집",
+      "aliases": [
+        "칠암일번지횟집",
+        "칠암 삼계"
+      ],
+      "address": "부산광역시 기장군 일광면 문오성길 547",
+      "lat": 35.3002520455,
+      "lon": 129.2592953908,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2775556"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 49,
+        "name": "칠암 삼계",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_118",
+      "title": "톤쇼우",
+      "aliases": [
+        "톤쇼우"
+      ],
+      "address": "부산광역시 금정구 금강로 247-10 (장전동)",
+      "lat": 35.2304871678,
+      "lon": 129.0842986624,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2841442"
+        }
+      ],
+      "operatingHours": [],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 5,
+        "name": "톤쇼우",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_608",
+      "title": "국립해양박물관",
+      "aliases": [
+        "국립해양박물관(한,영,중간,중번,일)",
+        "국립해양박물관"
+      ],
+      "address": "부산광역시 영도구 해양로301번길 45",
+      "lat": 35.078728,
+      "lon": 129.08018,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "257"
+        }
+      ],
+      "operatingHours": [
+        "국립해양박물관 \n-화 ~ 금 09:00~18:00(입장 17:30분까지) \n-토 09:00~21:00(5~8월) / 09:00~19:00(9월~4월) \n-일 09:00~19:00 \n-설날‧추석 익일, 어린이날, 광복절 09:00~21:00 \n\n해양도서관\n -화~일요일 10:00~17:30\n- 휴관일: 2025.6.4 ~ 8.18\n(박물관 휴관일 및 법정공휴일)"
+      ],
+      "holidays": [
+        "매주 월요일"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 25,
+        "name": "국립 해양 박물관",
+        "category": "체험활동관광지",
+        "dwell": {
+          "count": 10,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 10,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_618",
+      "title": "보수동책방골목",
+      "aliases": [
+        "보수동책방골목"
+      ],
+      "address": "부산광역시 중구 보수동1가 151-1",
+      "lat": 35.103367,
+      "lon": 129.02663,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "272"
+        }
+      ],
+      "operatingHours": [
+        "가게별 상이(20:00 전후 업무 종료)"
+      ],
+      "holidays": [
+        "첫째주, 셋째주 화요일 (신정, 구청, 추석있는 주는 무휴) / 신정 당일하루 / 구정, 추석은 당일과 다음날까지 2일"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 2,
+        "name": "보수동 책방 골목",
+        "category": "상업지구",
+        "dwell": {
+          "count": 12,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 12,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_628",
+      "title": "민락수변공원",
+      "aliases": [
+        "민락수변공원"
+      ],
+      "address": "부산광역시 수영구 민락동 110-19",
+      "lat": 35.15487,
+      "lon": 129.13399,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "285"
+        }
+      ],
+      "operatingHours": [
+        "상시"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 117,
+        "name": "민락수변공원",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 13,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 13,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_629",
+      "title": "송도해수욕장",
+      "aliases": [
+        "송도해수욕장(한,영,중간,중번,일)",
+        "송도해수욕장"
+      ],
+      "address": "부산광역시 서구 송도해변로 100",
+      "lat": 35.07595,
+      "lon": 129.01694,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "286"
+        }
+      ],
+      "operatingHours": [
+        "06:00 - 23:00"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "해변·해안",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 1,
+        "name": "송도해수욕장",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 8,
+          "median": 45,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 8,
+        "median": 45,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_650",
+      "title": "국립부산과학관",
+      "aliases": [
+        "국립부산과학관"
+      ],
+      "address": "부산광역시 기장군 기장읍 동부산관광6로 59",
+      "lat": 35.20468,
+      "lon": 129.2127,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "340"
+        }
+      ],
+      "operatingHours": [
+        "화~일 09:30~17:30(입장 16:30분까지) "
+      ],
+      "holidays": [
+        "매주 월요일, 1월 1일, 설날‧추석 당일\n※ 월요일이 공휴일인 경우 익일 휴관"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 4,
+        "name": "국립부산과학관",
+        "category": "문화시설",
+        "dwell": {
+          "count": 6,
+          "median": 135,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 6,
+        "median": 135,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "facility",
+      "availabilityReason": "과학관 관람 시설"
+    },
+    {
+      "id": "poi_656",
+      "title": "부산시민공원",
+      "aliases": [
+        "부산시민공원"
+      ],
+      "address": "부산광역시 부산진구 시민공원로 73",
+      "lat": 35.16841,
+      "lon": 129.05739,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "354"
+        }
+      ],
+      "operatingHours": [
+        "매일 05:00 - 24:00"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 6,
+        "name": "부산 시민공원",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "siteGroupId": "site_busan_citizen_park",
+      "siteRole": "parent"
+    },
+    {
+      "id": "poi_660",
+      "title": "APEC나루공원",
+      "aliases": [
+        "APEC나루공원"
+      ],
+      "address": "부산광역시 해운대구 수영강변대로 85\n",
+      "lat": 35.170307,
+      "lon": 129.12564,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "362"
+        }
+      ],
+      "operatingHours": [
+        "상시"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "공원·정원",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 148,
+        "name": "영화의 전당",
+        "category": "문화시설",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "outdoor",
+      "availabilityReason": "상시 개방 야외 공원"
+    },
+    {
+      "id": "poi_662",
+      "title": "다대포 해수욕장",
+      "aliases": [
+        "다대포 해수욕장"
+      ],
+      "address": "부산광역시 사하구 몰운대1길 14",
+      "lat": 35.04652,
+      "lon": 128.96283,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "366"
+        }
+      ],
+      "operatingHours": [
+        "다대포해수욕장 : 매일\n낙조분수 : 4월 말~10월(매주 화~일)"
+      ],
+      "holidays": [
+        "다대포해수욕장 : 연중무휴\n낙조분수: 월요일"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "해변·해안",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 8,
+        "name": "다대포해수욕장",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 17,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 17,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_667",
+      "title": "F1963",
+      "aliases": [
+        "F1963"
+      ],
+      "address": "부산광역시 수영구 구락로123번길 20",
+      "lat": 35.176933,
+      "lon": 129.11496,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "372"
+        }
+      ],
+      "operatingHours": [
+        "월~일/09:00 ~ 21:00(매장별 운영시간 상이)"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 2,
+        "name": "F1963",
+        "category": "상업지구",
+        "dwell": {
+          "count": 5,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_669",
+      "title": "광안리 해수욕장",
+      "aliases": [
+        "광안리해수욕장",
+        "광안리 해수욕장"
+      ],
+      "address": "부산광역시 수영구 광안해변로 219",
+      "lat": 35.15318,
+      "lon": 129.11887,
+      "category": "자연관광지",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "377"
+        }
+      ],
+      "operatingHours": [
+        "상시"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "해변·해안",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 10,
+        "name": "광안리해수욕장",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 161,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 161,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_673",
+      "title": "상해거리",
+      "aliases": [
+        "상해거리"
+      ],
+      "address": "부산광역시 동구 중앙대로179번길 1\n",
+      "lat": 35.113808,
+      "lon": 129.03786,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "415"
+        }
+      ],
+      "operatingHours": [
+        "상시(가게별 상이)"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "거리·골목",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 15,
+        "name": "초량 차이나타운",
+        "category": "상업지구",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "availabilityProfile": "area",
+      "availabilityReason": "거리 상권 이용 성격"
+    },
+    {
+      "id": "poi_703",
+      "title": "KT&G상상마당 부산",
+      "aliases": [
+        "KT&G상상마당 부산(한,영,중간,중번,일)",
+        "KT&G상상마당 부산"
+      ],
+      "address": "부산광역시 부산진구 서면로 39",
+      "lat": 35.15431,
+      "lon": 129.05728,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1185"
+        }
+      ],
+      "operatingHours": [
+        "10:00 - 22:00\n입점공간별, 프로그램별 상이"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 6,
+        "name": "KTG 상상마당 부산",
+        "category": "문화시설",
+        "dwell": {
+          "count": 34,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 34,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_709",
+      "title": "부산근현대역사관",
+      "aliases": [
+        "부산근현대역사관 별관(한,영,중간,중번,일)",
+        "부산근현대역사관"
+      ],
+      "address": "부산광역시 중구 대청로 104",
+      "lat": 35.10258,
+      "lon": 129.03203,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1444"
+        }
+      ],
+      "operatingHours": [
+        "화요일~일요일 09:00-18:00(입장마감 17:00)"
+      ],
+      "holidays": [
+        "월요일, 1월 1일"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 74,
+        "name": "부산 근현대 역사관 별관",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      },
+      "siteGroupId": "site_busan_modern_history_museum",
+      "siteRole": "parent"
+    },
+    {
+      "id": "poi_711",
+      "title": "서면미술관",
+      "aliases": [
+        "서면미술관(한,영,중간,중번,일)",
+        "서면미술관"
+      ],
+      "address": "부산광역시 부산진구 동천로 58, 2층",
+      "lat": 35.153927,
+      "lon": 129.06252,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1653"
+        }
+      ],
+      "operatingHours": [
+        "11:00 ~ 19:00 (발권 마감 18:00)"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 6,
+        "name": "서면 미술관",
+        "category": "문화시설",
+        "dwell": {
+          "count": 7,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_712",
+      "title": "부산현대미술관",
+      "aliases": [
+        "부산현대미술관(한,영,중간,중번,일)",
+        "부산현대미술관"
+      ],
+      "address": "부산광역시 사하구 낙동남로 1191",
+      "lat": 35.109245,
+      "lon": 128.94263,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1671"
+        }
+      ],
+      "operatingHours": [
+        "화~일 10:00~18:00(17:30 입장마감)"
+      ],
+      "holidays": [
+        "월요일(월요일이 공휴일이면 화요일 휴관), 1월 1일"
+      ],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 9,
+        "name": "부산 현대미술관",
+        "category": "문화시설",
+        "dwell": {
+          "count": 7,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_752",
+      "title": "부산시민공원 역사문화관",
+      "aliases": [
+        "부산시민공원 역사문화관(한,영,중간,중번,일)",
+        "부산시민공원 역사문화관"
+      ],
+      "address": "부산광역시 부산진구 시민공원로 73",
+      "lat": 35.168602,
+      "lon": 129.05751,
+      "category": "문화시설",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2155"
+        }
+      ],
+      "operatingHours": [
+        "화요일~일요일 09:00~18:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "내부장소",
+        "kind": "공원·정원",
+        "parent": "부산시민공원"
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 29,
+        "name": "부산 시민공원",
+        "category": "자연관광지",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      },
+      "siteGroupId": "site_busan_citizen_park",
+      "siteRole": "child"
+    },
+    {
+      "id": "poi_789",
+      "title": "해운대시장",
+      "aliases": [
+        "해운대시장(한,영,중간,중번,일)",
+        "해운대시장"
+      ],
+      "address": "부산 해운대구 중동1로 42-16",
+      "lat": 35.16165,
+      "lon": 129.1621,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "294"
+        }
+      ],
+      "operatingHours": [
+        "09:00 - 22:00"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 35,
+        "name": "해운대 전통시장",
+        "category": "상업지구",
+        "dwell": {
+          "count": 11,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 11,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_791",
+      "title": "서면시장",
+      "aliases": [
+        "서면시장"
+      ],
+      "address": "부산광역시 부산진구 서면로 56",
+      "lat": 35.155655,
+      "lon": 129.05817,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "328"
+        }
+      ],
+      "operatingHours": [
+        "가게별 상이"
+      ],
+      "holidays": [
+        "가게별 상이"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 31,
+        "name": "송정 삼대 국밥",
+        "category": "식당",
+        "dwell": {
+          "count": 5,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_798",
+      "title": "롯데면세점 부산점",
+      "aliases": [
+        "롯데면세점 부산점"
+      ],
+      "address": "부산광역시 부산진구 가야대로 772 롯데백화점 부산점 8층",
+      "lat": 35.15664,
+      "lon": 129.05534,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "537"
+        }
+      ],
+      "operatingHours": [
+        "매일 10:30~19:30"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 99,
+        "name": "롯데백화점 부산본점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 24,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 24,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_799",
+      "title": "부산면세점 용두산점",
+      "aliases": [
+        "부산면세점 용두산점"
+      ],
+      "address": "부산광역시 중구 용두산길 37-55",
+      "lat": 35.101048,
+      "lon": 129.03249,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "539"
+        }
+      ],
+      "operatingHours": [
+        "09:00~18:00"
+      ],
+      "holidays": [
+        "연중무휴"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 9,
+        "name": "부산타워",
+        "category": "테마시설",
+        "dwell": {
+          "count": 3,
+          "median": 90,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 90,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_801",
+      "title": "롯데백화점 부산본점",
+      "aliases": [
+        "롯데백화점 부산본점"
+      ],
+      "address": "부산광역시 부산진구 가야대로 772",
+      "lat": 35.15665,
+      "lon": 129.05655,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "541"
+        }
+      ],
+      "operatingHours": [
+        "월~목 10:30 ~ 20:00\n금~일 10:30 ~ 20:30 "
+      ],
+      "holidays": [
+        "월1회 휴점"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 20,
+        "name": "롯데백화점 부산본점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 24,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 24,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_802",
+      "title": "롯데백화점 센텀시티점",
+      "aliases": [
+        "롯데백화점 센텀시티점"
+      ],
+      "address": "부산광역시 해운대구 센텀남대로 59",
+      "lat": 35.169735,
+      "lon": 129.13115,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "546"
+        }
+      ],
+      "operatingHours": [
+        "월~목 10:30 ~ 20:00\n금~일 10:30 ~ 20:30"
+      ],
+      "holidays": [
+        "월1회 휴점"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 10,
+        "name": "롯데백화점 센텀시티점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_805",
+      "title": "부산프리미엄아울렛",
+      "aliases": [
+        "부산프리미엄아울렛"
+      ],
+      "address": "부산광역시 기장군 장안읍 정관로 1133",
+      "lat": 35.323696,
+      "lon": 129.23563,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "552"
+        }
+      ],
+      "operatingHours": [
+        "하절기(5~10월) 매일 10:30~21:00\n동절기(11~4월) 월~목 10:30~20:30 | 금~일 10:30~21:00"
+      ],
+      "holidays": [
+        "설날, 추석 당일"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "coord",
+        "distanceM": 51,
+        "name": "신세계 프리미엄 아웃렛 부산",
+        "category": "상업지구",
+        "dwell": {
+          "count": 7,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_806",
+      "title": "NC백화점 해운대점",
+      "aliases": [
+        "NC백화점 해운대점(한,영,중간,중번,일)",
+        "NC백화점 해운대점"
+      ],
+      "address": "부산광역시 해운대구 해운대로 813",
+      "lat": 35.170517,
+      "lon": 129.17708,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "554"
+        }
+      ],
+      "operatingHours": [
+        "월~목 10:30~21:00\n금~일 10:30~22:00"
+      ],
+      "holidays": [
+        "월1회 휴점"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 4,
+        "name": "NC백화점 해운대점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_807",
+      "title": "NC백화점 부산대점",
+      "aliases": [
+        "NC백화점 부산대점(한,영,중간,중번,일)",
+        "NC백화점 부산대점"
+      ],
+      "address": "부산광역시 금정구 부산대학로 63번길 2",
+      "lat": 35.232323,
+      "lon": 129.08401,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "555"
+        }
+      ],
+      "operatingHours": [
+        "패션&킴스 : (월-목) 10:30-21:00 (금-일) 10:30-22:00\n식당가/카페 : (월-목) 10:30-21:00 (금-일) 10:30-22:00"
+      ],
+      "holidays": [
+        "설날/추석 당일 휴점 "
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "쇼핑복합공간",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 3,
+        "name": "NC백화점 부산대점",
+        "category": "상업지구",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_809",
+      "title": "밀락더마켓 ",
+      "aliases": [
+        "밀락더마켓(한,영,중간,중번,일)",
+        "밀락더마켓 "
+      ],
+      "address": "부산광역시 수영구 민락수변로17번길 56",
+      "lat": 35.154293,
+      "lon": 129.12698,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "1323"
+        }
+      ],
+      "operatingHours": [
+        "매일 10:00-24:00"
+      ],
+      "holidays": [
+        "가게별 상이"
+      ],
+      "scope": {
+        "type": "포괄장소",
+        "kind": "시장",
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 2,
+        "name": "밀란 더 마켓",
+        "category": "상업지구",
+        "dwell": {
+          "count": 53,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "area_dwell_from_aihub",
+      "dwell": {
+        "count": 53,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_819",
+      "title": "페이퍼가든",
+      "aliases": [
+        "페이퍼가든(한,영,중간,중번,일)",
+        "페이퍼가든"
+      ],
+      "address": "부산광역시 부산진구 전포대로210번길 8 2층",
+      "lat": 35.15533,
+      "lon": 129.066,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2252"
+        }
+      ],
+      "operatingHours": [
+        "매일 11:00~22:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 1,
+        "name": "페이퍼 가든",
+        "category": "상점",
+        "dwell": {
+          "count": 3,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_821",
+      "title": "오브젝트 서면점",
+      "aliases": [
+        "오브젝트 서면점"
+      ],
+      "address": "부산 부산진구 전포대로209번길 11",
+      "lat": 35.155327,
+      "lon": 129.06444,
+      "category": "상업지구",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2417"
+        }
+      ],
+      "operatingHours": [
+        "매일 12:00 ~ 21:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 1,
+        "name": "오브젝트 서면점",
+        "category": "상점",
+        "dwell": {
+          "count": 5,
+          "median": 30,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 5,
+        "median": 30,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_975",
+      "title": "톤쇼우 광안점",
+      "aliases": [
+        "톤쇼우 광안점"
+      ],
+      "address": "광안해변로279번길 13",
+      "lat": 35.15631,
+      "lon": 129.12474,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1251"
+        }
+      ],
+      "operatingHours": [
+        "11:00-21:30\n(20:30 라스트 오더)"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 14,
+        "name": "톤쇼우 광안점",
+        "category": "식당",
+        "dwell": {
+          "count": 14,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 14,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_1047",
+      "title": "웨이브온커피",
+      "aliases": [
+        "웨이브온커피"
+      ],
+      "address": "기장군 장안읍 해맞이로 286",
+      "lat": 35.32225,
+      "lon": 129.26979,
+      "category": "카페",
+      "sourceEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "174"
+        }
+      ],
+      "operatingHours": [
+        "10:00-24:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 5,
+        "name": "웨이브 온 커피",
+        "category": "식당",
+        "dwell": {
+          "count": 3,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 3,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    },
+    {
+      "id": "poi_1102",
+      "title": "해운대암소갈비집",
+      "aliases": [
+        "해운대암소갈비집"
+      ],
+      "address": "해운대구 해운대해변로333",
+      "lat": 35.163258,
+      "lon": 129.16626,
+      "category": "식당",
+      "sourceEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "2370"
+        }
+      ],
+      "operatingHours": [
+        "11:30-15:00/17:00-22:00"
+      ],
+      "holidays": [],
+      "scope": {
+        "type": "독립장소",
+        "kind": null,
+        "parent": null
+      },
+      "aihubMatch": {
+        "matchType": "name+coord",
+        "distanceM": 32,
+        "name": "해운대 암소 갈빗집",
+        "category": "식당",
+        "dwell": {
+          "count": 7,
+          "median": 60,
+          "p25": null,
+          "p75": null
+        }
+      },
+      "dwellPolicy": "individual_dwell_from_aihub",
+      "dwell": {
+        "count": 7,
+        "median": 60,
+        "p25": null,
+        "p75": null
+      }
+    }
+  ]
+}

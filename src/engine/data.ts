@@ -1,6 +1,6 @@
 // 부산 정제 후보 카탈로그와 체류시간 정책. 앱은 이 로컬 카탈로그를 좌표 반경으로 탐색한다.
 import busanPoiCatalog from '../data/busan_poi_catalog.json';
-import { DayType, HourBucket, MapVerificationStatus, MatchScope, OpeningHoursReliability, SpotConfidence, LatLon } from './types';
+import { AvailabilityProfile, DayType, HourBucket, MapVerificationStatus, MatchScope, OpeningHoursReliability, SpotConfidence, LatLon } from './types';
 
 type MapVerification = {
   provider: 'kakao';
@@ -17,6 +17,9 @@ export type BusanCatalogPlace = {
   contentTypeId: string;
   category: string;
   subCategory?: string;
+  availabilityProfile?: AvailabilityProfile;
+  siteGroupId?: string;
+  siteRole?: 'parent' | 'child';
   addr1: string;
   lat: number;
   lon: number;
@@ -25,6 +28,8 @@ export type BusanCatalogPlace = {
   openingHoursSourceName?: string;
   openingHoursReliability?: OpeningHoursReliability;
   operatingHours?: string[];
+  imageUrl?: string;
+  imageSource?: 'busan_official' | 'tourapi';
   mapVerification?: MapVerification;
   tourapiContentId?: string;
   tourapiContentTypeId?: string;
@@ -44,6 +49,9 @@ export type ResolvedBusanDwell = {
   src: string;
   confidence: SpotConfidence;
   subCategory?: string;
+  availabilityProfile?: AvailabilityProfile;
+  siteGroupId?: string;
+  siteRole?: 'parent' | 'child';
   matchScope: MatchScope;
   dwellSourceName: string;
   openingHoursSourceName: string;
@@ -56,6 +64,7 @@ export type ResolvedBusanDwell = {
   tourapiContentId?: string;
   tourapiContentTypeId?: string;
   operatingHours?: string[];
+  imageUrl?: string;
 };
 
 const catalog = busanPoiCatalog as any;
@@ -86,7 +95,7 @@ export function resolveBusanDwell(
   }
 
   const unmatched = busanUnmatched[String(contentId)];
-  if (!unmatched || unmatched.mapVerification?.status === 'not_found') return null;
+  if (!unmatched || unmatched.mapVerification?.status === 'not_found' || unmatched.availabilityProfile === 'hold') return null;
   const stat = categoryStats[unmatched.category];
   if (!stat?.median) return null;
   return {
@@ -98,6 +107,9 @@ export function resolveBusanDwell(
     src: `카테고리폴백:${unmatched.category}(n=${stat.count})`,
     confidence: 'category_fallback',
     subCategory: unmatched.subCategory,
+    availabilityProfile: unmatched.availabilityProfile,
+    siteGroupId: unmatched.siteGroupId,
+    siteRole: unmatched.siteRole,
     matchScope: 'category_fallback',
     dwellSourceName: unmatched.dwellSourceName ?? `카테고리:${unmatched.category}`,
     openingHoursSourceName: unmatched.openingHoursSourceName ?? unmatched.title,
@@ -110,13 +122,14 @@ export function resolveBusanDwell(
     tourapiContentId: unmatched.tourapiContentId,
     tourapiContentTypeId: unmatched.tourapiContentTypeId,
     operatingHours: unmatched.operatingHours,
+    imageUrl: unmatched.imageUrl,
   };
 }
 
 function isLowConfidenceMatched(matched: BusanCatalogPlace): boolean {
   // 최종 매칭은 독립 장소의 이름+좌표 또는 포괄 장소의 지역 맥락으로 이미 정제됐다.
   // 기존 카카오 검증에서 명확히 찾지 못한 TourAPI 장소만 추천 후보에서 막는다.
-  return matched.mapVerification?.status === 'not_found';
+  return matched.mapVerification?.status === 'not_found' || matched.availabilityProfile === 'hold';
 }
 
 function effectiveBusanMatchedDwell(matched: BusanCatalogPlace): ResolvedBusanDwell {
@@ -133,6 +146,9 @@ function effectiveBusanMatchedDwell(matched: BusanCatalogPlace): ResolvedBusanDw
     src: `AI-Hub:${dwellSourceName}(${matchScope},n=${matched.dwell?.count ?? 0})`,
     confidence: matchScope === 'area_context' ? 'area_context_match' : 'direct_match',
     subCategory: matched.subCategory,
+    availabilityProfile: matched.availabilityProfile,
+    siteGroupId: matched.siteGroupId,
+    siteRole: matched.siteRole,
     matchScope,
     dwellSourceName,
     openingHoursSourceName: matched.openingHoursSourceName ?? matched.title,
@@ -145,6 +161,7 @@ function effectiveBusanMatchedDwell(matched: BusanCatalogPlace): ResolvedBusanDw
     tourapiContentId: matched.tourapiContentId,
     tourapiContentTypeId: matched.tourapiContentTypeId,
     operatingHours: matched.operatingHours,
+    imageUrl: matched.imageUrl,
   };
 }
 

@@ -15,12 +15,30 @@ test('숙박·교통·의료·주차 시설은 추천 카탈로그에서 제외�
   assert.deepEqual(rows.filter((place) => excluded.test(place.title)).map((place) => place.title), []);
 });
 
-test('포괄 장소 내부 후보는 런타임 카탈로그에 포함되지 않는다', () => {
-  const review = JSON.parse(fs.readFileSync('data/processed/review/부산_최종장소_보류.json', 'utf-8'));
+test('포괄 장소와 내부 시설은 각각 유지하되 동일 장소 그룹으로 묶인다', () => {
+  const grouped = rows.filter((place) => place.siteGroupId);
+  assert.equal(grouped.length, 8);
+  const groups = new Map();
+  for (const place of grouped) groups.set(place.siteGroupId, [...(groups.get(place.siteGroupId) ?? []), place]);
+  assert.equal(groups.size, 4);
+  for (const [groupId, places] of groups) {
+    assert.equal(places.length, 2, `${groupId}: expected parent and child`);
+    assert.deepEqual(new Set(places.map((place) => place.siteRole)), new Set(['parent', 'child']), `${groupId}: invalid roles`);
+  }
+});
+
+test('이름 차이 중복의 탈락 레코드는 대표 장소에 병합된다', () => {
   const runtimeIds = new Set(rows.map((place) => place.contentId));
-  const internal = review.data.filter((place) => place.scope?.type === '내부장소');
-  assert.ok(internal.length > 0);
-  for (const place of internal) assert.equal(runtimeIds.has(place.id), false, `${place.title}: internal place leaked into runtime catalog`);
+  const mergedIds = rows.flatMap((place) => place.mergedPlaceIds ?? []);
+  assert.equal(mergedIds.length, 11);
+  for (const contentId of mergedIds) assert.equal(runtimeIds.has(contentId), false, `${contentId}: duplicate remains in runtime catalog`);
+});
+
+test('일반명 백화점 중복은 제거하고 운영시간이 있는 대표 백화점만 유지한다', () => {
+  assert.equal(rows.some((place) => place.title === '백화점'), false);
+  const lotte = rows.find((place) => place.title === '롯데백화점 부산본점');
+  assert.ok(lotte);
+  assert.match(lotte.operatingHours?.[0] ?? '', /10:30/);
 });
 
 test('카테고리 체류시간 통계는 추천 가능한 분 단위 범위를 가진다', () => {
