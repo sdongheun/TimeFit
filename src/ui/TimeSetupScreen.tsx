@@ -111,6 +111,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
           startMin,
           mode,
           modeLabel: mode === 'car' ? '차량' : mode === 'transit' ? '대중교통' : '도보',
+          originLabel,
           appointment,
           remainingMin,
           dayType,
@@ -119,7 +120,8 @@ export function TimeSetupScreen({ navigation, route }: Props) {
         },
       };
       flow.setLatestResults(params);
-      navigation.replace('Results', params);
+      // 결과에서 뒤로가면 입력값을 유지한 시간 설정 화면으로 돌아간다.
+      navigation.navigate('Results', params);
     } catch (runError) {
       setError(`추천 실패: ${runError instanceof Error ? runError.message : '알 수 없는 오류'}`);
     } finally {

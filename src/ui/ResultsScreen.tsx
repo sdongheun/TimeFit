@@ -3,6 +3,7 @@ import { Feather } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
+  Alert,
   Linking,
   PanResponder,
   Pressable,
@@ -24,6 +25,7 @@ import {
   travelGeo,
   travelMin,
   travelSrc,
+  validateCourseOpening,
 } from "../engine";
 import { RootStackParamList, fmtHM } from "./nav";
 import { Chip } from "./Chip";
@@ -37,7 +39,7 @@ import {
   resetToProfile,
 } from "./mainTabNavigation";
 import { buildRouteMapSegments, KakaoRouteMap } from "./KakaoRouteMap";
-import { precompute } from "../engine/travel";
+import { precompute, precomputeTransit } from "../engine/travel";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Results">;
 type CandidateStatus = "good" | "short" | "tight" | "over";
@@ -48,6 +50,7 @@ type CandidateEval = {
   stayPossibleMin: number;
   bufferLeftMin: number;
   status: CandidateStatus;
+  siteConflict: boolean;
   reason: string;
   recommendationRank: number;
   rankingScore: number;
@@ -356,6 +359,7 @@ export function ResultsScreen({ route, navigation }: Props) {
   );
   const [focusedSpotId, setFocusedSpotId] = useState<string | null>(null);
   const [basketRouteVersion, setBasketRouteVersion] = useState(0);
+  const [isSavingCourse, setIsSavingCourse] = useState(false);
   const expandedSheetHeight = Math.min(
     Math.round(windowHeight * 0.9),
     windowHeight - (insets.top + 8),
@@ -565,6 +569,10 @@ export function ResultsScreen({ route, navigation }: Props) {
   const evals = useMemo<CandidateEval[]>(() => {
     return spots.map((spot) => {
       const isSelected = selectedIds.includes(spot.contentId);
+      const siteConflict = !isSelected && Boolean(
+        spot.siteGroupId
+        && selected.some((selectedSpot) => selectedSpot.siteGroupId === spot.siteGroupId),
+      );
       const trial = isSelected
         ? selected
         : optimizeSpotOrder([...selected, spot], origin, target, ctx.mode);
@@ -599,6 +607,8 @@ export function ResultsScreen({ route, navigation }: Props) {
       );
       const status = isSelected
         ? "good"
+        : siteConflict
+          ? "over"
         : evalStatus(
             candidateStay,
             candidateMinStay,
@@ -609,6 +619,8 @@ export function ResultsScreen({ route, navigation }: Props) {
           );
       const reason = isSelected
         ? "이미 담은 장소입니다"
+        : siteConflict
+          ? "이미 담은 장소와 같은 단지의 내부 공간이에요"
         : status === "over"
           ? !paidBalanced
             ? "시설형 장소는 추가 이동시간보다 체류시간이 길어야 해요"
@@ -621,6 +633,7 @@ export function ResultsScreen({ route, navigation }: Props) {
         stayPossibleMin: candidateStay,
         bufferLeftMin,
         status,
+        siteConflict,
         reason,
         recommendationRank: recommendation?.rank ?? Number.MAX_SAFE_INTEGER,
         rankingScore: recommendation?.score ?? -Number.MAX_SAFE_INTEGER,
@@ -731,13 +744,59 @@ export function ResultsScreen({ route, navigation }: Props) {
     });
   }
 
-  function confirmCourse() {
-    if (!basketCourse) return;
-    const params = { course: basketCourse, origin, ctx };
-    // 장바구니가 최종 검토 화면이다. 확정한 코스는 보관하고 바로 실행 흐름으로 이어진다.
-    saveCourse(params);
-    setActiveCourse(params);
-    navigation.replace("Execution", params);
+  async function confirmCourse() {
+    if (!basketCourse || isSavingCourse) return;
+    setIsSavingCourse(true);
+    try {
+      const pairs: [LatLon, LatLon][] = [];
+      let current = origin;
+      selected.forEach((spot) => {
+        pairs.push([current, spot]);
+        current = spot;
+      });
+      pairs.push([current, target]);
+
+      if (ctx.mode === "transit") {
+        await precomputeTransit(pairs, { retryFallback: true });
+      } else {
+        await precompute(pairs, ctx.mode, { retryFallback: true });
+      }
+
+      // 정밀 경로를 받은 뒤 체류 종료시각까지 다시 검증한다.
+      const refinedCourse = buildBasketCourse(selected, origin, target, ctx);
+      const stayMins = refinedCourse.legs
+        .filter((leg) => leg.label.startsWith("체류 가능"))
+        .map((leg) => leg.min);
+      const opening = await validateCourseOpening(
+        selected,
+        origin,
+        target,
+        ctx.mode,
+        ctx.startMin,
+        stayMins,
+      );
+      if (!opening.ok) {
+        Alert.alert("코스를 확정할 수 없어요", opening.reason ?? "운영시간을 다시 확인해 주세요.");
+        setBasketRouteVersion((version) => version + 1);
+        return;
+      }
+      if (!opening.exactRoute) {
+        Alert.alert("실경로 확인이 필요해요", "일부 구간의 경로 API 응답을 받지 못했어요. 잠시 후 다시 시도해 주세요.");
+        setBasketRouteVersion((version) => version + 1);
+        return;
+      }
+
+      const params = { course: refinedCourse, origin, ctx };
+      // 장바구니가 최종 검토 화면이다. DB 저장이 성공한 코스만 실행 흐름으로 넘긴다.
+      await saveCourse(params);
+      setActiveCourse(params);
+      navigation.replace("Execution", params);
+    } catch (error) {
+      console.warn('[코스 저장] 실패', error);
+      Alert.alert('코스 저장 실패', error instanceof Error ? error.message : '저장한 뒤 다시 시도해 주세요.');
+    } finally {
+      setIsSavingCourse(false);
+    }
   }
 
   function focusCandidate(markerIndex: number) {
@@ -786,6 +845,10 @@ export function ResultsScreen({ route, navigation }: Props) {
           line={[]}
           markers={candidateMapMarkers}
           showMarkerLabels
+          usePhotoMarkers
+          focusedMarkerOffsetY={
+            sheetPosition === "default" ? Math.round(defaultSheetHeight * 0.42) : 0
+          }
           boundsPadding={{
             top: 132,
             right: 20,
@@ -1070,12 +1133,14 @@ export function ResultsScreen({ route, navigation }: Props) {
                   </View>
                 ) : null}
                 <Pressable
-                  style={[s.cta, !selected.length && s.ctaOff]}
-                  disabled={!selected.length}
+                  style={[s.cta, (!selected.length || isSavingCourse) && s.ctaOff]}
+                  disabled={!selected.length || isSavingCourse}
                   onPress={confirmCourse}
                 >
                   <Text style={s.ctaTxt}>
-                    {selected.length
+                    {isSavingCourse
+                      ? "코스 저장 중..."
+                      : selected.length
                       ? "코스 저장 후 길찾기 시작"
                       : "장소를 먼저 담아주세요"}
                   </Text>
@@ -1153,7 +1218,11 @@ export function ResultsScreen({ route, navigation }: Props) {
                       </View>
                       <View style={[s.status, status.box]}>
                         <Text style={[s.statusTxt, status.txt]}>
-                          {isSelected ? "담김" : STATUS_LABEL[item.status]}
+                          {isSelected
+                            ? "담김"
+                            : item.siteConflict
+                              ? "같은 단지"
+                              : STATUS_LABEL[item.status]}
                         </Text>
                       </View>
                     </View>

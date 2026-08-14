@@ -17,6 +17,7 @@ export type RouteMapMarker = {
   label: string;
   kind?: 'origin' | 'spot' | 'appointment';
   active?: boolean;
+  imageUrl?: string;
 };
 
 export type RouteMapSegment = {
@@ -55,12 +56,14 @@ type Props = {
   markers: RouteMapMarker[];
   segments?: RouteMapSegment[];
   showMarkerLabels?: boolean;
+  usePhotoMarkers?: boolean;
+  focusedMarkerOffsetY?: number;
   boundsPadding?: { top: number; right: number; bottom: number; left: number };
   onMarkerTap?: (index: number) => void;
   style?: StyleProp<ViewStyle>;
 };
 
-export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, boundsPadding, onMarkerTap, style }: Props) {
+export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, focusedMarkerOffsetY = 0, boundsPadding, onMarkerTap, style }: Props) {
   const ref = useRef<WebView>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
@@ -80,11 +83,13 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
       markers,
       segments: routeSegments,
       showMarkerLabels,
+      usePhotoMarkers,
+      focusedMarkerOffsetY,
       boundsPadding,
       markerTapEnabled: Boolean(onMarkerTap),
     });
     ref.current?.injectJavaScript(`setRoute(${route});true;`);
-  }, [ready, markers, routeSegments, showMarkerLabels, boundsPadding, onMarkerTap]);
+  }, [ready, markers, routeSegments, showMarkerLabels, usePhotoMarkers, focusedMarkerOffsetY, boundsPadding, onMarkerTap]);
 
   if (!KAKAO_JS_KEY) {
     return (
@@ -150,6 +155,13 @@ html,body,#map{margin:0;padding:0;width:100%;height:100%;background:#111820}
 .spot .label{background:#f59e0b}
 .appointment .label{background:${C.green}}
 .marker.active .label{transform:scale(1.22);box-shadow:0 0 0 4px rgba(76,194,255,.28),0 3px 10px rgba(0,0,0,.25)}
+.photo-marker{position:relative;width:40px;height:48px;justify-content:flex-start;filter:drop-shadow(0 3px 5px rgba(0,0,0,.3))}
+.photo-marker .photo-frame{position:relative;z-index:1;width:36px;height:36px;overflow:hidden;border:3px solid #fff;border-radius:50%;background:#f59e0b;box-sizing:border-box}
+.photo-marker .photo-frame img{display:block;width:100%;height:100%;object-fit:cover}
+.photo-marker .photo-tail{position:relative;z-index:0;width:14px;height:14px;margin-top:-8px;background:#fff;transform:rotate(45deg);border-radius:2px}
+.photo-marker.active .photo-frame{width:72px;height:72px;border-width:4px;box-shadow:0 0 0 5px rgba(76,194,255,.3)}
+.photo-marker.active{width:78px;height:90px}
+.photo-marker.active .photo-tail{width:20px;height:20px;margin-top:-12px}
 .marker-name{max-width:96px;margin-top:4px;padding:2px 5px;border-radius:5px;background:rgba(15,20,25,.86);color:#fff;font:700 10px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .arrow{width:26px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(255,255,255,.92);box-shadow:0 2px 7px rgba(0,0,0,.22)}
 .arrow svg{width:18px;height:18px;overflow:visible}
@@ -186,6 +198,24 @@ function escapeHtml(value){
 function clearRoute(){
   overlays.forEach(function(o){ o.setMap(null); });
   overlays = [];
+}
+function markerColor(kind){
+  if (kind === 'origin') return '${C.accent}';
+  if (kind === 'appointment') return '${C.green}';
+  return '#f59e0b';
+}
+function colorPinImage(color, active){
+  var width = active ? 52 : 36;
+  var height = active ? 68 : 48;
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="48" viewBox="0 0 36 48">' +
+    '<path d="M18 2C9.7 2 3 8.7 3 17c0 11.3 15 27.6 15 27.6S33 28.3 33 17C33 8.7 26.3 2 18 2Z" fill="' + color + '" stroke="#fff" stroke-width="3"/>' +
+    '<circle cx="18" cy="17" r="5" fill="#fff" fill-opacity=".9"/>' +
+    '</svg>';
+  return new kakao.maps.MarkerImage(
+    'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg),
+    new kakao.maps.Size(width, height),
+    { offset: new kakao.maps.Point(width / 2, height - 2) }
+  );
 }
 function toRad(deg){ return deg * Math.PI / 180; }
 function bearing(a, b){
@@ -257,6 +287,7 @@ function setRoute(data){
   if (!map) return;
   clearRoute();
   var bounds = new kakao.maps.LatLngBounds();
+  var focusedPoint = null;
   var segments = Array.isArray(data.segments) ? data.segments : [];
   segments.forEach(function(seg){
     var path = (seg.points || []).map(function(p){ var point = ll(p); bounds.extend(point); return point; });
@@ -277,7 +308,62 @@ function setRoute(data){
   (data.markers || []).forEach(function(m, i){
     var point = ll(m);
     bounds.extend(point);
+    if (m.active) focusedPoint = point;
     var kind = m.kind || 'spot';
+    var hasPhoto = data.usePhotoMarkers && kind === 'spot' && /^https:\/\//.test(String(m.imageUrl || ''));
+    if (hasPhoto) {
+      var fallbackMarker = new kakao.maps.Marker({
+        map: map,
+        position: point,
+        title: m.label,
+        image: colorPinImage(markerColor(kind), !!m.active),
+        zIndex: 9
+      });
+      if (data.markerTapEnabled) {
+        kakao.maps.event.addListener(fallbackMarker, 'click', (function(index){
+          return function(){ post({type:'marker', index:index}); };
+        })(i));
+      }
+      overlays.push(fallbackMarker);
+      var activePhoto = m.active ? ' active' : '';
+      var photoClick = data.markerTapEnabled ? ' onclick="post({type:&quot;marker&quot;,index:' + i + '})"' : '';
+      var photoContent =
+        '<button class="marker spot photo-marker' + activePhoto + '"' + photoClick + '>' +
+          '<span class="photo-frame"><img src="' + escapeHtml(m.imageUrl) + '" onerror="this.parentNode.parentNode.style.display=&quot;none&quot;"></span>' +
+          '<span class="photo-tail"></span>' +
+        '</button>';
+      var photoOverlay = new kakao.maps.CustomOverlay({
+        map: map,
+        position: point,
+        content: photoContent,
+        yAnchor: 1,
+        xAnchor: 0.5,
+        clickable: !!data.markerTapEnabled,
+        zIndex: m.active ? 20 : 10
+      });
+      overlays.push(photoOverlay);
+      var photoProbe = new Image();
+      photoProbe.onload = function(){ fallbackMarker.setMap(null); };
+      photoProbe.onerror = function(){ photoOverlay.setMap(null); };
+      photoProbe.src = m.imageUrl;
+      return;
+    }
+    if (data.usePhotoMarkers) {
+      var marker = new kakao.maps.Marker({
+        map: map,
+        position: point,
+        title: m.label,
+        image: colorPinImage(markerColor(kind), !!m.active),
+        zIndex: m.active ? 20 : 10
+      });
+      if (data.markerTapEnabled) {
+        kakao.maps.event.addListener(marker, 'click', (function(index){
+          return function(){ post({type:'marker', index:index}); };
+        })(i));
+      }
+      overlays.push(marker);
+      return;
+    }
     var name = data.showMarkerLabels && kind === 'spot' ? '<span class="marker-name">' + escapeHtml(m.label) + '</span>' : '';
     var active = m.active ? ' active' : '';
     var click = data.markerTapEnabled ? ' onclick="post({type:&quot;marker&quot;,index:' + i + '})"' : '';
@@ -292,7 +378,11 @@ function setRoute(data){
     });
     overlays.push(overlay);
   });
-  if (!bounds.isEmpty()) {
+  if (focusedPoint) {
+    map.setCenter(focusedPoint);
+    var focusOffsetY = Number(data.focusedMarkerOffsetY || 0);
+    if (focusOffsetY) map.panBy(0, focusOffsetY);
+  } else if (!bounds.isEmpty()) {
     var pad = data.boundsPadding || { top:40, right:40, bottom:40, left:40 };
     map.setBounds(bounds, pad.top, pad.right, pad.bottom, pad.left);
   }

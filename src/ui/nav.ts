@@ -9,6 +9,7 @@ export type PlanCtx = {
   startMin: number;
   mode: Mode;
   modeLabel: string;
+  originLabel?: string;
   appointment: Appointment;
   remainingMin: number;
   dayType?: DayType;
