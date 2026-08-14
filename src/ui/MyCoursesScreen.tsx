@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
@@ -13,13 +13,29 @@ export function MyCoursesScreen({ navigation }: Props) {
   const flow = useAppFlow();
   const insets = useSafeAreaInsets();
 
+  const removeCourse = async (id: string) => {
+    try {
+      await flow.removeSavedCourse(id);
+    } catch (error) {
+      Alert.alert('코스 삭제 실패', error instanceof Error ? error.message : '다시 시도해 주세요.');
+    }
+  };
+
   return (
     <View style={s.root}>
       <ScrollView contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]}>
         <Text style={s.h1}>내 코스</Text>
         <Text style={s.sub}>저장한 코스를 다시 확인하고 길찾기를 시작하세요.</Text>
 
-        {flow.savedCourses.length === 0 ? (
+        {flow.isCoursesLoading ? (
+          <View style={s.loadingBox}><ActivityIndicator color={C.accent} /><Text style={s.loadingTxt}>저장한 코스를 불러오는 중입니다.</Text></View>
+        ) : flow.coursesError ? (
+          <View style={s.emptyBox}>
+            <Text style={s.emptyTitle}>코스를 불러오지 못했습니다</Text>
+            <Text style={s.emptyTxt}>{flow.coursesError}</Text>
+            <Pressable style={s.emptyBtn} onPress={() => void flow.refreshSavedCourses()}><Text style={s.emptyBtnTxt}>다시 불러오기</Text></Pressable>
+          </View>
+        ) : flow.savedCourses.length === 0 ? (
           <View style={s.emptyBox}>
             <Text style={s.emptyTitle}>저장한 코스가 없습니다</Text>
             <Text style={s.emptyTxt}>메인에서 장소를 담아 코스를 확정하면 여기에 저장됩니다.</Text>
@@ -51,7 +67,7 @@ export function MyCoursesScreen({ navigation }: Props) {
                     이동 {item.course.mobility?.[item.ctx.mode]?.moveMin ?? item.course.totalMin}분 · 체류 가능 {item.course.mobility?.[item.ctx.mode]?.stayMin ?? '-'}분
                   </Text>
                 </Pressable>
-                <Pressable style={s.deleteBtn} onPress={() => flow.removeSavedCourse(item.id)}>
+                <Pressable style={s.deleteBtn} onPress={() => void removeCourse(item.id)}>
                   <Text style={s.deleteBtnTxt}>삭제</Text>
                 </Pressable>
               </View>
@@ -76,6 +92,8 @@ const s = StyleSheet.create({
   h1: { color: C.txt, fontSize: 30, fontWeight: '900' },
   sub: { color: C.muted, fontSize: 14.5, marginTop: 5, marginBottom: 18 },
   emptyBox: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 18 },
+  loadingBox: { minHeight: 150, alignItems: 'center', justifyContent: 'center', gap: 10 },
+  loadingTxt: { color: C.muted, fontSize: 13 },
   emptyTitle: { color: C.txt, fontSize: 17, fontWeight: '900' },
   emptyTxt: { color: C.muted, fontSize: 13, lineHeight: 19, marginTop: 6 },
   emptyBtn: { minHeight: 52, marginTop: 14, backgroundColor: C.accent, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
