@@ -73,7 +73,8 @@ export async function kakaoPoiSearchMulti(keyword: string, center?: LatLon, coun
     size: Math.min(15, Math.max(1, count * 3)),
   };
   const params = center
-    ? { ...baseParams, x: center.lon, y: center.lat, radius: 30000, sort: 'distance' }
+    // Kakao Local 키워드 검색 반경 상한은 20km다. 상한 초과 시 400으로 전체 검색이 비어 버린다.
+    ? { ...baseParams, x: center.lon, y: center.lat, radius: 20000, sort: 'distance' }
     : baseParams;
 
   const docs = await kakaoGet('search/keyword.json', params);
