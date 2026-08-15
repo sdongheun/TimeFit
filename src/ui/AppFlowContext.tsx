@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { RootStackParamList } from './nav';
-import { listSavedCoursesFromRepository, removeCourseFromRepository, saveCourseToRepository } from '../services/courseRepository';
+import { listSavedCoursesFromRepository, removeCourseFromRepository, replaceCoursePlanInRepository, saveCourseToRepository } from '../services/courseRepository';
 import { useAuth } from './AuthContext';
 
 type ResultsParams = RootStackParamList['Results'];
@@ -18,6 +18,7 @@ type AppFlowContextValue = {
   setActiveCourse: (params: ExecutionParams | null) => void;
   refreshSavedCourses: () => Promise<void>;
   saveCourse: (params: ExecutionParams) => Promise<SavedCourse>;
+  replaceCourse: (courseId: string, params: ExecutionParams) => Promise<ExecutionParams>;
   removeSavedCourse: (id: string) => Promise<void>;
 };
 
@@ -58,6 +59,11 @@ export function AppFlowProvider({ children }: PropsWithChildren) {
     setSavedCourses((prev) => [saved, ...prev]);
     return saved;
   }, []);
+  const replaceCourse = useCallback(async (courseId: string, params: ExecutionParams) => {
+    const updated = await replaceCoursePlanInRepository(courseId, params);
+    await refreshSavedCourses();
+    return updated;
+  }, [refreshSavedCourses]);
   const removeSavedCourse = useCallback(async (id: string) => {
     await removeCourseFromRepository(id);
     setSavedCourses((prev) => prev.filter((course) => course.id !== id));
@@ -73,8 +79,9 @@ export function AppFlowProvider({ children }: PropsWithChildren) {
     setActiveCourse,
     refreshSavedCourses,
     saveCourse,
+    replaceCourse,
     removeSavedCourse,
-  }), [latestResults, activeCourse, savedCourses, isCoursesLoading, coursesError, setLatestResults, setActiveCourse, refreshSavedCourses, saveCourse, removeSavedCourse]);
+  }), [latestResults, activeCourse, savedCourses, isCoursesLoading, coursesError, setLatestResults, setActiveCourse, refreshSavedCourses, saveCourse, replaceCourse, removeSavedCourse]);
 
   return <AppFlowContext.Provider value={value}>{children}</AppFlowContext.Provider>;
 }

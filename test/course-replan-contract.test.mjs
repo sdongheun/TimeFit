@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import test from 'node:test';
+
+const migration = fs.readFileSync('supabase/migrations/202608150009_replace_course_plan.sql', 'utf-8');
+const repository = fs.readFileSync('src/services/courseRepository.ts', 'utf-8');
+const execution = fs.readFileSync('src/ui/ExecutionScreen.tsx', 'utf-8');
+
+test('코스 변경은 최초 시작·약속 도착 시각을 바꾸지 않고 마지막 재계산 시각만 기록한다', () => {
+  assert.match(migration, /create or replace function public\.replace_course_plan/);
+  assert.match(migration, /last_recalculated_at = timezone\('utc', now\(\)\)/);
+  assert.doesNotMatch(migration, /starts_at\s*=/);
+  assert.doesNotMatch(migration, /ends_at\s*=/);
+});
+
+test('코스 변경은 같은 코스 ID의 장소·구간을 원자적으로 교체한다', () => {
+  assert.match(migration, /delete from public\.course_stops where course_id = p_course_id/);
+  assert.match(migration, /delete from public\.course_legs where course_id = p_course_id/);
+  assert.match(migration, /insert into public\.course_stops/);
+  assert.match(migration, /insert into public\.course_legs/);
+  assert.match(repository, /supabase\.rpc\('replace_course_plan'/);
+});
+
+test('진행 화면의 코스 변경은 현재 GPS·현재 시각 기준으로 다시 추천한다', () => {
+  assert.match(execution, /Location\.getCurrentPositionAsync/);
+  assert.match(execution, /remainingMin = endMin - nowMin/);
+  assert.match(execution, /editingCourseId: courseId/);
+});

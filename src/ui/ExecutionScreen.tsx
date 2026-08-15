@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useState } from 'react';
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { LatLon, Mode } from '../engine';
+import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import * as Location from 'expo-location';
+import { LatLon, Mode, planTimeFit, timeContext } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
@@ -15,10 +16,11 @@ import {
 } from '../services/courseNotifications';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Execution'>;
+type ExecutionParams = RootStackParamList['Execution'];
 
 // legs → 각 지점의 도착/출발 예정시각 계산 (startMin 누적)
-type Stop = { name: string; arriveMin: number; leaveMin: number; isSpot: boolean; point: LatLon };
-function buildSchedule(params: Props['route']['params']): { stops: Stop[]; alerts: { min: number; msg: string }[] } {
+type Stop = { name: string; arriveMin: number; leaveMin: number; isSpot: boolean; point: LatLon; incomingMode?: Mode };
+function buildSchedule(params: ExecutionParams): { stops: Stop[]; alerts: { min: number; msg: string }[] } {
   const { course, ctx, origin } = params;
   const target = ctx.appointment ?? origin;
   const stops: Stop[] = [{ name: '출발', arriveMin: ctx.startMin, leaveMin: ctx.startMin, isSpot: false, point: origin }];
@@ -32,7 +34,7 @@ function buildSchedule(params: Props['route']['params']): { stops: Stop[]; alert
       const spot = isLast ? null : course.spots[spotIdx++];
       const name = isLast ? (ctx.appointment ? `약속 · ${ctx.appointment.label}` : '출발지 복귀') : spot?.title ?? '';
       const point = isLast ? target : spot ?? target;
-      stops.push({ name, arriveMin: t, leaveMin: t, isSpot: !isLast, point });
+      stops.push({ name, arriveMin: t, leaveMin: t, isSpot: !isLast, point, incomingMode: lg.mode ?? ctx.mode });
     }
   }
   // 알림은 코스를 마친 뒤 약속장소(또는 출발지)로 이동해야 하는 최종 출발 시각에만 보낸다.
@@ -67,7 +69,27 @@ function currentMinuteOfDay(): number {
 }
 
 export function ExecutionScreen({ route, navigation }: Props) {
-  const { course, origin, ctx } = route.params;
+  const { activeCourse } = useAppFlow();
+  // Fast Refresh·이전 저장 코스처럼 라우트 파라미터가 불완전한 경우에는 최근 활성 코스를 우선 복구한다.
+  const params = route.params?.ctx && route.params?.course && route.params?.origin
+    ? route.params
+    : activeCourse;
+  if (!params?.ctx || !params.course || !params.origin) {
+    return (
+      <View style={s.missingRoot}>
+        <Text style={s.missingTitle}>코스 정보를 불러오지 못했어요</Text>
+        <Text style={s.missingMeta}>내 코스에서 다시 선택해 주세요.</Text>
+        <Pressable style={s.missingButton} onPress={() => resetToMyCourses(navigation)}>
+          <Text style={s.missingButtonText}>내 코스로 돌아가기</Text>
+        </Pressable>
+      </View>
+    );
+  }
+  return <ExecutionContent params={params} navigation={navigation} />;
+}
+
+function ExecutionContent({ params, navigation }: { params: ExecutionParams; navigation: Props['navigation'] }) {
+  const { course, origin, ctx, courseId } = params;
   const flow = useAppFlow();
   const { setActiveCourse } = flow;
   const [step, setStep] = useState(0); // 현재 위치한 지점 인덱스
@@ -77,7 +99,8 @@ export function ExecutionScreen({ route, navigation }: Props) {
   const [actualArriveMinByStep, setActualArriveMinByStep] = useState<Record<number, number>>({});
   const [notificationResult, setNotificationResult] = useState<ScheduleResult | null>(null);
   const [notificationError, setNotificationError] = useState(false);
-  const { stops, alerts } = useMemo(() => buildSchedule(route.params), [route.params]);
+  const [isChangingCourse, setIsChangingCourse] = useState(false);
+  const { stops, alerts } = useMemo(() => buildSchedule(params), [params]);
 
   const target = ctx.appointment ?? origin;
   const pts = [origin, ...course.spots, target];
@@ -95,7 +118,6 @@ export function ExecutionScreen({ route, navigation }: Props) {
   const stayMin = current.isSpot ? Math.max(0, current.leaveMin - effectiveArriveMin) : 0;
   const delayMin = current.isSpot && actualArriveMin != null ? actualArriveMin - current.arriveMin : 0;
   const stayWarning = current.isSpot && actualArriveMin != null && stayMin < 20;
-  const canAdjust = !isDone && current.isSpot;
   const totalSegments = Math.max(0, stops.length - 1);
   const currentSegment = Math.min(step + 1, totalSegments);
   const ctaLabel = isDone
@@ -113,8 +135,8 @@ export function ExecutionScreen({ route, navigation }: Props) {
       : `${current.name} → ${next.name}`;
 
   useEffect(() => {
-    setActiveCourse(route.params);
-  }, [setActiveCourse, route.params]);
+    setActiveCourse(params);
+  }, [setActiveCourse, params]);
 
   useEffect(() => {
     let alive = true;
@@ -141,7 +163,7 @@ export function ExecutionScreen({ route, navigation }: Props) {
     setRouteOpened(true);
     setTransitionMsg('');
     setActualDepartMinByStep((prev) => ({ ...prev, [step]: now }));
-    const url = kakaoRouteUrl(next.point, ctx.mode);
+    const url = kakaoRouteUrl(next.point, next.incomingMode ?? ctx.mode);
     const fallback = kakaoWebFallback(next);
     try {
       await Linking.openURL(url);
@@ -160,11 +182,63 @@ export function ExecutionScreen({ route, navigation }: Props) {
     setTransitionMsg(nextStep >= stops.length - 1 ? '마지막 지점 기준으로 코스를 마무리합니다.' : '다음 이동 안내로 전환했어요.');
   }
 
-  function adjustCourseFromNow() {
-    if (!current.isSpot) return;
-    const now = currentMinuteOfDay();
-    setActualArriveMinByStep((prev) => ({ ...prev, [step]: now }));
-    setTransitionMsg('현재 시간 기준으로 체류 가능 시간을 다시 계산했어요.');
+  async function changeCourseFromNow() {
+    if (isDone || isChangingCourse) return;
+    if (!courseId) {
+      Alert.alert('코스를 변경할 수 없어요', '저장된 코스에서 다시 시작해 주세요.');
+      return;
+    }
+    setIsChangingCourse(true);
+    try {
+      const permission = await Location.requestForegroundPermissionsAsync();
+      if (permission.status !== 'granted') {
+        Alert.alert('현재 위치가 필요해요', '코스를 변경하려면 현재 위치 권한을 허용해 주세요.');
+        return;
+      }
+      const position = await Location.getCurrentPositionAsync({});
+      const now = new Date();
+      const nowMin = currentMinuteOfDay();
+      const remainingMin = endMin - nowMin;
+      if (remainingMin <= 0) {
+        Alert.alert('약속 시간이 지났어요', '새 코스를 만들기보다 약속 장소로 바로 이동해 주세요.');
+        return;
+      }
+      const time = timeContext(now);
+      const currentOrigin = { lat: position.coords.latitude, lon: position.coords.longitude };
+      const result = await planTimeFit({
+        origin: currentOrigin,
+        destination: ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : null,
+        remainingMin,
+        nowMin,
+        dayType: time.dayType,
+        hourBucket: time.hourBucket,
+        mode: ctx.mode,
+      });
+      if (!result.courses.length) {
+        Alert.alert('변경 가능한 장소가 없어요', '남은 시간에는 약속 장소로 바로 이동하는 것이 안전해요.');
+        return;
+      }
+      navigation.replace('Results', {
+        result,
+        usedTimeLabel: `현재 기준 ${fmtHM(nowMin)}·${time.hourBucket}`,
+        origin: currentOrigin,
+        ctx: {
+          ...ctx,
+          startMin: nowMin,
+          remainingMin,
+          dayType: time.dayType,
+          hourBucket: time.hourBucket,
+          originLabel: '현재 위치',
+          isManualTime: false,
+        },
+        editingCourseId: courseId,
+      });
+    } catch (error) {
+      console.warn('[코스 변경] 현재 위치 추천 실패', error);
+      Alert.alert('코스를 변경하지 못했어요', error instanceof Error ? error.message : '잠시 후 다시 시도해 주세요.');
+    } finally {
+      setIsChangingCourse(false);
+    }
   }
 
   return (
@@ -214,11 +288,9 @@ export function ExecutionScreen({ route, navigation }: Props) {
               {stayWarning ? (
                 <Text style={s.warnNote}>머물 시간이 짧아졌어요. 다음 장소로 바로 이동하는 것도 고려하세요.</Text>
               ) : null}
-              {canAdjust ? (
-                <Pressable style={[s.adjustBtn, stayWarning && s.adjustBtnWarn]} onPress={adjustCourseFromNow}>
-                  <Text style={[s.adjustBtnTxt, stayWarning && s.adjustBtnWarnTxt]}>현재 시간으로 코스 조정</Text>
-                </Pressable>
-              ) : null}
+              <Pressable disabled={isChangingCourse} style={[s.adjustBtn, stayWarning && s.adjustBtnWarn, isChangingCourse && s.adjustBtnDisabled]} onPress={() => void changeCourseFromNow()}>
+                <Text style={[s.adjustBtnTxt, stayWarning && s.adjustBtnWarnTxt]}>{isChangingCourse ? '현재 위치 확인 중' : '코스 변경'}</Text>
+              </Pressable>
               <View style={s.nowStats}>
                 <View style={s.stat}><Text style={s.statLbl}>이동</Text><Text style={s.statVal}>{moveMin}분</Text></View>
                 <View style={s.stat}><Text style={s.statLbl}>체류 가능</Text><Text style={s.statVal}>{current.isSpot ? `${stayMin}분` : '-'}</Text></View>
@@ -308,6 +380,11 @@ export function ExecutionScreen({ route, navigation }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
+  missingRoot: { flex: 1, paddingHorizontal: 24, alignItems: 'center', justifyContent: 'center', backgroundColor: C.bg },
+  missingTitle: { color: C.txt, fontSize: 20, fontWeight: '800' },
+  missingMeta: { color: C.muted, fontSize: 13.5, marginTop: 8 },
+  missingButton: { minHeight: 48, marginTop: 24, paddingHorizontal: 18, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: C.accent },
+  missingButtonText: { color: C.onAccent, fontSize: 15, fontWeight: '800' },
   map: { width: '100%', height: 230 },
   scroll: { padding: 18 },
   banner: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'rgba(227,179,65,0.08)', borderColor: 'rgba(227,179,65,0.3)', borderWidth: 1, borderRadius: 12, paddingVertical: 11, paddingHorizontal: 14, marginBottom: 6 },
@@ -321,6 +398,7 @@ const s = StyleSheet.create({
   delayNote: { color: C.amber },
   warnNote: { color: C.red, fontSize: 12.5, lineHeight: 18, marginTop: 8, fontWeight: '700' },
   adjustBtn: { marginTop: 12, borderWidth: 1, borderColor: 'rgba(76,194,255,0.5)', backgroundColor: 'rgba(76,194,255,0.1)', borderRadius: 11, paddingVertical: 11, alignItems: 'center' },
+  adjustBtnDisabled: { opacity: 0.55 },
   adjustBtnWarn: { borderColor: 'rgba(227,179,65,0.75)', backgroundColor: 'rgba(227,179,65,0.22)' },
   adjustBtnTxt: { color: C.accent, fontSize: 13.5, fontWeight: '800' },
   adjustBtnWarnTxt: { color: C.amber },

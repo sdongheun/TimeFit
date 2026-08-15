@@ -31,9 +31,10 @@ export type RootStackParamList = {
     ctx: PlanCtx;
     selectedIds?: string[];
     initialPage?: "recommend" | "basket";
+    editingCourseId?: string;
   };
   MyCourses: undefined;
-  Execution: { course: Course; origin: LatLon; ctx: PlanCtx };
+  Execution: { course: Course; origin: LatLon; ctx: PlanCtx; courseId?: string };
   Feedback: { course: Course; ctx: PlanCtx };
   Profile: undefined;
 };

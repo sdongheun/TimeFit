@@ -88,6 +88,7 @@ function paramsFromRows(course: StoredCourseRow, stops: StoredStopRow[]): SavedC
   const savedCourse: Course = { ...snapshot.course, spots: selected };
   return {
     id: course.id,
+    courseId: course.id,
     title: savedTitle(savedCourse),
     createdAt: new Date(course.created_at).getTime(),
     course: savedCourse,
@@ -102,6 +103,40 @@ function paramsFromRows(course: StoredCourseRow, stops: StoredStopRow[]): SavedC
   };
 }
 
+function coursePlanRows(courseId: string, params: ExecutionParams) {
+  const { course, origin, ctx } = params;
+  const travelLegs = course.legs.filter((leg) => !leg.label.startsWith('체류'));
+  const totalMoveMin = travelLegs.reduce((sum, leg) => sum + leg.min, 0);
+  const totalDwellMin = course.legs
+    .filter((leg) => leg.label.startsWith('체류'))
+    .reduce((sum, leg) => sum + leg.min, 0);
+  const stops = course.spots.map((spot, index) => ({
+    course_id: courseId,
+    stop_order: index + 1,
+    place_source: 'timefit_catalog',
+    place_content_id: spot.contentId,
+    title: spot.title,
+    category: spot.category,
+    sub_category: spot.subCategory ?? null,
+    lat: spot.lat,
+    lon: spot.lon,
+    planned_dwell_min: Math.max(0, Math.round(course.legs[index * 2 + 1]?.min ?? spot.dwell)),
+    dwell_source: spot.dwellSrc,
+    kakao_place_url: spot.kakaoPlaceUrl ?? null,
+  }));
+  const legs = travelLegs.map((leg, index) => ({
+    course_id: courseId,
+    leg_order: index + 1,
+    from_kind: index === 0 ? 'origin' : 'stop',
+    to_kind: index === travelLegs.length - 1 ? (ctx.appointment ? 'destination' : 'origin') : 'stop',
+    mode: leg.mode ?? ctx.mode,
+    move_min: Math.max(0, Math.round(leg.min)),
+    source: leg.src,
+    route_summary: { label: leg.label },
+  }));
+  return { origin, ctx, course, totalMoveMin, totalDwellMin, stops, legs };
+}
+
 async function currentUserId(): Promise<string> {
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) throw new Error(`세션 확인 실패: ${error?.message ?? '로그인이 필요합니다.'}`);
@@ -113,11 +148,7 @@ export async function saveCourseToRepository(params: ExecutionParams): Promise<S
   const { course, origin, ctx } = params;
   const startsAt = dateAtMinute(ctx.startMin);
   const endsAt = new Date(startsAt.getTime() + ctx.remainingMin * 60_000);
-  const travelLegs = course.legs.filter((leg) => !leg.label.startsWith('체류'));
-  const totalMoveMin = travelLegs.reduce((sum, leg) => sum + leg.min, 0);
-  const totalDwellMin = course.legs
-    .filter((leg) => leg.label.startsWith('체류'))
-    .reduce((sum, leg) => sum + leg.min, 0);
+  const plan = coursePlanRows('', params);
 
   const { data: created, error: courseError } = await supabase
     .from('courses')
@@ -133,8 +164,8 @@ export async function saveCourseToRepository(params: ExecutionParams): Promise<S
       starts_at: startsAt.toISOString(),
       ends_at: endsAt.toISOString(),
       mode: ctx.mode,
-      total_move_min: totalMoveMin,
-      total_dwell_min: totalDwellMin,
+      total_move_min: plan.totalMoveMin,
+      total_dwell_min: plan.totalDwellMin,
       buffer_min: Math.max(0, Math.round(course.bufferLeftMin)),
       recommendation_snapshot: { course: courseSnapshot(course), ctx },
     })
@@ -143,33 +174,10 @@ export async function saveCourseToRepository(params: ExecutionParams): Promise<S
   if (courseError || !created) throw new Error(`코스 저장 실패: ${courseError?.message ?? '응답 데이터가 없습니다.'}`);
 
   try {
-    const stops = course.spots.map((spot, index) => ({
-      course_id: created.id,
-      stop_order: index + 1,
-      place_source: 'timefit_catalog',
-      place_content_id: spot.contentId,
-      title: spot.title,
-      category: spot.category,
-      sub_category: spot.subCategory ?? null,
-      lat: spot.lat,
-      lon: spot.lon,
-      planned_dwell_min: Math.max(0, Math.round(course.legs[index * 2 + 1]?.min ?? spot.dwell)),
-      dwell_source: spot.dwellSrc,
-      kakao_place_url: spot.kakaoPlaceUrl ?? null,
-    }));
-    const legs = travelLegs.map((leg, index) => ({
-      course_id: created.id,
-      leg_order: index + 1,
-      from_kind: index === 0 ? 'origin' : 'stop',
-      to_kind: index === travelLegs.length - 1 ? (ctx.appointment ? 'destination' : 'origin') : 'stop',
-      mode: ctx.mode,
-      move_min: Math.max(0, Math.round(leg.min)),
-      source: leg.src,
-      route_summary: { label: leg.label },
-    }));
+    const planRows = coursePlanRows(created.id, params);
     const [{ error: stopsError }, { error: legsError }] = await Promise.all([
-      stops.length ? supabase.from('course_stops').insert(stops) : Promise.resolve({ error: null }),
-      legs.length ? supabase.from('course_legs').insert(legs) : Promise.resolve({ error: null }),
+      planRows.stops.length ? supabase.from('course_stops').insert(planRows.stops) : Promise.resolve({ error: null }),
+      planRows.legs.length ? supabase.from('course_legs').insert(planRows.legs) : Promise.resolve({ error: null }),
     ]);
     if (stopsError || legsError) {
       const message = stopsError?.message ?? legsError?.message ?? '알 수 없는 오류';
@@ -181,7 +189,26 @@ export async function saveCourseToRepository(params: ExecutionParams): Promise<S
     throw error;
   }
 
-  return { ...params, id: created.id, title: savedTitle(course), createdAt: new Date(created.created_at).getTime() };
+  return { ...params, courseId: created.id, id: created.id, title: savedTitle(course), createdAt: new Date(created.created_at).getTime() };
+}
+
+export async function replaceCoursePlanInRepository(courseId: string, params: ExecutionParams): Promise<ExecutionParams> {
+  await currentUserId();
+  const plan = coursePlanRows(courseId, params);
+  const { error } = await supabase.rpc('replace_course_plan', {
+    p_course_id: courseId,
+    p_origin_label: plan.ctx.originLabel ?? '현재 위치',
+    p_origin_lat: plan.origin.lat,
+    p_origin_lon: plan.origin.lon,
+    p_total_move_min: plan.totalMoveMin,
+    p_total_dwell_min: plan.totalDwellMin,
+    p_buffer_min: Math.max(0, Math.round(plan.course.bufferLeftMin)),
+    p_recommendation_snapshot: { course: courseSnapshot(plan.course), ctx: plan.ctx },
+    p_stops: plan.stops.map(({ course_id: _courseId, ...stop }) => stop),
+    p_legs: plan.legs.map(({ course_id: _courseId, ...leg }) => leg),
+  });
+  if (error) throw new Error(`코스 변경 저장 실패: ${error.message}`);
+  return { ...params, courseId };
 }
 
 export async function listSavedCoursesFromRepository(): Promise<SavedCourse[]> {

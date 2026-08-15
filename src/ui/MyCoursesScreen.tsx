@@ -54,6 +54,7 @@ export function MyCoursesScreen({ navigation }: Props) {
                     course: item.course,
                     origin: item.origin,
                     ctx: item.ctx,
+                    courseId: item.id,
                   })}
                 >
                   <View style={s.cardHead}>
