@@ -27,6 +27,11 @@
       "direct": 566,
       "unknown": 189,
       "area_uncertain": 33
+    },
+    "mapVerification": {
+      "not_found": 111,
+      "verified": 724,
+      "weak": 76
     }
   },
   "matched": {
@@ -1418,13 +1423,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1582000041",
-          "placeUrl": "https://place.map.kakao.com/1582000041",
+          "status": "weak",
           "matchedName": "씨라이프부산아쿠아리움 전기차충전소",
           "matchedAddress": "부산 해운대구 해운대해변로 266",
           "distanceM": 2,
-          "checkedAt": "2026-08-08T12:22:23.930Z"
+          "checkedAt": "2026-08-08T12:22:23.930Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "aihubName": "씨라 이르 부산아쿠아리움",
         "aihubCategory": "문화시설",
@@ -5742,13 +5746,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "1802884698",
-          "placeUrl": "https://place.map.kakao.com/1802884698",
           "matchedName": "해운대시장 공영주차장",
           "matchedAddress": "부산 해운대구 구남로29번길 20-11",
           "distanceM": 66,
           "checkedAt": "2026-08-09T18:26:53.121Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191226105015522_thumbL",
         "imageSource": "busan_official",
@@ -5795,13 +5798,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "1179022297",
-          "placeUrl": "https://place.map.kakao.com/1179022297",
           "matchedName": "파크짐플레이스 서면역서면시장 물품보관함",
           "matchedAddress": "부산 부산진구 서면로 56",
           "distanceM": 3,
           "checkedAt": "2026-08-09T18:26:53.111Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191227114043326_thumbL",
         "imageSource": "busan_official",
@@ -7876,13 +7878,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1582000041",
-          "placeUrl": "https://place.map.kakao.com/1582000041",
+          "status": "weak",
           "matchedName": "씨라이프부산아쿠아리움 전기차충전소",
           "matchedAddress": "부산 해운대구 해운대해변로 266",
           "distanceM": 2,
-          "checkedAt": "2026-08-08T12:22:23.930Z"
+          "checkedAt": "2026-08-08T12:22:23.930Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "aihubName": "씨라 이르 부산아쿠아리움",
         "aihubCategory": "문화시설",
@@ -12200,13 +12201,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "1802884698",
-          "placeUrl": "https://place.map.kakao.com/1802884698",
           "matchedName": "해운대시장 공영주차장",
           "matchedAddress": "부산 해운대구 구남로29번길 20-11",
           "distanceM": 66,
           "checkedAt": "2026-08-09T18:26:53.121Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191226105015522_thumbL",
         "imageSource": "busan_official",
@@ -12253,13 +12253,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "1179022297",
-          "placeUrl": "https://place.map.kakao.com/1179022297",
           "matchedName": "파크짐플레이스 서면역서면시장 물품보관함",
           "matchedAddress": "부산 부산진구 서면로 56",
           "distanceM": 3,
           "checkedAt": "2026-08-09T18:26:53.111Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191227114043326_thumbL",
         "imageSource": "busan_official",
@@ -13411,13 +13410,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "338948390",
-          "placeUrl": "https://place.map.kakao.com/338948390",
+          "status": "weak",
           "matchedName": "구덕문화공원 주차장",
           "matchedAddress": "부산 서구 꽃마을로163번길 73",
           "distanceM": 22,
-          "checkedAt": "2026-08-08T12:22:36.636Z"
+          "checkedAt": "2026-08-08T12:22:36.636Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200812172315522_thumbL",
         "imageSource": "busan_official"
@@ -14123,7 +14121,9 @@
           "matchedAddress": "부산 부산진구 전포동 330-1",
           "distanceM": 43,
           "checkedAt": "2026-08-08T12:22:40.381Z"
-        }
+        },
+        "availabilityProfile": "hold",
+        "normalizationNote": "운영시간·관광 활동 근거 미확인 종교시설은 자연관광지 폴백으로 자동 추천하지 않음"
       },
       {
         "contentId": "poi_148",
@@ -14192,13 +14192,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "20514547",
-          "placeUrl": "https://place.map.kakao.com/20514547",
+          "status": "weak",
           "matchedName": "달맞이동산주차장",
           "matchedAddress": "부산 해운대구 중동 산 42-25",
           "distanceM": 201,
-          "checkedAt": "2026-08-08T12:22:40.624Z"
+          "checkedAt": "2026-08-08T12:22:40.624Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -14269,13 +14268,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "515019938",
-          "placeUrl": "https://place.map.kakao.com/515019938",
+          "status": "weak",
           "matchedName": "대천공원 2호 공중화장실(신시가지근린공원 2-2호)",
           "matchedAddress": "부산 해운대구 장산로 331-18",
           "distanceM": 7,
-          "checkedAt": "2026-08-08T12:22:40.886Z"
+          "checkedAt": "2026-08-08T12:22:40.886Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -14489,13 +14487,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "766929646",
-          "placeUrl": "https://place.map.kakao.com/766929646",
+          "status": "weak",
           "matchedName": "땅뫼산 산책로변 공중화장실",
           "matchedAddress": "부산 금정구 오륜대로 260-1",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:22:41.586Z"
+          "checkedAt": "2026-08-08T12:22:41.586Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -15214,13 +15211,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "158496819",
-          "placeUrl": "https://place.map.kakao.com/158496819",
+          "status": "weak",
           "matchedName": "중앙공원 화장실",
           "matchedAddress": "부산 서구 망양로193번길 187",
           "distanceM": 15,
-          "checkedAt": "2026-08-08T12:22:43.946Z"
+          "checkedAt": "2026-08-08T12:22:43.946Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -16001,13 +15997,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "17581056",
-          "placeUrl": "https://place.map.kakao.com/17581056",
+          "status": "weak",
           "matchedName": "스포원파크 남측주차장",
           "matchedAddress": "부산 금정구 체육공원로399번길 324",
           "distanceM": 126,
-          "checkedAt": "2026-08-08T12:22:46.481Z"
+          "checkedAt": "2026-08-08T12:22:46.481Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -16306,13 +16301,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "17574100",
-          "placeUrl": "https://place.map.kakao.com/17574100",
+          "status": "weak",
           "matchedName": "옥련선원 주차장",
           "matchedAddress": "부산 수영구 광남로257번길 58",
           "distanceM": 1,
-          "checkedAt": "2026-08-08T12:22:47.521Z"
+          "checkedAt": "2026-08-08T12:22:47.521Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -17084,7 +17078,9 @@
           "matchedAddress": "부산 동구 초량상로 53",
           "distanceM": 18,
           "checkedAt": "2026-08-08T12:22:49.994Z"
-        }
+        },
+        "availabilityProfile": "hold",
+        "normalizationNote": "운영시간·관광 활동 근거 미확인 종교시설은 자연관광지 폴백으로 자동 추천하지 않음"
       },
       {
         "contentId": "poi_225",
@@ -17273,13 +17269,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "27597359",
-          "placeUrl": "https://place.map.kakao.com/27597359",
+          "status": "weak",
           "matchedName": "평화공원 화장실",
           "matchedAddress": "부산 남구 대연동 709-4",
           "distanceM": 2,
-          "checkedAt": "2026-08-08T12:22:50.589Z"
+          "checkedAt": "2026-08-08T12:22:50.589Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -18387,13 +18382,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "18831744",
-          "placeUrl": "https://place.map.kakao.com/18831744",
+          "status": "weak",
           "matchedName": "부산광역시립시민도서관 주차장",
           "matchedAddress": "부산 부산진구 월드컵대로 462",
           "distanceM": 17,
-          "checkedAt": "2026-08-08T12:22:54.330Z"
+          "checkedAt": "2026-08-08T12:22:54.330Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -19147,13 +19141,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1141986759",
-          "placeUrl": "https://place.map.kakao.com/1141986759",
+          "status": "weak",
           "matchedName": "해운대문화회관 주차장",
           "matchedAddress": "부산 해운대구 양운로 97",
           "distanceM": 6,
-          "checkedAt": "2026-08-08T12:22:56.811Z"
+          "checkedAt": "2026-08-08T12:22:56.811Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -19185,13 +19178,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "19776994",
-          "placeUrl": "https://place.map.kakao.com/19776994",
+          "status": "weak",
           "matchedName": "구포무장애숲길 주차장",
           "matchedAddress": "부산 북구 구포동 884",
           "distanceM": 24,
-          "checkedAt": "2026-08-08T12:22:56.925Z"
+          "checkedAt": "2026-08-08T12:22:56.925Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -20360,13 +20352,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "27532534",
-          "placeUrl": "https://place.map.kakao.com/27532534",
+          "status": "weak",
           "matchedName": "수영팔도시장 공영주차장",
           "matchedAddress": "부산 수영구 수영성로13번길 18",
           "distanceM": 125,
-          "checkedAt": "2026-08-08T12:23:00.758Z"
+          "checkedAt": "2026-08-08T12:23:00.758Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -21070,13 +21061,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "990168511",
-          "placeUrl": "https://place.map.kakao.com/990168511",
+          "status": "weak",
           "matchedName": "거대갈비 주차장",
           "matchedAddress": "부산 해운대구 달맞이길 22",
           "distanceM": 18,
-          "checkedAt": "2026-08-08T12:23:03.092Z"
+          "checkedAt": "2026-08-08T12:23:03.092Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20240419125908808_thumbL",
         "imageSource": "busan_official"
@@ -22200,13 +22190,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1008595334",
-          "placeUrl": "https://place.map.kakao.com/1008595334",
+          "status": "weak",
           "matchedName": "다온나루 주차장",
           "matchedAddress": "부산 강서구 범방3로46번길 21",
           "distanceM": 11,
-          "checkedAt": "2026-08-08T12:23:07.169Z"
+          "checkedAt": "2026-08-08T12:23:07.169Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -22428,13 +22417,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "574112551",
-          "placeUrl": "https://place.map.kakao.com/574112551",
+          "status": "weak",
           "matchedName": "포도밭대저할매국수 주차장",
           "matchedAddress": "부산 강서구 대저중앙로 337",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:23:07.897Z"
+          "checkedAt": "2026-08-08T12:23:07.897Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -22504,13 +22492,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1785512622",
-          "placeUrl": "https://place.map.kakao.com/1785512622",
+          "status": "weak",
           "matchedName": "더팜471 주차장",
           "matchedAddress": "부산 금정구 하마2길 28-17",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:23:08.240Z"
+          "checkedAt": "2026-08-08T12:23:08.240Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -25305,13 +25292,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "484210117",
-          "placeUrl": "https://place.map.kakao.com/484210117",
+          "status": "weak",
           "matchedName": "스노잉클라우드 주차장",
           "matchedAddress": "부산 해운대구 달맞이길117번가길 120-30",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:23:18.346Z"
+          "checkedAt": "2026-08-08T12:23:18.346Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -25452,13 +25438,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "2075533612",
-          "placeUrl": "https://place.map.kakao.com/2075533612",
+          "status": "weak",
           "matchedName": "신기숲 주차장",
           "matchedAddress": "부산 영도구 청학동 산 39-14",
           "distanceM": 25,
-          "checkedAt": "2026-08-08T12:23:18.941Z"
+          "checkedAt": "2026-08-08T12:23:18.941Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -26299,13 +26284,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1641161978",
-          "placeUrl": "https://place.map.kakao.com/1641161978",
+          "status": "weak",
           "matchedName": "연산낙지해물탕 주차장",
           "matchedAddress": "부산 연제구 과정로 121",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:23:22.033Z"
+          "checkedAt": "2026-08-08T12:23:22.033Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200819103408604_thumbL",
         "imageSource": "busan_official"
@@ -26810,13 +26794,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "780097283",
-          "placeUrl": "https://place.map.kakao.com/780097283",
+          "status": "weak",
           "matchedName": "외식1번가 해운대점 주차장",
           "matchedAddress": "부산 해운대구 해운대로 425",
           "distanceM": 7,
-          "checkedAt": "2026-08-08T12:23:23.927Z"
+          "checkedAt": "2026-08-08T12:23:23.927Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -27177,13 +27160,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1065766345",
-          "placeUrl": "https://place.map.kakao.com/1065766345",
+          "status": "weak",
           "matchedName": "원조석대추어탕전용주차장",
           "matchedAddress": "부산 해운대구 석대동 494",
           "distanceM": 14,
-          "checkedAt": "2026-08-08T12:23:25.254Z"
+          "checkedAt": "2026-08-08T12:23:25.254Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191219104936271_thumbL",
         "imageSource": "busan_official"
@@ -27331,13 +27313,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "779073436",
-          "placeUrl": "https://place.map.kakao.com/779073436",
+          "status": "weak",
           "matchedName": "웨스턴챔버 주차장",
           "matchedAddress": "부산 기장군 정관읍 병산로 221-19",
           "distanceM": 25,
-          "checkedAt": "2026-08-08T12:23:25.714Z"
+          "checkedAt": "2026-08-08T12:23:25.714Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -27996,13 +27977,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "196435595",
-          "placeUrl": "https://place.map.kakao.com/196435595",
+          "status": "weak",
           "matchedName": "소문난주문진막국수 주차장",
           "matchedAddress": "부산 동래구 사직로58번길 8",
           "distanceM": 12,
-          "checkedAt": "2026-08-08T12:23:28.684Z"
+          "checkedAt": "2026-08-08T12:23:28.684Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -28775,13 +28755,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "79296898",
-          "placeUrl": "https://place.map.kakao.com/79296898",
+          "status": "weak",
           "matchedName": "클래식캠퍼 주차장",
           "matchedAddress": "부산 사상구 대동로 224",
           "distanceM": 14,
-          "checkedAt": "2026-08-08T12:23:31.307Z"
+          "checkedAt": "2026-08-08T12:23:31.307Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -29491,13 +29470,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1833650911",
-          "placeUrl": "https://place.map.kakao.com/1833650911",
+          "status": "weak",
           "matchedName": "피크스퀘어 주차장",
           "matchedAddress": "부산 기장군 기장읍 기장해안로 864",
           "distanceM": 14,
-          "checkedAt": "2026-08-08T12:23:33.568Z"
+          "checkedAt": "2026-08-08T12:23:33.568Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       {
@@ -31023,13 +31001,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "20519500",
-          "placeUrl": "https://place.map.kakao.com/20519500",
           "matchedName": "오랑대공원 공영주차장",
           "matchedAddress": "부산 기장군 기장읍 연화리 산 64-26",
           "distanceM": 87,
           "checkedAt": "2026-08-09T18:26:54.021Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191226101451768_thumbL",
         "imageSource": "busan_official"
@@ -31065,13 +31042,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "917787760",
-          "placeUrl": "https://place.map.kakao.com/917787760",
           "matchedName": "국립수산과학관 공중화장실",
           "matchedAddress": "부산 기장군 기장읍 기장해안로 216",
           "distanceM": 36,
           "checkedAt": "2026-08-09T18:26:54.023Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191226102157667_thumbL",
         "imageSource": "busan_official"
@@ -31446,13 +31422,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "1192673361",
-          "placeUrl": "https://place.map.kakao.com/1192673361",
           "matchedName": "삼락생태공원 화장실 1-6",
           "matchedAddress": "부산 사상구 삼락동 29-44",
           "distanceM": 54,
           "checkedAt": "2026-08-09T18:26:54.330Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20230602100722403_thumbL",
         "imageSource": "busan_official"
@@ -32337,13 +32312,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "8929746",
-          "placeUrl": "https://place.map.kakao.com/8929746",
           "matchedName": "대신공원 관리사무소",
           "matchedAddress": "부산 서구 대신공원로 37-18",
           "distanceM": 0,
           "checkedAt": "2026-08-09T18:26:55.059Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191231192024538_thumbL",
         "imageSource": "busan_official"
@@ -33023,13 +32997,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "24765522",
-          "placeUrl": "https://place.map.kakao.com/24765522",
           "matchedName": "대저생태공원 주차장4",
           "matchedAddress": "부산 강서구 대저1동 1-23",
           "distanceM": 448,
           "checkedAt": "2026-08-09T18:26:55.617Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20230713153840580_thumbL",
         "imageSource": "busan_official"
@@ -33067,13 +33040,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "720873166",
-          "placeUrl": "https://place.map.kakao.com/720873166",
           "matchedName": "맥도생태공원 관리사무소",
           "matchedAddress": "부산 강서구 대저2동 1200-28",
           "distanceM": 4,
           "checkedAt": "2026-08-09T18:26:55.606Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20230713150615959_thumbL",
         "imageSource": "busan_official"
@@ -33314,7 +33286,9 @@
           "status": "not_found"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20240528135430979_thumbL",
-        "imageSource": "busan_official"
+        "imageSource": "busan_official",
+        "availabilityProfile": "hold",
+        "normalizationNote": "운영시간·관광 활동 근거 미확인 종교시설은 자연관광지 폴백으로 자동 추천하지 않음"
       },
       {
         "contentId": "poi_728",
@@ -35993,13 +35967,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "1362181883",
-          "placeUrl": "https://place.map.kakao.com/1362181883",
           "matchedName": "얼크니손칼국수 주차장",
           "matchedAddress": "부산 기장군 기장읍 교리 25-1",
           "distanceM": 24,
           "checkedAt": "2026-08-09T18:26:58.044Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200819144753937_thumbL",
         "imageSource": "busan_official"
@@ -36996,13 +36969,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "937371801",
-          "placeUrl": "https://place.map.kakao.com/937371801",
           "matchedName": "세연정 동래점 주차장",
           "matchedAddress": "부산 동래구 충렬대로 149",
           "distanceM": 7,
           "checkedAt": "2026-08-09T18:26:58.884Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20220512093357835_thumbL",
         "imageSource": "busan_official"
@@ -43253,13 +43225,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "971507163",
-          "placeUrl": "https://place.map.kakao.com/971507163",
           "matchedName": "거대숯불구이 주차장",
           "matchedAddress": "부산 해운대구 좌동순환로 459",
           "distanceM": 345,
           "checkedAt": "2026-08-09T18:27:04.115Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20230612134343289_thumbL",
         "imageSource": "busan_official"
@@ -44816,13 +44787,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "338948390",
-          "placeUrl": "https://place.map.kakao.com/338948390",
+          "status": "weak",
           "matchedName": "구덕문화공원 주차장",
           "matchedAddress": "부산 서구 꽃마을로163번길 73",
           "distanceM": 22,
-          "checkedAt": "2026-08-08T12:22:36.636Z"
+          "checkedAt": "2026-08-08T12:22:36.636Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200812172315522_thumbL",
         "imageSource": "busan_official"
@@ -45528,7 +45498,9 @@
           "matchedAddress": "부산 부산진구 전포동 330-1",
           "distanceM": 43,
           "checkedAt": "2026-08-08T12:22:40.381Z"
-        }
+        },
+        "availabilityProfile": "hold",
+        "normalizationNote": "운영시간·관광 활동 근거 미확인 종교시설은 자연관광지 폴백으로 자동 추천하지 않음"
       },
       "poi_148": {
         "contentId": "poi_148",
@@ -45597,13 +45569,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "20514547",
-          "placeUrl": "https://place.map.kakao.com/20514547",
+          "status": "weak",
           "matchedName": "달맞이동산주차장",
           "matchedAddress": "부산 해운대구 중동 산 42-25",
           "distanceM": 201,
-          "checkedAt": "2026-08-08T12:22:40.624Z"
+          "checkedAt": "2026-08-08T12:22:40.624Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_150": {
@@ -45674,13 +45645,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "515019938",
-          "placeUrl": "https://place.map.kakao.com/515019938",
+          "status": "weak",
           "matchedName": "대천공원 2호 공중화장실(신시가지근린공원 2-2호)",
           "matchedAddress": "부산 해운대구 장산로 331-18",
           "distanceM": 7,
-          "checkedAt": "2026-08-08T12:22:40.886Z"
+          "checkedAt": "2026-08-08T12:22:40.886Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_152": {
@@ -45894,13 +45864,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "766929646",
-          "placeUrl": "https://place.map.kakao.com/766929646",
+          "status": "weak",
           "matchedName": "땅뫼산 산책로변 공중화장실",
           "matchedAddress": "부산 금정구 오륜대로 260-1",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:22:41.586Z"
+          "checkedAt": "2026-08-08T12:22:41.586Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_158": {
@@ -46619,13 +46588,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "158496819",
-          "placeUrl": "https://place.map.kakao.com/158496819",
+          "status": "weak",
           "matchedName": "중앙공원 화장실",
           "matchedAddress": "부산 서구 망양로193번길 187",
           "distanceM": 15,
-          "checkedAt": "2026-08-08T12:22:43.946Z"
+          "checkedAt": "2026-08-08T12:22:43.946Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_177": {
@@ -47406,13 +47374,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "17581056",
-          "placeUrl": "https://place.map.kakao.com/17581056",
+          "status": "weak",
           "matchedName": "스포원파크 남측주차장",
           "matchedAddress": "부산 금정구 체육공원로399번길 324",
           "distanceM": 126,
-          "checkedAt": "2026-08-08T12:22:46.481Z"
+          "checkedAt": "2026-08-08T12:22:46.481Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_197": {
@@ -47711,13 +47678,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "17574100",
-          "placeUrl": "https://place.map.kakao.com/17574100",
+          "status": "weak",
           "matchedName": "옥련선원 주차장",
           "matchedAddress": "부산 수영구 광남로257번길 58",
           "distanceM": 1,
-          "checkedAt": "2026-08-08T12:22:47.521Z"
+          "checkedAt": "2026-08-08T12:22:47.521Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_205": {
@@ -48489,7 +48455,9 @@
           "matchedAddress": "부산 동구 초량상로 53",
           "distanceM": 18,
           "checkedAt": "2026-08-08T12:22:49.994Z"
-        }
+        },
+        "availabilityProfile": "hold",
+        "normalizationNote": "운영시간·관광 활동 근거 미확인 종교시설은 자연관광지 폴백으로 자동 추천하지 않음"
       },
       "poi_225": {
         "contentId": "poi_225",
@@ -48678,13 +48646,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "27597359",
-          "placeUrl": "https://place.map.kakao.com/27597359",
+          "status": "weak",
           "matchedName": "평화공원 화장실",
           "matchedAddress": "부산 남구 대연동 709-4",
           "distanceM": 2,
-          "checkedAt": "2026-08-08T12:22:50.589Z"
+          "checkedAt": "2026-08-08T12:22:50.589Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_230": {
@@ -49792,13 +49759,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "18831744",
-          "placeUrl": "https://place.map.kakao.com/18831744",
+          "status": "weak",
           "matchedName": "부산광역시립시민도서관 주차장",
           "matchedAddress": "부산 부산진구 월드컵대로 462",
           "distanceM": 17,
-          "checkedAt": "2026-08-08T12:22:54.330Z"
+          "checkedAt": "2026-08-08T12:22:54.330Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_258": {
@@ -50552,13 +50518,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1141986759",
-          "placeUrl": "https://place.map.kakao.com/1141986759",
+          "status": "weak",
           "matchedName": "해운대문화회관 주차장",
           "matchedAddress": "부산 해운대구 양운로 97",
           "distanceM": 6,
-          "checkedAt": "2026-08-08T12:22:56.811Z"
+          "checkedAt": "2026-08-08T12:22:56.811Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_278": {
@@ -50590,13 +50555,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "19776994",
-          "placeUrl": "https://place.map.kakao.com/19776994",
+          "status": "weak",
           "matchedName": "구포무장애숲길 주차장",
           "matchedAddress": "부산 북구 구포동 884",
           "distanceM": 24,
-          "checkedAt": "2026-08-08T12:22:56.925Z"
+          "checkedAt": "2026-08-08T12:22:56.925Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_279": {
@@ -51765,13 +51729,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "27532534",
-          "placeUrl": "https://place.map.kakao.com/27532534",
+          "status": "weak",
           "matchedName": "수영팔도시장 공영주차장",
           "matchedAddress": "부산 수영구 수영성로13번길 18",
           "distanceM": 125,
-          "checkedAt": "2026-08-08T12:23:00.758Z"
+          "checkedAt": "2026-08-08T12:23:00.758Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_309": {
@@ -52475,13 +52438,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "990168511",
-          "placeUrl": "https://place.map.kakao.com/990168511",
+          "status": "weak",
           "matchedName": "거대갈비 주차장",
           "matchedAddress": "부산 해운대구 달맞이길 22",
           "distanceM": 18,
-          "checkedAt": "2026-08-08T12:23:03.092Z"
+          "checkedAt": "2026-08-08T12:23:03.092Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20240419125908808_thumbL",
         "imageSource": "busan_official"
@@ -53605,13 +53567,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1008595334",
-          "placeUrl": "https://place.map.kakao.com/1008595334",
+          "status": "weak",
           "matchedName": "다온나루 주차장",
           "matchedAddress": "부산 강서구 범방3로46번길 21",
           "distanceM": 11,
-          "checkedAt": "2026-08-08T12:23:07.169Z"
+          "checkedAt": "2026-08-08T12:23:07.169Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_362": {
@@ -53833,13 +53794,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "574112551",
-          "placeUrl": "https://place.map.kakao.com/574112551",
+          "status": "weak",
           "matchedName": "포도밭대저할매국수 주차장",
           "matchedAddress": "부산 강서구 대저중앙로 337",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:23:07.897Z"
+          "checkedAt": "2026-08-08T12:23:07.897Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_369": {
@@ -53909,13 +53869,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1785512622",
-          "placeUrl": "https://place.map.kakao.com/1785512622",
+          "status": "weak",
           "matchedName": "더팜471 주차장",
           "matchedAddress": "부산 금정구 하마2길 28-17",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:23:08.240Z"
+          "checkedAt": "2026-08-08T12:23:08.240Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_371": {
@@ -56710,13 +56669,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "484210117",
-          "placeUrl": "https://place.map.kakao.com/484210117",
+          "status": "weak",
           "matchedName": "스노잉클라우드 주차장",
           "matchedAddress": "부산 해운대구 달맞이길117번가길 120-30",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:23:18.346Z"
+          "checkedAt": "2026-08-08T12:23:18.346Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_453": {
@@ -56857,13 +56815,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "2075533612",
-          "placeUrl": "https://place.map.kakao.com/2075533612",
+          "status": "weak",
           "matchedName": "신기숲 주차장",
           "matchedAddress": "부산 영도구 청학동 산 39-14",
           "distanceM": 25,
-          "checkedAt": "2026-08-08T12:23:18.941Z"
+          "checkedAt": "2026-08-08T12:23:18.941Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_458": {
@@ -57704,13 +57661,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1641161978",
-          "placeUrl": "https://place.map.kakao.com/1641161978",
+          "status": "weak",
           "matchedName": "연산낙지해물탕 주차장",
           "matchedAddress": "부산 연제구 과정로 121",
           "distanceM": 5,
-          "checkedAt": "2026-08-08T12:23:22.033Z"
+          "checkedAt": "2026-08-08T12:23:22.033Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200819103408604_thumbL",
         "imageSource": "busan_official"
@@ -58215,13 +58171,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "780097283",
-          "placeUrl": "https://place.map.kakao.com/780097283",
+          "status": "weak",
           "matchedName": "외식1번가 해운대점 주차장",
           "matchedAddress": "부산 해운대구 해운대로 425",
           "distanceM": 7,
-          "checkedAt": "2026-08-08T12:23:23.927Z"
+          "checkedAt": "2026-08-08T12:23:23.927Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_497": {
@@ -58582,13 +58537,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1065766345",
-          "placeUrl": "https://place.map.kakao.com/1065766345",
+          "status": "weak",
           "matchedName": "원조석대추어탕전용주차장",
           "matchedAddress": "부산 해운대구 석대동 494",
           "distanceM": 14,
-          "checkedAt": "2026-08-08T12:23:25.254Z"
+          "checkedAt": "2026-08-08T12:23:25.254Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191219104936271_thumbL",
         "imageSource": "busan_official"
@@ -58736,13 +58690,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "779073436",
-          "placeUrl": "https://place.map.kakao.com/779073436",
+          "status": "weak",
           "matchedName": "웨스턴챔버 주차장",
           "matchedAddress": "부산 기장군 정관읍 병산로 221-19",
           "distanceM": 25,
-          "checkedAt": "2026-08-08T12:23:25.714Z"
+          "checkedAt": "2026-08-08T12:23:25.714Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_512": {
@@ -59401,13 +59354,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "196435595",
-          "placeUrl": "https://place.map.kakao.com/196435595",
+          "status": "weak",
           "matchedName": "소문난주문진막국수 주차장",
           "matchedAddress": "부산 동래구 사직로58번길 8",
           "distanceM": 12,
-          "checkedAt": "2026-08-08T12:23:28.684Z"
+          "checkedAt": "2026-08-08T12:23:28.684Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_537": {
@@ -60180,13 +60132,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "79296898",
-          "placeUrl": "https://place.map.kakao.com/79296898",
+          "status": "weak",
           "matchedName": "클래식캠퍼 주차장",
           "matchedAddress": "부산 사상구 대동로 224",
           "distanceM": 14,
-          "checkedAt": "2026-08-08T12:23:31.307Z"
+          "checkedAt": "2026-08-08T12:23:31.307Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_559": {
@@ -60896,13 +60847,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "status": "verified",
-          "placeId": "1833650911",
-          "placeUrl": "https://place.map.kakao.com/1833650911",
+          "status": "weak",
           "matchedName": "피크스퀘어 주차장",
           "matchedAddress": "부산 기장군 기장읍 기장해안로 864",
           "distanceM": 14,
-          "checkedAt": "2026-08-08T12:23:33.568Z"
+          "checkedAt": "2026-08-08T12:23:33.568Z",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         }
       },
       "poi_579": {
@@ -62428,13 +62378,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "20519500",
-          "placeUrl": "https://place.map.kakao.com/20519500",
           "matchedName": "오랑대공원 공영주차장",
           "matchedAddress": "부산 기장군 기장읍 연화리 산 64-26",
           "distanceM": 87,
           "checkedAt": "2026-08-09T18:26:54.021Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191226101451768_thumbL",
         "imageSource": "busan_official"
@@ -62470,13 +62419,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "917787760",
-          "placeUrl": "https://place.map.kakao.com/917787760",
           "matchedName": "국립수산과학관 공중화장실",
           "matchedAddress": "부산 기장군 기장읍 기장해안로 216",
           "distanceM": 36,
           "checkedAt": "2026-08-09T18:26:54.023Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191226102157667_thumbL",
         "imageSource": "busan_official"
@@ -62851,13 +62799,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "1192673361",
-          "placeUrl": "https://place.map.kakao.com/1192673361",
           "matchedName": "삼락생태공원 화장실 1-6",
           "matchedAddress": "부산 사상구 삼락동 29-44",
           "distanceM": 54,
           "checkedAt": "2026-08-09T18:26:54.330Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20230602100722403_thumbL",
         "imageSource": "busan_official"
@@ -63742,13 +63689,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "8929746",
-          "placeUrl": "https://place.map.kakao.com/8929746",
           "matchedName": "대신공원 관리사무소",
           "matchedAddress": "부산 서구 대신공원로 37-18",
           "distanceM": 0,
           "checkedAt": "2026-08-09T18:26:55.059Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191231192024538_thumbL",
         "imageSource": "busan_official"
@@ -64428,13 +64374,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "24765522",
-          "placeUrl": "https://place.map.kakao.com/24765522",
           "matchedName": "대저생태공원 주차장4",
           "matchedAddress": "부산 강서구 대저1동 1-23",
           "distanceM": 448,
           "checkedAt": "2026-08-09T18:26:55.617Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20230713153840580_thumbL",
         "imageSource": "busan_official"
@@ -64472,13 +64417,12 @@
         ],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "720873166",
-          "placeUrl": "https://place.map.kakao.com/720873166",
           "matchedName": "맥도생태공원 관리사무소",
           "matchedAddress": "부산 강서구 대저2동 1200-28",
           "distanceM": 4,
           "checkedAt": "2026-08-09T18:26:55.606Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20230713150615959_thumbL",
         "imageSource": "busan_official"
@@ -64719,7 +64663,9 @@
           "status": "not_found"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20240528135430979_thumbL",
-        "imageSource": "busan_official"
+        "imageSource": "busan_official",
+        "availabilityProfile": "hold",
+        "normalizationNote": "운영시간·관광 활동 근거 미확인 종교시설은 자연관광지 폴백으로 자동 추천하지 않음"
       },
       "poi_728": {
         "contentId": "poi_728",
@@ -67398,13 +67344,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "1362181883",
-          "placeUrl": "https://place.map.kakao.com/1362181883",
           "matchedName": "얼크니손칼국수 주차장",
           "matchedAddress": "부산 기장군 기장읍 교리 25-1",
           "distanceM": 24,
           "checkedAt": "2026-08-09T18:26:58.044Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200819144753937_thumbL",
         "imageSource": "busan_official"
@@ -68401,13 +68346,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "937371801",
-          "placeUrl": "https://place.map.kakao.com/937371801",
           "matchedName": "세연정 동래점 주차장",
           "matchedAddress": "부산 동래구 충렬대로 149",
           "distanceM": 7,
           "checkedAt": "2026-08-09T18:26:58.884Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20220512093357835_thumbL",
         "imageSource": "busan_official"
@@ -74658,13 +74602,12 @@
         "holidays": [],
         "mapVerification": {
           "provider": "kakao",
-          "placeId": "971507163",
-          "placeUrl": "https://place.map.kakao.com/971507163",
           "matchedName": "거대숯불구이 주차장",
           "matchedAddress": "부산 해운대구 좌동순환로 459",
           "distanceM": 345,
           "checkedAt": "2026-08-09T18:27:04.115Z",
-          "status": "verified"
+          "status": "weak",
+          "reason": "카카오 키워드 검색 결과가 장소 본체가 아닌 보조시설로 확인됨"
         },
         "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20230612134343289_thumbL",
         "imageSource": "busan_official"

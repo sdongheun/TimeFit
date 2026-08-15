@@ -1,0 +1,324 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-15T17:45:29.723Z",
+    "rule": "카카오 키워드 검색 결과가 보조시설이면 weak으로 낮추고 잘못된 Place URL을 제거"
+  },
+  "summary": {
+    "corrected": 37,
+    "held": 3
+  },
+  "data": {
+    "auxiliaryMapMatches": [
+      {
+        "contentId": "poi_35",
+        "title": "씨라이프부산아쿠아리움",
+        "category": "문화시설",
+        "matchedName": "씨라이프부산아쿠아리움 전기차충전소",
+        "previousStatus": "weak",
+        "distanceM": 2
+      },
+      {
+        "contentId": "poi_789",
+        "title": "해운대시장",
+        "category": "상업지구",
+        "matchedName": "해운대시장 공영주차장",
+        "previousStatus": "weak",
+        "distanceM": 66
+      },
+      {
+        "contentId": "poi_791",
+        "title": "서면시장",
+        "category": "상업지구",
+        "matchedName": "파크짐플레이스 서면역서면시장 물품보관함",
+        "previousStatus": "weak",
+        "distanceM": 3
+      },
+      {
+        "contentId": "poi_129",
+        "title": "구덕문화공원",
+        "category": "자연관광지",
+        "matchedName": "구덕문화공원 주차장",
+        "previousStatus": "weak",
+        "distanceM": 22
+      },
+      {
+        "contentId": "poi_149",
+        "title": "달맞이동산",
+        "category": "자연관광지",
+        "matchedName": "달맞이동산주차장",
+        "previousStatus": "weak",
+        "distanceM": 201
+      },
+      {
+        "contentId": "poi_151",
+        "title": "대천공원",
+        "category": "자연관광지",
+        "matchedName": "대천공원 2호 공중화장실(신시가지근린공원 2-2호)",
+        "previousStatus": "weak",
+        "distanceM": 7
+      },
+      {
+        "contentId": "poi_157",
+        "title": "땅뫼산",
+        "category": "자연관광지",
+        "matchedName": "땅뫼산 산책로변 공중화장실",
+        "previousStatus": "weak",
+        "distanceM": 5
+      },
+      {
+        "contentId": "poi_176",
+        "title": "부산 중앙공원",
+        "category": "자연관광지",
+        "matchedName": "중앙공원 화장실",
+        "previousStatus": "weak",
+        "distanceM": 15
+      },
+      {
+        "contentId": "poi_196",
+        "title": "스포원파크",
+        "category": "자연관광지",
+        "matchedName": "스포원파크 남측주차장",
+        "previousStatus": "weak",
+        "distanceM": 126
+      },
+      {
+        "contentId": "poi_204",
+        "title": "옥련선원",
+        "category": "자연관광지",
+        "matchedName": "옥련선원 주차장",
+        "previousStatus": "weak",
+        "distanceM": 1
+      },
+      {
+        "contentId": "poi_229",
+        "title": "평화공원",
+        "category": "자연관광지",
+        "matchedName": "평화공원 화장실",
+        "previousStatus": "weak",
+        "distanceM": 2
+      },
+      {
+        "contentId": "poi_257",
+        "title": "부산광역시립 시민도서관",
+        "category": "문화시설",
+        "matchedName": "부산광역시립시민도서관 주차장",
+        "previousStatus": "weak",
+        "distanceM": 17
+      },
+      {
+        "contentId": "poi_277",
+        "title": "해운대문화회관",
+        "category": "문화시설",
+        "matchedName": "해운대문화회관 주차장",
+        "previousStatus": "weak",
+        "distanceM": 6
+      },
+      {
+        "contentId": "poi_278",
+        "title": "구포무장애숲길",
+        "category": "레저/스포츠",
+        "matchedName": "구포무장애숲길 주차장",
+        "previousStatus": "weak",
+        "distanceM": 24
+      },
+      {
+        "contentId": "poi_308",
+        "title": "수영팔도시장",
+        "category": "상업지구",
+        "matchedName": "수영팔도시장 공영주차장",
+        "previousStatus": "weak",
+        "distanceM": 125
+      },
+      {
+        "contentId": "poi_327",
+        "title": "거대갈비",
+        "category": "식당",
+        "matchedName": "거대갈비 주차장",
+        "previousStatus": "weak",
+        "distanceM": 18
+      },
+      {
+        "contentId": "poi_361",
+        "title": "다온나루",
+        "category": "식당",
+        "matchedName": "다온나루 주차장",
+        "previousStatus": "weak",
+        "distanceM": 11
+      },
+      {
+        "contentId": "poi_367",
+        "title": "대저할매국수",
+        "category": "식당",
+        "matchedName": "포도밭대저할매국수 주차장",
+        "previousStatus": "weak",
+        "distanceM": 5
+      },
+      {
+        "contentId": "poi_370",
+        "title": "더팜471",
+        "category": "식당",
+        "matchedName": "더팜471 주차장",
+        "previousStatus": "weak",
+        "distanceM": 5
+      },
+      {
+        "contentId": "poi_452",
+        "title": "스노잉클라우드",
+        "category": "식당",
+        "matchedName": "스노잉클라우드 주차장",
+        "previousStatus": "weak",
+        "distanceM": 5
+      },
+      {
+        "contentId": "poi_457",
+        "title": "신기숲",
+        "category": "식당",
+        "matchedName": "신기숲 주차장",
+        "previousStatus": "weak",
+        "distanceM": 25
+      },
+      {
+        "contentId": "poi_481",
+        "title": "연산낙지해물탕",
+        "category": "식당",
+        "matchedName": "연산낙지해물탕 주차장",
+        "previousStatus": "weak",
+        "distanceM": 5
+      },
+      {
+        "contentId": "poi_496",
+        "title": "외식1번가",
+        "category": "식당",
+        "matchedName": "외식1번가 해운대점 주차장",
+        "previousStatus": "weak",
+        "distanceM": 7
+      },
+      {
+        "contentId": "poi_507",
+        "title": "원조석대추어탕",
+        "category": "식당",
+        "matchedName": "원조석대추어탕전용주차장",
+        "previousStatus": "weak",
+        "distanceM": 14
+      },
+      {
+        "contentId": "poi_511",
+        "title": "웨스턴챔버",
+        "category": "식당",
+        "matchedName": "웨스턴챔버 주차장",
+        "previousStatus": "weak",
+        "distanceM": 25
+      },
+      {
+        "contentId": "poi_536",
+        "title": "주문진 막국수",
+        "category": "식당",
+        "matchedName": "소문난주문진막국수 주차장",
+        "previousStatus": "weak",
+        "distanceM": 12
+      },
+      {
+        "contentId": "poi_558",
+        "title": "클래식캠퍼",
+        "category": "식당",
+        "matchedName": "클래식캠퍼 주차장",
+        "previousStatus": "weak",
+        "distanceM": 14
+      },
+      {
+        "contentId": "poi_577",
+        "title": "피크스퀘어",
+        "category": "식당",
+        "matchedName": "피크스퀘어 주차장",
+        "previousStatus": "weak",
+        "distanceM": 14
+      },
+      {
+        "contentId": "poi_632",
+        "title": "오랑대공원",
+        "category": "자연관광지",
+        "matchedName": "오랑대공원 공영주차장",
+        "previousStatus": "weak",
+        "distanceM": 87
+      },
+      {
+        "contentId": "poi_633",
+        "title": "국립수산과학관",
+        "category": "자연관광지",
+        "matchedName": "국립수산과학관 공중화장실",
+        "previousStatus": "weak",
+        "distanceM": 36
+      },
+      {
+        "contentId": "poi_645",
+        "title": "삼락생태공원",
+        "category": "자연관광지",
+        "matchedName": "삼락생태공원 화장실 1-6",
+        "previousStatus": "weak",
+        "distanceM": 54
+      },
+      {
+        "contentId": "poi_685",
+        "title": "대신공원",
+        "category": "자연관광지",
+        "matchedName": "대신공원 관리사무소",
+        "previousStatus": "weak",
+        "distanceM": 0
+      },
+      {
+        "contentId": "poi_713",
+        "title": "대저생태공원",
+        "category": "자연관광지",
+        "matchedName": "대저생태공원 주차장4",
+        "previousStatus": "weak",
+        "distanceM": 448
+      },
+      {
+        "contentId": "poi_714",
+        "title": "맥도생태공원",
+        "category": "자연관광지",
+        "matchedName": "맥도생태공원 관리사무소",
+        "previousStatus": "weak",
+        "distanceM": 4
+      },
+      {
+        "contentId": "poi_854",
+        "title": "얼크니손칼국수",
+        "category": "식당",
+        "matchedName": "얼크니손칼국수 주차장",
+        "previousStatus": "weak",
+        "distanceM": 24
+      },
+      {
+        "contentId": "poi_893",
+        "title": "세연정",
+        "category": "식당",
+        "matchedName": "세연정 동래점 주차장",
+        "previousStatus": "weak",
+        "distanceM": 7
+      },
+      {
+        "contentId": "poi_1111",
+        "title": "거대숯불구이",
+        "category": "식당",
+        "matchedName": "거대숯불구이 주차장",
+        "previousStatus": "weak",
+        "distanceM": 345
+      }
+    ],
+    "heldWorshipFacilities": [
+      {
+        "contentId": "poi_147",
+        "title": "남부산교회"
+      },
+      {
+        "contentId": "poi_224",
+        "title": "초량교회"
+      },
+      {
+        "contentId": "poi_726",
+        "title": "한국 이슬람 부산성원"
+      }
+    ]
+  }
+}

@@ -46,6 +46,10 @@ function isAreaLike(value) {
   return /시장|거리|골목|상권|마을|해수욕장|해변|공원|광장|지하상가|아울렛|백화점|마켓타운|먹자골목|로데오|수산물시장|종합시장|문화마을/.test(String(value ?? ''));
 }
 
+function isAuxiliaryFacility(value) {
+  return /물품보관함|주차장|공중화장실|화장실|전기차충전소|충전소|관리사무소|ATM|현금인출|주유소|정비소/.test(String(value ?? ''));
+}
+
 async function kakaoKeyword(place) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 10000);
@@ -97,7 +101,7 @@ function classify(place, docs) {
     return { provider: 'kakao', status: 'not_found', checkedAt: new Date().toISOString() };
   }
 
-  if (best.nameSimilar && best.distanceM <= 500) {
+  if (best.nameSimilar && best.distanceM <= 500 && !isAuxiliaryFacility(best.name)) {
     return {
       provider: 'kakao',
       status: 'verified',
@@ -107,6 +111,18 @@ function classify(place, docs) {
       matchedAddress: best.address,
       distanceM: best.distanceM,
       checkedAt: new Date().toISOString(),
+    };
+  }
+
+  if (isAuxiliaryFacility(best.name)) {
+    return {
+      provider: 'kakao',
+      status: 'weak',
+      matchedName: best.name,
+      matchedAddress: best.address,
+      distanceM: best.distanceM,
+      checkedAt: new Date().toISOString(),
+      reason: '장소 본체가 아닌 보조시설 검색 결과',
     };
   }
 

@@ -41,17 +41,32 @@ test('미매칭 장소는 카테고리 체류시간 폴백만 사용한다', () 
   }
 });
 
-test('추천 가능한 모든 장소는 검증된 카카오 상세 링크를 가진다', () => {
+test('카카오 보조시설 결과는 약한 위치 확인으로 낮추고 잘못된 상세 링크를 쓰지 않는다', () => {
+  const auxiliary = /물품보관함|주차장|공중화장실|화장실|전기차충전소|충전소|관리사무소|ATM|현금인출|주유소|정비소/;
   for (const place of [...matched, ...unmatched]) {
     assert.ok(MAP_VERIFICATION.has(place.mapVerification?.status), `${place.title}: invalid Kakao verification status`);
-    if (place.mapVerification?.status === 'not_found') continue;
-    assert.match(place.mapVerification?.placeUrl ?? '', /^https:\/\/place\.map\.kakao\.com\/\d+$/, `${place.title}: missing Kakao place URL`);
+    const matchedName = place.mapVerification?.matchedName ?? '';
+    if (auxiliary.test(matchedName)) {
+      assert.equal(place.mapVerification?.status, 'weak', `${place.title}: auxiliary result must not be verified`);
+      assert.equal(place.mapVerification?.placeUrl, undefined, `${place.title}: auxiliary URL must not be exposed`);
+      continue;
+    }
+    if (place.mapVerification?.status === 'verified') {
+      assert.match(place.mapVerification?.placeUrl ?? '', /^https:\/\/place\.map\.kakao\.com\/\d+$/, `${place.title}: missing Kakao place URL`);
+    }
   }
 });
 
 test('운영시간 신뢰도는 정제 정책의 세 값만 사용한다', () => {
   for (const place of [...matched, ...unmatched]) {
     assert.ok(OPENING_RELIABILITY.has(place.openingHoursReliability), `${place.title}: invalid opening-hour reliability`);
+  }
+});
+
+test('운영시간과 관광 활동 근거가 없는 종교시설은 자연관광지 폴백으로 자동 추천하지 않는다', () => {
+  const titles = new Set(['남부산교회', '초량교회', '한국 이슬람 부산성원']);
+  for (const place of [...matched, ...unmatched].filter((item) => titles.has(item.title))) {
+    assert.equal(place.availabilityProfile, 'hold', `${place.title}: must be held from automatic recommendation`);
   }
 });
 

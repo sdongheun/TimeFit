@@ -29,6 +29,7 @@ const similarName = (a, b) => {
   return !!left && !!right && (left.includes(right) || right.includes(left));
 };
 const isAreaPlace = (value) => /시장|거리|골목|상권|마을|해수욕장|해변|공원|광장|지하상가|아울렛|백화점|마켓타운|먹자골목|로데오|수산물시장|종합시장|문화마을/.test(value ?? '');
+const isAuxiliaryFacility = (value) => /물품보관함|주차장|공중화장실|화장실|전기차충전소|충전소|관리사무소|ATM|현금인출|주유소|정비소/.test(value ?? '');
 const distanceM = (a, b) => {
   const rad = Math.PI / 180;
   const dLat = (b.lat - a.lat) * rad;
@@ -66,7 +67,8 @@ function classify(place, documents) {
   const checkedAt = new Date().toISOString();
   if (!best) return { provider: 'kakao', status: 'not_found', checkedAt };
   const base = { provider: 'kakao', placeId: best.placeId, placeUrl: best.placeUrl, matchedName: best.name, matchedAddress: best.address, distanceM: best.distanceM, checkedAt };
-  if (best.nameSimilar && best.distanceM <= 500) return { ...base, status: 'verified' };
+  if (best.nameSimilar && best.distanceM <= 500 && !isAuxiliaryFacility(best.name)) return { ...base, status: 'verified' };
+  if (isAuxiliaryFacility(best.name)) return { ...base, status: 'weak', reason: '장소 본체가 아닌 보조시설 검색 결과' };
   if ((best.nameSimilar && best.distanceM <= 1500) || (isAreaPlace(place.title) && best.distanceM <= 900)) return { ...base, status: 'weak' };
   return { ...base, status: 'not_found' };
 }
