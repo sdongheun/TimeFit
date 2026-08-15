@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
-import { HourBucket, kakaoReverseGeocode, Mode, planTimeFit, reverseGeocode, timeContext } from '../engine';
+import { HourBucket, kakaoReverseGeocode, planTimeFit, reverseGeocode, timeContext } from '../engine';
 import { Appointment, fmtHM, RootStackParamList } from './nav';
 import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
@@ -29,10 +29,6 @@ function hourBucketOf(hour: number): HourBucket {
   return hour < 11 ? '아침' : hour < 14 ? '점심' : hour < 17 ? '오후' : hour < 21 ? '저녁' : '야간';
 }
 
-function bufferFor(mode: Mode) {
-  return mode === 'transit' ? 20 : mode === 'car' ? 10 : 15;
-}
-
 export function TimeSetupScreen({ navigation, route }: Props) {
   const flow = useAppFlow();
   const insets = useSafeAreaInsets();
@@ -45,7 +41,6 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const [startMinute, setStartMinute] = useState(roundedNow % 60);
   const [endHour, setEndHour] = useState(Math.floor(initialEnd / 60));
   const [endMinute, setEndMinute] = useState(initialEnd % 60);
-  const [mode, setMode] = useState<Mode>('walk');
   const [appointment, setAppointment] = useState<Appointment>(null);
   const [origin, setOrigin] = useState(SEOMYEON);
   const [originLabel, setOriginLabel] = useState('부산 서면(기본)');
@@ -94,13 +89,17 @@ export function TimeSetupScreen({ navigation, route }: Props) {
         origin,
         destination: appointment ? { lat: appointment.lat, lon: appointment.lon } : null,
         remainingMin,
-        mode,
+        // 초기 지도는 세 이동수단 중 하나라도 가능한 장소를 수집한다.
+        // 특정 수단을 미리 고정하지 않고, 실제 구간 수단은 장소 선택 뒤 비교한다.
+        mode: 'transit',
+        candidateModes: ['walk', 'transit', 'car'],
+        radiusM: 8000,
         nowMin: startMin,
         dayType,
         hourBucket,
       });
       if (!result.courses.length) {
-        setError('이 시간 안에 가능한 코스를 찾지 못했어요. 시간을 늘리거나 이동수단을 바꿔 보세요.');
+        setError('이 시간 안에 들를 수 있는 장소를 찾지 못했어요. 약속 시각이나 장소를 다시 확인해 주세요.');
         return;
       }
       const params: RootStackParamList['Results'] = {
@@ -109,8 +108,10 @@ export function TimeSetupScreen({ navigation, route }: Props) {
         origin,
         ctx: {
           startMin,
-          mode,
-          modeLabel: mode === 'car' ? '차량' : mode === 'transit' ? '대중교통' : '도보',
+          // 코스 확정 전에는 특정 수단을 고정하지 않는다. 기존 단일 모드 엔진과의 호환을 위해
+          // 기본 계산값은 대중교통으로 두고, 지도에서는 수단별 가능성을 별도 비교한다.
+          mode: 'transit',
+          modeLabel: '이동수단 비교',
           originLabel,
           appointment,
           remainingMin,
@@ -177,23 +178,12 @@ export function TimeSetupScreen({ navigation, route }: Props) {
           </View>
           <View style={s.summaryRight}>
             <Text style={s.summaryTime}>{fmtHM(startMin)} → {fmtHM(endMin)}</Text>
-            <Text style={s.summaryBuffer}>안전 여유 {bufferFor(mode)}분</Text>
+            <Text style={s.summaryBuffer}>장소를 고른 뒤 이동 방법을 비교해요</Text>
           </View>
         </View>
 
         {timeCard('시작 시각', startHour, startMinute, setStartHour, setStartMinute, '위아래로 굴려서 고릅니다')}
         {timeCard('종료 시각 (약속 도착)', endHour, endMinute, setEndHour, setEndMinute, '시작 시각부터 최대 4시간까지 설정할 수 있어요')}
-
-        <View style={s.card}>
-          <Text style={s.cardTitle}>이동수단</Text>
-          <View style={s.modeRow}>
-            {([['walk', '도보'], ['transit', '대중교통'], ['car', '차량']] as const).map(([value, label]) => (
-              <Pressable key={value} onPress={() => setMode(value)} style={[s.modeButton, mode === value && s.modeButtonSelected]}>
-                <Text style={[s.modeButtonText, mode === value && s.modeButtonTextSelected]}>{label}</Text>
-              </Pressable>
-            ))}
-          </View>
-        </View>
 
         <View style={[s.card, s.placeCard]}>
           <Pressable style={s.placeRow} onPress={() => setPicker('origin')}>
@@ -258,11 +248,6 @@ const s = StyleSheet.create({
   wheels: { flexDirection: 'row', marginTop: 8 },
   wheelColumn: { flex: 1 },
   wheelHint: { color: C.muted, fontSize: 11.5, textAlign: 'center', marginTop: 6 },
-  modeRow: { flexDirection: 'row', gap: 8, marginTop: 14 },
-  modeButton: { flex: 1, minHeight: 44, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: C.panel2, borderColor: C.line, borderWidth: 1 },
-  modeButtonSelected: { borderColor: C.accent, backgroundColor: 'rgba(0,102,255,0.16)' },
-  modeButtonText: { color: C.muted, fontSize: 13, fontWeight: '800' },
-  modeButtonTextSelected: { color: C.txt },
   placeCard: { paddingVertical: 4 },
   placeRow: { minHeight: 60, flexDirection: 'row', gap: 16, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 2 },
   placeLabel: { color: C.muted, fontSize: 13.5, flexShrink: 0 },

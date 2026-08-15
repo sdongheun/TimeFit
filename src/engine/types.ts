@@ -19,6 +19,9 @@ export type PlanInput = {
   dayType: DayType;
   hourBucket: HourBucket;
   mode: Mode;
+  // 지도 우선 탐색에서는 특정 수단 하나가 아니라, 아래 수단 중 하나라도
+  // 시간·최소 체류 조건을 만족하면 후보로 남긴다. 기존 단일 수단 화면은 생략한다.
+  candidateModes?: Mode[];
   radiusM?: number;
   // 자동진단에서만 사용: 후보 풀 비교를 위해 ODsay 정밀화를 생략한다.
   deferTransitRefinement?: boolean;
@@ -59,7 +62,8 @@ export type Spot = {
   strategy: Strategy;
 };
 
-export type Leg = { label: string; min: number; src: string; geo?: LatLon[] }; // geo: TMAP 실경로 좌표(이동 구간만)
+// mode는 체류가 아닌 이동 구간에만 지정한다. 한 코스는 도보·대중교통을 구간별로 조합할 수 있다.
+export type Leg = { label: string; min: number; src: string; geo?: LatLon[]; mode?: Mode }; // geo: TMAP 실경로 좌표(이동 구간만)
 
 export type MobilityOption = {
   mode: Mode;
@@ -89,7 +93,7 @@ export type PlanResult = {
   bufferMin: number;
   tourApiCount: number; // 후보 중 TourAPI contentId가 있어 운영시간 상세 조회가 가능한 장소 수
   candidateCount: number; // 로컬 부산 카탈로그에서 좌표 반경 조건을 통과한 후보
-  eligibleCount: number; // 시간·방향성 1차 컷 통과 후보
+  eligibleCount: number; // 시간·최소 체류 1차 컷 통과 후보
   openingCheckCount: number; // 운영시간 상세 조회 대상
   gatedCount: number; // 운영시간 게이트 통과 후보
   tmapOk: number;

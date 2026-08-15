@@ -5,6 +5,7 @@ import {
   Animated,
   Alert,
   Linking,
+  Modal,
   PanResponder,
   Pressable,
   ScrollView,
@@ -16,8 +17,11 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Course,
+  automaticLegMode,
+  automaticTravelLegs,
   hasBalancedPaidVisit,
   LatLon,
+  Mode,
   minimumStayForCourse,
   minimumStayForSpot,
   safetyBufferMin,
@@ -54,6 +58,8 @@ type CandidateEval = {
   reason: string;
   recommendationRank: number;
   rankingScore: number;
+  availableModes: Mode[];
+  suggestedMode?: Mode;
   recommendationStrategy?: Course["strategy"];
   rankingWhy?: string;
 };
@@ -65,11 +71,34 @@ type CandidateRecommendation = {
   why?: string;
 };
 
+type TransportScenario = {
+  mode: Mode;
+  approachMin: number;
+  onwardMode: Mode;
+  onwardMin: number;
+  stayPossibleMin: number;
+  bufferLeftMin: number;
+  status: CandidateStatus;
+};
+
+function TransportGlyph({ mode, color = C.txt2, size = 15 }: { mode: Mode; color?: string; size?: number }) {
+  if (mode === "car") return <Feather color={color} name="truck" size={size} />;
+  if (mode === "transit") return <Feather color={color} name="git-commit" size={size} />;
+  return <Feather color={color} name="navigation" size={size} />;
+}
+
+
 const STATUS_LABEL: Record<CandidateStatus, string> = {
   good: "여유 있음",
   short: "짧게 가능",
   tight: "빠듯함",
   over: "시간 초과",
+};
+
+const MODE_LABEL: Record<Mode, string> = {
+  walk: "도보",
+  transit: "대중교통",
+  car: "차량",
 };
 
 function statusStyle(status: CandidateStatus) {
@@ -178,14 +207,13 @@ function routeMoveMin(
   target: LatLon,
   mode: Course["bestMode"],
 ): number {
-  const travelMode = mode ?? "walk";
   let cur: LatLon = origin,
     total = 0;
   for (const spot of spots) {
-    total += travelMin(cur, spot, travelMode);
+    total += travelMin(cur, spot, mode ?? automaticLegMode(cur, spot));
     cur = spot;
   }
-  total += travelMin(cur, target, travelMode);
+  total += travelMin(cur, target, mode ?? automaticLegMode(cur, target));
   return total;
 }
 
@@ -194,10 +222,9 @@ function courseApproachMins(
   origin: LatLon,
   mode: Course["bestMode"],
 ): number[] {
-  const travelMode = mode ?? "walk";
   let cur = origin;
   return spots.map((spot) => {
-    const min = travelMin(cur, spot, travelMode);
+    const min = travelMin(cur, spot, mode ?? automaticLegMode(cur, spot));
     cur = spot;
     return min;
   });
@@ -211,19 +238,20 @@ function optimizeSpotOrder(
   mode: Course["bestMode"],
 ): Spot[] {
   if (spots.length < 2) return spots;
-  const travelMode = mode ?? "walk";
   const remaining = [...spots];
   const ordered: Spot[] = [];
   let current: LatLon = origin;
 
   while (remaining.length) {
     remaining.sort((a, b) => {
+      const aMode = mode ?? automaticLegMode(current, a);
+      const bMode = mode ?? automaticLegMode(current, b);
       const aCost =
-        travelMin(current, a, travelMode) +
-        travelMin(a, target, travelMode) * 0.15;
+        travelMin(current, a, aMode) +
+        travelMin(a, target, mode ?? automaticLegMode(a, target)) * 0.15;
       const bCost =
-        travelMin(current, b, travelMode) +
-        travelMin(b, target, travelMode) * 0.15;
+        travelMin(current, b, bMode) +
+        travelMin(b, target, mode ?? automaticLegMode(b, target)) * 0.15;
       return aCost - bCost || a.title.localeCompare(b.title, "ko");
     });
     const next = remaining.shift();
@@ -267,10 +295,12 @@ function buildBasketCourse(
   origin: LatLon,
   target: LatLon,
   ctx: Props["route"]["params"]["ctx"],
+  arrivalModes: Partial<Record<string, Mode>> = {},
 ): Course {
-  const buffer = safetyBufferMin(ctx.mode);
+  const travelPlan = automaticTravelLegs(selected, origin, target, arrivalModes);
+  const buffer = Math.max(...travelPlan.map((leg) => safetyBufferMin(leg.mode)));
   const budget = ctx.remainingMin - buffer;
-  const moveMin = routeMoveMin(selected, origin, target, ctx.mode);
+  const moveMin = travelPlan.reduce((sum, leg) => sum + travelMin(leg.from, leg.to, leg.mode), 0);
   const stayPool = Math.max(0, budget - moveMin);
   const dwellTotal = selected.reduce((n, spot) => n + spot.dwell, 0);
   let allocatedLeft = stayPool;
@@ -278,8 +308,9 @@ function buildBasketCourse(
   const legs: Course["legs"] = [];
 
   selected.forEach((spot, i) => {
-    const t = travelMin(cur, spot, ctx.mode);
-    const src = travelSrc(cur, spot, ctx.mode);
+    const travel = travelPlan[i];
+    const t = travelMin(cur, spot, travel.mode);
+    const src = travelSrc(cur, spot, travel.mode);
     const stay =
       i === selected.length - 1
         ? Math.max(0, allocatedLeft)
@@ -292,7 +323,8 @@ function buildBasketCourse(
       label: `${i === 0 ? "출발" : "이동"} → ${spot.title}`,
       min: t,
       src,
-      geo: travelGeo(cur, spot, ctx.mode),
+      mode: travel.mode,
+      geo: travelGeo(cur, spot, travel.mode),
     });
     legs.push({
       label: `체류 가능 · ${spot.title}`,
@@ -302,24 +334,26 @@ function buildBasketCourse(
     cur = spot;
   });
 
-  const lastMove = travelMin(cur, target, ctx.mode);
+  const finalTravel = travelPlan[travelPlan.length - 1];
+  const lastMove = travelMin(cur, target, finalTravel.mode);
   legs.push({
     label: ctx.appointment ? "다음 스케줄로" : "출발지로 복귀",
     min: lastMove,
-    src: travelSrc(cur, target, ctx.mode),
-    geo: travelGeo(cur, target, ctx.mode),
+    src: travelSrc(cur, target, finalTravel.mode),
+    mode: finalTravel.mode,
+    geo: travelGeo(cur, target, finalTravel.mode),
   });
 
   const totalStay = stayPool - allocatedLeft;
-  const directMove = ctx.appointment ? travelMin(origin, target, ctx.mode) : 0;
+  const directMove = ctx.appointment ? travelMin(origin, target, automaticLegMode(origin, target)) : 0;
   const addedMove = Math.max(0, moveMin - directMove);
   const minStay = minimumStayForCourse(
     selected,
-    courseApproachMins(selected, origin, ctx.mode),
+    courseApproachMins(selected, origin, undefined),
   );
   const mobility = {
-    [ctx.mode]: {
-      mode: ctx.mode,
+    transit: {
+      mode: "transit",
       moveMin,
       stayMin: stayPool,
       totalMin: moveMin + totalStay,
@@ -337,18 +371,18 @@ function buildBasketCourse(
     totalMin: moveMin + totalStay,
     legs,
     bufferLeftMin: ctx.remainingMin - moveMin - totalStay,
-    bestMode: ctx.mode,
+    bestMode: travelPlan.some((leg) => leg.mode === "transit") ? "transit" : "walk",
     mobility,
-    why: `${ctx.modeLabel} 기준 직접 구성 · 이동 ${moveMin}분 · 체류 가능 ${Math.round(stayPool)}분`,
+    why: `구간별 자동 이동 · 이동 ${moveMin}분 · 체류 가능 ${Math.round(stayPool)}분`,
   };
 }
 
 export function ResultsScreen({ route, navigation }: Props) {
   const insets = useSafeAreaInsets();
   const { height: windowHeight } = useWindowDimensions();
-  const { result, usedTimeLabel, origin, ctx } = route.params;
+  const { result, usedTimeLabel, origin, ctx, editingCourseId } = route.params;
   const flow = useAppFlow();
-  const { saveCourse, setActiveCourse, setLatestResults } = flow;
+  const { saveCourse, replaceCourse, setActiveCourse, setLatestResults } = flow;
   const [moods, setMoods] = useState<Set<Mood>>(new Set());
   const [acts, setActs] = useState<Set<Activity>>(new Set());
   const [selectedIds, setSelectedIds] = useState<string[]>(
@@ -358,6 +392,14 @@ export function ResultsScreen({ route, navigation }: Props) {
     route.params.initialPage ?? "recommend",
   );
   const [focusedSpotId, setFocusedSpotId] = useState<string | null>(null);
+  const [locationFocusToken, setLocationFocusToken] = useState(0);
+  const [selectedArrivalModes, setSelectedArrivalModes] = useState<
+    Partial<Record<string, Mode>>
+  >({});
+  const [pendingTransportItem, setPendingTransportItem] =
+    useState<CandidateEval | null>(null);
+  const [chosenArrivalMode, setChosenArrivalMode] = useState<Mode>("walk");
+  const [transportModeTouched, setTransportModeTouched] = useState(false);
   const [basketRouteVersion, setBasketRouteVersion] = useState(0);
   const [isSavingCourse, setIsSavingCourse] = useState(false);
   const expandedSheetHeight = Math.min(
@@ -497,8 +539,15 @@ export function ResultsScreen({ route, navigation }: Props) {
         .filter(Boolean) as Spot[],
     [selectedIds, spots],
   );
-  const selectedMoveMin = routeMoveMin(selected, origin, target, ctx.mode);
-  const buffer = safetyBufferMin(ctx.mode);
+  const selectedTravelPlan = useMemo(
+    () => automaticTravelLegs(selected, origin, target, selectedArrivalModes),
+    [origin, selected, selectedArrivalModes, target],
+  );
+  const selectedMoveMin = selectedTravelPlan.reduce(
+    (sum, leg) => sum + travelMin(leg.from, leg.to, leg.mode),
+    0,
+  );
+  const buffer = Math.max(...selectedTravelPlan.map((leg) => safetyBufferMin(leg.mode)));
   const budget = ctx.remainingMin - buffer;
   const selectedStayPool = Math.max(0, budget - selectedMoveMin);
   const selectedBufferLeft = Math.max(
@@ -512,8 +561,10 @@ export function ResultsScreen({ route, navigation }: Props) {
   );
   const basketCourse = useMemo(
     () =>
-      selected.length ? buildBasketCourse(selected, origin, target, ctx) : null,
-    [basketRouteVersion, ctx, origin, selected, target],
+      selected.length
+        ? buildBasketCourse(selected, origin, target, ctx, selectedArrivalModes)
+        : null,
+    [basketRouteVersion, ctx, origin, selected, selectedArrivalModes, target],
   );
   const basketMapHeight = Math.round(windowHeight * 0.3);
   const basketTravelLegs =
@@ -533,20 +584,16 @@ export function ResultsScreen({ route, navigation }: Props) {
   }, [defaultSheetOffset, page, sheetTranslateY]);
 
   useEffect(() => {
-    if (page !== "basket" || !selected.length || ctx.mode === "transit") return;
-    const roadMode = ctx.mode;
-    const pairs: [LatLon, LatLon][] = [];
-    let current: LatLon = origin;
-    selected.forEach((spot) => {
-      pairs.push([current, spot]);
-      current = spot;
-    });
-    pairs.push([current, target]);
+    if (page !== "basket" || !selected.length) return;
+    const plans = automaticTravelLegs(selected, origin, target, selectedArrivalModes);
 
     let alive = true;
     const timer = setTimeout(() => {
-      // 장바구니에서 확정한 이동수단의 구간만 정밀화한다. 같은 구간은 24시간 캐시를 재사용한다.
-      precompute(pairs, roadMode, { retryFallback: true }).finally(() => {
+      // 장바구니의 각 구간을 자동 수단으로 정밀화한다. 같은 좌표쌍·수단은 24시간 캐시를 재사용한다.
+      Promise.all(plans.map((plan) => plan.mode === "transit"
+        ? precomputeTransit([[plan.from, plan.to]], { retryFallback: true })
+        : precompute([[plan.from, plan.to]], plan.mode, { retryFallback: true })))
+        .finally(() => {
         if (alive) setBasketRouteVersion((version) => version + 1);
       });
     }, 350);
@@ -554,7 +601,7 @@ export function ResultsScreen({ route, navigation }: Props) {
       alive = false;
       clearTimeout(timer);
     };
-  }, [ctx.mode, origin, page, selected, target]);
+  }, [origin, page, selected, selectedArrivalModes, target]);
 
   useEffect(() => {
     setLatestResults(route.params);
@@ -573,59 +620,28 @@ export function ResultsScreen({ route, navigation }: Props) {
         spot.siteGroupId
         && selected.some((selectedSpot) => selectedSpot.siteGroupId === spot.siteGroupId),
       );
-      const trial = isSelected
-        ? selected
-        : optimizeSpotOrder([...selected, spot], origin, target, ctx.mode);
-      const moveMin = routeMoveMin(trial, origin, target, ctx.mode);
-      const stayPool = Math.max(0, budget - moveMin);
-      const dwellTotal = trial.reduce((n, sp) => n + sp.dwell, 0);
-      const approachMins = courseApproachMins(trial, origin, ctx.mode);
-      const trialMinStay = minimumStayForCourse(trial, approachMins);
-      const candidateStay = isSelected
-        ? Math.min(spot.dwell, stayPool)
-        : Math.max(
-            0,
-            Math.round(stayPool * (spot.dwell / Math.max(dwellTotal, 1))),
-          );
-      const bufferLeftMin =
-        ctx.remainingMin - moveMin - Math.min(stayPool, dwellTotal);
-      const directMove = ctx.appointment
-        ? travelMin(origin, target, ctx.mode)
-        : 0;
-      const addedMove = Math.max(0, moveMin - directMove);
-      const paidBalanced = hasBalancedPaidVisit(
-        trial,
-        Math.min(stayPool, dwellTotal),
-        addedMove,
-      );
-      const candidateIndex = trial.findIndex(
-        (item) => item.contentId === spot.contentId,
-      );
-      const candidateMinStay = minimumStayForSpot(
-        spot,
-        approachMins[candidateIndex] ?? Infinity,
-      );
+      const modeScenarios = (['walk', 'transit', 'car'] as Mode[])
+        .map((mode) => transportScenario(spot, mode));
+      const feasibleScenarios = modeScenarios.filter((scenario) => scenario.status !== 'over');
+      const suggested = [...feasibleScenarios].sort((a, b) => {
+        const vehiclePenalty = Number(a.mode === 'car') - Number(b.mode === 'car');
+        return vehiclePenalty || b.bufferLeftMin - a.bufferLeftMin;
+      })[0];
       const status = isSelected
-        ? "good"
+        ? 'good'
         : siteConflict
-          ? "over"
-        : evalStatus(
-            candidateStay,
-            candidateMinStay,
-            spot.dwell,
-            bufferLeftMin,
-            paidBalanced,
-            stayPool >= trialMinStay,
-          );
+          ? 'over'
+          : suggested?.status ?? 'over';
+      const moveMin = suggested ? suggested.approachMin + suggested.onwardMin : 0;
+      const candidateStay = suggested?.stayPossibleMin ?? 0;
+      const bufferLeftMin = suggested?.bufferLeftMin ?? -1;
       const reason = isSelected
         ? "이미 담은 장소입니다"
         : siteConflict
           ? "이미 담은 장소와 같은 단지의 내부 공간이에요"
-        : status === "over"
-          ? !paidBalanced
-            ? "시설형 장소는 추가 이동시간보다 체류시간이 길어야 해요"
-            : `담으면 약 ${Math.abs(Math.min(bufferLeftMin, candidateStay - candidateMinStay))}분 부족해요`
-          : `담으면 약 ${candidateStay}분 머물 수 있어요`;
+          : status === "over"
+          ? '현재 코스 기준 시간 안에 담기 어려워요'
+          : `${MODE_LABEL[suggested?.mode ?? 'walk']}로 담으면 약 ${candidateStay}분 머물 수 있어요`;
       const recommendation = recommendationById.get(spot.contentId);
       return {
         spot,
@@ -637,6 +653,8 @@ export function ResultsScreen({ route, navigation }: Props) {
         reason,
         recommendationRank: recommendation?.rank ?? Number.MAX_SAFE_INTEGER,
         rankingScore: recommendation?.score ?? -Number.MAX_SAFE_INTEGER,
+        availableModes: feasibleScenarios.map((scenario) => scenario.mode),
+        suggestedMode: suggested?.mode,
         recommendationStrategy: recommendation?.strategy,
         rankingWhy: recommendation?.why,
       };
@@ -647,9 +665,8 @@ export function ResultsScreen({ route, navigation }: Props) {
     selected,
     origin,
     target,
-    ctx.mode,
     ctx.remainingMin,
-    budget,
+    selectedArrivalModes,
     recommendationById,
   ]);
 
@@ -703,24 +720,116 @@ export function ResultsScreen({ route, navigation }: Props) {
     ];
   }, [evals, moods, acts, selectedIds]);
 
-  function addSpot(evalItem: CandidateEval) {
-    if (
-      selectedIds.includes(evalItem.spot.contentId) ||
-      evalItem.status === "over"
-    )
-      return;
-    setSelectedIds((prev) => {
-      const next = [...prev, evalItem.spot.contentId]
-        .map((id) => spots.find((spot) => spot.contentId === id))
-        .filter(Boolean) as Spot[];
-      return optimizeSpotOrder(next, origin, target, ctx.mode).map(
-        (spot) => spot.contentId,
-      );
+  function transportScenario(spot: Spot, mode: Mode): TransportScenario {
+    const trial = [...selected, spot];
+    const arrivalModes = { ...selectedArrivalModes, [spot.contentId]: mode };
+    const plan = automaticTravelLegs(trial, origin, target, arrivalModes);
+    const incoming = plan[trial.length - 1];
+    const outgoing = plan[plan.length - 1];
+    const moveMin = plan.reduce(
+      (sum, leg) => sum + travelMin(leg.from, leg.to, leg.mode),
+      0,
+    );
+    const buffer = Math.max(...plan.map((leg) => safetyBufferMin(leg.mode)));
+    const stayPool = Math.max(0, ctx.remainingMin - buffer - moveMin);
+    const dwellTotal = trial.reduce((sum, item) => sum + item.dwell, 0);
+    let allocatedLeft = stayPool;
+    let candidateStay = 0;
+    trial.forEach((item, index) => {
+      const stay =
+        index === trial.length - 1
+          ? Math.max(0, allocatedLeft)
+          : Math.min(
+              allocatedLeft,
+              Math.round(stayPool * (item.dwell / Math.max(dwellTotal, 1))),
+            );
+      allocatedLeft -= stay;
+      if (item.contentId === spot.contentId) candidateStay = stay;
     });
+    const bufferLeftMin =
+      ctx.remainingMin - moveMin - Math.min(stayPool, dwellTotal);
+    const approaches = trial.map((_, index) => {
+      const leg = plan[index];
+      return travelMin(leg.from, leg.to, leg.mode);
+    });
+    const candidateMinStay = minimumStayForSpot(
+      spot,
+      approaches[trial.length - 1] ?? travelMin(incoming.from, incoming.to, incoming.mode),
+    );
+    const minCourseStay = minimumStayForCourse(trial, approaches);
+    const directMove = ctx.appointment
+      ? travelMin(origin, target, automaticLegMode(origin, target))
+      : 0;
+    const addedMove = Math.max(0, moveMin - directMove);
+    return {
+      mode,
+      approachMin: travelMin(incoming.from, incoming.to, incoming.mode),
+      onwardMode: outgoing.mode,
+      onwardMin: travelMin(outgoing.from, outgoing.to, outgoing.mode),
+      stayPossibleMin: candidateStay,
+      bufferLeftMin,
+      status: evalStatus(
+        candidateStay,
+        candidateMinStay,
+        spot.dwell,
+        bufferLeftMin,
+        hasBalancedPaidVisit(trial, Math.min(stayPool, dwellTotal), addedMove),
+        stayPool >= minCourseStay,
+      ),
+    };
+  }
+
+  const pendingTransportScenarios = useMemo(() => {
+    if (!pendingTransportItem) return [];
+    return (["walk", "transit", "car"] as Mode[]).map((mode) =>
+      transportScenario(pendingTransportItem.spot, mode),
+    );
+  }, [pendingTransportItem, selected, selectedArrivalModes, origin, target, ctx.remainingMin]);
+
+  useEffect(() => {
+    if (!pendingTransportItem || transportModeTouched) return;
+    // 자차·택시 여부를 앱이 임의로 가정하지 않도록 기본 추천에서는 차량을 뒤로 둔다.
+    const suggested = [...pendingTransportScenarios]
+      .filter((scenario) => scenario.status !== "over")
+      .sort((a, b) => {
+        const aVehiclePenalty = a.mode === "car" ? 1 : 0;
+        const bVehiclePenalty = b.mode === "car" ? 1 : 0;
+        return (
+          aVehiclePenalty - bVehiclePenalty ||
+          b.bufferLeftMin - a.bufferLeftMin
+        );
+      })[0];
+    if (suggested) setChosenArrivalMode(suggested.mode);
+  }, [pendingTransportItem, pendingTransportScenarios, transportModeTouched]);
+
+  function openTransportPicker(evalItem: CandidateEval) {
+    if (selectedIds.includes(evalItem.spot.contentId) || evalItem.siteConflict) return;
+    const previous = selected[selected.length - 1] ?? origin;
+    setChosenArrivalMode(automaticLegMode(previous, evalItem.spot));
+    setTransportModeTouched(false);
+    setPendingTransportItem(evalItem);
+  }
+
+  function addSpotWithTransport() {
+    if (!pendingTransportItem) return;
+    const scenario = pendingTransportScenarios.find(
+      (item) => item.mode === chosenArrivalMode,
+    );
+    if (!scenario || scenario.status === "over") return;
+    const contentId = pendingTransportItem.spot.contentId;
+    setSelectedArrivalModes((prev) => ({ ...prev, [contentId]: chosenArrivalMode }));
+    // 이동수단은 "직전 지점 → 이 장소"에 대응하므로, 추가 순서를 자동으로 바꾸지 않는다.
+    setSelectedIds((prev) => [...prev, contentId]);
+    setPendingTransportItem(null);
   }
 
   function removeSpot(contentId: string) {
     setSelectedIds((prev) => prev.filter((id) => id !== contentId));
+    setSelectedArrivalModes((prev) => {
+      const next = { ...prev };
+      delete next[contentId];
+      return next;
+    });
   }
 
   function moveSpot(index: number, direction: -1 | 1) {
@@ -738,7 +847,7 @@ export function ResultsScreen({ route, navigation }: Props) {
       const selectedSpots = prev
         .map((id) => spots.find((spot) => spot.contentId === id))
         .filter(Boolean) as Spot[];
-      return optimizeSpotOrder(selectedSpots, origin, target, ctx.mode).map(
+      return optimizeSpotOrder(selectedSpots, origin, target, undefined).map(
         (spot) => spot.contentId,
       );
     });
@@ -748,22 +857,19 @@ export function ResultsScreen({ route, navigation }: Props) {
     if (!basketCourse || isSavingCourse) return;
     setIsSavingCourse(true);
     try {
-      const pairs: [LatLon, LatLon][] = [];
-      let current = origin;
-      selected.forEach((spot) => {
-        pairs.push([current, spot]);
-        current = spot;
-      });
-      pairs.push([current, target]);
-
-      if (ctx.mode === "transit") {
-        await precomputeTransit(pairs, { retryFallback: true });
-      } else {
-        await precompute(pairs, ctx.mode, { retryFallback: true });
-      }
+      const plans = automaticTravelLegs(selected, origin, target, selectedArrivalModes);
+      await Promise.all(plans.map((plan) => plan.mode === "transit"
+        ? precomputeTransit([[plan.from, plan.to]], { retryFallback: true })
+        : precompute([[plan.from, plan.to]], plan.mode, { retryFallback: true })));
 
       // 정밀 경로를 받은 뒤 체류 종료시각까지 다시 검증한다.
-      const refinedCourse = buildBasketCourse(selected, origin, target, ctx);
+      const refinedCourse = buildBasketCourse(
+        selected,
+        origin,
+        target,
+        ctx,
+        selectedArrivalModes,
+      );
       const stayMins = refinedCourse.legs
         .filter((leg) => leg.label.startsWith("체류 가능"))
         .map((leg) => leg.min);
@@ -771,7 +877,7 @@ export function ResultsScreen({ route, navigation }: Props) {
         selected,
         origin,
         target,
-        ctx.mode,
+        plans.map((plan) => plan.mode),
         ctx.startMin,
         stayMins,
       );
@@ -786,11 +892,13 @@ export function ResultsScreen({ route, navigation }: Props) {
         return;
       }
 
-      const params = { course: refinedCourse, origin, ctx };
+      const baseParams = { course: refinedCourse, origin, ctx };
       // 장바구니가 최종 검토 화면이다. DB 저장이 성공한 코스만 실행 흐름으로 넘긴다.
-      await saveCourse(params);
-      setActiveCourse(params);
-      navigation.replace("Execution", params);
+      const executionParams = editingCourseId
+        ? await replaceCourse(editingCourseId, baseParams)
+        : { ...baseParams, courseId: (await saveCourse(baseParams)).id };
+      setActiveCourse(executionParams);
+      navigation.replace("Execution", executionParams);
     } catch (error) {
       console.warn('[코스 저장] 실패', error);
       Alert.alert('코스 저장 실패', error instanceof Error ? error.message : '저장한 뒤 다시 시도해 주세요.');
@@ -810,6 +918,7 @@ export function ResultsScreen({ route, navigation }: Props) {
         y: Math.max(0, y - 12),
         animated: true,
       });
+    openTransportPicker(item);
   }
 
   const candidateMapPoints = [
@@ -846,6 +955,11 @@ export function ResultsScreen({ route, navigation }: Props) {
           markers={candidateMapMarkers}
           showMarkerLabels
           usePhotoMarkers
+          recenterPoint={origin}
+          recenterToken={locationFocusToken}
+          recenterOffsetY={
+            sheetPosition === "default" ? Math.round(defaultSheetHeight * 0.42) : 0
+          }
           focusedMarkerOffsetY={
             sheetPosition === "default" ? Math.round(defaultSheetHeight * 0.42) : 0
           }
@@ -863,12 +977,31 @@ export function ResultsScreen({ route, navigation }: Props) {
           onMarkerTap={focusCandidate}
         />
       ) : null}
+      {page === "recommend" && sheetPosition !== "expanded" ? (
+        <Pressable
+          style={[
+            s.mapLocationButton,
+            {
+              bottom:
+                sheetPosition === "collapsed"
+                  ? insets.bottom + 96
+                  : defaultSheetHeight + 16,
+            },
+          ]}
+          onPress={() => setLocationFocusToken((token) => token + 1)}
+          accessibilityLabel="현재 위치로 지도 이동"
+        >
+          <Feather color={C.txt} name="crosshair" size={21} />
+        </Pressable>
+      ) : null}
       {page === "basket" ? (
         <KakaoRouteMap
           style={[s.basketMap, { height: basketMapHeight }]}
           points={basketMapPoints}
           line={basketRouteLine.length > 1 ? basketRouteLine : basketMapPoints}
           segments={basketRouteSegments}
+          recenterPoint={origin}
+          recenterToken={locationFocusToken}
           markers={[
             { ...origin, label: "현재 위치", kind: "origin" },
             ...selected.map((spot) => ({
@@ -894,6 +1027,15 @@ export function ResultsScreen({ route, navigation }: Props) {
           }}
         />
       ) : null}
+      {page === "basket" ? (
+        <Pressable
+          style={[s.mapLocationButton, { top: basketMapHeight - 54 }]}
+          onPress={() => setLocationFocusToken((token) => token + 1)}
+          accessibilityLabel="현재 위치로 지도 이동"
+        >
+          <Feather color={C.txt} name="crosshair" size={21} />
+        </Pressable>
+      ) : null}
       {page === "recommend" && sheetPosition !== "expanded" ? (
         <View style={[s.mapTopBar, { top: insets.top + 8 }]}>
           <Pressable
@@ -903,10 +1045,8 @@ export function ResultsScreen({ route, navigation }: Props) {
           >
             <Feather color={C.txt} name="arrow-left" size={22} />
           </Pressable>
-          <Text style={s.mapTitle}>코스 만들기</Text>
           <View style={s.timePill}>
-            <Text style={s.timePillLabel}>남은 자투리</Text>
-            <Text style={s.timePillValue}>{ctx.remainingMin}분 남음</Text>
+            <Text style={s.timePillValue}>코스 만들기 · {ctx.remainingMin}분 남음</Text>
           </View>
           <Pressable
             style={s.mapCartButton}
@@ -1044,7 +1184,7 @@ export function ResultsScreen({ route, navigation }: Props) {
                             {i + 1}. {spot.title}
                           </Text>
                           <Text style={s.selectedMeta}>
-                            {spot.category} · 이동{" "}
+                            {spot.category} · {MODE_LABEL[basketCourse?.legs[i * 2]?.mode ?? "transit"]} · 이동{" "}
                             {basketCourse?.legs[i * 2]?.min ?? 0}분 · 체류{" "}
                             {basketCourse?.legs[i * 2 + 1]?.min ?? 0}분
                           </Text>
@@ -1125,7 +1265,7 @@ export function ResultsScreen({ route, navigation }: Props) {
                         style={s.routeSummaryRow}
                       >
                         <Text style={s.routeSummaryLabel} numberOfLines={1}>
-                          {leg.label}
+                          {leg.mode ? `${MODE_LABEL[leg.mode]} · ${leg.label}` : leg.label}
                         </Text>
                         <Text style={s.routeSummaryMin}>{leg.min}분</Text>
                       </View>
@@ -1141,7 +1281,9 @@ export function ResultsScreen({ route, navigation }: Props) {
                     {isSavingCourse
                       ? "코스 저장 중..."
                       : selected.length
-                      ? "코스 저장 후 길찾기 시작"
+                      ? editingCourseId
+                        ? "변경 적용 후 길찾기 시작"
+                        : "코스 저장 후 길찾기 시작"
                       : "장소를 먼저 담아주세요"}
                   </Text>
                 </Pressable>
@@ -1271,29 +1413,29 @@ export function ResultsScreen({ route, navigation }: Props) {
                       style={[
                         s.addBtn,
                         isSelected && s.removeBtn,
-                        item.status === "over" && !isSelected && s.addBtnOff,
+                        item.siteConflict && !isSelected && s.addBtnOff,
                       ]}
                       onPress={() =>
                         isSelected
                           ? removeSpot(item.spot.contentId)
-                          : addSpot(item)
+                          : openTransportPicker(item)
                       }
-                      disabled={item.status === "over" && !isSelected}
+                      disabled={item.siteConflict && !isSelected}
                     >
                       <Text
                         style={[
                           s.addBtnTxt,
                           isSelected && s.removeBtnTxt,
-                          item.status === "over" &&
+                          item.siteConflict &&
                             !isSelected &&
                             s.addBtnOffTxt,
                         ]}
                       >
                         {isSelected
                           ? "바구니에서 빼기"
-                          : item.status === "over"
-                            ? "시간 초과로 담기 불가"
-                            : "장소 담기"}
+                          : item.siteConflict
+                            ? "같은 단지 장소가 이미 담겼어요"
+                            : "이곳 들르기"}
                       </Text>
                     </Pressable>
                   </View>
@@ -1304,6 +1446,118 @@ export function ResultsScreen({ route, navigation }: Props) {
           <View style={{ height: 120 }} />
         </ScrollView>
       </Animated.View>
+      <Modal
+        visible={Boolean(pendingTransportItem)}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setPendingTransportItem(null)}
+      >
+        <Pressable
+          style={s.transportModalBackdrop}
+          onPress={() => setPendingTransportItem(null)}
+        >
+          <Pressable style={s.transportModal} onPress={() => undefined}>
+            <View style={s.transportModalHead}>
+              <View style={{ flex: 1 }}>
+                <Text style={s.transportModalEyebrow}>이 장소로 이동</Text>
+                <Text style={s.transportModalTitle} numberOfLines={1}>
+                  {pendingTransportItem?.spot.title}
+                </Text>
+              </View>
+              <Pressable
+                style={s.transportModalClose}
+                onPress={() => setPendingTransportItem(null)}
+                accessibilityLabel="장소 미리보기 닫기"
+              >
+                <Feather color={C.txt2} name="x" size={20} />
+              </Pressable>
+            </View>
+            {(() => {
+              const chosen = pendingTransportScenarios.find(
+                (scenario) => scenario.mode === chosenArrivalMode,
+              );
+              const disabled = !chosen || chosen.status === "over";
+              return (
+                <>
+                  <View style={s.routePreview}>
+                    <View style={s.routePreviewLine}>
+                      <View style={s.routePreviewPoint}>
+                        <Feather color={C.accent} name="navigation" size={17} />
+                        <Text style={s.routePreviewPointLabel}>출발</Text>
+                      </View>
+                      <View style={s.routePreviewLeg}>
+                        <TransportGlyph mode={chosenArrivalMode} />
+                        <Text style={s.routePreviewLegTime}>{chosen?.approachMin ?? "-"}분</Text>
+                      </View>
+                      <View style={s.routePreviewPoint}>
+                        <Feather color={C.green} name="map-pin" size={17} />
+                        <Text style={s.routePreviewPointLabel}>장소</Text>
+                      </View>
+                      <View style={s.routePreviewLeg}>
+                        {chosen ? <TransportGlyph mode={chosen.onwardMode} /> : null}
+                        <Text style={s.routePreviewLegTime}>{chosen?.onwardMin ?? "-"}분</Text>
+                      </View>
+                      <View style={s.routePreviewPoint}>
+                        <Feather color={C.amber} name="calendar" size={16} />
+                        <Text style={s.routePreviewPointLabel}>약속</Text>
+                      </View>
+                    </View>
+                    <View style={s.timeVisualRow}>
+                      <View style={s.timeVisualPrimary}>
+                        <Text style={s.timeVisualValue}>{Math.max(0, Math.round(chosen?.bufferLeftMin ?? 0))}분</Text>
+                        <Text style={s.timeVisualLabel}>약속 전 여유</Text>
+                      </View>
+                      <View style={s.timeVisualDivider} />
+                      <View style={s.timeVisualSecondary}>
+                        <Text style={s.timeVisualStay}>{chosen?.stayPossibleMin ?? 0}분</Text>
+                        <Text style={s.timeVisualLabel}>이곳 체류 가능</Text>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={s.compactModePicker}>
+                    {pendingTransportScenarios.map((scenario) => {
+                      const active = scenario.mode === chosenArrivalMode;
+                      return (
+                        <Pressable
+                          key={scenario.mode}
+                          disabled={scenario.status === "over"}
+                          onPress={() => {
+                            setTransportModeTouched(true);
+                            setChosenArrivalMode(scenario.mode);
+                          }}
+                          style={[
+                            s.compactMode,
+                            active && s.compactModeOn,
+                            scenario.status === "over" && s.compactModeOff,
+                          ]}
+                          accessibilityLabel={`${MODE_LABEL[scenario.mode]} ${scenario.approachMin}분`}
+                        >
+                          <TransportGlyph
+                            mode={scenario.mode}
+                            color={active ? C.accent : C.txt2}
+                          />
+                          <Text style={[s.compactModeTime, active && s.compactModeTimeOn]}>
+                            {scenario.status === "over" ? "-" : `${scenario.approachMin}분`}
+                          </Text>
+                        </Pressable>
+                      );
+                    })}
+                  </View>
+                  <Pressable
+                    disabled={disabled}
+                    onPress={addSpotWithTransport}
+                    style={[s.transportConfirmButton, disabled && s.transportConfirmButtonOff]}
+                  >
+                    <Text style={[s.transportConfirmText, disabled && s.transportConfirmTextOff]}>
+                      {disabled ? "시간 안에 담기 어려워요" : "장바구니에 담기"}
+                    </Text>
+                  </Pressable>
+                </>
+              );
+            })()}
+          </Pressable>
+        </Pressable>
+      </Modal>
       <FloatingTabBar
         active="main"
         onMain={() => resetToMain(navigation)}
@@ -1346,7 +1600,6 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  mapTitle: { color: C.txt, fontSize: 15, fontWeight: "800", flexShrink: 0 },
   timePill: {
     flex: 1,
     height: 42,
@@ -1357,12 +1610,10 @@ const s = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: "rgba(31,32,35,0.92)",
   },
-  timePillLabel: { color: C.muted, fontSize: 10.5, fontWeight: "700" },
   timePillValue: {
     color: C.txt,
-    fontSize: 14,
+    fontSize: 13.5,
     fontWeight: "800",
-    marginTop: 1,
   },
   mapCartButton: {
     width: 42,
@@ -1373,6 +1624,19 @@ const s = StyleSheet.create({
     borderColor: C.line,
     borderWidth: 1,
     backgroundColor: "rgba(31,32,35,0.92)",
+  },
+  mapLocationButton: {
+    position: "absolute",
+    right: 16,
+    width: 42,
+    height: 42,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: C.line,
+    backgroundColor: "rgba(31,32,35,0.94)",
+    zIndex: 3,
   },
   mapCartCount: {
     position: "absolute",
@@ -1594,7 +1858,7 @@ const s = StyleSheet.create({
   },
   cardType: { color: C.green, fontWeight: "800", fontSize: 12 },
   spotName: { color: C.txt, fontSize: 16, fontWeight: "800", marginTop: 3 },
-  whyMeta: { color: C.muted, fontSize: 11.5, marginBottom: 10 },
+  whyMeta: { color: C.muted, fontSize: 11.5, marginBottom: 6 },
   status: {
     borderRadius: 999,
     paddingVertical: 4,
@@ -1659,4 +1923,98 @@ const s = StyleSheet.create({
   removeBtnTxt: { color: C.red },
   addBtnOff: { backgroundColor: C.panel2, borderColor: C.line },
   addBtnOffTxt: { color: C.muted },
+  transportModalBackdrop: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0,0,0,0.58)",
+    padding: 16,
+  },
+  transportModal: {
+    backgroundColor: C.panel,
+    borderColor: C.line,
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 18,
+    paddingBottom: 16,
+  },
+  transportModalHead: { flexDirection: "row", alignItems: "center", gap: 12 },
+  transportModalEyebrow: { color: C.accent, fontSize: 12, fontWeight: "800" },
+  transportModalTitle: { color: C.txt, fontSize: 19, fontWeight: "900", marginTop: 3 },
+  transportModalClose: {
+    width: 38,
+    height: 38,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: C.line,
+    borderRadius: 10,
+    backgroundColor: C.panel2,
+  },
+  routePreview: {
+    marginTop: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: C.line,
+    backgroundColor: C.panel2,
+    padding: 12,
+  },
+  routePreviewLine: { flexDirection: "row", alignItems: "flex-start" },
+  routePreviewPoint: { alignItems: "center", width: 38 },
+  routePreviewPointLabel: { color: C.muted, fontSize: 9.5, fontWeight: "800", marginTop: 4 },
+  routePreviewLeg: {
+    flex: 1,
+    minWidth: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 3,
+    borderTopWidth: 1,
+    borderColor: C.line,
+    marginTop: 8,
+    paddingTop: 5,
+  },
+  routePreviewLegTime: { color: C.txt2, fontSize: 11, fontWeight: "900" },
+  timeVisualRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 14,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderColor: C.line,
+  },
+  timeVisualPrimary: { flex: 1, alignItems: "center" },
+  timeVisualSecondary: { flex: 1, alignItems: "center" },
+  timeVisualDivider: { width: 1, height: 34, backgroundColor: C.line },
+  timeVisualValue: { color: C.green, fontSize: 25, fontWeight: "900" },
+  timeVisualStay: { color: C.txt, fontSize: 21, fontWeight: "900", marginTop: 2 },
+  timeVisualLabel: { color: C.muted, fontSize: 10.5, fontWeight: "800", marginTop: 3 },
+  compactModePicker: { flexDirection: "row", gap: 8, marginTop: 12 },
+  compactMode: {
+    flex: 1,
+    minHeight: 39,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
+    borderWidth: 1,
+    borderColor: C.line,
+    borderRadius: 9,
+    backgroundColor: C.panel2,
+  },
+  compactModeOn: { borderColor: C.accent, backgroundColor: "rgba(76,194,255,0.12)" },
+  compactModeOff: { opacity: 0.38 },
+  compactModeTime: { color: C.txt2, fontSize: 11.5, fontWeight: "900" },
+  compactModeTimeOn: { color: C.accent },
+  transportConfirmButton: {
+    minHeight: 50,
+    marginTop: 14,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: C.accent,
+  },
+  transportConfirmButtonOff: { backgroundColor: C.panel2 },
+  transportConfirmText: { color: C.onAccent, fontSize: 14, fontWeight: "900" },
+  transportConfirmTextOff: { color: C.muted },
 });

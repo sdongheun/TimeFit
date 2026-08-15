@@ -58,7 +58,7 @@ type CandidateDiagnosis = {
   categoryFallbackCount: number;
   directHoursCount: number;
   weakMapCount: number;
-  bottleneck: 'none' | 'time_direction' | 'opening_hours' | 'course_build';
+  bottleneck: 'none' | 'time_feasibility' | 'opening_hours' | 'course_build';
   note: string;
   top: Array<{ title: string; category: string; strategy: string }>;
 };
@@ -295,14 +295,14 @@ function diagnoseCandidates(
   const bottleneck = visible.length > 0
     ? 'none'
     : stages.eligible === 0
-      ? 'time_direction'
+      ? 'time_feasibility'
       : stages.gated === 0 && stages.openingChecked > 0
         ? 'opening_hours'
         : 'course_build';
-  const note = bottleneck === 'time_direction'
-    ? `TourAPI ${stages.tourApi}곳 중 카탈로그 후보 ${stages.catalog}곳은 있었지만 시간·방향성 1차 컷을 통과한 후보가 없습니다. 장소 데이터 부족이 아니라 입력 시간과 약속 동선의 제약입니다.`
+  const note = bottleneck === 'time_feasibility'
+    ? `TourAPI ${stages.tourApi}곳 중 카탈로그 후보 ${stages.catalog}곳은 있었지만 시간·최소 체류 1차 컷을 통과한 후보가 없습니다. 장소 데이터 부족이 아니라 입력 시간과 이동수단 제약을 확인해야 합니다.`
     : bottleneck === 'opening_hours'
-      ? `시간·방향성 통과 ${stages.eligible}곳 중 운영시간 상세 확인 ${stages.openingChecked}곳이 모두 게이트에서 제외됐습니다. 운영시간·행사기간 데이터를 확인해야 합니다.`
+      ? `시간·최소 체류 통과 ${stages.eligible}곳 중 운영시간 상세 확인 ${stages.openingChecked}곳이 모두 게이트에서 제외됐습니다. 운영시간·행사기간 데이터를 확인해야 합니다.`
       : bottleneck === 'course_build'
         ? `운영시간 통과 ${stages.gated}곳은 있었지만 코스 조립 결과가 없습니다. 최소 체류시간과 이동시간 배분 규칙을 확인해야 합니다.`
     : health === 'SCARCE'
@@ -491,7 +491,7 @@ function renderScenario(a: ScenarioAudit): string {
         <h2>${esc(sc.id)}. ${esc(sc.title)}</h2>
         <div class="meta">${esc(sc.origin.label)} -> ${esc(sc.destination?.label ?? '출발지 복귀')} · ${modeKorean[auditMode]} · ${sc.remainingMin}분 · ${sc.dayType} ${fmtTime(sc.nowMin)} ${sc.hourBucket}</div>
       </div>
-      <div class="meta">TourAPI 운영확인 가능 ${a.tourApiCount} · 로컬 카탈로그 ${a.candidateCount} · 시간/방향 ${a.eligibleCount} · ${coverageOnly ? '운영시간 생략' : `운영확인 ${a.openingCheckCount} · 영업 ${a.gatedCount}`} · 경로 API ${a.tmapCalls}</div>
+      <div class="meta">TourAPI 운영확인 가능 ${a.tourApiCount} · 로컬 카탈로그 ${a.candidateCount} · 시간/최소 체류 ${a.eligibleCount} · ${coverageOnly ? '운영시간 생략' : `운영확인 ${a.openingCheckCount} · 영업 ${a.gatedCount}`} · 경로 API ${a.tmapCalls}</div>
     </div>
     ${a.error ? `<div class="err">${esc(a.error)}</div>` : `${renderCandidateDiagnosis(a.candidateDiagnosis)}<div class="courses">${a.courses.map(renderCourse).join('')}</div>`}
   </section>`;
@@ -504,7 +504,7 @@ function renderCandidateDiagnosis(d: CandidateDiagnosis): string {
   return `<div class="candidateDiag">
     <div class="candidateDiagHead">
       <div>
-        <div class="candidateDiagTitle">후보 풀 진단 · 전체 ${d.uniqueCount}곳 / 목록 상단 ${d.visibleCount}곳${d.bottleneck !== 'none' ? ` · 병목 ${d.bottleneck === 'time_direction' ? '시간·방향' : d.bottleneck === 'opening_hours' ? '운영시간' : '코스 조립'}` : ''}</div>
+        <div class="candidateDiagTitle">후보 풀 진단 · 전체 ${d.uniqueCount}곳 / 목록 상단 ${d.visibleCount}곳${d.bottleneck !== 'none' ? ` · 병목 ${d.bottleneck === 'time_feasibility' ? '시간·최소 체류' : d.bottleneck === 'opening_hours' ? '운영시간' : '코스 조립'}` : ''}</div>
         <div class="meta">${esc(d.note)}</div>
       </div>
       <span class="health ${d.health}">${label[d.health]}</span>
