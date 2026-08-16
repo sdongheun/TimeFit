@@ -1,10 +1,9 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Feather } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   Alert,
-  Linking,
   Modal,
   PanResponder,
   Pressable,
@@ -43,7 +42,7 @@ import {
   resetToProfile,
 } from "./mainTabNavigation";
 import { buildRouteMapSegments, KakaoRouteMap } from "./KakaoRouteMap";
-import { precompute, precomputeTransit } from "../engine/travel";
+import { haversineKm, precompute, precomputeTransit } from "../engine/travel";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Results">;
 type CandidateStatus = "good" | "short" | "tight" | "over";
@@ -82,9 +81,15 @@ type TransportScenario = {
 };
 
 function TransportGlyph({ mode, color = C.txt2, size = 15 }: { mode: Mode; color?: string; size?: number }) {
-  if (mode === "car") return <Feather color={color} name="truck" size={size} />;
-  if (mode === "transit") return <Feather color={color} name="git-commit" size={size} />;
-  return <Feather color={color} name="navigation" size={size} />;
+  if (mode === "car") return <MaterialCommunityIcons color={color} name="car" size={size} />;
+  if (mode === "transit") return <MaterialCommunityIcons color={color} name="bus" size={size} />;
+  return <MaterialCommunityIcons color={color} name="walk" size={size} />;
+}
+
+function transportColor(mode: Mode): string {
+  if (mode === "car") return C.amber;
+  if (mode === "transit") return C.accent;
+  return C.green;
 }
 
 
@@ -108,10 +113,10 @@ function statusStyle(status: CandidateStatus) {
   return { box: s.statusOver, txt: s.statusOverTxt };
 }
 
-function strategyLabel(course?: Course): string {
-  if (course?.strategy === "destination_area") return "약속지 근처";
-  if (course?.strategy === "route_area") return "가는 길 중간";
-  return "출발지 근처";
+function distanceFromOriginLabel(origin: LatLon, spot: Spot): string {
+  const km = haversineKm(origin, spot);
+  if (km < 1) return `현재 위치 ${Math.max(10, Math.round(km * 1000 / 10) * 10)}m`;
+  return `현재 위치 ${km.toFixed(1)}km`;
 }
 
 function evalStatus(
@@ -285,11 +290,6 @@ function optimizeSpotOrder(
   return ordered;
 }
 
-function openKakaoPlaceDetail(spot: Spot) {
-  if (!spot.kakaoPlaceUrl) return;
-  void Linking.openURL(spot.kakaoPlaceUrl).catch(() => undefined);
-}
-
 function buildBasketCourse(
   selected: Spot[],
   origin: LatLon,
@@ -380,7 +380,7 @@ function buildBasketCourse(
 export function ResultsScreen({ route, navigation }: Props) {
   const insets = useSafeAreaInsets();
   const { height: windowHeight } = useWindowDimensions();
-  const { result, usedTimeLabel, origin, ctx, editingCourseId } = route.params;
+  const { result, origin, ctx, editingCourseId } = route.params;
   const flow = useAppFlow();
   const { saveCourse, replaceCourse, setActiveCourse, setLatestResults } = flow;
   const [moods, setMoods] = useState<Set<Mood>>(new Set());
@@ -392,7 +392,7 @@ export function ResultsScreen({ route, navigation }: Props) {
     route.params.initialPage ?? "recommend",
   );
   const [focusedSpotId, setFocusedSpotId] = useState<string | null>(null);
-  const [locationFocusToken, setLocationFocusToken] = useState(0);
+  const [mapFocusRequest, setMapFocusRequest] = useState({ point: origin, token: 0 });
   const [selectedArrivalModes, setSelectedArrivalModes] = useState<
     Partial<Record<string, Mode>>
   >({});
@@ -413,6 +413,12 @@ export function ResultsScreen({ route, navigation }: Props) {
     expandedSheetHeight - (insets.bottom + 82),
   );
   const [sheetPosition, setSheetPosition] = useState<SheetPosition>("default");
+  const mapFocusOffsetY =
+    sheetPosition === "default"
+      ? Math.round(defaultSheetHeight * 0.5)
+      : sheetPosition === "collapsed"
+        ? Math.round((insets.bottom + 82) * 0.5)
+        : Math.round(expandedSheetHeight * 0.5);
   const candidateListRef = useRef<ScrollView>(null);
   const candidateOffsets = useRef(new Map<string, number>());
   const sheetTranslateY = useRef(
@@ -420,9 +426,15 @@ export function ResultsScreen({ route, navigation }: Props) {
   ).current;
   const sheetStartOffset = useRef(0);
 
+  const requestMapFocus = useCallback((point: LatLon) => {
+    setMapFocusRequest((previous) => ({ point, token: previous.token + 1 }));
+  }, []);
+
   const moveSheet = useCallback(
     (position: SheetPosition) => {
       setSheetPosition(position);
+      // 시트 높이가 바뀌면 같은 장소라도 보이는 지도 영역의 중심이 달라진다.
+      setMapFocusRequest((previous) => ({ ...previous, token: previous.token + 1 }));
       const toValue =
         position === "expanded"
           ? 0
@@ -810,6 +822,14 @@ export function ResultsScreen({ route, navigation }: Props) {
     setPendingTransportItem(evalItem);
   }
 
+  function openCandidateFromSheet(evalItem: CandidateEval) {
+    if (selectedIds.includes(evalItem.spot.contentId) || evalItem.siteConflict) return;
+    setFocusedSpotId(evalItem.spot.contentId);
+    requestMapFocus(evalItem.spot);
+    // 시트 위치를 바꾸지 않고 지도 포커스 전환을 먼저 보여 준 뒤 상세 선택을 연다.
+    setTimeout(() => openTransportPicker(evalItem), 220);
+  }
+
   function addSpotWithTransport() {
     if (!pendingTransportItem) return;
     const scenario = pendingTransportScenarios.find(
@@ -912,13 +932,14 @@ export function ResultsScreen({ route, navigation }: Props) {
     if (!item) return;
     const contentId = item.spot.contentId;
     setFocusedSpotId(contentId);
+    requestMapFocus(item.spot);
+    moveSheet("default");
     const y = candidateOffsets.current.get(contentId);
     if (y != null)
       candidateListRef.current?.scrollTo({
         y: Math.max(0, y - 12),
         animated: true,
       });
-    openTransportPicker(item);
   }
 
   const candidateMapPoints = [
@@ -927,7 +948,12 @@ export function ResultsScreen({ route, navigation }: Props) {
     ...(ctx.appointment ? [target] : []),
   ];
   const candidateMapMarkers = [
-    { ...origin, label: "현재 위치", kind: "origin" as const },
+    {
+      ...origin,
+      label: "현재 위치",
+      kind: "origin" as const,
+      active: !focusedSpotId,
+    },
     ...filtered.map((item) => ({
       ...item.spot,
       label: item.spot.title,
@@ -955,14 +981,10 @@ export function ResultsScreen({ route, navigation }: Props) {
           markers={candidateMapMarkers}
           showMarkerLabels
           usePhotoMarkers
-          recenterPoint={origin}
-          recenterToken={locationFocusToken}
-          recenterOffsetY={
-            sheetPosition === "default" ? Math.round(defaultSheetHeight * 0.42) : 0
-          }
-          focusedMarkerOffsetY={
-            sheetPosition === "default" ? Math.round(defaultSheetHeight * 0.42) : 0
-          }
+          recenterPoint={mapFocusRequest.point}
+          recenterToken={mapFocusRequest.token}
+          recenterOffsetY={mapFocusOffsetY}
+          focusedMarkerOffsetY={mapFocusOffsetY}
           boundsPadding={{
             top: 132,
             right: 20,
@@ -988,7 +1010,7 @@ export function ResultsScreen({ route, navigation }: Props) {
                   : defaultSheetHeight + 16,
             },
           ]}
-          onPress={() => setLocationFocusToken((token) => token + 1)}
+          onPress={() => requestMapFocus(origin)}
           accessibilityLabel="현재 위치로 지도 이동"
         >
           <Feather color={C.txt} name="crosshair" size={21} />
@@ -1000,8 +1022,8 @@ export function ResultsScreen({ route, navigation }: Props) {
           points={basketMapPoints}
           line={basketRouteLine.length > 1 ? basketRouteLine : basketMapPoints}
           segments={basketRouteSegments}
-          recenterPoint={origin}
-          recenterToken={locationFocusToken}
+          recenterPoint={mapFocusRequest.point}
+          recenterToken={mapFocusRequest.token}
           markers={[
             { ...origin, label: "현재 위치", kind: "origin" },
             ...selected.map((spot) => ({
@@ -1030,7 +1052,7 @@ export function ResultsScreen({ route, navigation }: Props) {
       {page === "basket" ? (
         <Pressable
           style={[s.mapLocationButton, { top: basketMapHeight - 54 }]}
-          onPress={() => setLocationFocusToken((token) => token + 1)}
+          onPress={() => requestMapFocus(origin)}
           accessibilityLabel="현재 위치로 지도 이동"
         >
           <Feather color={C.txt} name="crosshair" size={21} />
@@ -1136,25 +1158,6 @@ export function ResultsScreen({ route, navigation }: Props) {
             page === "basket" && s.basketScroll,
           ]}
         >
-          {page === "recommend" ? (
-            <>
-              <View style={s.banner}>
-                <View style={{ flex: 1 }}>
-                  <Text style={s.bannerTxt}>
-                    {ctx.appointment
-                      ? `${fmtHM(endMin)} ${ctx.appointment.label} 약속까지`
-                      : `${fmtHM(endMin)}까지 · 왕복 기준`}
-                  </Text>
-                  <Text style={s.bannerBig}>지도에서 장소를 골라보세요</Text>
-                </View>
-              </View>
-              <Text style={s.meta}>
-                ⏱ {usedTimeLabel} · 후보 장소 {filtered.length} · 영업시간 확인{" "}
-                {result.gatedCount}
-              </Text>
-            </>
-          ) : null}
-
           {page === "basket" ? (
             <View style={s.pageBlock}>
               <View style={s.basket}>
@@ -1316,9 +1319,6 @@ export function ResultsScreen({ route, navigation }: Props) {
 
               <View style={s.countRow}>
                 <Text style={s.count}>장소 후보 {filtered.length}</Text>
-                <Text style={s.countSub}>
-                  지도 마커를 누르면 이 목록의 장소를 보여줘요
-                </Text>
               </View>
               {filtered.length === 0 && (
                 <Text style={s.empty}>
@@ -1330,7 +1330,7 @@ export function ResultsScreen({ route, navigation }: Props) {
                 const isSelected = selectedIds.includes(item.spot.contentId);
                 const status = statusStyle(item.status);
                 return (
-                  <View
+                  <Pressable
                     key={item.spot.contentId}
                     onLayout={(event) =>
                       candidateOffsets.current.set(
@@ -1343,20 +1343,40 @@ export function ResultsScreen({ route, navigation }: Props) {
                       isSelected && s.cardOn,
                       focusedSpotId === item.spot.contentId && s.cardFocused,
                     ]}
+                    disabled={isSelected || item.siteConflict}
+                    onPress={() => openCandidateFromSheet(item)}
+                    accessibilityLabel={
+                      isSelected
+                        ? `${item.spot.title}, 장바구니에 담김`
+                        : item.siteConflict
+                          ? `${item.spot.title}, 같은 단지 장소가 이미 담김`
+                          : `${item.spot.title} 상세 보기`
+                    }
                   >
                     <View style={s.cardHead}>
                       <View style={{ flex: 1 }}>
                         <Text style={s.cardType}>
-                          {strategyLabel(
-                            item.recommendationStrategy
-                              ? ({
-                                  strategy: item.recommendationStrategy,
-                                } as Course)
-                              : undefined,
-                          )}{" "}
-                          · {item.spot.category}
+                          {distanceFromOriginLabel(origin, item.spot)} · {item.spot.category}
                         </Text>
                         <Text style={s.spotName}>{item.spot.title}</Text>
+                        <View style={s.modeAvailability}>
+                          {(["walk", "transit", "car"] as Mode[]).map((mode) => {
+                            const available = item.availableModes.includes(mode);
+                            return (
+                              <View
+                                key={mode}
+                                style={[s.modeAvailabilityIcon, !available && s.modeAvailabilityIconOff]}
+                                accessibilityLabel={`${MODE_LABEL[mode]} ${available ? "가능" : "불가"}`}
+                              >
+                                <TransportGlyph
+                                  mode={mode}
+                                  color={available ? C.green : C.muted}
+                                  size={17}
+                                />
+                              </View>
+                            );
+                          })}
+                        </View>
                       </View>
                       <View style={[s.status, status.box]}>
                         <Text style={[s.statusTxt, status.txt]}>
@@ -1368,77 +1388,15 @@ export function ResultsScreen({ route, navigation }: Props) {
                         </Text>
                       </View>
                     </View>
-                    <Text style={s.whyMeta}>
-                      {item.spot.dwellSourceName ?? item.spot.dwellSrc}
-                    </Text>
-                    <View style={s.evalRow}>
-                      <View style={s.evalCell}>
-                        <Text style={s.evalLbl}>추가 후 이동</Text>
-                        <Text style={s.evalVal}>{item.moveMin}분</Text>
-                      </View>
-                      <View style={s.evalCell}>
-                        <Text style={s.evalLbl}>이 장소 체류</Text>
-                        <Text style={s.evalVal}>{item.stayPossibleMin}분</Text>
-                      </View>
-                      <View style={s.evalCell}>
-                        <Text style={s.evalLbl}>여유</Text>
-                        <Text style={s.evalVal}>
-                          {Math.round(item.bufferLeftMin)}분
-                        </Text>
-                      </View>
-                    </View>
-                    <Text style={s.why}>
-                      ✓ {item.reason} · 권장 {item.spot.dwell}분
-                    </Text>
-                    {item.rankingWhy ? (
-                      <Text style={s.rankingWhy}>
-                        추천 근거 · {item.rankingWhy}
-                      </Text>
+                    {!isSelected && !item.siteConflict ? (
+                      <Feather
+                        color={C.muted}
+                        name="chevron-right"
+                        size={19}
+                        style={s.cardChevron}
+                      />
                     ) : null}
-                    <Pressable
-                      style={s.kakaoDetailBtn}
-                      onPress={() => openKakaoPlaceDetail(item.spot)}
-                      disabled={!item.spot.kakaoPlaceUrl}
-                    >
-                      <Text
-                        style={[
-                          s.kakaoDetailTxt,
-                          !item.spot.kakaoPlaceUrl && s.kakaoDetailTxtOff,
-                        ]}
-                      >
-                        카카오맵에서 장소 자세히 보기
-                      </Text>
-                    </Pressable>
-                    <Pressable
-                      style={[
-                        s.addBtn,
-                        isSelected && s.removeBtn,
-                        item.siteConflict && !isSelected && s.addBtnOff,
-                      ]}
-                      onPress={() =>
-                        isSelected
-                          ? removeSpot(item.spot.contentId)
-                          : openTransportPicker(item)
-                      }
-                      disabled={item.siteConflict && !isSelected}
-                    >
-                      <Text
-                        style={[
-                          s.addBtnTxt,
-                          isSelected && s.removeBtnTxt,
-                          item.siteConflict &&
-                            !isSelected &&
-                            s.addBtnOffTxt,
-                        ]}
-                      >
-                        {isSelected
-                          ? "바구니에서 빼기"
-                          : item.siteConflict
-                            ? "같은 단지 장소가 이미 담겼어요"
-                            : "이곳 들르기"}
-                      </Text>
-                    </Pressable>
-                  </View>
+                  </Pressable>
                 );
               })}
             </>
@@ -1480,37 +1438,54 @@ export function ResultsScreen({ route, navigation }: Props) {
               return (
                 <>
                   <View style={s.routePreview}>
-                    <View style={s.routePreviewLine}>
-                      <View style={s.routePreviewPoint}>
-                        <Feather color={C.accent} name="navigation" size={17} />
-                        <Text style={s.routePreviewPointLabel}>출발</Text>
-                      </View>
-                      <View style={s.routePreviewLeg}>
-                        <TransportGlyph mode={chosenArrivalMode} />
-                        <Text style={s.routePreviewLegTime}>{chosen?.approachMin ?? "-"}분</Text>
-                      </View>
-                      <View style={s.routePreviewPoint}>
-                        <Feather color={C.green} name="map-pin" size={17} />
-                        <Text style={s.routePreviewPointLabel}>장소</Text>
-                      </View>
-                      <View style={s.routePreviewLeg}>
-                        {chosen ? <TransportGlyph mode={chosen.onwardMode} /> : null}
-                        <Text style={s.routePreviewLegTime}>{chosen?.onwardMin ?? "-"}분</Text>
-                      </View>
+                      <View style={s.routePreviewLine}>
+                        <View style={s.routePreviewPoint}>
+                          <Feather color={C.accent} name="navigation" size={17} />
+                          <Text style={s.routePreviewPointLabel}>출발</Text>
+                        </View>
+                        <View style={s.routePreviewLeg}>
+                          <View style={[s.routePreviewDash, { borderColor: transportColor(chosenArrivalMode) }]} />
+                          <View style={[s.routePreviewLegIcon, { borderColor: transportColor(chosenArrivalMode) }]}>
+                            <TransportGlyph mode={chosenArrivalMode} color={transportColor(chosenArrivalMode)} size={17} />
+                          </View>
+                          <Text style={s.routePreviewLegTime}>{chosen?.approachMin ?? "-"}분</Text>
+                        </View>
+                        <View style={s.routePreviewPoint}>
+                          <Feather color={C.green} name="map-pin" size={17} />
+                          <Text style={s.routePreviewPointLabel}>장소</Text>
+                        </View>
+                        <View style={s.routePreviewLeg}>
+                          {chosen ? (
+                            <>
+                              <View style={[s.routePreviewDash, { borderColor: transportColor(chosen.onwardMode) }]} />
+                              <View style={[s.routePreviewLegIcon, { borderColor: transportColor(chosen.onwardMode) }]}>
+                                <TransportGlyph mode={chosen.onwardMode} color={transportColor(chosen.onwardMode)} size={17} />
+                              </View>
+                              <Text style={s.routePreviewLegTime}>{chosen.onwardMin}분</Text>
+                            </>
+                          ) : null}
+                        </View>
                       <View style={s.routePreviewPoint}>
                         <Feather color={C.amber} name="calendar" size={16} />
                         <Text style={s.routePreviewPointLabel}>약속</Text>
                       </View>
                     </View>
                     <View style={s.timeVisualRow}>
-                      <View style={s.timeVisualPrimary}>
-                        <Text style={s.timeVisualValue}>{Math.max(0, Math.round(chosen?.bufferLeftMin ?? 0))}분</Text>
-                        <Text style={s.timeVisualLabel}>약속 전 여유</Text>
+                      <View style={s.timeVisualMetric}>
+                        <Text style={s.timeVisualMove}>
+                          {Math.round((chosen?.approachMin ?? 0) + (chosen?.onwardMin ?? 0))}분
+                        </Text>
+                        <Text style={s.timeVisualLabel}>이동</Text>
                       </View>
                       <View style={s.timeVisualDivider} />
-                      <View style={s.timeVisualSecondary}>
+                      <View style={s.timeVisualMetric}>
                         <Text style={s.timeVisualStay}>{chosen?.stayPossibleMin ?? 0}분</Text>
                         <Text style={s.timeVisualLabel}>이곳 체류 가능</Text>
+                      </View>
+                      <View style={s.timeVisualDivider} />
+                      <View style={s.timeVisualMetric}>
+                        <Text style={s.timeVisualRemaining}>{Math.max(0, Math.round(chosen?.bufferLeftMin ?? 0))}분</Text>
+                        <Text style={s.timeVisualLabel}>남는 시간</Text>
                       </View>
                     </View>
                   </View>
@@ -1708,18 +1683,6 @@ const s = StyleSheet.create({
     fontSize: 17,
     fontWeight: "800",
   },
-  banner: {
-    backgroundColor: C.panel,
-    borderColor: C.line,
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingVertical: 11,
-    paddingHorizontal: 14,
-    marginBottom: 8,
-  },
-  bannerTxt: { color: C.txt2, fontSize: 12.5 },
-  bannerBig: { color: C.accent, fontSize: 15, fontWeight: "800" },
-  meta: { color: C.muted, fontSize: 11.5, marginBottom: 10 },
   pageBlock: { marginTop: 4 },
   basket: {
     backgroundColor: C.panel,
@@ -1837,15 +1800,18 @@ const s = StyleSheet.create({
     fontWeight: "700",
     letterSpacing: 0.5,
   },
-  countSub: { color: "#6e7d8c", fontSize: 11.5, marginTop: 2 },
   empty: { color: C.amber, fontSize: 13, marginTop: 6 },
   card: {
     backgroundColor: C.panel,
     borderColor: C.line,
     borderWidth: 1,
     borderRadius: 14,
-    padding: 16,
+    minHeight: 74,
+    paddingVertical: 13,
+    paddingHorizontal: 16,
     marginTop: 12,
+    flexDirection: "row",
+    alignItems: "center",
   },
   cardOn: { borderColor: C.green, backgroundColor: "rgba(126,231,135,0.08)" },
   cardFocused: { borderColor: C.accent, borderWidth: 2 },
@@ -1854,11 +1820,21 @@ const s = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     gap: 10,
-    marginBottom: 8,
+    marginBottom: 0,
   },
   cardType: { color: C.green, fontWeight: "800", fontSize: 12 },
   spotName: { color: C.txt, fontSize: 16, fontWeight: "800", marginTop: 3 },
-  whyMeta: { color: C.muted, fontSize: 11.5, marginBottom: 6 },
+  modeAvailability: { flexDirection: "row", gap: 8, marginTop: 9 },
+  modeAvailabilityIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(126,231,135,0.12)",
+  },
+  modeAvailabilityIconOff: { opacity: 0.35, backgroundColor: C.panel2 },
+  cardChevron: { marginLeft: 2 },
   status: {
     borderRadius: 999,
     paddingVertical: 4,
@@ -1883,46 +1859,6 @@ const s = StyleSheet.create({
   statusTightTxt: { color: C.amber },
   statusOver: { borderColor: C.red, backgroundColor: "rgba(255,123,114,0.1)" },
   statusOverTxt: { color: C.red },
-  evalRow: { flexDirection: "row", gap: 8 },
-  evalCell: {
-    flex: 1,
-    backgroundColor: C.panel2,
-    borderRadius: 10,
-    paddingVertical: 9,
-    paddingHorizontal: 8,
-  },
-  evalLbl: { color: C.muted, fontSize: 10.5, fontWeight: "800" },
-  evalVal: { color: C.txt, fontSize: 13.5, fontWeight: "900", marginTop: 2 },
-  why: { color: C.green, fontSize: 12.5, marginTop: 10, fontWeight: "600" },
-  rankingWhy: { color: C.muted, fontSize: 11.5, lineHeight: 17, marginTop: 6 },
-  kakaoDetailBtn: {
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: C.line,
-    borderRadius: 11,
-    paddingVertical: 10,
-    alignItems: "center",
-    backgroundColor: C.panel2,
-  },
-  kakaoDetailTxt: { color: C.txt2, fontSize: 12.5, fontWeight: "800" },
-  kakaoDetailTxtOff: { color: C.muted },
-  addBtn: {
-    marginTop: 12,
-    backgroundColor: "rgba(76,194,255,0.12)",
-    borderWidth: 1,
-    borderColor: "rgba(76,194,255,0.45)",
-    borderRadius: 11,
-    paddingVertical: 11,
-    alignItems: "center",
-  },
-  addBtnTxt: { color: C.accent, fontSize: 13.5, fontWeight: "900" },
-  removeBtn: {
-    backgroundColor: "rgba(255,123,114,0.1)",
-    borderColor: "rgba(255,123,114,0.45)",
-  },
-  removeBtnTxt: { color: C.red },
-  addBtnOff: { backgroundColor: C.panel2, borderColor: C.line },
-  addBtnOffTxt: { color: C.muted },
   transportModalBackdrop: {
     flex: 1,
     justifyContent: "flex-end",
@@ -1964,16 +1900,28 @@ const s = StyleSheet.create({
   routePreviewLeg: {
     flex: 1,
     minWidth: 0,
-    flexDirection: "row",
+    alignItems: "center",
+    paddingTop: 2,
+    position: "relative",
+  },
+  routePreviewDash: {
+    position: "absolute",
+    top: 13,
+    left: 0,
+    right: 0,
+    borderTopWidth: 1.5,
+    borderStyle: "dashed",
+  },
+  routePreviewLegIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    backgroundColor: C.panel,
     alignItems: "center",
     justifyContent: "center",
-    gap: 3,
-    borderTopWidth: 1,
-    borderColor: C.line,
-    marginTop: 8,
-    paddingTop: 5,
   },
-  routePreviewLegTime: { color: C.txt2, fontSize: 11, fontWeight: "900" },
+  routePreviewLegTime: { color: C.txt2, fontSize: 11, fontWeight: "900", marginTop: 4 },
   timeVisualRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -1983,11 +1931,11 @@ const s = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: C.line,
   },
-  timeVisualPrimary: { flex: 1, alignItems: "center" },
-  timeVisualSecondary: { flex: 1, alignItems: "center" },
+  timeVisualMetric: { flex: 1, alignItems: "center" },
   timeVisualDivider: { width: 1, height: 34, backgroundColor: C.line },
-  timeVisualValue: { color: C.green, fontSize: 25, fontWeight: "900" },
+  timeVisualMove: { color: C.txt, fontSize: 20, fontWeight: "900", marginTop: 2 },
   timeVisualStay: { color: C.txt, fontSize: 21, fontWeight: "900", marginTop: 2 },
+  timeVisualRemaining: { color: C.green, fontSize: 20, fontWeight: "900", marginTop: 2 },
   timeVisualLabel: { color: C.muted, fontSize: 10.5, fontWeight: "800", marginTop: 3 },
   compactModePicker: { flexDirection: "row", gap: 8, marginTop: 12 },
   compactMode: {

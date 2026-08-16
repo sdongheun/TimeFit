@@ -170,7 +170,7 @@ html,body,#map{margin:0;padding:0;width:100%;height:100%;background:#111820}
 .photo-marker.active .photo-frame{width:72px;height:72px;border-width:4px;box-shadow:0 0 0 5px rgba(76,194,255,.3)}
 .photo-marker.active{width:78px;height:90px}
 .photo-marker.active .photo-tail{width:20px;height:20px;margin-top:-12px}
-.marker-name{max-width:112px;padding:4px 7px;border:1px solid rgba(22,27,34,.18);border-radius:6px;background:rgba(255,255,255,.96);color:#1c242d;font:800 10px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 2px 6px rgba(0,0,0,.2);transform:translateY(-43px)}
+.marker-name{max-width:112px;padding:4px 7px;border:1px solid rgba(22,27,34,.18);border-radius:6px;background:rgba(255,255,255,.96);color:#1c242d;font:800 10px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 2px 6px rgba(0,0,0,.2);transform:translateY(8px)}
 .arrow{width:26px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(255,255,255,.92);box-shadow:0 2px 7px rgba(0,0,0,.22)}
 .arrow svg{width:18px;height:18px;overflow:visible}
 .arrow path.body{fill:none;stroke:${C.accent};stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
@@ -191,7 +191,7 @@ setTimeout(function(){
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false" onerror="post({type:'error',message:'Kakao Maps SDK 스크립트 로드 실패'})"></script>
 </head><body><div id="map"></div>
 <script>
-var map, overlays = [];
+var map, overlays = [], hasInitialRoute = false;
 function ll(p){ return new kakao.maps.LatLng(p.lat, p.lon); }
 function markerText(m, i){
   if (m.kind === 'origin') return '출';
@@ -206,6 +206,20 @@ function escapeHtml(value){
 function clearRoute(){
   overlays.forEach(function(o){ o.setMap(null); });
   overlays = [];
+}
+function focusCenter(point, offsetY){
+  var offset = Number(offsetY || 0);
+  if (!offset || !map || !map.getProjection) return point;
+  try {
+    var projection = map.getProjection();
+    var containerPoint = projection.containerPointFromCoords(point);
+    // 시트가 덮은 높이의 절반만큼 남쪽을 중심으로 잡으면 대상은 가시 지도 영역의 중앙에 놓인다.
+    return projection.coordsFromContainerPoint(
+      new kakao.maps.Point(containerPoint.x, containerPoint.y + offset)
+    );
+  } catch (error) {
+    return point;
+  }
 }
 function markerColor(kind){
   if (kind === 'origin') return '${C.accent}';
@@ -244,24 +258,24 @@ function createMapMarker(point, marker, kind, active){
     map: map,
     position: point,
     title: marker.label,
-    zIndex: active ? 20 : 10
+    zIndex: active ? 100 : 10
   };
   if (kind === 'origin') options.image = currentLocationImage(active);
   else if (kind !== 'spot') options.image = colorPinImage(markerColor(kind), active);
   // 이미지가 없는 장소는 카카오 SDK 기본 마커를 그대로 사용한다.
   return new kakao.maps.Marker(options);
 }
-function addSpotLabel(marker, point, index, enabled){
+function addSpotLabel(marker, point, index, enabled, active){
   if (!enabled) return;
   var click = ' onclick="post({type:&quot;marker&quot;,index:' + index + '})"';
   var overlay = new kakao.maps.CustomOverlay({
     map: map,
     position: point,
     content: '<button class="marker-name"' + click + '>' + escapeHtml(marker.label) + '</button>',
-    yAnchor: 1,
+    yAnchor: 0,
     xAnchor: 0.5,
     clickable: true,
-    zIndex: 30
+    zIndex: active ? 110 : 30
   });
   overlays.push(overlay);
 }
@@ -391,14 +405,14 @@ function setRoute(data){
         yAnchor: 1,
         xAnchor: 0.5,
         clickable: !!data.markerTapEnabled,
-        zIndex: m.active ? 20 : 10
+        zIndex: m.active ? 100 : 10
       });
       overlays.push(photoOverlay);
       var photoProbe = new Image();
       photoProbe.onload = function(){ fallbackMarker.setMap(null); };
       photoProbe.onerror = function(){ photoOverlay.setMap(null); };
       photoProbe.src = m.imageUrl;
-      addSpotLabel(m, point, i, data.showMarkerLabels);
+      addSpotLabel(m, point, i, data.showMarkerLabels, !!m.active);
       return;
     }
     if (data.usePhotoMarkers) {
@@ -409,7 +423,7 @@ function setRoute(data){
         })(i));
       }
       overlays.push(marker);
-      if (kind === 'spot') addSpotLabel(m, point, i, data.showMarkerLabels);
+      if (kind === 'spot') addSpotLabel(m, point, i, data.showMarkerLabels, !!m.active);
       return;
     }
     var active = m.active ? ' active' : '';
@@ -421,15 +435,19 @@ function setRoute(data){
       content: content,
       yAnchor: 0.5,
       xAnchor: 0.5,
-      clickable: !!data.markerTapEnabled
+      clickable: !!data.markerTapEnabled,
+      zIndex: m.active ? 100 : 10
     });
     overlays.push(overlay);
-    if (kind === 'spot') addSpotLabel(m, point, i, data.showMarkerLabels);
+    if (kind === 'spot') addSpotLabel(m, point, i, data.showMarkerLabels, !!m.active);
   });
   if (focusedPoint) {
-    map.setCenter(focusedPoint);
-    var focusOffsetY = Number(data.focusedMarkerOffsetY || 0);
-    if (focusOffsetY) map.panBy(0, focusOffsetY);
+    // 첫 진입만 현재 위치를 기준으로 잡고, 이후에는 사용자가 옮긴 지도 위치를 보존한다.
+    if (!hasInitialRoute) {
+      var focusOffsetY = Number(data.focusedMarkerOffsetY || 0);
+      map.setCenter(focusCenter(focusedPoint, focusOffsetY));
+    }
+    hasInitialRoute = true;
   } else if (!bounds.isEmpty()) {
     var pad = data.boundsPadding || { top:40, right:40, bottom:40, left:40 };
     map.setBounds(bounds, pad.top, pad.right, pad.bottom, pad.left);
@@ -437,8 +455,7 @@ function setRoute(data){
 }
 function focusMap(point, offsetY){
   if (!map || !point) return;
-  map.setCenter(ll(point));
-  if (Number(offsetY)) map.panBy(0, Number(offsetY));
+  map.panTo(focusCenter(ll(point), offsetY));
 }
 function initMap(){
   if (!window.kakao || !window.kakao.maps) {
