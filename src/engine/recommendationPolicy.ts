@@ -3,7 +3,7 @@ import type { Mode, Spot } from './types';
 // 약속 지연 위험은 이동수단마다 다르므로 시간 예산에서 먼저 확보한다.
 export function safetyBufferMin(mode: Mode): number {
   if (mode === 'transit') return 20;
-  if (mode === 'walk') return 15;
+  if (mode === 'walk') return 8;
   return 10;
 }
 

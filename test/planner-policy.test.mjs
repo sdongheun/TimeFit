@@ -3,6 +3,13 @@ import fs from 'node:fs';
 import test from 'node:test';
 
 const planner = fs.readFileSync('src/engine/planner.ts', 'utf-8');
+const recommendationPolicy = fs.readFileSync('src/engine/recommendationPolicy.ts', 'utf-8');
+
+test('도보는 실제 경로 재검증을 전제로 8분의 안전 여유를 확보한다', () => {
+  assert.match(recommendationPolicy, /mode === 'walk'\) return 8/);
+  assert.match(recommendationPolicy, /mode === 'transit'\) return 20/);
+  assert.match(recommendationPolicy, /return 10/);
+});
 
 test('직행 대비 우회율은 추천 후보의 하드 제외 조건으로 사용하지 않는다', () => {
   assert.doesNotMatch(planner, /HARD_DETOUR_RATIO|directionEfficiency|detourRatio/);
