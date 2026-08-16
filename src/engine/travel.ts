@@ -243,7 +243,10 @@ const MODE: Record<Mode, { circ: number; kmh: number; fix: number }> = {
 
 export function haversineMin(a: LatLon, b: LatLon, mode: Mode): number {
   const km = haversineKm(a, b);
-  const use = km < 0.8 ? MODE.walk : MODE[mode];
+  if (km < 0.03) return 0;
+  // 짧은 구간의 대중교통은 접근·대기보다 도보가 현실적이므로 도보 근사로 본다.
+  // 차량까지 도보 시간을 재사용하면 수단 선택 UI가 모두 같은 시간으로 보인다.
+  const use = mode === 'transit' && km < 0.8 ? MODE.walk : MODE[mode];
   return Math.round((km * use.circ) / use.kmh * 60 + use.fix);
 }
 
