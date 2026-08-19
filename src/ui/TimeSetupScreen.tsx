@@ -41,6 +41,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const [startMinute, setStartMinute] = useState(roundedNow % 60);
   const [endHour, setEndHour] = useState(Math.floor(initialEnd / 60));
   const [endMinute, setEndMinute] = useState(initialEnd % 60);
+  const [showDevTimeOverride, setShowDevTimeOverride] = useState(false);
   const [appointment, setAppointment] = useState<Appointment>(null);
   const [origin, setOrigin] = useState(SEOMYEON);
   const [originLabel, setOriginLabel] = useState('부산 서면(기본)');
@@ -56,6 +57,12 @@ export function TimeSetupScreen({ navigation, route }: Props) {
     : remainingMin > MAX_MINUTES
       ? '자투리 시간은 최대 4시간까지 설정할 수 있어요.'
       : '';
+
+  const setDurationPreset = (minutes: number) => {
+    const nextEnd = Math.min(23 * 60 + 55, startMin + minutes);
+    setEndHour(Math.floor(nextEnd / 60));
+    setEndMinute(nextEnd % 60);
+  };
 
   const useGps = async () => {
     try {
@@ -121,7 +128,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
           remainingMin,
           dayType,
           hourBucket,
-          isManualTime: true,
+          isManualTime: showDevTimeOverride,
         },
       };
       flow.setLatestResults(params);
@@ -181,13 +188,31 @@ export function TimeSetupScreen({ navigation, route }: Props) {
             <Text style={[s.summaryValue, validation && s.summaryValueError]}>{formatDuration(remainingMin)}</Text>
           </View>
           <View style={s.summaryRight}>
-            <Text style={s.summaryTime}>{fmtHM(startMin)} → {fmtHM(endMin)}</Text>
+            <Text style={s.summaryTime}>{fmtHM(startMin)} 출발 → {fmtHM(endMin)}</Text>
             <Text style={s.summaryBuffer}>장소를 고른 뒤 이동 방법을 비교해요</Text>
           </View>
         </View>
 
-        {timeCard('시작 시각', startHour, startMinute, setStartHour, setStartMinute, '위아래로 굴려서 고릅니다')}
-        {timeCard('종료 시각 (약속 도착)', endHour, endMinute, setEndHour, setEndMinute, '시작 시각부터 최대 4시간까지 설정할 수 있어요')}
+        {/* 빠른 자투리 시간 프리셋 */}
+        <View style={s.presetRow}>
+          {[30, 60, 90, 120, 180].map((preset) => {
+            const isSelected = remainingMin === preset;
+            return (
+              <Pressable
+                key={preset}
+                onPress={() => setDurationPreset(preset)}
+                style={[s.presetChip, isSelected && s.presetChipActive]}
+              >
+                <Text style={[s.presetChipText, isSelected && s.presetChipTextActive]}>
+                  {preset < 60 ? `${preset}분` : `${preset / 60}시간`}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        {/* 종료 시각 (약속 시각 / 복귀 시각) 설정 */}
+        {timeCard('종료 시각 (약속 도착 / 복귀)', endHour, endMinute, setEndHour, setEndMinute, '현재 시각부터 최대 4시간까지 설정할 수 있어요')}
 
         <View style={[s.card, s.placeCard]}>
           <Pressable style={s.placeRow} onPress={() => setPicker('origin')}>
@@ -200,6 +225,23 @@ export function TimeSetupScreen({ navigation, route }: Props) {
             <Text style={s.placeValue} numberOfLines={1}>{appointment?.label ?? '없음 (왕복)'}</Text>
           </Pressable>
           <Pressable style={s.locationButton} onPress={useGps}><Text style={s.locationButtonText}>현재 위치 사용</Text></Pressable>
+        </View>
+
+        {/* TIME-01.1 개발/테스트용 시작 시각 수동 설정 토글 */}
+        <View style={s.devSection}>
+          <Pressable
+            onPress={() => setShowDevTimeOverride((prev) => !prev)}
+            style={s.devToggle}
+          >
+            <Text style={s.devToggleText}>
+              {showDevTimeOverride ? '▼ 테스트 시작 시각 닫기' : '▶ [테스트] 시작 시각 직접 변경하기'}
+            </Text>
+          </Pressable>
+          {showDevTimeOverride ? (
+            <View style={s.devCardWrapper}>
+              {timeCard('시작 시각 (테스트용)', startHour, startMinute, setStartHour, setStartMinute, '새벽, 운영시간 경계 등 테스트 시각을 직접 지정합니다')}
+            </View>
+          ) : null}
         </View>
 
         {(validation || error) ? <Text style={s.error}>{validation || error}</Text> : null}
@@ -245,6 +287,11 @@ const s = StyleSheet.create({
   summaryRight: { alignItems: 'flex-end' },
   summaryTime: { color: C.txt2, fontSize: 12.5, fontWeight: '700' },
   summaryBuffer: { color: C.muted, fontSize: 12, marginTop: 4 },
+  presetRow: { flexDirection: 'row', gap: 8, justifyContent: 'space-between' },
+  presetChip: { flex: 1, height: 38, borderRadius: 10, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+  presetChipActive: { backgroundColor: C.accent, borderColor: C.accent },
+  presetChipText: { color: C.txt2, fontSize: 13, fontWeight: '700' },
+  presetChipTextActive: { color: C.onAccent, fontWeight: '800' },
   card: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 16, padding: 16 },
   cardHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   cardTitle: { color: C.txt, fontSize: 15, fontWeight: '800' },
@@ -259,6 +306,10 @@ const s = StyleSheet.create({
   separator: { height: 1, backgroundColor: C.line },
   locationButton: { alignSelf: 'flex-end', paddingHorizontal: 2, paddingVertical: 10 },
   locationButtonText: { color: C.accent, fontSize: 13, fontWeight: '800' },
+  devSection: { marginTop: 4 },
+  devToggle: { paddingVertical: 6, paddingHorizontal: 4 },
+  devToggleText: { color: C.muted, fontSize: 12, fontWeight: '600' },
+  devCardWrapper: { marginTop: 8 },
   error: { color: C.red, fontSize: 12.5, fontWeight: '600', lineHeight: 19, paddingHorizontal: 2 },
   footer: { padding: 16, paddingBottom: 28, borderTopColor: C.line, borderTopWidth: 1, backgroundColor: C.bg },
   cta: { minHeight: 52, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: C.accent },
