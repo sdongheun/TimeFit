@@ -25,6 +25,23 @@ test('지도 우선 후보는 단일 대중교통 기준이 아니라 세 수단
   assert.match(planner, /candidateModes\.length === 1/);
 });
 
+test('후보 공간 범위는 직선 중간점이 아니라 실제 기준 경로 geometry를 사용한다', () => {
+  assert.match(planner, /createActualRouteSearchScope/);
+  assert.match(planner, /isPointInActualRouteSearchScope/);
+  assert.match(planner, /baselines: input\.routeBaselines/);
+  assert.doesNotMatch(planner, /candidateSearchScopes|candidateSearchScope/);
+});
+
+test('지도 탐색은 최대 공간 후보만 반환하고 코스 확정 계산을 강제하지 않는다', () => {
+  assert.match(planner, /if \(input\.mapExploration\)/);
+  assert.match(planner, /passesLocalOpeningGate/);
+  assert.match(planner, /isTimeFeasibleForMode/);
+  assert.match(planner, /const visibleCandidates = cands\.filter/);
+  assert.match(planner, /spatialCandidates: visibleCandidates/);
+  assert.match(planner, /routeBaselines: input\.routeBaselines \?\? \[\]/);
+  assert.match(planner, /searchRadiusM: radiusM/);
+});
+
 test('추가 이동은 전체 자투리 예산 대비 비중으로만 랭킹에 반영한다', () => {
   assert.match(planner, /function routeMovementOverhead/);
   assert.match(planner, /addedMove \/ Math\.max\(budget, 1\)/);

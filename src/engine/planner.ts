@@ -1,11 +1,13 @@
 // 시간-적합 플래너 (결정적). 스파이크 engine_spike.mjs 로직 이식.
 import { Course, LatLon, Mode, MobilityOption, PlanInput, PlanResult, RoadMode, Spot, Strategy } from './types';
-import { listBusanPoiCandidatesNear } from './data';
+import { listBusanPoiCandidates } from './data';
 import { detailIntro, isOpenDuring, isOpenDuringText } from './tourapi';
 import { haversineMin, precompute, precomputeTransit, transitMeta, travelGeo, travelMin, travelSrc } from './travel';
 import { hasBalancedPaidVisit, isPaidFacilityLike, isTravelHeavyBrowse, minimumStayForCourse, safetyBufferMin } from './recommendationPolicy';
 import { areaAvailabilityDuring } from './areaAvailability';
 import { automaticLegMode } from './mixedTravel';
+import { createActualRouteSearchScope, isPointInActualRouteSearchScope, strategyForActualRoutePoint } from './actualRouteSearchScope';
+import { passesLocalOpeningGate } from './localOpeningGate';
 
 const ROAD_MODES: RoadMode[] = ['walk', 'car'];
 const INITIAL_TMAP_REFINE_COUNT = 0;
@@ -19,7 +21,6 @@ const STRATEGY_LABEL: Record<Strategy, string> = {
   destination_area: '약속지 근처',
   route_area: '가는 길 중간',
 };
-
 export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   const primaryMode = input.mode;
   const candidateModes = normalizedCandidateModes(input.candidateModes, primaryMode);
@@ -28,39 +29,74 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
   const budget = input.remainingMin - buffer;
   const target: LatLon = input.destination ?? input.origin;
 
-  // 1) 후보: 출발지 근처 + 약속지 근처 + 이동 중간 후보를 함께 수집
+  // 1) 후보: 실제 기준 경로 주변(또는 왕복/전체실패 생활권)만 수집한다.
+  // 철회한 직선 중간점·넓은 원 범위는 여기서 사용하지 않는다.
   const cands: Spot[] = [];
   const seenCand = new Map<string, Spot>();
   const seenTourApi = new Set<string>();
-  for (const center of searchCenters(input.origin, input.destination ?? null)) {
-    const local = listBusanPoiCandidatesNear(center, radiusM);
-    for (const { place, dwell: d } of local) {
-      if (place.tourapiContentId) seenTourApi.add(place.tourapiContentId);
-      const contentId = place.contentId;
-      const spot: Spot = {
-        title: place.title, contentId, typeId: place.contentTypeId, category: d.category, subCategory: d.subCategory, availabilityProfile: d.availabilityProfile,
-        siteGroupId: d.siteGroupId, siteRole: d.siteRole,
-        lat: place.lat, lon: place.lon, dwell: d.eff, dwellBase: d.base, dwellSrc: d.src, mult: d.mult,
-        dwellSourceName: d.dwellSourceName,
-        openingHoursSourceName: d.openingHoursSourceName,
-        openingHoursReliability: d.openingHoursReliability,
-        matchScope: d.matchScope,
-        mapVerificationStatus: d.mapVerificationStatus,
-        kakaoPlaceId: d.kakaoPlaceId,
-        kakaoPlaceUrl: d.kakaoPlaceUrl,
-        mapVerificationName: d.mapVerificationName,
-        mapVerificationDistanceM: d.mapVerificationDistanceM,
-        tourapiContentId: d.tourapiContentId,
-        tourapiContentTypeId: d.tourapiContentTypeId,
-        operatingHours: d.operatingHours,
-        imageUrl: d.imageUrl,
-        openNote: '', confidence: d.confidence, strategy: center.strategy,
-      };
-      const prev = seenCand.get(contentId);
-      if (!prev || strategyPriority(center.strategy) < strategyPriority(prev.strategy)) seenCand.set(contentId, spot);
-    }
+  const searchScope = createActualRouteSearchScope({
+    origin: input.origin,
+    destination: input.destination ?? null,
+    radiusM,
+    baselines: input.routeBaselines,
+  });
+  for (const { place, dwell: d } of listBusanPoiCandidates()) {
+    if (!isPointInActualRouteSearchScope(place, searchScope)) continue;
+    if (place.tourapiContentId) seenTourApi.add(place.tourapiContentId);
+    const contentId = place.contentId;
+    const spot: Spot = {
+      title: place.title, contentId, typeId: place.contentTypeId, category: d.category, subCategory: d.subCategory, availabilityProfile: d.availabilityProfile,
+      siteGroupId: d.siteGroupId, siteRole: d.siteRole,
+      lat: place.lat, lon: place.lon, dwell: d.eff, dwellBase: d.base, dwellSrc: d.src, mult: d.mult,
+      dwellSourceName: d.dwellSourceName,
+      openingHoursSourceName: d.openingHoursSourceName,
+      openingHoursReliability: d.openingHoursReliability,
+      matchScope: d.matchScope,
+      mapVerificationStatus: d.mapVerificationStatus,
+      kakaoPlaceId: d.kakaoPlaceId,
+      kakaoPlaceUrl: d.kakaoPlaceUrl,
+      mapVerificationName: d.mapVerificationName,
+      mapVerificationDistanceM: d.mapVerificationDistanceM,
+      tourapiContentId: d.tourapiContentId,
+      tourapiContentTypeId: d.tourapiContentTypeId,
+      operatingHours: d.operatingHours,
+      imageUrl: d.imageUrl,
+      openNote: '', confidence: d.confidence, strategy: strategyForActualRoutePoint(place, searchScope),
+    };
+    seenCand.set(contentId, spot);
   }
   cands.push(...seenCand.values());
+
+  // 지도 탐색은 최대 공간 후보 중 시간·로컬 운영시간을 통과한 장소만 전달한다.
+  // 외부 TourAPI 상세 호출은 하지 않으며, 장바구니 추가 시 실제 경로·운영시간으로 다시 확정한다.
+  if (input.mapExploration) {
+    const visibleCandidates = cands.filter((spot) => candidateModes.some((mode) =>
+      isTimeFeasibleForMode(spot, input.origin, target, input.remainingMin, mode)
+      && passesLocalOpeningGate({
+        spot,
+        origin: input.origin,
+        mode,
+        nowMin: input.nowMin,
+        arrivalMarginMin: CANDIDATE_OPENING_MARGIN_MIN,
+      }),
+    ));
+    return {
+      budgetMin: budget,
+      bufferMin: buffer,
+      tourApiCount: seenTourApi.size,
+      candidateCount: cands.length,
+      eligibleCount: visibleCandidates.length,
+      openingCheckCount: cands.length,
+      gatedCount: visibleCandidates.length,
+      tmapOk: 0,
+      tmapFail: 0,
+      courses: [],
+      pending: [],
+      spatialCandidates: visibleCandidates,
+      routeBaselines: input.routeBaselines ?? [],
+      searchRadiusM: radiusM,
+    };
+  }
 
   // 2) haversine 프리필터: 짧은 자투리 시간에는 카페/상업지구/가벼운 구경 장소를 더 유연하게 유지
   const pre = cands.flatMap((spot) => {
@@ -138,6 +174,9 @@ export async function planTimeFit(input: PlanInput): Promise<PlanResult> {
     eligibleCount: pre.length,
     openingCheckCount: openingTargets.length,
     gatedCount: gated.length, tmapOk: r.ok, tmapFail: r.fail, courses: visibleCourses, pending: pendingCourses,
+    spatialCandidates: cands,
+    routeBaselines: input.routeBaselines ?? [],
+    searchRadiusM: radiusM,
   };
 }
 
@@ -232,22 +271,6 @@ const TIMEFIT: Record<PlanInput['hourBucket'], Record<string, number>> = {
   야간: { 카페: 0.8, 상업지구: 0.8, '지역축제/행사': 0.8, 식당: 0.7, 자연관광지: 0.6 },
 };
 const timeFitOf = (bucket: PlanInput['hourBucket'], category: string) => TIMEFIT[bucket]?.[category] ?? 0.6;
-
-function searchCenters(origin: LatLon, destination: LatLon | null): Array<LatLon & { strategy: Strategy }> {
-  const centers: Array<LatLon & { strategy: Strategy }> = [{ ...origin, strategy: 'origin_area' }];
-  if (!destination) return centers;
-  centers.push({ ...destination, strategy: 'destination_area' });
-  centers.push({
-    lat: (origin.lat + destination.lat) / 2,
-    lon: (origin.lon + destination.lon) / 2,
-    strategy: 'route_area',
-  });
-  return centers;
-}
-
-function strategyPriority(strategy: Strategy): number {
-  return strategy === 'destination_area' ? 0 : strategy === 'route_area' ? 1 : 2;
-}
 
 function radiusFor(mode: Mode, remainingMin: number): number {
   if (mode === 'transit') {
@@ -384,26 +407,32 @@ function firstFeasibleMode(
   // 도보 -> 대중교통 -> 차량 순서: 차량 보유를 앱이 임의로 가정하지 않는다.
   // 후보·장바구니가 같은 규칙을 쓰도록, 진입 구간만 사용자가 고르고
   // 다음 구간은 ResultsScreen과 동일한 자동 수단으로 계산한다.
-  return modes.find((mode) => {
-    let current = origin;
-    let moveMin = 0;
-    let minStay = 0;
-    for (const spot of spots) {
-      const legMode = current === origin ? mode : automaticLegMode(current, spot);
-      const approachMin = travelMin(current, spot, legMode);
-      moveMin += approachMin;
-      minStay += minimumStayForCourse([spot], [approachMin]);
-      current = spot;
-    }
-    const onwardMode = automaticLegMode(current, target);
-    moveMin += travelMin(current, target, onwardMode);
-    const buffer = Math.max(safetyBufferMin(mode), safetyBufferMin(onwardMode));
-    const stayPool = Math.max(0, remainingMin - buffer - moveMin);
-    const allocatedStay = Math.min(sumDwell(spots), stayPool);
-    const directMode = automaticLegMode(origin, target);
-    const directMove = origin === target ? 0 : travelMin(origin, target, directMode);
-    return stayPool >= minStay && hasBalancedPaidVisit(spots, allocatedStay, Math.max(0, moveMin - directMove));
-  }) ?? null;
+  return modes.find((mode) => isTimeFeasibleForMode(spots, origin, target, remainingMin, mode)) ?? null;
+}
+
+function isTimeFeasibleForMode(
+  spots: Spot | Spot[], origin: LatLon, target: LatLon, remainingMin: number, mode: Mode,
+): boolean {
+  const list = Array.isArray(spots) ? spots : [spots];
+  let current = origin;
+  let moveMin = 0;
+  let minStay = 0;
+  for (const spot of list) {
+    const legMode = current === origin ? mode : automaticLegMode(current, spot);
+    const approachMin = travelMin(current, spot, legMode);
+    moveMin += approachMin;
+    minStay += minimumStayForCourse([spot], [approachMin]);
+    current = spot;
+  }
+  const onwardMode = automaticLegMode(current, target);
+  moveMin += travelMin(current, target, onwardMode);
+  const buffer = Math.max(safetyBufferMin(mode), safetyBufferMin(onwardMode));
+  const stayPool = Math.max(0, remainingMin - buffer - moveMin);
+  const allocatedStay = Math.min(sumDwell(list), stayPool);
+  const directMode = automaticLegMode(origin, target);
+  const directMove = origin === target ? 0 : travelMin(origin, target, directMode);
+  return stayPool >= minStay
+    && hasBalancedPaidVisit(list, allocatedStay, Math.max(0, moveMin - directMove));
 }
 
 function gateLimitFor(modes: Mode[], remainingMin: number): number {

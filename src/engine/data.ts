@@ -78,8 +78,12 @@ export function resolveBusanMatched(contentId: string): BusanCatalogPlace | null
 }
 
 export function listBusanPoiCandidatesNear(center: LatLon, radiusM: number): Array<{ place: BusanCatalogPlace; dwell: ResolvedBusanDwell }> {
+  return listBusanPoiCandidates().filter(({ place }) => distanceM(center, place) <= radiusM);
+}
+
+// 실제 경로 범위 모듈이 모든 로컬 후보를 한 번만 순회한 뒤 공간 조건을 적용할 수 있게 한다.
+export function listBusanPoiCandidates(): Array<{ place: BusanCatalogPlace; dwell: ResolvedBusanDwell }> {
   return allPlaces.flatMap((place) => {
-    if (distanceM(center, place) > radiusM) return [];
     const dwell = resolveBusanDwell(place.contentId, '평일', '오후');
     return dwell ? [{ place, dwell }] : [];
   });

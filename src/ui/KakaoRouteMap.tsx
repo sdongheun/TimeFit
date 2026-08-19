@@ -3,6 +3,13 @@ import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { LatLon } from '../engine';
 import { C } from './theme';
+import {
+  buildRouteMapSegments,
+  type RouteMapSegment,
+} from './map/routeSegments';
+
+export { buildRouteMapSegments } from './map/routeSegments';
+export type { RouteMapSegment } from './map/routeSegments';
 
 const KAKAO_WEBVIEW_BASE_URL = 'https://timefit.local';
 const KAKAO_JS_KEY =
@@ -19,36 +26,6 @@ export type RouteMapMarker = {
   active?: boolean;
   imageUrl?: string;
 };
-
-export type RouteMapSegment = {
-  points: LatLon[];
-  quality: 'precise' | 'approx' | 'fallback';
-};
-
-export function buildRouteMapSegments(points: LatLon[], travelLegs: Array<{ geo?: LatLon[]; src?: string }>): RouteMapSegment[] {
-  return travelLegs.map((leg, i) => {
-    const geo = normalizeRoutePoints(leg.geo);
-    const hasGeo = geo.length > 1;
-    const quality: RouteMapSegment['quality'] =
-      leg.src === 'TMAP' && geo.length >= 4 ? 'precise' : hasGeo ? 'approx' : 'fallback';
-    return {
-      points: hasGeo ? geo : [points[i], points[i + 1]].filter(Boolean),
-      quality,
-    };
-  }).filter((seg) => seg.points.length > 1);
-}
-
-function normalizeRoutePoints(points?: LatLon[]): LatLon[] {
-  if (!points) return [];
-  const out: LatLon[] = [];
-  for (const p of points) {
-    if (!Number.isFinite(p.lat) || !Number.isFinite(p.lon)) continue;
-    const last = out[out.length - 1];
-    if (last && Math.abs(last.lat - p.lat) < 0.00001 && Math.abs(last.lon - p.lon) < 0.00001) continue;
-    out.push(p);
-  }
-  return out;
-}
 
 type Props = {
   points: LatLon[];

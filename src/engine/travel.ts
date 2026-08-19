@@ -1,6 +1,8 @@
 // 이동시간: TMAP REST(보행/자동차) + haversine 폴백 + 좌표쌍 캐시
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LatLon, Mode, RoadMode } from './types';
+import type { RouteBaseline } from './actualRouteSearchScope';
+import { createRouteBaselineService, type RouteBaselineResult } from './routeBaselineService';
 
 const TMAP_KEY = process.env.EXPO_PUBLIC_TMAP_APP_KEY;
 const ODSAY_KEY = process.env.EXPO_PUBLIC_ODSAY_API_KEY ?? process.env.ODSAY_API_KEY;
@@ -554,6 +556,33 @@ export function travelGeo(a: LatLon, b: LatLon, mode: Mode): LatLon[] | undefine
 }
 export function transitMeta(a: LatLon, b: LatLon): TransitMeta | undefined {
   return getTransitCache(transitKey(a, b))?.meta;
+}
+
+// 추천 후보 범위용 기준 경로. 실패한 근사 경로는 반환하지 않는다.
+// 실제 호출·캐시 정책은 routeBaselineService에 있고, 이 함수는 현재 TMAP/ODsay 캐시를 어댑터로 연결한다.
+async function fetchRouteBaseline(origin: LatLon, destination: LatLon, mode: Mode): Promise<RouteBaseline | null> {
+  if (mode === 'transit') {
+    await precomputeTransit([[origin, destination]], { retryFallback: true });
+    const geometry = travelGeo(origin, destination, mode);
+    return travelSrc(origin, destination, mode) === 'ODsay' && geometry && geometry.length >= 2
+      ? { mode, geometry }
+      : null;
+  }
+
+  await precompute([[origin, destination]], mode, { retryFallback: true });
+  const geometry = travelGeo(origin, destination, mode);
+  return travelSrc(origin, destination, mode) === 'TMAP' && geometry && geometry.length >= 2
+    ? { mode, geometry }
+    : null;
+}
+
+const routeBaselineService = createRouteBaselineService({
+  fetcher: { fetch: fetchRouteBaseline },
+  storage: AsyncStorage,
+});
+
+export function getActualRouteBaselines(origin: LatLon, destination: LatLon): Promise<RouteBaselineResult> {
+  return routeBaselineService.get(origin, destination);
 }
 
 // TMAP POI 통합검색: 장소명 → 좌표 후보 (center 지정 시 가까운 순)

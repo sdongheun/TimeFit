@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
-import { HourBucket, kakaoReverseGeocode, planTimeFit, reverseGeocode, timeContext } from '../engine';
+import { getActualRouteBaselines, HourBucket, kakaoReverseGeocode, planTimeFit, reverseGeocode, timeContext } from '../engine';
 import { Appointment, fmtHM, RootStackParamList } from './nav';
 import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
@@ -85,20 +85,24 @@ export function TimeSetupScreen({ navigation, route }: Props) {
     try {
       const dayType = now.dayType;
       const hourBucket = hourBucketOf(startHour);
+      const destination = appointment ? { lat: appointment.lat, lon: appointment.lon } : null;
+      const baseline = destination ? await getActualRouteBaselines(origin, destination) : null;
       const result = await planTimeFit({
         origin,
-        destination: appointment ? { lat: appointment.lat, lon: appointment.lon } : null,
+        destination,
         remainingMin,
         // 초기 지도는 세 이동수단 중 하나라도 가능한 장소를 수집한다.
         // 특정 수단을 미리 고정하지 않고, 실제 구간 수단은 장소 선택 뒤 비교한다.
         mode: 'transit',
         candidateModes: ['walk', 'transit', 'car'],
         radiusM: 8000,
+        routeBaselines: baseline?.baselines,
+        mapExploration: true,
         nowMin: startMin,
         dayType,
         hourBucket,
       });
-      if (!result.courses.length) {
+      if (!result.spatialCandidates.length) {
         setError('이 시간 안에 들를 수 있는 장소를 찾지 못했어요. 약속 시각이나 장소를 다시 확인해 주세요.');
         return;
       }

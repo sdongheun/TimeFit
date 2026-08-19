@@ -5,6 +5,7 @@
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
     "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-community/slider": "5.2.0",
     "@react-navigation/native": "^7.3.3",
     "@react-navigation/native-stack": "^7.17.5",
     "@supabase/supabase-js": "^2.109.0",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@types/node": "^26.1.2",
     "@types/react": "~19.2.2",
+    "tsx": "^4.23.12",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -30,7 +32,9 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "node --test test",
-    "test:typecheck": "tsc --noEmit"
+    "test:ui": "tsx --test test/ui/*.test.ts test/ui/*.test.mjs",
+    "test:typecheck": "tsc --noEmit",
+    "interview:requirements": "node scripts/requirements_interview.mjs"
   },
   "private": true
 }

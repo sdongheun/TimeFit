@@ -1,4 +1,6 @@
 // 시간-적합 엔진 타입
+import type { RouteBaseline } from './actualRouteSearchScope';
+
 export type LatLon = { lat: number; lon: number };
 export type Mode = "walk" | "car" | "transit";
 export type RoadMode = "walk" | "car";
@@ -23,6 +25,11 @@ export type PlanInput = {
   // 시간·최소 체류 조건을 만족하면 후보로 남긴다. 기존 단일 수단 화면은 생략한다.
   candidateModes?: Mode[];
   radiusM?: number;
+  // 추천 실행 전에 조회한 실제 기준 경로. 자동 테스트는 fixture를 직접 주입한다.
+  routeBaselines?: RouteBaseline[];
+  // 지도 탐색은 최대 범위에서 근사 시간·로컬 운영시간을 통과한 후보를 만들고,
+  // 실제 경로·상세 운영시간 확정은 장소 추가 시점으로 미룬다.
+  mapExploration?: boolean;
   // 자동진단에서만 사용: 후보 풀 비교를 위해 ODsay 정밀화를 생략한다.
   deferTransitRefinement?: boolean;
   // 자동진단에서만 사용: 후보 데이터 범위 비교를 위해 TourAPI 운영시간 상세 조회를 생략한다.
@@ -100,4 +107,7 @@ export type PlanResult = {
   tmapFail: number;
   courses: Course[]; // 추천 배치(≤10, 목록 단계는 haversine 추정)
   pending: Course[]; // "다른 코스 보기" 대기열(haversine 추정치)
+  spatialCandidates: Spot[];
+  routeBaselines: RouteBaseline[];
+  searchRadiusM: number;
 };
