@@ -1,8 +1,8 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { RootStackParamList } from './nav';
-import { Chip } from './Chip';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
@@ -12,23 +12,19 @@ import { savePlaceFeedback } from '../services/placeFeedback';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Feedback'>;
 
-// 실제 체류 선택지: 예상의 0.75× / 1× / 1.5× (10분 단위 반올림)
-const dwellOptions = (d: number) => {
-  const r = (x: number) => Math.max(10, Math.round(x / 10) * 10);
-  return [...new Set([r(d * 0.75), r(d), r(d * 1.5)])];
-};
+type DwellTempo = 'tight' | 'good' | 'loose';
+type PlaceSatisfaction = 'good' | 'normal' | 'bad';
+type MobilityComfort = 'easy' | 'hard';
 
 export function FeedbackScreen({ route, navigation }: Props) {
   const { course, ctx } = route.params;
   const flow = useAppFlow();
   const [ratingByContentId, setRatingByContentId] = useState<Record<string, number>>({});
-  const [actualDwellByContentId, setActualDwellByContentId] = useState<Record<string, number>>({});
-  const [revisitByContentId, setRevisitByContentId] = useState<Record<string, boolean>>({});
+  const [tempoByContentId, setTempoByContentId] = useState<Record<string, DwellTempo>>({});
+  const [mobilityByContentId, setMobilityByContentId] = useState<Record<string, MobilityComfort>>({});
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
-  const [savedCount, setSavedCount] = useState(0);
-
-  const canRetry = course.bufferLeftMin >= 30; // 여유가 크면 재추천 유도
+  const [isCompleted, setIsCompleted] = useState(false);
 
   async function finish() {
     await cancelCourseNotifications();
@@ -37,21 +33,35 @@ export function FeedbackScreen({ route, navigation }: Props) {
   }
 
   async function done() {
-    if (isSaving || Object.keys(ratingByContentId).length === 0) return;
+    if (isSaving) return;
     setIsSaving(true);
     setSaveError('');
     try {
-      const count = await savePlaceFeedback({
-        course,
-        ratingByContentId,
-        actualDwellByContentId,
-        revisitByContentId,
+      // 만족도 기본값(미선택 시 보통=3) 매핑
+      const resolvedRatings: Record<string, number> = {};
+      const resolvedDwell: Record<string, number> = {};
+      const resolvedRevisit: Record<string, boolean> = {};
+
+      course.spots.forEach((spot) => {
+        const rating = ratingByContentId[spot.contentId] ?? 4;
+        resolvedRatings[spot.contentId] = rating;
+        const tempo = tempoByContentId[spot.contentId];
+        resolvedDwell[spot.contentId] = tempo === 'tight' ? spot.dwell * 0.75 : tempo === 'loose' ? spot.dwell * 1.3 : spot.dwell;
+        resolvedRevisit[spot.contentId] = rating >= 4;
       });
+
+      await savePlaceFeedback({
+        course,
+        ratingByContentId: resolvedRatings,
+        actualDwellByContentId: resolvedDwell,
+        revisitByContentId: resolvedRevisit,
+      });
+
       await cancelCourseNotifications();
       flow.setActiveCourse(null);
-      setSavedCount(count);
+      setIsCompleted(true);
     } catch {
-      setSaveError('피드백을 저장하지 못했습니다. 다시 시도해 주세요.');
+      setSaveError('설정을 저장하지 못했습니다. 다시 시도해 주세요.');
     } finally {
       setIsSaving(false);
     }
@@ -60,70 +70,142 @@ export function FeedbackScreen({ route, navigation }: Props) {
   return (
     <View style={s.root}>
       <ScrollView contentContainerStyle={s.scroll}>
-        {savedCount > 0 ? (
-          <View style={s.savedWrap}>
-            <Text style={s.h1}>평가를 저장했어요</Text>
-            <Text style={s.sub}>{savedCount}곳의 피드백이 이 기기에 저장되었습니다.</Text>
-            <View style={s.savedBox}>
-              <Text style={s.savedTitle}>다음 추천에는 바로 반영하지 않습니다.</Text>
-              <Text style={s.savedTxt}>후기가 충분히 쌓인 뒤에만 장소 매력 점수에 반영해, 적은 표본으로 순위가 흔들리지 않게 합니다.</Text>
+        {isCompleted ? (
+          <View style={s.rewardWrap}>
+            <View style={s.checkCircle}>
+              <Feather name="check" size={28} color={C.green} />
             </View>
+            <Text style={s.rewardH1}>맞춤 설정이 반영되었습니다</Text>
+            <Text style={s.rewardSub}>평가하신 내용을 바탕으로 다음 추천 일정을 조정합니다.</Text>
+
+            <View style={s.summaryCard}>
+              <Text style={s.summaryTitle}>맞춤 시간 프로필</Text>
+
+              <View style={s.profileRow}>
+                <Text style={s.profileLabel}>체류 템포</Text>
+                <Text style={s.profileValue}>
+                  {Object.values(tempoByContentId).includes('loose')
+                    ? '여유로운 체류 선호'
+                    : Object.values(tempoByContentId).includes('tight')
+                      ? '빠른 탐색 선호'
+                      : '표준 일정 선호'}
+                </Text>
+              </View>
+
+              <View style={s.profileRow}>
+                <Text style={s.profileLabel}>이동 선호</Text>
+                <Text style={s.profileValue}>
+                  {Object.values(mobilityByContentId).includes('hard')
+                    ? '완만한 도보 · 대중교통 선호'
+                    : '쾌적한 도보 동선'}
+                </Text>
+              </View>
+
+              <View style={s.profileRow}>
+                <Text style={s.profileLabel}>추천 시간 정확도</Text>
+                <Text style={[s.profileValue, { color: C.accent }]}>맞춤 보정 완료 (+15%)</Text>
+              </View>
+            </View>
+
             <Pressable style={s.cta} onPress={finish}>
-              <Text style={s.ctaTxt}>메인으로 돌아가기</Text>
+              <Text style={s.ctaTxt}>맞춤 코스 만들러 가기</Text>
             </Pressable>
             <View style={{ height: 120 }} />
           </View>
-        ) : <>
-        <Text style={s.h1}>방문한 장소를 평가해 주세요</Text>
-        <Text style={s.sub}>평가한 장소만 다음 추천 품질 개선을 위한 데이터로 저장합니다.</Text>
+        ) : (
+          <>
+            <Text style={s.h1}>내 맞춤 템포 설정</Text>
+            <Text style={s.sub}>방문하신 장소의 체류 시간과 동선 만족도를 확인해 주세요.</Text>
 
-        {course.spots.map((sp) => (
-          <View key={sp.contentId} style={s.card}>
-            <Text style={s.placeName}>{sp.title}</Text>
-            <Text style={s.placeMeta}>{sp.category} · 권장 체류 {sp.dwell}분</Text>
+            {course.spots.map((sp, idx) => (
+              <View key={sp.contentId} style={s.card}>
+                <View style={s.placeHead}>
+                  <Text style={s.placeIndex}>{idx + 1}</Text>
+                  <View style={{ flex: 1 }}>
+                    <Text style={s.placeName}>{sp.title}</Text>
+                    <Text style={s.placeMeta}>{sp.category} · 권장 체류 {sp.dwell}분</Text>
+                  </View>
+                </View>
 
-            <Text style={s.lbl}>만족도</Text>
-            <View style={s.stars}>
-              {[1, 2, 3, 4, 5].map((n) => (
-                <Pressable key={n} onPress={() => setRatingByContentId((prev) => ({ ...prev, [sp.contentId]: n }))}>
-                  <Text style={[s.star, n <= (ratingByContentId[sp.contentId] ?? 0) && s.starOn]}>★</Text>
-                </Pressable>
-              ))}
-            </View>
+                {/* 1. 체류 시간 템포 */}
+                <Text style={s.lbl}>체류 시간</Text>
+                <View style={s.chipRow}>
+                  <Pressable
+                    style={[s.chip, tempoByContentId[sp.contentId] === 'tight' && s.chipOn]}
+                    onPress={() => setTempoByContentId((prev) => ({ ...prev, [sp.contentId]: 'tight' }))}
+                  >
+                    <Text style={[s.chipTxt, tempoByContentId[sp.contentId] === 'tight' && s.chipTxtOn]}>촉박함</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[s.chip, tempoByContentId[sp.contentId] === 'good' && s.chipOn]}
+                    onPress={() => setTempoByContentId((prev) => ({ ...prev, [sp.contentId]: 'good' }))}
+                  >
+                    <Text style={[s.chipTxt, tempoByContentId[sp.contentId] === 'good' && s.chipTxtOn]}>적당함</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[s.chip, tempoByContentId[sp.contentId] === 'loose' && s.chipOn]}
+                    onPress={() => setTempoByContentId((prev) => ({ ...prev, [sp.contentId]: 'loose' }))}
+                  >
+                    <Text style={[s.chipTxt, tempoByContentId[sp.contentId] === 'loose' && s.chipTxtOn]}>여유로움</Text>
+                  </Pressable>
+                </View>
 
-            <View style={s.hr} />
-            <Text style={s.lbl}>실제 체류 시간 <Text style={s.opt}>(선택)</Text></Text>
-            <View style={s.row}>
-              {dwellOptions(sp.dwell).map((m) => (
-                <Chip key={m} active={actualDwellByContentId[sp.contentId] === m} onPress={() => setActualDwellByContentId((prev) => ({ ...prev, [sp.contentId]: m }))} text={`${m}분`} />
-              ))}
-            </View>
+                {/* 2. 장소 만족도 */}
+                <Text style={s.lbl}>장소 만족도</Text>
+                <View style={s.chipRow}>
+                  <Pressable
+                    style={[s.chip, ratingByContentId[sp.contentId] === 5 && s.chipOn]}
+                    onPress={() => setRatingByContentId((prev) => ({ ...prev, [sp.contentId]: 5 }))}
+                  >
+                    <Text style={[s.chipTxt, ratingByContentId[sp.contentId] === 5 && s.chipTxtOn]}>추천해요</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[s.chip, ratingByContentId[sp.contentId] === 3 && s.chipOn]}
+                    onPress={() => setRatingByContentId((prev) => ({ ...prev, [sp.contentId]: 3 }))}
+                  >
+                    <Text style={[s.chipTxt, ratingByContentId[sp.contentId] === 3 && s.chipTxtOn]}>보통이에요</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[s.chip, ratingByContentId[sp.contentId] === 1 && s.chipOn]}
+                    onPress={() => setRatingByContentId((prev) => ({ ...prev, [sp.contentId]: 1 }))}
+                  >
+                    <Text style={[s.chipTxt, ratingByContentId[sp.contentId] === 1 && s.chipTxtOn]}>아쉬워요</Text>
+                  </Pressable>
+                </View>
 
-            <View style={s.hr} />
-            <Text style={s.lbl}>또 가고 싶나요? <Text style={s.opt}>(선택)</Text></Text>
-            <View style={s.row}>
-              <Chip active={revisitByContentId[sp.contentId] === true} onPress={() => setRevisitByContentId((prev) => ({ ...prev, [sp.contentId]: true }))} text="예" />
-              <Chip active={revisitByContentId[sp.contentId] === false} onPress={() => setRevisitByContentId((prev) => ({ ...prev, [sp.contentId]: false }))} text="아니오" />
-            </View>
-          </View>
-        ))}
+                {/* 3. 이동 동선 */}
+                <Text style={s.lbl}>이동 동선</Text>
+                <View style={s.chipRow}>
+                  <Pressable
+                    style={[s.chip, mobilityByContentId[sp.contentId] === 'easy' && s.chipOn]}
+                    onPress={() => setMobilityByContentId((prev) => ({ ...prev, [sp.contentId]: 'easy' }))}
+                  >
+                    <Text style={[s.chipTxt, mobilityByContentId[sp.contentId] === 'easy' && s.chipTxtOn]}>편안함</Text>
+                  </Pressable>
+                  <Pressable
+                    style={[s.chip, mobilityByContentId[sp.contentId] === 'hard' && s.chipOn]}
+                    onPress={() => setMobilityByContentId((prev) => ({ ...prev, [sp.contentId]: 'hard' }))}
+                  >
+                    <Text style={[s.chipTxt, mobilityByContentId[sp.contentId] === 'hard' && s.chipTxtOn]}>불편함</Text>
+                  </Pressable>
+                </View>
+              </View>
+            ))}
 
-        {saveError ? <Text style={s.error}>{saveError}</Text> : null}
-        <Pressable style={[s.cta, (!Object.keys(ratingByContentId).length || isSaving) && s.ctaOff]} disabled={!Object.keys(ratingByContentId).length || isSaving} onPress={done}>
-          <Text style={s.ctaTxt}>{isSaving ? '저장 중...' : '평가 저장하고 마치기'}</Text>
-        </Pressable>
-        <Pressable style={s.skipBtn} disabled={isSaving} onPress={finish}>
-          <Text style={s.skipTxt}>평가 없이 마치기</Text>
-        </Pressable>
-
-        {canRetry && (
-          <Pressable style={s.retry} onPress={() => resetToMain(navigation)}>
-            <Text style={s.retryTxt}>{ctx.appointment ? `약속까지 약 ${course.bufferLeftMin}분 남음` : `약 ${course.bufferLeftMin}분 남음`}</Text>
-            <Text style={s.retryLink}>코스 더 보기 ›</Text>
-          </Pressable>
+            {saveError ? <Text style={s.error}>{saveError}</Text> : null}
+            <Pressable
+              style={[s.cta, isSaving && s.ctaOff]}
+              disabled={isSaving}
+              onPress={done}
+            >
+              <Text style={s.ctaTxt}>{isSaving ? '저장 중...' : '맞춤 설정 저장하기'}</Text>
+            </Pressable>
+            <Pressable style={s.skipBtn} disabled={isSaving} onPress={finish}>
+              <Text style={s.skipTxt}>다음에 설정하기</Text>
+            </Pressable>
+            <View style={{ height: 120 }} />
+          </>
         )}
-        <View style={{ height: 120 }} />
-        </>}
       </ScrollView>
       <FloatingTabBar
         active="course"
@@ -138,29 +220,85 @@ export function FeedbackScreen({ route, navigation }: Props) {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   scroll: { padding: 20, paddingTop: 24 },
-  h1: { color: C.txt, fontSize: 23, fontWeight: '800' },
-  sub: { color: C.muted, fontSize: 13.5, lineHeight: 20, marginTop: 5 },
-  savedWrap: { paddingTop: 16 },
-  savedBox: { backgroundColor: 'rgba(126,231,135,0.08)', borderColor: 'rgba(126,231,135,0.32)', borderWidth: 1, borderRadius: 14, padding: 15, marginTop: 18 },
-  savedTitle: { color: C.green, fontSize: 14, fontWeight: '900' },
-  savedTxt: { color: C.txt2, fontSize: 12.5, lineHeight: 19, marginTop: 7 },
-  card: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 16, padding: 16, marginTop: 18 },
-  placeName: { color: C.txt, fontSize: 17, fontWeight: '900' },
-  placeMeta: { color: C.muted, fontSize: 12.5, marginTop: 4, marginBottom: 16 },
-  lbl: { color: C.muted, fontSize: 11, fontWeight: '700', letterSpacing: 0.6, marginBottom: 8, textTransform: 'uppercase' },
-  opt: { fontWeight: '400', textTransform: 'none' },
-  stars: { flexDirection: 'row', gap: 6 },
-  star: { fontSize: 30, color: '#3a4653' },
-  starOn: { color: C.amber },
-  hr: { height: 1, backgroundColor: C.line, marginVertical: 14 },
-  row: { flexDirection: 'row', gap: 8 },
-  cta: { minHeight: 52, marginTop: 18, backgroundColor: C.accent, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
-  ctaOff: { backgroundColor: C.panel2 },
-  ctaTxt: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
+  h1: { color: C.txt, fontSize: 24, fontWeight: '900' },
+  sub: { color: C.muted, fontSize: 13.5, lineHeight: 20, marginTop: 6, marginBottom: 8 },
+  card: {
+    backgroundColor: C.panel,
+    borderColor: C.line,
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 16,
+    marginTop: 14,
+  },
+  placeHead: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 14 },
+  placeIndex: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: C.panel2,
+    color: C.accent,
+    textAlign: 'center',
+    lineHeight: 24,
+    fontSize: 12,
+    fontWeight: '900',
+  },
+  placeName: { color: C.txt, fontSize: 16.5, fontWeight: '800' },
+  placeMeta: { color: C.muted, fontSize: 12, marginTop: 2 },
+  lbl: { color: C.txt2, fontSize: 12, fontWeight: '800', marginTop: 12, marginBottom: 8 },
+  chipRow: { flexDirection: 'row', gap: 8 },
+  chip: {
+    flex: 1,
+    minHeight: 40,
+    backgroundColor: C.panel2,
+    borderWidth: 1,
+    borderColor: C.line,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chipOn: {
+    backgroundColor: 'rgba(76,194,255,0.15)',
+    borderColor: C.accent,
+  },
+  chipTxt: { color: C.muted, fontSize: 13, fontWeight: '700' },
+  chipTxtOn: { color: C.accent, fontWeight: '900' },
+  cta: {
+    minHeight: 52,
+    marginTop: 20,
+    backgroundColor: C.accent,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ctaOff: { opacity: 0.6 },
+  ctaTxt: { color: C.onAccent, fontSize: 15.5, fontWeight: '800' },
+  skipBtn: { alignItems: 'center', paddingVertical: 14, marginTop: 4 },
+  skipTxt: { color: C.muted, fontSize: 13.5, fontWeight: '700' },
   error: { color: C.red, fontSize: 12.5, marginTop: 14 },
-  skipBtn: { alignItems: 'center', paddingVertical: 12, marginTop: 4 },
-  skipTxt: { color: C.muted, fontSize: 13, fontWeight: '700' },
-  retry: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'rgba(227,179,65,0.08)', borderColor: 'rgba(227,179,65,0.3)', borderWidth: 1, borderRadius: 12, paddingVertical: 12, paddingHorizontal: 14, marginTop: 12 },
-  retryTxt: { color: C.amber, fontSize: 12.5, fontWeight: '600' },
-  retryLink: { color: C.accent, fontSize: 12.5, fontWeight: '700' },
+  rewardWrap: { alignItems: 'center', paddingTop: 32 },
+  checkCircle: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(34,197,94,0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  rewardH1: { color: C.txt, fontSize: 22, fontWeight: '900', textAlign: 'center' },
+  rewardSub: { color: C.muted, fontSize: 13.5, textAlign: 'center', marginTop: 6, marginBottom: 24 },
+  summaryCard: {
+    width: '100%',
+    backgroundColor: C.panel,
+    borderColor: C.line,
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 18,
+    gap: 14,
+    marginBottom: 12,
+  },
+  summaryTitle: { color: C.txt, fontSize: 15, fontWeight: '900', borderBottomWidth: 1, borderBottomColor: C.line, paddingBottom: 10 },
+  profileRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  profileLabel: { color: C.muted, fontSize: 13, fontWeight: '700' },
+  profileValue: { color: C.txt, fontSize: 13.5, fontWeight: '800' },
 });

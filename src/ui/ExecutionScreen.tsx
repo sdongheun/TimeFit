@@ -1,14 +1,15 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, AppState, AppStateStatus, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
-import { getActualRouteBaselines, planTimeFit, timeContext } from '../engine';
+import { getActualRouteBaselines, LatLon, Mode, planTimeFit, timeContext, travelGeo } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
 import { resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
+import { precompute, precomputeTransit } from '../engine/travel';
 import {
   cancelCourseNotifications,
   scheduleCourseNotifications,
@@ -57,16 +58,97 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
   const [notificationResult, setNotificationResult] = useState<ScheduleResult | null>(null);
   const [notificationError, setNotificationError] = useState(false);
   const [isChangingCourse, setIsChangingCourse] = useState(false);
+  const [nowMin, setNowMin] = useState<number>(currentMinuteOfDay());
+
+  const target = useMemo(() => ctx.appointment ?? origin, [ctx.appointment, origin]);
+
+  // 하이브리드 실경로 Hydration (로컬 캐시 즉시 렌더링 + 캐시 누락 시 백그라운드 1회 자동 복원)
+  const [hydratedTravelLegs, setHydratedTravelLegs] = useState<Array<{ geo?: LatLon[]; src?: string; mode?: Mode }>>(() => {
+    return course.legs.filter((lg) => !lg.label.startsWith('체류'));
+  });
+
+  useEffect(() => {
+    const travelLegs = course.legs.filter((lg) => !lg.label.startsWith('체류'));
+    const needsHydration = travelLegs.some((lg) => !lg.geo || lg.geo.length <= 1);
+    if (!needsHydration) return;
+
+    let alive = true;
+    async function restoreRouteGeo() {
+      try {
+        const pairs: Array<{ from: LatLon; to: LatLon; mode: Mode }> = [];
+        let curr: LatLon = origin;
+        for (let i = 0; i < course.spots.length; i++) {
+          const sp = course.spots[i];
+          const mode = travelLegs[i]?.mode ?? ctx.mode;
+          pairs.push({ from: curr, to: sp, mode });
+          curr = sp;
+        }
+        pairs.push({ from: curr, to: target, mode: travelLegs[course.spots.length]?.mode ?? ctx.mode });
+
+        await Promise.all(
+          pairs.map((p) =>
+            p.mode === 'transit'
+              ? precomputeTransit([[p.from, p.to]], { retryFallback: true })
+              : precompute([[p.from, p.to]], p.mode, { retryFallback: true }),
+          ),
+        );
+
+        if (!alive) return;
+        const updatedLegs = travelLegs.map((lg, i) => {
+          const pair = pairs[i];
+          if (!pair) return lg;
+          const restoredGeo = travelGeo(pair.from, pair.to, pair.mode);
+          return {
+            ...lg,
+            geo: restoredGeo && restoredGeo.length > 1 ? restoredGeo : lg.geo,
+            src: lg.src ?? 'TMAP',
+          };
+        });
+
+        setHydratedTravelLegs(updatedLegs);
+      } catch (err) {
+        console.warn('[실경로 하이드레이션] 복구 실패', err);
+      }
+    }
+
+    void restoreRouteGeo();
+    return () => { alive = false; };
+  }, [course, origin, target, ctx.mode]);
+
+  // 1분 주기 타이머 + 앱 복귀(AppState active) 자동 동기화 (배터리 누수 방지)
+  useEffect(() => {
+    const updateNow = () => setNowMin(currentMinuteOfDay());
+    updateNow();
+
+    const interval = setInterval(updateNow, 30_000); // 30초마다 분 단위 최신화
+
+    const sub = AppState.addEventListener('change', (nextState: AppStateStatus) => {
+      if (nextState === 'active') {
+        updateNow();
+      }
+    });
+
+    return () => {
+      clearInterval(interval);
+      sub.remove();
+    };
+  }, []);
+
   const { stops, alerts } = useMemo(
     () => buildExecutionSchedule(params),
     [params],
   );
 
-  const target = ctx.appointment ?? origin;
-  const pts = [origin, ...course.spots, target];
-  const geo = course.legs.filter((lg) => !lg.label.startsWith('체류')).flatMap((lg) => lg.geo ?? []);
-  const line = geo.length > 1 ? geo : pts;
-  const routeSegments = buildRouteMapSegments(pts, course.legs.filter((lg) => !lg.label.startsWith('체류')));
+  const pts = useMemo(() => [origin, ...course.spots, target], [origin, course.spots, target]);
+  const routeSegments = useMemo(
+    () => buildRouteMapSegments(pts, hydratedTravelLegs),
+    [pts, hydratedTravelLegs],
+  );
+  const geo = useMemo(
+    () => hydratedTravelLegs.flatMap((lg) => lg.geo ?? []),
+    [hydratedTravelLegs],
+  );
+  const line = useMemo(() => geo.length > 1 ? geo : pts, [geo, pts]);
   const endMin = ctx.startMin + ctx.remainingMin;
   const current = stops[Math.min(step, stops.length - 1)];
   const next = stops[step + 1];
@@ -74,24 +156,28 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
   const moveMin = next ? Math.max(0, next.arriveMin - current.leaveMin) : 0;
   const actualArriveMin = actualArriveMinByStep[step];
   const actualDepartMin = actualDepartMinByStep[step];
-  const effectiveArriveMin = actualArriveMin ?? current.arriveMin;
-  const stayMin = current.isSpot ? Math.max(0, current.leaveMin - effectiveArriveMin) : 0;
-  const delayMin = current.isSpot && actualArriveMin != null ? actualArriveMin - current.arriveMin : 0;
-  const stayWarning = current.isSpot && actualArriveMin != null && stayMin < 20;
+
+  // 실시간 동적 시간 계산 (음수 방어 및 초과 시각 계산)
+  const remainingStayMin = current.isSpot ? Math.max(0, current.leaveMin - nowMin) : 0;
+  const overdueMin = current.isSpot && nowMin > current.leaveMin ? nowMin - current.leaveMin : 0;
+  const stayWarning = current.isSpot && (overdueMin > 0 || remainingStayMin < 15);
+  const remainingMoveMin = !current.isSpot && next ? Math.max(0, (actualDepartMin != null ? actualDepartMin + moveMin : current.leaveMin) - nowMin) : moveMin;
+  const dynamicBufferLeftMin = Math.max(0, Math.round(course.bufferLeftMin));
+
   const totalSegments = Math.max(0, stops.length - 1);
   const currentSegment = Math.min(step + 1, totalSegments);
   const ctaLabel = isDone
     ? '코스 완료'
     : routeOpened
-      ? '다음 이동 준비하기'
-      : `현재 위치에서 ${next.name} 길찾기`;
+      ? '도착 완료 (다음 단계)'
+      : `${next.name} 길찾기`;
   const ctaKicker = isDone
     ? '마지막 지점'
     : `${currentSegment}/${totalSegments} 구간`;
   const ctaMeta = isDone
     ? '예정된 이동이 끝났습니다'
     : routeOpened
-      ? '다시 TimeFit으로 돌아왔을 때 이어서 안내합니다'
+      ? '목적지에 도착하셨다면 탭해 주세요'
       : `${current.name} → ${next.name}`;
 
   useEffect(() => {
@@ -227,21 +313,22 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
           actualDepartMin={actualDepartMin}
           alerts={alerts}
           appointmentLabel={ctx.appointment?.label}
-          bufferLeftMin={course.bufferLeftMin}
+          bufferLeftMin={dynamicBufferLeftMin}
           ctaKicker={ctaKicker}
           ctaLabel={ctaLabel}
           ctaMeta={ctaMeta}
           current={current}
           currentSegment={currentSegment}
-          delayMin={delayMin}
+          delayMin={0}
           endMin={endMin}
           isChangingCourse={isChangingCourse}
           isDone={isDone}
-          moveMin={moveMin}
+          moveMin={remainingMoveMin}
           next={next}
           notificationError={notificationError}
           notificationResult={notificationResult}
-          stayMin={stayMin}
+          overdueMin={overdueMin}
+          stayMin={remainingStayMin}
           stayWarning={stayWarning}
           step={step}
           stops={stops}
