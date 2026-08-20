@@ -4,3 +4,4 @@ export { planTimeFit, refineCourses, timeContext, timeContextManual, validateCou
 export { geocodeAddr, getActualRouteBaselines, getOdsayTransitUsage, getTmapRouteUsage, poiSearch, poiSearchMulti, reverseGeocode, travelGeo, travelMin, travelSrc, type Poi } from './travel';
 export { AUTO_WALK_LIMIT_MIN, automaticLegMode, automaticTravelLegs, type AutomaticTravelLeg } from './mixedTravel';
 export { hasKakaoRestKey, kakaoGeocodeAddr, kakaoPoiSearchMulti, kakaoReverseGeocode } from './kakao';
+export { getNearbyPopularPlaces, type PopularPlace } from './data';

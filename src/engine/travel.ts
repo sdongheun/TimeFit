@@ -684,18 +684,19 @@ export async function geocodeAddr(fullAddr: string, count = 3): Promise<Poi[]> {
   }
 }
 
-// TMAP 역지오코딩: 좌표 → 주소 (지도 롱프레스 핀용)
+// TMAP 역지오코딩: 좌표 → 도로명 주소 우선 변환
 export async function reverseGeocode(lat: number, lon: number): Promise<string | null> {
   if (!TMAP_KEY) return null;
   const qs = new URLSearchParams({
-    version: '1', lat: String(lat), lon: String(lon), coordType: 'WGS84GEO', addressType: 'A03',
+    version: '1', lat: String(lat), lon: String(lon), coordType: 'WGS84GEO', addressType: 'A04',
   }).toString();
   try {
     const res = await fetch(`https://apis.openapi.sk.com/tmap/geo/reversegeocoding?${qs}`, { headers: { appKey: TMAP_KEY } });
     if (!res.ok) return null;
     const j = await res.json();
     const a = j?.addressInfo;
-    return a?.fullAddress || [a?.city_do, a?.gu_gun, a?.legalDong].filter(Boolean).join(' ') || null;
+    const road = [a?.city_do, a?.gu_gun, a?.roadName, a?.buildingIndex].filter(Boolean).join(' ');
+    return road || a?.fullAddress || [a?.city_do, a?.gu_gun, a?.legalDong].filter(Boolean).join(' ') || null;
   } catch {
     return null;
   }

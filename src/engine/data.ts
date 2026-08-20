@@ -182,3 +182,78 @@ function distanceM(a: LatLon, b: LatLon): number {
   const x = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLon / 2) ** 2;
   return 6371000 * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
 }
+
+export type PopularPlace = {
+  contentId: string;
+  title: string;
+  category: string;
+  subCategory?: string;
+  addr1: string;
+  lat: number;
+  lon: number;
+  imageUrl?: string;
+  dwellMin: number;
+  distanceKm: number;
+  walkMin: number;
+};
+
+const BUSAN_DEFAULT_CENTER = { lat: 35.1578, lon: 129.0594 }; // 서면역
+
+function isInsideBusan(p: LatLon): boolean {
+  return p.lat >= 34.8 && p.lat <= 35.4 && p.lon >= 128.7 && p.lon <= 129.4;
+}
+
+export function getNearbyPopularPlaces(origin: LatLon, limit = 5): PopularPlace[] {
+  // 사용자가 부산 외 지역(서울, 경기 등)에 있을 경우 부산 중심(서면)을 기준으로 스마트 폴백
+  const center = isInsideBusan(origin) ? origin : BUSAN_DEFAULT_CENTER;
+
+  // 1. 유효한 이미지와 좌표를 가진 검증 장소 필터링
+  const candidates = allPlaces.filter((p) =>
+    Boolean(p.imageUrl) &&
+    Number.isFinite(p.lat) &&
+    Number.isFinite(p.lon) &&
+    p.mapVerification?.status !== 'not_found' &&
+    p.availabilityProfile !== 'hold',
+  );
+
+  // 2. 거리 계산 및 매핑
+  const mapped = candidates.map((p) => {
+    const distM = distanceM(center, { lat: p.lat, lon: p.lon });
+    const distKm = distM / 1000;
+    const walkMin = Math.max(1, Math.round((distKm / 4.5) * 60));
+    const dwellMin = p.dwell?.median ?? 45;
+    // 인기도 점수 = (방문 카운트 가중치) / (거리 + 0.3)
+    const popularity = (p.dwell?.count ?? 10) / (distKm + 0.3);
+    return {
+      contentId: p.contentId,
+      title: p.title,
+      category: p.category,
+      subCategory: p.subCategory,
+      addr1: p.addr1,
+      lat: p.lat,
+      lon: p.lon,
+      imageUrl: p.imageUrl,
+      dwellMin,
+      distanceKm: Number(distKm.toFixed(1)),
+      walkMin,
+      popularity,
+    };
+  });
+
+  // 3. 반경 3km 이내 필터링
+  let withinRadius = mapped.filter((p) => p.distanceKm <= 3.0);
+
+  // 4. 만약 3km 내에 장소가 부족하면 5km까지 확장
+  if (withinRadius.length < limit) {
+    withinRadius = mapped.filter((p) => p.distanceKm <= 5.0);
+  }
+  if (withinRadius.length < limit) {
+    withinRadius = mapped;
+  }
+
+  // 5. 인기도 및 거리 기준 정렬 후 상위 limit개 반환
+  withinRadius.sort((a, b) => b.popularity - a.popularity);
+  return withinRadius.slice(0, limit).map(({ popularity: _p, ...item }) => item);
+}
+
+
