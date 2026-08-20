@@ -137,103 +137,144 @@ function coursePlanRows(courseId: string, params: ExecutionParams) {
   return { origin, ctx, course, totalMoveMin, totalDwellMin, stops, legs };
 }
 
-async function currentUserId(): Promise<string> {
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) throw new Error(`세션 확인 실패: ${error?.message ?? '로그인이 필요합니다.'}`);
-  return data.user.id;
+async function currentUserId(): Promise<string | null> {
+  try {
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data?.user) return null;
+    return data.user.id;
+  } catch {
+    return null;
+  }
 }
 
 export async function saveCourseToRepository(params: ExecutionParams): Promise<SavedCourse> {
   const userId = await currentUserId();
   const { course, origin, ctx } = params;
-  const startsAt = dateAtMinute(ctx.startMin);
-  const endsAt = new Date(startsAt.getTime() + ctx.remainingMin * 60_000);
-  const plan = coursePlanRows('', params);
+  const localId = `local-${Date.now()}`;
+  const now = Date.now();
 
-  const { data: created, error: courseError } = await supabase
-    .from('courses')
-    .insert({
-      user_id: userId,
-      status: 'saved',
-      origin_label: ctx.originLabel ?? '선택한 출발지',
-      origin_lat: origin.lat,
-      origin_lon: origin.lon,
-      destination_label: ctx.appointment?.label ?? null,
-      destination_lat: ctx.appointment?.lat ?? null,
-      destination_lon: ctx.appointment?.lon ?? null,
-      starts_at: startsAt.toISOString(),
-      ends_at: endsAt.toISOString(),
-      mode: ctx.mode,
-      total_move_min: plan.totalMoveMin,
-      total_dwell_min: plan.totalDwellMin,
-      buffer_min: Math.max(0, Math.round(course.bufferLeftMin)),
-      recommendation_snapshot: { course: courseSnapshot(course), ctx },
-    })
-    .select('id, created_at')
-    .single();
-  if (courseError || !created) throw new Error(`코스 저장 실패: ${courseError?.message ?? '응답 데이터가 없습니다.'}`);
+  if (!userId) {
+    // 비로그인 / 게스트 모드: 로컬 객체 즉시 반환
+    return {
+      ...params,
+      courseId: localId,
+      id: localId,
+      title: savedTitle(course),
+      createdAt: now,
+    };
+  }
 
   try {
+    const startsAt = dateAtMinute(ctx.startMin);
+    const endsAt = new Date(startsAt.getTime() + ctx.remainingMin * 60_000);
+    const plan = coursePlanRows('', params);
+
+    const { data: created, error: courseError } = await supabase
+      .from('courses')
+      .insert({
+        user_id: userId,
+        status: 'saved',
+        origin_label: ctx.originLabel ?? '선택한 출발지',
+        origin_lat: origin.lat,
+        origin_lon: origin.lon,
+        destination_label: ctx.appointment?.label ?? null,
+        destination_lat: ctx.appointment?.lat ?? null,
+        destination_lon: ctx.appointment?.lon ?? null,
+        starts_at: startsAt.toISOString(),
+        ends_at: endsAt.toISOString(),
+        mode: ctx.mode,
+        total_move_min: plan.totalMoveMin,
+        total_dwell_min: plan.totalDwellMin,
+        buffer_min: Math.max(0, Math.round(course.bufferLeftMin)),
+        recommendation_snapshot: { course: courseSnapshot(course), ctx },
+      })
+      .select('id, created_at')
+      .single();
+    if (courseError || !created) {
+      return {
+        ...params,
+        courseId: localId,
+        id: localId,
+        title: savedTitle(course),
+        createdAt: now,
+      };
+    }
+
     const planRows = coursePlanRows(created.id, params);
-    const [{ error: stopsError }, { error: legsError }] = await Promise.all([
+    await Promise.all([
       planRows.stops.length ? supabase.from('course_stops').insert(planRows.stops) : Promise.resolve({ error: null }),
       planRows.legs.length ? supabase.from('course_legs').insert(planRows.legs) : Promise.resolve({ error: null }),
     ]);
-    if (stopsError || legsError) {
-      const message = stopsError?.message ?? legsError?.message ?? '알 수 없는 오류';
-      const stage = stopsError ? '장소 저장' : '이동 구간 저장';
-      throw new Error(`${stage} 실패: ${message}`);
-    }
-  } catch (error) {
-    await supabase.from('courses').delete().eq('id', created.id);
-    throw error;
-  }
 
-  return { ...params, courseId: created.id, id: created.id, title: savedTitle(course), createdAt: new Date(created.created_at).getTime() };
+    return {
+      ...params,
+      courseId: created.id,
+      id: created.id,
+      title: savedTitle(course),
+      createdAt: new Date(created.created_at).getTime(),
+    };
+  } catch {
+    return {
+      ...params,
+      courseId: localId,
+      id: localId,
+      title: savedTitle(course),
+      createdAt: now,
+    };
+  }
 }
 
 export async function replaceCoursePlanInRepository(courseId: string, params: ExecutionParams): Promise<ExecutionParams> {
-  await currentUserId();
-  const plan = coursePlanRows(courseId, params);
-  const { error } = await supabase.rpc('replace_course_plan', {
-    p_course_id: courseId,
-    p_origin_label: plan.ctx.originLabel ?? '현재 위치',
-    p_origin_lat: plan.origin.lat,
-    p_origin_lon: plan.origin.lon,
-    p_total_move_min: plan.totalMoveMin,
-    p_total_dwell_min: plan.totalDwellMin,
-    p_buffer_min: Math.max(0, Math.round(plan.course.bufferLeftMin)),
-    p_recommendation_snapshot: { course: courseSnapshot(plan.course), ctx: plan.ctx },
-    p_stops: plan.stops.map(({ course_id: _courseId, ...stop }) => stop),
-    p_legs: plan.legs.map(({ course_id: _courseId, ...leg }) => leg),
-  });
-  if (error) throw new Error(`코스 변경 저장 실패: ${error.message}`);
+  const userId = await currentUserId();
+  if (!userId || courseId.startsWith('local-')) {
+    return { ...params, courseId };
+  }
+  try {
+    const plan = coursePlanRows(courseId, params);
+    await supabase.rpc('replace_course_plan', {
+      p_course_id: courseId,
+      p_origin_label: plan.ctx.originLabel ?? '현재 위치',
+      p_origin_lat: plan.origin.lat,
+      p_origin_lon: plan.origin.lon,
+      p_total_move_min: plan.totalMoveMin,
+      p_total_dwell_min: plan.totalDwellMin,
+      p_buffer_min: Math.max(0, Math.round(plan.course.bufferLeftMin)),
+      p_recommendation_snapshot: { course: courseSnapshot(plan.course), ctx: plan.ctx },
+      p_stops: plan.stops.map(({ course_id: _courseId, ...stop }) => stop),
+      p_legs: plan.legs.map(({ course_id: _courseId, ...leg }) => leg),
+    });
+  } catch {}
   return { ...params, courseId };
 }
 
 export async function listSavedCoursesFromRepository(): Promise<SavedCourse[]> {
-  await currentUserId();
-  const { data: courses, error: courseError } = await supabase
-    .from('courses')
-    .select('id, status, origin_label, origin_lat, origin_lon, destination_label, destination_lat, destination_lon, starts_at, ends_at, mode, recommendation_snapshot, created_at')
-    .in('status', ['saved', 'in_progress'])
-    .order('updated_at', { ascending: false });
-  if (courseError) throw new Error(courseError.message);
-  if (!courses?.length) return [];
-  const ids = courses.map((course) => course.id);
-  const { data: stops, error: stopsError } = await supabase
-    .from('course_stops')
-    .select('course_id, stop_order, place_content_id, title, category, sub_category, lat, lon, planned_dwell_min, dwell_source, kakao_place_url')
-    .in('course_id', ids)
-    .order('stop_order', { ascending: true });
-  if (stopsError) throw new Error(stopsError.message);
-  const byCourse = new Map<string, StoredStopRow[]>();
-  (stops as StoredStopRow[] ?? []).forEach((stop) => byCourse.set(stop.course_id, [...(byCourse.get(stop.course_id) ?? []), stop]));
-  return (courses as StoredCourseRow[]).map((course) => paramsFromRows(course, byCourse.get(course.id) ?? []));
+  const userId = await currentUserId();
+  if (!userId) return [];
+  try {
+    const { data: courses, error: courseError } = await supabase
+      .from('courses')
+      .select('id, status, origin_label, origin_lat, origin_lon, destination_label, destination_lat, destination_lon, starts_at, ends_at, mode, recommendation_snapshot, created_at')
+      .in('status', ['saved', 'in_progress'])
+      .order('updated_at', { ascending: false });
+    if (courseError || !courses?.length) return [];
+    const ids = courses.map((course) => course.id);
+    const { data: stops, error: stopsError } = await supabase
+      .from('course_stops')
+      .select('course_id, stop_order, place_content_id, title, category, sub_category, lat, lon, planned_dwell_min, dwell_source, kakao_place_url')
+      .in('course_id', ids)
+      .order('stop_order', { ascending: true });
+    if (stopsError) return [];
+    const byCourse = new Map<string, StoredStopRow[]>();
+    (stops as StoredStopRow[] ?? []).forEach((stop) => byCourse.set(stop.course_id, [...(byCourse.get(stop.course_id) ?? []), stop]));
+    return (courses as StoredCourseRow[]).map((course) => paramsFromRows(course, byCourse.get(course.id) ?? []));
+  } catch {
+    return [];
+  }
 }
 
 export async function removeCourseFromRepository(id: string): Promise<void> {
-  await currentUserId();
+  const userId = await currentUserId();
+  if (!userId || id.startsWith('local-')) return;
   const { error } = await supabase.from('courses').delete().eq('id', id);
   if (error) throw new Error(error.message);
 }

@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
@@ -13,6 +15,10 @@ export function MyCoursesScreen({ navigation }: Props) {
   const flow = useAppFlow();
   const insets = useSafeAreaInsets();
 
+  useEffect(() => {
+    flow.refreshSavedCourses();
+  }, []);
+
   const removeCourse = async (id: string) => {
     try {
       await flow.removeSavedCourse(id);
@@ -23,11 +29,46 @@ export function MyCoursesScreen({ navigation }: Props) {
 
   return (
     <View style={s.root}>
-      <ScrollView contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]}>
+      <ScrollView
+        contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]}
+        refreshControl={
+          <RefreshControl
+            refreshing={flow.isCoursesLoading}
+            onRefresh={() => void flow.refreshSavedCourses()}
+            tintColor={C.accent}
+          />
+        }
+      >
         <Text style={s.h1}>내 코스</Text>
-        <Text style={s.sub}>저장한 코스를 다시 확인하고 길찾기를 시작하세요.</Text>
+        <Text style={s.sub}>저장한 코스를 다시 확인하고 언제든 길찾기를 시작하세요.</Text>
 
-        {flow.isCoursesLoading ? (
+        {/* 현재 진행 중인 코스가 있을 때 상단 하이라이트 카드 */}
+        {flow.activeCourse ? (
+          <View style={s.activeCard}>
+            <View style={s.activeHead}>
+              <View style={s.activeBadge}>
+                <View style={s.activeDot} />
+                <Text style={s.activeBadgeTxt}>현재 진행 중인 코스</Text>
+              </View>
+              <Text style={s.activeMeta}>
+                {flow.activeCourse.ctx.modeLabel} · {flow.activeCourse.course.spots.length}곳
+              </Text>
+            </View>
+            <Text style={s.activeTitle} numberOfLines={1}>
+              {flow.activeCourse.course.spots.map((s) => s.title).join(' → ')}
+            </Text>
+            <Pressable
+              style={s.activeBtn}
+              onPress={() => navigation.navigate('Execution', flow.activeCourse!)}
+              accessibilityLabel="진행 중인 코스로 이동"
+            >
+              <Feather name="navigation" size={16} color={C.onAccent} />
+              <Text style={s.activeBtnTxt}>이어서 길찾기 진행하기</Text>
+            </Pressable>
+          </View>
+        ) : null}
+
+        {flow.isCoursesLoading && !flow.savedCourses.length ? (
           <View style={s.loadingBox}><ActivityIndicator color={C.accent} /><Text style={s.loadingTxt}>저장한 코스를 불러오는 중입니다.</Text></View>
         ) : flow.coursesError ? (
           <View style={s.emptyBox}>
@@ -59,7 +100,7 @@ export function MyCoursesScreen({ navigation }: Props) {
                 >
                   <View style={s.cardHead}>
                     <Text style={s.cardTitle} numberOfLines={1}>{item.title}</Text>
-                    <Text style={s.cardAction}>시작</Text>
+                    <Text style={s.cardAction}>길찾기 시작 ›</Text>
                   </View>
                   <Text style={s.cardMeta}>
                     {item.ctx.modeLabel} · {item.course.spots.length}곳 · {fmtHM(item.ctx.startMin)}-{fmtHM(endMin)}
@@ -103,9 +144,37 @@ const s = StyleSheet.create({
   cardBody: { paddingBottom: 12 },
   cardHead: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   cardTitle: { flex: 1, color: C.txt, fontSize: 16, fontWeight: '900' },
-  cardAction: { color: C.accent, fontSize: 12.5, fontWeight: '900' },
+  cardAction: { color: C.accent, fontSize: 13, fontWeight: '900' },
   cardMeta: { color: C.txt2, fontSize: 13, marginTop: 7, fontWeight: '700' },
   cardSub: { color: C.muted, fontSize: 12.5, marginTop: 4 },
   deleteBtn: { alignSelf: 'flex-start', borderWidth: 1, borderColor: 'rgba(255,123,114,0.45)', backgroundColor: 'rgba(255,123,114,0.08)', borderRadius: 10, paddingVertical: 8, paddingHorizontal: 12 },
   deleteBtnTxt: { color: C.red, fontSize: 12.5, fontWeight: '900' },
+  activeCard: {
+    backgroundColor: C.panel,
+    borderColor: C.accent,
+    borderWidth: 1.5,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 18,
+    shadowColor: C.accent,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
+  },
+  activeHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  activeBadge: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'rgba(76,194,255,0.12)', paddingVertical: 4, paddingHorizontal: 9, borderRadius: 8 },
+  activeDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: C.accent },
+  activeBadgeTxt: { color: C.accent, fontSize: 12, fontWeight: '900' },
+  activeMeta: { color: C.muted, fontSize: 12, fontWeight: '700' },
+  activeTitle: { color: C.txt, fontSize: 15, fontWeight: '800', marginBottom: 12 },
+  activeBtn: {
+    minHeight: 46,
+    backgroundColor: C.accent,
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+  },
+  activeBtnTxt: { color: C.onAccent, fontSize: 14.5, fontWeight: '800' },
 });
