@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
@@ -48,6 +48,30 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const [picker, setPicker] = useState<'origin' | 'appointment' | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // 화면 진입 시 위치 권한이 허용되어 있으면 자동으로 현재 위치를 출발지로 설정 (수동 검색·변경은 그대로 가능)
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const { status } = await Location.getForegroundPermissionsAsync();
+        if (status === 'granted' && active) {
+          const position = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+          if (!active) return;
+          const { latitude: lat, longitude: lon } = position.coords;
+          setOrigin({ lat, lon });
+          const address = (await kakaoReverseGeocode(lat, lon)) ?? (await reverseGeocode(lat, lon));
+          if (!active) return;
+          setOriginLabel(address ? `현재 위치 · ${address}` : `현재 위치 (${lat.toFixed(3)}, ${lon.toFixed(3)})`);
+        }
+      } catch {
+        // 초기 자동 감지 실패 시 기본값(서면) 유지
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const startMin = startHour * 60 + startMinute;
   const endMin = endHour * 60 + endMinute;
