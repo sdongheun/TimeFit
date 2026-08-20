@@ -65,7 +65,10 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
       const p = await Location.getCurrentPositionAsync({});
       const lat = p.coords.latitude, lon = p.coords.longitude;
       const addr = await kakaoReverseGeocode(lat, lon) ?? await reverseGeocode(lat, lon);
-      const me: Poi = { name: addr ? `내 위치 · ${addr}` : `내 위치 (${lat.toFixed(4)}, ${lon.toFixed(4)})`, lat, lon, addr: 'GPS' };
+      const geocoded = addr ? (await kakaoGeocodeAddr(addr, 1))[0] ?? (await geocodeAddr(addr, 1))[0] : null;
+      const targetLat = geocoded ? geocoded.lat : lat;
+      const targetLon = geocoded ? geocoded.lon : lon;
+      const me: Poi = { name: addr ? `내 위치 · ${addr}` : `내 위치 (${lat.toFixed(4)}, ${lon.toFixed(4)})`, lat: targetLat, lon: targetLon, addr: 'GPS' };
       setCands([me]); setSel(0); setMsg('');
     } catch { setMsg('위치를 가져오지 못했어요'); }
     finally { setBusy(''); }

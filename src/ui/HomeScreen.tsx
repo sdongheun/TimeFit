@@ -1,6 +1,9 @@
+import { useEffect, useMemo, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as Location from 'expo-location';
+import { getNearbyPopularPlaces, LatLon } from '../engine';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
@@ -10,11 +13,7 @@ import { resetToMyCourses, resetToProfile } from './mainTabNavigation';
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const QUICK_TIMES = [30, 60, 90, 120, 180, 240];
-const FEATURED_PLACES = [
-  { title: '전포카페거리', caption: '카페 · 거리' },
-  { title: '광안리해수욕장', caption: '자연관광' },
-  { title: 'F1963', caption: '문화시설' },
-];
+const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
 
 function durationLabel(minutes: number) {
   if (minutes < 60) return `${minutes}분`;
@@ -24,6 +23,28 @@ function durationLabel(minutes: number) {
 export function HomeScreen({ navigation }: Props) {
   const { activeCourse } = useAppFlow();
   const insets = useSafeAreaInsets();
+  const [currentOrigin, setCurrentOrigin] = useState<LatLon>(SEOMYEON);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const { status } = await Location.getForegroundPermissionsAsync();
+        if (status === 'granted' && active) {
+          const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+          if (active && pos?.coords) {
+            setCurrentOrigin({ lat: pos.coords.latitude, lon: pos.coords.longitude });
+          }
+        }
+      } catch {
+        // 위치 실패 시 기본 서면 유지
+      }
+    })();
+    return () => { active = false; };
+  }, []);
+
+  const popularPlaces = useMemo(() => getNearbyPopularPlaces(currentOrigin, 5), [currentOrigin]);
+
   const openSetup = (presetMin?: number) => navigation.navigate('TimeSetup', presetMin ? { presetMin } : undefined);
 
   return (
@@ -60,15 +81,35 @@ export function HomeScreen({ navigation }: Props) {
           ))}
         </ScrollView>
 
-        <Text style={[s.sectionLabel, s.featuredLabel]}>부산에서 자주 담기는 곳</Text>
+        <View style={s.featuredHeader}>
+          <Text style={[s.sectionLabel, s.featuredLabel]}>부산에서 자주 담기는 곳</Text>
+          <Text style={s.featuredSub}>
+            {currentOrigin.lat >= 34.8 && currentOrigin.lat <= 35.4 && currentOrigin.lon >= 128.7 && currentOrigin.lon <= 129.4
+              ? '내 주변 반경 3km 인기 장소'
+              : '부산 서면 주변 인기 장소'}
+          </Text>
+        </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.featuredRow}>
-          {FEATURED_PLACES.map((place, index) => (
-            <Pressable key={place.title} onPress={() => openSetup()} style={s.featuredCard}>
-              <View style={[s.featuredVisual, index === 1 && s.featuredVisualNature, index === 2 && s.featuredVisualCulture]}>
-                <Text style={s.featuredVisualText}>{place.caption}</Text>
+          {popularPlaces.map((place) => (
+            <Pressable
+              key={place.contentId}
+              onPress={() => openSetup()}
+              style={s.featuredCard}
+              accessibilityLabel={`${place.title} 인기 장소`}
+            >
+              <View style={s.featuredVisual}>
+                {place.imageUrl ? (
+                  <Image source={{ uri: place.imageUrl }} style={s.featuredImage} />
+                ) : (
+                  <View style={s.featuredFallback}>
+                    <Text style={s.featuredVisualText}>{place.category}</Text>
+                  </View>
+                )}
               </View>
               <Text style={s.featuredTitle} numberOfLines={1}>{place.title}</Text>
-              <Text style={s.featuredCaption}>{place.caption}</Text>
+              <Text style={s.featuredCaption}>
+                {place.category} · {place.distanceKm < 1 ? `${Math.round(place.distanceKm * 1000)}m` : `${place.distanceKm}km`}
+              </Text>
             </Pressable>
           ))}
         </ScrollView>
@@ -103,13 +144,16 @@ const s = StyleSheet.create({
   chipRow: { gap: 8, paddingRight: 20 },
   quickChip: { minHeight: 40, paddingHorizontal: 17, borderRadius: 20, justifyContent: 'center', borderColor: C.line, borderWidth: 1, backgroundColor: C.panel },
   quickChipText: { color: C.txt2, fontSize: 14, fontWeight: '700' },
-  featuredLabel: { marginTop: 28 },
+  featuredHeader: { marginTop: 28, marginBottom: 12 },
+  featuredLabel: { marginTop: 0, marginBottom: 3, color: C.txt, fontSize: 15, fontWeight: '900' },
+  featuredSub: { color: C.muted, fontSize: 12, fontWeight: '600' },
   featuredRow: { gap: 12, paddingRight: 20 },
-  featuredCard: { width: 150 },
-  featuredVisual: { width: 150, height: 108, borderRadius: 12, backgroundColor: '#26364f', justifyContent: 'flex-end', padding: 12, overflow: 'hidden' },
-  featuredVisualNature: { backgroundColor: '#243b36' },
-  featuredVisualCulture: { backgroundColor: '#41322b' },
-  featuredVisualText: { color: C.txt, fontSize: 12, fontWeight: '800' },
-  featuredTitle: { color: C.txt, fontSize: 14, fontWeight: '800', marginTop: 9 },
-  featuredCaption: { color: C.muted, fontSize: 12, marginTop: 3 },
+  featuredCard: { width: 148, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, overflow: 'hidden', paddingBottom: 10 },
+  featuredVisual: { width: '100%', height: 96, backgroundColor: C.panel2, overflow: 'hidden' },
+  featuredImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  featuredFallback: { width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' },
+  featuredVisualText: { color: C.muted, fontSize: 12, fontWeight: '800' },
+  featuredTitle: { color: C.txt, fontSize: 13.5, fontWeight: '800', marginTop: 8, paddingHorizontal: 10 },
+  featuredCaption: { color: C.muted, fontSize: 11.5, marginTop: 3, paddingHorizontal: 10 },
 });
+

@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
-import { getActualRouteBaselines, HourBucket, kakaoReverseGeocode, planTimeFit, reverseGeocode, timeContext } from '../engine';
+import { getActualRouteBaselines, geocodeAddr, getNearbyPopularPlaces, HourBucket, kakaoGeocodeAddr, kakaoReverseGeocode, LatLon, planTimeFit, reverseGeocode, timeContext } from '../engine';
 import { Appointment, fmtHM, RootStackParamList } from './nav';
 import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
@@ -17,6 +17,49 @@ const HOURS = Array.from({ length: 24 }, (_, hour) => String(hour).padStart(2, '
 const MINUTES = Array.from({ length: 60 / STEP_MINUTES }, (_, index) => String(index * STEP_MINUTES).padStart(2, '0'));
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TimeSetup'>;
+
+async function resolveLocationRoadAddress(lat: number, lon: number): Promise<{ coords: LatLon; label: string }> {
+  // 1. 카카오 도로명 역지오코딩
+  const kakaoRoad = await kakaoReverseGeocode(lat, lon);
+
+  // 2. 네이티브 OS(iOS/Android) 역지오코딩
+  let nativeRoad: string | null = null;
+  try {
+    const [addr] = await Location.reverseGeocodeAsync({ latitude: lat, longitude: lon });
+    if (addr) {
+      const parts = [
+        addr.region,
+        addr.district || addr.city,
+        addr.street,
+        addr.streetNumber,
+      ].filter(Boolean);
+      if (parts.length >= 2) {
+        nativeRoad = parts.join(' ');
+      }
+    }
+  } catch {
+    // 네이티브 지오코딩 실패 무시
+  }
+
+  // 3. TMAP 도로명 역지오코딩
+  const tmapRoad = await reverseGeocode(lat, lon);
+
+  const roadAddress = kakaoRoad || nativeRoad || tmapRoad;
+
+  if (roadAddress) {
+    // 도로명 주소 기반 정규화 좌표 조회
+    const geocoded = (await kakaoGeocodeAddr(roadAddress, 1))[0] ?? (await geocodeAddr(roadAddress, 1))[0];
+    return {
+      coords: geocoded ? { lat: geocoded.lat, lon: geocoded.lon } : { lat, lon },
+      label: `현재 위치 · ${roadAddress}`,
+    };
+  }
+
+  return {
+    coords: { lat, lon },
+    label: `현재 위치 (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
+  };
+}
 
 function formatDuration(minutes: number) {
   if (minutes <= 0) return '—';
@@ -49,7 +92,10 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // 화면 진입 시 위치 권한이 허용되어 있으면 자동으로 현재 위치를 출발지로 설정 (수동 검색·변경은 그대로 가능)
+  // 현재 위치 기준 반경 3km 내 자주 찾는 인기 장소 상위 5개
+  const popularPlaces = useMemo(() => getNearbyPopularPlaces(origin, 5), [origin]);
+
+  // 화면 진입 시 위치 권한이 허용되어 있으면 자동으로 현재 위치 좌표를 도로명 주소로 변환하여 설정
   useEffect(() => {
     let active = true;
     (async () => {
@@ -59,10 +105,10 @@ export function TimeSetupScreen({ navigation, route }: Props) {
           const position = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
           if (!active) return;
           const { latitude: lat, longitude: lon } = position.coords;
-          setOrigin({ lat, lon });
-          const address = (await kakaoReverseGeocode(lat, lon)) ?? (await reverseGeocode(lat, lon));
+          const resolved = await resolveLocationRoadAddress(lat, lon);
           if (!active) return;
-          setOriginLabel(address ? `현재 위치 · ${address}` : `현재 위치 (${lat.toFixed(3)}, ${lon.toFixed(3)})`);
+          setOrigin(resolved.coords);
+          setOriginLabel(resolved.label);
         }
       } catch {
         // 초기 자동 감지 실패 시 기본값(서면) 유지
@@ -97,10 +143,10 @@ export function TimeSetupScreen({ navigation, route }: Props) {
       }
       const position = await Location.getCurrentPositionAsync({});
       const { latitude: lat, longitude: lon } = position.coords;
-      setOrigin({ lat, lon });
-      setOriginLabel('현재 위치 · 주소 확인 중');
-      const address = await kakaoReverseGeocode(lat, lon) ?? await reverseGeocode(lat, lon);
-      setOriginLabel(address ? `현재 위치 · ${address}` : `현재 위치 (${lat.toFixed(3)}, ${lon.toFixed(3)})`);
+      setOriginLabel('현재 위치 · 도로명 주소 확인 중');
+      const resolved = await resolveLocationRoadAddress(lat, lon);
+      setOrigin(resolved.coords);
+      setOriginLabel(resolved.label);
     } catch {
       setError('현재 위치를 가져오지 못했어요. 직접 장소를 검색해 주세요.');
     }
@@ -268,6 +314,50 @@ export function TimeSetupScreen({ navigation, route }: Props) {
           ) : null}
         </View>
 
+        {/* 현재 위치 기준 반경 3km 내 자주 찾는 인기 장소 5개 */}
+        {popularPlaces.length > 0 ? (
+          <View style={s.popularSection}>
+            <View style={s.popularHeader}>
+              <Text style={s.popularTitle}>내 주변 자주 찾는 장소</Text>
+              <Text style={s.popularSubtitle}>
+                {origin.lat >= 34.8 && origin.lat <= 35.4 && origin.lon >= 128.7 && origin.lon <= 129.4
+                  ? '반경 3km 내 자투리 시간에 많이 들르는 곳이에요'
+                  : '부산 서면 주변 자투리 시간에 많이 들르는 인기 장소예요'}
+              </Text>
+            </View>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={s.popularScroll}
+            >
+              {popularPlaces.map((place) => (
+                <Pressable
+                  key={place.contentId}
+                  style={s.popularCard}
+                  onPress={() => {
+                    setAppointment({ label: place.title, lat: place.lat, lon: place.lon });
+                  }}
+                  accessibilityLabel={`${place.title}을 다음 일정 장소로 선택`}
+                >
+                  {place.imageUrl ? (
+                    <Image source={{ uri: place.imageUrl }} style={s.popularImage} />
+                  ) : (
+                    <View style={s.popularFallbackImage}>
+                      <Text style={s.popularCategoryText}>{place.category}</Text>
+                    </View>
+                  )}
+                  <View style={s.popularInfo}>
+                    <Text style={s.popularPlaceName} numberOfLines={1}>{place.title}</Text>
+                    <Text style={s.popularMeta}>
+                      {place.distanceKm < 1 ? `${Math.round(place.distanceKm * 1000)}m` : `${place.distanceKm}km`} · 권장 {place.dwellMin}분
+                    </Text>
+                  </View>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        ) : null}
+
         {(validation || error) ? <Text style={s.error}>{validation || error}</Text> : null}
       </ScrollView>
 
@@ -334,9 +424,29 @@ const s = StyleSheet.create({
   devToggle: { paddingVertical: 6, paddingHorizontal: 4 },
   devToggleText: { color: C.muted, fontSize: 12, fontWeight: '600' },
   devCardWrapper: { marginTop: 8 },
+  popularSection: { marginTop: 6, marginBottom: 4 },
+  popularHeader: { marginBottom: 10, paddingHorizontal: 2 },
+  popularTitle: { color: C.txt, fontSize: 15, fontWeight: '900' },
+  popularSubtitle: { color: C.muted, fontSize: 12, marginTop: 3 },
+  popularScroll: { gap: 12, paddingRight: 8 },
+  popularCard: {
+    width: 148,
+    backgroundColor: C.panel,
+    borderColor: C.line,
+    borderWidth: 1,
+    borderRadius: 14,
+    overflow: 'hidden',
+  },
+  popularImage: { width: '100%', height: 94, backgroundColor: C.panel2 },
+  popularFallbackImage: { width: '100%', height: 94, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' },
+  popularCategoryText: { color: C.muted, fontSize: 12, fontWeight: '700' },
+  popularInfo: { padding: 10 },
+  popularPlaceName: { color: C.txt, fontSize: 13.5, fontWeight: '800' },
+  popularMeta: { color: C.muted, fontSize: 11.5, marginTop: 3 },
   error: { color: C.red, fontSize: 12.5, fontWeight: '600', lineHeight: 19, paddingHorizontal: 2 },
   footer: { padding: 16, paddingBottom: 28, borderTopColor: C.line, borderTopWidth: 1, backgroundColor: C.bg },
   cta: { minHeight: 52, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: C.accent },
   ctaDisabled: { backgroundColor: C.panel2 },
   ctaText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
 });
+
