@@ -25,6 +25,18 @@ function transportColor(mode: Mode): string {
   return C.green;
 }
 
+function bufferNoteForMode(mode: Mode): string {
+  if (mode === "transit") return "(대기·환승 20분 포함)";
+  if (mode === "walk") return "(보행 여유 8분 포함)";
+  return "(주차·정체 10분 포함)";
+}
+
+function modeHintForMode(mode: Mode): string {
+  if (mode === "transit") return "대중교통 지연에 대비해 안전 여유 20분을 미리 확보해요";
+  if (mode === "walk") return "도보는 이동이 확실해 장소에 더 오래 머물 수 있어요";
+  return "차량 이동은 주차·신호 대기 여유 10분을 반영해요";
+}
+
 export function CandidateDetail({
   item,
   scenarios,
@@ -76,9 +88,19 @@ export function CandidateDetail({
         <View style={s.metrics}>
           <Metric value={`${Math.round(chosen?.totalMoveMin ?? 0)}분`} label="총 이동" style={s.move} />
           <View style={s.divider} />
-          <Metric value={`${chosen?.totalStayMin ?? 0}분`} label="코스 체류" style={s.stay} />
+          <Metric
+            value={`${chosen?.stayPossibleMin ?? 0}분`}
+            label="이 장소 체류"
+            subLabel={chosen && chosen.totalStayMin !== chosen.stayPossibleMin ? `(코스 총 ${chosen.totalStayMin}분)` : undefined}
+            style={s.stay}
+          />
           <View style={s.divider} />
-          <Metric value={`${Math.round(chosen?.remainingAfterPlannedMin ?? 0)}분`} label="남는 시간" style={s.remaining} />
+          <Metric
+            value={`${Math.round(chosen?.remainingAfterPlannedMin ?? 0)}분`}
+            label="남는 시간"
+            subLabel={chosen ? bufferNoteForMode(chosen.mode) : undefined}
+            style={s.remaining}
+          />
         </View>
       </View>
       <View style={s.modePicker}>
@@ -98,6 +120,7 @@ export function CandidateDetail({
           );
         })}
       </View>
+      <Text style={s.modeHint}>{modeHintForMode(chosenMode)}</Text>
       <Pressable disabled={disabled} onPress={onAddToBasket} style={[s.confirm, disabled && s.confirmOff]}>
         <Text style={[s.confirmText, disabled && s.confirmTextOff]}>{isAdding ? "실제 경로 확인 중" : !chosen || chosen.status === "over" ? "시간 안에 담기 어려워요" : "장바구니에 담기"}</Text>
       </Pressable>
@@ -115,8 +138,14 @@ function RouteLeg({ mode, minutes }: { mode?: Mode; minutes?: number | string })
   return <View style={s.routeLeg}><View style={[s.dash, { borderColor: color }]} /><View style={[s.routeLegIcon, { borderColor: color }]}><TransportGlyph mode={mode} color={color} size={17} /></View><Text style={s.routeLegTime}>{minutes ?? "-"}분</Text></View>;
 }
 
-function Metric({ value, label, style }: { value: string; label: string; style: object }) {
-  return <View style={s.metric}><Text style={style}>{value}</Text><Text style={s.metricLabel}>{label}</Text></View>;
+function Metric({ value, label, subLabel, style }: { value: string; label: string; subLabel?: string; style: object }) {
+  return (
+    <View style={s.metric}>
+      <Text style={style}>{value}</Text>
+      <Text style={s.metricLabel}>{label}</Text>
+      {subLabel ? <Text style={s.metricSubLabel}>{subLabel}</Text> : null}
+    </View>
+  );
 }
 
 const s = StyleSheet.create({
@@ -146,12 +175,14 @@ const s = StyleSheet.create({
   stay: { color: C.txt, fontSize: 21, fontWeight: "900", marginTop: 2 },
   remaining: { color: C.green, fontSize: 20, fontWeight: "900", marginTop: 2 },
   metricLabel: { color: C.muted, fontSize: 10.5, fontWeight: "800", marginTop: 3 },
+  metricSubLabel: { color: C.muted, fontSize: 9, fontWeight: "600", marginTop: 1 },
   modePicker: { flexDirection: "row", gap: 8, marginTop: 12 },
   mode: { flex: 1, minHeight: 39, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 5, borderWidth: 1, borderColor: C.line, borderRadius: 9, backgroundColor: C.panel2 },
   modeOn: { borderColor: C.accent, backgroundColor: "rgba(76,194,255,0.12)" },
   modeOff: { opacity: 0.38 },
   modeTime: { color: C.txt2, fontSize: 11.5, fontWeight: "900" },
   modeTimeOn: { color: C.accent },
+  modeHint: { color: C.muted, fontSize: 11.5, fontWeight: "600", textAlign: "center", marginTop: 8 },
   confirm: { minHeight: 50, marginTop: 14, borderRadius: 12, alignItems: "center", justifyContent: "center", backgroundColor: C.accent },
   confirmOff: { backgroundColor: C.panel2 },
   confirmText: { color: C.onAccent, fontSize: 14, fontWeight: "900" },

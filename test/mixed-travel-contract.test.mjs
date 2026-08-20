@@ -41,10 +41,10 @@ test('장소 미리보기는 경로와 남은 시간을 먼저 보여주고, 수
   assert.match(candidateDetail, /stay:/);
   assert.match(candidateDetail, /remaining:/);
   assert.match(candidateDetail, /남는 시간/);
-  assert.match(candidateDetail, /코스 체류/);
+  assert.match(candidateDetail, /이 장소 체류/);
   assert.match(candidateDetail, /총 이동/);
   assert.match(candidateDetail, /totalMoveMin/);
-  assert.match(candidateDetail, /totalStayMin/);
+  assert.match(candidateDetail, /stayPossibleMin/);
   assert.match(candidateDetail, /remainingAfterPlannedMin/);
   assert.match(candidateDetail, /modePicker/);
   assert.match(candidateDetail, /장바구니에 담기/);

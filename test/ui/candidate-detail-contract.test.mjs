@@ -13,8 +13,8 @@ test('장소 상세는 표시 전용이며 수단 선택·카카오맵 열기·�
   assert.match(source, /카카오맵에서 보기/);
   assert.match(source, /장바구니에 담기/);
   assert.match(source, /chosen\?\.totalMoveMin/);
-  assert.match(source, /chosen\?\.totalStayMin/);
+  assert.match(source, /chosen\?\.stayPossibleMin/);
   assert.match(source, /chosen\?\.remainingAfterPlannedMin/);
   assert.match(source, /label="총 이동"/);
-  assert.match(source, /label="코스 체류"/);
+  assert.match(source, /label="이 장소 체류"/);
 });
