@@ -12,6 +12,7 @@ type LayoutInput = {
   windowHeight: number;
   insetTop: number;
   insetBottom: number;
+  defaultRatio?: number;
 };
 
 const EXPANDED_RATIO = 0.9;
@@ -23,6 +24,7 @@ export function recommendationSheetLayout({
   windowHeight,
   insetTop,
   insetBottom,
+  defaultRatio = DEFAULT_RATIO,
 }: LayoutInput): RecommendationSheetLayout {
   const expandedHeight = Math.max(
     0,
@@ -33,7 +35,7 @@ export function recommendationSheetLayout({
   );
   const defaultHeight = Math.min(
     expandedHeight,
-    Math.max(0, Math.round(windowHeight * DEFAULT_RATIO)),
+    Math.max(0, Math.round(windowHeight * defaultRatio)),
   );
   const collapsedVisibleHeight = insetBottom + COLLAPSED_CONTROL_HEIGHT;
 

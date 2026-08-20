@@ -28,7 +28,7 @@ import {
   createActualRouteSearchScope,
   isPointInActualRouteSearchScope,
 } from "../engine/actualRouteSearchScope";
-import { RootStackParamList, fmtHM } from "./nav";
+import { PlanCtx, RootStackParamList, fmtHM } from "./nav";
 import { C } from "./theme";
 import { useAppFlow } from "./AppFlowContext";
 import { FloatingTabBar } from "./FloatingTabBar";
@@ -109,8 +109,9 @@ export function ResultsScreen({ route, navigation }: Props) {
         windowHeight,
         insetTop: insets.top,
         insetBottom: insets.bottom,
+        defaultRatio: page === "basket" ? 0.70 : 0.56,
       }),
-    [insets.bottom, insets.top, windowHeight],
+    [insets.bottom, insets.top, page, windowHeight],
   );
   const {
     defaultHeight: defaultSheetHeight,
@@ -535,19 +536,32 @@ export function ResultsScreen({ route, navigation }: Props) {
       }
 
       const baseParams = { course: refinedCourse, origin, ctx };
-      // 장바구니가 최종 검토 화면이다. DB 저장이 성공한 코스만 실행 흐름으로 넘긴다.
-      const executionParams = editingCourseId
-        ? await replaceCourse(editingCourseId, baseParams)
-        : { ...baseParams, courseId: (await saveCourse(baseParams)).id };
+      let executionParams: { course: Course; origin: LatLon; ctx: PlanCtx; courseId: string } = {
+        ...baseParams,
+        courseId: editingCourseId ?? `local-${Date.now()}`,
+      };
+
+      try {
+        if (editingCourseId) {
+          const updated = await replaceCourse(editingCourseId, baseParams);
+          executionParams = { ...baseParams, courseId: updated.courseId ?? editingCourseId };
+        } else {
+          const saved = await saveCourse(baseParams);
+          executionParams = { ...baseParams, courseId: saved.id };
+        }
+      } catch (saveError) {
+        console.warn("[코스 백그라운드 저장 폴백]", saveError);
+      }
+
       setActiveCourse(executionParams);
       navigation.replace("Execution", executionParams);
     } catch (error) {
-      console.warn("[코스 저장] 실패", error);
+      console.warn("[코스 확정 실패]", error);
       Alert.alert(
-        "코스 저장 실패",
+        "코스 확정 실패",
         error instanceof Error
           ? error.message
-          : "저장한 뒤 다시 시도해 주세요.",
+          : "다시 시도해 주세요.",
       );
     } finally {
       setIsSavingCourse(false);
@@ -665,12 +679,13 @@ export function ResultsScreen({ route, navigation }: Props) {
       ) : null}
       {page === "basket" ? (
         <KakaoRouteMap
-          style={[s.basketMap, { height: basketMapHeight }]}
+          style={[s.basketMap, { height: windowHeight }]}
           points={basketMapPoints}
           line={basketRouteLine.length > 1 ? basketRouteLine : basketMapPoints}
           segments={basketRouteSegments}
           recenterPoint={mapFocusRequest.point}
           recenterToken={mapFocusRequest.token}
+          recenterOffsetY={mapFocusOffsetYForSheet}
           markers={[
             { ...origin, label: "현재 위치", kind: "origin" },
             ...selected.map((spot) => ({
@@ -691,14 +706,27 @@ export function ResultsScreen({ route, navigation }: Props) {
           boundsPadding={{
             top: insets.top + 58,
             right: 18,
-            bottom: 18,
+            bottom:
+              sheetPosition === "collapsed"
+                ? insets.bottom + 96
+                : sheetPosition === "expanded"
+                  ? insets.top + 58
+                  : defaultSheetHeight + 18,
             left: 18,
           }}
         />
       ) : null}
-      {page === "basket" ? (
+      {page === "basket" && sheetPosition !== "expanded" ? (
         <MapIconButton
-          style={[s.mapLocationButton, { top: basketMapHeight - 54 }]}
+          style={[
+            s.mapLocationButton,
+            {
+              bottom:
+                sheetPosition === "collapsed"
+                  ? insets.bottom + 96
+                  : defaultSheetHeight + 16,
+            },
+          ]}
           onPress={() => requestMapFocus(origin)}
           accessibilityLabel="현재 위치로 지도 이동"
           icon="crosshair"
@@ -744,41 +772,38 @@ export function ResultsScreen({ route, navigation }: Props) {
       <Animated.View
         // 추천 시트의 native translateY가 장바구니 일반 레이아웃에 남지 않게 페이지별로 재마운트한다.
         key={page}
-        style={
-          page === "recommend"
-            ? [
-                s.candidateSheet,
-                sheetPosition === "expanded" && s.candidateSheetExpanded,
-                {
-                  height: expandedSheetHeight,
-                  transform: [{ translateY: sheetTranslateY }],
-                },
-              ]
-            : [s.pageSurface, { marginTop: basketMapHeight }]
-        }
+        style={[
+          s.candidateSheet,
+          sheetPosition === "expanded" && s.candidateSheetExpanded,
+          {
+            height: expandedSheetHeight,
+            transform: [{ translateY: sheetTranslateY }],
+          },
+        ]}
       >
-        {page === "recommend" ? (
-          <View style={s.sheetTop}>
-            <View
-              {...sheetPanHandlers}
-              accessibilityLabel={
-                sheetPosition === "collapsed"
-                  ? "장소 목록 펼치기"
-                  : sheetPosition === "expanded"
-                    ? "장소 목록 기본 크기로 줄이기"
-                    : "장소 목록 펼치기"
-              }
-              style={s.sheetDragArea}
-            >
-              <View style={s.sheetHandle} />
-            </View>
-            {sheetPosition !== "collapsed" && !pendingTransportItem ? (
-              <View style={s.sheetCandidateCount}>
-                <Text style={s.sheetCandidateCountText}>장소 후보 {filtered.length}</Text>
-              </View>
-            ) : null}
+        <View style={s.sheetTop}>
+          <View
+            {...sheetPanHandlers}
+            accessibilityLabel={
+              sheetPosition === "collapsed"
+                ? page === "basket" ? "장바구니 펼치기" : "장소 목록 펼치기"
+                : sheetPosition === "expanded"
+                  ? page === "basket" ? "장바구니 기본 크기로 줄이기" : "장소 목록 기본 크기로 줄이기"
+                  : page === "basket" ? "장바구니 펼치기" : "장소 목록 펼치기"
+            }
+            style={s.sheetDragArea}
+          >
+            <View style={s.sheetHandle} />
           </View>
-        ) : null}
+          {sheetPosition !== "collapsed" && !pendingTransportItem ? (
+            <View style={s.sheetCandidateCount}>
+              <Text style={s.sheetCandidateCountText}>
+                {page === "basket" ? `담은 장소 ${selected.length}개` : null}
+                {page === "recommend" ? <>장소 후보 {filtered.length}</> : null}
+              </Text>
+            </View>
+          ) : null}
+        </View>
         <ScrollView
           ref={page === "recommend" ? candidateListRef : undefined}
           style={s.contentScroll}
@@ -845,7 +870,14 @@ const s = StyleSheet.create({
     left: 0,
     zIndex: 0,
   },
-  basketMap: { position: "absolute", top: 0, right: 0, left: 0, zIndex: 0 },
+  basketMap: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 0,
+  },
   basketMapBar: { position: "absolute", left: 16, zIndex: 3 },
   mapTopBar: {
     position: "absolute",
