@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TimeFit Wireframe v1</title>
+  <style>
+    :root {
+      --bg: #111317;
+      --surface: #1b1e24;
+      --surface-2: #242831;
+      --line: #3a404b;
+      --text: #f5f7fb;
+      --muted: #a9b1bf;
+      --blue: #4da8ff;
+      --blue-2: #2671d8;
+      --green: #54c96d;
+      --amber: #f2ac3f;
+      --red: #e26767;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #e8edf3;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(250px, 1fr) minmax(360px, 430px) minmax(250px, 1fr);
+      align-items: center;
+      gap: 48px;
+      padding: 32px;
+    }
+    .notes { color: #27313e; max-width: 320px; }
+    .notes h1 { margin: 0 0 12px; font-size: 30px; letter-spacing: 0; }
+    .notes p { margin: 0 0 16px; line-height: 1.6; }
+    .notes ul { margin: 0; padding-left: 20px; line-height: 1.7; }
+    .legend { border-top: 1px solid #c5ced8; margin-top: 28px; padding-top: 16px; font-size: 13px; }
+    .legend strong { color: #15202d; }
+
+    .phone {
+      width: min(100%, 430px);
+      height: min(860px, calc(100vh - 64px));
+      min-height: 680px;
+      overflow: hidden;
+      position: relative;
+      background: var(--bg);
+      border: 10px solid #08090b;
+      border-radius: 46px;
+      box-shadow: 0 28px 60px rgba(27, 37, 48, .28);
+    }
+    .status {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 24px 0;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .island { position: absolute; top: 11px; left: 50%; width: 112px; height: 27px; border-radius: 15px; background: #000; transform: translateX(-50%); }
+    .screen {
+      display: none;
+      height: calc(100% - 52px);
+      overflow-y: auto;
+      padding: 24px 22px 100px;
+      scrollbar-width: none;
+    }
+    .screen.active { display: block; }
+    .screen::-webkit-scrollbar { display: none; }
+
+    h2 { font-size: 26px; line-height: 1.25; margin: 8px 0 8px; letter-spacing: 0; }
+    h3 { font-size: 17px; margin: 0; letter-spacing: 0; }
+    p { color: var(--muted); line-height: 1.5; }
+    .eyebrow { color: var(--blue); font-weight: 700; font-size: 13px; margin: 0 0 8px; }
+    .small { font-size: 13px; }
+    .header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 18px; }
+    .back, .icon-button {
+      width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 12px;
+      background: var(--surface-2); color: var(--text); font-size: 24px; line-height: 1;
+    }
+    .icon-button { font-size: 20px; }
+    .primary, .secondary, .link-button {
+      width: 100%; min-height: 52px; border-radius: 12px; border: 0; font-weight: 750; font-size: 16px;
+    }
+    .primary { background: var(--blue-2); color: white; }
+    .primary:active { background: #185db6; }
+    .secondary { background: var(--surface-2); border: 1px solid var(--line); color: var(--text); }
+    .link-button { min-height: 42px; background: transparent; border: 1px solid var(--line); color: var(--blue); }
+    .stack { display: grid; gap: 12px; }
+    .space { height: 18px; }
+    .card { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius); padding: 17px; }
+    .muted-card { background: #171a20; border: 1px dashed #4a5160; border-radius: var(--radius); padding: 16px; }
+
+    .login-mark { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 14px; background: var(--blue-2); font-size: 22px; font-weight: 800; }
+    .field { display: grid; gap: 8px; margin: 17px 0; }
+    .field label { color: var(--muted); font-size: 13px; font-weight: 700; }
+    .input-like { min-height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; border-radius: 12px; border: 1px solid var(--line); background: #111419; color: var(--text); }
+    .input-like input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--text); }
+
+    .tabbar { position: absolute; left: 14px; right: 14px; bottom: 14px; height: 66px; padding: 7px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; border: 1px solid var(--line); border-radius: 18px; background: #171b22; }
+    .tab { border: 0; background: transparent; color: var(--muted); border-radius: 12px; font-size: 12px; font-weight: 700; }
+    .tab.active { background: #233449; color: var(--blue); }
+
+    .time-title { margin-top: 16px; font-size: 37px; line-height: 1.05; letter-spacing: 0; }
+    .time-hero { padding: 24px 0 30px; }
+    .divider { height: 1px; background: var(--line); margin: 18px 0; }
+    .option-row { min-height: 58px; width: 100%; display: flex; align-items: center; justify-content: space-between; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--text); text-align: left; }
+    .option-row:first-of-type { border-top: 1px solid var(--line); }
+    .option-label { display: grid; gap: 4px; }
+    .option-label span { color: var(--muted); font-size: 13px; }
+    .chevron { color: var(--muted); font-size: 22px; }
+    .slider-wrap { margin: 26px 0 12px; }
+    .slider-top { display: flex; justify-content: space-between; align-items: baseline; }
+    .slider-top strong { color: var(--blue); font-size: 21px; }
+    input[type="range"] { width: 100%; margin: 17px 0 2px; accent-color: var(--blue); }
+    .range-ends { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
+    .dev-toggle { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 12px; margin-top: 16px; }
+    .dev-toggle input { accent-color: var(--blue); }
+
+    .loading { display: grid; place-content: center; min-height: 570px; text-align: center; }
+    .loading h2 { margin-top: 20px; }
+    .steps { text-align: left; margin: 30px auto 0; width: min(100%, 280px); display: grid; gap: 17px; }
+    .step { display: flex; gap: 12px; align-items: center; color: var(--muted); font-size: 14px; }
+    .dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid #697385; }
+    .step.active .dot { border-color: var(--blue); background: var(--blue); box-shadow: 0 0 0 5px rgba(77,168,255,.16); }
+    .step.done .dot { border-color: var(--green); background: var(--green); }
+
+    .budget { padding: 17px; border: 1px solid #34669a; border-radius: var(--radius); background: #162333; }
+    .budget strong { display: block; font-size: 23px; margin-bottom: 4px; }
+    .budget span { color: #b7d7f5; font-size: 13px; }
+    .section-row { display: flex; align-items: center; justify-content: space-between; margin: 24px 0 12px; }
+    .section-row button { border: 0; padding: 0; background: transparent; color: var(--blue); font-weight: 700; }
+    .place-card { width: 100%; padding: 0; overflow: hidden; text-align: left; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--text); }
+    .place-image { height: 92px; display: grid; place-items: center; background: #36414e; color: #e1e9f2; font-size: 13px; }
+    .place-body { padding: 16px; }
+    .place-topline { display: flex; justify-content: space-between; gap: 8px; color: var(--green); font-size: 13px; font-weight: 750; }
+    .place-card h3 { margin: 9px 0; font-size: 20px; }
+    .metric-row { display: flex; flex-wrap: wrap; gap: 7px; color: var(--muted); font-size: 13px; }
+    .metric-row b { color: var(--text); }
+    .arrival { margin-top: 14px; color: #c9def1; font-size: 14px; }
+    .short-card { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    .short-card .tag { color: var(--amber); font-size: 12px; font-weight: 700; }
+
+    .map { height: 235px; position: relative; overflow: hidden; border-radius: var(--radius); background: #dfe7ef; color: #2a3543; }
+    .map::before, .map::after { content: ""; position: absolute; inset: -35%; background: repeating-linear-gradient(110deg, transparent 0 40px, rgba(83,104,125,.22) 42px 45px, transparent 47px 92px); transform: rotate(-9deg); }
+    .map::after { transform: rotate(72deg); opacity: .6; }
+    .pin { position: absolute; z-index: 1; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--blue-2); color: #fff; border: 3px solid #fff; box-shadow: 0 3px 7px rgba(0,0,0,.24); }
+    .pin b { transform: rotate(45deg); font-size: 12px; }
+    .pin.origin { background: var(--red); left: 22%; top: 55%; }
+    .pin.place { background: var(--blue-2); left: 57%; top: 34%; }
+    .pin.destination { background: var(--green); right: 14%; bottom: 20%; }
+    .map-label { position: absolute; z-index: 2; padding: 5px 8px; border-radius: 7px; background: rgba(255,255,255,.92); font-size: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.14); }
+    .map-label.place { left: 48%; top: 17%; }
+    .map-label.origin { left: 10%; top: 70%; }
+    .map-label.destination { right: 7%; bottom: 5%; }
+    .timeline { display: grid; gap: 0; margin: 20px 0; }
+    .timeline-row { display: grid; grid-template-columns: 14px 1fr auto; gap: 11px; align-items: center; min-height: 50px; }
+    .timeline-line { width: 2px; height: 28px; margin: -10px 0 -10px 6px; background: var(--line); }
+    .timeline-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--blue); }
+    .timeline-row strong { font-size: 15px; }
+    .timeline-row span { color: var(--muted); font-size: 13px; }
+    .pill { padding: 7px 9px; border-radius: 99px; font-size: 12px; font-weight: 750; border: 1px solid currentColor; }
+    .pill.good { color: var(--green); }
+    .pill.warn { color: var(--amber); }
+    .callout { padding: 14px; border-radius: 12px; background: #232022; border-left: 3px solid var(--amber); color: #e9d9bb; font-size: 14px; line-height: 1.45; }
+    .review-scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+    .review-scale button, .choice { height: 42px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); color: var(--text); }
+    .review-scale button.selected, .choice.selected { border-color: var(--blue); background: #1d3854; color: var(--blue); }
+    .choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+    .empty { display: grid; place-content: center; min-height: 520px; text-align: center; }
+    .empty .empty-mark { width: 62px; height: 62px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line); color: var(--muted); font-size: 26px; }
+    .toast { position: absolute; z-index: 6; left: 50%; bottom: 94px; max-width: calc(100% - 48px); transform: translate(-50%, 20px); opacity: 0; transition: .2s ease; padding: 11px 14px; border-radius: 10px; background: #f2f6fa; color: #1e2731; font-size: 13px; font-weight: 700; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 900px) {
+      .page { grid-template-columns: 1fr; padding: 20px; gap: 20px; }
+      .notes { display: none; }
+      .phone { height: calc(100vh - 40px); max-height: 860px; justify-self: center; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <aside class="notes">
+      <h1>TimeFit<br />Wireframe v1</h1>
+      <p>한 곳의 짧은 활동을 고르고, 약속 전 남길 시간을 사용자가 직접 조절하는 흐름입니다.</p>
+      <ul>
+        <li>지도는 추천의 시작점이 아니라 보조 확인 수단</li>
+        <li>계산 중 상태는 실제 단계와 연결</li>
+        <li>후보 없음은 외부 탐색으로 분리</li>
+        <li>후기는 코스 종료 뒤 한 번만 요청</li>
+      </ul>
+      <div class="legend"><strong>피드백 방법</strong><br />화면을 직접 눌러 흐름을 확인한 뒤, 불필요한 입력·헷갈리는 문구·다음 화면이 예상과 다른 지점을 알려주세요.</div>
+    </aside>
+
+    <section class="phone" aria-label="TimeFit wireframe prototype">
+      <div class="status"><span>9:41</span><span>5G&nbsp;&nbsp;100%</span></div>
+      <div class="island" aria-hidden="true"></div>
+      <div class="toast" id="toast"></div>
+
+      <section class="screen active" id="login">
+        <div class="login-mark">T</div>
+        <div class="space"></div>
+        <h2>약속 전,<br />지금 들를 한 곳</h2>
+        <p>저장한 코스와 후기는 다음 추천을 더 나아지게 합니다.</p>
+        <div class="card">
+          <div class="field"><label for="email">이메일</label><div class="input-like"><input id="email" value="demo@timefit.app" /></div></div>
+          <div class="field"><label for="password">비밀번호</label><div class="input-like"><input id="password" type="password" value="12345678" /></div></div>
+          <button class="primary" data-go="home">로그인</button>
+          <div class="space"></div>
+          <button class="link-button" data-toast="와이어프레임에서는 로그인만 확인합니다.">회원가입</button>
+        </div>
+      </section>
+
+      <section class="screen" id="home">
+        <div class="time-hero">
+          <p class="eyebrow">TIMEFIT</p>
+          <h1 class="time-title">지금 남는 시간을<br />정해볼까요?</h1>
+          <p>약속에 늦지 않도록, 들를 한 곳을 찾습니다.</p>
+        </div>
+        <button class="primary" data-go="setup">자투리 시간 설정하기</button>
+        <div class="space"></div>
+        <div class="muted-card small">진행 중인 코스가 생기면 이곳에서 바로 이어갈 수 있습니다.</div>
+        <nav class="tabbar" aria-label="주요 메뉴">
+          <button class="tab active" data-go="home">메인</button>
+          <button class="tab" data-go="courses">내 코스</button>
+          <button class="tab" data-go="profile">내 정보</button>
+        </nav>
+      </section>
+
+      <section class="screen" id="setup">
+        <div class="header"><button class="back" data-go="home" aria-label="뒤로가기">&lt;</button><h3>자투리 시간 설정</h3><span style="width:42px"></span></div>
+        <p class="small">현재 시각 12:35부터 최대 2시간 안에서 계산합니다.</p>
+        <button class="option-row" data-toast="현재 위치: 서면역 앞 (와이어프레임)"><span class="option-label"><b>현재 위치</b><span>서면역 앞</span></span><span class="chevron">&gt;</span></button>
+        <button class="option-row" id="destinationButton"><span class="option-label"><b>도착지/복귀</b><span id="destinationValue">현재 위치로 돌아오기</span></span><span class="chevron">&gt;</span></button>
+        <button class="option-row" id="timeButton"><span class="option-label"><b>도착 시각</b><span id="timeValue">오늘 14:00</span></span><span class="chevron">&gt;</span></button>
+        <div class="slider-wrap">
+          <div class="slider-top"><span>도착 전 남길 시간</span><strong><span id="bufferValue">10</span>분</strong></div>
+          <input id="buffer" type="range" min="5" max="30" step="5" value="10" aria-label="도착 전 남길 시간" />
+          <div class="range-ends"><span>빠듯하게</span><span>여유롭게</span></div>
+        </div>
+        <label class="dev-toggle"><span>후보 없음 상태 미리보기</span><input id="emptyToggle" type="checkbox" /></label>
+        <div class="space"></div>
+        <button class="primary" id="findButton">이 시간에 할 일 찾기</button>
+      </section>
+
+      <section class="screen" id="loading">
+        <div class="loading">
+          <div class="eyebrow">14:00까지 계산 중</div>
+          <h2>시간 안에 들를 곳을<br />찾고 있어요</h2>
+          <p class="small">계산 단계에 따라 결과가 바로 나타납니다.</p>
+          <div class="steps">
+            <div class="step active" data-load-step="0"><i class="dot"></i><span>현재 위치와 도착지 확인</span></div>
+            <div class="step" data-load-step="1"><i class="dot"></i><span>이동 가능한 범위 계산</span></div>
+            <div class="step" data-load-step="2"><i class="dot"></i><span>짧게 들를 장소 찾기</span></div>
+            <div class="step" data-load-step="3"><i class="dot"></i><span>운영 상태 확인</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="results">
+        <div class="header"><button class="back" data-go="setup" aria-label="뒤로가기">&lt;</button><h3>지금 할 수 있는 한 가지</h3><button class="icon-button" data-go="map" aria-label="지도 보기">+</button></div>
+        <div class="budget"><strong>14:00까지 85분</strong><span>도착 전 <b id="resultBuffer">10</b>분 남기고 계산했어요</span></div>
+        <div class="section-row"><h3>추천</h3><button data-go="map">지도에서 직접 보기</button></div>
+        <button class="place-card" data-go="detail">
+          <div class="place-image">장소 사진 영역</div>
+          <div class="place-body">
+            <div class="place-topline"><span>산책 · 자연관광</span><span>추천</span></div>
+            <h3>전포 산책길</h3>
+            <div class="metric-row"><span>도보·대중교통 <b>18분</b></span><span>권장 <b>25분</b></span></div>
+            <div class="arrival">13:48 도착 예상 · 약속 전 12분 여유</div>
+          </div>
+        </button>
+        <div class="section-row"><h3>짧게 가능</h3><span class="small" style="color:var(--muted)">2곳</span></div>
+        <button class="short-card" data-go="detail"><span><b>KT&amp;G 상상마당 부산</b><br /><span class="tag">최소 20분 가능</span></span><span class="chevron">&gt;</span></button>
+        <div class="space"></div>
+        <button class="secondary" data-go="hours">운영시간 확인 필요 장소 보기</button>
+      </section>
+
+      <section class="screen" id="detail">
+        <div class="header"><button class="back" data-go="results" aria-label="뒤로가기">&lt;</button><h3>전포 산책길</h3><span style="width:42px"></span></div>
+        <div class="place-image" style="height:156px;border-radius:16px">장소 사진 영역</div>
+        <div class="space"></div>
+        <div class="timeline">
+          <div class="timeline-row"><i class="timeline-dot"></i><span><strong>현재 위치</strong><br />서면역 앞</span><span>출발</span></div>
+          <i class="timeline-line"></i>
+          <div class="timeline-row"><i class="timeline-dot"></i><span><strong>전포 산책길</strong><br />도보·대중교통 18분 · 권장 25분</span><span class="pill good">추천</span></div>
+          <i class="timeline-line"></i>
+          <div class="timeline-row"><i class="timeline-dot"></i><span><strong>약속 장소</strong><br />도보·대중교통 22분</span><span>13:48</span></div>
+        </div>
+        <div class="card"><div class="metric-row"><span>권장 체류 <b>25분</b></span><span>도착 전 <b>12분</b></span></div></div>
+        <div class="space"></div>
+        <div class="stack"><button class="secondary" data-toast="카카오맵 장소 확인은 실제 앱에서 연결됩니다.">카카오맵에서 장소 확인</button><button class="primary" data-go="confirm">이곳 선택하기</button></div>
+      </section>
+
+      <section class="screen" id="hours">
+        <div class="header"><button class="back" data-go="results" aria-label="뒤로가기">&lt;</button><h3>운영시간 확인 필요</h3><span style="width:42px"></span></div>
+        <div class="callout">이 장소는 운영시간을 확인하지 못했습니다. TimeFit은 시간 안에 이용 가능하다고 보장하지 않습니다.</div>
+        <div class="space"></div>
+        <div class="card"><h3>독립서점 예시</h3><p class="small">짧게 둘러보기 · 최소 15분</p><button class="secondary" data-toast="카카오맵으로 운영시간 확인">카카오맵에서 확인</button></div>
+      </section>
+
+      <section class="screen" id="map">
+        <div class="header"><button class="back" data-go="results" aria-label="뒤로가기">&lt;</button><h3>지도에서 직접 보기</h3><span style="width:42px"></span></div>
+        <div class="map" aria-label="장소 위치 예시 지도">
+          <span class="pin origin"><b>1</b></span><span class="pin place"><b>2</b></span><span class="pin destination"><b>3</b></span>
+          <span class="map-label origin">현재 위치</span><span class="map-label place">전포 산책길</span><span class="map-label destination">도착지</span>
+        </div>
+        <div class="space"></div>
+        <div class="muted-card">지도는 더 살펴보고 싶을 때만 사용합니다. 기본 추천 판단은 시간 카드에서 끝납니다.</div>
+      </section>
+
+      <section class="screen" id="confirm">
+        <div class="header"><button class="back" data-go="detail" aria-label="뒤로가기">&lt;</button><h3>이 코스로 갈까요?</h3><span style="width:42px"></span></div>
+        <div class="card">
+          <p class="eyebrow">14:00 약속 전</p><h2>전포 산책길</h2>
+          <div class="divider"></div>
+          <div class="metric-row"><span>총 이동 <b>40분</b></span><span>권장 체류 <b>25분</b></span><span>도착 여유 <b>12분</b></span></div>
+        </div>
+        <div class="space"></div>
+        <div class="timeline">
+          <div class="timeline-row"><i class="timeline-dot"></i><span><strong>현재 위치</strong></span><span>12:35</span></div><i class="timeline-line"></i>
+          <div class="timeline-row"><i class="timeline-dot"></i><span><strong>전포 산책길</strong><br />25분 둘러보기</span><span>13:18</span></div><i class="timeline-line"></i>
+          <div class="timeline-row"><i class="timeline-dot"></i><span><strong>약속 장소</strong></span><span>13:48</span></div>
+        </div>
+        <button class="primary" data-go="progress">길찾기 시작</button>
+      </section>
+
+      <section class="screen" id="progress">
+        <div class="header"><button class="back" data-go="courses" aria-label="내 코스로">&lt;</button><h3>진행 중</h3><span style="width:42px"></span></div>
+        <p class="eyebrow">지금 이동할 곳</p><h2>전포 산책길</h2>
+        <div class="card"><div class="metric-row"><span>도보 7분</span><span>지하철 11분</span><span>도보 4분</span></div><p class="small">도착 후 권장 체류 25분</p></div>
+        <div class="space"></div>
+        <div class="stack"><button class="primary" data-toast="실제 앱에서는 카카오맵 길찾기로 전환됩니다.">카카오맵으로 길찾기</button><button class="secondary" data-go="results">코스 변경</button><button class="link-button" data-go="review">장소 이용 완료 (테스트)</button></div>
+      </section>
+
+      <section class="screen" id="review">
+        <div class="header"><button class="back" data-go="progress" aria-label="뒤로가기">&lt;</button><h3>이번 자투리 시간</h3><span style="width:42px"></span></div>
+        <h2>어땠나요?</h2><p>다음 추천의 체류시간과 장소 선택을 더 나아지게 합니다.</p>
+        <div class="review-scale" id="rating"><button>1</button><button>2</button><button>3</button><button>4</button><button>5</button></div>
+        <div class="space"></div>
+        <h3>실제 머문 시간</h3><div class="space" style="height:10px"></div>
+        <div class="choices" id="stayChoices"><button class="choice">짧았어요</button><button class="choice">적당했어요</button><button class="choice">길었어요</button></div>
+        <div class="space"></div>
+        <button class="primary" data-go="home">기록하기</button><div class="space" style="height:10px"></div><button class="link-button" data-go="home">건너뛰기</button>
+      </section>
+
+      <section class="screen" id="empty">
+        <div class="header"><button class="back" data-go="setup" aria-label="뒤로가기">&lt;</button><h3>추천 결과</h3><span style="width:42px"></span></div>
+        <div class="empty"><div><div class="empty-mark">?</div><h2>확신 있게 추천할<br />장소를 찾지 못했어요</h2><p class="small">이 조건에서는 시간과 운영 상태를 함께 만족하는 후보가 없습니다.</p><div class="stack"><button class="primary" data-go="results">탐색 범위 넓히기</button><button class="secondary" data-toast="도착지 주변 후보를 다시 확인합니다.">도착지 주변 보기</button><button class="link-button" data-toast="카카오맵 주변 카페 탐색으로 연결됩니다.">카카오맵에서 주변 카페 찾기</button></div></div></div>
+      </section>
+
+      <section class="screen" id="courses">
+        <div class="header"><h3>내 코스</h3><span></span></div><div class="muted-card">저장한 코스와 진행 중인 코스가 이곳에 표시됩니다.</div>
+        <nav class="tabbar"><button class="tab" data-go="home">메인</button><button class="tab active" data-go="courses">내 코스</button><button class="tab" data-go="profile">내 정보</button></nav>
+      </section>
+      <section class="screen" id="profile">
+        <div class="header"><h3>내 정보</h3><span></span></div><div class="card"><h3>나의 기록</h3><p class="small">완료한 코스와 후기는 개인화에만 사용합니다.</p></div><div class="space"></div><div class="muted-card small">개발 테스트 시각·위치 설정은 출시 화면에서 숨깁니다.</div>
+        <nav class="tabbar"><button class="tab" data-go="home">메인</button><button class="tab" data-go="courses">내 코스</button><button class="tab active" data-go="profile">내 정보</button></nav>
+      </section>
+    </section>
+
+    <aside class="notes">
+      <h1>검토 포인트</h1>
+      <p>이 프로토타입은 실제 추천 정확도나 지도 품질이 아니라 흐름을 위한 것입니다.</p>
+      <ul>
+        <li>시간 설정에 입력이 과한가</li>
+        <li>추천 결과가 일반 장소 목록처럼 보이는가</li>
+        <li>상세에서 이동·체류·여유가 바로 읽히는가</li>
+        <li>후보 없음이 실패처럼 느껴지는가</li>
+        <li>후기가 부담 없이 기록되는가</li>
+      </ul>
+    </aside>
+  </main>
+  <script>
+    const screens = [...document.querySelectorAll('.screen')];
+    const toast = document.getElementById('toast');
+    const buffer = document.getElementById('buffer');
+    const bufferValue = document.getElementById('bufferValue');
+    const resultBuffer = document.getElementById('resultBuffer');
+    let destinationSet = false;
+    let laterTime = false;
+
+    function show(id) {
+      screens.forEach(screen => screen.classList.toggle('active', screen.id === id));
+      document.querySelector('.phone').scrollTop = 0;
+      document.querySelector(`#${id}`)?.scrollTo(0, 0);
+    }
+    function notify(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      window.clearTimeout(notify.timer);
+      notify.timer = window.setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+    document.addEventListener('click', event => {
+      const target = event.target.closest('[data-go], [data-toast]');
+      if (!target) return;
+      if (target.dataset.toast) notify(target.dataset.toast);
+      if (target.dataset.go) show(target.dataset.go);
+    });
+    buffer.addEventListener('input', () => {
+      bufferValue.textContent = buffer.value;
+      resultBuffer.textContent = buffer.value;
+    });
+    document.getElementById('destinationButton').addEventListener('click', () => {
+      destinationSet = !destinationSet;
+      document.getElementById('destinationValue').textContent = destinationSet ? '사상역' : '현재 위치로 돌아오기';
+      notify(destinationSet ? '도착지: 사상역' : '현재 위치 복귀로 계산');
+    });
+    document.getElementById('timeButton').addEventListener('click', () => {
+      laterTime = !laterTime;
+      document.getElementById('timeValue').textContent = laterTime ? '오늘 13:35' : '오늘 14:00';
+      notify('와이어프레임 시간 선택');
+    });
+    document.getElementById('findButton').addEventListener('click', () => {
+      show('loading');
+      const steps = [...document.querySelectorAll('[data-load-step]')];
+      steps.forEach((step, index) => { step.classList.remove('active', 'done'); if (index === 0) step.classList.add('active'); });
+      let index = 0;
+      const timer = setInterval(() => {
+        steps[index].classList.remove('active');
+        steps[index].classList.add('done');
+        index += 1;
+        if (index < steps.length) steps[index].classList.add('active');
+        else {
+          clearInterval(timer);
+          setTimeout(() => show(document.getElementById('emptyToggle').checked ? 'empty' : 'results'), 280);
+        }
+      }, 360);
+    });
+    document.querySelectorAll('#rating button').forEach(button => button.addEventListener('click', () => {
+      document.querySelectorAll('#rating button').forEach(item => item.classList.toggle('selected', item === button));
+    }));
+    document.querySelectorAll('#stayChoices button').forEach(button => button.addEventListener('click', () => {
+      document.querySelectorAll('#stayChoices button').forEach(item => item.classList.toggle('selected', item === button));
+    }));
+  </script>
+</body>
+</html>
