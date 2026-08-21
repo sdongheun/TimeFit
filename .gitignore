@@ -35,6 +35,7 @@ npm-debug.*
 yarn-debug.*
 yarn-error.*
 docs/reports/busan_matched_tmap.html
+docs/reports/부산_자투리장소_분포지도.html
 
 # macOS / 도구
 .DS_Store

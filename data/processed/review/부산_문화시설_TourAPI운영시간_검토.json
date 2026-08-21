@@ -1,0 +1,651 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-21T11:22:25.925Z",
+    "source": "TourAPI KorService2 detailIntro2",
+    "status": "review_only_not_runtime",
+    "policy": "시간범위확인만 시설형 자투리 후보의 운영시간 근거로 사용한다. 전시·프로그램별 상이는 직접 추천 시간 계산에 사용하지 않는다."
+  },
+  "summary": {
+    "queried": 51,
+    "byStatus": {
+      "시간범위확인": 36,
+      "조건부안내": 6,
+      "시간미기재": 3,
+      "시간범위미확인": 6
+    }
+  },
+  "data": [
+    {
+      "contentId": "poi_1",
+      "title": "해운대 관광특구",
+      "category": "문화시설",
+      "tourapiContentId": "127004",
+      "tourapiContentTypeId": "12",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "상시 개방",
+      "officialHolidays": "연중무휴",
+      "checkedAt": "2026-08-21T11:22:16.693Z"
+    },
+    {
+      "contentId": "poi_2",
+      "title": "영도 흰여울해안터널",
+      "category": "문화시설",
+      "tourapiContentId": "2606221",
+      "tourapiContentTypeId": "12",
+      "currentHours": [
+        "매일"
+      ],
+      "status": "시간범위확인",
+      "officialHours": "상시 개방",
+      "officialHolidays": "연중무휴",
+      "checkedAt": "2026-08-21T11:22:16.872Z"
+    },
+    {
+      "contentId": "poi_23",
+      "title": "갤러리이알디 부산",
+      "category": "문화시설",
+      "tourapiContentId": "2834026",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "12:00~18:00",
+      "officialHolidays": "매주 월요일, 화요일 / 공휴일",
+      "checkedAt": "2026-08-21T11:22:17.054Z"
+    },
+    {
+      "contentId": "poi_25",
+      "title": "부산시립미술관",
+      "category": "문화시설",
+      "tourapiContentId": "130166",
+      "tourapiContentTypeId": "14",
+      "currentHours": [
+        "본관/ 화요일~일요일 10:00~18:00 \n이우환 공간(별관) /화요일~일요일 10:00~18:00(입장 17:30까지) "
+      ],
+      "status": "시간범위확인",
+      "officialHours": "10:00~18:00 (입장 마감 17:30)",
+      "officialHolidays": "매주 월요일 (단, 월요일이 공휴일인 경우 그 다음날을 휴관일로 함) / 1월 1일",
+      "checkedAt": "2026-08-21T11:22:17.235Z"
+    },
+    {
+      "contentId": "poi_35",
+      "title": "씨라이프부산아쿠아리움",
+      "category": "문화시설",
+      "tourapiContentId": "229912",
+      "tourapiContentTypeId": "12",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "[평일] 10:00~19:00 (입장 마감 18:00) [주말] 10:00~20:00 (입장 마감 19:00)",
+      "officialHolidays": null,
+      "checkedAt": "2026-08-21T11:22:17.414Z"
+    },
+    {
+      "contentId": "poi_41",
+      "title": "놀이마루",
+      "category": "문화시설",
+      "tourapiContentId": "2763856",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "조건부안내",
+      "officialHours": "[북카페/갤러리]- 화요일~토요일 09:30~17:30[운동장 개방]- 화요일~토요일 07:00~21:30- 일요일 09:00~21:30※ 단, 운동장은 09:30~15:00에 정문이 폐쇄되므로 자세한 사항은 홈페이지 참조",
+      "officialHolidays": "매주 월요일 / 법정공휴일 / 임시공휴일",
+      "checkedAt": "2026-08-21T11:22:17.600Z"
+    },
+    {
+      "contentId": "poi_54",
+      "title": "창비부산",
+      "category": "문화시설",
+      "tourapiContentId": "2822910",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간미기재",
+      "officialHours": null,
+      "officialHolidays": null,
+      "checkedAt": "2026-08-21T11:22:17.781Z"
+    },
+    {
+      "contentId": "poi_70",
+      "title": "벡스코(BEXCO)",
+      "category": "문화시설",
+      "tourapiContentId": "130668",
+      "tourapiContentTypeId": "14",
+      "currentHours": [
+        "행사별 상이(홈페이지 참조)"
+      ],
+      "status": "조건부안내",
+      "officialHours": "※ 이용시설마다 상이하므로 홈페이지 참조",
+      "officialHolidays": "연중무휴",
+      "checkedAt": "2026-08-21T11:22:17.959Z"
+    },
+    {
+      "contentId": "poi_89",
+      "title": "범어사 성보박물관",
+      "category": "문화시설",
+      "tourapiContentId": "2554111",
+      "tourapiContentTypeId": "14",
+      "currentHours": [
+        "매일 08:00 - 17:00"
+      ],
+      "status": "시간범위확인",
+      "officialHours": "09:30~17:00",
+      "officialHolidays": "매주 월요일",
+      "checkedAt": "2026-08-21T11:22:18.140Z"
+    },
+    {
+      "contentId": "poi_90",
+      "title": "부산 영화의 전당",
+      "category": "문화시설",
+      "tourapiContentId": "2456837",
+      "tourapiContentTypeId": "12",
+      "currentHours": [
+        "매일 / 프로그램별 상이(홈페이지 참조)"
+      ],
+      "status": "시간범위미확인",
+      "officialHours": "※ 영화 및 공연·전시별로 상이하므로 홈페이지 참고",
+      "officialHolidays": "연중무휴",
+      "checkedAt": "2026-08-21T11:22:18.319Z"
+    },
+    {
+      "contentId": "poi_91",
+      "title": "부산근현대역사관 별관",
+      "category": "문화시설",
+      "tourapiContentId": "2784363",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00",
+      "officialHolidays": "매주 월요일 / 1월 1일",
+      "checkedAt": "2026-08-21T11:22:18.497Z"
+    },
+    {
+      "contentId": "poi_92",
+      "title": "부산근현대역사관 본관",
+      "category": "문화시설",
+      "tourapiContentId": "3083767",
+      "tourapiContentTypeId": "14",
+      "currentHours": [
+        "매주 화요일~일요일 09:00~18:00"
+      ],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00",
+      "officialHolidays": "매주 월요일 (단, 월요일이 공휴일인 경우 다음날 화요일 휴관) / 1월 1일",
+      "checkedAt": "2026-08-21T11:22:18.672Z"
+    },
+    {
+      "contentId": "poi_94",
+      "title": "부산타워",
+      "category": "문화시설",
+      "tourapiContentId": "1277679",
+      "tourapiContentTypeId": "12",
+      "currentHours": [
+        "10:00 - 22:00(발권마감 21:30)"
+      ],
+      "status": "시간범위확인",
+      "officialHours": "10:00~22:00 (발권 마감 21:30)",
+      "officialHolidays": "연중무휴",
+      "checkedAt": "2026-08-21T11:22:18.851Z"
+    },
+    {
+      "contentId": "poi_97",
+      "title": "삼진어묵 체험·역사과학관",
+      "category": "문화시설",
+      "tourapiContentId": "2470024",
+      "tourapiContentTypeId": "12",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00 ※ 사전 예약제 운영 (전달 첫째 주 화요일 오전 9시 예약 오픈)",
+      "officialHolidays": "매주 월요일",
+      "checkedAt": "2026-08-21T11:22:19.035Z"
+    },
+    {
+      "contentId": "poi_108",
+      "title": "영화의전당 라이브러리 자료실",
+      "category": "문화시설",
+      "tourapiContentId": "3454074",
+      "tourapiContentTypeId": "12",
+      "currentHours": [],
+      "status": "시간미기재",
+      "officialHours": null,
+      "officialHolidays": null,
+      "checkedAt": "2026-08-21T11:22:19.214Z"
+    },
+    {
+      "contentId": "poi_242",
+      "title": "구덕민속예술관",
+      "category": "문화시설",
+      "tourapiContentId": "130200",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00",
+      "officialHolidays": "매주 일요일 / 명절 / 공휴일",
+      "checkedAt": "2026-08-21T11:22:19.391Z"
+    },
+    {
+      "contentId": "poi_243",
+      "title": "금정문화원",
+      "category": "문화시설",
+      "tourapiContentId": "130383",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위미확인",
+      "officialHours": "※ 프로그램 별로 상이하므로 홈페이지 참고",
+      "officialHolidays": "주말 / 공휴일",
+      "checkedAt": "2026-08-21T11:22:19.622Z"
+    },
+    {
+      "contentId": "poi_244",
+      "title": "기장문화원",
+      "category": "문화시설",
+      "tourapiContentId": "130380",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00",
+      "officialHolidays": "매주 주말 / 법정공휴일",
+      "checkedAt": "2026-08-21T11:22:19.801Z"
+    },
+    {
+      "contentId": "poi_245",
+      "title": "누리마루 APEC하우스",
+      "category": "문화시설",
+      "tourapiContentId": "1918263",
+      "tourapiContentTypeId": "14",
+      "currentHours": [
+        "매일 09:00~18:00"
+      ],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00(입장마감 17:00)",
+      "officialHolidays": "매월 첫째 주 월요일",
+      "checkedAt": "2026-08-21T11:22:19.975Z"
+    },
+    {
+      "contentId": "poi_246",
+      "title": "동래문화원",
+      "category": "문화시설",
+      "tourapiContentId": "130381",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00",
+      "officialHolidays": "매주 토요일~일요일 / 법정공휴일",
+      "checkedAt": "2026-08-21T11:22:20.157Z"
+    },
+    {
+      "contentId": "poi_247",
+      "title": "동래읍성 임진왜란 역사관",
+      "category": "문화시설",
+      "tourapiContentId": "3017112",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "10:00~19:00",
+      "officialHolidays": "매주 월요일 (단, 월요일이 공휴일인 경우 그 다음날 휴관) / 1월 1일 / 설·추석 당일",
+      "checkedAt": "2026-08-21T11:22:20.335Z"
+    },
+    {
+      "contentId": "poi_248",
+      "title": "동삼동패총전시관",
+      "category": "문화시설",
+      "tourapiContentId": "130774",
+      "tourapiContentTypeId": "14",
+      "currentHours": [
+        "화요일~일요일 09:00~18:00"
+      ],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00",
+      "officialHolidays": "매주 월요일 (단, 월요일이 공휴일인 경우 다음날 휴관) / 1월1일",
+      "checkedAt": "2026-08-21T11:22:20.514Z"
+    },
+    {
+      "contentId": "poi_249",
+      "title": "동서대학교 소향씨어터 신한카드홀",
+      "category": "문화시설",
+      "tourapiContentId": "3023734",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위미확인",
+      "officialHours": "※ 공연별로 상이하므로 자세한 사항은 전화문의 요망",
+      "officialHolidays": "※ 공연별로 상이하므로 자세한 사항은 전화문의 요망",
+      "checkedAt": "2026-08-21T11:22:20.763Z"
+    },
+    {
+      "contentId": "poi_250",
+      "title": "박태준기념관",
+      "category": "문화시설",
+      "tourapiContentId": "2823059",
+      "tourapiContentTypeId": "14",
+      "currentHours": [
+        "09:00~18:00 (입장 마감 17:30)"
+      ],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00 (입장 마감 17:30)",
+      "officialHolidays": "매주 월요일 (단, 월요일이 공휴일인 경우 그 다음날) / 1월 1일 / 설·추석 당일",
+      "checkedAt": "2026-08-21T11:22:20.940Z"
+    },
+    {
+      "contentId": "poi_251",
+      "title": "반여도서관",
+      "category": "문화시설",
+      "tourapiContentId": "130796",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "조건부안내",
+      "officialHours": "[종합자료실] - 화요일~금요일 09:00~22:00 - 토요일 09:00~18:00 - 일요일 09:00~17:00 [어린이자료실] - 화요일~금요일 09:00~18:00 - 토요일 09:00~18:00 - 일요일 09:00~17:00 ※ 자세한 사항은 홈페이지 참조",
+      "officialHolidays": "매주 월요일 / 국경일 / 정부 지정 공휴일 / 기타 관장이 필요하다고 인정하는 날",
+      "checkedAt": "2026-08-21T11:22:21.117Z"
+    },
+    {
+      "contentId": "poi_252",
+      "title": "부산 강서문화원",
+      "category": "문화시설",
+      "tourapiContentId": "130216",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00",
+      "officialHolidays": "※ 행사, 강좌별 상이하므로 홈페이지 참고",
+      "checkedAt": "2026-08-21T11:22:21.293Z"
+    },
+    {
+      "contentId": "poi_253",
+      "title": "부산 동구도서관",
+      "category": "문화시설",
+      "tourapiContentId": "130798",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "[종합자료실] 화요일~금요일 09:00~22:00 토요일 09:00~18:00 일요일 09:00~17:00 [어린이자료실 / 멀티미디어실] 화요일~토요일 09:00~18:00 일요일 09:00~17:00 [열람실] 화요일~일요일 07:00~22:00",
+      "officialHolidays": "매주 월요일 / 국경일 / 정부지정 공휴일",
+      "checkedAt": "2026-08-21T11:22:21.468Z"
+    },
+    {
+      "contentId": "poi_254",
+      "title": "부산광역시 기장도서관",
+      "category": "문화시설",
+      "tourapiContentId": "130799",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "조건부안내",
+      "officialHours": "- 종합자료실 09:00~22:00 - 열람실 07:00~24:00 ※ 자세한 사항은 홈페이지 참조",
+      "officialHolidays": "매주 월요일 / 정부 지정 공휴일 / 특별한 사유로 군수가 필요하다고 인정한 날",
+      "checkedAt": "2026-08-21T11:22:21.648Z"
+    },
+    {
+      "contentId": "poi_255",
+      "title": "부산광역시 영도도서관",
+      "category": "문화시설",
+      "tourapiContentId": "130793",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "조건부안내",
+      "officialHours": "[어린이자료실] - 화요일~금요일 09:00~20:00 - 토요일 09:00~18:00 - 일요일 09:00~17:00 [종합자료실] - 화요일~금요일 09:00~22:00 - 토요일 09:00~18:00 - 일요일 09:00~17:00 [멀티미디어실] - 화요일~토요일 09:00~18:00 - 일요일 09:00~17:00 ※ 자세한 사항은 홈페이지 참조",
+      "officialHolidays": "매주 월요일 / 일요일을 제외한 공휴일 (단, 일요일이 다른 공휴일과 겹치는 경우 휴관) / 도서관장이 지정하는 날",
+      "checkedAt": "2026-08-21T11:22:21.824Z"
+    },
+    {
+      "contentId": "poi_256",
+      "title": "부산광역시립 명장도서관",
+      "category": "문화시설",
+      "tourapiContentId": "130749",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "[종합자료실] 월,토 09:00~18:00 / 화~금 09:00~22:00 / 일 09:00~17:00 [디지털자료실/연속간행물실/어린이자료실] 월~토 09:00~18:00 / 일 09:00~17:00 [열람실] 07:00~22:00",
+      "officialHolidays": "매월 첫째, 둘째 월요일 / 국가지정 공휴일(공휴일이 일요일인 경우 휴관) / 도서관장이 자료의 정리 및 기타 사유로 휴관이 필요하다고 인정하는 날",
+      "checkedAt": "2026-08-21T11:22:22.006Z"
+    },
+    {
+      "contentId": "poi_257",
+      "title": "부산광역시립 시민도서관",
+      "category": "문화시설",
+      "tourapiContentId": "130752",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "- 일반열람실 07:00~22:00 - 2층 자료실 09:00~22:00 - 1층, 3층 자료실 09:00~18:00 ※ 자세한 사항은 홈페이지 참고",
+      "officialHolidays": "매월 첫째 주, 둘째 주 월요일",
+      "checkedAt": "2026-08-21T11:22:22.182Z"
+    },
+    {
+      "contentId": "poi_258",
+      "title": "부산광역시립 연산도서관",
+      "category": "문화시설",
+      "tourapiContentId": "130797",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~22:00 ※ 자세한 사항은 홈페이지 참고",
+      "officialHolidays": "매월 셋째 주, 넷째 주 월요일 / 정부 지정 공휴일",
+      "checkedAt": "2026-08-21T11:22:22.359Z"
+    },
+    {
+      "contentId": "poi_259",
+      "title": "부산광역시립 중앙도서관",
+      "category": "문화시설",
+      "tourapiContentId": "130795",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "조건부안내",
+      "officialHours": "[종합자료실] - 화요일~금요일 09:00~22:00 - 월요일, 토요일 09:00~18:00 - 일요일 09:00~17:00 [어린이실] - 화요일~금요일 09:00~18:00 - 월요일, 토요일 09:00~18:00 - 일요일 09:00~17:00 ※ 자세한 사항은 홈페이지 참조",
+      "officialHolidays": "매월 첫째, 둘째 월요일 / 일요일을 제외한 관공서의 공휴일 (단, 일요일이 공휴일 경우에는 휴관) / 도서관장이 필요하다고 인정하는 날",
+      "checkedAt": "2026-08-21T11:22:22.536Z"
+    },
+    {
+      "contentId": "poi_260",
+      "title": "부산대학교 박물관",
+      "category": "문화시설",
+      "tourapiContentId": "1607138",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "10:00~17:00",
+      "officialHolidays": "매주 일요일 / 공휴일 및 기타 휴관일",
+      "checkedAt": "2026-08-21T11:22:22.713Z"
+    },
+    {
+      "contentId": "poi_261",
+      "title": "부산문화회관",
+      "category": "문화시설",
+      "tourapiContentId": "129725",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위미확인",
+      "officialHours": "공연 및 전시별 상이",
+      "officialHolidays": "연중무휴",
+      "checkedAt": "2026-08-21T11:22:22.921Z"
+    },
+    {
+      "contentId": "poi_262",
+      "title": "부산자원순환협력센터",
+      "category": "문화시설",
+      "tourapiContentId": "2764008",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00 (입장 마감 17:00)",
+      "officialHolidays": "매주 월요일 / 1월 1일 / 설·추석 연휴 / 그 밖에 협력센터의 안전점검 및 유지보수 필요 시 휴관",
+      "checkedAt": "2026-08-21T11:22:23.100Z"
+    },
+    {
+      "contentId": "poi_263",
+      "title": "부산자유회관(부산통일관)",
+      "category": "문화시설",
+      "tourapiContentId": "130737",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~17:00",
+      "officialHolidays": "연중무휴",
+      "checkedAt": "2026-08-21T11:22:23.281Z"
+    },
+    {
+      "contentId": "poi_264",
+      "title": "부산점자도서관",
+      "category": "문화시설",
+      "tourapiContentId": "130834",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "- 3~10월 09:00~18:00 - 11~2월 09:00~17:00",
+      "officialHolidays": "매주 주말 / 법정공휴일",
+      "checkedAt": "2026-08-21T11:22:23.457Z"
+    },
+    {
+      "contentId": "poi_265",
+      "title": "북구문화예술회관 공연장",
+      "category": "문화시설",
+      "tourapiContentId": "1747913",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~22:00",
+      "officialHolidays": "※ 공연별 상이하므로 홈페이지 참고",
+      "checkedAt": "2026-08-21T11:22:23.631Z"
+    },
+    {
+      "contentId": "poi_266",
+      "title": "사상문화원",
+      "category": "문화시설",
+      "tourapiContentId": "130382",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "09:00~18:00",
+      "officialHolidays": "※ 행사별 상이하므로 홈페이지 참고",
+      "checkedAt": "2026-08-21T11:22:23.807Z"
+    },
+    {
+      "contentId": "poi_267",
+      "title": "을숙도문화회관",
+      "category": "문화시설",
+      "tourapiContentId": "1748028",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위미확인",
+      "officialHours": "※ 공연마다 상이하므로 전화문의 요망",
+      "officialHolidays": "※ 공연마다 상이하므로 전화문의 요망",
+      "checkedAt": "2026-08-21T11:22:24.022Z"
+    },
+    {
+      "contentId": "poi_268",
+      "title": "이바구공작소",
+      "category": "문화시설",
+      "tourapiContentId": "1942314",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "10:00~19:00",
+      "officialHolidays": "매주 월요일",
+      "checkedAt": "2026-08-21T11:22:24.197Z"
+    },
+    {
+      "contentId": "poi_269",
+      "title": "장기려기념 더 나눔센터",
+      "category": "문화시설",
+      "tourapiContentId": "1945293",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "- 화요일~토요일 10:00~19:00 - 일요일 09:00~18:00",
+      "officialHolidays": "매주 월요일",
+      "checkedAt": "2026-08-21T11:22:24.416Z"
+    },
+    {
+      "contentId": "poi_270",
+      "title": "정관박물관",
+      "category": "문화시설",
+      "tourapiContentId": "2556598",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "9:00~18:00 (입장 마감 17:00)",
+      "officialHolidays": "매주 월요일 (단, 월요일이 공휴일인 경우 그 다음 평일 휴관) / 1월 1일",
+      "checkedAt": "2026-08-21T11:22:24.592Z"
+    },
+    {
+      "contentId": "poi_271",
+      "title": "조현화랑",
+      "category": "문화시설",
+      "tourapiContentId": "130642",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "10:30~18:30",
+      "officialHolidays": "매주 월요일",
+      "checkedAt": "2026-08-21T11:22:24.768Z"
+    },
+    {
+      "contentId": "poi_272",
+      "title": "책방봄봄",
+      "category": "문화시설",
+      "tourapiContentId": "2782714",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "- 평일 14:00~20:00 - 토요일 10:00~17:30 ※ 책방 방문은 예약제로 운영됨",
+      "officialHolidays": "매주 일요일 / 월요일",
+      "checkedAt": "2026-08-21T11:22:24.952Z"
+    },
+    {
+      "contentId": "poi_273",
+      "title": "책방오월",
+      "category": "문화시설",
+      "tourapiContentId": "2782757",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "10:00~18:00",
+      "officialHolidays": "매주 일요일",
+      "checkedAt": "2026-08-21T11:22:25.128Z"
+    },
+    {
+      "contentId": "poi_274",
+      "title": "한국기독교선교박물관",
+      "category": "문화시설",
+      "tourapiContentId": "2550799",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "10:00~17:00",
+      "officialHolidays": "매주 일요일, 일요일 / 공휴일 / 설·추석 연휴",
+      "checkedAt": "2026-08-21T11:22:25.311Z"
+    },
+    {
+      "contentId": "poi_275",
+      "title": "한국신발관",
+      "category": "문화시설",
+      "tourapiContentId": "2788392",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위확인",
+      "officialHours": "10:00~17:00",
+      "officialHolidays": "매주 일요일 / 법정공휴일",
+      "checkedAt": "2026-08-21T11:22:25.489Z"
+    },
+    {
+      "contentId": "poi_276",
+      "title": "해성아트베이",
+      "category": "문화시설",
+      "tourapiContentId": "3451794",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간미기재",
+      "officialHours": null,
+      "officialHolidays": "매주 월요일 휴관",
+      "checkedAt": "2026-08-21T11:22:25.666Z"
+    },
+    {
+      "contentId": "poi_277",
+      "title": "해운대문화회관",
+      "category": "문화시설",
+      "tourapiContentId": "1748157",
+      "tourapiContentTypeId": "14",
+      "currentHours": [],
+      "status": "시간범위미확인",
+      "officialHours": "※ 이용시설에 따라 상이하므로 전화문의 요망",
+      "officialHolidays": "매주 월요일",
+      "checkedAt": "2026-08-21T11:22:25.844Z"
+    }
+  ]
+}
