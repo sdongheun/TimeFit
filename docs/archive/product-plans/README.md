@@ -2,12 +2,9 @@
 
 이 폴더의 문서는 초기 기획과 구현 전 계획 기록이다. 현재 제품 사양이나 구현 상태를 판단하는 기준으로 사용하지 않는다.
 
-현재 기준 문서:
+현재 기준 문서는 [docs/README.md](../../README.md)에서 확인한다. 특히 추천 정책은 `docs/03_product/추천로직.md`, 데이터 근거는 `docs/02_data/`의 최신 감사·분포 문서를 따른다.
 
-- `docs/03_product/추천로직_현재흐름과부족한점.md`: 서비스 목적, 현재 사용자 흐름, 보장 범위, 남은 과제
-- `docs/03_product/추천로직.md`: 추천 엔진의 수치와 정책 단일 사양
-- `docs/03_product/추천자동진단기준.md`: 자동진단 실행과 해석 기준
-- `docs/03_product/부산매칭데이터정리.md`: 부산 A/B 후보 데이터 원칙
+과거 전환 기록은 [product-history](../product-history/README.md), 초기 데이터 설계는 [data-research](../data-research/README.md)에 별도로 보관한다.
 
 보관 이유:
 
