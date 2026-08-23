@@ -4,10 +4,8 @@ import test from 'node:test';
 
 const mixedTravel = fs.readFileSync('src/engine/mixedTravel.ts', 'utf-8');
 const travel = fs.readFileSync('src/engine/travel.ts', 'utf-8');
-const results = fs.readFileSync('src/ui/ResultsScreen.tsx', 'utf-8');
+const results = fs.readFileSync('src/ui/OneStopResultsScreen.tsx', 'utf-8');
 const basketPlanner = fs.readFileSync('src/ui/recommendation/basketPlanner.ts', 'utf-8');
-const candidateDetail = fs.readFileSync('src/ui/recommendation/CandidateDetail.tsx', 'utf-8');
-const candidateEvaluation = fs.readFileSync('src/ui/recommendation/candidateEvaluation.ts', 'utf-8');
 const execution = fs.readFileSync('src/ui/ExecutionScreen.tsx', 'utf-8');
 const executionSchedule = fs.readFileSync('src/ui/execution/schedule.ts', 'utf-8');
 const repository = fs.readFileSync('src/services/courseRepository.ts', 'utf-8');
@@ -23,36 +21,21 @@ test('짧은 구간 근사에서 차량 시간을 도보 시간으로 재사용�
   assert.match(travel, /if \(km < 0\.03\) return 0/);
 });
 
-test('장바구니 확정은 구간별 수단으로 정밀 경로·운영시간을 검증한다', () => {
-  assert.match(results, /selectedArrivalModes/);
-  assert.match(results, /automaticTravelLegs\(selected, origin, target, selectedArrivalModes\)/);
-  assert.match(results, /plans\.map\(\(plan\) => plan\.mode/);
-  assert.match(results, /buildBasketCourse\(selected, origin, target, ctx, selectedArrivalModes\)/);
+test('단일 장소 확정은 자동 선택한 이동수단으로 경로·운영시간을 다시 검증한다', () => {
+  assert.match(results, /buildBasketCourse\(\[spot\], origin, target, ctx, \{ \[spot\.contentId\]: active\.mode \}\)/);
+  assert.match(results, /validateCourseOpening\(\[spot\], origin, target, \[active\.mode, active\.mode\]/);
   assert.match(basketPlanner, /mode: travel\.mode/);
   assert.match(basketPlanner, /automaticTravelLegs\(selected, origin, target, arrivalModes\)/);
-  assert.match(results, /validateCourseOpening\([\s\S]*plans\.map\(\(plan\) => plan\.mode\)/);
 });
 
-test('장소 미리보기는 경로와 남은 시간을 먼저 보여주고, 수단 변경은 구간 단위로 제공한다', () => {
-  assert.match(results, /openTransportPicker/);
-  assert.match(results, /transportScenario/);
-  assert.match(candidateDetail, /routePreview/);
-  assert.match(candidateDetail, /move:/);
-  assert.match(candidateDetail, /stay:/);
-  assert.match(candidateDetail, /remaining:/);
-  assert.match(candidateDetail, /남는 시간/);
-  assert.match(candidateDetail, /이 장소 체류/);
-  assert.match(candidateDetail, /총 이동/);
-  assert.match(candidateDetail, /totalMoveMin/);
-  assert.match(candidateDetail, /stayPossibleMin/);
-  assert.match(candidateDetail, /remainingAfterPlannedMin/);
-  assert.match(candidateDetail, /modePicker/);
-  assert.match(candidateDetail, /장바구니에 담기/);
-  assert.match(results, /addSpotWithTransport/);
-  assert.match(candidateEvaluation, /const approaches = trial\.map/);
-  assert.match(candidateEvaluation, /travelMin\(leg\.from, leg\.to, leg\.mode\)/);
-  assert.match(mixedTravel, /arrivalModes\[spot\.contentId\]/);
-  assert.match(mixedTravel, /마지막 약속 장소\(또는 복귀 지점\) 구간은 별도 선택 전까지 자동 추천/);
+test('장소 상세는 자동 수단의 이동·체류·여유를 표시하고, 사용자 수단 선택을 요구하지 않는다', () => {
+  assert.match(results, /approachMin=\{active\.approachMin\}/);
+  assert.match(results, /onwardMin=\{active\.onwardMin\}/);
+  assert.match(results, /최소/);
+  assert.match(results, /권장/);
+  assert.match(results, /TimeJourney/);
+  assert.match(results, /journeyOf/);
+  assert.doesNotMatch(results, /openTransportPicker|selectedArrivalModes|modePicker/);
 });
 
 test('저장과 실행은 각 이동 구간의 mode를 유지한다', () => {

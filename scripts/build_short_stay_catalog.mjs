@@ -6,6 +6,7 @@ import fs from 'node:fs';
 const MATCHED_FILE = 'data/processed/부산_최종매칭장소.json';
 const UNMATCHED_FILE = 'data/processed/부산_최종미매칭장소.json';
 const TRADITIONAL_MARKET_FILE = 'data/전국전통시장표준데이터.json';
+const CATEGORY_DWELL_FILE = 'data/processed/카테고리별_체류시간.json';
 const OUTPUT_FILE = 'data/processed/review/부산_자투리장소_카탈로그_초안.json';
 const DECISION_FILE = 'data/processed/review/부산_자투리장소_보류및제외.json';
 
@@ -31,11 +32,33 @@ function distanceM(first, second) {
 }
 
 const templates = {
-  scenic_pause: { min: 10, recommended: 15, max: 25, weatherDependency: 'high' },
-  walk_break: { min: 15, recommended: 25, max: 45, weatherDependency: 'moderate' },
-  quick_browse: { min: 15, recommended: 25, max: 40, weatherDependency: 'none' },
-  compact_culture: { min: 20, recommended: 35, max: 60, weatherDependency: 'none' },
-  quick_rest: { min: 15, recommended: 25, max: 45, weatherDependency: 'none' },
+  scenic_pause: { weatherDependency: 'high' },
+  walk_break: { weatherDependency: 'moderate' },
+  quick_browse: { weatherDependency: 'none' },
+  compact_culture: { weatherDependency: 'none' },
+  quick_rest: { weatherDependency: 'none' },
+};
+
+// 활동명은 UI/선별 정책이고, 체류 중앙값은 AI-Hub의 원래 방문 카테고리에서만 읽는다.
+// 직접 일치 장소는 이 대응표보다 강한 장소별 중앙값을 우선한다.
+const aihubCategoryForActivity = {
+  scenic_pause: '자연관광지',
+  walk_break: '산책로/둘레길',
+  quick_browse: '상업지구',
+  compact_culture: '문화시설',
+  quick_rest: '카페',
+};
+const categoryDwell = read(CATEGORY_DWELL_FILE).data;
+
+// AI-Hub 원본에서 현행 활동 대응 카테고리의 최빈 체류시간은 모두 30분이다.
+// 20분은 30분 기록을 전부 채우지 못해도 짧게 들를 수 있게 하는 제품 하한이며,
+// 문화시설만 p75=120분의 긴 관람 분포를 상한에 남긴다.
+const shortStayPolicy = {
+  scenic_pause: { min: 20, recommended: 30, max: 60 },
+  walk_break: { min: 20, recommended: 30, max: 60 },
+  quick_browse: { min: 20, recommended: 30, max: 60 },
+  compact_culture: { min: 20, recommended: 30, max: 120 },
+  quick_rest: { min: 20, recommended: 30, max: 60 },
 };
 
 const GENERAL_FOOD = /식당|음식|맛집|분식|국밥|밀면|횟집|복국|갈비|곰탕|칼국수|고기|전복|해장|돼지|라멘|만게츠|텐푸라|포차|주점/;
@@ -82,23 +105,19 @@ function classify(place) {
 }
 
 function dwellRange(place, shortStayType, directAihub) {
-  const template = templates[shortStayType];
-  if (directAihub && place.dwell?.median > 0) {
-    // AIHub 원본에 분위값이 없는 현재 데이터에서는 중앙값만 권장값으로 쓰고,
-    // 최소/최대는 활동 유형의 안전한 범위 안에서 정한다.
-    const recommended = Math.min(template.max, Math.max(template.min, Math.round(place.dwell.median)));
-    return {
-      minStayMin: Math.min(template.min, recommended),
-      recommendedStayMin: recommended,
-      maxStayMin: Math.max(recommended, template.max),
-      dwellBasis: 'aihub_exact_name_coord_median_plus_activity_template',
-    };
-  }
+  const policy = shortStayPolicy[shortStayType];
+  const fallbackCategory = aihubCategoryForActivity[shortStayType];
+  // 직접 매칭이어도 일관된 짧은 활동 시간 기준을 쓴다. 장소별 AI-Hub 중앙값은
+  // aihubMatch에 보존하며, 유사명 매칭의 카테고리는 여기서 참조하지 않는다.
+  const category = fallbackCategory;
+  const stats = categoryDwell[category];
+  if (!stats) throw new Error(`${place.title}: no AI-Hub category dwell for ${shortStayType}`);
   return {
-    minStayMin: template.min,
-    recommendedStayMin: template.recommended,
-    maxStayMin: template.max,
-    dwellBasis: 'activity_template_only',
+    minStayMin: policy.min,
+    recommendedStayMin: policy.recommended,
+    maxStayMin: policy.max,
+    dwellBasis: 'aihub_category_mode_short_stay_policy',
+    dwellReference: { kind: 'category_mode', category, ...stats, exactAihubMatch: directAihub },
   };
 }
 
@@ -268,9 +287,9 @@ const remainingReview = review.filter((item) => !conditional.some((candidate) =>
 
 const meta = {
   generatedAt: new Date().toISOString(),
-  status: 'parallel_draft_not_used_by_runtime',
+  status: 'runtime_source_active',
   source: '부산_최종매칭장소 + 부산_최종미매칭장소',
-  policy: '일반 식당·카페/베이커리 자동추천 제외, 100m 이내 유사명·좌표 단독 AIHub 매칭 불인정, 정확한 이름+좌표 매칭과 활동 적합성 근거를 분리한다.',
+  policy: '일반 식당·장기 활동은 제외하고, 카페/베이커리는 활동 유형·운영시간 근거에 따라 승인 또는 조건부로 구분한다. 100m 이내 유사명·좌표 단독 AIHub 매칭은 개인 체류 근거로 쓰지 않는다.',
 };
 write(OUTPUT_FILE, {
   meta,

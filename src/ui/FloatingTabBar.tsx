@@ -1,27 +1,31 @@
+import { Feather } from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { C } from './theme';
 
-export type MainTabKey = 'main' | 'course' | 'profile';
+export type MainTabKey = 'main' | 'course' | 'record' | 'profile';
 
 type Props = {
   active: MainTabKey;
   onMain: () => void;
   onCourse: () => void;
+  onRecord: () => void;
   onProfile: () => void;
 };
 
-const TABS: { key: MainTabKey; label: string; mark: string }[] = [
-  { key: 'main', label: '메인', mark: '⌕' },
-  { key: 'course', label: '내 코스', mark: '□' },
-  { key: 'profile', label: '내정보', mark: '●' },
+const TABS: { key: MainTabKey; label: string; icon: keyof typeof Feather.glyphMap }[] = [
+  { key: 'main', label: '메인', icon: 'search' },
+  { key: 'course', label: '내 코스', icon: 'map' },
+  { key: 'record', label: '기록', icon: 'pie-chart' },
+  { key: 'profile', label: '내정보', icon: 'user' },
 ];
 
-export function FloatingTabBar({ active, onMain, onCourse, onProfile }: Props) {
+export function FloatingTabBar({ active, onMain, onCourse, onRecord, onProfile }: Props) {
   const insets = useSafeAreaInsets();
   const handlers: Record<MainTabKey, () => void> = {
     main: onMain,
     course: onCourse,
+    record: onRecord,
     profile: onProfile,
   };
 
@@ -36,7 +40,7 @@ export function FloatingTabBar({ active, onMain, onCourse, onProfile }: Props) {
               style={[s.item, isActive && s.itemOn]}
               onPress={handlers[tab.key]}
             >
-              <Text style={[s.mark, isActive && s.markOn]}>{tab.mark}</Text>
+              <Feather name={tab.icon} size={17} color={isActive ? C.accent : C.muted} />
               <Text style={[s.label, isActive && s.labelOn]}>{tab.label}</Text>
             </Pressable>
           );
@@ -63,8 +67,6 @@ const s = StyleSheet.create({
   },
   item: { flex: 1, minHeight: 52, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   itemOn: { backgroundColor: 'rgba(76,194,255,0.14)' },
-  mark: { color: C.muted, fontSize: 15, fontWeight: '900', lineHeight: 18 },
-  markOn: { color: C.accent },
   label: { color: C.muted, fontSize: 11.5, fontWeight: '800', marginTop: 2 },
   labelOn: { color: C.txt },
 });

@@ -3,79 +3,57 @@ import fs from 'node:fs';
 import test from 'node:test';
 
 const catalog = JSON.parse(fs.readFileSync('src/data/busan_poi_catalog.json', 'utf-8'));
-const matched = Object.values(catalog.matched.byContentId);
-const unmatched = Object.values(catalog.unmatched.byContentId);
-const finalMatched = JSON.parse(fs.readFileSync('data/processed/부산_최종매칭장소.json', 'utf-8'));
-const finalUnmatched = JSON.parse(fs.readFileSync('data/processed/부산_최종미매칭장소.json', 'utf-8'));
+const source = JSON.parse(fs.readFileSync('data/processed/review/부산_자투리장소_카탈로그_초안.json', 'utf-8'));
+const rows = [...catalog.matched.data, ...catalog.unmatched.data];
 
-const MATCH_SCOPES = new Set(['direct_place', 'area_context', 'category_fallback']);
+const SHORT_STAY_TYPES = new Set(['scenic_pause', 'quick_browse', 'compact_culture', 'quick_rest']);
 const OPENING_RELIABILITY = new Set(['direct', 'area_uncertain', 'unknown']);
 const MAP_VERIFICATION = new Set(['verified', 'weak', 'not_found', 'unverified']);
 
-test('정제 카탈로그 기본 구조와 집계가 일치한다', () => {
+test('런타임 카탈로그는 검토한 자투리 활동 장소를 정확히 사용한다', () => {
+  const activeSource = source.data.filter((place) => ['approved', 'conditional'].includes(place.selectionStatus));
   assert.equal(catalog.meta.targetRegion, '부산');
-  assert.equal(matched.length, finalMatched.data.length);
-  assert.equal(unmatched.length, finalUnmatched.data.length);
-  assert.equal(catalog.summary.total, finalMatched.data.length + finalUnmatched.data.length);
-  assert.equal(matched.length, catalog.summary.matched);
-  assert.equal(unmatched.length, catalog.summary.unmatched);
-  assert.equal(catalog.meta.legacyCatalog, 'src/data/busan_poi_catalog.legacy.json');
-  assert.equal(finalMatched.summary.records, finalMatched.data.length);
-  assert.equal(finalUnmatched.summary.records, finalUnmatched.data.length);
+  assert.equal(catalog.meta.sourceCatalog, 'data/processed/review/부산_자투리장소_카탈로그_초안.json');
+  assert.equal(rows.length, activeSource.length);
+  assert.equal(catalog.summary.total, activeSource.length);
+  assert.equal(catalog.summary.matched + catalog.summary.unmatched, activeSource.length);
+  assert.deepEqual(catalog.summary.selectionStatus, { approved: 49, conditional: 307 });
 });
 
-test('매칭 장소는 직접 또는 포괄 장소 체류시간 정책만 가진다', () => {
-  for (const place of matched) {
-    assert.ok(['direct_place', 'area_context'].includes(place.matchScope), `${place.title}: invalid matchScope`);
-    assert.ok(place.dwell?.median > 0, `${place.title}: missing dwell median`);
-    assert.ok(place.dwell?.count >= 3, `${place.title}: insufficient AI-Hub samples`);
-    assert.ok(['name+coord', 'coord'].includes(place.matchType), `${place.title}: invalid AI-Hub match type`);
+test('모든 런타임 장소는 짧은 활동 유형과 최소·권장·최대 체류 범위를 가진다', () => {
+  for (const place of rows) {
+    const policy = place.shortStay;
+    assert.ok(policy, `${place.title}: shortStay policy required`);
+    assert.ok(SHORT_STAY_TYPES.has(policy.type), `${place.title}: invalid activity type`);
+    assert.ok(policy.minStayMin > 0, `${place.title}: minimum stay`);
+    assert.ok(policy.minStayMin <= policy.recommendedStayMin, `${place.title}: recommended stay`);
+    assert.ok(policy.recommendedStayMin <= policy.maxStayMin, `${place.title}: maximum stay`);
+    assert.ok(['approved', 'conditional'].includes(policy.selectionStatus), `${place.title}: selection status`);
   }
 });
 
-test('미매칭 장소는 카테고리 체류시간 폴백만 사용한다', () => {
-  for (const place of unmatched) {
-    assert.equal(place.matchScope, 'category_fallback', `${place.title}: invalid fallback policy`);
-    assert.equal(place.dwell, undefined, `${place.title}: unmatched must not inherit individual dwell`);
-    assert.ok(catalog.categoryDwell[place.category]?.median > 0, `${place.title}: missing category dwell`);
+test('직접 AI-Hub 매칭만 매칭 그룹에 두고 나머지는 활동 정책으로 사용한다', () => {
+  for (const place of catalog.matched.data) {
+    assert.ok(['direct_place', 'area_context'].includes(place.matchScope), `${place.title}: matched scope`);
+    assert.equal(place.matchType, 'name+coord', `${place.title}: exact match type`);
+    assert.ok(place.matchDistanceM <= 100, `${place.title}: exact match distance`);
+  }
+  for (const place of catalog.unmatched.data) {
+    assert.equal(place.matchScope, 'category_fallback', `${place.title}: fallback scope`);
+    assert.ok(place.shortStay, `${place.title}: conditional activity policy required`);
   }
 });
 
-test('카카오 보조시설 결과는 약한 위치 확인으로 낮추고 잘못된 상세 링크를 쓰지 않는다', () => {
-  const auxiliary = /물품보관함|주차장|공중화장실|화장실|전기차충전소|충전소|관리사무소|ATM|현금인출|주유소|정비소/;
-  for (const place of [...matched, ...unmatched]) {
-    assert.ok(MAP_VERIFICATION.has(place.mapVerification?.status), `${place.title}: invalid Kakao verification status`);
-    const matchedName = place.mapVerification?.matchedName ?? '';
-    if (auxiliary.test(matchedName)) {
-      assert.equal(place.mapVerification?.status, 'weak', `${place.title}: auxiliary result must not be verified`);
-      assert.equal(place.mapVerification?.placeUrl, undefined, `${place.title}: auxiliary URL must not be exposed`);
-      continue;
-    }
-    if (place.mapVerification?.status === 'verified') {
-      assert.match(place.mapVerification?.placeUrl ?? '', /^https:\/\/place\.map\.kakao\.com\/\d+$/, `${place.title}: missing Kakao place URL`);
-    }
+test('카카오 확인 링크와 운영시간 신뢰도는 장소별로 추적된다', () => {
+  for (const place of rows) {
+    assert.ok(MAP_VERIFICATION.has(place.mapVerification?.status), `${place.title}: map status`);
+    assert.match(place.mapVerification?.placeUrl ?? '', /^https:\/(?:\/map\.kakao\.com\/link\/search\/|\/place\.map\.kakao\.com\/\d+$)/, `${place.title}: Kakao URL`);
+    assert.ok(OPENING_RELIABILITY.has(place.openingHoursReliability), `${place.title}: opening-hour reliability`);
   }
 });
 
-test('운영시간 신뢰도는 정제 정책의 세 값만 사용한다', () => {
-  for (const place of [...matched, ...unmatched]) {
-    assert.ok(OPENING_RELIABILITY.has(place.openingHoursReliability), `${place.title}: invalid opening-hour reliability`);
-  }
-});
-
-test('운영시간과 관광 활동 근거가 없는 종교시설은 자연관광지 폴백으로 자동 추천하지 않는다', () => {
-  const titles = new Set(['남부산교회', '초량교회', '한국 이슬람 부산성원']);
-  for (const place of [...matched, ...unmatched].filter((item) => titles.has(item.title))) {
-    assert.equal(place.availabilityProfile, 'hold', `${place.title}: must be held from automatic recommendation`);
-  }
-});
-
-test('부산 공식 관광 데이터의 썸네일은 추천 지도 마커에 사용할 수 있다', () => {
-  const placesWithOfficialImage = [...matched, ...unmatched]
-    .filter((place) => place.imageSource === 'busan_official');
-
-  assert.ok(placesWithOfficialImage.length >= 450, '부산 공식 이미지 병합 범위가 줄었습니다.');
-  for (const place of placesWithOfficialImage) {
-    assert.match(place.imageUrl ?? '', /^https:\/\//, `${place.title}: HTTPS 이미지 URL이 필요합니다.`);
-  }
+test('일반 식당과 숙박·교통·의료·주차 시설은 런타임 자투리 활동 카탈로그에 없다', () => {
+  const excluded = /호텔|모텔|리조트|숙박|숙소|게스트하우스|펜션|여관|호스텔|콘도|병원|주차장|여객터미널|버스터미널|철도역|기차역|지하철역/;
+  assert.deepEqual(rows.filter((place) => excluded.test(place.title)).map((place) => place.title), []);
+  assert.deepEqual(rows.filter((place) => place.category === '식당').map((place) => place.title), []);
 });

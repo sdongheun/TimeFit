@@ -1,6 +1,6 @@
 // 부산 정제 후보 카탈로그와 체류시간 정책. 앱은 이 로컬 카탈로그를 좌표 반경으로 탐색한다.
 import busanPoiCatalog from '../data/busan_poi_catalog.json';
-import { AvailabilityProfile, DayType, HourBucket, MapVerificationStatus, MatchScope, OpeningHoursReliability, SpotConfidence, LatLon } from './types';
+import { AvailabilityProfile, DayType, HourBucket, MapVerificationStatus, MatchScope, OpeningHoursReliability, ShortStaySelectionStatus, ShortStayType, SpotConfidence, LatLon } from './types';
 
 type MapVerification = {
   provider: 'kakao';
@@ -38,6 +38,26 @@ export type BusanCatalogPlace = {
   matchType?: string;
   matchDistanceM?: number;
   dwell?: { count: number; median: number; p25?: number | null; p75?: number | null; mean?: number | null };
+  shortStay?: {
+    type: ShortStayType;
+    minStayMin: number;
+    recommendedStayMin: number;
+    maxStayMin: number;
+    selectionStatus: ShortStaySelectionStatus;
+    dwellBasis: string;
+    dwellReference?: {
+      kind: 'category_mode';
+      category: string;
+      count: number;
+      mode: number;
+      median: number;
+      p25: number;
+      p75: number;
+      mean: number;
+      exactAihubMatch: boolean;
+    };
+    availabilityNotice?: string;
+  };
 };
 
 export type ResolvedBusanDwell = {
@@ -65,6 +85,12 @@ export type ResolvedBusanDwell = {
   tourapiContentTypeId?: string;
   operatingHours?: string[];
   imageUrl?: string;
+  shortStayType?: ShortStayType;
+  minStayMin?: number;
+  recommendedStayMin?: number;
+  maxStayMin?: number;
+  selectionStatus?: ShortStaySelectionStatus;
+  availabilityNotice?: string;
 };
 
 const catalog = busanPoiCatalog as any;
@@ -94,11 +120,13 @@ export function resolveBusanDwell(
 ): ResolvedBusanDwell | null {
   const matched = busanMatched[String(contentId)];
   if (matched) {
+    if (matched.shortStay) return effectiveShortStayDwell(matched);
     if (isLowConfidenceMatched(matched)) return null;
     return effectiveBusanMatchedDwell(matched);
   }
 
   const unmatched = busanUnmatched[String(contentId)];
+  if (unmatched?.shortStay) return effectiveShortStayDwell(unmatched);
   if (!unmatched || unmatched.mapVerification?.status === 'not_found' || unmatched.availabilityProfile === 'hold') return null;
   const stat = categoryStats[unmatched.category];
   if (!stat?.median) return null;
@@ -127,6 +155,46 @@ export function resolveBusanDwell(
     tourapiContentTypeId: unmatched.tourapiContentTypeId,
     operatingHours: unmatched.operatingHours,
     imageUrl: unmatched.imageUrl,
+  };
+}
+
+function effectiveShortStayDwell(place: BusanCatalogPlace): ResolvedBusanDwell {
+  const policy = place.shortStay;
+  if (!policy) throw new Error(`${place.title}: short-stay policy is required`);
+  const direct = place.matchScope === 'direct_place';
+  return {
+    title: place.title,
+    category: place.category,
+    // 기존 플래너의 dwell은 권장 체류값으로 유지한다. 최소값은 장소 상세와
+    // 단일 추천 판정에서 별도로 사용한다.
+    eff: policy.recommendedStayMin,
+    base: policy.recommendedStayMin,
+    mult: 1,
+    src: `자투리활동:${policy.type}(${policy.dwellBasis})`,
+    confidence: direct ? 'direct_match' : place.matchScope === 'area_context' ? 'area_context_match' : 'category_fallback',
+    subCategory: place.subCategory,
+    availabilityProfile: place.availabilityProfile,
+    siteGroupId: place.siteGroupId,
+    siteRole: place.siteRole,
+    matchScope: place.matchScope,
+    dwellSourceName: policy.dwellBasis,
+    openingHoursSourceName: place.openingHoursSourceName ?? place.title,
+    openingHoursReliability: place.openingHoursReliability ?? openingReliabilityFor(place),
+    mapVerificationStatus: place.mapVerification?.status ?? 'unverified',
+    kakaoPlaceId: place.mapVerification?.placeId,
+    kakaoPlaceUrl: place.mapVerification?.placeUrl,
+    mapVerificationName: place.mapVerification?.matchedName,
+    mapVerificationDistanceM: place.mapVerification?.distanceM,
+    tourapiContentId: place.tourapiContentId,
+    tourapiContentTypeId: place.tourapiContentTypeId,
+    operatingHours: place.operatingHours,
+    imageUrl: place.imageUrl,
+    shortStayType: policy.type,
+    minStayMin: policy.minStayMin,
+    recommendedStayMin: policy.recommendedStayMin,
+    maxStayMin: policy.maxStayMin,
+    selectionStatus: policy.selectionStatus,
+    availabilityNotice: policy.availabilityNotice,
   };
 }
 
@@ -255,5 +323,3 @@ export function getNearbyPopularPlaces(origin: LatLon, limit = 5): PopularPlace[
   withinRadius.sort((a, b) => b.popularity - a.popularity);
   return withinRadius.slice(0, limit).map(({ popularity: _p, ...item }) => item);
 }
-
-

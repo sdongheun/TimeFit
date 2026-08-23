@@ -101,7 +101,9 @@ export function buildBasketCourse(
   arrivalModes: Partial<Record<string, Mode>> = {},
 ): Course {
   const travelPlan = automaticTravelLegs(selected, origin, target, arrivalModes);
-  const buffer = Math.max(...travelPlan.map((leg) => safetyBufferMin(leg.mode)));
+  // 단일 장소 흐름에서는 사용자가 설정한 도착 여유를 최종 코스에도 동일하게 적용한다.
+  // 이전 다중 코스 입력에는 필드가 없으므로 기존 수단별 안전 여유를 유지한다.
+  const buffer = ctx.arrivalBufferMin ?? Math.max(...travelPlan.map((leg) => safetyBufferMin(leg.mode)));
   const budget = ctx.remainingMin - buffer;
   const moveMin = travelPlan.reduce(
     (sum, leg) => sum + travelMin(leg.from, leg.to, leg.mode),

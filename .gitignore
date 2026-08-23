@@ -30,6 +30,10 @@ data/raw/
 data/aihub_donbu/
 # ※ 집계 산출물 data/processed/ 는 커밋 OK
 
+# 탐색용 공공 원본: 현재 런타임·카탈로그 생성 입력이 아니므로 로컬 조사본으로만 유지
+data/전국공공시설개방정보표준데이터.json
+data/전국도시공원정보표준데이터.json
+
 # 디버그
 npm-debug.*
 yarn-debug.*

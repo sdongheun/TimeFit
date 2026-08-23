@@ -8,7 +8,7 @@ import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToProfile } from './mainTabNavigation';
+import { resetToActivityRecord, resetToMain, resetToProfile } from './mainTabNavigation';
 import { UI_RADIUS } from './tokens';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MyCourses'>;
@@ -139,6 +139,7 @@ export function MyCoursesScreen({ navigation }: Props) {
         active="course"
         onMain={() => resetToMain(navigation)}
         onCourse={() => undefined}
+        onRecord={() => resetToActivityRecord(navigation)}
         onProfile={() => resetToProfile(navigation)}
       />
     </View>

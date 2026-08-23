@@ -6,7 +6,7 @@ import { PrimaryButton } from './CommonButtons';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToMyCourses } from './mainTabNavigation';
+import { resetToActivityRecord, resetToMain, resetToMyCourses } from './mainTabNavigation';
 import { useAuth } from './AuthContext';
 import { UI_RADIUS } from './tokens';
 
@@ -178,6 +178,7 @@ export function ProfileScreen({ navigation }: Props) {
         active="profile"
         onMain={() => resetToMain(navigation)}
         onCourse={() => resetToMyCourses(navigation)}
+        onRecord={() => resetToActivityRecord(navigation)}
         onProfile={() => undefined}
       />
     </View>

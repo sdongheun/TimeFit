@@ -43,6 +43,11 @@ const num = (x) => { const n = parseFloat(x); return Number.isFinite(n) ? n : nu
 const median = (a) => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 const quantile = (a, q) => { if (a.length < 2) return a[0] ?? null; const s = [...a].sort((x, y) => x - y); const p = (s.length - 1) * q, lo = Math.floor(p), hi = Math.ceil(p); return s[lo] + (s[hi] - s[lo]) * (p - lo); };
 const mean = (a) => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+const mode = (a) => {
+  const counts = new Map();
+  for (const value of a) counts.set(value, (counts.get(value) ?? 0) + 1);
+  return [...counts.entries()].sort(([leftValue, leftCount], [rightValue, rightCount]) => rightCount - leftCount || leftValue - rightValue)[0]?.[0] ?? null;
+};
 const r0 = (x) => x == null ? null : Math.round(x);
 
 // ---------- 1. 데이터 적재 ----------
@@ -122,7 +127,7 @@ for (const v of visits) {
 // ---- 카테고리별_체류시간.json ----
 const categoryDwell = {};
 for (const [cat, arr] of Object.entries(catDwell)) {
-  categoryDwell[cat] = { count: arr.length, median: r0(median(arr)), p25: r0(quantile(arr, 0.25)), p75: r0(quantile(arr, 0.75)), mean: r0(mean(arr)) };
+  categoryDwell[cat] = { count: arr.length, mode: r0(mode(arr)), median: r0(median(arr)), p25: r0(quantile(arr, 0.25)), p75: r0(quantile(arr, 0.75)), mean: r0(mean(arr)) };
 }
 
 // ---- congestion_matrix.json (배수: 셀빈도 / 균등기대, clamp 0.8~1.8) ----
@@ -151,8 +156,10 @@ for (const [k, p] of poiAgg) {
 
 const meta = { source: 'AI-Hub 국내여행로그 동부권(2023구축)', generatedFrom: 'training+validation', visitRecords: visits.length, usedRecords: used, poiThreshold: THRESH, note: 'CC-BY-SA-4.0 — 집계 파라미터(앱 내장용). 출처표시 필수.' };
 fs.writeFileSync(path.join(OUT, '카테고리별_체류시간.json'), JSON.stringify({ meta, data: categoryDwell }, null, 2));
-fs.writeFileSync(path.join(OUT, 'congestion_matrix.json'), JSON.stringify({ meta, buckets: BUCKETS, data: congestionMatrix }, null, 2));
-fs.writeFileSync(path.join(OUT, 'poi_dwell.json'), JSON.stringify({ meta, count: Object.keys(poiDwell).length, data: poiDwell }, null, 2));
+if (process.env.DWELL_ONLY !== '1') {
+  fs.writeFileSync(path.join(OUT, 'congestion_matrix.json'), JSON.stringify({ meta, buckets: BUCKETS, data: congestionMatrix }, null, 2));
+  fs.writeFileSync(path.join(OUT, 'poi_dwell.json'), JSON.stringify({ meta, count: Object.keys(poiDwell).length, data: poiDwell }, null, 2));
+}
 
 console.log(`\n산출:`);
 console.log(`  카테고리별_체류시간.json  (${Object.keys(categoryDwell).length} 카테고리, used ${used})`);

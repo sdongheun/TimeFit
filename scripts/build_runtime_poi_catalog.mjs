@@ -1,10 +1,9 @@
 #!/usr/bin/env node
-// 정제된 부산 후보를 앱 번들용 카탈로그로 변환한다.
-// 기존 카탈로그는 src/data/busan_poi_catalog.legacy.json에 보관한 뒤 이 스크립트를 실행한다.
+// 검토를 마친 자투리 활동 카탈로그를 앱 번들용 데이터로 변환한다.
+// 원본 검토 카탈로그는 data/processed/review에 보존하고, 앱은 이 출력만 읽는다.
 import fs from 'node:fs';
 
-const FINAL_MATCHED = 'data/processed/부산_최종매칭장소.json';
-const FINAL_UNMATCHED = 'data/processed/부산_최종미매칭장소.json';
+const SHORT_STAY_CATALOG = 'data/processed/review/부산_자투리장소_카탈로그_초안.json';
 const LEGACY = 'src/data/busan_poi_catalog.legacy.json';
 const OUTPUT = 'src/data/busan_poi_catalog.json';
 const OFFICIAL_SOURCES = {
@@ -15,6 +14,11 @@ const OFFICIAL_SOURCES = {
 
 const read = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const write = (file, value) => fs.writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
+const countBy = (rows, selector) => rows.reduce((result, row) => {
+  const key = selector(row) ?? 'unknown';
+  result[key] = (result[key] ?? 0) + 1;
+  return result;
+}, {});
 
 const legacy = read(LEGACY);
 const existing = fs.existsSync(OUTPUT) ? read(OUTPUT) : null;
@@ -34,19 +38,11 @@ const contentTypeForCategory = {
   문화시설: '14',
   '레저/스포츠': '28',
   상업지구: '38',
-  식당: '39',
   카페: '39',
 };
 
 function sourceTourApiId(place) {
   return place.sourceEvidence?.find((source) => source.source === 'tourapi_aihub' || source.source === 'tourapi_fallback')?.sourceId;
-}
-
-function openingReliability(place, matchScope, legacyPlace) {
-  if (legacyPlace?.openingHoursReliability) return legacyPlace.openingHoursReliability;
-  if (place.category === '자연관광지') return 'unknown';
-  if (matchScope === 'area_context') return 'area_uncertain';
-  return place.operatingHours?.length ? 'direct' : 'unknown';
 }
 
 function kakaoSearchUrl(title) {
@@ -65,21 +61,51 @@ function officialImage(place) {
   return null;
 }
 
-function toRuntime(place, group) {
+function availabilityProfileFor(place) {
+  if (place.shortStayType === 'scenic_pause') return 'outdoor';
+  const areaKind = /시장|거리|골목|마을/.test(place.scope?.kind ?? '');
+  if (place.shortStayType === 'quick_browse' && place.scope?.type === '포괄장소') return 'area';
+  if (place.scope?.type === '포괄장소' && areaKind) return 'area';
+  return 'facility';
+}
+
+function matchScopeFor(place) {
+  if (place.selectionEvidence?.exactAihubMatch) {
+    return place.scope?.type === '포괄장소' ? 'area_context' : 'direct_place';
+  }
+  return 'category_fallback';
+}
+
+function openingReliabilityFor(place, availabilityProfile) {
+  if (place.operatingHours?.length) return 'direct';
+  if (availabilityProfile === 'area') return 'area_uncertain';
+  return 'unknown';
+}
+
+function mapVerificationFor(place, existingPlace, legacyPlace) {
+  // 과거 카탈로그의 verified/weak 결과만 재사용한다. 과거 not_found는 당시의
+  // 넓은 후보 정제 결과이므로 새 활동 카탈로그의 자동 제외 근거로 삼지 않는다.
+  const previous = [existingPlace?.mapVerification, legacyPlace?.mapVerification]
+    .find((value) => value && ['verified', 'weak'].includes(value.status));
+  if (previous) {
+    return {
+      ...previous,
+      placeUrl: previous.placeUrl || place.mapSearchUrl || kakaoSearchUrl(place.title),
+    };
+  }
+  return {
+    provider: 'kakao',
+    status: 'unverified',
+    placeUrl: place.mapSearchUrl || kakaoSearchUrl(place.title),
+  };
+}
+
+function toRuntime(place) {
   const tourapiContentId = sourceTourApiId(place);
   const legacyPlace = tourapiContentId ? legacyByContentId.get(String(tourapiContentId)) : null;
   const existingPlace = existingByContentId.get(String(place.id));
-  const matchScope = group === 'matched'
-    ? place.dwellPolicy === 'area_dwell_from_aihub' ? 'area_context' : 'direct_place'
-    : 'category_fallback';
-  const existingVerification = existingPlace?.mapVerification?.status !== 'unverified'
-    ? existingPlace?.mapVerification
-    : null;
-  const mapVerification = existingVerification ?? legacyPlace?.mapVerification ?? {
-    provider: 'kakao',
-    status: 'unverified',
-    placeUrl: kakaoSearchUrl(place.title),
-  };
+  const availabilityProfile = availabilityProfileFor(place);
+  const matchScope = matchScopeFor(place);
   const image = officialImage(place) ?? (existingPlace?.imageUrl ? {
     imageUrl: existingPlace.imageUrl,
     imageSource: existingPlace.imageSource,
@@ -89,10 +115,10 @@ function toRuntime(place, group) {
     contentId: place.id,
     title: place.title,
     contentTypeId: legacyPlace?.contentTypeId ?? contentTypeForCategory[place.category] ?? 'local',
-    contentTypeName: legacyPlace?.contentTypeName ?? '부산 공식 관광 데이터',
+    contentTypeName: legacyPlace?.contentTypeName ?? '부산 자투리 활동 데이터',
     category: place.category,
     subCategory: place.scope?.kind ?? legacyPlace?.subCategory,
-    availabilityProfile: place.availabilityProfile,
+    availabilityProfile,
     addr1: place.address ?? '',
     lat: place.lat,
     lon: place.lon,
@@ -104,49 +130,61 @@ function toRuntime(place, group) {
     tourapiContentId: tourapiContentId ? String(tourapiContentId) : undefined,
     tourapiContentTypeId: tourapiContentId ? legacyPlace?.contentTypeId : undefined,
     matchScope,
-    dwellSourceName: group === 'matched' ? place.aihubMatch?.name ?? place.title : `카테고리:${place.category}`,
+    dwellSourceName: place.dwellBasis,
     openingHoursSourceName: place.title,
-    openingHoursReliability: openingReliability(place, matchScope, legacyPlace),
+    openingHoursReliability: openingReliabilityFor(place, availabilityProfile),
     operatingHours: place.operatingHours ?? [],
-    holidays: place.holidays ?? [],
-    mapVerification,
-    ...(image ?? {}),
-    ...(group === 'matched' ? {
+    mapVerification: mapVerificationFor(place, existingPlace, legacyPlace),
+    shortStay: {
+      type: place.shortStayType,
+      minStayMin: place.minStayMin,
+      recommendedStayMin: place.recommendedStayMin,
+      maxStayMin: place.maxStayMin,
+      selectionStatus: place.selectionStatus,
+      dwellBasis: place.dwellBasis,
+      dwellReference: place.dwellReference,
+      availabilityNotice: place.availabilityNotice,
+    },
+    ...(place.selectionEvidence?.exactAihubMatch ? {
       aihubName: place.aihubMatch?.name,
       aihubCategory: place.aihubMatch?.category,
       matchType: place.aihubMatch?.matchType,
       matchDistanceM: place.aihubMatch?.distanceM,
-      dwell: place.dwell,
+      dwell: place.aihubMatch?.dwell,
     } : {}),
+    ...(image ?? {}),
   };
 }
 
-const matchedSource = read(FINAL_MATCHED).data;
-const unmatchedSource = read(FINAL_UNMATCHED).data;
-const matched = matchedSource.map((place) => toRuntime(place, 'matched'));
-const unmatched = unmatchedSource.map((place) => toRuntime(place, 'unmatched'));
-const categories = [...new Set([...matched, ...unmatched].map((place) => place.category))].sort();
-const countBy = (rows, selector) => rows.reduce((result, row) => {
-  const key = selector(row) ?? 'unknown';
-  result[key] = (result[key] ?? 0) + 1;
-  return result;
-}, {});
+const source = read(SHORT_STAY_CATALOG);
+const rows = source.data.filter((place) => ['approved', 'conditional'].includes(place.selectionStatus));
+const matched = rows
+  .filter((place) => place.selectionEvidence?.exactAihubMatch)
+  .map(toRuntime);
+const unmatched = rows
+  .filter((place) => !place.selectionEvidence?.exactAihubMatch)
+  .map(toRuntime);
+const all = [...matched, ...unmatched];
+const categories = [...new Set(all.map((place) => place.category))].sort();
+
 const catalog = {
   meta: {
     generatedAt: new Date().toISOString(),
     targetRegion: '부산',
-    source: 'TourAPI KorService2 + 부산광역시 명소·쇼핑·맛집 OpenAPI + AI-Hub 국내여행로그',
-    note: '앱 런타임용 부산 POI 카탈로그. 정제 완료 장소만 포함하며, 보류·제외 목록은 추천하지 않는다.',
+    source: '부산 자투리장소 검토 카탈로그 (TourAPI·부산 공공데이터·AI-Hub 기반)',
+    sourceCatalog: SHORT_STAY_CATALOG,
+    note: '앱 런타임용 자투리 활동 장소 카탈로그. 승인·조건부 장소만 포함하며, 장소별 최소·권장·최대 체류 범위를 사용한다.',
     legacyCatalog: 'src/data/busan_poi_catalog.legacy.json',
-    candidateCollection: '로컬 카탈로그 좌표 반경 탐색. TourAPI 원본 contentId가 있는 장소만 detailIntro2 운영시간 확인을 추가로 수행한다.',
+    candidateCollection: '로컬 카탈로그 좌표 범위 탐색. 운영시간 미확인 시설은 운영시간 게이트에서 자동 추천하지 않고 카카오맵 확인 링크를 제공한다.',
   },
   summary: {
     matched: matched.length,
     unmatched: unmatched.length,
-    total: matched.length + unmatched.length,
-    categories: countBy([...matched, ...unmatched], (place) => place.category),
-    matchedMatchScope: countBy(matched, (place) => place.matchScope),
-    unmatchedOpeningHoursReliability: countBy(unmatched, (place) => place.openingHoursReliability),
+    total: all.length,
+    selectionStatus: countBy(all, (place) => place.shortStay.selectionStatus),
+    shortStayType: countBy(all, (place) => place.shortStay.type),
+    categories: countBy(all, (place) => place.category),
+    openingHoursReliability: countBy(all, (place) => place.openingHoursReliability),
   },
   matched: {
     summary: { matched: matched.length, matchScope: countBy(matched, (place) => place.matchScope) },
@@ -154,12 +192,13 @@ const catalog = {
     byContentId: Object.fromEntries(matched.map((place) => [place.contentId, place])),
   },
   unmatched: {
-    summary: { unmatched: unmatched.length, matchScope: { category_fallback: unmatched.length } },
+    summary: { unmatched: unmatched.length, matchScope: countBy(unmatched, (place) => place.matchScope) },
     data: unmatched,
     byContentId: Object.fromEntries(unmatched.map((place) => [place.contentId, place])),
   },
-  categoryDwell: Object.fromEntries(categories.map((category) => [category, categoryDwell[category]])),
+  // 기존 진단 스크립트와 과거 데이터 호환용 통계다. 현재 런타임 후보는 shortStay를 우선 사용한다.
+  categoryDwell: Object.fromEntries(categories.map((category) => [category, categoryDwell[category]]).filter(([, value]) => value)),
 };
 
 write(OUTPUT, catalog);
-console.log(`런타임 카탈로그 생성: 매칭 ${matched.length} / 미매칭 ${unmatched.length} / 합계 ${matched.length + unmatched.length}`);
+console.log(`자투리 런타임 카탈로그 생성: 매칭 ${matched.length} / 미매칭 ${unmatched.length} / 합계 ${all.length}`);

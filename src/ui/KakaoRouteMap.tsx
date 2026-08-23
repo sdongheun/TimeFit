@@ -40,10 +40,11 @@ type Props = {
   recenterOffsetY?: number;
   boundsPadding?: { top: number; right: number; bottom: number; left: number };
   onMarkerTap?: (index: number) => void;
+  onMapTap?: (point: LatLon) => void;
   style?: StyleProp<ViewStyle>;
 };
 
-export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, focusedMarkerOffsetY = 0, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, style }: Props) {
+export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, focusedMarkerOffsetY = 0, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, onMapTap, style }: Props) {
   const ref = useRef<WebView>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
@@ -67,6 +68,7 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
       focusedMarkerOffsetY,
       boundsPadding,
       markerTapEnabled: Boolean(onMarkerTap),
+      mapTapEnabled: Boolean(onMapTap),
     });
     ref.current?.injectJavaScript(`setRoute(${route});true;`);
   }, [ready, markers, routeSegments, showMarkerLabels, usePhotoMarkers, focusedMarkerOffsetY, boundsPadding, onMarkerTap]);
@@ -107,6 +109,8 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
               setError(m.message || 'Kakao 지도 로드 실패');
             } else if (m.type === 'marker' && typeof m.index === 'number') {
               onMarkerTap?.(m.index);
+            } else if (m.type === 'mapTap' && Number.isFinite(m.lat) && Number.isFinite(m.lon)) {
+              onMapTap?.({ lat: m.lat, lon: m.lon });
             }
           } catch {
             // WebView 지도 이벤트는 표시 상태만 사용한다.
@@ -168,7 +172,7 @@ setTimeout(function(){
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_JS_KEY}&autoload=false" onerror="post({type:'error',message:'Kakao Maps SDK 스크립트 로드 실패'})"></script>
 </head><body><div id="map"></div>
 <script>
-var map, overlays = [], hasInitialRoute = false;
+var map, overlays = [], hasInitialRoute = false, mapTapEnabled = false;
 function ll(p){ return new kakao.maps.LatLng(p.lat, p.lon); }
 function markerText(m, i){
   if (m.kind === 'origin') return '출';
@@ -324,6 +328,7 @@ function addDirectionArrows(points, quality){
 }
 function setRoute(data){
   if (!map) return;
+  mapTapEnabled = Boolean(data.mapTapEnabled);
   clearRoute();
   var bounds = new kakao.maps.LatLngBounds();
   var focusedPoint = null;
@@ -443,6 +448,11 @@ function initMap(){
     map = new kakao.maps.Map(document.getElementById('map'), {
       center: new kakao.maps.LatLng(${center.lat}, ${center.lon}),
       level: 5
+    });
+    kakao.maps.event.addListener(map, 'click', function(mouseEvent){
+      if (!mapTapEnabled) return;
+      var point = mouseEvent.latLng;
+      post({ type:'mapTap', lat:point.getLat(), lon:point.getLng() });
     });
     post({ type:'ready' });
   });
