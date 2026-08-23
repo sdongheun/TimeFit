@@ -63,6 +63,22 @@ test('동일한 장소 정밀화는 진행 중 요청과 완료 결과를 공유
   assert.deepEqual(fixture.calls(), { walk: 1, transit: 1 });
 });
 
+test('완료된 정밀 경로는 24시간 TTL이 지나면 다시 계산한다', async () => {
+  let now = 0;
+  const fixture = adapterFixture();
+  const service = createOneStopRouteService({
+    adapter: fixture.adapter,
+    now: () => now,
+    ttlMs: 24 * 60 * 60 * 1000,
+  });
+
+  await service.get({ origin, spot, target });
+  now += 24 * 60 * 60 * 1000 + 1;
+  await service.get({ origin, spot, target });
+
+  assert.deepEqual(fixture.calls(), { walk: 2, transit: 2 });
+});
+
 test('한 수단이 근사값으로 폴백되면 그 수단은 정밀 결과로 쓰지 않는다', async () => {
   const fixture = adapterFixture({ transitFallback: true });
   const service = createOneStopRouteService({ adapter: fixture.adapter });

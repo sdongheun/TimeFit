@@ -48,7 +48,7 @@ test("시설형 장소는 도착 후 최소 체류까지 공식 운영시간 안
   );
 });
 
-test("운영시간이 없는 카페·식당·시설은 지도 추천에서 제외한다", () => {
+test("운영시간이 없는 시설은 조건부 지도 후보로 남기되 자동 확정은 별도 검증에서 막는다", () => {
   assert.equal(
     passesLocalOpeningGate({
       spot: spot({ operatingHours: undefined }),
@@ -57,7 +57,7 @@ test("운영시간이 없는 카페·식당·시설은 지도 추천에서 제�
       nowMin: 14 * 60,
       arrivalMarginMin: 10,
     }),
-    false,
+    true,
   );
 });
 
@@ -79,7 +79,7 @@ test("자연관광 야외 장소는 별도 운영시간이 없어도 지도 후�
   );
 });
 
-test("시간대 정책이 등록되지 않은 시장·거리·골목은 지도 추천에서 제외한다", () => {
+test("시간대 정책이 등록되지 않은 시장·거리·골목은 조건부 지도 후보로 남긴다", () => {
   assert.equal(
     passesLocalOpeningGate({
       spot: spot({
@@ -94,6 +94,6 @@ test("시간대 정책이 등록되지 않은 시장·거리·골목은 지도 �
       nowMin: 14 * 60,
       arrivalMarginMin: 10,
     }),
-    false,
+    true,
   );
 });

@@ -19,6 +19,13 @@ export type OneStopRouteAdapter = {
   read(from: LatLon, to: LatLon, mode: OneStopRouteMode): { min: number; source: string };
 };
 
+const ONE_STOP_ROUTE_TTL_MS = 24 * 60 * 60 * 1000;
+
+type CompletedRoute = {
+  result: OneStopRouteResult;
+  cachedAt: number;
+};
+
 export const defaultOneStopRouteAdapter: OneStopRouteAdapter = {
   precomputeWalk: (pairs, options) => precompute(pairs, 'walk', options),
   precomputeTransit: (pairs, options) => precomputeTransit(pairs, options),
@@ -36,23 +43,30 @@ const exactSource = (mode: OneStopRouteMode, source: string) => (
   mode === 'walk' ? source === 'TMAP' : source === 'ODsay' || source === 'walk_short'
 );
 
-export function createOneStopRouteService(options: { adapter?: OneStopRouteAdapter } = {}) {
+export function createOneStopRouteService(options: {
+  adapter?: OneStopRouteAdapter;
+  now?: () => number;
+  ttlMs?: number;
+} = {}) {
   const adapter = options.adapter ?? defaultOneStopRouteAdapter;
-  const completed = new Map<string, OneStopRouteResult>();
+  const now = options.now ?? Date.now;
+  const ttlMs = options.ttlMs ?? ONE_STOP_ROUTE_TTL_MS;
+  const completed = new Map<string, CompletedRoute>();
   const inFlight = new Map<string, Promise<OneStopRouteResult>>();
 
   async function get(request: RouteRequest): Promise<OneStopRouteResult> {
     const key = oneStopRouteKey(request.origin, request.spot, request.target);
     if (!request.forceRefresh) {
       const cached = completed.get(key);
-      if (cached) return cached;
+      if (cached && now() - cached.cachedAt < ttlMs) return cached.result;
+      if (cached) completed.delete(key);
       const pending = inFlight.get(key);
       if (pending) return pending;
     }
 
     const pending = refine(request)
       .then((result) => {
-        completed.set(key, result);
+        completed.set(key, { result, cachedAt: now() });
         return result;
       })
       .finally(() => inFlight.delete(key));
