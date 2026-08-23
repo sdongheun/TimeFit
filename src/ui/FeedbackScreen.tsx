@@ -6,7 +6,7 @@ import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
+import { resetToActivityRecord, resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
 import { cancelCourseNotifications } from '../services/courseNotifications';
 import { savePlaceFeedback } from '../services/placeFeedback';
 
@@ -211,6 +211,7 @@ export function FeedbackScreen({ route, navigation }: Props) {
         active="course"
         onMain={() => resetToMain(navigation)}
         onCourse={() => resetToMyCourses(navigation)}
+        onRecord={() => resetToActivityRecord(navigation)}
         onProfile={() => resetToProfile(navigation)}
       />
     </View>

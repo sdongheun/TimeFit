@@ -15,6 +15,13 @@ export function resetToProfile(navigation: NavigationProp<RootStackParamList>) {
   }));
 }
 
+export function resetToActivityRecord(navigation: NavigationProp<RootStackParamList>) {
+  navigation.dispatch(CommonActions.reset({
+    index: 0,
+    routes: [{ name: 'ActivityRecord' }],
+  }));
+}
+
 export function resetToMyCourses(navigation: NavigationProp<RootStackParamList>) {
   navigation.dispatch(CommonActions.reset({
     index: 0,

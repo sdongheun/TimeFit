@@ -1,452 +1,113 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Slider from '@react-native-community/slider';
+import { useMemo, useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
-import { getActualRouteBaselines, geocodeAddr, getNearbyPopularPlaces, HourBucket, kakaoGeocodeAddr, kakaoReverseGeocode, LatLon, planTimeFit, reverseGeocode, timeContext } from '../engine';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getActualRouteBaselines, LatLon, planTimeFit, timeContext } from '../engine';
+import { MapPlacePicker } from './MapPlacePicker';
 import { Appointment, fmtHM, RootStackParamList } from './nav';
 import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
 import { TimeWheel } from './TimeWheel';
 import { useAppFlow } from './AppFlowContext';
+import { hourBucketForMinute, resolveTimeSetupClock, suggestedEndForTestClock } from './timeSetup/testClock';
 
-const MAX_MINUTES = 240;
-const STEP_MINUTES = 5;
+const MAX_MINUTES = 120;
 const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
-const HOURS = Array.from({ length: 24 }, (_, hour) => String(hour).padStart(2, '0'));
-const MINUTES = Array.from({ length: 60 / STEP_MINUTES }, (_, index) => String(index * STEP_MINUTES).padStart(2, '0'));
-
+const HOURS_12 = Array.from({ length: 12 }, (_, index) => String(index + 1));
+const MINUTES = Array.from({ length: 60 }, (_, minute) => String(minute).padStart(2, '0'));
+type Page = 'setup' | 'origin-choice' | 'location-permission' | 'destination-choice' | 'time-picker' | 'test-clock' | 'loading';
+type PickTarget = 'origin' | 'destination' | null;
 type Props = NativeStackScreenProps<RootStackParamList, 'TimeSetup'>;
 
-async function resolveLocationRoadAddress(lat: number, lon: number): Promise<{ coords: LatLon; label: string }> {
-  // 1. 카카오 도로명 역지오코딩
-  const kakaoRoad = await kakaoReverseGeocode(lat, lon);
-
-  // 2. 네이티브 OS(iOS/Android) 역지오코딩
-  let nativeRoad: string | null = null;
-  try {
-    const [addr] = await Location.reverseGeocodeAsync({ latitude: lat, longitude: lon });
-    if (addr) {
-      const parts = [
-        addr.region,
-        addr.district || addr.city,
-        addr.street,
-        addr.streetNumber,
-      ].filter(Boolean);
-      if (parts.length >= 2) {
-        nativeRoad = parts.join(' ');
-      }
-    }
-  } catch {
-    // 네이티브 지오코딩 실패 무시
-  }
-
-  // 3. TMAP 도로명 역지오코딩
-  const tmapRoad = await reverseGeocode(lat, lon);
-
-  const roadAddress = kakaoRoad || nativeRoad || tmapRoad;
-
-  if (roadAddress) {
-    // 도로명 주소 기반 정규화 좌표 조회
-    const geocoded = (await kakaoGeocodeAddr(roadAddress, 1))[0] ?? (await geocodeAddr(roadAddress, 1))[0];
-    return {
-      coords: geocoded ? { lat: geocoded.lat, lon: geocoded.lon } : { lat, lon },
-      label: `현재 위치 · ${roadAddress}`,
-    };
-  }
-
-  return {
-    coords: { lat, lon },
-    label: `현재 위치 (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
-  };
-}
-
-function formatDuration(minutes: number) {
-  if (minutes <= 0) return '—';
-  const hours = Math.floor(minutes / 60);
-  const rest = minutes % 60;
-  return hours ? (rest ? `${hours}시간 ${rest}분` : `${hours}시간`) : `${rest}분`;
-}
-
-function hourBucketOf(hour: number): HourBucket {
-  return hour < 11 ? '아침' : hour < 14 ? '점심' : hour < 17 ? '오후' : hour < 21 ? '저녁' : '야간';
-}
+function to12(min: number) { const hour24 = Math.floor(min / 60); return { pm: hour24 >= 12, hour: hour24 % 12 || 12, minute: min % 60 }; }
+function to24(pm: boolean, hour12: number, minute: number) { return ((pm ? 12 : 0) + (hour12 % 12)) * 60 + minute; }
+function placeLabel(place: LatLon) { return `지도 선택 위치 (${place.lat.toFixed(4)}, ${place.lon.toFixed(4)})`; }
+const SHOW_TEST_CLOCK = typeof __DEV__ !== 'undefined' && __DEV__;
 
 export function TimeSetupScreen({ navigation, route }: Props) {
   const flow = useAppFlow();
   const insets = useSafeAreaInsets();
-  const now = useMemo(() => timeContext(new Date()), []);
-  const roundedNow = Math.min(23 * 60 + 55, Math.ceil(now.nowMin / STEP_MINUTES) * STEP_MINUTES);
-  const initialDuration = route.params?.presetMin ?? 120;
-  const initialEnd = Math.min(23 * 60 + 55, roundedNow + initialDuration);
-
-  const [startHour, setStartHour] = useState(Math.floor(roundedNow / 60));
-  const [startMinute, setStartMinute] = useState(roundedNow % 60);
-  const [endHour, setEndHour] = useState(Math.floor(initialEnd / 60));
-  const [endMinute, setEndMinute] = useState(initialEnd % 60);
-  const [showDevTimeOverride, setShowDevTimeOverride] = useState(false);
+  const realNow = useMemo(() => timeContext(new Date()), []);
+  const [testNowMin, setTestNowMin] = useState<number | null>(null);
+  const now = resolveTimeSetupClock(realNow, testNowMin);
+  const initialEnd = Math.min(23 * 60 + 59, now.nowMin + Math.min(route.params?.presetMin ?? 120, MAX_MINUTES));
+  const initial12 = to12(initialEnd);
+  const [page, setPage] = useState<Page>('setup');
+  const [origin, setOrigin] = useState<LatLon | null>(null);
+  const [originLabel, setOriginLabel] = useState('내 위치 사용하기');
   const [appointment, setAppointment] = useState<Appointment>(null);
-  const [origin, setOrigin] = useState(SEOMYEON);
-  const [originLabel, setOriginLabel] = useState('부산 서면(기본)');
-  const [picker, setPicker] = useState<'origin' | 'appointment' | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [pm, setPm] = useState(initial12.pm);
+  const [hour12, setHour12] = useState(initial12.hour);
+  const [minute, setMinute] = useState(initial12.minute);
+  const [arrivalBufferMin, setArrivalBufferMin] = useState(10);
+  const testInitial = to12(realNow.nowMin);
+  const [testPm, setTestPm] = useState(testInitial.pm);
+  const [testHour12, setTestHour12] = useState(testInitial.hour);
+  const [testMinute, setTestMinute] = useState(testInitial.minute);
+  const [mapTarget, setMapTarget] = useState<PickTarget>(null);
+  const [searchTarget, setSearchTarget] = useState<PickTarget>(null);
+  const [loadingStep, setLoadingStep] = useState(0);
   const [error, setError] = useState('');
+  const endMin = to24(pm, hour12, minute);
+  const remainingMin = endMin - now.nowMin;
+  const validation = !origin ? '출발 위치를 선택해 주세요.' : remainingMin <= 0 ? '도착 시각을 현재 시각 뒤로 설정해 주세요.' : remainingMin > MAX_MINUTES ? '현재 시각부터 최대 2시간 안에서 설정해 주세요.' : '';
 
-  // 현재 위치 기준 반경 3km 내 자주 찾는 인기 장소 상위 5개
-  const popularPlaces = useMemo(() => getNearbyPopularPlaces(origin, 5), [origin]);
-
-  // 화면 진입 시 위치 권한이 허용되어 있으면 자동으로 현재 위치 좌표를 도로명 주소로 변환하여 설정
-  useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const { status } = await Location.getForegroundPermissionsAsync();
-        if (status === 'granted' && active) {
-          const position = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
-          if (!active) return;
-          const { latitude: lat, longitude: lon } = position.coords;
-          const resolved = await resolveLocationRoadAddress(lat, lon);
-          if (!active) return;
-          setOrigin(resolved.coords);
-          setOriginLabel(resolved.label);
-        }
-      } catch {
-        // 초기 자동 감지 실패 시 기본값(서면) 유지
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  const startMin = startHour * 60 + startMinute;
-  const endMin = endHour * 60 + endMinute;
-  const remainingMin = endMin - startMin;
-  const validation = remainingMin <= 0
-    ? '종료 시각이 시작 시각보다 빨라요. 종료 시각을 뒤로 옮겨 주세요.'
-    : remainingMin > MAX_MINUTES
-      ? '자투리 시간은 최대 4시간까지 설정할 수 있어요.'
-      : '';
-
-  const setDurationPreset = (minutes: number) => {
-    const nextEnd = Math.min(23 * 60 + 55, startMin + minutes);
-    setEndHour(Math.floor(nextEnd / 60));
-    setEndMinute(nextEnd % 60);
+  const chooseMap = (target: Exclude<PickTarget, null>) => { setMapTarget(target); };
+  const applyPlace = (target: Exclude<PickTarget, null>, point: LatLon, label: string) => {
+    if (target === 'origin') { setOrigin(point); setOriginLabel(label); }
+    else setAppointment({ label, ...point });
   };
-
   const useGps = async () => {
     try {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setError('위치 권한이 허용되지 않았어요. 직접 장소를 검색해 주세요.');
-        return;
-      }
-      const position = await Location.getCurrentPositionAsync({});
-      const { latitude: lat, longitude: lon } = position.coords;
-      setOriginLabel('현재 위치 · 도로명 주소 확인 중');
-      const resolved = await resolveLocationRoadAddress(lat, lon);
-      setOrigin(resolved.coords);
-      setOriginLabel(resolved.label);
-    } catch {
-      setError('현재 위치를 가져오지 못했어요. 직접 장소를 검색해 주세요.');
-    }
+      const permission = await Location.requestForegroundPermissionsAsync();
+      if (permission.status !== 'granted') { setError('위치 권한이 허용되지 않았어요. 지도로 직접 선택할 수 있어요.'); setPage('origin-choice'); return; }
+      const position = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+      const point = { lat: position.coords.latitude, lon: position.coords.longitude };
+      applyPlace('origin', point, '현재 위치');
+      setPage('setup');
+    } catch { setError('현재 위치를 가져오지 못했어요. 지도로 직접 선택해 주세요.'); setPage('origin-choice'); }
   };
-
   const run = async () => {
-    if (validation) {
-      setError(validation);
-      return;
-    }
+    if (validation || !origin) { setError(validation); return; }
     setError('');
-    setLoading(true);
+    setLoadingStep(0);
+    setPage('loading');
     try {
-      const dayType = now.dayType;
-      const hourBucket = hourBucketOf(startHour);
-      const destination = appointment ? { lat: appointment.lat, lon: appointment.lon } : null;
-      const baseline = destination ? await getActualRouteBaselines(origin, destination) : null;
-      const result = await planTimeFit({
-        origin,
-        destination,
-        remainingMin,
-        // 초기 지도는 세 이동수단 중 하나라도 가능한 장소를 수집한다.
-        // 특정 수단을 미리 고정하지 않고, 실제 구간 수단은 장소 선택 뒤 비교한다.
-        mode: 'transit',
-        candidateModes: ['walk', 'transit', 'car'],
-        radiusM: 8000,
-        routeBaselines: baseline?.baselines,
-        mapExploration: true,
-        nowMin: startMin,
-        dayType,
-        hourBucket,
-      });
-      if (!result.spatialCandidates.length) {
-        setError('이 시간 안에 들를 수 있는 장소를 찾지 못했어요. 약속 시각이나 장소를 다시 확인해 주세요.');
-        return;
-      }
-      const params: RootStackParamList['Results'] = {
-        result,
-        usedTimeLabel: `${dayType} ${fmtHM(startMin)}·${hourBucket}`,
-        origin,
-        ctx: {
-          startMin,
-          // 코스 확정 전에는 특정 수단을 고정하지 않는다. 기존 단일 모드 엔진과의 호환을 위해
-          // 기본 계산값은 대중교통으로 두고, 지도에서는 수단별 가능성을 별도 비교한다.
-          mode: 'transit',
-          modeLabel: '이동수단 비교',
-          originLabel,
-          appointment,
-          remainingMin,
-          dayType,
-          hourBucket,
-          isManualTime: showDevTimeOverride,
-        },
-      };
-      flow.setLatestResults(params);
-      // 결과에서 뒤로가면 입력값을 유지한 시간 설정 화면으로 돌아간다.
-      navigation.navigate('Results', params);
-    } catch (runError) {
-      setError(`추천 실패: ${runError instanceof Error ? runError.message : '알 수 없는 오류'}`);
-    } finally {
-      setLoading(false);
-    }
+      // 로딩 화면을 먼저 그린 뒤, 실제 비동기 단계가 완료될 때만 다음 상태로 전환한다.
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      const target = appointment ? { lat: appointment.lat, lon: appointment.lon } : null;
+      setLoadingStep(1);
+      const baseline = target ? await getActualRouteBaselines(origin, target) : null;
+      setLoadingStep(2);
+      const result = await planTimeFit({ origin, destination: target, remainingMin, mode: 'transit', candidateModes: ['walk', 'transit'], radiusM: 8000, routeBaselines: baseline?.baselines, mapExploration: true, nowMin: now.nowMin, dayType: now.dayType, hourBucket: hourBucketForMinute(now.nowMin) });
+      setLoadingStep(3);
+      const params: RootStackParamList['Results'] = { result, usedTimeLabel: `${fmtHM(now.nowMin)} 기준${testNowMin != null ? ' (테스트)' : ''}`, origin, ctx: { startMin: now.nowMin, mode: 'transit', modeLabel: '도보·대중교통 비교', originLabel, appointment, remainingMin, arrivalBufferMin, dayType: now.dayType, hourBucket: hourBucketForMinute(now.nowMin) } };
+      flow.setLatestResults(params); navigation.replace('Results', params);
+    } catch (reason) { setError(`추천을 준비하지 못했어요: ${reason instanceof Error ? reason.message : '잠시 후 다시 시도해 주세요.'}`); setPage('setup'); }
   };
-
-  const timeCard = (
-    title: string,
-    hour: number,
-    minute: number,
-    setHour: (hour: number) => void,
-    setMinute: (minute: number) => void,
-    hint: string,
-  ) => (
-    <View style={s.card}>
-      <View style={s.cardHeader}>
-        <Text style={s.cardTitle}>{title}</Text>
-        <Text style={s.cardValue}>{fmtHM(hour * 60 + minute)}</Text>
-      </View>
-      <View style={s.wheels}>
-        <View style={s.wheelColumn}><TimeWheel values={HOURS} index={hour} onChange={setHour} /></View>
-        <View style={s.wheelColumn}><TimeWheel values={MINUTES} index={minute / STEP_MINUTES} onChange={(index) => setMinute(index * STEP_MINUTES)} /></View>
-      </View>
-      <Text style={s.wheelHint}>{hint}</Text>
-    </View>
-  );
-
-  return (
-    <View style={s.root}>
-      <View style={[s.nav, { height: insets.top + 52, paddingTop: insets.top }]}>
-        <Pressable
-          accessibilityLabel="메인으로 돌아가기"
-          hitSlop={12}
-          onPress={() => {
-            if (navigation.canGoBack()) navigation.goBack();
-            else navigation.navigate('Home');
-          }}
-          style={s.backButton}
-        >
-          <Text style={s.backArrow}>‹</Text>
-          <Text style={s.backLabel}>메인</Text>
-        </Pressable>
-        <Text style={s.navTitle}>자투리 시간 설정</Text>
-        <View style={s.navSpacer} />
-      </View>
-
-      <ScrollView contentContainerStyle={s.body} showsVerticalScrollIndicator={false}>
-        <View style={s.summary}>
-          <View>
-            <Text style={s.summaryLabel}>쓸 수 있는 자투리</Text>
-            <Text style={[s.summaryValue, validation && s.summaryValueError]}>{formatDuration(remainingMin)}</Text>
-          </View>
-          <View style={s.summaryRight}>
-            <Text style={s.summaryTime}>{fmtHM(startMin)} 출발 → {fmtHM(endMin)}</Text>
-            <Text style={s.summaryBuffer}>장소를 고른 뒤 이동 방법을 비교해요</Text>
-          </View>
-        </View>
-
-        {/* 빠른 자투리 시간 프리셋 */}
-        <View style={s.presetRow}>
-          {[30, 60, 90, 120, 180].map((preset) => {
-            const isSelected = remainingMin === preset;
-            return (
-              <Pressable
-                key={preset}
-                onPress={() => setDurationPreset(preset)}
-                style={[s.presetChip, isSelected && s.presetChipActive]}
-              >
-                <Text style={[s.presetChipText, isSelected && s.presetChipTextActive]}>
-                  {preset < 60 ? `${preset}분` : `${preset / 60}시간`}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
-
-        {/* 종료 시각 (약속 시각 / 복귀 시각) 설정 */}
-        {timeCard('종료 시각 (약속 도착 / 복귀)', endHour, endMinute, setEndHour, setEndMinute, '현재 시각부터 최대 4시간까지 설정할 수 있어요')}
-
-        <View style={[s.card, s.placeCard]}>
-          <Pressable style={s.placeRow} onPress={() => setPicker('origin')}>
-            <Text style={s.placeLabel}>출발지</Text>
-            <Text style={s.placeValue} numberOfLines={1}>{originLabel}</Text>
-          </Pressable>
-          <View style={s.separator} />
-          <Pressable style={s.placeRow} onPress={() => setPicker('appointment')}>
-            <Text style={s.placeLabel}>다음 일정 장소</Text>
-            <Text style={s.placeValue} numberOfLines={1}>{appointment?.label ?? '없음 (왕복)'}</Text>
-          </Pressable>
-          <Pressable style={s.locationButton} onPress={useGps}><Text style={s.locationButtonText}>현재 위치 사용</Text></Pressable>
-        </View>
-
-        {/* TIME-01.1 개발/테스트용 시작 시각 수동 설정 토글 */}
-        <View style={s.devSection}>
-          <Pressable
-            onPress={() => setShowDevTimeOverride((prev) => !prev)}
-            style={s.devToggle}
-          >
-            <Text style={s.devToggleText}>
-              {showDevTimeOverride ? '▼ 테스트 시작 시각 닫기' : '▶ [테스트] 시작 시각 직접 변경하기'}
-            </Text>
-          </Pressable>
-          {showDevTimeOverride ? (
-            <View style={s.devCardWrapper}>
-              {timeCard('시작 시각 (테스트용)', startHour, startMinute, setStartHour, setStartMinute, '새벽, 운영시간 경계 등 테스트 시각을 직접 지정합니다')}
-            </View>
-          ) : null}
-        </View>
-
-        {/* 현재 위치 기준 반경 3km 내 자주 찾는 인기 장소 5개 */}
-        {popularPlaces.length > 0 ? (
-          <View style={s.popularSection}>
-            <View style={s.popularHeader}>
-              <Text style={s.popularTitle}>내 주변 자주 찾는 장소</Text>
-              <Text style={s.popularSubtitle}>
-                {origin.lat >= 34.8 && origin.lat <= 35.4 && origin.lon >= 128.7 && origin.lon <= 129.4
-                  ? '반경 3km 내 자투리 시간에 많이 들르는 곳이에요'
-                  : '부산 서면 주변 자투리 시간에 많이 들르는 인기 장소예요'}
-              </Text>
-            </View>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={s.popularScroll}
-            >
-              {popularPlaces.map((place) => (
-                <Pressable
-                  key={place.contentId}
-                  style={s.popularCard}
-                  onPress={() => {
-                    setAppointment({ label: place.title, lat: place.lat, lon: place.lon });
-                  }}
-                  accessibilityLabel={`${place.title}을 다음 일정 장소로 선택`}
-                >
-                  {place.imageUrl ? (
-                    <Image source={{ uri: place.imageUrl }} style={s.popularImage} />
-                  ) : (
-                    <View style={s.popularFallbackImage}>
-                      <Text style={s.popularCategoryText}>{place.category}</Text>
-                    </View>
-                  )}
-                  <View style={s.popularInfo}>
-                    <Text style={s.popularPlaceName} numberOfLines={1}>{place.title}</Text>
-                    <Text style={s.popularMeta}>
-                      {place.distanceKm < 1 ? `${Math.round(place.distanceKm * 1000)}m` : `${place.distanceKm}km`} · 권장 {place.dwellMin}분
-                    </Text>
-                  </View>
-                </Pressable>
-              ))}
-            </ScrollView>
-          </View>
-        ) : null}
-
-        {(validation || error) ? <Text style={s.error}>{validation || error}</Text> : null}
-      </ScrollView>
-
-      <View style={s.footer}>
-        <Pressable disabled={Boolean(validation) || loading} onPress={run} style={[s.cta, (validation || loading) && s.ctaDisabled]}>
-          {loading ? <ActivityIndicator color={C.onAccent} /> : <Text style={s.ctaText}>이 시간에 갈 곳 찾기</Text>}
-        </Pressable>
-      </View>
-
-      <PlacePicker
-        visible={picker !== null}
-        title={picker === 'origin' ? '출발지 선택' : '다음 일정 장소 선택'}
-        center={picker === 'appointment' ? appointment ?? origin : origin}
-        showGps={picker === 'origin'}
-        onClose={() => setPicker(null)}
-        onConfirm={(place) => {
-          if (picker === 'appointment') setAppointment({ label: place.label, lat: place.lat, lon: place.lon });
-          else {
-            setOrigin({ lat: place.lat, lon: place.lon });
-            setOriginLabel(place.label);
-          }
-        }}
-      />
-    </View>
-  );
+  const back = () => {
+    if (page === 'setup') navigation.goBack();
+    else if (page === 'origin-choice' || page === 'destination-choice' || page === 'time-picker' || page === 'test-clock') setPage('setup');
+    else if (page === 'location-permission') setPage('origin-choice');
+  };
+  const Header = ({ title }: { title: string }) => <View style={s.header}><Pressable onPress={back} style={s.back}><Text style={s.backText}>‹</Text></Pressable><Text style={s.headerTitle}>{title}</Text><View style={s.back} /></View>;
+  if (page === 'loading') return <View style={s.root}><View style={[s.loading, { paddingTop: insets.top + 40 }]}><Text style={s.loadingEyebrow}>{fmtHM(endMin)}까지 계산 중</Text><Text style={s.loadingTitle}>시간 안에 들를 곳을{`\n`}찾고 있어요</Text>{['현재 위치와 도착지 확인', '이동 가능한 범위 계산', '짧게 들를 장소 찾기', '운영 상태 확인'].map((label, index) => <View key={label} style={s.loadingRow}><View style={[s.dot, index < loadingStep && s.dotDone, index === loadingStep && s.dotActive]} /><Text style={[s.loadingText, index <= loadingStep && s.loadingTextActive]}>{label}</Text></View>)}</View></View>;
+  if (page === 'origin-choice') return <View style={s.root}><ScrollView contentContainerStyle={[s.screen, { paddingTop: insets.top + 14 }]}><Header title="현재 위치" /><Text style={s.smallCopy}>현재 위치를 쓰거나 지도에서 직접 출발지를 고르세요.</Text><Pressable style={s.primary} onPress={() => setPage('location-permission')}><Text style={s.primaryText}>내 위치 사용하기</Text></Pressable><Pressable style={s.secondary} onPress={() => chooseMap('origin')}><Text style={s.secondaryText}>지도에서 직접 선택</Text></Pressable><Pressable style={s.link} onPress={() => setSearchTarget('origin')}><Text style={s.linkText}>장소 이름 또는 주소로 검색</Text></Pressable>{error ? <Text style={s.error}>{error}</Text> : null}</ScrollView>{pickers()}</View>;
+  if (page === 'location-permission') return <View style={s.root}><ScrollView contentContainerStyle={[s.screen, { paddingTop: insets.top + 14 }]}><Header title="현재 위치" /><View style={s.permission}><View style={s.permissionMark}><Text style={s.permissionIcon}>⌖</Text></View><Text style={s.permissionTitle}>현재 위치를{`\n`}사용할까요?</Text><Text style={s.permissionCopy}>현재 위치에서 걸을 수 있는 범위와 이동 시간을 계산하는 데만 사용합니다.</Text><Pressable style={s.primary} onPress={useGps}><Text style={s.primaryText}>허용</Text></Pressable><Pressable style={s.link} onPress={() => chooseMap('origin')}><Text style={s.linkText}>지도로 직접 선택</Text></Pressable></View></ScrollView>{pickers()}</View>;
+  if (page === 'destination-choice') return <View style={s.root}><ScrollView contentContainerStyle={[s.screen, { paddingTop: insets.top + 14 }]}><Header title="도착지/복귀" /><Text style={s.smallCopy}>도착지를 비우면 현재 위치로 돌아오는 시간까지 계산합니다.</Text><Pressable style={s.secondary} onPress={() => { setAppointment(null); setPage('setup'); }}><Text style={s.secondaryText}>현재 위치로 돌아오기</Text></Pressable><Pressable style={s.primary} onPress={() => chooseMap('destination')}><Text style={s.primaryText}>지도에서 도착지 선택</Text></Pressable><Pressable style={s.link} onPress={() => setSearchTarget('destination')}><Text style={s.linkText}>장소 이름 또는 주소로 검색</Text></Pressable></ScrollView>{pickers()}</View>;
+  if (page === 'time-picker') return <View style={s.root}><ScrollView contentContainerStyle={[s.screen, { paddingTop: insets.top + 14 }]}><Header title="도착 시각" /><Text style={s.smallCopy}>현재 시각부터 최대 2시간 안에서 분 단위로 정합니다.</Text><View style={s.wheelPanel}><View style={s.meridiem}><Pressable onPress={() => setPm(false)}><Text style={[s.meridiemText, !pm && s.meridiemOn]}>오전</Text></Pressable><Pressable onPress={() => setPm(true)}><Text style={[s.meridiemText, pm && s.meridiemOn]}>오후</Text></Pressable></View><View style={s.wheelCol}><TimeWheel values={HOURS_12} index={hour12 - 1} onChange={(index) => setHour12(index + 1)} /></View><View style={s.wheelCol}><TimeWheel values={MINUTES} index={minute} onChange={setMinute} /></View></View>{validation && origin ? <Text style={s.error}>{validation}</Text> : null}<Pressable style={s.primary} onPress={() => setPage('setup')}><Text style={s.primaryText}>도착 시각 설정</Text></Pressable></ScrollView></View>;
+  if (page === 'test-clock') return <View style={s.root}><ScrollView contentContainerStyle={[s.screen, { paddingTop: insets.top + 14 }]}><Header title="테스트 현재 시각" /><Text style={s.smallCopy}>개발 테스트에서만 추천과 운영시간 판단 시각을 바꿉니다.</Text><View style={s.wheelPanel}><View style={s.meridiem}><Pressable onPress={() => setTestPm(false)}><Text style={[s.meridiemText, !testPm && s.meridiemOn]}>오전</Text></Pressable><Pressable onPress={() => setTestPm(true)}><Text style={[s.meridiemText, testPm && s.meridiemOn]}>오후</Text></Pressable></View><View style={s.wheelCol}><TimeWheel values={HOURS_12} index={testHour12 - 1} onChange={(index) => setTestHour12(index + 1)} /></View><View style={s.wheelCol}><TimeWheel values={MINUTES} index={testMinute} onChange={setTestMinute} /></View></View><Pressable style={s.primary} onPress={() => { const next = to24(testPm, testHour12, testMinute); const end = to12(suggestedEndForTestClock(next)); setTestNowMin(next); setPm(end.pm); setHour12(end.hour); setMinute(end.minute); setPage('setup'); }}><Text style={s.primaryText}>테스트 시각 적용</Text></Pressable><Pressable style={s.secondary} onPress={() => { const end = to12(suggestedEndForTestClock(realNow.nowMin)); setTestNowMin(null); setPm(end.pm); setHour12(end.hour); setMinute(end.minute); setPage('setup'); }}><Text style={s.secondaryText}>실제 현재 시각으로 복원</Text></Pressable></ScrollView></View>;
+  return <View style={s.root}><ScrollView contentContainerStyle={[s.screen, { paddingTop: insets.top + 14 }]}><Header title="자투리 시간 설정" /><Text style={s.smallCopy}>{testNowMin != null ? `테스트 시각 ${fmtHM(now.nowMin)} 기준` : `현재 시각 ${fmtHM(now.nowMin)}부터 최대 2시간 안에서 계산합니다.`}</Text><Pressable style={s.row} onPress={() => setPage('origin-choice')}><View><Text style={s.rowTitle}>현재 위치</Text><Text style={s.rowValue}>{originLabel}</Text></View><Text style={s.chevron}>›</Text></Pressable><Pressable style={s.row} onPress={() => setPage('destination-choice')}><View><Text style={s.rowTitle}>도착지/복귀</Text><Text style={s.rowValue}>{appointment?.label ?? '현재 위치로 돌아오기'}</Text></View><Text style={s.chevron}>›</Text></Pressable><Pressable style={s.row} onPress={() => setPage('time-picker')}><View><Text style={s.rowTitle}>도착 시각</Text><Text style={s.rowValue}>오늘 {fmtHM(endMin)}</Text></View><Text style={s.chevron}>›</Text></Pressable>{SHOW_TEST_CLOCK ? <Pressable testID="dev-test-clock" style={s.devRow} onPress={() => setPage('test-clock')}><Text style={s.devText}>개발 테스트 시각</Text><Text style={s.devText}>{fmtHM(now.nowMin)} ›</Text></Pressable> : null}<View style={s.slider}><View style={s.sliderHead}><Text style={s.rowTitle}>도착 전 남길 시간</Text><Text style={s.bufferValue}>{arrivalBufferMin}분</Text></View><Slider minimumValue={5} maximumValue={30} step={5} value={arrivalBufferMin} minimumTrackTintColor={C.accent} maximumTrackTintColor={C.line} thumbTintColor={C.accent} onValueChange={(value) => setArrivalBufferMin(Math.round(value))} /><View style={s.rangeEnds}><Text>빠듯하게</Text><Text>여유롭게</Text></View></View>{(validation || error) ? <Text style={s.error}>{validation || error}</Text> : null}<Pressable style={[s.primary, Boolean(validation) && s.primaryOff]} onPress={run} disabled={Boolean(validation)}><Text style={s.primaryText}>이 시간에 할 일 찾기</Text></Pressable><Text style={s.privacy}>위치 정보 이용과 저장 방식은 내 정보에서 확인할 수 있어요.</Text></ScrollView>{pickers()}</View>;
+  function pickers() { return <><MapPlacePicker visible={mapTarget !== null} title={mapTarget === 'origin' ? '출발지 선택' : '도착지 선택'} center={mapTarget === 'destination' ? appointment ?? origin ?? SEOMYEON : origin ?? SEOMYEON} onClose={() => setMapTarget(null)} onSearch={() => { setSearchTarget(mapTarget); setMapTarget(null); }} onConfirm={(point) => { if (mapTarget) applyPlace(mapTarget, point, placeLabel(point)); setMapTarget(null); setPage('setup'); }} /><PlacePicker visible={searchTarget !== null} title={searchTarget === 'origin' ? '출발지 검색' : '도착지 검색'} center={origin ?? SEOMYEON} showGps={searchTarget === 'origin'} onClose={() => setSearchTarget(null)} onConfirm={(place) => { if (searchTarget) applyPlace(searchTarget, place, place.label); setSearchTarget(null); setPage('setup'); }} /></>; }
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: C.bg },
-  nav: { paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomColor: C.line, borderBottomWidth: 1 },
-  backButton: { width: 58, flexDirection: 'row', alignItems: 'center', gap: 2, paddingVertical: 8 },
-  backArrow: { color: C.txt, fontSize: 32, fontWeight: '400', lineHeight: 32 },
-  backLabel: { color: C.txt2, fontSize: 14, fontWeight: '700' },
-  navTitle: { color: C.txt, fontSize: 16, fontWeight: '800' },
-  navSpacer: { width: 42 },
-  body: { padding: 20, paddingBottom: 28, gap: 12 },
-  summary: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 16, padding: 18 },
-  summaryLabel: { color: C.muted, fontSize: 12, fontWeight: '600' },
-  summaryValue: { color: C.accent, fontSize: 26, fontWeight: '800', marginTop: 4 },
-  summaryValueError: { color: C.red },
-  summaryRight: { alignItems: 'flex-end' },
-  summaryTime: { color: C.txt2, fontSize: 12.5, fontWeight: '700' },
-  summaryBuffer: { color: C.muted, fontSize: 12, marginTop: 4 },
-  presetRow: { flexDirection: 'row', gap: 8, justifyContent: 'space-between' },
-  presetChip: { flex: 1, height: 38, borderRadius: 10, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
-  presetChipActive: { backgroundColor: C.accent, borderColor: C.accent },
-  presetChipText: { color: C.txt2, fontSize: 13, fontWeight: '700' },
-  presetChipTextActive: { color: C.onAccent, fontWeight: '800' },
-  card: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 16, padding: 16 },
-  cardHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  cardTitle: { color: C.txt, fontSize: 15, fontWeight: '800' },
-  cardValue: { color: C.accent, fontSize: 15, fontWeight: '800' },
-  wheels: { flexDirection: 'row', marginTop: 8 },
-  wheelColumn: { flex: 1 },
-  wheelHint: { color: C.muted, fontSize: 11.5, textAlign: 'center', marginTop: 6 },
-  placeCard: { paddingVertical: 4 },
-  placeRow: { minHeight: 60, flexDirection: 'row', gap: 16, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 2 },
-  placeLabel: { color: C.muted, fontSize: 13.5, flexShrink: 0 },
-  placeValue: { color: C.txt, fontSize: 14, fontWeight: '700', textAlign: 'right', flex: 1 },
-  separator: { height: 1, backgroundColor: C.line },
-  locationButton: { alignSelf: 'flex-end', paddingHorizontal: 2, paddingVertical: 10 },
-  locationButtonText: { color: C.accent, fontSize: 13, fontWeight: '800' },
-  devSection: { marginTop: 4 },
-  devToggle: { paddingVertical: 6, paddingHorizontal: 4 },
-  devToggleText: { color: C.muted, fontSize: 12, fontWeight: '600' },
-  devCardWrapper: { marginTop: 8 },
-  popularSection: { marginTop: 6, marginBottom: 4 },
-  popularHeader: { marginBottom: 10, paddingHorizontal: 2 },
-  popularTitle: { color: C.txt, fontSize: 15, fontWeight: '900' },
-  popularSubtitle: { color: C.muted, fontSize: 12, marginTop: 3 },
-  popularScroll: { gap: 12, paddingRight: 8 },
-  popularCard: {
-    width: 148,
-    backgroundColor: C.panel,
-    borderColor: C.line,
-    borderWidth: 1,
-    borderRadius: 14,
-    overflow: 'hidden',
-  },
-  popularImage: { width: '100%', height: 94, backgroundColor: C.panel2 },
-  popularFallbackImage: { width: '100%', height: 94, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' },
-  popularCategoryText: { color: C.muted, fontSize: 12, fontWeight: '700' },
-  popularInfo: { padding: 10 },
-  popularPlaceName: { color: C.txt, fontSize: 13.5, fontWeight: '800' },
-  popularMeta: { color: C.muted, fontSize: 11.5, marginTop: 3 },
-  error: { color: C.red, fontSize: 12.5, fontWeight: '600', lineHeight: 19, paddingHorizontal: 2 },
-  footer: { padding: 16, paddingBottom: 28, borderTopColor: C.line, borderTopWidth: 1, backgroundColor: C.bg },
-  cta: { minHeight: 52, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: C.accent },
-  ctaDisabled: { backgroundColor: C.panel2 },
-  ctaText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
+  root: { flex: 1, backgroundColor: C.bg }, screen: { paddingHorizontal: 22, paddingBottom: 42 }, header: { height: 52, marginBottom: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, back: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: C.panel2, borderWidth: 1, borderColor: C.line }, backText: { color: C.txt, fontSize: 32, lineHeight: 34 }, headerTitle: { color: C.txt, fontSize: 17, fontWeight: '800' }, smallCopy: { color: C.muted, fontSize: 13, lineHeight: 20, marginBottom: 22 },
+  row: { minHeight: 70, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderTopWidth: 1, borderColor: C.line }, rowTitle: { color: C.txt, fontSize: 15, fontWeight: '800' }, rowValue: { maxWidth: 270, color: C.muted, fontSize: 13, marginTop: 5 }, chevron: { color: C.muted, fontSize: 28 }, devRow: { minHeight: 44, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, borderColor: '#4b85cf', backgroundColor: '#1d3045', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }, devText: { color: '#83baff', fontSize: 13, fontWeight: '800' }, slider: { marginVertical: 26 }, sliderHead: { flexDirection: 'row', justifyContent: 'space-between' }, bufferValue: { color: '#70adff', fontSize: 20, fontWeight: '800' }, rangeEnds: { flexDirection: 'row', justifyContent: 'space-between' },
+  primary: { minHeight: 52, marginTop: 12, borderRadius: 12, backgroundColor: C.accent, alignItems: 'center', justifyContent: 'center' }, primaryOff: { backgroundColor: C.panel2 }, primaryText: { color: C.onAccent, fontSize: 16, fontWeight: '800' }, secondary: { minHeight: 52, marginTop: 12, borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' }, secondaryText: { color: C.txt, fontSize: 16, fontWeight: '800' }, link: { minHeight: 44, marginTop: 12, borderRadius: 12, borderWidth: 1, borderColor: C.line, alignItems: 'center', justifyContent: 'center' }, linkText: { color: '#75b1ff', fontSize: 14, fontWeight: '800' }, privacy: { color: C.muted, fontSize: 12, lineHeight: 18, textAlign: 'center', marginTop: 15 }, error: { color: C.red, fontSize: 13, lineHeight: 19, marginTop: 10 },
+  permission: { marginTop: 62, padding: 28, borderRadius: 20, backgroundColor: C.panel, borderWidth: 1, borderColor: C.line, alignItems: 'center' }, permissionMark: { width: 50, height: 50, borderRadius: 25, backgroundColor: '#263e57', alignItems: 'center', justifyContent: 'center' }, permissionIcon: { color: '#70adff', fontSize: 25 }, permissionTitle: { color: C.txt, fontSize: 26, lineHeight: 33, fontWeight: '800', textAlign: 'center', marginTop: 16 }, permissionCopy: { color: C.muted, fontSize: 13, lineHeight: 20, textAlign: 'center', marginTop: 11 },
+  wheelPanel: { minHeight: 210, flexDirection: 'row', alignItems: 'center', borderRadius: 16, backgroundColor: '#171a20', overflow: 'hidden' }, meridiem: { width: 84, alignItems: 'center', gap: 25 }, meridiemText: { color: C.muted, fontSize: 19 }, meridiemOn: { color: C.txt, fontSize: 24, fontWeight: '800' }, wheelCol: { flex: 1 },
+  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 34 }, loadingEyebrow: { color: '#6eacff', fontSize: 13, fontWeight: '800' }, loadingTitle: { color: C.txt, fontSize: 27, lineHeight: 35, fontWeight: '800', textAlign: 'center', marginTop: 12, marginBottom: 34 }, loadingRow: { width: 280, flexDirection: 'row', alignItems: 'center', gap: 12, marginVertical: 9 }, dot: { width: 11, height: 11, borderWidth: 2, borderColor: '#697385', borderRadius: 6 }, dotDone: { borderColor: C.green, backgroundColor: C.green }, dotActive: { borderColor: '#72b2ff', backgroundColor: '#72b2ff' }, loadingText: { color: C.muted, fontSize: 14 }, loadingTextActive: { color: C.txt2 },
 });
-

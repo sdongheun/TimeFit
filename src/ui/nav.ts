@@ -12,6 +12,8 @@ export type PlanCtx = {
   originLabel?: string;
   appointment: Appointment;
   remainingMin: number;
+  // 단일 장소 추천에서 약속/복귀 전에 확보할 사용자 설정 여유 시간.
+  arrivalBufferMin?: number;
   dayType?: DayType;
   hourBucket?: HourBucket;
   isManualTime?: boolean;
@@ -36,6 +38,7 @@ export type RootStackParamList = {
   MyCourses: undefined;
   Execution: { course: Course; origin: LatLon; ctx: PlanCtx; courseId?: string };
   Feedback: { course: Course; ctx: PlanCtx };
+  ActivityRecord: undefined;
   Profile: undefined;
 };
 

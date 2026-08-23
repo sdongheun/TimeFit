@@ -16,6 +16,7 @@ import { ResultsScreen } from "./src/ui/ResultsScreen";
 import { ExecutionScreen } from "./src/ui/ExecutionScreen";
 import { FeedbackScreen } from "./src/ui/FeedbackScreen";
 import { ProfileScreen } from "./src/ui/ProfileScreen";
+import { ActivityRecordScreen } from "./src/ui/ActivityRecordScreen";
 import { AppFlowProvider } from "./src/ui/AppFlowContext";
 import { AuthProvider } from "./src/ui/AuthContext";
 import { MyCoursesScreen } from "./src/ui/MyCoursesScreen";
@@ -114,6 +115,11 @@ export default function App() {
               <Stack.Screen
                 name="Profile"
                 component={ProfileScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ActivityRecord"
+                component={ActivityRecordScreen}
                 options={{ headerShown: false }}
               />
             </Stack.Navigator>

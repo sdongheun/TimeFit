@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToMyCourses } from './mainTabNavigation';
+import { resetToActivityRecord, resetToMain, resetToMyCourses } from './mainTabNavigation';
 import { useAuth } from './AuthContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
@@ -121,6 +121,7 @@ export function ProfileScreen({ navigation }: Props) {
         active="profile"
         onMain={() => resetToMain(navigation)}
         onCourse={() => resetToMyCourses(navigation)}
+        onRecord={() => resetToActivityRecord(navigation)}
         onProfile={() => undefined}
       />
     </View>
