@@ -12,6 +12,8 @@ export type OpeningHoursReliability = "direct" | "area_uncertain" | "unknown";
 export type SpotConfidence = "direct_match" | "area_context_match" | "category_fallback";
 export type MapVerificationStatus = "verified" | "weak" | "not_found" | "unverified";
 export type AvailabilityProfile = 'facility' | 'area' | 'outdoor' | 'hold';
+export type ShortStayType = 'scenic_pause' | 'quick_browse' | 'compact_culture' | 'quick_rest';
+export type ShortStaySelectionStatus = 'approved' | 'conditional';
 
 export type PlanInput = {
   origin: LatLon;
@@ -50,6 +52,14 @@ export type Spot = {
   dwell: number; // 유효 체류(분, 혼잡반영)
   dwellBase: number;
   dwellSrc: string;
+  // 자투리 활동 카탈로그가 제공하는 범위. dwell은 권장 체류값과 동일하게 유지해
+  // 기존 플래너와 호환하고, UI는 아래 범위를 통해 "짧게/권장"을 구분한다.
+  shortStayType?: ShortStayType;
+  minStayMin?: number;
+  recommendedStayMin?: number;
+  maxStayMin?: number;
+  selectionStatus?: ShortStaySelectionStatus;
+  availabilityNotice?: string;
   dwellSourceName?: string;
   openingHoursSourceName?: string;
   openingHoursReliability?: OpeningHoursReliability;

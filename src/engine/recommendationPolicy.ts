@@ -24,6 +24,9 @@ export function isPaidFacilityLike(spot: Spot): boolean {
 
 // 자연·거리·광장처럼 가볍게 둘러볼 수 있는 곳만 접근 시간이 짧을 때 체류 하한을 낮춘다.
 export function minimumStayForSpot(spot: Spot, approachMin: number): number {
+  // 자투리 활동 카탈로그가 개별 장소의 최소 체류를 제공하면 과거 카테고리
+  // 템플릿보다 우선한다. 템플릿은 이전 카탈로그 호환용 폴백으로만 남긴다.
+  if (spot.minStayMin !== undefined) return spot.minStayMin;
   if (!isQuickBrowseSpot(spot)) return 30;
   if (approachMin <= 10) return 15;
   if (approachMin <= 15) return 20;

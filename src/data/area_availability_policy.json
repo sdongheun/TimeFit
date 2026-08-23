@@ -9,7 +9,6 @@
     "poi_285": { "title": "광복 지하도상가", "windows": [{ "start": "10:00", "end": "22:00" }], "sourceText": "10:00~22:00" },
     "poi_8": { "title": "국제시장", "windows": [{ "start": "09:00", "end": "20:00" }], "sourceText": "09:00~20:00" },
     "poi_290": { "title": "남포동 지하도상가", "windows": [{ "start": "10:00", "end": "22:00" }], "sourceText": "10:00~22:00" },
-    "poi_291": { "title": "남포동건어물도매시장", "windows": [{ "start": "08:00", "end": "19:00" }], "sourceText": "08:00~19:00" },
     "poi_69": { "title": "만물의거리", "windows": [{ "start": "09:00", "end": "20:00" }], "sourceText": "09:00~20:00" },
     "poi_297": { "title": "명지시장", "windows": [{ "start": "08:00", "end": "23:00" }], "sourceText": "08:00~23:00" },
     "poi_302": { "title": "부산 자유도매시장", "windows": [{ "start": "07:00", "end": "18:00" }], "sourceText": "07:00~18:00" },
@@ -17,7 +16,6 @@
     "poi_93": { "title": "부산전자종합시장", "windows": [{ "start": "09:00", "end": "20:00" }], "sourceText": "09:00~20:00" },
     "poi_305": { "title": "부산진시장", "windows": [{ "start": "07:00", "end": "19:00" }], "sourceText": "07:00~19:00" },
     "poi_306": { "title": "서동미로시장", "windows": [{ "start": "10:00", "end": "22:00" }], "sourceText": "10:00~22:00" },
-    "poi_15": { "title": "신동아 수산물시장", "windows": [{ "start": "09:00", "end": "21:00" }], "sourceText": "1층 06:00~21:00, 2층 09:00~21:00, 3층 09:00~23:00. 모든 층이 열리는 공통 시간만 사용" },
     "poi_11": { "title": "아리랑거리", "windows": [{ "start": "09:00", "end": "20:00" }], "sourceText": "09:00~20:00" },
     "poi_107": { "title": "영도봉래시장", "windows": [{ "start": "09:00", "end": "21:00" }], "sourceText": "09:00~21:00" }
   }

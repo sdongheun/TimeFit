@@ -9,8 +9,8 @@ const approved = candidates.filter((place) => place.selectionStatus === 'approve
 const conditional = candidates.filter((place) => place.selectionStatus === 'conditional');
 const all = [...candidates, ...decisions.review, ...decisions.excluded];
 
-test('자투리 장소 병렬 카탈로그는 기존 런타임과 분리된 초안이다', () => {
-  assert.equal(catalog.meta.status, 'parallel_draft_not_used_by_runtime');
+test('자투리 장소 카탈로그는 런타임 변환의 단일 원천이며 원본 추적 정보를 보존한다', () => {
+  assert.equal(catalog.meta.status, 'runtime_source_active');
   assert.equal(catalog.summary.existingSourceTotal, 911);
   assert.equal(catalog.summary.sourceTotal, 911 + catalog.summary.addedTraditionalMarketCandidates);
   assert.equal(catalog.summary.approved + catalog.summary.conditional + catalog.summary.review + catalog.summary.excluded, catalog.summary.sourceTotal);
@@ -57,6 +57,16 @@ test('승인 장소는 짧은 체류 범위와 활동 유형을 가진다', () =
     assert.ok(place.minStayMin > 0, `${place.title}: min`);
     assert.ok(place.minStayMin <= place.recommendedStayMin, `${place.title}: recommended`);
     assert.ok(place.recommendedStayMin <= place.maxStayMin, `${place.title}: max`);
+  }
+});
+
+test('권장 체류는 활동 대응 AI-Hub 카테고리 최빈값 30분을 사용하고, 문화시설만 최대 120분을 둔다', () => {
+  for (const place of candidates) {
+    assert.equal(place.dwellReference?.kind, 'category_mode', `${place.title}: category mode reference`);
+    assert.equal(place.dwellReference?.mode, 30, `${place.title}: AI-Hub category mode`);
+    assert.equal(place.recommendedStayMin, 30, `${place.title}: short-visit recommendation`);
+    assert.equal(place.minStayMin, 20, `${place.title}: short-visit minimum`);
+    assert.equal(place.maxStayMin, place.shortStayType === 'compact_culture' ? 120 : 60, `${place.title}: activity maximum`);
   }
 });
 
