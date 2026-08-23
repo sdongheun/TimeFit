@@ -17,7 +17,7 @@ test('시간 입력은 이동수단을 미리 선택하지 않고 비교용 후�
   assert.doesNotMatch(setup, /const \[mode, setMode\]/);
   assert.match(setup, /candidateModes: \['walk', 'transit', 'car'\]/);
   assert.match(setup, /getActualRouteBaselines\(origin, destination\)/);
-  assert.doesNotMatch(setup, /@react-native-community\/slider/);
+  assert.doesNotMatch(setup, /candidateRadiusKm/);
   assert.match(setup, /radiusM: 8000/);
   assert.match(setup, /mapExploration: true/);
   assert.match(setup, /routeBaselines: baseline\?\.baselines/);

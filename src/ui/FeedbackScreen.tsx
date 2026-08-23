@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { PrimaryButton } from './CommonButtons';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
@@ -9,6 +10,7 @@ import { FloatingTabBar } from './FloatingTabBar';
 import { resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
 import { cancelCourseNotifications } from '../services/courseNotifications';
 import { savePlaceFeedback } from '../services/placeFeedback';
+import { UI_RADIUS } from './tokens';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Feedback'>;
 
@@ -107,9 +109,11 @@ export function FeedbackScreen({ route, navigation }: Props) {
               </View>
             </View>
 
-            <Pressable style={s.cta} onPress={finish}>
-              <Text style={s.ctaTxt}>맞춤 코스 만들러 가기</Text>
-            </Pressable>
+            <PrimaryButton
+              title="맞춤 코스 만들러 가기"
+              onPress={finish}
+              style={s.finishBtnMargin}
+            />
             <View style={{ height: 120 }} />
           </View>
         ) : (
@@ -133,18 +137,27 @@ export function FeedbackScreen({ route, navigation }: Props) {
                   <Pressable
                     style={[s.chip, tempoByContentId[sp.contentId] === 'tight' && s.chipOn]}
                     onPress={() => setTempoByContentId((prev) => ({ ...prev, [sp.contentId]: 'tight' }))}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: tempoByContentId[sp.contentId] === 'tight' }}
+                    accessibilityLabel="체류 시간 촉박함"
                   >
                     <Text style={[s.chipTxt, tempoByContentId[sp.contentId] === 'tight' && s.chipTxtOn]}>촉박함</Text>
                   </Pressable>
                   <Pressable
                     style={[s.chip, tempoByContentId[sp.contentId] === 'good' && s.chipOn]}
                     onPress={() => setTempoByContentId((prev) => ({ ...prev, [sp.contentId]: 'good' }))}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: tempoByContentId[sp.contentId] === 'good' }}
+                    accessibilityLabel="체류 시간 적당함"
                   >
                     <Text style={[s.chipTxt, tempoByContentId[sp.contentId] === 'good' && s.chipTxtOn]}>적당함</Text>
                   </Pressable>
                   <Pressable
                     style={[s.chip, tempoByContentId[sp.contentId] === 'loose' && s.chipOn]}
                     onPress={() => setTempoByContentId((prev) => ({ ...prev, [sp.contentId]: 'loose' }))}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: tempoByContentId[sp.contentId] === 'loose' }}
+                    accessibilityLabel="체류 시간 여유로움"
                   >
                     <Text style={[s.chipTxt, tempoByContentId[sp.contentId] === 'loose' && s.chipTxtOn]}>여유로움</Text>
                   </Pressable>
@@ -156,18 +169,27 @@ export function FeedbackScreen({ route, navigation }: Props) {
                   <Pressable
                     style={[s.chip, ratingByContentId[sp.contentId] === 5 && s.chipOn]}
                     onPress={() => setRatingByContentId((prev) => ({ ...prev, [sp.contentId]: 5 }))}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: ratingByContentId[sp.contentId] === 5 }}
+                    accessibilityLabel="장소 추천해요"
                   >
                     <Text style={[s.chipTxt, ratingByContentId[sp.contentId] === 5 && s.chipTxtOn]}>추천해요</Text>
                   </Pressable>
                   <Pressable
                     style={[s.chip, ratingByContentId[sp.contentId] === 3 && s.chipOn]}
                     onPress={() => setRatingByContentId((prev) => ({ ...prev, [sp.contentId]: 3 }))}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: ratingByContentId[sp.contentId] === 3 }}
+                    accessibilityLabel="장소 보통이에요"
                   >
                     <Text style={[s.chipTxt, ratingByContentId[sp.contentId] === 3 && s.chipTxtOn]}>보통이에요</Text>
                   </Pressable>
                   <Pressable
                     style={[s.chip, ratingByContentId[sp.contentId] === 1 && s.chipOn]}
                     onPress={() => setRatingByContentId((prev) => ({ ...prev, [sp.contentId]: 1 }))}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: ratingByContentId[sp.contentId] === 1 }}
+                    accessibilityLabel="장소 아쉬워요"
                   >
                     <Text style={[s.chipTxt, ratingByContentId[sp.contentId] === 1 && s.chipTxtOn]}>아쉬워요</Text>
                   </Pressable>
@@ -179,12 +201,18 @@ export function FeedbackScreen({ route, navigation }: Props) {
                   <Pressable
                     style={[s.chip, mobilityByContentId[sp.contentId] === 'easy' && s.chipOn]}
                     onPress={() => setMobilityByContentId((prev) => ({ ...prev, [sp.contentId]: 'easy' }))}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: mobilityByContentId[sp.contentId] === 'easy' }}
+                    accessibilityLabel="이동 동선 편안함"
                   >
                     <Text style={[s.chipTxt, mobilityByContentId[sp.contentId] === 'easy' && s.chipTxtOn]}>편안함</Text>
                   </Pressable>
                   <Pressable
                     style={[s.chip, mobilityByContentId[sp.contentId] === 'hard' && s.chipOn]}
                     onPress={() => setMobilityByContentId((prev) => ({ ...prev, [sp.contentId]: 'hard' }))}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: mobilityByContentId[sp.contentId] === 'hard' }}
+                    accessibilityLabel="이동 동선 불편함"
                   >
                     <Text style={[s.chipTxt, mobilityByContentId[sp.contentId] === 'hard' && s.chipTxtOn]}>불편함</Text>
                   </Pressable>
@@ -193,14 +221,19 @@ export function FeedbackScreen({ route, navigation }: Props) {
             ))}
 
             {saveError ? <Text style={s.error}>{saveError}</Text> : null}
-            <Pressable
-              style={[s.cta, isSaving && s.ctaOff]}
-              disabled={isSaving}
+            <PrimaryButton
+              title="맞춤 설정 저장하기"
               onPress={done}
+              loading={isSaving}
+              style={s.saveBtnMargin}
+            />
+            <Pressable
+              style={s.skipBtn}
+              disabled={isSaving}
+              onPress={finish}
+              accessibilityRole="button"
+              accessibilityLabel="다음에 설정하기"
             >
-              <Text style={s.ctaTxt}>{isSaving ? '저장 중...' : '맞춤 설정 저장하기'}</Text>
-            </Pressable>
-            <Pressable style={s.skipBtn} disabled={isSaving} onPress={finish}>
               <Text style={s.skipTxt}>다음에 설정하기</Text>
             </Pressable>
             <View style={{ height: 120 }} />
@@ -226,7 +259,7 @@ const s = StyleSheet.create({
     backgroundColor: C.panel,
     borderColor: C.line,
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: UI_RADIUS.panel,
     padding: 16,
     marginTop: 14,
   },
@@ -252,7 +285,7 @@ const s = StyleSheet.create({
     backgroundColor: C.panel2,
     borderWidth: 1,
     borderColor: C.line,
-    borderRadius: 10,
+    borderRadius: UI_RADIUS.control,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -262,16 +295,8 @@ const s = StyleSheet.create({
   },
   chipTxt: { color: C.muted, fontSize: 13, fontWeight: '700' },
   chipTxtOn: { color: C.accent, fontWeight: '900' },
-  cta: {
-    minHeight: 52,
-    marginTop: 20,
-    backgroundColor: C.accent,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  ctaOff: { opacity: 0.6 },
-  ctaTxt: { color: C.onAccent, fontSize: 15.5, fontWeight: '800' },
+  saveBtnMargin: { marginTop: 20 },
+  finishBtnMargin: { marginTop: 20, width: '100%' },
   skipBtn: { alignItems: 'center', paddingVertical: 14, marginTop: 4 },
   skipTxt: { color: C.muted, fontSize: 13.5, fontWeight: '700' },
   error: { color: C.red, fontSize: 12.5, marginTop: 14 },
@@ -292,7 +317,7 @@ const s = StyleSheet.create({
     backgroundColor: C.panel,
     borderColor: C.line,
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: UI_RADIUS.media,
     padding: 18,
     gap: 14,
     marginBottom: 12,

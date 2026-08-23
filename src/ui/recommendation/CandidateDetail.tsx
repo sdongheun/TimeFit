@@ -2,6 +2,7 @@ import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import type { Mode, Spot } from "../../engine";
 import { C } from "../theme";
+import { UI_RADIUS, UI_SIZE } from "../tokens";
 import { TransportGlyph } from "./TransportGlyph";
 import { MODE_LABEL, type CandidateEval, type TransportScenario } from "./types";
 
@@ -60,8 +61,14 @@ export function CandidateDetail({
           <Text style={s.title} numberOfLines={1}>{spot.title}</Text>
           <Text style={s.categoryText}>{spot.category}</Text>
         </View>
-        <Pressable style={s.close} onPress={onClose} accessibilityLabel="장소 목록으로 접기">
-          <Feather color={C.txt2} name="chevron-down" size={22} />
+        <Pressable
+          style={s.close}
+          onPress={onClose}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="장소 목록으로 접기"
+        >
+          <Feather color={C.txt} name="chevron-down" size={22} />
         </Pressable>
       </View>
 
@@ -159,6 +166,7 @@ export function CandidateDetail({
                 disabled={scenario.status === "over"}
                 onPress={() => onModeChange(scenario.mode)}
                 style={[s.mode, active && s.modeOn, scenario.status === "over" && s.modeOff]}
+                accessibilityRole="button"
                 accessibilityLabel={`${MODE_LABEL[scenario.mode]} ${scenario.approachMin}분`}
               >
                 <TransportGlyph mode={scenario.mode} color={active ? C.accent : C.txt2} size={16} />
@@ -173,7 +181,19 @@ export function CandidateDetail({
       </View>
 
       {/* 5. 하단 주요 CTA 버튼 */}
-      <Pressable disabled={disabled} onPress={onAddToBasket} style={[s.confirm, disabled && s.confirmOff]}>
+      <Pressable
+        disabled={disabled}
+        onPress={onAddToBasket}
+        style={[s.confirm, disabled && s.confirmOff]}
+        accessibilityRole="button"
+        accessibilityLabel={
+          isAdding
+            ? "실제 경로 확인 중"
+            : !chosen || chosen.status === "over"
+              ? "시간 안에 다녀오기 어려움"
+              : "장바구니에 담기"
+        }
+      >
         <Text style={[s.confirmText, disabled && s.confirmTextOff]}>
           {isAdding
             ? "실제 경로 확인 중..."
@@ -201,15 +221,17 @@ const s = StyleSheet.create({
   title: { color: C.txt, fontSize: 18.5, fontWeight: "900" },
   categoryText: { color: C.muted, fontSize: 12.5, fontWeight: "700", marginTop: 2 },
   close: {
-    width: 32,
-    height: 32,
+    width: UI_SIZE.iconControl,
+    height: UI_SIZE.iconControl,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 16,
+    borderRadius: UI_RADIUS.control,
     backgroundColor: C.panel2,
+    borderWidth: 1,
+    borderColor: C.line,
   },
   mediaWrap: { marginBottom: 16 },
-  media: { height: 160, overflow: "hidden", borderRadius: 14, backgroundColor: C.panel2 },
+  media: { height: 160, overflow: "hidden", borderRadius: UI_RADIUS.panel, backgroundColor: C.panel2 },
   image: { width: "100%", height: "100%", resizeMode: "cover" },
   fallback: { flex: 1, alignItems: "center", justifyContent: "center", gap: 6 },
   fallbackText: { color: C.muted, fontSize: 12.5, fontWeight: "800" },
@@ -229,7 +251,7 @@ const s = StyleSheet.create({
     backgroundColor: C.panel,
     borderColor: C.line,
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: UI_RADIUS.media,
     padding: 16,
     marginBottom: 16,
   },
@@ -237,7 +259,7 @@ const s = StyleSheet.create({
     backgroundColor: C.panel,
     borderColor: C.line,
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: UI_RADIUS.media,
     padding: 16,
     marginBottom: 16,
   },
@@ -297,7 +319,7 @@ const s = StyleSheet.create({
     gap: 6,
     borderWidth: 1,
     borderColor: C.line,
-    borderRadius: 10,
+    borderRadius: UI_RADIUS.control,
     backgroundColor: C.panel,
   },
   modeOn: { borderColor: C.accent, backgroundColor: "rgba(76,194,255,0.12)" },
@@ -306,15 +328,15 @@ const s = StyleSheet.create({
   modeTextOn: { color: C.accent, fontWeight: "900" },
   modeHint: { color: C.muted, fontSize: 11.5, fontWeight: "600", textAlign: "center", marginTop: 8 },
   confirm: {
-    minHeight: 52,
-    borderRadius: 12,
+    minHeight: UI_SIZE.primaryAction,
+    height: UI_SIZE.primaryAction,
+    borderRadius: UI_RADIUS.control,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: C.accent,
+    paddingHorizontal: 16,
   },
   confirmOff: { backgroundColor: C.panel2 },
-  confirmText: { color: C.onAccent, fontSize: 15.5, fontWeight: "900" },
+  confirmText: { color: C.onAccent, fontSize: 16, fontWeight: "800" },
   confirmTextOff: { color: C.muted },
 });
-
-

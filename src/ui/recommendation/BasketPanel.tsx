@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { Course, Mode, Spot } from "../../engine";
 import { C } from "../theme";
+import { UI_RADIUS, UI_SIZE } from "../tokens";
 import { TransportGlyph } from "./TransportGlyph";
 import { MODE_LABEL } from "./types";
 
@@ -61,7 +62,12 @@ export function BasketPanel({
             <Text style={s.basketMeta}>담은 장소 {selected.length}개</Text>
           </View>
           {selected.length > 1 ? (
-            <Pressable style={s.autoSortBtn} onPress={onAutoSort} accessibilityLabel="최적 순서로 자동 정렬">
+            <Pressable
+              style={s.autoSortBtn}
+              onPress={onAutoSort}
+              accessibilityRole="button"
+              accessibilityLabel="최적 순서로 자동 정렬"
+            >
               <Feather name="refresh-cw" size={13} color={C.accent} />
               <Text style={s.autoSortTxt}>최적 순서로 정렬</Text>
             </Pressable>
@@ -103,8 +109,9 @@ export function BasketPanel({
                         style={[s.btnOrder, index === 0 && s.btnDisabled]}
                         disabled={index === 0}
                         onPress={() => onMove(index, -1)}
+                        accessibilityRole="button"
                         accessibilityLabel={`${spot.title} 위로 이동`}
-                        hitSlop={6}
+                        hitSlop={8}
                       >
                         <Feather name="chevron-up" size={18} color={index === 0 ? C.muted : C.txt2} />
                       </Pressable>
@@ -112,14 +119,16 @@ export function BasketPanel({
                         style={[s.btnOrder, index === selected.length - 1 && s.btnDisabled]}
                         disabled={index === selected.length - 1}
                         onPress={() => onMove(index, 1)}
+                        accessibilityRole="button"
                         accessibilityLabel={`${spot.title} 아래로 이동`}
-                        hitSlop={6}
+                        hitSlop={8}
                       >
                         <Feather name="chevron-down" size={18} color={index === selected.length - 1 ? C.muted : C.txt2} />
                       </Pressable>
                       <Pressable
                         style={s.btnRemove}
                         onPress={() => onRemove(spot.contentId)}
+                        accessibilityRole="button"
                         accessibilityLabel={`${spot.title} 제거`}
                         hitSlop={8}
                       >
@@ -159,6 +168,7 @@ export function BasketPanel({
           style={[s.cta, (!selected.length || isSaving) && s.ctaDisabled]}
           disabled={!selected.length || isSaving}
           onPress={onConfirm}
+          accessibilityRole="button"
           accessibilityLabel={confirmLabel}
         >
           <Text style={[s.ctaTxt, (!selected.length || isSaving) && s.ctaTxtDisabled]}>{confirmLabel}</Text>
@@ -216,7 +226,7 @@ const s = StyleSheet.create({
     backgroundColor: C.panel,
     borderColor: C.line,
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: UI_RADIUS.media,
     padding: 16,
     marginBottom: 16,
   },
@@ -225,7 +235,7 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: C.panel2,
-    borderRadius: 12,
+    borderRadius: UI_RADIUS.control,
     borderWidth: 1,
     borderColor: C.line,
     paddingVertical: 12,
@@ -308,7 +318,7 @@ const s = StyleSheet.create({
     backgroundColor: C.panel2,
     borderWidth: 1,
     borderColor: C.line,
-    borderRadius: 12,
+    borderRadius: UI_RADIUS.control,
     padding: 12,
     marginLeft: 2,
   },
@@ -355,12 +365,14 @@ const s = StyleSheet.create({
   },
   emptyText: { color: C.muted, fontSize: 13, fontWeight: "700" },
   cta: {
-    minHeight: 52,
+    minHeight: UI_SIZE.primaryAction,
+    height: UI_SIZE.primaryAction,
     backgroundColor: C.accent,
-    borderRadius: 12,
+    borderRadius: UI_RADIUS.control,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
+    paddingHorizontal: 16,
   },
   ctaDisabled: { backgroundColor: C.panel2 },
   ctaTxt: { color: C.onAccent, fontSize: 16, fontWeight: "800" },

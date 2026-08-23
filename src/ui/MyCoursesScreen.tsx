@@ -3,11 +3,13 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ActivityIndicator, Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
+import { PrimaryButton } from './CommonButtons';
 import { RootStackParamList, fmtHM } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
 import { resetToMain, resetToProfile } from './mainTabNavigation';
+import { UI_RADIUS } from './tokens';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MyCourses'>;
 
@@ -60,6 +62,7 @@ export function MyCoursesScreen({ navigation }: Props) {
             <Pressable
               style={s.activeBtn}
               onPress={() => navigation.navigate('Execution', flow.activeCourse!)}
+              accessibilityRole="button"
               accessibilityLabel="진행 중인 코스로 이동"
             >
               <Feather name="navigation" size={16} color={C.onAccent} />
@@ -74,15 +77,21 @@ export function MyCoursesScreen({ navigation }: Props) {
           <View style={s.emptyBox}>
             <Text style={s.emptyTitle}>코스를 불러오지 못했습니다</Text>
             <Text style={s.emptyTxt}>{flow.coursesError}</Text>
-            <Pressable style={s.emptyBtn} onPress={() => void flow.refreshSavedCourses()}><Text style={s.emptyBtnTxt}>다시 불러오기</Text></Pressable>
+            <PrimaryButton
+              title="다시 불러오기"
+              onPress={() => void flow.refreshSavedCourses()}
+              style={s.emptyBtnMargin}
+            />
           </View>
         ) : flow.savedCourses.length === 0 ? (
           <View style={s.emptyBox}>
             <Text style={s.emptyTitle}>저장한 코스가 없습니다</Text>
             <Text style={s.emptyTxt}>메인에서 장소를 담아 코스를 확정하면 여기에 저장됩니다.</Text>
-            <Pressable style={s.emptyBtn} onPress={() => resetToMain(navigation)}>
-              <Text style={s.emptyBtnTxt}>코스 만들러 가기</Text>
-            </Pressable>
+            <PrimaryButton
+              title="코스 만들러 가기"
+              onPress={() => resetToMain(navigation)}
+              style={s.emptyBtnMargin}
+            />
           </View>
         ) : (
           flow.savedCourses.map((item) => {
@@ -97,6 +106,8 @@ export function MyCoursesScreen({ navigation }: Props) {
                     ctx: item.ctx,
                     courseId: item.id,
                   })}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${item.title} 길찾기 시작`}
                 >
                   <View style={s.cardHead}>
                     <Text style={s.cardTitle} numberOfLines={1}>{item.title}</Text>
@@ -109,7 +120,13 @@ export function MyCoursesScreen({ navigation }: Props) {
                     이동 {item.course.mobility?.[item.ctx.mode]?.moveMin ?? item.course.totalMin}분 · 체류 가능 {item.course.mobility?.[item.ctx.mode]?.stayMin ?? '-'}분
                   </Text>
                 </Pressable>
-                <Pressable style={s.deleteBtn} onPress={() => void removeCourse(item.id)}>
+                <Pressable
+                  style={s.deleteBtn}
+                  onPress={() => void removeCourse(item.id)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${item.title} 삭제`}
+                  hitSlop={8}
+                >
                   <Text style={s.deleteBtnTxt}>삭제</Text>
                 </Pressable>
               </View>
@@ -133,14 +150,13 @@ const s = StyleSheet.create({
   scroll: { padding: 22 },
   h1: { color: C.txt, fontSize: 30, fontWeight: '900' },
   sub: { color: C.muted, fontSize: 14.5, marginTop: 5, marginBottom: 18 },
-  emptyBox: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 18 },
+  emptyBox: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: UI_RADIUS.panel, padding: 18 },
   loadingBox: { minHeight: 150, alignItems: 'center', justifyContent: 'center', gap: 10 },
   loadingTxt: { color: C.muted, fontSize: 13 },
   emptyTitle: { color: C.txt, fontSize: 17, fontWeight: '900' },
   emptyTxt: { color: C.muted, fontSize: 13, lineHeight: 19, marginTop: 6 },
-  emptyBtn: { minHeight: 52, marginTop: 14, backgroundColor: C.accent, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
-  emptyBtnTxt: { color: C.onAccent, fontSize: 15, fontWeight: '800' },
-  card: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 14, padding: 15, marginBottom: 11 },
+  emptyBtnMargin: { marginTop: 14 },
+  card: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: UI_RADIUS.panel, padding: 15, marginBottom: 11 },
   cardBody: { paddingBottom: 12 },
   cardHead: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   cardTitle: { flex: 1, color: C.txt, fontSize: 16, fontWeight: '900' },
@@ -153,7 +169,7 @@ const s = StyleSheet.create({
     backgroundColor: C.panel,
     borderColor: C.accent,
     borderWidth: 1.5,
-    borderRadius: 16,
+    borderRadius: UI_RADIUS.media,
     padding: 16,
     marginBottom: 18,
     shadowColor: C.accent,
@@ -170,7 +186,7 @@ const s = StyleSheet.create({
   activeBtn: {
     minHeight: 46,
     backgroundColor: C.accent,
-    borderRadius: 10,
+    borderRadius: UI_RADIUS.control,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

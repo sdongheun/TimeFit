@@ -1,17 +1,20 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Slider from '@react-native-community/slider';
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import { getActualRouteBaselines, geocodeAddr, getNearbyPopularPlaces, HourBucket, kakaoGeocodeAddr, kakaoReverseGeocode, LatLon, planTimeFit, reverseGeocode, timeContext } from '../engine';
+import { HeaderBackButton, PrimaryButton } from './CommonButtons';
 import { Appointment, fmtHM, RootStackParamList } from './nav';
 import { PlacePicker } from './PlacePicker';
 import { C } from './theme';
 import { TimeWheel } from './TimeWheel';
 import { useAppFlow } from './AppFlowContext';
 
-const MAX_MINUTES = 240;
+const MAX_MINUTES = 120;
 const STEP_MINUTES = 5;
+const DURATION_PRESETS = [30, 45, 60, 90, 120];
 const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
 const HOURS = Array.from({ length: 24 }, (_, hour) => String(hour).padStart(2, '0'));
 const MINUTES = Array.from({ length: 60 / STEP_MINUTES }, (_, index) => String(index * STEP_MINUTES).padStart(2, '0'));
@@ -77,13 +80,14 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const insets = useSafeAreaInsets();
   const now = useMemo(() => timeContext(new Date()), []);
   const roundedNow = Math.min(23 * 60 + 55, Math.ceil(now.nowMin / STEP_MINUTES) * STEP_MINUTES);
-  const initialDuration = route.params?.presetMin ?? 120;
+  const initialDuration = Math.min(MAX_MINUTES, route.params?.presetMin ?? 120);
   const initialEnd = Math.min(23 * 60 + 55, roundedNow + initialDuration);
 
   const [startHour, setStartHour] = useState(Math.floor(roundedNow / 60));
   const [startMinute, setStartMinute] = useState(roundedNow % 60);
   const [endHour, setEndHour] = useState(Math.floor(initialEnd / 60));
   const [endMinute, setEndMinute] = useState(initialEnd % 60);
+  const [arrivalBufferMin, setArrivalBufferMin] = useState(10);
   const [showDevTimeOverride, setShowDevTimeOverride] = useState(false);
   const [appointment, setAppointment] = useState<Appointment>(null);
   const [origin, setOrigin] = useState(SEOMYEON);
@@ -125,7 +129,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const validation = remainingMin <= 0
     ? '종료 시각이 시작 시각보다 빨라요. 종료 시각을 뒤로 옮겨 주세요.'
     : remainingMin > MAX_MINUTES
-      ? '자투리 시간은 최대 4시간까지 설정할 수 있어요.'
+      ? '자투리 시간은 최대 2시간까지 설정할 수 있어요.'
       : '';
 
   const setDurationPreset = (minutes: number) => {
@@ -234,19 +238,14 @@ export function TimeSetupScreen({ navigation, route }: Props) {
 
   return (
     <View style={s.root}>
-      <View style={[s.nav, { height: insets.top + 52, paddingTop: insets.top }]}>
-        <Pressable
-          accessibilityLabel="메인으로 돌아가기"
-          hitSlop={12}
+      <View style={[s.nav, { height: insets.top + 58, paddingTop: insets.top + 6 }]}>
+        <HeaderBackButton
           onPress={() => {
             if (navigation.canGoBack()) navigation.goBack();
             else navigation.navigate('Home');
           }}
-          style={s.backButton}
-        >
-          <Text style={s.backArrow}>‹</Text>
-          <Text style={s.backLabel}>메인</Text>
-        </Pressable>
+          accessibilityLabel="메인으로 돌아가기"
+        />
         <Text style={s.navTitle}>자투리 시간 설정</Text>
         <View style={s.navSpacer} />
       </View>
@@ -259,19 +258,21 @@ export function TimeSetupScreen({ navigation, route }: Props) {
           </View>
           <View style={s.summaryRight}>
             <Text style={s.summaryTime}>{fmtHM(startMin)} 출발 → {fmtHM(endMin)}</Text>
-            <Text style={s.summaryBuffer}>장소를 고른 뒤 이동 방법을 비교해요</Text>
+            <Text style={s.summaryBuffer}>도착 전 {arrivalBufferMin}분 여유 반영</Text>
           </View>
         </View>
 
         {/* 빠른 자투리 시간 프리셋 */}
         <View style={s.presetRow}>
-          {[30, 60, 90, 120, 180].map((preset) => {
+          {DURATION_PRESETS.map((preset) => {
             const isSelected = remainingMin === preset;
             return (
               <Pressable
                 key={preset}
                 onPress={() => setDurationPreset(preset)}
                 style={[s.presetChip, isSelected && s.presetChipActive]}
+                accessibilityRole="button"
+                accessibilityLabel={`${preset}분 자투리 시간 선택`}
               >
                 <Text style={[s.presetChipText, isSelected && s.presetChipTextActive]}>
                   {preset < 60 ? `${preset}분` : `${preset / 60}시간`}
@@ -282,7 +283,31 @@ export function TimeSetupScreen({ navigation, route }: Props) {
         </View>
 
         {/* 종료 시각 (약속 시각 / 복귀 시각) 설정 */}
-        {timeCard('종료 시각 (약속 도착 / 복귀)', endHour, endMinute, setEndHour, setEndMinute, '현재 시각부터 최대 4시간까지 설정할 수 있어요')}
+        {timeCard('종료 시각 (약속 도착 / 복귀)', endHour, endMinute, setEndHour, setEndMinute, '현재 시각부터 최대 2시간(120분)까지 설정할 수 있어요')}
+
+        {/* 약속 전 남길 시간 (도착 전 여유) 슬라이더 */}
+        <View style={s.marginCard}>
+          <View style={s.marginHeader}>
+            <Text style={s.marginTitle}>약속 전 남길 시간 (도착 전 여유)</Text>
+            <Text style={s.marginValue}>{arrivalBufferMin}분</Text>
+          </View>
+          <Slider
+            accessibilityLabel="약속 전 남길 여유 시간 슬라이더"
+            minimumValue={5}
+            maximumValue={30}
+            step={5}
+            value={arrivalBufferMin}
+            minimumTrackTintColor={C.accent}
+            maximumTrackTintColor={C.line}
+            thumbTintColor={C.accent}
+            onValueChange={(value) => setArrivalBufferMin(Math.round(value))}
+            style={s.marginSlider}
+          />
+          <View style={s.marginLabels}>
+            <Text style={s.marginLabelText}>빠듯하게 (5분)</Text>
+            <Text style={s.marginLabelText}>여유롭게 (30분)</Text>
+          </View>
+        </View>
 
         <View style={[s.card, s.placeCard]}>
           <Pressable style={s.placeRow} onPress={() => setPicker('origin')}>
@@ -361,10 +386,13 @@ export function TimeSetupScreen({ navigation, route }: Props) {
         {(validation || error) ? <Text style={s.error}>{validation || error}</Text> : null}
       </ScrollView>
 
-      <View style={s.footer}>
-        <Pressable disabled={Boolean(validation) || loading} onPress={run} style={[s.cta, (validation || loading) && s.ctaDisabled]}>
-          {loading ? <ActivityIndicator color={C.onAccent} /> : <Text style={s.ctaText}>이 시간에 갈 곳 찾기</Text>}
-        </Pressable>
+      <View style={[s.footer, { paddingBottom: Math.max(insets.bottom, 24) }]}>
+        <PrimaryButton
+          title="이 시간에 갈 곳 찾기"
+          onPress={run}
+          disabled={Boolean(validation)}
+          loading={loading}
+        />
       </View>
 
       <PlacePicker
@@ -387,24 +415,46 @@ export function TimeSetupScreen({ navigation, route }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  nav: { paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomColor: C.line, borderBottomWidth: 1 },
-  backButton: { width: 58, flexDirection: 'row', alignItems: 'center', gap: 2, paddingVertical: 8 },
-  backArrow: { color: C.txt, fontSize: 32, fontWeight: '400', lineHeight: 32 },
-  backLabel: { color: C.txt2, fontSize: 14, fontWeight: '700' },
+  nav: {
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottomColor: C.line,
+    borderBottomWidth: 1,
+  },
   navTitle: { color: C.txt, fontSize: 16, fontWeight: '800' },
   navSpacer: { width: 42 },
   body: { padding: 20, paddingBottom: 28, gap: 12 },
-  summary: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 16, padding: 18 },
+  summary: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: C.panel,
+    borderColor: C.line,
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 18,
+  },
   summaryLabel: { color: C.muted, fontSize: 12, fontWeight: '600' },
   summaryValue: { color: C.accent, fontSize: 26, fontWeight: '800', marginTop: 4 },
   summaryValueError: { color: C.red },
   summaryRight: { alignItems: 'flex-end' },
   summaryTime: { color: C.txt2, fontSize: 12.5, fontWeight: '700' },
   summaryBuffer: { color: C.muted, fontSize: 12, marginTop: 4 },
-  presetRow: { flexDirection: 'row', gap: 8, justifyContent: 'space-between' },
-  presetChip: { flex: 1, height: 38, borderRadius: 10, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+  presetRow: { flexDirection: 'row', gap: 6, justifyContent: 'space-between' },
+  presetChip: {
+    flex: 1,
+    height: 38,
+    borderRadius: 10,
+    backgroundColor: C.panel,
+    borderColor: C.line,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   presetChipActive: { backgroundColor: C.accent, borderColor: C.accent },
-  presetChipText: { color: C.txt2, fontSize: 13, fontWeight: '700' },
+  presetChipText: { color: C.txt2, fontSize: 12.5, fontWeight: '700' },
   presetChipTextActive: { color: C.onAccent, fontWeight: '800' },
   card: { backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 16, padding: 16 },
   cardHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
@@ -413,6 +463,19 @@ const s = StyleSheet.create({
   wheels: { flexDirection: 'row', marginTop: 8 },
   wheelColumn: { flex: 1 },
   wheelHint: { color: C.muted, fontSize: 11.5, textAlign: 'center', marginTop: 6 },
+  marginCard: {
+    backgroundColor: C.panel,
+    borderColor: C.line,
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 16,
+  },
+  marginHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 },
+  marginTitle: { color: C.txt, fontSize: 14.5, fontWeight: '800' },
+  marginValue: { color: C.accent, fontSize: 15, fontWeight: '800' },
+  marginSlider: { height: 36, marginHorizontal: -4 },
+  marginLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 2 },
+  marginLabelText: { color: C.muted, fontSize: 11, fontWeight: '700' },
   placeCard: { paddingVertical: 4 },
   placeRow: { minHeight: 60, flexDirection: 'row', gap: 16, alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 2 },
   placeLabel: { color: C.muted, fontSize: 13.5, flexShrink: 0 },
@@ -444,9 +507,5 @@ const s = StyleSheet.create({
   popularPlaceName: { color: C.txt, fontSize: 13.5, fontWeight: '800' },
   popularMeta: { color: C.muted, fontSize: 11.5, marginTop: 3 },
   error: { color: C.red, fontSize: 12.5, fontWeight: '600', lineHeight: 19, paddingHorizontal: 2 },
-  footer: { padding: 16, paddingBottom: 28, borderTopColor: C.line, borderTopWidth: 1, backgroundColor: C.bg },
-  cta: { minHeight: 52, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: C.accent },
-  ctaDisabled: { backgroundColor: C.panel2 },
-  ctaText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
+  footer: { padding: 16, borderTopColor: C.line, borderTopWidth: 1, backgroundColor: C.bg },
 });
-
