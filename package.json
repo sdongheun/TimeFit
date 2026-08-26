@@ -34,6 +34,7 @@
     "web": "expo start --web",
     "test": "node --test test",
     "test:ui": "tsx --test test/ui/*.test.ts test/ui/*.test.mjs",
+    "test:qa:v1": "tsx --test test/course-v1.test.ts test/course-v1-candidate-provider.test.ts test/course-v1-limited-integration.test.ts test/course-v1-route-adapter.test.ts test/ui/course-v1-discovery-context.test.ts test/ui/course-v1-journey.test.ts test/ui/course-v1-place-preview.test.ts test/ui/course-v1-results-list.test.ts test/ui/recommendation-session-time.test.ts test/map-transport-ui-contract.test.mjs test/busan-poi-catalog.test.mjs test/recommendation-data-contract.test.mjs test/short-stay-catalog.test.mjs test/evidence-profile-classification.test.mjs",
     "test:typecheck": "tsc --noEmit",
     "interview:requirements": "node scripts/requirements_interview.mjs"
   },
