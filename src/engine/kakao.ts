@@ -1,6 +1,7 @@
 // Kakao Local REST API 클라이언트: 장소 검색 + 주소 지오코딩 + 역지오코딩
 import { LatLon } from './types';
 import { haversineKm, Poi } from './travel';
+import { lineLabelsFromProviderCategoryFields, matchPlaceNameQuery } from '../services/placeNameSemanticMatch';
 
 const KAKAO_REST_KEY =
   process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY
@@ -16,7 +17,24 @@ type KakaoDocument = {
   address?: { address_name?: string };
   x?: string;
   y?: string;
+  category_group_code?: string;
+  category_name?: string;
 };
+
+export type PlaceSearchProvider = 'kakao' | 'tmap';
+export type PlaceSearchStatus = 'ok' | 'unconfigured' | 'http_error' | 'network_error' | 'invalid_response';
+export type PlaceSearchResult = {
+  provider: PlaceSearchProvider;
+  status: PlaceSearchStatus;
+  pois: Poi[];
+  /** HTTP 상태만 보존하며 응답 본문·키·검색어·좌표는 절대 담지 않는다. */
+  statusCode?: number;
+  metrics?: PlaceSearchMetrics;
+};
+export type PlaceSearchMetrics = { rawPoiCount: number; directNameMatchCount: number; mappingValidCount: number };
+
+export type PlaceSearchObserver = (event: Pick<PlaceSearchResult, 'provider' | 'status'> & { resultCount: number }) => void;
+export type KakaoPoiSearchOptions = { fetcher?: typeof fetch; apiKey?: string; observe?: PlaceSearchObserver };
 
 const kakaoHeaders = () => ({ Authorization: `KakaoAK ${KAKAO_REST_KEY}` });
 
@@ -26,19 +44,42 @@ function toPoi(doc: KakaoDocument, fallbackName: string): Poi | null {
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
   const name = doc.place_name || doc.road_address_name || doc.address_name || fallbackName;
   const addr = doc.road_address_name || doc.address_name || '카카오';
-  return { name, lat, lon, addr };
+  const transit = doc.category_group_code === 'SW8' || /지하철|역|정류장/.test(doc.category_name ?? '');
+  const lineLabels = lineLabelsFromProviderCategoryFields([doc.category_name, doc.category_group_code]);
+  return transit
+    ? { name, lat, lon, addr, providerMetadata: { placeType: 'transit_place', ...(lineLabels ? { lineLabels } : {}), labelSource: 'provider' } }
+    : { name, lat, lon, addr };
 }
 
-async function kakaoGet(path: string, params: Record<string, string | number>): Promise<KakaoDocument[]> {
-  if (!KAKAO_REST_KEY) return [];
+function observe(result: PlaceSearchResult, callback?: PlaceSearchObserver): PlaceSearchResult {
+  const event = { provider: result.provider, status: result.status, resultCount: result.pois.length };
+  callback?.(event);
+  if (process.env.NODE_ENV === 'development') console.info(`[place-search] ${event.provider} ${event.status} ${event.resultCount}`);
+  return result;
+}
+
+export function placeSearchMetrics(keyword: string, rawPoiCount: number, pois: readonly Poi[]): PlaceSearchMetrics {
+  const normalizedKeyword = keyword.toLowerCase().replace(/[^0-9a-z가-힣]/g, '');
+  return {
+    rawPoiCount,
+    mappingValidCount: pois.length,
+    directNameMatchCount: normalizedKeyword ? pois.filter((poi) => matchPlaceNameQuery(keyword, poi.name) !== 'none').length : 0,
+  };
+}
+
+async function kakaoGet(path: string, params: Record<string, string | number>, options: KakaoPoiSearchOptions = {}): Promise<PlaceSearchResult & { documents?: KakaoDocument[] }> {
+  const key = options.apiKey ?? KAKAO_REST_KEY;
+  if (!key) return observe({ provider: 'kakao', status: 'unconfigured', pois: [], metrics: placeSearchMetrics('', 0, []) }, options.observe);
   const qs = new URLSearchParams(Object.entries(params).map(([k, v]) => [k, String(v)])).toString();
   try {
-    const res = await fetch(`https://dapi.kakao.com/v2/local/${path}?${qs}`, { headers: kakaoHeaders() });
-    if (!res.ok) return [];
-    const json = await res.json();
-    return Array.isArray(json?.documents) ? json.documents : [];
+    const res = await (options.fetcher ?? fetch)(`https://dapi.kakao.com/v2/local/${path}?${qs}`, { headers: { Authorization: `KakaoAK ${key}` } });
+    if (!res.ok) return observe({ provider: 'kakao', status: 'http_error', pois: [], statusCode: res.status, metrics: placeSearchMetrics('', 0, []) }, options.observe);
+    let json: unknown;
+    try { json = await res.json(); } catch { return observe({ provider: 'kakao', status: 'invalid_response', pois: [], metrics: placeSearchMetrics('', 0, []) }, options.observe); }
+    if (!Array.isArray((json as { documents?: unknown })?.documents)) return observe({ provider: 'kakao', status: 'invalid_response', pois: [], metrics: placeSearchMetrics('', 0, []) }, options.observe);
+    return { provider: 'kakao', status: 'ok', pois: [], documents: (json as { documents: KakaoDocument[] }).documents };
   } catch {
-    return [];
+    return observe({ provider: 'kakao', status: 'network_error', pois: [], metrics: placeSearchMetrics('', 0, []) }, options.observe);
   }
 }
 
@@ -67,31 +108,36 @@ function kakaoPoiScore(p: Poi, keyword: string, center?: LatLon): number {
 }
 
 export async function kakaoPoiSearchMulti(keyword: string, center?: LatLon, count = 5): Promise<Poi[]> {
-  if (!keyword.trim()) return [];
+  return (await kakaoPoiSearchMultiResult(keyword, center, count)).pois;
+}
+
+export async function kakaoPoiSearchMultiResult(keyword: string, center?: LatLon, count = 5, options: KakaoPoiSearchOptions = {}): Promise<PlaceSearchResult> {
+  if (!keyword.trim()) return observe({ provider: 'kakao', status: 'ok', pois: [], metrics: placeSearchMetrics('', 0, []) }, options.observe);
   const baseParams: Record<string, string | number> = {
     query: keyword.trim(),
     size: Math.min(15, Math.max(1, count * 3)),
   };
-  const params = center
-    // Kakao Local 키워드 검색 반경 상한은 20km다. 상한 초과 시 400으로 전체 검색이 비어 버린다.
-    ? { ...baseParams, x: center.lon, y: center.lat, radius: 20000, sort: 'distance' }
-    : baseParams;
+  // 장소명 선택은 중심좌표 기반 주변 정렬과 분리한다. 관련성은 제공사 keyword 결과와 UI 이름 필터만 사용한다.
+  const params = baseParams;
 
-  const docs = await kakaoGet('search/keyword.json', params);
-  const pois = docs.map((doc) => toPoi(doc, keyword)).filter((p): p is Poi => !!p);
-  return dedupePois(pois)
+  const response = await kakaoGet('search/keyword.json', params, options);
+  if (response.status !== 'ok') return response;
+  const pois = (response.documents ?? []).map((doc) => toPoi(doc, keyword)).filter((p): p is Poi => !!p);
+  const result = dedupePois(pois)
     .sort((a, b) => kakaoPoiScore(b, keyword, center) - kakaoPoiScore(a, keyword, center))
     .slice(0, count);
+  return observe({ provider: 'kakao', status: 'ok', pois: result, metrics: placeSearchMetrics(keyword, response.documents?.length ?? 0, pois) }, options.observe);
 }
 
 export async function kakaoGeocodeAddr(fullAddr: string, count = 3): Promise<Poi[]> {
   if (!fullAddr.trim()) return [];
-  const docs = await kakaoGet('search/address.json', { query: fullAddr.trim(), size: Math.min(10, Math.max(1, count)) });
-  return docs.map((doc) => toPoi(doc, fullAddr)).filter((p): p is Poi => !!p).slice(0, count);
+  const result = await kakaoGet('search/address.json', { query: fullAddr.trim(), size: Math.min(10, Math.max(1, count)) });
+  return (result.documents ?? []).map((doc) => toPoi(doc, fullAddr)).filter((p): p is Poi => !!p).slice(0, count);
 }
 
 export async function kakaoReverseGeocode(lat: number, lon: number): Promise<string | null> {
-  const docs = await kakaoGet('geo/coord2address.json', { x: lon, y: lat });
+  const result = await kakaoGet('geo/coord2address.json', { x: lon, y: lat });
+  const docs = result.documents ?? [];
   const doc = docs[0];
   return doc?.road_address?.address_name || doc?.address?.address_name || doc?.road_address_name || doc?.address_name || null;
 }

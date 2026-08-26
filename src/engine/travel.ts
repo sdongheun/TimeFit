@@ -3,6 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LatLon, Mode, RoadMode } from './types';
 import type { RouteBaseline } from './actualRouteSearchScope';
 import { createRouteBaselineService, type RouteBaselineResult } from './routeBaselineService';
+import type { PlaceSearchObserver, PlaceSearchResult } from './kakao';
+import { lineLabelsFromProviderCategoryFields, matchPlaceNameQuery } from '../services/placeNameSemanticMatch';
 
 const TMAP_KEY = process.env.EXPO_PUBLIC_TMAP_APP_KEY;
 const ODSAY_KEY = process.env.EXPO_PUBLIC_ODSAY_API_KEY ?? process.env.ODSAY_API_KEY;
@@ -586,7 +588,57 @@ export function getActualRouteBaselines(origin: LatLon, destination: LatLon): Pr
 }
 
 // TMAP POI 통합검색: 장소명 → 좌표 후보 (center 지정 시 가까운 순)
-export type Poi = { name: string; lat: number; lon: number; addr: string };
+export type Poi = { name: string; lat: number; lon: number; addr: string; providerMetadata?: { placeType?: 'transit_place'; lineLabels?: string[]; labelSource: 'provider' } };
+export type TmapPoiSearchOptions = { fetcher?: typeof fetch; apiKey?: string; observe?: PlaceSearchObserver };
+
+function observeTmap(result: PlaceSearchResult, callback?: PlaceSearchObserver): PlaceSearchResult {
+  const event = { provider: result.provider, status: result.status, resultCount: result.pois.length };
+  callback?.(event);
+  if (process.env.NODE_ENV === 'development') console.info(`[place-search] ${event.provider} ${event.status} ${event.resultCount}`);
+  return result;
+}
+
+function tmapSearchMetrics(keyword: string, rawPoiCount: number, pois: readonly Poi[]) {
+  const query = keyword.toLowerCase().replace(/[^0-9a-z가-힣]/g, '');
+  return { rawPoiCount, mappingValidCount: pois.length, directNameMatchCount: query ? pois.filter((poi) => matchPlaceNameQuery(keyword, poi.name) !== 'none').length : 0 };
+}
+
+/** 상태형 TMAP 장소명 검색. 기존 Poi[] 호출은 poiSearchMulti를 계속 사용한다. */
+export async function tmapPoiSearchMultiResult(keyword: string, center?: LatLon, count = 5, options: TmapPoiSearchOptions = {}): Promise<PlaceSearchResult> {
+  const key = options.apiKey ?? TMAP_KEY;
+  if (!key) return observeTmap({ provider: 'tmap', status: 'unconfigured', pois: [], metrics: tmapSearchMetrics('', 0, []) }, options.observe);
+  if (!keyword.trim()) return observeTmap({ provider: 'tmap', status: 'ok', pois: [], metrics: tmapSearchMetrics('', 0, []) }, options.observe);
+  const params: Record<string, string> = {
+    version: '1', searchKeyword: keyword.trim(), count: String(Math.max(1, count)),
+    resCoordType: 'WGS84GEO', reqCoordType: 'WGS84GEO',
+  };
+  // 장소명 검색은 반경 기반 주변 POI 모드와 분리한다. center는 이 API 경계에서 전송하지 않는다.
+  try {
+    const res = await (options.fetcher ?? fetch)(`https://apis.openapi.sk.com/tmap/pois?${new URLSearchParams(params)}`, { headers: { appKey: key } });
+    if (!res.ok) return observeTmap({ provider: 'tmap', status: 'http_error', pois: [], statusCode: res.status, metrics: tmapSearchMetrics('', 0, []) }, options.observe);
+    let json: any;
+    try { json = await res.json(); } catch { return observeTmap({ provider: 'tmap', status: 'invalid_response', pois: [], metrics: tmapSearchMetrics('', 0, []) }, options.observe); }
+    const raw = json?.searchPoiInfo?.pois?.poi;
+    if (raw === undefined || raw === null) return observeTmap({ provider: 'tmap', status: 'invalid_response', pois: [], metrics: tmapSearchMetrics('', 0, []) }, options.observe);
+    const list = Array.isArray(raw) ? raw : [raw];
+    const pois: Poi[] = [];
+    for (const p of list) {
+      const lat = parseFloat(p.frontLat ?? p.noorLat), lon = parseFloat(p.frontLon ?? p.noorLon);
+      if (Number.isFinite(lat) && Number.isFinite(lon)) {
+        const category = String(p.poiCateName ?? p.categoryName ?? '');
+        const lineLabels = lineLabelsFromProviderCategoryFields([p.poiCateName, p.categoryName]);
+        const base = { name: p.name, lat, lon, addr: [p.upperAddrName, p.middleAddrName, p.lowerAddrName].filter(Boolean).join(' ') };
+        pois.push(/역|정류장|지하철|경전철/.test(category)
+          ? { ...base, providerMetadata: { placeType: 'transit_place', ...(lineLabels ? { lineLabels } : {}), labelSource: 'provider' } }
+          : base);
+      }
+    }
+    return observeTmap({ provider: 'tmap', status: 'ok', pois, metrics: tmapSearchMetrics(keyword, list.length, pois) }, options.observe);
+  } catch {
+    return observeTmap({ provider: 'tmap', status: 'network_error', pois: [], metrics: tmapSearchMetrics('', 0, []) }, options.observe);
+  }
+}
+
 async function tmapPoiSearch(keyword: string, center?: LatLon, count = 10): Promise<Poi[]> {
   if (!TMAP_KEY || !keyword.trim()) return [];
   const params: Record<string, string> = {
