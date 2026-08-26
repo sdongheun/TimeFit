@@ -6,9 +6,10 @@
 
 ## 현재 런타임 추천 후보
 
-- `review/부산_자투리장소_카탈로그_초안.json`: `approved` 49개와 `conditional` 307개, 총 356개의 자투리 활동 장소. 각 장소는 `shortStayType`, `minStayMin`, `recommendedStayMin`, `maxStayMin`, 출처와 운영시간 확인 상태를 가진다.
-- `review/부산_자투리장소_보류및제외.json`: 활동 유형을 설명할 수 없는 보류 140개와 하드 제외 541개. 런타임 후보에 넣지 않는다.
-- `src/data/busan_poi_catalog.json`: `scripts/build_runtime_poi_catalog.mjs`가 위 검토 카탈로그를 앱용 구조로 변환한 결과다.
+- `review/부산_장소_근거프로필_재분류.json`: 기준선 1,037개를 필드별 근거로 재분류한 현행 원천이다. `representative_core` 28개·`representative_standard` 138개·`conditional_more` 176개·`hold` 695개이며, 원천·원문·수집일·적용 범위와 재검토 기한을 보존한다.
+- `review/부산_장소_근거프로필_기준선.json`: 활성 356개 + 기존 review 140개 + excluded 541개의 ID 대조 기준선이다.
+- `review/부산_자투리장소_카탈로그_초안.json`, `review/부산_자투리장소_보류및제외.json`: 이전 `approved / conditional / review / excluded` 분류 원천으로 보존한다. 현행 런타임 입력은 아니다.
+- `src/data/busan_poi_catalog.json`: 재분류 원천에서 hold를 제외하고 생성한 앱용 구조다. 대표 추천은 core/standard만, 조건부는 더보기 전용이다.
 
 `카테고리별_체류시간.json`의 중앙값은 과거 파이프라인과 진단 호환용으로만 보존한다. 현재 추천 후보의 체류시간은 카테고리 중앙값이 아니라 장소별 활동 범위를 우선한다.
 

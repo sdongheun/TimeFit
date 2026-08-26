@@ -1,0 +1,651 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-23T18:33:18.662Z",
+    "purpose": "route_verified_measurement에 연결 가능한 실제 TMAP 도보 장소쌍 스냅샷",
+    "calls": 22
+  },
+  "summary": {
+    "ok": 22,
+    "failed": 0
+  },
+  "data": [
+    {
+      "id": "PAIR-NAMPO-JAGALCHI-DEMOCRACY",
+      "area": "중구",
+      "from": {
+        "id": "poi_13",
+        "title": "부산 자갈치시장(관광·상권 진입점)",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201
+      },
+      "to": {
+        "id": "poi_165",
+        "title": "민주공원(관광 거점)",
+        "lat": 35.1093802515,
+        "lon": 129.0281096457
+      },
+      "fromId": "poi_13",
+      "toId": "poi_165",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 29,
+      "totalDistanceM": 2001,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:13.581Z",
+      "responseSummary": {
+        "featureCount": 49,
+        "totalTimeSec": 1712,
+        "totalDistance": 2001
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-JAGALCHI-DEMOCRACY-RETURN",
+      "area": "중구",
+      "from": {
+        "id": "poi_165",
+        "title": "민주공원(관광 거점)",
+        "lat": 35.1093802515,
+        "lon": 129.0281096457
+      },
+      "to": {
+        "id": "poi_13",
+        "title": "부산 자갈치시장(관광·상권 진입점)",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201
+      },
+      "fromId": "poi_165",
+      "toId": "poi_13",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 29,
+      "totalDistanceM": 2001,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:13.815Z",
+      "responseSummary": {
+        "featureCount": 49,
+        "totalTimeSec": 1712,
+        "totalDistance": 2001
+      }
+    },
+    {
+      "id": "PAIR-SEOMYEON-COFFEE-JEONPO",
+      "area": "부산진구",
+      "from": {
+        "id": "poi_1051",
+        "title": "커피스가모 인 서면(서면 약속 거점)",
+        "lat": 35.15878,
+        "lon": 129.05403
+      },
+      "to": {
+        "id": "poi_213",
+        "title": "전포 삼거리(전포 상권 진입점)",
+        "lat": 35.1536149962,
+        "lon": 129.071940736
+      },
+      "fromId": "poi_1051",
+      "toId": "poi_213",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 30,
+      "totalDistanceM": 2118,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:14.054Z",
+      "responseSummary": {
+        "featureCount": 56,
+        "totalTimeSec": 1798,
+        "totalDistance": 2118
+      }
+    },
+    {
+      "id": "PAIR-SEOMYEON-COFFEE-JEONPO-RETURN",
+      "area": "부산진구",
+      "from": {
+        "id": "poi_213",
+        "title": "전포 삼거리(전포 상권 진입점)",
+        "lat": 35.1536149962,
+        "lon": 129.071940736
+      },
+      "to": {
+        "id": "poi_1051",
+        "title": "커피스가모 인 서면(서면 약속 거점)",
+        "lat": 35.15878,
+        "lon": 129.05403
+      },
+      "fromId": "poi_213",
+      "toId": "poi_1051",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 30,
+      "totalDistanceM": 2118,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:14.278Z",
+      "responseSummary": {
+        "featureCount": 56,
+        "totalTimeSec": 1798,
+        "totalDistance": 2118
+      }
+    },
+    {
+      "id": "PAIR-HAEUNDAE-MOVIE-DONGBACK",
+      "area": "해운대구",
+      "from": {
+        "id": "poi_174",
+        "title": "부산 영화의 거리(관광 거점)",
+        "lat": 35.1549495207,
+        "lon": 129.1444371716
+      },
+      "to": {
+        "id": "poi_19",
+        "title": "동백공원(관광 거점)",
+        "lat": 35.1536609221,
+        "lon": 129.1523226328
+      },
+      "fromId": "poi_174",
+      "toId": "poi_19",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 20,
+      "totalDistanceM": 1466,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:14.501Z",
+      "responseSummary": {
+        "featureCount": 31,
+        "totalTimeSec": 1196,
+        "totalDistance": 1466
+      }
+    },
+    {
+      "id": "PAIR-HAEUNDAE-MOVIE-DONGBACK-RETURN",
+      "area": "해운대구",
+      "from": {
+        "id": "poi_19",
+        "title": "동백공원(관광 거점)",
+        "lat": 35.1536609221,
+        "lon": 129.1523226328
+      },
+      "to": {
+        "id": "poi_174",
+        "title": "부산 영화의 거리(관광 거점)",
+        "lat": 35.1549495207,
+        "lon": 129.1444371716
+      },
+      "fromId": "poi_19",
+      "toId": "poi_174",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 20,
+      "totalDistanceM": 1466,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:14.772Z",
+      "responseSummary": {
+        "featureCount": 31,
+        "totalTimeSec": 1196,
+        "totalDistance": 1466
+      }
+    },
+    {
+      "id": "PAIR-YEONGDO-MARKET-JEOLYEONG",
+      "area": "영도구",
+      "from": {
+        "id": "poi_107",
+        "title": "영도봉래시장(상권 진입점)",
+        "lat": 35.0927462941,
+        "lon": 129.0439559432
+      },
+      "to": {
+        "id": "poi_214",
+        "title": "절영해안산책로(관광 거점)",
+        "lat": 35.0812475294,
+        "lon": 129.0411870536
+      },
+      "fromId": "poi_107",
+      "toId": "poi_214",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 21,
+      "totalDistanceM": 1503,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:15.022Z",
+      "responseSummary": {
+        "featureCount": 31,
+        "totalTimeSec": 1269,
+        "totalDistance": 1503
+      }
+    },
+    {
+      "id": "PAIR-YEONGDO-MARKET-JEOLYEONG-RETURN",
+      "area": "영도구",
+      "from": {
+        "id": "poi_214",
+        "title": "절영해안산책로(관광 거점)",
+        "lat": 35.0812475294,
+        "lon": 129.0411870536
+      },
+      "to": {
+        "id": "poi_107",
+        "title": "영도봉래시장(상권 진입점)",
+        "lat": 35.0927462941,
+        "lon": 129.0439559432
+      },
+      "fromId": "poi_214",
+      "toId": "poi_107",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 21,
+      "totalDistanceM": 1503,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:15.267Z",
+      "responseSummary": {
+        "featureCount": 32,
+        "totalTimeSec": 1269,
+        "totalDistance": 1503
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-DEMOCRACY-YOUNGJU",
+      "area": "중구",
+      "from": {
+        "id": "poi_165",
+        "title": "민주공원(관광 거점)",
+        "lat": 35.1093802515,
+        "lon": 129.0281096457
+      },
+      "to": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대(야외 전망 거점)",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427
+      },
+      "fromId": "poi_165",
+      "toId": "poi_203",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 11,
+      "totalDistanceM": 802,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:15.489Z",
+      "responseSummary": {
+        "featureCount": 21,
+        "totalTimeSec": 685,
+        "totalDistance": 802
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-DEMOCRACY-YOUNGJU-RETURN",
+      "area": "중구",
+      "from": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대(야외 전망 거점)",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427
+      },
+      "to": {
+        "id": "poi_165",
+        "title": "민주공원(관광 거점)",
+        "lat": 35.1093802515,
+        "lon": 129.0281096457
+      },
+      "fromId": "poi_203",
+      "toId": "poi_165",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 11,
+      "totalDistanceM": 802,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:15.711Z",
+      "responseSummary": {
+        "featureCount": 21,
+        "totalTimeSec": 685,
+        "totalDistance": 802
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-YOUNGJU-JAGALCHI",
+      "area": "중구",
+      "from": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대(야외 전망 거점)",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427
+      },
+      "to": {
+        "id": "poi_13",
+        "title": "부산 자갈치시장(관광·상권 진입점)",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201
+      },
+      "fromId": "poi_203",
+      "toId": "poi_13",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 33,
+      "totalDistanceM": 2487,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:15.937Z",
+      "responseSummary": {
+        "featureCount": 38,
+        "totalTimeSec": 1959,
+        "totalDistance": 2487
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-YOUNGJU-JAGALCHI-RETURN",
+      "area": "중구",
+      "from": {
+        "id": "poi_13",
+        "title": "부산 자갈치시장(관광·상권 진입점)",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201
+      },
+      "to": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대(야외 전망 거점)",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427
+      },
+      "fromId": "poi_13",
+      "toId": "poi_203",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 33,
+      "totalDistanceM": 2487,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:16.182Z",
+      "responseSummary": {
+        "featureCount": 38,
+        "totalTimeSec": 1959,
+        "totalDistance": 2487
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-YOUNGJU-DAECHEONG",
+      "area": "중구",
+      "from": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대(야외 전망 거점)",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427
+      },
+      "to": {
+        "id": "poi_745",
+        "title": "대청스카이전망대(야외 전망 거점)",
+        "lat": 35.107513,
+        "lon": 129.02963
+      },
+      "fromId": "poi_203",
+      "toId": "poi_745",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 13,
+      "totalDistanceM": 966,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:16.406Z",
+      "responseSummary": {
+        "featureCount": 12,
+        "totalTimeSec": 751,
+        "totalDistance": 966
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-YOUNGJU-DAECHEONG-RETURN",
+      "area": "중구",
+      "from": {
+        "id": "poi_745",
+        "title": "대청스카이전망대(야외 전망 거점)",
+        "lat": 35.107513,
+        "lon": 129.02963
+      },
+      "to": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대(야외 전망 거점)",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427
+      },
+      "fromId": "poi_745",
+      "toId": "poi_203",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 13,
+      "totalDistanceM": 966,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:16.629Z",
+      "responseSummary": {
+        "featureCount": 12,
+        "totalTimeSec": 751,
+        "totalDistance": 966
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-DAECHEONG-JAGALCHI",
+      "area": "중구",
+      "from": {
+        "id": "poi_745",
+        "title": "대청스카이전망대(야외 전망 거점)",
+        "lat": 35.107513,
+        "lon": 129.02963
+      },
+      "to": {
+        "id": "poi_13",
+        "title": "부산 자갈치시장(관광·상권 진입점)",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201
+      },
+      "fromId": "poi_745",
+      "toId": "poi_13",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 22,
+      "totalDistanceM": 1554,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:16.884Z",
+      "responseSummary": {
+        "featureCount": 42,
+        "totalTimeSec": 1332,
+        "totalDistance": 1554
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-DAECHEONG-JAGALCHI-RETURN",
+      "area": "중구",
+      "from": {
+        "id": "poi_13",
+        "title": "부산 자갈치시장(관광·상권 진입점)",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201
+      },
+      "to": {
+        "id": "poi_745",
+        "title": "대청스카이전망대(야외 전망 거점)",
+        "lat": 35.107513,
+        "lon": 129.02963
+      },
+      "fromId": "poi_13",
+      "toId": "poi_745",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 22,
+      "totalDistanceM": 1554,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:17.129Z",
+      "responseSummary": {
+        "featureCount": 41,
+        "totalTimeSec": 1332,
+        "totalDistance": 1554
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-DEMOCRACY-HISTORY",
+      "area": "중구",
+      "from": {
+        "id": "poi_165",
+        "title": "민주공원(관광 거점)",
+        "lat": 35.1093802515,
+        "lon": 129.0281096457
+      },
+      "to": {
+        "id": "poi_92",
+        "title": "부산근현대역사관 본관(별도 약속 거점)",
+        "lat": 35.1027616225,
+        "lon": 129.032190027
+      },
+      "fromId": "poi_165",
+      "toId": "poi_92",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 17,
+      "totalDistanceM": 1144,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:17.364Z",
+      "responseSummary": {
+        "featureCount": 36,
+        "totalTimeSec": 1046,
+        "totalDistance": 1144
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-DEMOCRACY-HISTORY-RETURN",
+      "area": "중구",
+      "from": {
+        "id": "poi_92",
+        "title": "부산근현대역사관 본관(별도 약속 거점)",
+        "lat": 35.1027616225,
+        "lon": 129.032190027
+      },
+      "to": {
+        "id": "poi_165",
+        "title": "민주공원(관광 거점)",
+        "lat": 35.1093802515,
+        "lon": 129.0281096457
+      },
+      "fromId": "poi_92",
+      "toId": "poi_165",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 17,
+      "totalDistanceM": 1144,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:17.586Z",
+      "responseSummary": {
+        "featureCount": 37,
+        "totalTimeSec": 1046,
+        "totalDistance": 1144
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-YOUNGJU-HISTORY",
+      "area": "중구",
+      "from": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대(야외 전망 거점)",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427
+      },
+      "to": {
+        "id": "poi_92",
+        "title": "부산근현대역사관 본관(별도 약속 거점)",
+        "lat": 35.1027616225,
+        "lon": 129.032190027
+      },
+      "fromId": "poi_203",
+      "toId": "poi_92",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 22,
+      "totalDistanceM": 1631,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:17.809Z",
+      "responseSummary": {
+        "featureCount": 22,
+        "totalTimeSec": 1294,
+        "totalDistance": 1631
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-YOUNGJU-HISTORY-RETURN",
+      "area": "중구",
+      "from": {
+        "id": "poi_92",
+        "title": "부산근현대역사관 본관(별도 약속 거점)",
+        "lat": 35.1027616225,
+        "lon": 129.032190027
+      },
+      "to": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대(야외 전망 거점)",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427
+      },
+      "fromId": "poi_92",
+      "toId": "poi_203",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 22,
+      "totalDistanceM": 1631,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:18.037Z",
+      "responseSummary": {
+        "featureCount": 22,
+        "totalTimeSec": 1294,
+        "totalDistance": 1631
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-DAECHEONG-HISTORY",
+      "area": "중구",
+      "from": {
+        "id": "poi_745",
+        "title": "대청스카이전망대(야외 전망 거점)",
+        "lat": 35.107513,
+        "lon": 129.02963
+      },
+      "to": {
+        "id": "poi_92",
+        "title": "부산근현대역사관 본관(별도 약속 거점)",
+        "lat": 35.1027616225,
+        "lon": 129.032190027
+      },
+      "fromId": "poi_745",
+      "toId": "poi_92",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 12,
+      "totalDistanceM": 802,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:18.274Z",
+      "responseSummary": {
+        "featureCount": 35,
+        "totalTimeSec": 744,
+        "totalDistance": 802
+      }
+    },
+    {
+      "id": "PAIR-NAMPO-DAECHEONG-HISTORY-RETURN",
+      "area": "중구",
+      "from": {
+        "id": "poi_92",
+        "title": "부산근현대역사관 본관(별도 약속 거점)",
+        "lat": 35.1027616225,
+        "lon": 129.032190027
+      },
+      "to": {
+        "id": "poi_745",
+        "title": "대청스카이전망대(야외 전망 거점)",
+        "lat": 35.107513,
+        "lon": 129.02963
+      },
+      "fromId": "poi_92",
+      "toId": "poi_745",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 12,
+      "totalDistanceM": 802,
+      "provider": "TMAP pedestrian routes",
+      "retrievedAt": "2026-08-23T18:33:18.510Z",
+      "responseSummary": {
+        "featureCount": 33,
+        "totalTimeSec": 744,
+        "totalDistance": 802
+      }
+    }
+  ]
+}

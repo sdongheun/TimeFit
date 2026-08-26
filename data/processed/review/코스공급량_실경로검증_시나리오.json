@@ -1,0 +1,1232 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-24T11:14:07.025Z",
+    "purpose": "실제 TMAP 왕복·별도 도착 경로와 구조화 운영시간을 함께 가진 route_verified_course_fixture. 모든 segment는 TMAP 스냅샷이며 후보 top-N 절단을 하지 않는다. 생활권 전체 적격 후보를 평가하지 않았으므로 공급량 route_verified_measurement로 사용 금지."
+  },
+  "summary": {
+    "total": 6,
+    "routeVerifiedCourseFixture": 6,
+    "byPlaceCount": {
+      "1": 2,
+      "2": 2,
+      "3": 2
+    },
+    "budgetPass": {
+      "1": 2,
+      "2": 2,
+      "3": 2
+    },
+    "budgetRejected": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  "scenarios": [
+    {
+      "scenarioId": "ROUTE-VERIFIED-NAMPO-WEEKDAY-180-RETURN",
+      "measurementGrade": "route_verified_course_fixture",
+      "coverageMatrixKey": {
+        "borough": "중구",
+        "dayType": "weekday",
+        "now": "10:00",
+        "budgetMin": 180,
+        "arrivalType": "return_to_origin"
+      },
+      "dayType": "weekday",
+      "now": "10:00",
+      "origin": {
+        "id": "poi_13",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "자갈치시장 관광·상권 진입점"
+      },
+      "destination": {
+        "id": "poi_13",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "출발지 복귀"
+      },
+      "budgetMin": 180,
+      "arrivalBufferMin": 10,
+      "place": {
+        "id": "poi_165",
+        "title": "민주공원",
+        "classification": "representative_standard",
+        "shortStay": {
+          "min": 20,
+          "recommended": 30,
+          "max": 60
+        },
+        "availability": {
+          "placeId": "poi_165",
+          "sourceText": "09:00~18:00",
+          "sourceEvidence": [
+            {
+              "field": "availability",
+              "source": "tourapi_detailIntro2",
+              "sourceIdOrUrl": "127149",
+              "sourceText": "09:00~18:00",
+              "retrievedAt": "2026-08-23",
+              "appliesTo": "area"
+            }
+          ],
+          "version": "2026-08-24 availability normalization",
+          "status": "structured",
+          "dayTypes": [
+            "weekday",
+            "weekend"
+          ],
+          "alwaysAccessible": false,
+          "windows": [
+            {
+              "startMin": 540,
+              "endMin": 1080
+            }
+          ]
+        }
+      },
+      "segments": [
+        {
+          "id": "PAIR-NAMPO-JAGALCHI-DEMOCRACY",
+          "area": "중구",
+          "from": {
+            "id": "poi_13",
+            "title": "부산 자갈치시장(관광·상권 진입점)",
+            "lat": 35.0966511661,
+            "lon": 129.0306042201
+          },
+          "to": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "fromId": "poi_13",
+          "toId": "poi_165",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 29,
+          "totalDistanceM": 2001,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:13.581Z",
+          "responseSummary": {
+            "featureCount": 49,
+            "totalTimeSec": 1712,
+            "totalDistance": 2001
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-JAGALCHI-DEMOCRACY-RETURN",
+          "area": "중구",
+          "from": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "to": {
+            "id": "poi_13",
+            "title": "부산 자갈치시장(관광·상권 진입점)",
+            "lat": 35.0966511661,
+            "lon": 129.0306042201
+          },
+          "fromId": "poi_165",
+          "toId": "poi_13",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 29,
+          "totalDistanceM": 2001,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:13.815Z",
+          "responseSummary": {
+            "featureCount": 49,
+            "totalTimeSec": 1712,
+            "totalDistance": 2001
+          }
+        }
+      ],
+      "evaluation": {
+        "arrivalMin": 629,
+        "leaveMin": 659,
+        "totalMoveMin": 58,
+        "totalMin": 98,
+        "availabilityPass": true,
+        "budgetPass": true
+      },
+      "representativeCourseCount": 1,
+      "newRecommendationCount": 0,
+      "nextRecommendationState": "no_alternative_verified_course"
+    },
+    {
+      "scenarioId": "ROUTE-VERIFIED-NAMPO-WEEKDAY-180-RETURN-2PLACE",
+      "measurementGrade": "route_verified_course_fixture",
+      "coverageMatrixKey": {
+        "borough": "중구",
+        "dayType": "weekday",
+        "now": "10:00",
+        "budgetMin": 180,
+        "arrivalType": "return_to_origin"
+      },
+      "dayType": "weekday",
+      "now": "10:00",
+      "origin": {
+        "id": "poi_13",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "자갈치시장 관광·상권 진입점"
+      },
+      "destination": {
+        "id": "poi_13",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "출발지 복귀"
+      },
+      "budgetMin": 180,
+      "arrivalBufferMin": 10,
+      "places": [
+        {
+          "id": "poi_165",
+          "title": "민주공원",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_165",
+            "sourceText": "09:00~18:00",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "tourapi_detailIntro2",
+                "sourceIdOrUrl": "127149",
+                "sourceText": "09:00~18:00",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "area"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": false,
+            "windows": [
+              {
+                "startMin": 540,
+                "endMin": 1080
+              }
+            ]
+          }
+        },
+        {
+          "id": "poi_203",
+          "title": "영주하늘눈전망대",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_203",
+            "sourceText": "상시개방",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "tourapi_detailIntro2",
+                "sourceIdOrUrl": "2721157",
+                "sourceText": "상시개방",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "place"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": true,
+            "windows": [
+              {
+                "startMin": 0,
+                "endMin": 1440
+              }
+            ]
+          }
+        }
+      ],
+      "segments": [
+        {
+          "id": "PAIR-NAMPO-JAGALCHI-DEMOCRACY",
+          "area": "중구",
+          "from": {
+            "id": "poi_13",
+            "title": "부산 자갈치시장(관광·상권 진입점)",
+            "lat": 35.0966511661,
+            "lon": 129.0306042201
+          },
+          "to": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "fromId": "poi_13",
+          "toId": "poi_165",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 29,
+          "totalDistanceM": 2001,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:13.581Z",
+          "responseSummary": {
+            "featureCount": 49,
+            "totalTimeSec": 1712,
+            "totalDistance": 2001
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-DEMOCRACY-YOUNGJU",
+          "area": "중구",
+          "from": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "to": {
+            "id": "poi_203",
+            "title": "영주하늘눈전망대(야외 전망 거점)",
+            "lat": 35.1146102693,
+            "lon": 129.0307259427
+          },
+          "fromId": "poi_165",
+          "toId": "poi_203",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 11,
+          "totalDistanceM": 802,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:15.489Z",
+          "responseSummary": {
+            "featureCount": 21,
+            "totalTimeSec": 685,
+            "totalDistance": 802
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-YOUNGJU-JAGALCHI",
+          "area": "중구",
+          "from": {
+            "id": "poi_203",
+            "title": "영주하늘눈전망대(야외 전망 거점)",
+            "lat": 35.1146102693,
+            "lon": 129.0307259427
+          },
+          "to": {
+            "id": "poi_13",
+            "title": "부산 자갈치시장(관광·상권 진입점)",
+            "lat": 35.0966511661,
+            "lon": 129.0306042201
+          },
+          "fromId": "poi_203",
+          "toId": "poi_13",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 33,
+          "totalDistanceM": 2487,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:15.937Z",
+          "responseSummary": {
+            "featureCount": 38,
+            "totalTimeSec": 1959,
+            "totalDistance": 2487
+          }
+        }
+      ],
+      "evaluation": {
+        "totalMoveMin": 73,
+        "totalMin": 143,
+        "availabilityPass": true,
+        "budgetPass": true
+      },
+      "representativeCourseCount": 1,
+      "newRecommendationCount": 0,
+      "nextRecommendationState": "no_alternative_verified_course"
+    },
+    {
+      "scenarioId": "ROUTE-VERIFIED-NAMPO-WEEKDAY-180-RETURN-3PLACE",
+      "measurementGrade": "route_verified_course_fixture",
+      "coverageMatrixKey": {
+        "borough": "중구",
+        "dayType": "weekday",
+        "now": "10:00",
+        "budgetMin": 180,
+        "arrivalType": "return_to_origin"
+      },
+      "dayType": "weekday",
+      "now": "10:00",
+      "origin": {
+        "id": "poi_13",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "자갈치시장 관광·상권 진입점"
+      },
+      "destination": {
+        "id": "poi_13",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "출발지 복귀"
+      },
+      "budgetMin": 180,
+      "arrivalBufferMin": 10,
+      "places": [
+        {
+          "id": "poi_165",
+          "title": "민주공원",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_165",
+            "sourceText": "09:00~18:00",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "tourapi_detailIntro2",
+                "sourceIdOrUrl": "127149",
+                "sourceText": "09:00~18:00",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "area"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": false,
+            "windows": [
+              {
+                "startMin": 540,
+                "endMin": 1080
+              }
+            ]
+          }
+        },
+        {
+          "id": "poi_203",
+          "title": "영주하늘눈전망대",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_203",
+            "sourceText": "상시개방",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "tourapi_detailIntro2",
+                "sourceIdOrUrl": "2721157",
+                "sourceText": "상시개방",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "place"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": true,
+            "windows": [
+              {
+                "startMin": 0,
+                "endMin": 1440
+              }
+            ]
+          }
+        },
+        {
+          "id": "poi_745",
+          "title": "대청스카이전망대",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_745",
+            "sourceText": "매일 00:00~24:00",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "busan_attraction",
+                "sourceIdOrUrl": "2105",
+                "sourceText": "매일 00:00~24:00",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "place"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": true,
+            "windows": [
+              {
+                "startMin": 0,
+                "endMin": 1440
+              }
+            ]
+          }
+        }
+      ],
+      "segments": [
+        {
+          "id": "PAIR-NAMPO-JAGALCHI-DEMOCRACY",
+          "area": "중구",
+          "from": {
+            "id": "poi_13",
+            "title": "부산 자갈치시장(관광·상권 진입점)",
+            "lat": 35.0966511661,
+            "lon": 129.0306042201
+          },
+          "to": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "fromId": "poi_13",
+          "toId": "poi_165",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 29,
+          "totalDistanceM": 2001,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:13.581Z",
+          "responseSummary": {
+            "featureCount": 49,
+            "totalTimeSec": 1712,
+            "totalDistance": 2001
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-DEMOCRACY-YOUNGJU",
+          "area": "중구",
+          "from": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "to": {
+            "id": "poi_203",
+            "title": "영주하늘눈전망대(야외 전망 거점)",
+            "lat": 35.1146102693,
+            "lon": 129.0307259427
+          },
+          "fromId": "poi_165",
+          "toId": "poi_203",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 11,
+          "totalDistanceM": 802,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:15.489Z",
+          "responseSummary": {
+            "featureCount": 21,
+            "totalTimeSec": 685,
+            "totalDistance": 802
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-YOUNGJU-DAECHEONG",
+          "area": "중구",
+          "from": {
+            "id": "poi_203",
+            "title": "영주하늘눈전망대(야외 전망 거점)",
+            "lat": 35.1146102693,
+            "lon": 129.0307259427
+          },
+          "to": {
+            "id": "poi_745",
+            "title": "대청스카이전망대(야외 전망 거점)",
+            "lat": 35.107513,
+            "lon": 129.02963
+          },
+          "fromId": "poi_203",
+          "toId": "poi_745",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 13,
+          "totalDistanceM": 966,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:16.406Z",
+          "responseSummary": {
+            "featureCount": 12,
+            "totalTimeSec": 751,
+            "totalDistance": 966
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-DAECHEONG-JAGALCHI",
+          "area": "중구",
+          "from": {
+            "id": "poi_745",
+            "title": "대청스카이전망대(야외 전망 거점)",
+            "lat": 35.107513,
+            "lon": 129.02963
+          },
+          "to": {
+            "id": "poi_13",
+            "title": "부산 자갈치시장(관광·상권 진입점)",
+            "lat": 35.0966511661,
+            "lon": 129.0306042201
+          },
+          "fromId": "poi_745",
+          "toId": "poi_13",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 22,
+          "totalDistanceM": 1554,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:16.884Z",
+          "responseSummary": {
+            "featureCount": 42,
+            "totalTimeSec": 1332,
+            "totalDistance": 1554
+          }
+        }
+      ],
+      "evaluation": {
+        "totalMoveMin": 75,
+        "totalMin": 175,
+        "availabilityPass": true,
+        "budgetPass": true,
+        "budgetRejection": null
+      },
+      "representativeCourseCount": 1,
+      "newRecommendationCount": 0,
+      "nextRecommendationState": "no_alternative_verified_course"
+    },
+    {
+      "scenarioId": "ROUTE-VERIFIED-NAMPO-WEEKDAY-180-SEPARATE-1PLACE",
+      "measurementGrade": "route_verified_course_fixture",
+      "coverageMatrixKey": {
+        "borough": "중구",
+        "dayType": "weekday",
+        "now": "10:00",
+        "budgetMin": 180,
+        "arrivalType": "separate_destination"
+      },
+      "dayType": "weekday",
+      "now": "10:00",
+      "origin": {
+        "id": "poi_13",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "자갈치시장 관광·상권 진입점"
+      },
+      "destination": {
+        "id": "poi_92",
+        "lat": 35.1027616225,
+        "lon": 129.032190027,
+        "reason": "부산근현대역사관 본관 별도 약속 거점"
+      },
+      "budgetMin": 180,
+      "arrivalBufferMin": 10,
+      "place": {
+        "id": "poi_165",
+        "title": "민주공원",
+        "classification": "representative_standard",
+        "shortStay": {
+          "min": 20,
+          "recommended": 30,
+          "max": 60
+        },
+        "availability": {
+          "placeId": "poi_165",
+          "sourceText": "09:00~18:00",
+          "sourceEvidence": [
+            {
+              "field": "availability",
+              "source": "tourapi_detailIntro2",
+              "sourceIdOrUrl": "127149",
+              "sourceText": "09:00~18:00",
+              "retrievedAt": "2026-08-23",
+              "appliesTo": "area"
+            }
+          ],
+          "version": "2026-08-24 availability normalization",
+          "status": "structured",
+          "dayTypes": [
+            "weekday",
+            "weekend"
+          ],
+          "alwaysAccessible": false,
+          "windows": [
+            {
+              "startMin": 540,
+              "endMin": 1080
+            }
+          ]
+        }
+      },
+      "segments": [
+        {
+          "id": "PAIR-NAMPO-JAGALCHI-DEMOCRACY",
+          "area": "중구",
+          "from": {
+            "id": "poi_13",
+            "title": "부산 자갈치시장(관광·상권 진입점)",
+            "lat": 35.0966511661,
+            "lon": 129.0306042201
+          },
+          "to": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "fromId": "poi_13",
+          "toId": "poi_165",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 29,
+          "totalDistanceM": 2001,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:13.581Z",
+          "responseSummary": {
+            "featureCount": 49,
+            "totalTimeSec": 1712,
+            "totalDistance": 2001
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-DEMOCRACY-HISTORY",
+          "area": "중구",
+          "from": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "to": {
+            "id": "poi_92",
+            "title": "부산근현대역사관 본관(별도 약속 거점)",
+            "lat": 35.1027616225,
+            "lon": 129.032190027
+          },
+          "fromId": "poi_165",
+          "toId": "poi_92",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 17,
+          "totalDistanceM": 1144,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:17.364Z",
+          "responseSummary": {
+            "featureCount": 36,
+            "totalTimeSec": 1046,
+            "totalDistance": 1144
+          }
+        }
+      ],
+      "evaluation": {
+        "totalMoveMin": 46,
+        "totalMin": 86,
+        "availabilityPass": true,
+        "budgetPass": true
+      },
+      "representativeCourseCount": 1,
+      "newRecommendationCount": 0,
+      "nextRecommendationState": "no_alternative_verified_course"
+    },
+    {
+      "scenarioId": "ROUTE-VERIFIED-NAMPO-WEEKDAY-180-SEPARATE-2PLACE",
+      "measurementGrade": "route_verified_course_fixture",
+      "coverageMatrixKey": {
+        "borough": "중구",
+        "dayType": "weekday",
+        "now": "10:00",
+        "budgetMin": 180,
+        "arrivalType": "separate_destination"
+      },
+      "dayType": "weekday",
+      "now": "10:00",
+      "origin": {
+        "id": "poi_13",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "자갈치시장 관광·상권 진입점"
+      },
+      "destination": {
+        "id": "poi_92",
+        "lat": 35.1027616225,
+        "lon": 129.032190027,
+        "reason": "부산근현대역사관 본관 별도 약속 거점"
+      },
+      "budgetMin": 180,
+      "arrivalBufferMin": 10,
+      "places": [
+        {
+          "id": "poi_165",
+          "title": "민주공원",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_165",
+            "sourceText": "09:00~18:00",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "tourapi_detailIntro2",
+                "sourceIdOrUrl": "127149",
+                "sourceText": "09:00~18:00",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "area"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": false,
+            "windows": [
+              {
+                "startMin": 540,
+                "endMin": 1080
+              }
+            ]
+          }
+        },
+        {
+          "id": "poi_203",
+          "title": "영주하늘눈전망대",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_203",
+            "sourceText": "상시개방",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "tourapi_detailIntro2",
+                "sourceIdOrUrl": "2721157",
+                "sourceText": "상시개방",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "place"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": true,
+            "windows": [
+              {
+                "startMin": 0,
+                "endMin": 1440
+              }
+            ]
+          }
+        }
+      ],
+      "segments": [
+        {
+          "id": "PAIR-NAMPO-JAGALCHI-DEMOCRACY",
+          "area": "중구",
+          "from": {
+            "id": "poi_13",
+            "title": "부산 자갈치시장(관광·상권 진입점)",
+            "lat": 35.0966511661,
+            "lon": 129.0306042201
+          },
+          "to": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "fromId": "poi_13",
+          "toId": "poi_165",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 29,
+          "totalDistanceM": 2001,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:13.581Z",
+          "responseSummary": {
+            "featureCount": 49,
+            "totalTimeSec": 1712,
+            "totalDistance": 2001
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-DEMOCRACY-YOUNGJU",
+          "area": "중구",
+          "from": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "to": {
+            "id": "poi_203",
+            "title": "영주하늘눈전망대(야외 전망 거점)",
+            "lat": 35.1146102693,
+            "lon": 129.0307259427
+          },
+          "fromId": "poi_165",
+          "toId": "poi_203",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 11,
+          "totalDistanceM": 802,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:15.489Z",
+          "responseSummary": {
+            "featureCount": 21,
+            "totalTimeSec": 685,
+            "totalDistance": 802
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-YOUNGJU-HISTORY",
+          "area": "중구",
+          "from": {
+            "id": "poi_203",
+            "title": "영주하늘눈전망대(야외 전망 거점)",
+            "lat": 35.1146102693,
+            "lon": 129.0307259427
+          },
+          "to": {
+            "id": "poi_92",
+            "title": "부산근현대역사관 본관(별도 약속 거점)",
+            "lat": 35.1027616225,
+            "lon": 129.032190027
+          },
+          "fromId": "poi_203",
+          "toId": "poi_92",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 22,
+          "totalDistanceM": 1631,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:17.809Z",
+          "responseSummary": {
+            "featureCount": 22,
+            "totalTimeSec": 1294,
+            "totalDistance": 1631
+          }
+        }
+      ],
+      "evaluation": {
+        "totalMoveMin": 62,
+        "totalMin": 132,
+        "availabilityPass": true,
+        "budgetPass": true
+      },
+      "representativeCourseCount": 1,
+      "newRecommendationCount": 0,
+      "nextRecommendationState": "no_alternative_verified_course"
+    },
+    {
+      "scenarioId": "ROUTE-VERIFIED-NAMPO-WEEKDAY-180-SEPARATE-3PLACE",
+      "measurementGrade": "route_verified_course_fixture",
+      "coverageMatrixKey": {
+        "borough": "중구",
+        "dayType": "weekday",
+        "now": "10:00",
+        "budgetMin": 180,
+        "arrivalType": "separate_destination"
+      },
+      "dayType": "weekday",
+      "now": "10:00",
+      "origin": {
+        "id": "poi_13",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "자갈치시장 관광·상권 진입점"
+      },
+      "destination": {
+        "id": "poi_92",
+        "lat": 35.1027616225,
+        "lon": 129.032190027,
+        "reason": "부산근현대역사관 본관 별도 약속 거점"
+      },
+      "budgetMin": 180,
+      "arrivalBufferMin": 10,
+      "places": [
+        {
+          "id": "poi_165",
+          "title": "민주공원",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_165",
+            "sourceText": "09:00~18:00",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "tourapi_detailIntro2",
+                "sourceIdOrUrl": "127149",
+                "sourceText": "09:00~18:00",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "area"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": false,
+            "windows": [
+              {
+                "startMin": 540,
+                "endMin": 1080
+              }
+            ]
+          }
+        },
+        {
+          "id": "poi_203",
+          "title": "영주하늘눈전망대",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_203",
+            "sourceText": "상시개방",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "tourapi_detailIntro2",
+                "sourceIdOrUrl": "2721157",
+                "sourceText": "상시개방",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "place"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": true,
+            "windows": [
+              {
+                "startMin": 0,
+                "endMin": 1440
+              }
+            ]
+          }
+        },
+        {
+          "id": "poi_745",
+          "title": "대청스카이전망대",
+          "classification": "representative_standard",
+          "shortStay": {
+            "min": 20,
+            "recommended": 30,
+            "max": 60
+          },
+          "availability": {
+            "placeId": "poi_745",
+            "sourceText": "매일 00:00~24:00",
+            "sourceEvidence": [
+              {
+                "field": "availability",
+                "source": "busan_attraction",
+                "sourceIdOrUrl": "2105",
+                "sourceText": "매일 00:00~24:00",
+                "retrievedAt": "2026-08-23",
+                "appliesTo": "place"
+              }
+            ],
+            "version": "2026-08-24 availability normalization",
+            "status": "structured",
+            "dayTypes": [
+              "weekday",
+              "weekend"
+            ],
+            "alwaysAccessible": true,
+            "windows": [
+              {
+                "startMin": 0,
+                "endMin": 1440
+              }
+            ]
+          }
+        }
+      ],
+      "segments": [
+        {
+          "id": "PAIR-NAMPO-JAGALCHI-DEMOCRACY",
+          "area": "중구",
+          "from": {
+            "id": "poi_13",
+            "title": "부산 자갈치시장(관광·상권 진입점)",
+            "lat": 35.0966511661,
+            "lon": 129.0306042201
+          },
+          "to": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "fromId": "poi_13",
+          "toId": "poi_165",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 29,
+          "totalDistanceM": 2001,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:13.581Z",
+          "responseSummary": {
+            "featureCount": 49,
+            "totalTimeSec": 1712,
+            "totalDistance": 2001
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-DEMOCRACY-YOUNGJU",
+          "area": "중구",
+          "from": {
+            "id": "poi_165",
+            "title": "민주공원(관광 거점)",
+            "lat": 35.1093802515,
+            "lon": 129.0281096457
+          },
+          "to": {
+            "id": "poi_203",
+            "title": "영주하늘눈전망대(야외 전망 거점)",
+            "lat": 35.1146102693,
+            "lon": 129.0307259427
+          },
+          "fromId": "poi_165",
+          "toId": "poi_203",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 11,
+          "totalDistanceM": 802,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:15.489Z",
+          "responseSummary": {
+            "featureCount": 21,
+            "totalTimeSec": 685,
+            "totalDistance": 802
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-YOUNGJU-DAECHEONG",
+          "area": "중구",
+          "from": {
+            "id": "poi_203",
+            "title": "영주하늘눈전망대(야외 전망 거점)",
+            "lat": 35.1146102693,
+            "lon": 129.0307259427
+          },
+          "to": {
+            "id": "poi_745",
+            "title": "대청스카이전망대(야외 전망 거점)",
+            "lat": 35.107513,
+            "lon": 129.02963
+          },
+          "fromId": "poi_203",
+          "toId": "poi_745",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 13,
+          "totalDistanceM": 966,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:16.406Z",
+          "responseSummary": {
+            "featureCount": 12,
+            "totalTimeSec": 751,
+            "totalDistance": 966
+          }
+        },
+        {
+          "id": "PAIR-NAMPO-DAECHEONG-HISTORY",
+          "area": "중구",
+          "from": {
+            "id": "poi_745",
+            "title": "대청스카이전망대(야외 전망 거점)",
+            "lat": 35.107513,
+            "lon": 129.02963
+          },
+          "to": {
+            "id": "poi_92",
+            "title": "부산근현대역사관 본관(별도 약속 거점)",
+            "lat": 35.1027616225,
+            "lon": 129.032190027
+          },
+          "fromId": "poi_745",
+          "toId": "poi_92",
+          "status": "ok",
+          "mode": "walk",
+          "totalMoveMin": 12,
+          "totalDistanceM": 802,
+          "provider": "TMAP pedestrian routes",
+          "retrievedAt": "2026-08-23T18:33:18.274Z",
+          "responseSummary": {
+            "featureCount": 35,
+            "totalTimeSec": 744,
+            "totalDistance": 802
+          }
+        }
+      ],
+      "evaluation": {
+        "totalMoveMin": 65,
+        "totalMin": 165,
+        "availabilityPass": true,
+        "budgetPass": true
+      },
+      "representativeCourseCount": 1,
+      "newRecommendationCount": 0,
+      "nextRecommendationState": "no_alternative_verified_course"
+    }
+  ]
+}

@@ -1,0 +1,415 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-24",
+    "source": [
+      "data/processed/review/부산_장소_근거프로필_재분류.json",
+      "data/processed/review/부산_장소_구조화_운영시간.json"
+    ],
+    "purpose": "전체 매트릭스 확장 전 실제 경로 수집 대상의 의미·동일성·운영시간 입력을 검증한다."
+  },
+  "summary": {
+    "total": 16,
+    "ready": 16,
+    "needsReview": 0
+  },
+  "data": [
+    {
+      "borough": "중구",
+      "origin": {
+        "placeId": "poi_13",
+        "reason": "관광·상권 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_165",
+        "poi_203",
+        "poi_745"
+      ],
+      "destination": {
+        "placeId": "poi_92",
+        "reason": "별도 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "서구",
+      "origin": {
+        "placeId": "poi_173",
+        "reason": "송도 해안 관광 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_193",
+        "poi_221"
+      ],
+      "destination": {
+        "placeId": "poi_620",
+        "reason": "박물관 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2
+      ],
+      "missingCourseSizes": [
+        3
+      ],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "동구",
+      "origin": {
+        "placeId": "poi_738",
+        "reason": "북항 수변 관광 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_225",
+        "poi_253",
+        "poi_616"
+      ],
+      "destination": {
+        "placeId": "poi_305",
+        "reason": "전통시장 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "영도구",
+      "origin": {
+        "placeId": "poi_107",
+        "reason": "영도 시장 상권 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_214",
+        "poi_223",
+        "poi_608"
+      ],
+      "destination": {
+        "placeId": "poi_220",
+        "reason": "노을 전망 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "부산진구",
+      "origin": {
+        "placeId": "poi_1051",
+        "reason": "서면 약속 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_213",
+        "poi_656",
+        "poi_711"
+      ],
+      "destination": {
+        "placeId": "poi_801",
+        "reason": "백화점 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "동래구",
+      "origin": {
+        "placeId": "poi_247",
+        "reason": "수안 역사 관광 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_246",
+        "poi_274",
+        "poi_450"
+      ],
+      "destination": {
+        "placeId": "poi_803",
+        "reason": "백화점 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "남구",
+      "origin": {
+        "placeId": "poi_229",
+        "reason": "UN평화공원 관광 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_241",
+        "poi_622",
+        "poi_150"
+      ],
+      "destination": {
+        "placeId": "poi_621",
+        "reason": "역사관 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "북구",
+      "origin": {
+        "placeId": "poi_287",
+        "reason": "구포시장 상권 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_740",
+        "poi_134"
+      ],
+      "destination": {
+        "placeId": "poi_265",
+        "reason": "문화예술회관 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2
+      ],
+      "missingCourseSizes": [
+        3
+      ],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "해운대구",
+      "origin": {
+        "placeId": "poi_174",
+        "reason": "마린시티 관광 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_19",
+        "poi_22",
+        "poi_37"
+      ],
+      "destination": {
+        "placeId": "poi_3",
+        "reason": "센텀 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "사하구",
+      "origin": {
+        "placeId": "poi_641",
+        "reason": "을숙도 관광 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_144",
+        "poi_630"
+      ],
+      "destination": {
+        "placeId": "poi_553",
+        "reason": "괴정 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2
+      ],
+      "missingCourseSizes": [
+        3
+      ],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "금정구",
+      "origin": {
+        "placeId": "poi_260",
+        "reason": "부산대 문화 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_306",
+        "poi_403",
+        "poi_89"
+      ],
+      "destination": {
+        "placeId": "poi_1052",
+        "reason": "부산대 상권 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "강서구",
+      "origin": {
+        "placeId": "poi_297",
+        "reason": "명지시장 상권 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_171",
+        "poi_252",
+        "poi_473"
+      ],
+      "destination": {
+        "placeId": "poi_713",
+        "reason": "대저 생태 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "연제구",
+      "origin": {
+        "placeId": "poi_258",
+        "reason": "연산도서관 문화 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_421"
+      ],
+      "destination": {
+        "placeId": "poi_1068",
+        "reason": "교대 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2
+      ],
+      "missingCourseSizes": [
+        3
+      ],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "수영구",
+      "origin": {
+        "placeId": "poi_79",
+        "reason": "광안리 해변 관광 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_125"
+      ],
+      "destination": {
+        "placeId": "poi_273",
+        "reason": "광안동 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2
+      ],
+      "missingCourseSizes": [
+        3
+      ],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "사상구",
+      "origin": {
+        "placeId": "poi_700",
+        "reason": "부산도서관 문화 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_264",
+        "poi_266",
+        "poi_185"
+      ],
+      "destination": {
+        "placeId": "poi_304",
+        "reason": "새벽시장 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    },
+    {
+      "borough": "기장군",
+      "origin": {
+        "placeId": "poi_787",
+        "reason": "기장시장 상권 진입점"
+      },
+      "candidatePlaceIds": [
+        "poi_244",
+        "poi_554",
+        "poi_612"
+      ],
+      "destination": {
+        "placeId": "poi_231",
+        "reason": "학리항 약속 거점"
+      },
+      "plannedCourseSizes": [
+        1,
+        2,
+        3
+      ],
+      "missingCourseSizes": [],
+      "status": "ready_for_tmap_snapshot",
+      "validationErrors": {},
+      "duplicateIds": []
+    }
+  ]
+}

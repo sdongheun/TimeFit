@@ -3,9 +3,12 @@
 // 원본 검토 카탈로그는 data/processed/review에 보존하고, 앱은 이 출력만 읽는다.
 import fs from 'node:fs';
 
-const SHORT_STAY_CATALOG = 'data/processed/review/부산_자투리장소_카탈로그_초안.json';
+const SHORT_STAY_CATALOG = 'data/processed/review/부산_장소_근거프로필_재분류.json';
 const LEGACY = 'src/data/busan_poi_catalog.legacy.json';
 const OUTPUT = 'src/data/busan_poi_catalog.json';
+const TOURAPI_IMAGE_AUDIT = 'data/processed/review/현재사용_TourAPI_대표이미지_감사.json';
+const TOURAPI_IMAGE_HTTPS_VALIDATION = 'data/processed/review/현재사용_TourAPI_대표이미지_HTTPS검증.json';
+const TOURAPI_REPRESENTATIVE_IMAGE_HTTPS_VALIDATION = 'data/processed/review/현재사용_대표후보_TourAPI_HTTPS검증결과.json';
 const OFFICIAL_SOURCES = {
   busan_attraction: 'data/processed/부산시_명소정보.json',
   busan_shopping: 'data/processed/부산시_쇼핑정보.json',
@@ -27,6 +30,14 @@ const legacyByContentId = new Map(legacyPlaces.map((place) => [String(place.cont
 const existingPlaces = existing ? [...existing.matched.data, ...existing.unmatched.data] : [];
 const existingByContentId = new Map(existingPlaces.map((place) => [String(place.contentId), place]));
 const categoryDwell = legacy.categoryDwell;
+const tourapiImageAuditByContentId = fs.existsSync(TOURAPI_IMAGE_AUDIT)
+  ? new Map(read(TOURAPI_IMAGE_AUDIT).samples.map((item) => [item.contentId, item])) : new Map();
+const legacyTourapiImageValidation = fs.existsSync(TOURAPI_IMAGE_HTTPS_VALIDATION) ? read(TOURAPI_IMAGE_HTTPS_VALIDATION) : null;
+const representativeTourapiImageValidation = fs.existsSync(TOURAPI_REPRESENTATIVE_IMAGE_HTTPS_VALIDATION) ? read(TOURAPI_REPRESENTATIVE_IMAGE_HTTPS_VALIDATION) : null;
+const acceptedTourapiImageByContentId = new Map([
+  ...(legacyTourapiImageValidation?.data ?? []),
+  ...(representativeTourapiImageValidation?.data ?? []),
+].filter((item) => item.accepted).map((item) => [item.contentId, item]));
 const officialBySource = Object.fromEntries(Object.entries(OFFICIAL_SOURCES).map(([source, file]) => {
   const payload = read(file);
   const rows = Array.isArray(payload) ? payload : payload.data ?? payload.items ?? [];
@@ -59,6 +70,18 @@ function officialImage(place) {
     }
   }
   return null;
+}
+
+function tourapiImage(place, tourapiContentId) {
+  if (!tourapiContentId) return null;
+  const audit = tourapiImageAuditByContentId.get(place.id);
+  const validation = acceptedTourapiImageByContentId.get(place.id);
+  if (!audit || !validation || String(audit.tourapiContentId) !== String(tourapiContentId) || String(validation.tourapiContentId) !== String(tourapiContentId)) return null;
+  const originalUrl = validation.originalUrl ?? validation.image;
+  if (audit.image !== originalUrl || !validation.finalUrl?.startsWith('https://')) return null;
+  const validationMeta = representativeTourapiImageValidation?.data.some((item) => item.contentId === place.id)
+    ? representativeTourapiImageValidation.meta : legacyTourapiImageValidation?.meta;
+  return { imageUrl: validation.finalUrl, imageSource: 'tourapi', imageEvidence: { source: 'tourapi', sourceId: String(tourapiContentId), auditedAt: read(TOURAPI_IMAGE_AUDIT).meta.generatedAt, httpsValidatedAt: validationMeta?.generatedAt, validationMethod: validation.method ?? validationMeta?.request, finalUrl: validation.finalUrl } };
 }
 
 function availabilityProfileFor(place) {
@@ -106,7 +129,7 @@ function toRuntime(place) {
   const existingPlace = existingByContentId.get(String(place.id));
   const availabilityProfile = availabilityProfileFor(place);
   const matchScope = matchScopeFor(place);
-  const image = officialImage(place) ?? (existingPlace?.imageUrl ? {
+  const image = officialImage(place) ?? tourapiImage(place, tourapiContentId) ?? (existingPlace?.imageUrl ? {
     imageUrl: existingPlace.imageUrl,
     imageSource: existingPlace.imageSource,
   } : null);
@@ -140,10 +163,24 @@ function toRuntime(place) {
       minStayMin: place.minStayMin,
       recommendedStayMin: place.recommendedStayMin,
       maxStayMin: place.maxStayMin,
-      selectionStatus: place.selectionStatus,
+      // 기존 엔진 호환 필드. 새 정책의 실제 분류는 아래 classification과 evidenceProfile이다.
+      selectionStatus: place.classification === 'conditional_more' ? 'conditional' : 'approved',
       dwellBasis: place.dwellBasis,
       dwellReference: place.dwellReference,
       availabilityNotice: place.availabilityNotice,
+    },
+    classification: place.classification,
+    classificationReason: place.classificationReason,
+    evidenceProfile: {
+      identity: place.identity,
+      placeKind: place.placeKind,
+      activityEvidence: place.activityEvidence,
+      stayEvidence: place.stayEvidence,
+      availability: place.availability,
+      accessFriction: place.accessFriction,
+      evidence: place.evidence,
+      verifiedAt: place.verifiedAt,
+      reviewDueAt: place.reviewDueAt,
     },
     ...(place.selectionEvidence?.exactAihubMatch ? {
       aihubName: place.aihubMatch?.name,
@@ -157,7 +194,7 @@ function toRuntime(place) {
 }
 
 const source = read(SHORT_STAY_CATALOG);
-const rows = source.data.filter((place) => ['approved', 'conditional'].includes(place.selectionStatus));
+const rows = source.data.filter((place) => ['representative_core', 'representative_standard', 'conditional_more'].includes(place.classification));
 const matched = rows
   .filter((place) => place.selectionEvidence?.exactAihubMatch)
   .map(toRuntime);
@@ -173,7 +210,8 @@ const catalog = {
     targetRegion: '부산',
     source: '부산 자투리장소 검토 카탈로그 (TourAPI·부산 공공데이터·AI-Hub 기반)',
     sourceCatalog: SHORT_STAY_CATALOG,
-    note: '앱 런타임용 자투리 활동 장소 카탈로그. 승인·조건부 장소만 포함하며, 장소별 최소·권장·최대 체류 범위를 사용한다.',
+    note: '앱 런타임용 자투리 활동 장소 카탈로그. 대표(core/standard)와 조건부 더보기 후보만 포함하며, 장소별 최소·권장·최대 체류 범위를 사용한다.',
+    compatibility: 'shortStay.selectionStatus와 summary.selectionStatus의 approved/conditional은 전환 전 엔진 호환 필드다. 현행 후보 분류·노출 기준은 classification과 summary.classification만 사용한다.',
     legacyCatalog: 'src/data/busan_poi_catalog.legacy.json',
     candidateCollection: '로컬 카탈로그 좌표 범위 탐색. 운영시간 미확인 시설은 운영시간 게이트에서 자동 추천하지 않고 카카오맵 확인 링크를 제공한다.',
   },
@@ -182,6 +220,7 @@ const catalog = {
     unmatched: unmatched.length,
     total: all.length,
     selectionStatus: countBy(all, (place) => place.shortStay.selectionStatus),
+    classification: countBy(all, (place) => place.classification),
     shortStayType: countBy(all, (place) => place.shortStay.type),
     categories: countBy(all, (place) => place.category),
     openingHoursReliability: countBy(all, (place) => place.openingHoursReliability),

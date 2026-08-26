@@ -1,0 +1,4688 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-24T11:22:00.175Z",
+    "source": "data/processed/review/부산_장소_근거프로필_재분류.json",
+    "purpose": "140개 활동·짧은 방문 근거 미확정 hold의 공식 원문 사람 검토 큐",
+    "nonPromotionRule": "공식 원문·적용 범위 없이 분류를 승격하지 않는다."
+  },
+  "summary": {
+    "total": 140,
+    "bySource": {
+      "tourapi_fallback": 71,
+      "busan_attraction": 57,
+      "tourapi_aihub": 5,
+      "busan_shopping": 14,
+      "traditional_market_standard": 5
+    }
+  },
+  "data": [
+    {
+      "placeId": "poi_113",
+      "canonicalName": "전포공구길",
+      "title": "전포공구길",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.1587281711,
+        "lon": 129.0642801508
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2994179"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "1329"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_119",
+      "canonicalName": "회동수원지",
+      "title": "회동수원지",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2252550204,
+        "lon": 129.116648768
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2661475"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_120",
+      "canonicalName": "가덕도 등대",
+      "title": "가덕도 등대",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0006471157,
+        "lon": 128.8295937487
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "129156"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_126",
+      "canonicalName": "곰내연밭",
+      "title": "곰내연밭",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2954092493,
+        "lon": 129.1695450043
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2782765"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_127",
+      "canonicalName": "공수어촌체험마을",
+      "title": "공수어촌체험마을",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.1844585662,
+        "lon": 129.2111944455
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "128610"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_133",
+      "canonicalName": "금강식물원",
+      "title": "금강식물원",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2264763727,
+        "lon": 129.077063292
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "128830"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_135",
+      "canonicalName": "금련산",
+      "title": "금련산",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1602230601,
+        "lon": 129.0974161159
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "129140"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_141",
+      "canonicalName": "기장향교",
+      "title": "기장향교",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2578421006,
+        "lon": 129.2158836772
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1953936"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_142",
+      "canonicalName": "깡깡이 예술마을",
+      "title": "깡깡이 예술마을",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.0932043968,
+        "lon": 129.0342206663
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2554070"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "256"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_143",
+      "canonicalName": "낙동강 생태탐방선",
+      "title": "낙동강 생태탐방선",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1102509254,
+        "lon": 128.9492081536
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2783344"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_146",
+      "canonicalName": "낙조정",
+      "title": "낙조정",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1096647018,
+        "lon": 128.9394840158
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3027444"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_148",
+      "canonicalName": "녹산고향동산",
+      "title": "녹산고향동산",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.154317052,
+        "lon": 128.8860013488
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2867934"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_149",
+      "canonicalName": "달맞이동산",
+      "title": "달맞이동산",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1571305311,
+        "lon": 129.1821532774
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2875837"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_152",
+      "canonicalName": "대천천",
+      "title": "대천천",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2422290925,
+        "lon": 129.019201232
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "127891"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_155",
+      "canonicalName": "동래향교",
+      "title": "동래향교",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2077202717,
+        "lon": 129.0841215255
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1607360"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_156",
+      "canonicalName": "두도",
+      "title": "두도",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0490923097,
+        "lon": 129.0148985467
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2614716"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_157",
+      "canonicalName": "땅뫼산",
+      "title": "땅뫼산",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2472747896,
+        "lon": 129.1174425369
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2675011"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_158",
+      "canonicalName": "렛츠런파크 부산경남",
+      "title": "렛츠런파크 부산경남",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1546447184,
+        "lon": 128.8819239173
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2456224"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_159",
+      "canonicalName": "마린시티",
+      "title": "마린시티",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1560327184,
+        "lon": 129.1436566548
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2617724"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_161",
+      "canonicalName": "망산도·유주암",
+      "title": "망산도·유주암",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0967250919,
+        "lon": 128.8209252451
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "250424"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_163",
+      "canonicalName": "물빛색스튜디오",
+      "title": "물빛색스튜디오",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2093737159,
+        "lon": 128.979783344
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2732397"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_167",
+      "canonicalName": "백양산 웰빙숲",
+      "title": "백양산 웰빙숲",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1849381103,
+        "lon": 129.0093258839
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2677748"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_172",
+      "canonicalName": "부산 복천동 고분군",
+      "title": "부산 복천동 고분군",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2068732659,
+        "lon": 129.0906820891
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "231945"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_177",
+      "canonicalName": "부산 치유의 숲",
+      "title": "부산 치유의 숲",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2690086937,
+        "lon": 129.1298103057
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2660770"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "848"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_178",
+      "canonicalName": "부산광안대교",
+      "title": "부산광안대교",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1449947568,
+        "lon": 129.1270084045
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "128164"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_179",
+      "canonicalName": "부산기후변화체험교육관",
+      "title": "부산기후변화체험교육관",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2329549282,
+        "lon": 129.0081635592
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3442423"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_180",
+      "canonicalName": "부산대교",
+      "title": "부산대교",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0945765502,
+        "lon": 129.0388146742
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "252562"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_181",
+      "canonicalName": "부산동명불원",
+      "title": "부산동명불원",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1189694636,
+        "lon": 129.1038166893
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "126147"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_182",
+      "canonicalName": "부산영화촬영스튜디오",
+      "title": "부산영화촬영스튜디오",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1625180008,
+        "lon": 129.1380958485
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2381553"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_183",
+      "canonicalName": "부산진 별빛산책길",
+      "title": "부산진 별빛산책길",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1640385095,
+        "lon": 129.0546280676
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3093625"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_184",
+      "canonicalName": "북맛골",
+      "title": "북맛골",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2369919623,
+        "lon": 129.0825597462
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2643387"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_186",
+      "canonicalName": "산복도로",
+      "title": "산복도로",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1092330974,
+        "lon": 129.0309232942
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2650232"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_187",
+      "canonicalName": "색채마을",
+      "title": "색채마을",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.1070333171,
+        "lon": 129.0294707029
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3064931"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "2106"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_192",
+      "canonicalName": "송도마을",
+      "title": "송도마을",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.0789056952,
+        "lon": 129.0178502571
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "129093"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_194",
+      "canonicalName": "송도스카이파크",
+      "title": "송도스카이파크",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0613910358,
+        "lon": 129.0204310648
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2994364"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_195",
+      "canonicalName": "수리조선소길",
+      "title": "수리조선소길",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0923794753,
+        "lon": 129.033490197
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1942253"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_196",
+      "canonicalName": "스포원파크",
+      "title": "스포원파크",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.289161567,
+        "lon": 129.1070700628
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "128108"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_197",
+      "canonicalName": "스포원파크재난안전체험관",
+      "title": "스포원파크재난안전체험관",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2918223435,
+        "lon": 129.1051090492
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1082315"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_198",
+      "canonicalName": "승학산",
+      "title": "승학산",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1310381466,
+        "lon": 128.9851266839
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2674974"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_199",
+      "canonicalName": "안데르센 동화마을",
+      "title": "안데르센 동화마을",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.3601199691,
+        "lon": 129.2399148578
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2661452"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_204",
+      "canonicalName": "옥련선원",
+      "title": "옥련선원",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.161379026,
+        "lon": 129.1266024351
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "128134"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_205",
+      "canonicalName": "옥정사",
+      "title": "옥정사",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.3112806782,
+        "lon": 129.2225232855
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2776276"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_206",
+      "canonicalName": "외양포 포진지",
+      "title": "외양포 포진지",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0056381443,
+        "lon": 128.8251995524
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2605602"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_210",
+      "canonicalName": "은진사",
+      "title": "은진사",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.3360483529,
+        "lon": 129.2765262292
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2758498"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_212",
+      "canonicalName": "장안사계곡",
+      "title": "장안사계곡",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.3744348966,
+        "lon": 129.2328150778
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2758489"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_215",
+      "canonicalName": "주식회사감천아울",
+      "title": "주식회사감천아울",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0934316812,
+        "lon": 129.0087950933
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3510987"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_216",
+      "canonicalName": "주식회사뷰티홀릭",
+      "title": "주식회사뷰티홀릭",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1579180661,
+        "lon": 129.1138175312
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3511057"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_217",
+      "canonicalName": "주식회사어반힐링",
+      "title": "주식회사어반힐링",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1118315978,
+        "lon": 128.9651983858
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3511018"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_218",
+      "canonicalName": "주식회사피알아이피",
+      "title": "주식회사피알아이피",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1429140892,
+        "lon": 129.1083545281
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3511071"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_226",
+      "canonicalName": "커넥트현대",
+      "title": "커넥트현대",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1413411243,
+        "lon": 129.0586005649
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3452166"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_228",
+      "canonicalName": "태종사",
+      "title": "태종사",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0560095813,
+        "lon": 129.0897751849
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1608751"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_230",
+      "canonicalName": "플루니티",
+      "title": "플루니티",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0923685831,
+        "lon": 129.0452947259
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2999905"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_232",
+      "canonicalName": "해광사",
+      "title": "해광사",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.2055759171,
+        "lon": 129.22576204
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2775559"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_234",
+      "canonicalName": "해동성취사",
+      "title": "해동성취사",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.338625818,
+        "lon": 129.2752373809
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2775495"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_237",
+      "canonicalName": "화명수목원",
+      "title": "화명수목원",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.2510535364,
+        "lon": 129.0426767218
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2756696"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "457"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_238",
+      "canonicalName": "황령산",
+      "title": "황령산",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1579341561,
+        "lon": 129.0827285679
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "128290"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_240",
+      "canonicalName": "25의용단",
+      "title": "25의용단",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1719498296,
+        "lon": 129.1138921398
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "126814"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_242",
+      "canonicalName": "구덕민속예술관",
+      "title": "구덕민속예술관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1239756631,
+        "lon": 129.0185100829
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "130200"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_245",
+      "canonicalName": "누리마루 APEC하우스",
+      "title": "누리마루 APEC하우스",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1523943787,
+        "lon": 129.1513116443
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1918263"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "2121"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_249",
+      "canonicalName": "동서대학교 소향씨어터 신한카드홀",
+      "title": "동서대학교 소향씨어터 신한카드홀",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1731360622,
+        "lon": 129.1276353562
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3023734"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_250",
+      "canonicalName": "박태준기념관",
+      "title": "박태준기념관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.3169141022,
+        "lon": 129.2612503134
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2823059"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "1709"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_262",
+      "canonicalName": "부산자원순환협력센터",
+      "title": "부산자원순환협력센터",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1331637995,
+        "lon": 128.882341131
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2764008"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_263",
+      "canonicalName": "부산자유회관(부산통일관)",
+      "title": "부산자유회관(부산통일관)",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1828751212,
+        "lon": 129.0455755619
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "130737"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_268",
+      "canonicalName": "이바구공작소",
+      "title": "이바구공작소",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1171267121,
+        "lon": 129.0338450468
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1942314"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_269",
+      "canonicalName": "장기려기념 더 나눔센터",
+      "title": "장기려기념 더 나눔센터",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1185793062,
+        "lon": 129.0327117725
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1945293"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_271",
+      "canonicalName": "조현화랑",
+      "title": "조현화랑",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1568860663,
+        "lon": 129.1795840631
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "130642"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_275",
+      "canonicalName": "한국신발관",
+      "title": "한국신발관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1573442832,
+        "lon": 129.0258252014
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2788392"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_279",
+      "canonicalName": "문탠로드",
+      "title": "문탠로드",
+      "category": "레저/스포츠",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1574970351,
+        "lon": 129.1756010591
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2381567"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_293",
+      "canonicalName": "다대씨파크",
+      "title": "다대씨파크",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0551547329,
+        "lon": 128.9719937791
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2784351"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_296",
+      "canonicalName": "데팡스가든센터",
+      "title": "데팡스가든센터",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.290811206,
+        "lon": 129.0975791779
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2782699"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_300",
+      "canonicalName": "부산 르네시떼",
+      "title": "부산 르네시떼",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1638537784,
+        "lon": 128.9776597721
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1303697"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "2670"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_315",
+      "canonicalName": "천연제작소",
+      "title": "천연제작소",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.199137504,
+        "lon": 129.062695848
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2782794"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_614",
+      "canonicalName": "백산기념관",
+      "title": "백산기념관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.101955,
+        "lon": 129.03456
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "267"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_619",
+      "canonicalName": "임시수도기념관",
+      "title": "임시수도기념관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.103527,
+        "lon": 129.01735
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "273"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_631",
+      "canonicalName": "아미동 비석마을",
+      "title": "아미동 비석마을",
+      "category": "문화시설",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.099068,
+        "lon": 129.0127
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "288"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "876"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_633",
+      "canonicalName": "국립수산과학관",
+      "title": "국립수산과학관",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.193687,
+        "lon": 129.22423
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "291"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_636",
+      "canonicalName": "우장춘 기념관",
+      "title": "우장춘 기념관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.213547,
+        "lon": 129.07202
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "297"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_640",
+      "canonicalName": "부산기상관측소",
+      "title": "부산기상관측소",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.104973,
+        "lon": 129.03218
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "302"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_642",
+      "canonicalName": "부산시청자미디어센터",
+      "title": "부산시청자미디어센터",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.17255,
+        "lon": 129.1302
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "308"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_643",
+      "canonicalName": "부산솔로몬로파크",
+      "title": "부산솔로몬로파크",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.200798,
+        "lon": 129.00198
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "314"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_644",
+      "canonicalName": "부산어촌민속관",
+      "title": "부산어촌민속관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.234074,
+        "lon": 129.00859
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "315"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_648",
+      "canonicalName": "가덕도",
+      "title": "가덕도",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.022896,
+        "lon": 128.8172
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "334"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_649",
+      "canonicalName": "렛츠런파크 부산경남",
+      "title": "렛츠런파크 부산경남",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1566,
+        "lon": 128.87521
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "335"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_650",
+      "canonicalName": "국립부산과학관",
+      "title": "국립부산과학관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.20468,
+        "lon": 129.2127
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "340"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_653",
+      "canonicalName": "국립부산국악원",
+      "title": "국립부산국악원",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.17132,
+        "lon": 129.05424
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "346"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_657",
+      "canonicalName": "호천마을",
+      "title": "호천마을",
+      "category": "문화시설",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.144295,
+        "lon": 129.05106
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "358"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_658",
+      "canonicalName": "봉래산",
+      "title": "봉래산",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.08219,
+        "lon": 129.05524
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "359"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_668",
+      "canonicalName": "해운대",
+      "title": "해운대",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.158474,
+        "lon": 129.15987
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "373"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_672",
+      "canonicalName": "동래읍성",
+      "title": "동래읍성",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.20975,
+        "lon": 129.08997
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "409"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_677",
+      "canonicalName": "백양산",
+      "title": "백양산",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.182827,
+        "lon": 129.02196
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "426"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_679",
+      "canonicalName": "장산",
+      "title": "장산",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.193577,
+        "lon": 129.14497
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "432"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_683",
+      "canonicalName": "승학산 억새평원",
+      "title": "승학산 억새평원",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.116604,
+        "lon": 128.97968
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "445"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_684",
+      "canonicalName": "대룡마을",
+      "title": "대룡마을",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.371174,
+        "lon": 129.26433
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "450"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "2408"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_687",
+      "canonicalName": "우암동 소막마을",
+      "title": "우암동 소막마을",
+      "category": "문화시설",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.1256,
+        "lon": 129.07018
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "483"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_691",
+      "canonicalName": "사직야구장",
+      "title": "사직야구장",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.194107,
+        "lon": 129.06151
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "527"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_693",
+      "canonicalName": "기장 도예 관광 힐링촌 테마숲",
+      "title": "기장 도예 관광 힐링촌 테마숲",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.360134,
+        "lon": 129.23999
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "804"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_694",
+      "canonicalName": "부산신발이야기",
+      "title": "부산신발이야기",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.141808,
+        "lon": 129.0536
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "813"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_697",
+      "canonicalName": "우암동 소막마을",
+      "title": "우암동 소막마을",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.126194,
+        "lon": 129.07597
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "838"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_699",
+      "canonicalName": "기장 달음산 자연휴양림",
+      "title": "기장 달음산 자연휴양림",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.30242,
+        "lon": 129.18535
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1024"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_701",
+      "canonicalName": "해운대 수목원",
+      "title": "해운대 수목원",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.22992,
+        "lon": 129.1327
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1142"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_702",
+      "canonicalName": "영도 봉산마을",
+      "title": "영도 봉산마을",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.09309,
+        "lon": 129.05125
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1179"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_705",
+      "canonicalName": "현대 모터스튜디오 부산",
+      "title": "현대 모터스튜디오 부산",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.17674,
+        "lon": 129.11513
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1322"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_710",
+      "canonicalName": "우암동도시숲",
+      "title": "우암동도시숲",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.127033,
+        "lon": 129.07382
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1449"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_722",
+      "canonicalName": "땅뫼산 황토숲길",
+      "title": "땅뫼산 황토숲길",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.247078,
+        "lon": 129.12192
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1798"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_726",
+      "canonicalName": "한국 이슬람 부산성원",
+      "title": "한국 이슬람 부산성원",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.259975,
+        "lon": 129.09227
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1867"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_728",
+      "canonicalName": "부산트래블라운지",
+      "title": "부산트래블라운지",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.113834,
+        "lon": 129.03818
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1900"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_732",
+      "canonicalName": "범어사 용성계곡",
+      "title": "범어사 용성계곡",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.283524,
+        "lon": 129.06847
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2034"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_734",
+      "canonicalName": "국립부산국악원 국악체험관",
+      "title": "국립부산국악원 국악체험관",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.171013,
+        "lon": 129.05438
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2067"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_744",
+      "canonicalName": "닥밭골 벽화마을",
+      "title": "닥밭골 벽화마을",
+      "category": "문화시설",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.114338,
+        "lon": 129.02371
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2104"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_746",
+      "canonicalName": "뮤직컴플렉스 서울 부산점",
+      "title": "뮤직컴플렉스 서울 부산점",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.193672,
+        "lon": 129.21411
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2119"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_747",
+      "canonicalName": "부산 워케이션 거점센터",
+      "title": "부산 워케이션 거점센터",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.116238,
+        "lon": 129.04184
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2138"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_751",
+      "canonicalName": "도모헌",
+      "title": "도모헌",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.147057,
+        "lon": 129.10724
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2145"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_757",
+      "canonicalName": "일광 광산마을",
+      "title": "일광 광산마을",
+      "category": "자연관광지",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.30874,
+        "lon": 129.22404
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2186"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_759",
+      "canonicalName": "유엔평화기념관",
+      "title": "유엔평화기념관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.127697,
+        "lon": 129.09593
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2188"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_761",
+      "canonicalName": "포디움다이브엠",
+      "title": "포디움다이브엠",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.148014,
+        "lon": 129.11356
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2191"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_769",
+      "canonicalName": "륜빌리지",
+      "title": "륜빌리지",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.24763,
+        "lon": 129.11644
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2229"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_78",
+      "canonicalName": "고래서이뻐",
+      "title": "고래서이뻐",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1657319056,
+        "lon": 129.1583856629
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "3336600"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "2581"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_783",
+      "canonicalName": "고려제강기념관",
+      "title": "고려제강기념관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.177723,
+        "lon": 129.11348
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2598"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_784",
+      "canonicalName": "회동수원지",
+      "title": "회동수원지",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.245823,
+        "lon": 129.11913
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2612"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_785",
+      "canonicalName": "리틀 프린스 하우스",
+      "title": "리틀 프린스 하우스",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.09775,
+        "lon": 129.00851
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2678"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_792",
+      "canonicalName": "부산대학교 앞",
+      "title": "부산대학교 앞",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.23344,
+        "lon": 129.0785
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "387"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_798",
+      "canonicalName": "롯데면세점 부산점",
+      "title": "롯데면세점 부산점",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.15664,
+        "lon": 129.05534
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "537"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_799",
+      "canonicalName": "부산면세점 용두산점",
+      "title": "부산면세점 용두산점",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.101048,
+        "lon": 129.03249
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "539"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_808",
+      "canonicalName": "IKEA동부산점",
+      "title": "IKEA동부산점",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.190292,
+        "lon": 129.21034
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "819"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_809",
+      "canonicalName": "밀락더마켓 ",
+      "title": "밀락더마켓 ",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.154293,
+        "lon": 129.12698
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "1323"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_817",
+      "canonicalName": "아비베르컴퍼니",
+      "title": "아비베르컴퍼니",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.15461,
+        "lon": 129.06255
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2165"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_819",
+      "canonicalName": "페이퍼가든",
+      "title": "페이퍼가든",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.15533,
+        "lon": 129.066
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2252"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_821",
+      "canonicalName": "오브젝트 서면점",
+      "title": "오브젝트 서면점",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.155327,
+        "lon": 129.06444
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2417"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_822",
+      "canonicalName": "오월상점",
+      "title": "오월상점",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.155327,
+        "lon": 129.06458
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2537"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_823",
+      "canonicalName": "포셋 전포",
+      "title": "포셋 전포",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.156708,
+        "lon": 129.0641
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2539"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_824",
+      "canonicalName": "부산슈퍼 청사포점",
+      "title": "부산슈퍼 청사포점",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.161224,
+        "lon": 129.19183
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2541"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_826",
+      "canonicalName": "부산샌드",
+      "title": "부산샌드",
+      "category": "상업지구",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.163223,
+        "lon": 129.15552
+      },
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2579"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_84",
+      "canonicalName": "남선창고터",
+      "title": "남선창고터",
+      "category": "자연관광지",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1167962983,
+        "lon": 129.0395112298
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1942299"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_94",
+      "canonicalName": "부산타워",
+      "title": "부산타워",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.1011951345,
+        "lon": 129.0323594995
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1277679"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "550"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "poi_97",
+      "canonicalName": "삼진어묵 체험·역사과학관",
+      "title": "삼진어묵 체험·역사과학관",
+      "category": "문화시설",
+      "placeKind": "point_facility",
+      "coordinates": {
+        "lat": 35.0928101531,
+        "lon": 129.0427254928
+      },
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2470024"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "traditional_market_006",
+      "canonicalName": "부산데파트",
+      "title": "부산데파트",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.0983104,
+        "lon": 129.0367073
+      },
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부산데파트:35.098310:129.036707"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "traditional_market_011",
+      "canonicalName": "월드밸리",
+      "title": "월드밸리",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.10280033,
+        "lon": 129.0263688
+      },
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "월드밸리:35.102800:129.026369"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "traditional_market_091",
+      "canonicalName": "부산광역시철강판매협동조합",
+      "title": "부산광역시철강판매협동조합",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.13320862,
+        "lon": 128.9666014
+      },
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부산광역시철강판매협동조합:35.133209:128.966601"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "traditional_market_092",
+      "canonicalName": "부산광역시건축자재판매협동조합",
+      "title": "부산광역시건축자재판매협동조합",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.13287687,
+        "lon": 128.9653867
+      },
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부산광역시건축자재판매협동조합:35.132877:128.965387"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    },
+    {
+      "placeId": "traditional_market_098",
+      "canonicalName": "부산산업용품상협동조합",
+      "title": "부산산업용품상협동조합",
+      "category": "상업지구",
+      "placeKind": "area",
+      "coordinates": {
+        "lat": 35.15975736,
+        "lon": 128.9804306
+      },
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부산산업용품상협동조합:35.159757:128.980431"
+        }
+      ],
+      "currentClassification": "hold",
+      "currentReason": "activity_type_not_determinable_from_name_or_official_category; missing identity, activity, or stay evidence",
+      "currentReviewDueAt": "2026-11-21",
+      "requiredOfficialEvidence": [
+        "공식 소개 원문의 실제 활동·방문 단위",
+        "20~60분 짧은 방문 완결성 또는 공식 체류 근거",
+        "시설·권역·야외·행사 범위와 접근·예약 부담",
+        "운영시간 또는 상시 접근의 공식 적용 범위"
+      ],
+      "allowedOutcomes": [
+        "representative_core: 모든 필수 근거와 이용 가능성이 확인된 경우",
+        "representative_standard: 활동 또는 체류가 검토된 템플릿 근거이고 이용 가능성이 확인된 경우",
+        "conditional_more: 이용 가능성만 unknown인 경우",
+        "hold: 공식 원문이 부족하거나 장기·예약·프로그램 의존인 경우"
+      ],
+      "reviewStatus": "pending_official_source_review"
+    }
+  ]
+}

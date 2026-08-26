@@ -1,0 +1,6222 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-24",
+    "source": [
+      "src/data/busan_poi_catalog.json",
+      "data/processed/review/부산_장소_근거프로필_재분류.json",
+      "data/processed/review/부산_장소_구조화_운영시간.json"
+    ],
+    "purpose": "CourseV1CandidateProvider 입력·제외 계약 고정 fixture"
+  },
+  "summary": {
+    "runtimeTotal": 368,
+    "representativeTotal": 190,
+    "conditionalTotal": 178,
+    "holdTotal": 669
+  },
+  "representativeCandidateIds": [
+    "poi_1",
+    "poi_1047",
+    "poi_1049",
+    "poi_1051",
+    "poi_1052",
+    "poi_1057",
+    "poi_1059",
+    "poi_1060",
+    "poi_1065",
+    "poi_1068",
+    "poi_107",
+    "poi_1070",
+    "poi_1071",
+    "poi_11",
+    "poi_1141",
+    "poi_1152",
+    "poi_1153",
+    "poi_1154",
+    "poi_1158",
+    "poi_122",
+    "poi_123",
+    "poi_125",
+    "poi_13",
+    "poi_134",
+    "poi_144",
+    "poi_145",
+    "poi_150",
+    "poi_151",
+    "poi_153",
+    "poi_16",
+    "poi_165",
+    "poi_166",
+    "poi_168",
+    "poi_171",
+    "poi_173",
+    "poi_174",
+    "poi_176",
+    "poi_185",
+    "poi_187",
+    "poi_19",
+    "poi_190",
+    "poi_193",
+    "poi_203",
+    "poi_211",
+    "poi_213",
+    "poi_214",
+    "poi_219",
+    "poi_22",
+    "poi_220",
+    "poi_221",
+    "poi_223",
+    "poi_225",
+    "poi_229",
+    "poi_23",
+    "poi_231",
+    "poi_233",
+    "poi_237",
+    "poi_239",
+    "poi_241",
+    "poi_244",
+    "poi_245",
+    "poi_246",
+    "poi_247",
+    "poi_25",
+    "poi_252",
+    "poi_253",
+    "poi_256",
+    "poi_257",
+    "poi_258",
+    "poi_260",
+    "poi_264",
+    "poi_265",
+    "poi_266",
+    "poi_270",
+    "poi_272",
+    "poi_273",
+    "poi_274",
+    "poi_285",
+    "poi_287",
+    "poi_290",
+    "poi_297",
+    "poi_3",
+    "poi_302",
+    "poi_304",
+    "poi_305",
+    "poi_306",
+    "poi_34",
+    "poi_37",
+    "poi_378",
+    "poi_403",
+    "poi_421",
+    "poi_427",
+    "poi_450",
+    "poi_473",
+    "poi_488",
+    "poi_520",
+    "poi_551",
+    "poi_552",
+    "poi_553",
+    "poi_554",
+    "poi_555",
+    "poi_570",
+    "poi_608",
+    "poi_612",
+    "poi_614",
+    "poi_615",
+    "poi_616",
+    "poi_617",
+    "poi_619",
+    "poi_620",
+    "poi_621",
+    "poi_622",
+    "poi_628",
+    "poi_629",
+    "poi_630",
+    "poi_632",
+    "poi_636",
+    "poi_637",
+    "poi_639",
+    "poi_641",
+    "poi_645",
+    "poi_650",
+    "poi_652",
+    "poi_656",
+    "poi_659",
+    "poi_660",
+    "poi_661",
+    "poi_666",
+    "poi_669",
+    "poi_674",
+    "poi_685",
+    "poi_689",
+    "poi_69",
+    "poi_690",
+    "poi_692",
+    "poi_694",
+    "poi_7",
+    "poi_700",
+    "poi_705",
+    "poi_709",
+    "poi_71",
+    "poi_711",
+    "poi_712",
+    "poi_713",
+    "poi_714",
+    "poi_718",
+    "poi_719",
+    "poi_724",
+    "poi_735",
+    "poi_738",
+    "poi_740",
+    "poi_743",
+    "poi_744",
+    "poi_745",
+    "poi_746",
+    "poi_75",
+    "poi_751",
+    "poi_759",
+    "poi_761",
+    "poi_762",
+    "poi_764",
+    "poi_766",
+    "poi_77",
+    "poi_773",
+    "poi_78",
+    "poi_783",
+    "poi_785",
+    "poi_787",
+    "poi_789",
+    "poi_79",
+    "poi_790",
+    "poi_800",
+    "poi_801",
+    "poi_802",
+    "poi_803",
+    "poi_805",
+    "poi_806",
+    "poi_807",
+    "poi_811",
+    "poi_817",
+    "poi_819",
+    "poi_821",
+    "poi_822",
+    "poi_823",
+    "poi_824",
+    "poi_825",
+    "poi_89",
+    "poi_92",
+    "poi_93",
+    "poi_94"
+  ],
+  "conditionalCandidateIds": [
+    "poi_10",
+    "poi_177",
+    "poi_243",
+    "poi_251",
+    "poi_254",
+    "poi_255",
+    "poi_259",
+    "poi_261",
+    "poi_267",
+    "poi_276",
+    "poi_277",
+    "poi_282",
+    "poi_283",
+    "poi_286",
+    "poi_288",
+    "poi_289",
+    "poi_292",
+    "poi_294",
+    "poi_295",
+    "poi_298",
+    "poi_299",
+    "poi_303",
+    "poi_307",
+    "poi_308",
+    "poi_309",
+    "poi_310",
+    "poi_311",
+    "poi_312",
+    "poi_313",
+    "poi_314",
+    "poi_317",
+    "poi_318",
+    "poi_319",
+    "poi_320",
+    "poi_41",
+    "poi_5",
+    "poi_618",
+    "poi_646",
+    "poi_662",
+    "poi_667",
+    "poi_673",
+    "poi_70",
+    "poi_703",
+    "poi_704",
+    "poi_72",
+    "poi_722",
+    "poi_723",
+    "poi_733",
+    "poi_755",
+    "poi_758",
+    "poi_778",
+    "poi_781",
+    "poi_791",
+    "poi_793",
+    "poi_797",
+    "poi_816",
+    "poi_828",
+    "poi_90",
+    "poi_96",
+    "poi_99",
+    "traditional_market_001",
+    "traditional_market_002",
+    "traditional_market_003",
+    "traditional_market_004",
+    "traditional_market_005",
+    "traditional_market_007",
+    "traditional_market_008",
+    "traditional_market_009",
+    "traditional_market_010",
+    "traditional_market_012",
+    "traditional_market_013",
+    "traditional_market_014",
+    "traditional_market_016",
+    "traditional_market_017",
+    "traditional_market_018",
+    "traditional_market_019",
+    "traditional_market_020",
+    "traditional_market_021",
+    "traditional_market_022",
+    "traditional_market_023",
+    "traditional_market_024",
+    "traditional_market_025",
+    "traditional_market_026",
+    "traditional_market_027",
+    "traditional_market_028",
+    "traditional_market_029",
+    "traditional_market_030",
+    "traditional_market_031",
+    "traditional_market_032",
+    "traditional_market_033",
+    "traditional_market_034",
+    "traditional_market_035",
+    "traditional_market_036",
+    "traditional_market_037",
+    "traditional_market_038",
+    "traditional_market_039",
+    "traditional_market_040",
+    "traditional_market_041",
+    "traditional_market_042",
+    "traditional_market_043",
+    "traditional_market_044",
+    "traditional_market_045",
+    "traditional_market_046",
+    "traditional_market_047",
+    "traditional_market_048",
+    "traditional_market_049",
+    "traditional_market_050",
+    "traditional_market_051",
+    "traditional_market_052",
+    "traditional_market_053",
+    "traditional_market_054",
+    "traditional_market_055",
+    "traditional_market_056",
+    "traditional_market_057",
+    "traditional_market_058",
+    "traditional_market_059",
+    "traditional_market_060",
+    "traditional_market_061",
+    "traditional_market_062",
+    "traditional_market_063",
+    "traditional_market_064",
+    "traditional_market_065",
+    "traditional_market_067",
+    "traditional_market_068",
+    "traditional_market_069",
+    "traditional_market_070",
+    "traditional_market_071",
+    "traditional_market_072",
+    "traditional_market_073",
+    "traditional_market_074",
+    "traditional_market_075",
+    "traditional_market_076",
+    "traditional_market_077",
+    "traditional_market_078",
+    "traditional_market_080",
+    "traditional_market_081",
+    "traditional_market_082",
+    "traditional_market_083",
+    "traditional_market_084",
+    "traditional_market_085",
+    "traditional_market_086",
+    "traditional_market_087",
+    "traditional_market_088",
+    "traditional_market_089",
+    "traditional_market_090",
+    "traditional_market_093",
+    "traditional_market_094",
+    "traditional_market_095",
+    "traditional_market_096",
+    "traditional_market_097",
+    "traditional_market_099",
+    "traditional_market_100",
+    "traditional_market_101",
+    "traditional_market_102",
+    "traditional_market_103",
+    "traditional_market_104",
+    "traditional_market_105",
+    "traditional_market_106",
+    "traditional_market_107",
+    "traditional_market_108",
+    "traditional_market_109",
+    "traditional_market_110",
+    "traditional_market_111",
+    "traditional_market_112",
+    "traditional_market_113",
+    "traditional_market_114",
+    "traditional_market_115",
+    "traditional_market_116",
+    "traditional_market_117",
+    "traditional_market_118",
+    "traditional_market_119",
+    "traditional_market_120",
+    "traditional_market_121",
+    "traditional_market_122",
+    "traditional_market_123",
+    "traditional_market_124",
+    "traditional_market_125",
+    "traditional_market_126"
+  ],
+  "holdPlaceIds": [
+    "poi_1000",
+    "poi_1001",
+    "poi_1002",
+    "poi_1003",
+    "poi_1005",
+    "poi_1006",
+    "poi_1007",
+    "poi_1008",
+    "poi_1009",
+    "poi_1010",
+    "poi_1011",
+    "poi_1012",
+    "poi_1013",
+    "poi_1015",
+    "poi_1017",
+    "poi_1019",
+    "poi_102",
+    "poi_1020",
+    "poi_1021",
+    "poi_1022",
+    "poi_1025",
+    "poi_1026",
+    "poi_1027",
+    "poi_1028",
+    "poi_1029",
+    "poi_1031",
+    "poi_1033",
+    "poi_1034",
+    "poi_1035",
+    "poi_1039",
+    "poi_1042",
+    "poi_1043",
+    "poi_1044",
+    "poi_1046",
+    "poi_105",
+    "poi_1050",
+    "poi_1054",
+    "poi_1055",
+    "poi_1056",
+    "poi_1062",
+    "poi_1063",
+    "poi_1064",
+    "poi_1067",
+    "poi_1069",
+    "poi_1072",
+    "poi_1075",
+    "poi_1077",
+    "poi_1078",
+    "poi_108",
+    "poi_1080",
+    "poi_1083",
+    "poi_1085",
+    "poi_1087",
+    "poi_1088",
+    "poi_1089",
+    "poi_109",
+    "poi_1090",
+    "poi_1091",
+    "poi_1092",
+    "poi_1094",
+    "poi_1095",
+    "poi_1097",
+    "poi_1098",
+    "poi_1099",
+    "poi_110",
+    "poi_1101",
+    "poi_1102",
+    "poi_1103",
+    "poi_1108",
+    "poi_1109",
+    "poi_111",
+    "poi_1110",
+    "poi_1111",
+    "poi_1112",
+    "poi_1113",
+    "poi_1114",
+    "poi_1115",
+    "poi_1116",
+    "poi_1117",
+    "poi_1118",
+    "poi_1119",
+    "poi_112",
+    "poi_1121",
+    "poi_1122",
+    "poi_1123",
+    "poi_1128",
+    "poi_1129",
+    "poi_113",
+    "poi_1131",
+    "poi_1132",
+    "poi_1134",
+    "poi_1135",
+    "poi_1136",
+    "poi_1138",
+    "poi_114",
+    "poi_1140",
+    "poi_115",
+    "poi_1150",
+    "poi_1155",
+    "poi_116",
+    "poi_117",
+    "poi_118",
+    "poi_119",
+    "poi_120",
+    "poi_121",
+    "poi_124",
+    "poi_126",
+    "poi_127",
+    "poi_128",
+    "poi_129",
+    "poi_130",
+    "poi_131",
+    "poi_132",
+    "poi_133",
+    "poi_135",
+    "poi_136",
+    "poi_137",
+    "poi_138",
+    "poi_139",
+    "poi_140",
+    "poi_141",
+    "poi_142",
+    "poi_143",
+    "poi_146",
+    "poi_147",
+    "poi_148",
+    "poi_149",
+    "poi_15",
+    "poi_152",
+    "poi_154",
+    "poi_155",
+    "poi_156",
+    "poi_157",
+    "poi_158",
+    "poi_159",
+    "poi_160",
+    "poi_161",
+    "poi_162",
+    "poi_163",
+    "poi_164",
+    "poi_167",
+    "poi_169",
+    "poi_17",
+    "poi_170",
+    "poi_172",
+    "poi_175",
+    "poi_178",
+    "poi_179",
+    "poi_180",
+    "poi_181",
+    "poi_182",
+    "poi_183",
+    "poi_184",
+    "poi_186",
+    "poi_188",
+    "poi_189",
+    "poi_191",
+    "poi_192",
+    "poi_194",
+    "poi_195",
+    "poi_196",
+    "poi_197",
+    "poi_198",
+    "poi_199",
+    "poi_2",
+    "poi_200",
+    "poi_201",
+    "poi_202",
+    "poi_204",
+    "poi_205",
+    "poi_206",
+    "poi_207",
+    "poi_208",
+    "poi_209",
+    "poi_210",
+    "poi_212",
+    "poi_215",
+    "poi_216",
+    "poi_217",
+    "poi_218",
+    "poi_222",
+    "poi_224",
+    "poi_226",
+    "poi_227",
+    "poi_228",
+    "poi_230",
+    "poi_232",
+    "poi_234",
+    "poi_235",
+    "poi_236",
+    "poi_238",
+    "poi_24",
+    "poi_240",
+    "poi_242",
+    "poi_248",
+    "poi_249",
+    "poi_250",
+    "poi_262",
+    "poi_263",
+    "poi_268",
+    "poi_269",
+    "poi_27",
+    "poi_271",
+    "poi_275",
+    "poi_278",
+    "poi_279",
+    "poi_28",
+    "poi_280",
+    "poi_281",
+    "poi_284",
+    "poi_29",
+    "poi_291",
+    "poi_293",
+    "poi_296",
+    "poi_30",
+    "poi_300",
+    "poi_301",
+    "poi_31",
+    "poi_315",
+    "poi_321",
+    "poi_322",
+    "poi_323",
+    "poi_324",
+    "poi_325",
+    "poi_326",
+    "poi_327",
+    "poi_328",
+    "poi_330",
+    "poi_331",
+    "poi_333",
+    "poi_334",
+    "poi_336",
+    "poi_337",
+    "poi_338",
+    "poi_339",
+    "poi_340",
+    "poi_341",
+    "poi_342",
+    "poi_343",
+    "poi_344",
+    "poi_345",
+    "poi_346",
+    "poi_347",
+    "poi_348",
+    "poi_349",
+    "poi_35",
+    "poi_350",
+    "poi_351",
+    "poi_352",
+    "poi_353",
+    "poi_355",
+    "poi_356",
+    "poi_357",
+    "poi_358",
+    "poi_359",
+    "poi_361",
+    "poi_362",
+    "poi_363",
+    "poi_364",
+    "poi_365",
+    "poi_366",
+    "poi_367",
+    "poi_369",
+    "poi_370",
+    "poi_371",
+    "poi_373",
+    "poi_375",
+    "poi_376",
+    "poi_377",
+    "poi_379",
+    "poi_38",
+    "poi_380",
+    "poi_381",
+    "poi_382",
+    "poi_384",
+    "poi_386",
+    "poi_387",
+    "poi_388",
+    "poi_389",
+    "poi_39",
+    "poi_390",
+    "poi_391",
+    "poi_392",
+    "poi_393",
+    "poi_394",
+    "poi_395",
+    "poi_396",
+    "poi_397",
+    "poi_398",
+    "poi_399",
+    "poi_4",
+    "poi_40",
+    "poi_400",
+    "poi_402",
+    "poi_404",
+    "poi_406",
+    "poi_408",
+    "poi_410",
+    "poi_411",
+    "poi_412",
+    "poi_413",
+    "poi_414",
+    "poi_415",
+    "poi_416",
+    "poi_418",
+    "poi_419",
+    "poi_42",
+    "poi_420",
+    "poi_422",
+    "poi_424",
+    "poi_425",
+    "poi_426",
+    "poi_428",
+    "poi_429",
+    "poi_43",
+    "poi_430",
+    "poi_432",
+    "poi_433",
+    "poi_434",
+    "poi_435",
+    "poi_436",
+    "poi_437",
+    "poi_438",
+    "poi_439",
+    "poi_44",
+    "poi_440",
+    "poi_441",
+    "poi_442",
+    "poi_443",
+    "poi_445",
+    "poi_446",
+    "poi_447",
+    "poi_449",
+    "poi_45",
+    "poi_451",
+    "poi_452",
+    "poi_453",
+    "poi_454",
+    "poi_455",
+    "poi_457",
+    "poi_458",
+    "poi_459",
+    "poi_46",
+    "poi_460",
+    "poi_461",
+    "poi_462",
+    "poi_463",
+    "poi_464",
+    "poi_465",
+    "poi_466",
+    "poi_467",
+    "poi_469",
+    "poi_47",
+    "poi_470",
+    "poi_471",
+    "poi_472",
+    "poi_474",
+    "poi_477",
+    "poi_478",
+    "poi_479",
+    "poi_480",
+    "poi_481",
+    "poi_482",
+    "poi_484",
+    "poi_486",
+    "poi_487",
+    "poi_489",
+    "poi_49",
+    "poi_490",
+    "poi_491",
+    "poi_492",
+    "poi_493",
+    "poi_494",
+    "poi_495",
+    "poi_496",
+    "poi_497",
+    "poi_498",
+    "poi_50",
+    "poi_500",
+    "poi_501",
+    "poi_502",
+    "poi_503",
+    "poi_504",
+    "poi_506",
+    "poi_507",
+    "poi_508",
+    "poi_509",
+    "poi_51",
+    "poi_510",
+    "poi_511",
+    "poi_512",
+    "poi_516",
+    "poi_517",
+    "poi_518",
+    "poi_519",
+    "poi_521",
+    "poi_522",
+    "poi_523",
+    "poi_524",
+    "poi_525",
+    "poi_527",
+    "poi_528",
+    "poi_529",
+    "poi_53",
+    "poi_530",
+    "poi_532",
+    "poi_536",
+    "poi_537",
+    "poi_538",
+    "poi_539",
+    "poi_54",
+    "poi_540",
+    "poi_541",
+    "poi_542",
+    "poi_543",
+    "poi_544",
+    "poi_545",
+    "poi_546",
+    "poi_547",
+    "poi_548",
+    "poi_549",
+    "poi_550",
+    "poi_558",
+    "poi_559",
+    "poi_56",
+    "poi_560",
+    "poi_561",
+    "poi_563",
+    "poi_564",
+    "poi_565",
+    "poi_566",
+    "poi_567",
+    "poi_568",
+    "poi_569",
+    "poi_57",
+    "poi_571",
+    "poi_572",
+    "poi_573",
+    "poi_574",
+    "poi_575",
+    "poi_576",
+    "poi_577",
+    "poi_579",
+    "poi_58",
+    "poi_580",
+    "poi_581",
+    "poi_582",
+    "poi_583",
+    "poi_584",
+    "poi_585",
+    "poi_586",
+    "poi_587",
+    "poi_588",
+    "poi_589",
+    "poi_59",
+    "poi_591",
+    "poi_594",
+    "poi_595",
+    "poi_596",
+    "poi_597",
+    "poi_598",
+    "poi_599",
+    "poi_60",
+    "poi_600",
+    "poi_601",
+    "poi_603",
+    "poi_604",
+    "poi_605",
+    "poi_606",
+    "poi_607",
+    "poi_610",
+    "poi_62",
+    "poi_63",
+    "poi_631",
+    "poi_633",
+    "poi_64",
+    "poi_640",
+    "poi_642",
+    "poi_643",
+    "poi_644",
+    "poi_648",
+    "poi_649",
+    "poi_653",
+    "poi_657",
+    "poi_658",
+    "poi_66",
+    "poi_668",
+    "poi_67",
+    "poi_670",
+    "poi_671",
+    "poi_672",
+    "poi_676",
+    "poi_677",
+    "poi_679",
+    "poi_68",
+    "poi_683",
+    "poi_684",
+    "poi_687",
+    "poi_691",
+    "poi_693",
+    "poi_697",
+    "poi_699",
+    "poi_701",
+    "poi_702",
+    "poi_710",
+    "poi_726",
+    "poi_728",
+    "poi_73",
+    "poi_732",
+    "poi_734",
+    "poi_74",
+    "poi_747",
+    "poi_752",
+    "poi_757",
+    "poi_76",
+    "poi_769",
+    "poi_771",
+    "poi_775",
+    "poi_784",
+    "poi_792",
+    "poi_798",
+    "poi_799",
+    "poi_8",
+    "poi_808",
+    "poi_809",
+    "poi_81",
+    "poi_82",
+    "poi_826",
+    "poi_83",
+    "poi_831",
+    "poi_832",
+    "poi_833",
+    "poi_836",
+    "poi_837",
+    "poi_839",
+    "poi_84",
+    "poi_840",
+    "poi_841",
+    "poi_842",
+    "poi_844",
+    "poi_845",
+    "poi_847",
+    "poi_848",
+    "poi_849",
+    "poi_850",
+    "poi_851",
+    "poi_852",
+    "poi_853",
+    "poi_854",
+    "poi_855",
+    "poi_856",
+    "poi_857",
+    "poi_858",
+    "poi_859",
+    "poi_860",
+    "poi_861",
+    "poi_862",
+    "poi_863",
+    "poi_864",
+    "poi_866",
+    "poi_868",
+    "poi_870",
+    "poi_871",
+    "poi_872",
+    "poi_875",
+    "poi_876",
+    "poi_879",
+    "poi_88",
+    "poi_880",
+    "poi_882",
+    "poi_883",
+    "poi_884",
+    "poi_889",
+    "poi_890",
+    "poi_893",
+    "poi_894",
+    "poi_895",
+    "poi_896",
+    "poi_897",
+    "poi_898",
+    "poi_899",
+    "poi_9",
+    "poi_900",
+    "poi_901",
+    "poi_902",
+    "poi_903",
+    "poi_904",
+    "poi_905",
+    "poi_906",
+    "poi_907",
+    "poi_908",
+    "poi_909",
+    "poi_91",
+    "poi_911",
+    "poi_912",
+    "poi_915",
+    "poi_916",
+    "poi_917",
+    "poi_918",
+    "poi_920",
+    "poi_922",
+    "poi_924",
+    "poi_926",
+    "poi_928",
+    "poi_929",
+    "poi_931",
+    "poi_932",
+    "poi_933",
+    "poi_936",
+    "poi_937",
+    "poi_940",
+    "poi_941",
+    "poi_942",
+    "poi_943",
+    "poi_945",
+    "poi_946",
+    "poi_949",
+    "poi_95",
+    "poi_951",
+    "poi_952",
+    "poi_953",
+    "poi_954",
+    "poi_955",
+    "poi_956",
+    "poi_957",
+    "poi_958",
+    "poi_959",
+    "poi_960",
+    "poi_961",
+    "poi_962",
+    "poi_963",
+    "poi_965",
+    "poi_966",
+    "poi_969",
+    "poi_97",
+    "poi_970",
+    "poi_973",
+    "poi_974",
+    "poi_975",
+    "poi_976",
+    "poi_977",
+    "poi_978",
+    "poi_979",
+    "poi_98",
+    "poi_981",
+    "poi_982",
+    "poi_984",
+    "poi_985",
+    "poi_986",
+    "poi_987",
+    "poi_988",
+    "poi_989",
+    "poi_990",
+    "poi_991",
+    "poi_992",
+    "poi_993",
+    "poi_994",
+    "poi_995",
+    "poi_996",
+    "poi_998",
+    "poi_999",
+    "traditional_market_006",
+    "traditional_market_011",
+    "traditional_market_015",
+    "traditional_market_066",
+    "traditional_market_079",
+    "traditional_market_091",
+    "traditional_market_092",
+    "traditional_market_098"
+  ],
+  "internalPlaceIds": [
+    "poi_108",
+    "poi_752",
+    "poi_771",
+    "poi_91"
+  ],
+  "expiredAt20261122CandidateIds": [
+    "poi_1",
+    "poi_1047",
+    "poi_1049",
+    "poi_1051",
+    "poi_1052",
+    "poi_1057",
+    "poi_1059",
+    "poi_1060",
+    "poi_1065",
+    "poi_1068",
+    "poi_107",
+    "poi_1070",
+    "poi_1071",
+    "poi_11",
+    "poi_1141",
+    "poi_1152",
+    "poi_1153",
+    "poi_1154",
+    "poi_1158",
+    "poi_122",
+    "poi_123",
+    "poi_125",
+    "poi_13",
+    "poi_134",
+    "poi_144",
+    "poi_145",
+    "poi_150",
+    "poi_151",
+    "poi_153",
+    "poi_16",
+    "poi_165",
+    "poi_166",
+    "poi_168",
+    "poi_171",
+    "poi_173",
+    "poi_174",
+    "poi_176",
+    "poi_185",
+    "poi_187",
+    "poi_19",
+    "poi_190",
+    "poi_193",
+    "poi_203",
+    "poi_211",
+    "poi_213",
+    "poi_214",
+    "poi_219",
+    "poi_22",
+    "poi_220",
+    "poi_221",
+    "poi_223",
+    "poi_225",
+    "poi_229",
+    "poi_23",
+    "poi_231",
+    "poi_233",
+    "poi_237",
+    "poi_239",
+    "poi_241",
+    "poi_244",
+    "poi_245",
+    "poi_246",
+    "poi_247",
+    "poi_25",
+    "poi_252",
+    "poi_253",
+    "poi_256",
+    "poi_257",
+    "poi_258",
+    "poi_260",
+    "poi_264",
+    "poi_265",
+    "poi_266",
+    "poi_270",
+    "poi_272",
+    "poi_273",
+    "poi_274",
+    "poi_285",
+    "poi_287",
+    "poi_290",
+    "poi_297",
+    "poi_3",
+    "poi_302",
+    "poi_304",
+    "poi_305",
+    "poi_306",
+    "poi_34",
+    "poi_37",
+    "poi_378",
+    "poi_403",
+    "poi_421",
+    "poi_427",
+    "poi_450",
+    "poi_473",
+    "poi_488",
+    "poi_520",
+    "poi_551",
+    "poi_552",
+    "poi_553",
+    "poi_554",
+    "poi_555",
+    "poi_570",
+    "poi_608",
+    "poi_612",
+    "poi_614",
+    "poi_615",
+    "poi_616",
+    "poi_617",
+    "poi_619",
+    "poi_620",
+    "poi_621",
+    "poi_622",
+    "poi_628",
+    "poi_629",
+    "poi_630",
+    "poi_632",
+    "poi_636",
+    "poi_637",
+    "poi_639",
+    "poi_641",
+    "poi_645",
+    "poi_650",
+    "poi_652",
+    "poi_656",
+    "poi_659",
+    "poi_660",
+    "poi_661",
+    "poi_666",
+    "poi_669",
+    "poi_674",
+    "poi_685",
+    "poi_689",
+    "poi_69",
+    "poi_690",
+    "poi_692",
+    "poi_694",
+    "poi_7",
+    "poi_700",
+    "poi_705",
+    "poi_709",
+    "poi_71",
+    "poi_711",
+    "poi_712",
+    "poi_713",
+    "poi_714",
+    "poi_718",
+    "poi_719",
+    "poi_724",
+    "poi_735",
+    "poi_738",
+    "poi_740",
+    "poi_743",
+    "poi_744",
+    "poi_745",
+    "poi_746",
+    "poi_75",
+    "poi_751",
+    "poi_759",
+    "poi_761",
+    "poi_762",
+    "poi_764",
+    "poi_766",
+    "poi_77",
+    "poi_773",
+    "poi_78",
+    "poi_783",
+    "poi_785",
+    "poi_787",
+    "poi_789",
+    "poi_79",
+    "poi_790",
+    "poi_800",
+    "poi_801",
+    "poi_802",
+    "poi_803",
+    "poi_805",
+    "poi_806",
+    "poi_807",
+    "poi_811",
+    "poi_817",
+    "poi_819",
+    "poi_821",
+    "poi_822",
+    "poi_823",
+    "poi_824",
+    "poi_825",
+    "poi_89",
+    "poi_92",
+    "poi_93",
+    "poi_94"
+  ],
+  "data": [
+    {
+      "id": "poi_1",
+      "title": "해운대 관광특구",
+      "lat": 35.1584383046,
+      "lon": 129.1598690678,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1047",
+      "title": "웨이브온커피",
+      "lat": 35.32225,
+      "lon": 129.26979,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1049",
+      "title": "피아크 카페&베이커리",
+      "lat": 35.08665,
+      "lon": 129.077,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1380
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1051",
+      "title": "커피스가모 인 서면",
+      "lat": 35.15878,
+      "lon": 129.05403,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 630,
+            "endMin": 1320
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1052",
+      "title": "이흥용과자점 부산대직영점",
+      "lat": 35.23029,
+      "lon": 129.08397,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 510,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1057",
+      "title": "보리종파티세리 본점",
+      "lat": 35.233204,
+      "lon": 129.09138,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 510,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1059",
+      "title": "토북베이커리",
+      "lat": 35.11187,
+      "lon": 128.87785,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1320
+          },
+          {
+            "startMin": 600,
+            "endMin": 1320
+          },
+          {
+            "startMin": 600,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1060",
+      "title": "카페호밀",
+      "lat": 35.22877,
+      "lon": 129.07726,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 630,
+            "endMin": 1080
+          },
+          {
+            "startMin": 630,
+            "endMin": 1020
+          },
+          {
+            "startMin": 630,
+            "endMin": 1080
+          },
+          {
+            "startMin": 630,
+            "endMin": 1020
+          },
+          {
+            "startMin": 630,
+            "endMin": 1080
+          },
+          {
+            "startMin": 630,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1065",
+      "title": "그리다부부",
+      "lat": 35.102577,
+      "lon": 129.03072,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1068",
+      "title": "보느파티쓰리",
+      "lat": 35.19527,
+      "lon": 129.07895,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 690,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_107",
+      "title": "영도봉래시장",
+      "lat": 35.0927462941,
+      "lon": 129.0439559432,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1070",
+      "title": "연화제과",
+      "lat": 35.179752,
+      "lon": 129.04688,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1071",
+      "title": "히떼로스터리 전포점",
+      "lat": 35.15574,
+      "lon": 129.06819,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_11",
+      "title": "아리랑거리",
+      "lat": 35.100281283,
+      "lon": 129.0287931674,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1141",
+      "title": "백구당",
+      "lat": 35.10482,
+      "lon": 129.03575,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 450,
+            "endMin": 1290
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1152",
+      "title": "머그디저트랩",
+      "lat": 35.15704,
+      "lon": 129.14333,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 780,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1153",
+      "title": "보느파티쓰 리",
+      "lat": 35.195267,
+      "lon": 35.195267,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 690,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1154",
+      "title": "브레드365",
+      "lat": 35.135815,
+      "lon": 129.08633,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1170
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_1158",
+      "title": "히떼로스터리",
+      "lat": 35.155754,
+      "lon": 129.0682,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 720,
+            "endMin": 1200
+          },
+          {
+            "startMin": 600,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_122",
+      "title": "가톨릭 특성화 거리",
+      "lat": 35.2434553947,
+      "lon": 129.097038863,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_123",
+      "title": "감지해변",
+      "lat": 35.0625336062,
+      "lon": 129.0764900502,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_125",
+      "title": "경상좌수영성지",
+      "lat": 35.1743106361,
+      "lon": 129.1117117085,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_13",
+      "title": "부산 자갈치시장",
+      "lat": 35.0966511661,
+      "lon": 129.0306042201,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": "jagalchi_tourism_area",
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 300,
+            "endMin": 1320
+          },
+          {
+            "startMin": 300,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_134",
+      "title": "금곡동 율리 바위그늘유적",
+      "lat": 35.2505392944,
+      "lon": 129.0204258972,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_144",
+      "title": "낙동강문화관",
+      "lat": 35.1082872241,
+      "lon": 128.9474416939,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 570,
+            "endMin": 1050
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_145",
+      "title": "낙동강하구 (부산 국가지질공원)",
+      "lat": 35.104551505,
+      "lon": 128.9460085869,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_150",
+      "title": "대연수목전시원",
+      "lat": 35.1251964498,
+      "lon": 129.0986919647,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_151",
+      "title": "대천공원",
+      "lat": 35.1813775511,
+      "lon": 129.1678566312,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_153",
+      "title": "대항 어촌체험 휴양마을",
+      "lat": 35.0117208424,
+      "lon": 128.8276908389,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_16",
+      "title": "용두산 자갈치 관광특구",
+      "lat": 35.0966650543,
+      "lon": 129.0306014426,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": "jagalchi_tourism_area",
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_165",
+      "title": "민주공원",
+      "lat": 35.1093802515,
+      "lon": 129.0281096457,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_166",
+      "title": "반송공원",
+      "lat": 19.69442748,
+      "lon": 117.9925662504,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_168",
+      "title": "범일 이중섭거리",
+      "lat": 35.1403327856,
+      "lon": 129.0521955945,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_171",
+      "title": "보람공원",
+      "lat": 35.0881459047,
+      "lon": 128.8432429784,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_173",
+      "title": "부산 송도해수욕장",
+      "lat": 35.0739256715,
+      "lon": 129.016458847,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": "songdo_beach",
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 360,
+            "endMin": 1380
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_174",
+      "title": "부산 영화의 거리",
+      "lat": 35.1549495207,
+      "lon": 129.1444371716,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_176",
+      "title": "부산 중앙공원",
+      "lat": 35.1121438284,
+      "lon": 129.027954028,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_185",
+      "title": "사상근린공원",
+      "lat": 35.1521995132,
+      "lon": 128.9768740479,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_187",
+      "title": "색채마을",
+      "lat": 35.1070333171,
+      "lon": 129.0294707029,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_19",
+      "title": "동백공원",
+      "lat": 35.1536609221,
+      "lon": 129.1523226328,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": "dongbaek_park_island",
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_190",
+      "title": "소두방공원",
+      "lat": 35.3291390743,
+      "lon": 129.1843288936,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_193",
+      "title": "송도반도 (부산 국가지질공원)",
+      "lat": 35.0659655069,
+      "lon": 129.019511576,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_203",
+      "title": "영주하늘눈전망대",
+      "lat": 35.1146102693,
+      "lon": 129.0307259427,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_211",
+      "title": "장산 (부산 국가지질공원)",
+      "lat": 35.1811053657,
+      "lon": 129.168189943,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_213",
+      "title": "전포 삼거리",
+      "lat": 35.1536149962,
+      "lon": 129.071940736,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_214",
+      "title": "절영해안산책로",
+      "lat": 35.0812475294,
+      "lon": 129.0411870536,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_219",
+      "title": "죽도공원",
+      "lat": 35.1799561988,
+      "lon": 129.206133898,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_22",
+      "title": "해운대 동백섬",
+      "lat": 35.153991438,
+      "lon": 129.1521809693,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": "dongbaek_park_island",
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_220",
+      "title": "중리노을전망대",
+      "lat": 35.0692381886,
+      "lon": 129.0643270354,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_221",
+      "title": "천마산하늘전망대",
+      "lat": 35.093648481,
+      "lon": 129.0173415667,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_223",
+      "title": "청학수변공원",
+      "lat": 35.0977293865,
+      "lon": 129.0611626448,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_225",
+      "title": "친환경 스카이웨이 전망대(이바구길)",
+      "lat": 35.1213095185,
+      "lon": 129.0306535435,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_229",
+      "title": "평화공원",
+      "lat": 35.1253214518,
+      "lon": 129.0995779953,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_23",
+      "title": "갤러리이알디 부산",
+      "lat": 35.1610686425,
+      "lon": 129.1639936365,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 720,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_231",
+      "title": "학리항(학리방파제)",
+      "lat": 35.2599730111,
+      "lon": 129.2477530679,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_233",
+      "title": "해돋이전망대",
+      "lat": 35.0891108108,
+      "lon": 129.0559688873,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_237",
+      "title": "화명수목원",
+      "lat": 35.2510535364,
+      "lon": 129.0426767218,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_239",
+      "title": "황령산 전망대",
+      "lat": 35.1579341561,
+      "lon": 129.0827285679,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_241",
+      "title": "UN조각공원",
+      "lat": 35.1297375886,
+      "lon": 129.0976280442,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_244",
+      "title": "기장문화원",
+      "lat": 35.2353502842,
+      "lon": 129.2217032374,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_245",
+      "title": "누리마루 APEC하우스",
+      "lat": 35.1523943787,
+      "lon": 129.1513116443,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_246",
+      "title": "동래문화원",
+      "lat": 35.2121198984,
+      "lon": 129.0905625108,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_247",
+      "title": "동래읍성 임진왜란 역사관",
+      "lat": 35.2018764786,
+      "lon": 129.0839244809,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_25",
+      "title": "부산시립미술관",
+      "lat": 35.1666980687,
+      "lon": 129.1370458254,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_252",
+      "title": "부산 강서문화원",
+      "lat": 35.2113235102,
+      "lon": 128.9805054495,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_253",
+      "title": "부산 동구도서관",
+      "lat": 35.138088597,
+      "lon": 129.0524428566,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1320
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1020
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1020
+          },
+          {
+            "startMin": 420,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_256",
+      "title": "부산광역시립 명장도서관",
+      "lat": 35.200871455,
+      "lon": 129.1065697598,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1320
+          },
+          {
+            "startMin": 540,
+            "endMin": 1020
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1020
+          },
+          {
+            "startMin": 420,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_257",
+      "title": "부산광역시립 시민도서관",
+      "lat": 35.1828835404,
+      "lon": 129.0503001507,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 420,
+            "endMin": 1320
+          },
+          {
+            "startMin": 540,
+            "endMin": 1320
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_258",
+      "title": "부산광역시립 연산도서관",
+      "lat": 35.1861091721,
+      "lon": 129.1040120547,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_260",
+      "title": "부산대학교 박물관",
+      "lat": 35.2333923163,
+      "lon": 129.0798600805,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_264",
+      "title": "부산점자도서관",
+      "lat": 35.17813018,
+      "lon": 128.9898027697,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_265",
+      "title": "북구문화예술회관 공연장",
+      "lat": 35.2134515157,
+      "lon": 129.0057670798,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_266",
+      "title": "사상문화원",
+      "lat": 35.1476309123,
+      "lon": 128.994858718,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_270",
+      "title": "정관박물관",
+      "lat": 35.3269448875,
+      "lon": 129.1849372349,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_272",
+      "title": "책방봄봄",
+      "lat": 35.1673652425,
+      "lon": 129.1684791847,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_273",
+      "title": "책방오월",
+      "lat": 35.1604483075,
+      "lon": 129.1121398296,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_274",
+      "title": "한국기독교선교박물관",
+      "lat": 35.2012570842,
+      "lon": 129.0828690343,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_285",
+      "title": "광복 지하도상가",
+      "lat": 35.0997620313,
+      "lon": 129.0361453203,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_287",
+      "title": "구포시장",
+      "lat": 35.2087575605,
+      "lon": 129.0037896031,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 480,
+            "endMin": 1200
+          },
+          {
+            "startMin": 480,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_290",
+      "title": "남포동 지하도상가",
+      "lat": 35.0980149031,
+      "lon": 129.0306458464,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_297",
+      "title": "명지시장",
+      "lat": 35.1129197501,
+      "lon": 128.9317096042,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 480,
+            "endMin": 1380
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_3",
+      "title": "신세계백화점 센텀시티점",
+      "lat": 35.1687865886,
+      "lon": 129.1297408475,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          },
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          },
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_302",
+      "title": "부산 자유도매시장",
+      "lat": 35.1410439821,
+      "lon": 129.0611336867,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 420,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_304",
+      "title": "부산새벽시장",
+      "lat": 35.1537799975,
+      "lon": 128.9826012838,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 180,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_305",
+      "title": "부산진시장",
+      "lat": 35.1361805951,
+      "lon": 129.0587979118,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 420,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_306",
+      "title": "서동미로시장",
+      "lat": 35.215908583,
+      "lon": 129.1024697033,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_34",
+      "title": "신세계사이먼 부산 프리미엄 아울렛",
+      "lat": 35.3238517233,
+      "lon": 129.2349940728,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_37",
+      "title": "미포항",
+      "lat": 35.1580385696,
+      "lon": 129.1717291585,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_378",
+      "title": "디원카페",
+      "lat": 35.272449487,
+      "lon": 129.2529272719,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1170
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_403",
+      "title": "모모스커피 본점",
+      "lat": 35.2192717995,
+      "lon": 129.0864960018,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 480,
+            "endMin": 1080
+          },
+          {
+            "startMin": 480,
+            "endMin": 1080
+          },
+          {
+            "startMin": 480,
+            "endMin": 1080
+          },
+          {
+            "startMin": 480,
+            "endMin": 1080
+          },
+          {
+            "startMin": 480,
+            "endMin": 1080
+          },
+          {
+            "startMin": 480,
+            "endMin": 1080
+          },
+          {
+            "startMin": 480,
+            "endMin": 1080
+          },
+          {
+            "startMin": 480,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_421",
+      "title": "부산 카페 라운지",
+      "lat": 35.1825730073,
+      "lon": 129.0796892677,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_427",
+      "title": "브레이크인커피",
+      "lat": 35.340837641,
+      "lon": 129.1778263576,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1310
+          },
+          {
+            "startMin": 600,
+            "endMin": 1310
+          },
+          {
+            "startMin": 600,
+            "endMin": 1310
+          },
+          {
+            "startMin": 600,
+            "endMin": 1310
+          },
+          {
+            "startMin": 600,
+            "endMin": 1310
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_450",
+      "title": "수안커피컴퍼니 커피하우스",
+      "lat": 35.1998517568,
+      "lon": 129.086710405,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_473",
+      "title": "어라우즈로스터리",
+      "lat": 35.1038096127,
+      "lon": 128.9291850713,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_488",
+      "title": "오구카페",
+      "lat": 35.0856219234,
+      "lon": 129.034856929,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_520",
+      "title": "일광 카페 숲",
+      "lat": 35.2598118501,
+      "lon": 129.2441089449,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_551",
+      "title": "카페 385",
+      "lat": 35.0843256105,
+      "lon": 129.0763172491,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_552",
+      "title": "카페 도토리 로스터스",
+      "lat": 35.3699411554,
+      "lon": 129.2434503873,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_553",
+      "title": "카페 만디",
+      "lat": 35.1003836071,
+      "lon": 129.0047758093,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 720,
+            "endMin": 1290
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_554",
+      "title": "카페공지",
+      "lat": 35.2196576619,
+      "lon": 129.2251589263,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 630,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_555",
+      "title": "카페썬번",
+      "lat": 35.1990465422,
+      "lon": 129.1002870237,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 780,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_570",
+      "title": "팜카페",
+      "lat": 35.2033453296,
+      "lon": 129.2106078643,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_608",
+      "title": "국립해양박물관",
+      "lat": 35.078728,
+      "lon": 129.08018,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1260
+          },
+          {
+            "startMin": 540,
+            "endMin": 1140
+          },
+          {
+            "startMin": 540,
+            "endMin": 1140
+          },
+          {
+            "startMin": 540,
+            "endMin": 1260
+          },
+          {
+            "startMin": 600,
+            "endMin": 1050
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1260
+          },
+          {
+            "startMin": 540,
+            "endMin": 1140
+          },
+          {
+            "startMin": 540,
+            "endMin": 1140
+          },
+          {
+            "startMin": 540,
+            "endMin": 1260
+          },
+          {
+            "startMin": 600,
+            "endMin": 1050
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1260
+          },
+          {
+            "startMin": 540,
+            "endMin": 1140
+          },
+          {
+            "startMin": 540,
+            "endMin": 1140
+          },
+          {
+            "startMin": 540,
+            "endMin": 1260
+          },
+          {
+            "startMin": 600,
+            "endMin": 1050
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_612",
+      "title": "임랑해수욕장",
+      "lat": 35.31905,
+      "lon": 129.26451,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_614",
+      "title": "백산기념관",
+      "lat": 35.101955,
+      "lon": 129.03456,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1080
+          },
+          {
+            "startMin": 600,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_615",
+      "title": "한성1918 부산생활문화센터",
+      "lat": 35.10178,
+      "lon": 129.03444,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_616",
+      "title": "조선통신사역사관",
+      "lat": 35.135754,
+      "lon": 129.06203,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_617",
+      "title": "부산해양자연사박물관",
+      "lat": 35.22178,
+      "lon": 129.07591,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_619",
+      "title": "임시수도기념관",
+      "lat": 35.103527,
+      "lon": 129.01735,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_620",
+      "title": "동아대학교 석당박물관",
+      "lat": 35.10497,
+      "lon": 129.01926,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 570,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_621",
+      "title": "국립일제강제동원역사관",
+      "lat": 35.124355,
+      "lon": 129.09192,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 570,
+            "endMin": 1050
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_622",
+      "title": "부산박물관",
+      "lat": 35.12957,
+      "lon": 129.09451,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_628",
+      "title": "민락수변공원",
+      "lat": 35.15487,
+      "lon": 129.13399,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_629",
+      "title": "송도해수욕장",
+      "lat": 35.07595,
+      "lon": 129.01694,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": "songdo_beach",
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 360,
+            "endMin": 1380
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_630",
+      "title": "아미산전망대",
+      "lat": 35.052727,
+      "lon": 128.96075,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_632",
+      "title": "오랑대공원",
+      "lat": 35.205246,
+      "lon": 129.22583,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_636",
+      "title": "우장춘 기념관",
+      "lat": 35.213547,
+      "lon": 129.07202,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_637",
+      "title": "누리바라기전망대",
+      "lat": 35.09092,
+      "lon": 129.02019,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_639",
+      "title": "수영사적공원",
+      "lat": 35.170967,
+      "lon": 129.1143,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_641",
+      "title": "을숙도",
+      "lat": 35.107143,
+      "lon": 128.94283,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_645",
+      "title": "삼락생태공원",
+      "lat": 35.16884,
+      "lon": 128.97397,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_650",
+      "title": "국립부산과학관",
+      "lat": 35.20468,
+      "lon": 129.2127,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 570,
+            "endMin": 1050
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_652",
+      "title": "부산어린이대공원",
+      "lat": 35.184998,
+      "lon": 129.04153,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_656",
+      "title": "부산시민공원",
+      "lat": 35.16841,
+      "lon": 129.05739,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 300,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_659",
+      "title": "영화의 거리",
+      "lat": 35.154633,
+      "lon": 129.14278,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_660",
+      "title": "APEC나루공원",
+      "lat": 35.170307,
+      "lon": 129.12564,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_661",
+      "title": "40계단",
+      "lat": 35.103977,
+      "lon": 129.0346,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1080
+          },
+          {
+            "startMin": 600,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_666",
+      "title": "황령산 전망쉼터",
+      "lat": 35.158115,
+      "lon": 129.08269,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_669",
+      "title": "광안리 해수욕장",
+      "lat": 35.15318,
+      "lon": 129.11887,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_674",
+      "title": "이중섭문화거리",
+      "lat": 35.14069,
+      "lon": 129.05289,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_685",
+      "title": "대신공원",
+      "lat": 35.121544,
+      "lon": 129.01619,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_689",
+      "title": "부산커피박물관",
+      "lat": 35.15433,
+      "lon": 129.06453,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_69",
+      "title": "만물의거리",
+      "lat": 35.0996507962,
+      "lon": 129.0286987483,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_690",
+      "title": "사상생활사박물관",
+      "lat": 35.172,
+      "lon": 128.97871,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_692",
+      "title": "신평소공원",
+      "lat": 35.29337,
+      "lon": 129.26012,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_694",
+      "title": "부산신발이야기",
+      "lat": 35.141808,
+      "lon": 129.0536,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_7",
+      "title": "청사포 기찻길",
+      "lat": 35.1581969059,
+      "lon": 129.172851279,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_700",
+      "title": "부산도서관",
+      "lat": 35.172737,
+      "lon": 128.98526,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1320
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1320
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1320
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_705",
+      "title": "현대 모터스튜디오 부산",
+      "lat": 35.17674,
+      "lon": 129.11513,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_709",
+      "title": "부산근현대역사관",
+      "lat": 35.10258,
+      "lon": 129.03203,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_71",
+      "title": "부산영화체험박물관",
+      "lat": 35.1017589855,
+      "lon": 129.0336899238,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_711",
+      "title": "서면미술관",
+      "lat": 35.153927,
+      "lon": 129.06252,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_712",
+      "title": "부산현대미술관",
+      "lat": 35.109245,
+      "lon": 128.94263,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_713",
+      "title": "대저생태공원",
+      "lat": 35.20406,
+      "lon": 128.98305,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 360,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_714",
+      "title": "맥도생태공원",
+      "lat": 35.152267,
+      "lon": 128.95494,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_718",
+      "title": "유엔평화공원",
+      "lat": 35.125774,
+      "lon": 129.10027,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_719",
+      "title": "정중앙공원",
+      "lat": 35.17038,
+      "lon": 129.03691,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_724",
+      "title": "KF아세안문화원",
+      "lat": 35.17519,
+      "lon": 129.18196,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1080
+          },
+          {
+            "startMin": 600,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_735",
+      "title": "부산 수학문화관",
+      "lat": 35.15666,
+      "lon": 129.0513,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 570,
+            "endMin": 990
+          },
+          {
+            "startMin": 720,
+            "endMin": 840
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_738",
+      "title": "북항 친수공원",
+      "lat": 35.11442,
+      "lon": 129.04637,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 300,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_740",
+      "title": "문화예술플랫폼",
+      "lat": 35.206764,
+      "lon": 128.99797,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1080
+          },
+          {
+            "startMin": 600,
+            "endMin": 1020
+          },
+          {
+            "startMin": 600,
+            "endMin": 1080
+          },
+          {
+            "startMin": 600,
+            "endMin": 1020
+          },
+          {
+            "startMin": 600,
+            "endMin": 1080
+          },
+          {
+            "startMin": 600,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_743",
+      "title": "망양로 산복도로 전시관",
+      "lat": 35.117672,
+      "lon": 129.0332,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_744",
+      "title": "닥밭골 벽화마을",
+      "lat": 35.114338,
+      "lon": 129.02371,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_745",
+      "title": "대청스카이전망대",
+      "lat": 35.107513,
+      "lon": 129.02963,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_746",
+      "title": "뮤직컴플렉스 서울 부산점",
+      "lat": 35.193672,
+      "lon": 129.21411,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 720,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_75",
+      "title": "해운대 그린레일웨이 (미포~송정 구간)",
+      "lat": 35.1612857933,
+      "lon": 129.1914273569,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_751",
+      "title": "도모헌",
+      "lat": 35.147057,
+      "lon": 129.10724,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1080
+          },
+          {
+            "startMin": 600,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_759",
+      "title": "유엔평화기념관",
+      "lat": 35.127697,
+      "lon": 129.09593,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_761",
+      "title": "포디움다이브엠",
+      "lat": 35.148014,
+      "lon": 129.11356,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_762",
+      "title": "갤러리 수정",
+      "lat": 35.12573,
+      "lon": 129.04266,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1140
+          },
+          {
+            "startMin": 600,
+            "endMin": 1140
+          },
+          {
+            "startMin": 600,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_764",
+      "title": "디오티 미술관",
+      "lat": 35.228886,
+      "lon": 129.07677,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_766",
+      "title": "갤러리 플레이리스트",
+      "lat": 35.102535,
+      "lon": 129.03517,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_77",
+      "title": "희와제과",
+      "lat": 35.1584310105,
+      "lon": 129.0658105816,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 420,
+            "endMin": 1140
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_773",
+      "title": "BNK부산은행 아트시네마 모퉁이극장",
+      "lat": 35.1006,
+      "lon": 129.0309,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_78",
+      "title": "고래서이뻐",
+      "lat": 35.1657319056,
+      "lon": 129.1583856629,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_783",
+      "title": "고려제강기념관",
+      "lat": 35.177723,
+      "lon": 129.11348,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_785",
+      "title": "리틀 프린스 하우스",
+      "lat": 35.09775,
+      "lon": 129.00851,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_787",
+      "title": "기장시장",
+      "lat": 35.243847,
+      "lon": 129.21524,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 420,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_789",
+      "title": "해운대시장",
+      "lat": 35.16165,
+      "lon": 129.1621,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_79",
+      "title": "광안리해변 테마거리",
+      "lat": 35.1551657503,
+      "lon": 129.1221363273,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": true,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 0,
+            "endMin": 1440
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_790",
+      "title": "남항시장 / 봉래시장",
+      "lat": 35.08876,
+      "lon": 129.04222,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_800",
+      "title": "롯데면세점 김해공항점",
+      "lat": 35.173695,
+      "lon": 128.94626,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 390,
+            "endMin": 1290
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_801",
+      "title": "롯데백화점 부산본점",
+      "lat": 35.15665,
+      "lon": 129.05655,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          },
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          },
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_802",
+      "title": "롯데백화점 센텀시티점",
+      "lat": 35.169735,
+      "lon": 129.13115,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          },
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          },
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_803",
+      "title": "롯데백화점 동래점",
+      "lat": 35.211323,
+      "lon": 129.07771,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 630,
+            "endMin": 1200
+          },
+          {
+            "startMin": 630,
+            "endMin": 1230
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_805",
+      "title": "부산프리미엄아울렛",
+      "lat": 35.323696,
+      "lon": 129.23563,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_806",
+      "title": "NC백화점 해운대점",
+      "lat": 35.170517,
+      "lon": 129.17708,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 630,
+            "endMin": 1260
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          },
+          {
+            "startMin": 630,
+            "endMin": 1260
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          },
+          {
+            "startMin": 630,
+            "endMin": 1260
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_807",
+      "title": "NC백화점 부산대점",
+      "lat": 35.232323,
+      "lon": 129.08401,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 630,
+            "endMin": 1260
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          },
+          {
+            "startMin": 630,
+            "endMin": 1260
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          },
+          {
+            "startMin": 630,
+            "endMin": 1260
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          },
+          {
+            "startMin": 630,
+            "endMin": 1260
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          },
+          {
+            "startMin": 630,
+            "endMin": 1260
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          },
+          {
+            "startMin": 630,
+            "endMin": 1260
+          },
+          {
+            "startMin": 630,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_811",
+      "title": "해운대 선물가게",
+      "lat": 35.16377,
+      "lon": 129.15858,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_817",
+      "title": "아비베르컴퍼니",
+      "lat": 35.15461,
+      "lon": 129.06255,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1380
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_819",
+      "title": "페이퍼가든",
+      "lat": 35.15533,
+      "lon": 129.066,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 660,
+            "endMin": 1320
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_821",
+      "title": "오브젝트 서면점",
+      "lat": 35.155327,
+      "lon": 129.06444,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 720,
+            "endMin": 1260
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_822",
+      "title": "오월상점",
+      "lat": 35.155327,
+      "lon": 129.06458,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_823",
+      "title": "포셋 전포",
+      "lat": 35.156708,
+      "lon": 129.0641,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 720,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_824",
+      "title": "부산슈퍼 청사포점",
+      "lat": 35.161224,
+      "lon": 129.19183,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_825",
+      "title": "미피카페 부산",
+      "lat": 35.088093,
+      "lon": 129.0609,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "needs_review",
+        "alwaysAccessible": false,
+        "dayTypes": [],
+        "windows": []
+      }
+    },
+    {
+      "id": "poi_89",
+      "title": "범어사 성보박물관",
+      "lat": 35.2839753157,
+      "lon": 129.0681152667,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 570,
+            "endMin": 1020
+          },
+          {
+            "startMin": 480,
+            "endMin": 1020
+          },
+          {
+            "startMin": 480,
+            "endMin": 1020
+          },
+          {
+            "startMin": 570,
+            "endMin": 1020
+          },
+          {
+            "startMin": 480,
+            "endMin": 1020
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_92",
+      "title": "부산근현대역사관 본관",
+      "lat": 35.1027616225,
+      "lon": 129.032190027,
+      "classification": "representative_core",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          },
+          {
+            "startMin": 540,
+            "endMin": 1080
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_93",
+      "title": "부산전자종합시장",
+      "lat": 35.1637636841,
+      "lon": 129.0624412844,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1200
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_94",
+      "title": "부산타워",
+      "lat": 35.1011951345,
+      "lon": 129.0323594995,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 600,
+            "endMin": 1320
+          }
+        ]
+      }
+    }
+  ]
+}

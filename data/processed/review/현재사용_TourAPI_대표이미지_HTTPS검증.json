@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-24T15:20:40.287Z",
+    "source": "data/processed/review/현재사용_TourAPI_대표이미지_감사.json",
+    "request": "GET Range: bytes=0-0; redirects followed"
+  },
+  "summary": {
+    "checked": 4,
+    "accepted": 4,
+    "rejected": 0
+  },
+  "data": [
+    {
+      "contentId": "poi_41",
+      "tourapiContentId": "2763856",
+      "image": "https://tong.visitkorea.or.kr/cms/resource/77/3343377_image2_1.jpg",
+      "finalUrl": "https://tong.visitkorea.or.kr/cms/resource/77/3343377_image2_1.jpg",
+      "status": 206,
+      "contentType": "image/jpg",
+      "accepted": true
+    },
+    {
+      "contentId": "poi_70",
+      "tourapiContentId": "130668",
+      "image": "https://tong.visitkorea.or.kr/cms/resource/45/4092545_image2_1.jpg",
+      "finalUrl": "https://tong.visitkorea.or.kr/cms/resource/45/4092545_image2_1.jpg",
+      "status": 206,
+      "contentType": "image/jpg",
+      "accepted": true
+    },
+    {
+      "contentId": "poi_94",
+      "tourapiContentId": "1277679",
+      "image": "https://tong.visitkorea.or.kr/cms/resource/66/4096266_image2_1.jpg",
+      "finalUrl": "https://tong.visitkorea.or.kr/cms/resource/66/4096266_image2_1.jpg",
+      "status": 206,
+      "contentType": "image/jpg",
+      "accepted": true
+    },
+    {
+      "contentId": "poi_177",
+      "tourapiContentId": "2660770",
+      "image": "https://tong.visitkorea.or.kr/cms/resource/00/4096200_image2_1.jpg",
+      "finalUrl": "https://tong.visitkorea.or.kr/cms/resource/00/4096200_image2_1.jpg",
+      "status": 206,
+      "contentType": "image/jpg",
+      "accepted": true
+    }
+  ]
+}

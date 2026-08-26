@@ -1,0 +1,3053 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-23T18:40:08.744Z",
+    "purpose": "16개 생활권 수집계획의 실제 TMAP 도보 구간 스냅샷",
+    "sourcePlan": "data/processed/review/실경로_수집계획.json",
+    "calls": 98
+  },
+  "summary": {
+    "planned": 98,
+    "ok": 98,
+    "failed": 0
+  },
+  "data": [
+    {
+      "id": "PLAN-중-ORIGIN-poi_165",
+      "area": "중구",
+      "from": {
+        "id": "poi_13",
+        "title": "부산 자갈치시장",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "관광·상권 진입점"
+      },
+      "to": {
+        "id": "poi_165",
+        "title": "민주공원",
+        "lat": 35.1093802515,
+        "lon": 129.0281096457,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_13",
+      "toId": "poi_165",
+      "retrievedAt": "2026-08-23T18:39:10.213Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 29,
+      "totalDistanceM": 2001,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 49,
+        "totalTimeSec": 1712,
+        "totalDistance": 2001
+      }
+    },
+    {
+      "id": "PLAN-중-poi_165-poi_203",
+      "area": "중구",
+      "from": {
+        "id": "poi_165",
+        "title": "민주공원",
+        "lat": 35.1093802515,
+        "lon": 129.0281096457,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_165",
+      "toId": "poi_203",
+      "retrievedAt": "2026-08-23T18:39:10.429Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 11,
+      "totalDistanceM": 802,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 21,
+        "totalTimeSec": 685,
+        "totalDistance": 802
+      }
+    },
+    {
+      "id": "PLAN-중-poi_203-poi_745",
+      "area": "중구",
+      "from": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_745",
+        "title": "대청스카이전망대",
+        "lat": 35.107513,
+        "lon": 129.02963,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_203",
+      "toId": "poi_745",
+      "retrievedAt": "2026-08-23T18:39:10.628Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 13,
+      "totalDistanceM": 966,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 12,
+        "totalTimeSec": 751,
+        "totalDistance": 966
+      }
+    },
+    {
+      "id": "PLAN-중-poi_745-RETURN",
+      "area": "중구",
+      "from": {
+        "id": "poi_745",
+        "title": "대청스카이전망대",
+        "lat": 35.107513,
+        "lon": 129.02963,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_13",
+        "title": "부산 자갈치시장",
+        "lat": 35.0966511661,
+        "lon": 129.0306042201,
+        "reason": "관광·상권 진입점"
+      },
+      "fromId": "poi_745",
+      "toId": "poi_13",
+      "retrievedAt": "2026-08-23T18:39:10.825Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 22,
+      "totalDistanceM": 1554,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 42,
+        "totalTimeSec": 1332,
+        "totalDistance": 1554
+      }
+    },
+    {
+      "id": "PLAN-중-poi_165-DESTINATION",
+      "area": "중구",
+      "from": {
+        "id": "poi_165",
+        "title": "민주공원",
+        "lat": 35.1093802515,
+        "lon": 129.0281096457,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_92",
+        "title": "부산근현대역사관 본관",
+        "lat": 35.1027616225,
+        "lon": 129.032190027,
+        "reason": "별도 약속 거점"
+      },
+      "fromId": "poi_165",
+      "toId": "poi_92",
+      "retrievedAt": "2026-08-23T18:39:11.028Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 17,
+      "totalDistanceM": 1144,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 36,
+        "totalTimeSec": 1046,
+        "totalDistance": 1144
+      }
+    },
+    {
+      "id": "PLAN-중-poi_203-DESTINATION",
+      "area": "중구",
+      "from": {
+        "id": "poi_203",
+        "title": "영주하늘눈전망대",
+        "lat": 35.1146102693,
+        "lon": 129.0307259427,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_92",
+        "title": "부산근현대역사관 본관",
+        "lat": 35.1027616225,
+        "lon": 129.032190027,
+        "reason": "별도 약속 거점"
+      },
+      "fromId": "poi_203",
+      "toId": "poi_92",
+      "retrievedAt": "2026-08-23T18:39:11.223Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 22,
+      "totalDistanceM": 1631,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 22,
+        "totalTimeSec": 1294,
+        "totalDistance": 1631
+      }
+    },
+    {
+      "id": "PLAN-중-poi_745-DESTINATION",
+      "area": "중구",
+      "from": {
+        "id": "poi_745",
+        "title": "대청스카이전망대",
+        "lat": 35.107513,
+        "lon": 129.02963,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_92",
+        "title": "부산근현대역사관 본관",
+        "lat": 35.1027616225,
+        "lon": 129.032190027,
+        "reason": "별도 약속 거점"
+      },
+      "fromId": "poi_745",
+      "toId": "poi_92",
+      "retrievedAt": "2026-08-23T18:39:11.416Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 12,
+      "totalDistanceM": 802,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 35,
+        "totalTimeSec": 744,
+        "totalDistance": 802
+      }
+    },
+    {
+      "id": "PLAN-서-ORIGIN-poi_193",
+      "area": "서구",
+      "from": {
+        "id": "poi_173",
+        "title": "부산 송도해수욕장",
+        "lat": 35.0739256715,
+        "lon": 129.016458847,
+        "reason": "송도 해안 관광 진입점"
+      },
+      "to": {
+        "id": "poi_193",
+        "title": "송도반도 (부산 국가지질공원)",
+        "lat": 35.0659655069,
+        "lon": 129.019511576,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_173",
+      "toId": "poi_193",
+      "retrievedAt": "2026-08-23T18:39:11.610Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 18,
+      "totalDistanceM": 1398,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 16,
+        "totalTimeSec": 1071,
+        "totalDistance": 1398
+      }
+    },
+    {
+      "id": "PLAN-서-poi_193-poi_221",
+      "area": "서구",
+      "from": {
+        "id": "poi_193",
+        "title": "송도반도 (부산 국가지질공원)",
+        "lat": 35.0659655069,
+        "lon": 129.019511576,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_221",
+        "title": "천마산하늘전망대",
+        "lat": 35.093648481,
+        "lon": 129.0173415667,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_193",
+      "toId": "poi_221",
+      "retrievedAt": "2026-08-23T18:39:11.810Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 54,
+      "totalDistanceM": 4247,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 43,
+        "totalTimeSec": 3233,
+        "totalDistance": 4247
+      }
+    },
+    {
+      "id": "PLAN-서-poi_221-RETURN",
+      "area": "서구",
+      "from": {
+        "id": "poi_221",
+        "title": "천마산하늘전망대",
+        "lat": 35.093648481,
+        "lon": 129.0173415667,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_173",
+        "title": "부산 송도해수욕장",
+        "lat": 35.0739256715,
+        "lon": 129.016458847,
+        "reason": "송도 해안 관광 진입점"
+      },
+      "fromId": "poi_221",
+      "toId": "poi_173",
+      "retrievedAt": "2026-08-23T18:39:12.017Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 40,
+      "totalDistanceM": 3104,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 44,
+        "totalTimeSec": 2408,
+        "totalDistance": 3104
+      }
+    },
+    {
+      "id": "PLAN-서-poi_193-DESTINATION",
+      "area": "서구",
+      "from": {
+        "id": "poi_193",
+        "title": "송도반도 (부산 국가지질공원)",
+        "lat": 35.0659655069,
+        "lon": 129.019511576,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_620",
+        "title": "동아대학교 석당박물관",
+        "lat": 35.10497,
+        "lon": 129.01926,
+        "reason": "박물관 약속 거점"
+      },
+      "fromId": "poi_193",
+      "toId": "poi_620",
+      "retrievedAt": "2026-08-23T18:39:12.238Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 69,
+      "totalDistanceM": 5424,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 52,
+        "totalTimeSec": 4113,
+        "totalDistance": 5424
+      }
+    },
+    {
+      "id": "PLAN-서-poi_221-DESTINATION",
+      "area": "서구",
+      "from": {
+        "id": "poi_221",
+        "title": "천마산하늘전망대",
+        "lat": 35.093648481,
+        "lon": 129.0173415667,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_620",
+        "title": "동아대학교 석당박물관",
+        "lat": 35.10497,
+        "lon": 129.01926,
+        "reason": "박물관 약속 거점"
+      },
+      "fromId": "poi_221",
+      "toId": "poi_620",
+      "retrievedAt": "2026-08-23T18:39:12.427Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 20,
+      "totalDistanceM": 1570,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 28,
+        "totalTimeSec": 1225,
+        "totalDistance": 1570
+      }
+    },
+    {
+      "id": "PLAN-동-ORIGIN-poi_225",
+      "area": "동구",
+      "from": {
+        "id": "poi_738",
+        "title": "북항 친수공원",
+        "lat": 35.11442,
+        "lon": 129.04637,
+        "reason": "북항 수변 관광 진입점"
+      },
+      "to": {
+        "id": "poi_225",
+        "title": "친환경 스카이웨이 전망대(이바구길)",
+        "lat": 35.1213095185,
+        "lon": 129.0306535435,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_738",
+      "toId": "poi_225",
+      "retrievedAt": "2026-08-23T18:39:12.629Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 39,
+      "totalDistanceM": 2773,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 68,
+        "totalTimeSec": 2369,
+        "totalDistance": 2773
+      }
+    },
+    {
+      "id": "PLAN-동-poi_225-poi_253",
+      "area": "동구",
+      "from": {
+        "id": "poi_225",
+        "title": "친환경 스카이웨이 전망대(이바구길)",
+        "lat": 35.1213095185,
+        "lon": 129.0306535435,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_253",
+        "title": "부산 동구도서관",
+        "lat": 35.138088597,
+        "lon": 129.0524428566,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_225",
+      "toId": "poi_253",
+      "retrievedAt": "2026-08-23T18:39:12.831Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 45,
+      "totalDistanceM": 3586,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 28,
+        "totalTimeSec": 2727,
+        "totalDistance": 3586
+      }
+    },
+    {
+      "id": "PLAN-동-poi_253-poi_616",
+      "area": "동구",
+      "from": {
+        "id": "poi_253",
+        "title": "부산 동구도서관",
+        "lat": 35.138088597,
+        "lon": 129.0524428566,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_616",
+        "title": "조선통신사역사관",
+        "lat": 35.135754,
+        "lon": 129.06203,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_253",
+      "toId": "poi_616",
+      "retrievedAt": "2026-08-23T18:39:13.054Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 19,
+      "totalDistanceM": 1383,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 26,
+        "totalTimeSec": 1123,
+        "totalDistance": 1383
+      }
+    },
+    {
+      "id": "PLAN-동-poi_616-RETURN",
+      "area": "동구",
+      "from": {
+        "id": "poi_616",
+        "title": "조선통신사역사관",
+        "lat": 35.135754,
+        "lon": 129.06203,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_738",
+        "title": "북항 친수공원",
+        "lat": 35.11442,
+        "lon": 129.04637,
+        "reason": "북항 수변 관광 진입점"
+      },
+      "fromId": "poi_616",
+      "toId": "poi_738",
+      "retrievedAt": "2026-08-23T18:39:13.257Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 47,
+      "totalDistanceM": 3492,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 53,
+        "totalTimeSec": 2843,
+        "totalDistance": 3492
+      }
+    },
+    {
+      "id": "PLAN-동-poi_225-DESTINATION",
+      "area": "동구",
+      "from": {
+        "id": "poi_225",
+        "title": "친환경 스카이웨이 전망대(이바구길)",
+        "lat": 35.1213095185,
+        "lon": 129.0306535435,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_305",
+        "title": "부산진시장",
+        "lat": 35.1361805951,
+        "lon": 129.0587979118,
+        "reason": "전통시장 약속 거점"
+      },
+      "fromId": "poi_225",
+      "toId": "poi_305",
+      "retrievedAt": "2026-08-23T18:39:13.459Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 48,
+      "totalDistanceM": 3674,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 47,
+        "totalTimeSec": 2901,
+        "totalDistance": 3674
+      }
+    },
+    {
+      "id": "PLAN-동-poi_253-DESTINATION",
+      "area": "동구",
+      "from": {
+        "id": "poi_253",
+        "title": "부산 동구도서관",
+        "lat": 35.138088597,
+        "lon": 129.0524428566,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_305",
+        "title": "부산진시장",
+        "lat": 35.1361805951,
+        "lon": 129.0587979118,
+        "reason": "전통시장 약속 거점"
+      },
+      "fromId": "poi_253",
+      "toId": "poi_305",
+      "retrievedAt": "2026-08-23T18:39:13.667Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 12,
+      "totalDistanceM": 812,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 25,
+        "totalTimeSec": 706,
+        "totalDistance": 812
+      }
+    },
+    {
+      "id": "PLAN-동-poi_616-DESTINATION",
+      "area": "동구",
+      "from": {
+        "id": "poi_616",
+        "title": "조선통신사역사관",
+        "lat": 35.135754,
+        "lon": 129.06203,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_305",
+        "title": "부산진시장",
+        "lat": 35.1361805951,
+        "lon": 129.0587979118,
+        "reason": "전통시장 약속 거점"
+      },
+      "fromId": "poi_616",
+      "toId": "poi_305",
+      "retrievedAt": "2026-08-23T18:39:13.881Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 6,
+      "totalDistanceM": 445,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 11,
+        "totalTimeSec": 354,
+        "totalDistance": 445
+      }
+    },
+    {
+      "id": "PLAN-영도-ORIGIN-poi_214",
+      "area": "영도구",
+      "from": {
+        "id": "poi_107",
+        "title": "영도봉래시장",
+        "lat": 35.0927462941,
+        "lon": 129.0439559432,
+        "reason": "영도 시장 상권 진입점"
+      },
+      "to": {
+        "id": "poi_214",
+        "title": "절영해안산책로",
+        "lat": 35.0812475294,
+        "lon": 129.0411870536,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_107",
+      "toId": "poi_214",
+      "retrievedAt": "2026-08-23T18:39:14.078Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 21,
+      "totalDistanceM": 1503,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 31,
+        "totalTimeSec": 1269,
+        "totalDistance": 1503
+      }
+    },
+    {
+      "id": "PLAN-영도-poi_214-poi_223",
+      "area": "영도구",
+      "from": {
+        "id": "poi_214",
+        "title": "절영해안산책로",
+        "lat": 35.0812475294,
+        "lon": 129.0411870536,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_223",
+        "title": "청학수변공원",
+        "lat": 35.0977293865,
+        "lon": 129.0611626448,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_214",
+      "toId": "poi_223",
+      "retrievedAt": "2026-08-23T18:39:14.278Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 44,
+      "totalDistanceM": 3154,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 61,
+        "totalTimeSec": 2649,
+        "totalDistance": 3154
+      }
+    },
+    {
+      "id": "PLAN-영도-poi_223-poi_608",
+      "area": "영도구",
+      "from": {
+        "id": "poi_223",
+        "title": "청학수변공원",
+        "lat": 35.0977293865,
+        "lon": 129.0611626448,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_608",
+        "title": "국립해양박물관",
+        "lat": 35.078728,
+        "lon": 129.08018,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_223",
+      "toId": "poi_608",
+      "retrievedAt": "2026-08-23T18:39:14.474Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 40,
+      "totalDistanceM": 3146,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 22,
+        "totalTimeSec": 2377,
+        "totalDistance": 3146
+      }
+    },
+    {
+      "id": "PLAN-영도-poi_608-RETURN",
+      "area": "영도구",
+      "from": {
+        "id": "poi_608",
+        "title": "국립해양박물관",
+        "lat": 35.078728,
+        "lon": 129.08018,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_107",
+        "title": "영도봉래시장",
+        "lat": 35.0927462941,
+        "lon": 129.0439559432,
+        "reason": "영도 시장 상권 진입점"
+      },
+      "fromId": "poi_608",
+      "toId": "poi_107",
+      "retrievedAt": "2026-08-23T18:39:14.675Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 66,
+      "totalDistanceM": 4951,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 62,
+        "totalTimeSec": 3932,
+        "totalDistance": 4951
+      }
+    },
+    {
+      "id": "PLAN-영도-poi_214-DESTINATION",
+      "area": "영도구",
+      "from": {
+        "id": "poi_214",
+        "title": "절영해안산책로",
+        "lat": 35.0812475294,
+        "lon": 129.0411870536,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_220",
+        "title": "중리노을전망대",
+        "lat": 35.0692381886,
+        "lon": 129.0643270354,
+        "reason": "노을 전망 약속 거점"
+      },
+      "fromId": "poi_214",
+      "toId": "poi_220",
+      "retrievedAt": "2026-08-23T18:39:14.878Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 32,
+      "totalDistanceM": 2600,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 10,
+        "totalTimeSec": 1915,
+        "totalDistance": 2600
+      }
+    },
+    {
+      "id": "PLAN-영도-poi_223-DESTINATION",
+      "area": "영도구",
+      "from": {
+        "id": "poi_223",
+        "title": "청학수변공원",
+        "lat": 35.0977293865,
+        "lon": 129.0611626448,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_220",
+        "title": "중리노을전망대",
+        "lat": 35.0692381886,
+        "lon": 129.0643270354,
+        "reason": "노을 전망 약속 거점"
+      },
+      "fromId": "poi_223",
+      "toId": "poi_220",
+      "retrievedAt": "2026-08-23T18:39:15.075Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 53,
+      "totalDistanceM": 4148,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 42,
+        "totalTimeSec": 3197,
+        "totalDistance": 4148
+      }
+    },
+    {
+      "id": "PLAN-영도-poi_608-DESTINATION",
+      "area": "영도구",
+      "from": {
+        "id": "poi_608",
+        "title": "국립해양박물관",
+        "lat": 35.078728,
+        "lon": 129.08018,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_220",
+        "title": "중리노을전망대",
+        "lat": 35.0692381886,
+        "lon": 129.0643270354,
+        "reason": "노을 전망 약속 거점"
+      },
+      "fromId": "poi_608",
+      "toId": "poi_220",
+      "retrievedAt": "2026-08-23T18:39:15.283Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 28,
+      "totalDistanceM": 1990,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 51,
+        "totalTimeSec": 1703,
+        "totalDistance": 1990
+      }
+    },
+    {
+      "id": "PLAN-부산진-ORIGIN-poi_213",
+      "area": "부산진구",
+      "from": {
+        "id": "poi_1051",
+        "title": "커피스가모 인 서면",
+        "lat": 35.15878,
+        "lon": 129.05403,
+        "reason": "서면 약속 진입점"
+      },
+      "to": {
+        "id": "poi_213",
+        "title": "전포 삼거리",
+        "lat": 35.1536149962,
+        "lon": 129.071940736,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_1051",
+      "toId": "poi_213",
+      "retrievedAt": "2026-08-23T18:39:15.478Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 30,
+      "totalDistanceM": 2118,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 56,
+        "totalTimeSec": 1798,
+        "totalDistance": 2118
+      }
+    },
+    {
+      "id": "PLAN-부산진-poi_213-poi_656",
+      "area": "부산진구",
+      "from": {
+        "id": "poi_213",
+        "title": "전포 삼거리",
+        "lat": 35.1536149962,
+        "lon": 129.071940736,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_656",
+        "title": "부산시민공원",
+        "lat": 35.16841,
+        "lon": 129.05739,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_213",
+      "toId": "poi_656",
+      "retrievedAt": "2026-08-23T18:39:15.683Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 37,
+      "totalDistanceM": 2545,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 64,
+        "totalTimeSec": 2233,
+        "totalDistance": 2545
+      }
+    },
+    {
+      "id": "PLAN-부산진-poi_656-poi_711",
+      "area": "부산진구",
+      "from": {
+        "id": "poi_656",
+        "title": "부산시민공원",
+        "lat": 35.16841,
+        "lon": 129.05739,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_711",
+        "title": "서면미술관",
+        "lat": 35.153927,
+        "lon": 129.06252,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_656",
+      "toId": "poi_711",
+      "retrievedAt": "2026-08-23T18:39:15.900Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 31,
+      "totalDistanceM": 2080,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 60,
+        "totalTimeSec": 1863,
+        "totalDistance": 2080
+      }
+    },
+    {
+      "id": "PLAN-부산진-poi_711-RETURN",
+      "area": "부산진구",
+      "from": {
+        "id": "poi_711",
+        "title": "서면미술관",
+        "lat": 35.153927,
+        "lon": 129.06252,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_1051",
+        "title": "커피스가모 인 서면",
+        "lat": 35.15878,
+        "lon": 129.05403,
+        "reason": "서면 약속 진입점"
+      },
+      "fromId": "poi_711",
+      "toId": "poi_1051",
+      "retrievedAt": "2026-08-23T18:39:16.096Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 18,
+      "totalDistanceM": 1255,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 38,
+        "totalTimeSec": 1078,
+        "totalDistance": 1255
+      }
+    },
+    {
+      "id": "PLAN-부산진-poi_213-DESTINATION",
+      "area": "부산진구",
+      "from": {
+        "id": "poi_213",
+        "title": "전포 삼거리",
+        "lat": 35.1536149962,
+        "lon": 129.071940736,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_801",
+        "title": "롯데백화점 부산본점",
+        "lat": 35.15665,
+        "lon": 129.05655,
+        "reason": "백화점 약속 거점"
+      },
+      "fromId": "poi_213",
+      "toId": "poi_801",
+      "retrievedAt": "2026-08-23T18:39:16.291Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 24,
+      "totalDistanceM": 1687,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 45,
+        "totalTimeSec": 1431,
+        "totalDistance": 1687
+      }
+    },
+    {
+      "id": "PLAN-부산진-poi_656-DESTINATION",
+      "area": "부산진구",
+      "from": {
+        "id": "poi_656",
+        "title": "부산시민공원",
+        "lat": 35.16841,
+        "lon": 129.05739,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_801",
+        "title": "롯데백화점 부산본점",
+        "lat": 35.15665,
+        "lon": 129.05655,
+        "reason": "백화점 약속 거점"
+      },
+      "fromId": "poi_656",
+      "toId": "poi_801",
+      "retrievedAt": "2026-08-23T18:39:16.497Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 26,
+      "totalDistanceM": 1878,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 46,
+        "totalTimeSec": 1587,
+        "totalDistance": 1878
+      }
+    },
+    {
+      "id": "PLAN-부산진-poi_711-DESTINATION",
+      "area": "부산진구",
+      "from": {
+        "id": "poi_711",
+        "title": "서면미술관",
+        "lat": 35.153927,
+        "lon": 129.06252,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_801",
+        "title": "롯데백화점 부산본점",
+        "lat": 35.15665,
+        "lon": 129.05655,
+        "reason": "백화점 약속 거점"
+      },
+      "fromId": "poi_711",
+      "toId": "poi_801",
+      "retrievedAt": "2026-08-23T18:39:16.693Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 12,
+      "totalDistanceM": 824,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 27,
+        "totalTimeSec": 711,
+        "totalDistance": 824
+      }
+    },
+    {
+      "id": "PLAN-동래-ORIGIN-poi_246",
+      "area": "동래구",
+      "from": {
+        "id": "poi_247",
+        "title": "동래읍성 임진왜란 역사관",
+        "lat": 35.2018764786,
+        "lon": 129.0839244809,
+        "reason": "수안 역사 관광 진입점"
+      },
+      "to": {
+        "id": "poi_246",
+        "title": "동래문화원",
+        "lat": 35.2121198984,
+        "lon": 129.0905625108,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_247",
+      "toId": "poi_246",
+      "retrievedAt": "2026-08-23T18:39:16.893Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 24,
+      "totalDistanceM": 1861,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 27,
+        "totalTimeSec": 1463,
+        "totalDistance": 1861
+      }
+    },
+    {
+      "id": "PLAN-동래-poi_246-poi_274",
+      "area": "동래구",
+      "from": {
+        "id": "poi_246",
+        "title": "동래문화원",
+        "lat": 35.2121198984,
+        "lon": 129.0905625108,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_274",
+        "title": "한국기독교선교박물관",
+        "lat": 35.2012570842,
+        "lon": 129.0828690343,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_246",
+      "toId": "poi_274",
+      "retrievedAt": "2026-08-23T18:39:17.096Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 28,
+      "totalDistanceM": 2046,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 37,
+        "totalTimeSec": 1666,
+        "totalDistance": 2046
+      }
+    },
+    {
+      "id": "PLAN-동래-poi_274-poi_450",
+      "area": "동래구",
+      "from": {
+        "id": "poi_274",
+        "title": "한국기독교선교박물관",
+        "lat": 35.2012570842,
+        "lon": 129.0828690343,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_450",
+        "title": "수안커피컴퍼니 커피하우스",
+        "lat": 35.1998517568,
+        "lon": 129.086710405,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_274",
+      "toId": "poi_450",
+      "retrievedAt": "2026-08-23T18:39:17.293Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 10,
+      "totalDistanceM": 653,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 30,
+        "totalTimeSec": 606,
+        "totalDistance": 653
+      }
+    },
+    {
+      "id": "PLAN-동래-poi_450-RETURN",
+      "area": "동래구",
+      "from": {
+        "id": "poi_450",
+        "title": "수안커피컴퍼니 커피하우스",
+        "lat": 35.1998517568,
+        "lon": 129.086710405,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_247",
+        "title": "동래읍성 임진왜란 역사관",
+        "lat": 35.2018764786,
+        "lon": 129.0839244809,
+        "reason": "수안 역사 관광 진입점"
+      },
+      "fromId": "poi_450",
+      "toId": "poi_247",
+      "retrievedAt": "2026-08-23T18:39:17.483Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 8,
+      "totalDistanceM": 486,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 24,
+        "totalTimeSec": 479,
+        "totalDistance": 486
+      }
+    },
+    {
+      "id": "PLAN-동래-poi_246-DESTINATION",
+      "area": "동래구",
+      "from": {
+        "id": "poi_246",
+        "title": "동래문화원",
+        "lat": 35.2121198984,
+        "lon": 129.0905625108,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_803",
+        "title": "롯데백화점 동래점",
+        "lat": 35.211323,
+        "lon": 129.07771,
+        "reason": "백화점 약속 거점"
+      },
+      "fromId": "poi_246",
+      "toId": "poi_803",
+      "retrievedAt": "2026-08-23T18:39:17.682Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 20,
+      "totalDistanceM": 1461,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 26,
+        "totalTimeSec": 1182,
+        "totalDistance": 1461
+      }
+    },
+    {
+      "id": "PLAN-동래-poi_274-DESTINATION",
+      "area": "동래구",
+      "from": {
+        "id": "poi_274",
+        "title": "한국기독교선교박물관",
+        "lat": 35.2012570842,
+        "lon": 129.0828690343,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_803",
+        "title": "롯데백화점 동래점",
+        "lat": 35.211323,
+        "lon": 129.07771,
+        "reason": "백화점 약속 거점"
+      },
+      "fromId": "poi_274",
+      "toId": "poi_803",
+      "retrievedAt": "2026-08-23T18:39:17.873Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 21,
+      "totalDistanceM": 1439,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 42,
+        "totalTimeSec": 1284,
+        "totalDistance": 1439
+      }
+    },
+    {
+      "id": "PLAN-동래-poi_450-DESTINATION",
+      "area": "동래구",
+      "from": {
+        "id": "poi_450",
+        "title": "수안커피컴퍼니 커피하우스",
+        "lat": 35.1998517568,
+        "lon": 129.086710405,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_803",
+        "title": "롯데백화점 동래점",
+        "lat": 35.211323,
+        "lon": 129.07771,
+        "reason": "백화점 약속 거점"
+      },
+      "fromId": "poi_450",
+      "toId": "poi_803",
+      "retrievedAt": "2026-08-23T18:39:18.075Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 29,
+      "totalDistanceM": 1921,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 62,
+        "totalTimeSec": 1750,
+        "totalDistance": 1921
+      }
+    },
+    {
+      "id": "PLAN-남-ORIGIN-poi_241",
+      "area": "남구",
+      "from": {
+        "id": "poi_229",
+        "title": "평화공원",
+        "lat": 35.1253214518,
+        "lon": 129.0995779953,
+        "reason": "UN평화공원 관광 진입점"
+      },
+      "to": {
+        "id": "poi_241",
+        "title": "UN조각공원",
+        "lat": 35.1297375886,
+        "lon": 129.0976280442,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_229",
+      "toId": "poi_241",
+      "retrievedAt": "2026-08-23T18:39:18.271Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 10,
+      "totalDistanceM": 785,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 11,
+        "totalTimeSec": 590,
+        "totalDistance": 785
+      }
+    },
+    {
+      "id": "PLAN-남-poi_241-poi_622",
+      "area": "남구",
+      "from": {
+        "id": "poi_241",
+        "title": "UN조각공원",
+        "lat": 35.1297375886,
+        "lon": 129.0976280442,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_622",
+        "title": "부산박물관",
+        "lat": 35.12957,
+        "lon": 129.09451,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_241",
+      "toId": "poi_622",
+      "retrievedAt": "2026-08-23T18:39:18.463Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 4,
+      "totalDistanceM": 329,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 9,
+        "totalTimeSec": 250,
+        "totalDistance": 329
+      }
+    },
+    {
+      "id": "PLAN-남-poi_622-poi_150",
+      "area": "남구",
+      "from": {
+        "id": "poi_622",
+        "title": "부산박물관",
+        "lat": 35.12957,
+        "lon": 129.09451,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_150",
+        "title": "대연수목전시원",
+        "lat": 35.1251964498,
+        "lon": 129.0986919647,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_622",
+      "toId": "poi_150",
+      "retrievedAt": "2026-08-23T18:39:18.667Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 13,
+      "totalDistanceM": 1030,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 11,
+        "totalTimeSec": 754,
+        "totalDistance": 1030
+      }
+    },
+    {
+      "id": "PLAN-남-poi_150-RETURN",
+      "area": "남구",
+      "from": {
+        "id": "poi_150",
+        "title": "대연수목전시원",
+        "lat": 35.1251964498,
+        "lon": 129.0986919647,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_229",
+        "title": "평화공원",
+        "lat": 35.1253214518,
+        "lon": 129.0995779953,
+        "reason": "UN평화공원 관광 진입점"
+      },
+      "fromId": "poi_150",
+      "toId": "poi_229",
+      "retrievedAt": "2026-08-23T18:39:18.867Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 1,
+      "totalDistanceM": 79,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 3,
+        "totalTimeSec": 58,
+        "totalDistance": 79
+      }
+    },
+    {
+      "id": "PLAN-남-poi_241-DESTINATION",
+      "area": "남구",
+      "from": {
+        "id": "poi_241",
+        "title": "UN조각공원",
+        "lat": 35.1297375886,
+        "lon": 129.0976280442,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_621",
+        "title": "국립일제강제동원역사관",
+        "lat": 35.124355,
+        "lon": 129.09192,
+        "reason": "역사관 약속 거점"
+      },
+      "fromId": "poi_241",
+      "toId": "poi_621",
+      "retrievedAt": "2026-08-23T18:39:19.073Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 21,
+      "totalDistanceM": 1554,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 25,
+        "totalTimeSec": 1241,
+        "totalDistance": 1554
+      }
+    },
+    {
+      "id": "PLAN-남-poi_622-DESTINATION",
+      "area": "남구",
+      "from": {
+        "id": "poi_622",
+        "title": "부산박물관",
+        "lat": 35.12957,
+        "lon": 129.09451,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_621",
+        "title": "국립일제강제동원역사관",
+        "lat": 35.124355,
+        "lon": 129.09192,
+        "reason": "역사관 약속 거점"
+      },
+      "fromId": "poi_622",
+      "toId": "poi_621",
+      "retrievedAt": "2026-08-23T18:39:19.266Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 18,
+      "totalDistanceM": 1301,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 27,
+        "totalTimeSec": 1056,
+        "totalDistance": 1301
+      }
+    },
+    {
+      "id": "PLAN-남-poi_150-DESTINATION",
+      "area": "남구",
+      "from": {
+        "id": "poi_150",
+        "title": "대연수목전시원",
+        "lat": 35.1251964498,
+        "lon": 129.0986919647,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_621",
+        "title": "국립일제강제동원역사관",
+        "lat": 35.124355,
+        "lon": 129.09192,
+        "reason": "역사관 약속 거점"
+      },
+      "fromId": "poi_150",
+      "toId": "poi_621",
+      "retrievedAt": "2026-08-23T18:39:19.475Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 16,
+      "totalDistanceM": 1053,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 26,
+        "totalTimeSec": 933,
+        "totalDistance": 1053
+      }
+    },
+    {
+      "id": "PLAN-북-ORIGIN-poi_740",
+      "area": "북구",
+      "from": {
+        "id": "poi_287",
+        "title": "구포시장",
+        "lat": 35.2087575605,
+        "lon": 129.0037896031,
+        "reason": "구포시장 상권 진입점"
+      },
+      "to": {
+        "id": "poi_740",
+        "title": "문화예술플랫폼",
+        "lat": 35.206764,
+        "lon": 128.99797,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_287",
+      "toId": "poi_740",
+      "retrievedAt": "2026-08-23T18:39:19.671Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 10,
+      "totalDistanceM": 762,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 11,
+        "totalTimeSec": 595,
+        "totalDistance": 762
+      }
+    },
+    {
+      "id": "PLAN-북-poi_740-poi_134",
+      "area": "북구",
+      "from": {
+        "id": "poi_740",
+        "title": "문화예술플랫폼",
+        "lat": 35.206764,
+        "lon": 128.99797,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_134",
+        "title": "금곡동 율리 바위그늘유적",
+        "lat": 35.2505392944,
+        "lon": 129.0204258972,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_740",
+      "toId": "poi_134",
+      "retrievedAt": "2026-08-23T18:39:19.881Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 79,
+      "totalDistanceM": 5766,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 104,
+        "totalTimeSec": 4715,
+        "totalDistance": 5766
+      }
+    },
+    {
+      "id": "PLAN-북-poi_134-RETURN",
+      "area": "북구",
+      "from": {
+        "id": "poi_134",
+        "title": "금곡동 율리 바위그늘유적",
+        "lat": 35.2505392944,
+        "lon": 129.0204258972,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_287",
+        "title": "구포시장",
+        "lat": 35.2087575605,
+        "lon": 129.0037896031,
+        "reason": "구포시장 상권 진입점"
+      },
+      "fromId": "poi_134",
+      "toId": "poi_287",
+      "retrievedAt": "2026-08-23T18:39:20.093Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 72,
+      "totalDistanceM": 5314,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 95,
+        "totalTimeSec": 4337,
+        "totalDistance": 5314
+      }
+    },
+    {
+      "id": "PLAN-북-poi_740-DESTINATION",
+      "area": "북구",
+      "from": {
+        "id": "poi_740",
+        "title": "문화예술플랫폼",
+        "lat": 35.206764,
+        "lon": 128.99797,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_265",
+        "title": "북구문화예술회관 공연장",
+        "lat": 35.2134515157,
+        "lon": 129.0057670798,
+        "reason": "문화예술회관 약속 거점"
+      },
+      "fromId": "poi_740",
+      "toId": "poi_265",
+      "retrievedAt": "2026-08-23T18:39:20.313Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 23,
+      "totalDistanceM": 1604,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 47,
+        "totalTimeSec": 1386,
+        "totalDistance": 1604
+      }
+    },
+    {
+      "id": "PLAN-북-poi_134-DESTINATION",
+      "area": "북구",
+      "from": {
+        "id": "poi_134",
+        "title": "금곡동 율리 바위그늘유적",
+        "lat": 35.2505392944,
+        "lon": 129.0204258972,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_265",
+        "title": "북구문화예술회관 공연장",
+        "lat": 35.2134515157,
+        "lon": 129.0057670798,
+        "reason": "문화예술회관 약속 거점"
+      },
+      "fromId": "poi_134",
+      "toId": "poi_265",
+      "retrievedAt": "2026-08-23T18:39:20.518Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 66,
+      "totalDistanceM": 4837,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 90,
+        "totalTimeSec": 3964,
+        "totalDistance": 4837
+      }
+    },
+    {
+      "id": "PLAN-해운대-ORIGIN-poi_19",
+      "area": "해운대구",
+      "from": {
+        "id": "poi_174",
+        "title": "부산 영화의 거리",
+        "lat": 35.1549495207,
+        "lon": 129.1444371716,
+        "reason": "마린시티 관광 진입점"
+      },
+      "to": {
+        "id": "poi_19",
+        "title": "동백공원",
+        "lat": 35.1536609221,
+        "lon": 129.1523226328,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_174",
+      "toId": "poi_19",
+      "retrievedAt": "2026-08-23T18:39:20.715Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 20,
+      "totalDistanceM": 1466,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 31,
+        "totalTimeSec": 1196,
+        "totalDistance": 1466
+      }
+    },
+    {
+      "id": "PLAN-해운대-poi_19-poi_22",
+      "area": "해운대구",
+      "from": {
+        "id": "poi_19",
+        "title": "동백공원",
+        "lat": 35.1536609221,
+        "lon": 129.1523226328,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_22",
+        "title": "해운대 동백섬",
+        "lat": 35.153991438,
+        "lon": 129.1521809693,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_19",
+      "toId": "poi_22",
+      "retrievedAt": "2026-08-23T18:39:20.899Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 0,
+      "totalDistanceM": 31,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 3,
+        "totalTimeSec": 25,
+        "totalDistance": 31
+      }
+    },
+    {
+      "id": "PLAN-해운대-poi_22-poi_37",
+      "area": "해운대구",
+      "from": {
+        "id": "poi_22",
+        "title": "해운대 동백섬",
+        "lat": 35.153991438,
+        "lon": 129.1521809693,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_37",
+        "title": "미포항",
+        "lat": 35.1580385696,
+        "lon": 129.1717291585,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_22",
+      "toId": "poi_37",
+      "retrievedAt": "2026-08-23T18:39:21.103Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 36,
+      "totalDistanceM": 2820,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 17,
+        "totalTimeSec": 2130,
+        "totalDistance": 2820
+      }
+    },
+    {
+      "id": "PLAN-해운대-poi_37-RETURN",
+      "area": "해운대구",
+      "from": {
+        "id": "poi_37",
+        "title": "미포항",
+        "lat": 35.1580385696,
+        "lon": 129.1717291585,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_174",
+        "title": "부산 영화의 거리",
+        "lat": 35.1549495207,
+        "lon": 129.1444371716,
+        "reason": "마린시티 관광 진입점"
+      },
+      "fromId": "poi_37",
+      "toId": "poi_174",
+      "retrievedAt": "2026-08-23T18:39:21.301Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 43,
+      "totalDistanceM": 3272,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 44,
+        "totalTimeSec": 2587,
+        "totalDistance": 3272
+      }
+    },
+    {
+      "id": "PLAN-해운대-poi_19-DESTINATION",
+      "area": "해운대구",
+      "from": {
+        "id": "poi_19",
+        "title": "동백공원",
+        "lat": 35.1536609221,
+        "lon": 129.1523226328,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_3",
+        "title": "신세계백화점 센텀시티점",
+        "lat": 35.1687865886,
+        "lon": 129.1297408475,
+        "reason": "센텀 약속 거점"
+      },
+      "fromId": "poi_19",
+      "toId": "poi_3",
+      "retrievedAt": "2026-08-23T18:39:21.494Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 51,
+      "totalDistanceM": 3399,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 88,
+        "totalTimeSec": 3084,
+        "totalDistance": 3399
+      }
+    },
+    {
+      "id": "PLAN-해운대-poi_22-DESTINATION",
+      "area": "해운대구",
+      "from": {
+        "id": "poi_22",
+        "title": "해운대 동백섬",
+        "lat": 35.153991438,
+        "lon": 129.1521809693,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_3",
+        "title": "신세계백화점 센텀시티점",
+        "lat": 35.1687865886,
+        "lon": 129.1297408475,
+        "reason": "센텀 약속 거점"
+      },
+      "fromId": "poi_22",
+      "toId": "poi_3",
+      "retrievedAt": "2026-08-23T18:39:21.692Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 51,
+      "totalDistanceM": 3369,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 88,
+        "totalTimeSec": 3059,
+        "totalDistance": 3369
+      }
+    },
+    {
+      "id": "PLAN-해운대-poi_37-DESTINATION",
+      "area": "해운대구",
+      "from": {
+        "id": "poi_37",
+        "title": "미포항",
+        "lat": 35.1580385696,
+        "lon": 129.1717291585,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_3",
+        "title": "신세계백화점 센텀시티점",
+        "lat": 35.1687865886,
+        "lon": 129.1297408475,
+        "reason": "센텀 약속 거점"
+      },
+      "fromId": "poi_37",
+      "toId": "poi_3",
+      "retrievedAt": "2026-08-23T18:39:21.891Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 72,
+      "totalDistanceM": 5097,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 92,
+        "totalTimeSec": 4303,
+        "totalDistance": 5097
+      }
+    },
+    {
+      "id": "PLAN-사하-ORIGIN-poi_144",
+      "area": "사하구",
+      "from": {
+        "id": "poi_641",
+        "title": "을숙도",
+        "lat": 35.107143,
+        "lon": 128.94283,
+        "reason": "을숙도 관광 진입점"
+      },
+      "to": {
+        "id": "poi_144",
+        "title": "낙동강문화관",
+        "lat": 35.1082872241,
+        "lon": 128.9474416939,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_641",
+      "toId": "poi_144",
+      "retrievedAt": "2026-08-23T18:39:22.091Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 16,
+      "totalDistanceM": 1132,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 17,
+        "totalTimeSec": 937,
+        "totalDistance": 1132
+      }
+    },
+    {
+      "id": "PLAN-사하-poi_144-poi_630",
+      "area": "사하구",
+      "from": {
+        "id": "poi_144",
+        "title": "낙동강문화관",
+        "lat": 35.1082872241,
+        "lon": 128.9474416939,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_630",
+        "title": "아미산전망대",
+        "lat": 35.052727,
+        "lon": 128.96075,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_144",
+      "toId": "poi_630",
+      "retrievedAt": "2026-08-23T18:39:22.288Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 108,
+      "totalDistanceM": 8861,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 44,
+        "totalTimeSec": 6491,
+        "totalDistance": 8861
+      }
+    },
+    {
+      "id": "PLAN-사하-poi_630-RETURN",
+      "area": "사하구",
+      "from": {
+        "id": "poi_630",
+        "title": "아미산전망대",
+        "lat": 35.052727,
+        "lon": 128.96075,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_641",
+        "title": "을숙도",
+        "lat": 35.107143,
+        "lon": 128.94283,
+        "reason": "을숙도 관광 진입점"
+      },
+      "fromId": "poi_630",
+      "toId": "poi_641",
+      "retrievedAt": "2026-08-23T18:39:22.488Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 116,
+      "totalDistanceM": 9461,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 42,
+        "totalTimeSec": 6959,
+        "totalDistance": 9461
+      }
+    },
+    {
+      "id": "PLAN-사하-poi_144-DESTINATION",
+      "area": "사하구",
+      "from": {
+        "id": "poi_144",
+        "title": "낙동강문화관",
+        "lat": 35.1082872241,
+        "lon": 128.9474416939,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_553",
+        "title": "카페 만디",
+        "lat": 35.1003836071,
+        "lon": 129.0047758093,
+        "reason": "괴정 약속 거점"
+      },
+      "fromId": "poi_144",
+      "toId": "poi_553",
+      "retrievedAt": "2026-08-23T18:39:22.696Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 79,
+      "totalDistanceM": 5866,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 80,
+        "totalTimeSec": 4718,
+        "totalDistance": 5866
+      }
+    },
+    {
+      "id": "PLAN-사하-poi_630-DESTINATION",
+      "area": "사하구",
+      "from": {
+        "id": "poi_630",
+        "title": "아미산전망대",
+        "lat": 35.052727,
+        "lon": 128.96075,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_553",
+        "title": "카페 만디",
+        "lat": 35.1003836071,
+        "lon": 129.0047758093,
+        "reason": "괴정 약속 거점"
+      },
+      "fromId": "poi_630",
+      "toId": "poi_553",
+      "retrievedAt": "2026-08-23T18:39:22.897Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 113,
+      "totalDistanceM": 8916,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 75,
+        "totalTimeSec": 6794,
+        "totalDistance": 8916
+      }
+    },
+    {
+      "id": "PLAN-금정-ORIGIN-poi_306",
+      "area": "금정구",
+      "from": {
+        "id": "poi_260",
+        "title": "부산대학교 박물관",
+        "lat": 35.2333923163,
+        "lon": 129.0798600805,
+        "reason": "부산대 문화 진입점"
+      },
+      "to": {
+        "id": "poi_306",
+        "title": "서동미로시장",
+        "lat": 35.215908583,
+        "lon": 129.1024697033,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_260",
+      "toId": "poi_306",
+      "retrievedAt": "2026-08-23T18:39:23.102Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 47,
+      "totalDistanceM": 3456,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 64,
+        "totalTimeSec": 2844,
+        "totalDistance": 3456
+      }
+    },
+    {
+      "id": "PLAN-금정-poi_306-poi_403",
+      "area": "금정구",
+      "from": {
+        "id": "poi_306",
+        "title": "서동미로시장",
+        "lat": 35.215908583,
+        "lon": 129.1024697033,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_403",
+        "title": "모모스커피 본점",
+        "lat": 35.2192717995,
+        "lon": 129.0864960018,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_306",
+      "toId": "poi_403",
+      "retrievedAt": "2026-08-23T18:39:23.300Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 23,
+      "totalDistanceM": 1759,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 21,
+        "totalTimeSec": 1380,
+        "totalDistance": 1759
+      }
+    },
+    {
+      "id": "PLAN-금정-poi_403-poi_89",
+      "area": "금정구",
+      "from": {
+        "id": "poi_403",
+        "title": "모모스커피 본점",
+        "lat": 35.2192717995,
+        "lon": 129.0864960018,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_89",
+        "title": "범어사 성보박물관",
+        "lat": 35.2839753157,
+        "lon": 129.0681152667,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_403",
+      "toId": "poi_89",
+      "retrievedAt": "2026-08-23T18:39:23.506Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 116,
+      "totalDistanceM": 9069,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 86,
+        "totalTimeSec": 6947,
+        "totalDistance": 9069
+      }
+    },
+    {
+      "id": "PLAN-금정-poi_89-RETURN",
+      "area": "금정구",
+      "from": {
+        "id": "poi_89",
+        "title": "범어사 성보박물관",
+        "lat": 35.2839753157,
+        "lon": 129.0681152667,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_260",
+        "title": "부산대학교 박물관",
+        "lat": 35.2333923163,
+        "lon": 129.0798600805,
+        "reason": "부산대 문화 진입점"
+      },
+      "fromId": "poi_89",
+      "toId": "poi_260",
+      "retrievedAt": "2026-08-23T18:39:23.736Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 96,
+      "totalDistanceM": 7569,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 57,
+        "totalTimeSec": 5734,
+        "totalDistance": 7569
+      }
+    },
+    {
+      "id": "PLAN-금정-poi_306-DESTINATION",
+      "area": "금정구",
+      "from": {
+        "id": "poi_306",
+        "title": "서동미로시장",
+        "lat": 35.215908583,
+        "lon": 129.1024697033,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_1052",
+        "title": "이흥용과자점 부산대직영점",
+        "lat": 35.23029,
+        "lon": 129.08397,
+        "reason": "부산대 상권 약속 거점"
+      },
+      "fromId": "poi_306",
+      "toId": "poi_1052",
+      "retrievedAt": "2026-08-23T18:39:23.942Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 40,
+      "totalDistanceM": 2889,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 53,
+        "totalTimeSec": 2370,
+        "totalDistance": 2889
+      }
+    },
+    {
+      "id": "PLAN-금정-poi_403-DESTINATION",
+      "area": "금정구",
+      "from": {
+        "id": "poi_403",
+        "title": "모모스커피 본점",
+        "lat": 35.2192717995,
+        "lon": 129.0864960018,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_1052",
+        "title": "이흥용과자점 부산대직영점",
+        "lat": 35.23029,
+        "lon": 129.08397,
+        "reason": "부산대 상권 약속 거점"
+      },
+      "fromId": "poi_403",
+      "toId": "poi_1052",
+      "retrievedAt": "2026-08-23T18:39:24.142Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 22,
+      "totalDistanceM": 1628,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 30,
+        "totalTimeSec": 1323,
+        "totalDistance": 1628
+      }
+    },
+    {
+      "id": "PLAN-금정-poi_89-DESTINATION",
+      "area": "금정구",
+      "from": {
+        "id": "poi_89",
+        "title": "범어사 성보박물관",
+        "lat": 35.2839753157,
+        "lon": 129.0681152667,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_1052",
+        "title": "이흥용과자점 부산대직영점",
+        "lat": 35.23029,
+        "lon": 129.08397,
+        "reason": "부산대 상권 약속 거점"
+      },
+      "fromId": "poi_89",
+      "toId": "poi_1052",
+      "retrievedAt": "2026-08-23T18:39:24.350Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 95,
+      "totalDistanceM": 7585,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 60,
+        "totalTimeSec": 5710,
+        "totalDistance": 7585
+      }
+    },
+    {
+      "id": "PLAN-강서-ORIGIN-poi_171",
+      "area": "강서구",
+      "from": {
+        "id": "poi_297",
+        "title": "명지시장",
+        "lat": 35.1129197501,
+        "lon": 128.9317096042,
+        "reason": "명지시장 상권 진입점"
+      },
+      "to": {
+        "id": "poi_171",
+        "title": "보람공원",
+        "lat": 35.0881459047,
+        "lon": 128.8432429784,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_297",
+      "toId": "poi_171",
+      "retrievedAt": "2026-08-23T18:39:24.559Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 135,
+      "totalDistanceM": 10179,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 118,
+        "totalTimeSec": 8088,
+        "totalDistance": 10179
+      }
+    },
+    {
+      "id": "PLAN-강서-poi_171-poi_252",
+      "area": "강서구",
+      "from": {
+        "id": "poi_171",
+        "title": "보람공원",
+        "lat": 35.0881459047,
+        "lon": 128.8432429784,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_252",
+        "title": "부산 강서문화원",
+        "lat": 35.2113235102,
+        "lon": 128.9805054495,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_171",
+      "toId": "poi_252",
+      "retrievedAt": "2026-08-23T18:39:24.780Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 295,
+      "totalDistanceM": 23024,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 180,
+        "totalTimeSec": 17688,
+        "totalDistance": 23024
+      }
+    },
+    {
+      "id": "PLAN-강서-poi_252-poi_473",
+      "area": "강서구",
+      "from": {
+        "id": "poi_252",
+        "title": "부산 강서문화원",
+        "lat": 35.2113235102,
+        "lon": 128.9805054495,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_473",
+        "title": "어라우즈로스터리",
+        "lat": 35.1038096127,
+        "lon": 128.9291850713,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_252",
+      "toId": "poi_473",
+      "retrievedAt": "2026-08-23T18:39:24.990Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 176,
+      "totalDistanceM": 14050,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 96,
+        "totalTimeSec": 10588,
+        "totalDistance": 14050
+      }
+    },
+    {
+      "id": "PLAN-강서-poi_473-RETURN",
+      "area": "강서구",
+      "from": {
+        "id": "poi_473",
+        "title": "어라우즈로스터리",
+        "lat": 35.1038096127,
+        "lon": 128.9291850713,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_297",
+        "title": "명지시장",
+        "lat": 35.1129197501,
+        "lon": 128.9317096042,
+        "reason": "명지시장 상권 진입점"
+      },
+      "fromId": "poi_473",
+      "toId": "poi_297",
+      "retrievedAt": "2026-08-23T18:39:25.202Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 16,
+      "totalDistanceM": 1206,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 31,
+        "totalTimeSec": 987,
+        "totalDistance": 1206
+      }
+    },
+    {
+      "id": "PLAN-강서-poi_171-DESTINATION",
+      "area": "강서구",
+      "from": {
+        "id": "poi_171",
+        "title": "보람공원",
+        "lat": 35.0881459047,
+        "lon": 128.8432429784,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_713",
+        "title": "대저생태공원",
+        "lat": 35.20406,
+        "lon": 128.98305,
+        "reason": "대저 생태 약속 거점"
+      },
+      "fromId": "poi_171",
+      "toId": "poi_713",
+      "retrievedAt": "2026-08-23T18:39:25.411Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 292,
+      "totalDistanceM": 22724,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 170,
+        "totalTimeSec": 17498,
+        "totalDistance": 22724
+      }
+    },
+    {
+      "id": "PLAN-강서-poi_252-DESTINATION",
+      "area": "강서구",
+      "from": {
+        "id": "poi_252",
+        "title": "부산 강서문화원",
+        "lat": 35.2113235102,
+        "lon": 128.9805054495,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_713",
+        "title": "대저생태공원",
+        "lat": 35.20406,
+        "lon": 128.98305,
+        "reason": "대저 생태 약속 거점"
+      },
+      "fromId": "poi_252",
+      "toId": "poi_713",
+      "retrievedAt": "2026-08-23T18:39:25.624Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 19,
+      "totalDistanceM": 1328,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 28,
+        "totalTimeSec": 1127,
+        "totalDistance": 1328
+      }
+    },
+    {
+      "id": "PLAN-강서-poi_473-DESTINATION",
+      "area": "강서구",
+      "from": {
+        "id": "poi_473",
+        "title": "어라우즈로스터리",
+        "lat": 35.1038096127,
+        "lon": 128.9291850713,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_713",
+        "title": "대저생태공원",
+        "lat": 35.20406,
+        "lon": 128.98305,
+        "reason": "대저 생태 약속 거점"
+      },
+      "fromId": "poi_473",
+      "toId": "poi_713",
+      "retrievedAt": "2026-08-23T18:39:25.842Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 173,
+      "totalDistanceM": 13751,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 84,
+        "totalTimeSec": 10397,
+        "totalDistance": 13751
+      }
+    },
+    {
+      "id": "PLAN-연제-ORIGIN-poi_421",
+      "area": "연제구",
+      "from": {
+        "id": "poi_258",
+        "title": "부산광역시립 연산도서관",
+        "lat": 35.1861091721,
+        "lon": 129.1040120547,
+        "reason": "연산도서관 문화 진입점"
+      },
+      "to": {
+        "id": "poi_421",
+        "title": "부산 카페 라운지",
+        "lat": 35.1825730073,
+        "lon": 129.0796892677,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_258",
+      "toId": "poi_421",
+      "retrievedAt": "2026-08-23T18:39:26.038Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 33,
+      "totalDistanceM": 2544,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 31,
+        "totalTimeSec": 1988,
+        "totalDistance": 2544
+      }
+    },
+    {
+      "id": "PLAN-연제-poi_421-RETURN",
+      "area": "연제구",
+      "from": {
+        "id": "poi_421",
+        "title": "부산 카페 라운지",
+        "lat": 35.1825730073,
+        "lon": 129.0796892677,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_258",
+        "title": "부산광역시립 연산도서관",
+        "lat": 35.1861091721,
+        "lon": 129.1040120547,
+        "reason": "연산도서관 문화 진입점"
+      },
+      "fromId": "poi_421",
+      "toId": "poi_258",
+      "retrievedAt": "2026-08-23T18:40:08.613Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 33,
+      "totalDistanceM": 2544,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 29,
+        "totalTimeSec": 1988,
+        "totalDistance": 2544
+      }
+    },
+    {
+      "id": "PLAN-연제-poi_421-DESTINATION",
+      "area": "연제구",
+      "from": {
+        "id": "poi_421",
+        "title": "부산 카페 라운지",
+        "lat": 35.1825730073,
+        "lon": 129.0796892677,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_1068",
+        "title": "보느파티쓰리",
+        "lat": 35.19527,
+        "lon": 129.07895,
+        "reason": "교대 약속 거점"
+      },
+      "fromId": "poi_421",
+      "toId": "poi_1068",
+      "retrievedAt": "2026-08-23T18:39:26.242Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 23,
+      "totalDistanceM": 1690,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 37,
+        "totalTimeSec": 1399,
+        "totalDistance": 1690
+      }
+    },
+    {
+      "id": "PLAN-수영-ORIGIN-poi_125",
+      "area": "수영구",
+      "from": {
+        "id": "poi_79",
+        "title": "광안리해변 테마거리",
+        "lat": 35.1551657503,
+        "lon": 129.1221363273,
+        "reason": "광안리 해변 관광 진입점"
+      },
+      "to": {
+        "id": "poi_125",
+        "title": "경상좌수영성지",
+        "lat": 35.1743106361,
+        "lon": 129.1117117085,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_79",
+      "toId": "poi_125",
+      "retrievedAt": "2026-08-23T18:39:27.007Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 38,
+      "totalDistanceM": 2928,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 39,
+        "totalTimeSec": 2306,
+        "totalDistance": 2928
+      }
+    },
+    {
+      "id": "PLAN-수영-poi_125-RETURN",
+      "area": "수영구",
+      "from": {
+        "id": "poi_125",
+        "title": "경상좌수영성지",
+        "lat": 35.1743106361,
+        "lon": 129.1117117085,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_79",
+        "title": "광안리해변 테마거리",
+        "lat": 35.1551657503,
+        "lon": 129.1221363273,
+        "reason": "광안리 해변 관광 진입점"
+      },
+      "fromId": "poi_125",
+      "toId": "poi_79",
+      "retrievedAt": "2026-08-23T18:39:27.201Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 38,
+      "totalDistanceM": 2928,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 38,
+        "totalTimeSec": 2306,
+        "totalDistance": 2928
+      }
+    },
+    {
+      "id": "PLAN-수영-poi_125-DESTINATION",
+      "area": "수영구",
+      "from": {
+        "id": "poi_125",
+        "title": "경상좌수영성지",
+        "lat": 35.1743106361,
+        "lon": 129.1117117085,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_273",
+        "title": "책방오월",
+        "lat": 35.1604483075,
+        "lon": 129.1121398296,
+        "reason": "광안동 약속 거점"
+      },
+      "fromId": "poi_125",
+      "toId": "poi_273",
+      "retrievedAt": "2026-08-23T18:39:27.399Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 27,
+      "totalDistanceM": 2084,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 31,
+        "totalTimeSec": 1617,
+        "totalDistance": 2084
+      }
+    },
+    {
+      "id": "PLAN-사상-ORIGIN-poi_264",
+      "area": "사상구",
+      "from": {
+        "id": "poi_700",
+        "title": "부산도서관",
+        "lat": 35.172737,
+        "lon": 128.98526,
+        "reason": "부산도서관 문화 진입점"
+      },
+      "to": {
+        "id": "poi_264",
+        "title": "부산점자도서관",
+        "lat": 35.17813018,
+        "lon": 128.9898027697,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_700",
+      "toId": "poi_264",
+      "retrievedAt": "2026-08-23T18:39:27.601Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 15,
+      "totalDistanceM": 1163,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 19,
+        "totalTimeSec": 896,
+        "totalDistance": 1163
+      }
+    },
+    {
+      "id": "PLAN-사상-poi_264-poi_266",
+      "area": "사상구",
+      "from": {
+        "id": "poi_264",
+        "title": "부산점자도서관",
+        "lat": 35.17813018,
+        "lon": 128.9898027697,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_266",
+        "title": "사상문화원",
+        "lat": 35.1476309123,
+        "lon": 128.994858718,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_264",
+      "toId": "poi_266",
+      "retrievedAt": "2026-08-23T18:39:27.807Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 54,
+      "totalDistanceM": 4142,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 60,
+        "totalTimeSec": 3256,
+        "totalDistance": 4142
+      }
+    },
+    {
+      "id": "PLAN-사상-poi_266-poi_185",
+      "area": "사상구",
+      "from": {
+        "id": "poi_266",
+        "title": "사상문화원",
+        "lat": 35.1476309123,
+        "lon": 128.994858718,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_185",
+        "title": "사상근린공원",
+        "lat": 35.1521995132,
+        "lon": 128.9768740479,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_266",
+      "toId": "poi_185",
+      "retrievedAt": "2026-08-23T18:39:28.023Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 27,
+      "totalDistanceM": 1854,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 38,
+        "totalTimeSec": 1602,
+        "totalDistance": 1854
+      }
+    },
+    {
+      "id": "PLAN-사상-poi_185-RETURN",
+      "area": "사상구",
+      "from": {
+        "id": "poi_185",
+        "title": "사상근린공원",
+        "lat": 35.1521995132,
+        "lon": 128.9768740479,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_700",
+        "title": "부산도서관",
+        "lat": 35.172737,
+        "lon": 128.98526,
+        "reason": "부산도서관 문화 진입점"
+      },
+      "fromId": "poi_185",
+      "toId": "poi_700",
+      "retrievedAt": "2026-08-23T18:39:28.226Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 41,
+      "totalDistanceM": 3194,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 36,
+        "totalTimeSec": 2477,
+        "totalDistance": 3194
+      }
+    },
+    {
+      "id": "PLAN-사상-poi_264-DESTINATION",
+      "area": "사상구",
+      "from": {
+        "id": "poi_264",
+        "title": "부산점자도서관",
+        "lat": 35.17813018,
+        "lon": 128.9898027697,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_304",
+        "title": "부산새벽시장",
+        "lat": 35.1537799975,
+        "lon": 128.9826012838,
+        "reason": "새벽시장 약속 거점"
+      },
+      "fromId": "poi_264",
+      "toId": "poi_304",
+      "retrievedAt": "2026-08-23T18:39:28.426Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 45,
+      "totalDistanceM": 3425,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 51,
+        "totalTimeSec": 2726,
+        "totalDistance": 3425
+      }
+    },
+    {
+      "id": "PLAN-사상-poi_266-DESTINATION",
+      "area": "사상구",
+      "from": {
+        "id": "poi_266",
+        "title": "사상문화원",
+        "lat": 35.1476309123,
+        "lon": 128.994858718,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_304",
+        "title": "부산새벽시장",
+        "lat": 35.1537799975,
+        "lon": 128.9826012838,
+        "reason": "새벽시장 약속 거점"
+      },
+      "fromId": "poi_266",
+      "toId": "poi_304",
+      "retrievedAt": "2026-08-23T18:39:28.632Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 24,
+      "totalDistanceM": 1684,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 32,
+        "totalTimeSec": 1412,
+        "totalDistance": 1684
+      }
+    },
+    {
+      "id": "PLAN-사상-poi_185-DESTINATION",
+      "area": "사상구",
+      "from": {
+        "id": "poi_185",
+        "title": "사상근린공원",
+        "lat": 35.1521995132,
+        "lon": 128.9768740479,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_304",
+        "title": "부산새벽시장",
+        "lat": 35.1537799975,
+        "lon": 128.9826012838,
+        "reason": "새벽시장 약속 거점"
+      },
+      "fromId": "poi_185",
+      "toId": "poi_304",
+      "retrievedAt": "2026-08-23T18:39:28.830Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 9,
+      "totalDistanceM": 768,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 7,
+        "totalTimeSec": 558,
+        "totalDistance": 768
+      }
+    },
+    {
+      "id": "PLAN-기장-ORIGIN-poi_244",
+      "area": "기장군",
+      "from": {
+        "id": "poi_787",
+        "title": "기장시장",
+        "lat": 35.243847,
+        "lon": 129.21524,
+        "reason": "기장시장 상권 진입점"
+      },
+      "to": {
+        "id": "poi_244",
+        "title": "기장문화원",
+        "lat": 35.2353502842,
+        "lon": 129.2217032374,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_787",
+      "toId": "poi_244",
+      "retrievedAt": "2026-08-23T18:39:29.034Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 23,
+      "totalDistanceM": 1472,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 46,
+        "totalTimeSec": 1351,
+        "totalDistance": 1472
+      }
+    },
+    {
+      "id": "PLAN-기장-poi_244-poi_554",
+      "area": "기장군",
+      "from": {
+        "id": "poi_244",
+        "title": "기장문화원",
+        "lat": 35.2353502842,
+        "lon": 129.2217032374,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_554",
+        "title": "카페공지",
+        "lat": 35.2196576619,
+        "lon": 129.2251589263,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_244",
+      "toId": "poi_554",
+      "retrievedAt": "2026-08-23T18:39:29.227Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 27,
+      "totalDistanceM": 2152,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 15,
+        "totalTimeSec": 1597,
+        "totalDistance": 2152
+      }
+    },
+    {
+      "id": "PLAN-기장-poi_554-poi_612",
+      "area": "기장군",
+      "from": {
+        "id": "poi_554",
+        "title": "카페공지",
+        "lat": 35.2196576619,
+        "lon": 129.2251589263,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_612",
+        "title": "임랑해수욕장",
+        "lat": 35.31905,
+        "lon": 129.26451,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "fromId": "poi_554",
+      "toId": "poi_612",
+      "retrievedAt": "2026-08-23T18:39:29.434Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 176,
+      "totalDistanceM": 13874,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 114,
+        "totalTimeSec": 10581,
+        "totalDistance": 13874
+      }
+    },
+    {
+      "id": "PLAN-기장-poi_612-RETURN",
+      "area": "기장군",
+      "from": {
+        "id": "poi_612",
+        "title": "임랑해수욕장",
+        "lat": 35.31905,
+        "lon": 129.26451,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_787",
+        "title": "기장시장",
+        "lat": 35.243847,
+        "lon": 129.21524,
+        "reason": "기장시장 상권 진입점"
+      },
+      "fromId": "poi_612",
+      "toId": "poi_787",
+      "retrievedAt": "2026-08-23T18:39:29.645Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 147,
+      "totalDistanceM": 11332,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 123,
+        "totalTimeSec": 8836,
+        "totalDistance": 11332
+      }
+    },
+    {
+      "id": "PLAN-기장-poi_244-DESTINATION",
+      "area": "기장군",
+      "from": {
+        "id": "poi_244",
+        "title": "기장문화원",
+        "lat": 35.2353502842,
+        "lon": 129.2217032374,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_231",
+        "title": "학리항(학리방파제)",
+        "lat": 35.2599730111,
+        "lon": 129.2477530679,
+        "reason": "학리항 약속 거점"
+      },
+      "fromId": "poi_244",
+      "toId": "poi_231",
+      "retrievedAt": "2026-08-23T18:39:29.854Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 71,
+      "totalDistanceM": 5504,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 49,
+        "totalTimeSec": 4230,
+        "totalDistance": 5504
+      }
+    },
+    {
+      "id": "PLAN-기장-poi_554-DESTINATION",
+      "area": "기장군",
+      "from": {
+        "id": "poi_554",
+        "title": "카페공지",
+        "lat": 35.2196576619,
+        "lon": 129.2251589263,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_231",
+        "title": "학리항(학리방파제)",
+        "lat": 35.2599730111,
+        "lon": 129.2477530679,
+        "reason": "학리항 약속 거점"
+      },
+      "fromId": "poi_554",
+      "toId": "poi_231",
+      "retrievedAt": "2026-08-23T18:39:30.068Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 94,
+      "totalDistanceM": 7460,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 54,
+        "totalTimeSec": 5657,
+        "totalDistance": 7460
+      }
+    },
+    {
+      "id": "PLAN-기장-poi_612-DESTINATION",
+      "area": "기장군",
+      "from": {
+        "id": "poi_612",
+        "title": "임랑해수욕장",
+        "lat": 35.31905,
+        "lon": 129.26451,
+        "reason": "구조화 운영시간 대표 후보"
+      },
+      "to": {
+        "id": "poi_231",
+        "title": "학리항(학리방파제)",
+        "lat": 35.2599730111,
+        "lon": 129.2477530679,
+        "reason": "학리항 약속 거점"
+      },
+      "fromId": "poi_612",
+      "toId": "poi_231",
+      "retrievedAt": "2026-08-23T18:39:30.269Z",
+      "status": "ok",
+      "mode": "walk",
+      "totalMoveMin": 131,
+      "totalDistanceM": 10250,
+      "provider": "TMAP pedestrian routes",
+      "responseSummary": {
+        "featureCount": 95,
+        "totalTimeSec": 7856,
+        "totalDistance": 10250
+      }
+    }
+  ]
+}

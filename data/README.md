@@ -6,14 +6,16 @@
 
 | 파일 | 역할 | 생성/근거 |
 | --- | --- | --- |
-| `src/data/busan_poi_catalog.json` | 활성 장소·활동 범위·좌표·출처·운영시간을 담은 앱 카탈로그 | `scripts/build_runtime_poi_catalog.mjs` |
+| `src/data/busan_poi_catalog.json` | 대표·조건부 장소의 활동 범위·좌표·필드별 근거 프로필을 담은 앱 카탈로그 | `scripts/build_evidence_profile_catalog.mjs` → `scripts/build_runtime_poi_catalog.mjs` |
 | `src/data/area_availability_policy.json` | 시간 근거가 검증된 시장·거리·골목의 권역 시간 정책 | `src/engine/areaAvailability.ts` |
 
 `src/data/busan_poi_catalog.legacy.json`은 앱이 import하지 않는 **카탈로그 재생성 호환 입력**이다. 현재 `build_runtime_poi_catalog.mjs`가 일부 과거 메타데이터를 보존하기 위해 읽는다. 런타임 데이터로 오해하지 않는다.
 
 ## 2. 현재 카탈로그 재생성 입력
 
-- `processed/review/부산_자투리장소_카탈로그_초안.json`: 활성 후보를 판정한 원천 카탈로그
+- `processed/review/부산_장소_근거프로필_재분류.json`: 모든 기준선 장소의 `representative_core / representative_standard / conditional_more / hold` 판정·필드별 원천·재검토 기한. 런타임 생성의 단일 원천
+- `processed/review/부산_장소_근거프로필_기준선.json`: 활성·보류·제외 ID 대조 기준선
+- `processed/review/부산_자투리장소_카탈로그_초안.json`: 재분류 전 자투리 활동 후보 원천(보존용)
 - `processed/review/부산_자투리장소_보류및제외.json`: 보류·하드 제외 근거
 - `processed/부산_최종매칭장소.json`, `processed/부산_최종미매칭장소.json`: 자투리 카탈로그 생성 입력
 - `processed/부산시_명소정보.json`, `processed/부산시_쇼핑정보.json`, `processed/부산시_맛집정보.json`: 부산시 관광 원천 스냅샷
@@ -21,9 +23,16 @@
 
 ## 3. 현재 감사·검토 결과
 
-- `processed/review/사용중_장소_운영시간_원천감사.json`: 활성 356개 장소의 TourAPI 상세 재조회·부산시 원천 대조
+- `processed/review/사용중_장소_운영시간_원천감사.json`: 재분류 전 활성 356개 기준선의 TourAPI 상세 재조회·부산시 원천 대조. 현행 런타임 수는 근거 프로필 재분류 결과를 따른다.
 - `processed/review/현재사용_운영시간미확인장소.json`: 운영시간 미기재 후보 추출 결과. 위 원천 감사가 더 넓은 결과를 제공하므로 보조 자료다.
 - `processed/review/현재사용_중복장소후보.json`: 런타임 중복 점검 결과
+- `docs/02_data/장소_근거프로필_재분류_감사.md`: ID 대조·분류 수·생활권 공백·원천 충돌 감사
+- `processed/review/운영시간_충돌_처리결과.json`: 대표 후보 충돌의 표기 차이/범위·조건 충돌 판정
+- `processed/review/코스공급량_고정시나리오.json`: 실제 API와 분리한 코스 공급량 고정 fixture
+- `processed/review/부산_장소_구조화_운영시간.json`: 코스 빌더가 원문을 재해석하지 않도록 분리한 보수적 운영시간 구조화 입력
+- `processed/review/코스공급량_실경로검증_시나리오.json`: 전 구간 TMAP 스냅샷을 가진 소수의 실제 경로 검증 fixture. 부산 전체 공급량 결론과는 분리한다.
+- `processed/review/코스공급량_남포500m_실경로측정.json`: 500m 진단 slice의 모든 구조화 대표 후보를 실제 TMAP 구간으로 평가한 결과. 현행 제품의 실제 경로 주변 생활권 공급량 결론에는 사용하지 않는다.
+- `processed/review/코스공급량_부산500m_실경로측정.json`: 16개 생활권의 500m 진단 slice 512개 실제 경로 결과. 좌표·속도식 진단 및 제품 정책 범위 측정과 모두 분리해 유지한다.
 
 나머지 `processed/review/` 파일은 생성 스크립트와 상태를 [review 안내](processed/review/README.md)에서 확인한다.
 
@@ -39,3 +48,5 @@
 2. 재생성에 필요한 입력은 삭제하지 않는다. 스크립트가 참조하는 경로를 바꾸려면 같은 변경에서 스크립트·테스트·이 문서를 함께 갱신한다.
 3. 한 번의 조사로 끝난 결과나 현행 파이프라인에서 참조되지 않는 결과는 `processed/archive/historical-reviews`로 옮긴다.
 4. 원천 데이터는 파일명·수집일·제공기관을 보존한다. 단지 앱에서 쓰지 않는다는 이유로 원본을 삭제하지 않는다.
+5. **전환 이력(2026-08-24)**: 이전 `approved / conditional`은 활동 검토의 임시 상태여서 운영시간 불확실성과 장소·권역 근거 수준을 구분하지 못했다. 현재는 근거 프로필과 네 분류로 교체했다. 이전 원천은 철회하지 않고 보존하며, 런타임은 새 재분류 JSON에서만 재생성한다. 상태: 현행.
+6. **실경로 진단 등급 전환(2026-08-24)**: 이전에는 500m 반경 안의 실제 TMAP 결과를 `route_verified_measurement`로 보고했다. 제품 정책은 실제 경로 주변 생활권을 후보 범위로 정의하므로, 500m 반경은 정책 범위를 대표하지 못한다. 같은 응답·장소쌍은 보존하되 `route_verified_diagnostic_slice`로 교체했고, 제품 공급량·0개율·보강 우선순위에는 사용하지 않는다. 상태: 현행.

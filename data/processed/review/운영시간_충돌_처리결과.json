@@ -1,0 +1,1290 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-24",
+    "sourceAudit": "data/processed/review/사용중_장소_운영시간_원천감사.json",
+    "policy": "unresolved conflict never remains representative"
+  },
+  "summary": {
+    "total": 39,
+    "retainRepresentative": 25,
+    "hold": 14
+  },
+  "data": [
+    {
+      "placeId": "poi_762",
+      "canonicalName": "갤러리 수정",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_762",
+          "sourceText": "매일 10:00-19:00 ",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "2200",
+          "sourceText": "매일 10:00-19:00",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "매일10:0019:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_27",
+      "canonicalName": "관수옥과 초량왜관 터",
+      "previousClassification": "representative_core",
+      "conflictType": "범위 불일치",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_27",
+          "sourceText": "부산타워 10:00~22:00(발권마감 21:30)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "1942348",
+          "sourceText": "상시 개방",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "368",
+          "sourceText": "부산타워 10:00~22:00(발권마감 21:30)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "부산타워10:0022:00(21:30)",
+        "상시개방"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_30",
+      "canonicalName": "광복로패션거리",
+      "previousClassification": "representative_standard",
+      "conflictType": "범위 불일치",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_30",
+          "sourceText": "상시(가게별 상이)",
+          "appliesTo": "area"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "126857",
+          "sourceText": "상시 개방",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "413",
+          "sourceText": "상시(가게별 상이)",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "상시(가게별상이)",
+        "상시개방"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_129",
+      "canonicalName": "구덕문화공원",
+      "previousClassification": "representative_standard",
+      "conflictType": "시간 조건 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_129",
+          "sourceText": "화~일요일 09:00 ~ 17:00\n",
+          "appliesTo": "area"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "2744597",
+          "sourceText": "- 하절기(3월~10월) 09:00~18:00 - 동절기(11월~2월) 09:00~17:00",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "859",
+          "sourceText": "화~일요일 09:00 ~ 17:00",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "화일요일09:0017:00",
+        "하절기(3월10월)09:0018:00동절기(11월2월)09:0017:00"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_130",
+      "canonicalName": "구포 어린이교통공원",
+      "previousClassification": "representative_standard",
+      "conflictType": "시간 조건 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_130",
+          "sourceText": "평일 10:00~18:00 (단체체험관람/16:00까지 입장가능)\n주말(토요일) 10:00~13:00 (개별자유관람/12:00까지 입장가능)",
+          "appliesTo": "area"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "2755676",
+          "sourceText": "- 평일 10:00~18:00 (입장마감 16:00) - 주말 10:00~13:00 (입장마감 12:00) ※ 평일 관람대상 : 단체체험교육 ※ 토요일 관람대상 : 개별자유관람",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "313",
+          "sourceText": "평일 10:00~18:00 (단체체험관람/16:00까지 입장가능) 주말(토요일) 10:00~13:00 (개별자유관람/12:00까지 입장가능)",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "평일10:0018:00(단체체험관람/16:00까지입장가능)주말(토요일)10:0013:00(개별자유관람/12:00까지입장가능)",
+        "평일10:0018:00(16:00)주말10:0013:00(12:00)※평일관람대상:단체체험교육※토요일관람대상:개별자유관람"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_608",
+      "canonicalName": "국립해양박물관",
+      "previousClassification": "representative_core",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_608",
+          "sourceText": "국립해양박물관 \n-화 ~ 금 09:00~18:00(입장 17:30분까지) \n-토 09:00~21:00(5~8월) / 09:00~19:00(9월~4월) \n-일 09:00~19:00 \n-설날‧추석 익일, 어린이날, 광복절 09:00~21:00 \n\n해양도서관\n -화~일요일 10:00~17:30\n- 휴관일: 2025.6.4 ~ 8.18\n(박물관 휴관일 및 법정공휴일)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "257",
+          "sourceText": "국립해양박물관 -화 ~ 금 09:00~18:00(입장 17:30분까지) -토 09:00~21:00(5~8월) / 09:00~19:00(9월~4월) -일 09:00~19:00 -설날‧추석 익일, 어린이날, 광복절 09:00~21:00 해양도서관 -화~일요일 10:00~17:30 - 휴관일: 2025.6.4 ~ 8.18 (박물관 휴관일 및 법정공휴일)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "국립해양박물관화금09:0018:00(입장17:30분까지)토09:0021:00(58월)/09:0019:00(9월4월)일09:0019:00설날‧추석익일,어린이날,광복절09:0021:00해양도서관화일요일10:0017:30휴관일:2025.6.48.18(박물관휴관일및법정공휴일)"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_core",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_8",
+      "canonicalName": "국제시장",
+      "previousClassification": "representative_core",
+      "conflictType": "시간 조건 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_8",
+          "sourceText": "09:00 - 20:00(가게별 상이)",
+          "appliesTo": "area"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "132191",
+          "sourceText": "09:00~20:00",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "399",
+          "sourceText": "09:00 - 20:00(가게별 상이)",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "09:0020:00(가게별상이)",
+        "09:0020:00"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_671",
+      "canonicalName": "금강공원/식물원",
+      "previousClassification": "representative_standard",
+      "conflictType": "범위 불일치",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_671",
+          "sourceText": "금강공원 상시\n※ 금강식물원 2026. 1. 1.부 휴업(재개장 미정)",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "397",
+          "sourceText": "금강공원 상시 ※ 금강식물원 2026. 1. 1.부 휴업(재개장 미정)",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "금강공원상시※금강식물원2026.1.1.부휴업(재개장미정)"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_66",
+      "canonicalName": "다대포 꿈의 낙조분수",
+      "previousClassification": "representative_standard",
+      "conflictType": "시간 조건 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_66",
+          "sourceText": "상시 ",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "769761",
+          "sourceText": "[봄·여름(4~8월)] - 평일 20:00~20:20 - 주말 20:00~20:20 / 21:00~21:20 [가을(9~10월)] - 평일 19:30~19:50 - 주말 19:30~19:50 / 20:30~20:50 [주간 물놀이분수(5월~9월)] - 14:00 / 15:00 / 16:00 / 17:00 (매 정각마다 20분 운영) [야간 체험분수(4월~10월)] - 음악분수 1부 공연 종료 후 10분 (2부 후에는 미운영)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "1718",
+          "sourceText": "상시",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "상시",
+        "[봄·여름(48월)]평일20:0020:20주말20:0020:20/21:0021:20[가을(910월)]평일19:3019:50주말19:3019:50/20:3020:50[주간물놀이분수(5월9월)]14:00/15:00/16:00/17:00(매정각마다20분운영)[야간체험분수(4월10월)]음악분수1부공연종료후10분(2부후에는미운영)"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_248",
+      "canonicalName": "동삼동패총전시관",
+      "previousClassification": "representative_standard",
+      "conflictType": "시간 조건 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_248",
+          "sourceText": "화요일~일요일 09:00~18:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "130774",
+          "sourceText": "09:00~18:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "2153",
+          "sourceText": "화요일~일요일 09:00~18:00",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "화요일일요일09:0018:00",
+        "09:0018:00"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_379",
+      "canonicalName": "디저트시네마",
+      "previousClassification": "representative_standard",
+      "conflictType": "시간 조건 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_379",
+          "sourceText": "토-일 : 12:00-16:00 (재료소진시 마감)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "2759629",
+          "sourceText": "12:00~16:00 (마지막 주문 15:30) ※ 재료 소진 시 조기 마감",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_food",
+          "sourceIdOrUrl": "926",
+          "sourceText": "토-일 : 12:00-16:00 (재료소진시 마감)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "토일:12:0016:00(재료소진시마감)",
+        "12:0016:00(15:30)※재료소진시조기마감"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_801",
+      "canonicalName": "롯데백화점 부산본점",
+      "previousClassification": "representative_core",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_801",
+          "sourceText": "월~목 10:30 ~ 20:00\n금~일 10:30 ~ 20:30 ",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "541",
+          "sourceText": "월~목 10:30 ~ 20:00 금~일 10:30 ~ 20:30",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "월목10:3020:00금일10:3020:30"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_core",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_802",
+      "canonicalName": "롯데백화점 센텀시티점",
+      "previousClassification": "representative_core",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_802",
+          "sourceText": "월~목 10:30 ~ 20:00\n금~일 10:30 ~ 20:30",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "546",
+          "sourceText": "월~목 10:30 ~ 20:00 금~일 10:30 ~ 20:30",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "월목10:3020:00금일10:3020:30"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_core",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_88",
+      "canonicalName": "롯데프리미엄아울렛 동부산점",
+      "previousClassification": "representative_core",
+      "conflictType": "범위 불일치",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_88",
+          "sourceText": "-본관 : 매일 10:30~21:00\n※ 동절기(11~2월) 주중 10:30~20:30 l 주말·공휴일 10:30~21:00\n\n-메종관 : 주중 10:30~20:00 l 주말·공휴일 10:30~20:30",
+          "appliesTo": "area"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "1993017",
+          "sourceText": "[하절기 (3월~10월)] - 10:30~21:00 [동절기 (11월~2월)] - 평일 10:30~20:30 - 주말·법정공휴일 10:30~21:00",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "506",
+          "sourceText": "-본관 : 매일 10:30~21:00 ※ 동절기(11~2월) 주중 10:30~20:30 l 주말·공휴일 10:30~21:00 -메종관 : 주중 10:30~20:00 l 주말·공휴일 10:30~20:30",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "본관:매일10:3021:00※동절기(112월)주중10:3020:30l주말·공휴일10:3021:00메종관:주중10:3020:00l주말·공휴일10:3020:30",
+        "[하절기(3월10월)]10:3021:00[동절기(11월2월)]평일10:3020:30주말·법정공휴일10:3021:00"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_403",
+      "canonicalName": "모모스커피 본점",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_403",
+          "sourceText": "08:00-18:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_403",
+          "sourceText": "08:00-18:00\n(17:30 라스트 오더)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "2832729",
+          "sourceText": "08:00~18:00 (마지막 주문 17:30)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_food",
+          "sourceIdOrUrl": "127",
+          "sourceText": "08:00-18:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_food",
+          "sourceIdOrUrl": "1634",
+          "sourceText": "08:00-18:00 (17:30 라스트 오더)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "08:0018:00",
+        "08:0018:00(17:30)"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_740",
+      "canonicalName": "문화예술플랫폼",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_740",
+          "sourceText": "주중 10:00~18:00\n주말 10:00~17:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "2085",
+          "sourceText": "주중 10:00~18:00 주말 10:00~17:00",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "주중10:0018:00주말10:0017:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_825",
+      "canonicalName": "미피카페 부산",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_825",
+          "sourceText": "월~금 - 11:00 ~ 22:00 (21:00 라스트 오더)\n토~일 - 11:00 ~ 23:00 (22:00 라스트 오더)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "2555",
+          "sourceText": "월~금 - 11:00 ~ 22:00 (21:00 라스트 오더) 토~일 - 11:00 ~ 23:00 (22:00 라스트 오더)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "월금11:0022:00(21:00)토일11:0023:00(22:00)"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_89",
+      "canonicalName": "범어사 성보박물관",
+      "previousClassification": "representative_core",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_89",
+          "sourceText": "매일 08:00 - 17:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "2554111",
+          "sourceText": "09:30~17:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "402",
+          "sourceText": "매일 08:00 - 17:00",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "매일08:0017:00",
+        "09:3017:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_core",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_92",
+      "canonicalName": "부산근현대역사관 본관",
+      "previousClassification": "representative_core",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_92",
+          "sourceText": "매주 화요일~일요일 09:00~18:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "3083767",
+          "sourceText": "09:00~18:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "1881",
+          "sourceText": "매주 화요일~일요일 09:00~18:00",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "매주화요일일요일09:0018:00",
+        "09:0018:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_core",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_700",
+      "canonicalName": "부산도서관",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_700",
+          "sourceText": "화~금요일 09:00~22:00\n토~일요일 09:00~18:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "1031",
+          "sourceText": "화~금요일 09:00~22:00 토~일요일 09:00~18:00",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "화금요일09:0022:00토일요일09:0018:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_622",
+      "canonicalName": "부산박물관",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_622",
+          "sourceText": "09:00~18:00 (입장 17:00까지) ",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "276",
+          "sourceText": "09:00~18:00 (입장 17:00까지)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "09:0018:00(입장17:00까지)"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_25",
+      "canonicalName": "부산시립미술관",
+      "previousClassification": "representative_core",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_25",
+          "sourceText": "본관/ 화요일~일요일 10:00~18:00 \n이우환 공간(별관) /화요일~일요일 10:00~18:00(입장 17:30까지) ",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "130166",
+          "sourceText": "10:00~18:00 (입장 마감 17:30)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "289",
+          "sourceText": "본관/ 화요일~일요일 10:00~18:00 이우환 공간(별관) /화요일~일요일 10:00~18:00(입장 17:30까지)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "본관/화요일일요일10:0018:00이우환공간(별관)/화요일일요일10:0018:00(입장17:30까지)",
+        "10:0018:00(17:30)"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_core",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_805",
+      "canonicalName": "부산프리미엄아울렛",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_805",
+          "sourceText": "하절기(5~10월) 매일 10:30~21:00\n동절기(11~4월) 월~목 10:30~20:30 | 금~일 10:30~21:00",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "552",
+          "sourceText": "하절기(5~10월) 매일 10:30~21:00 동절기(11~4월) 월~목 10:30~20:30 | 금~일 10:30~21:00",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "하절기(510월)매일10:3021:00동절기(114월)월목10:3020:30|금일10:3021:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_4",
+      "canonicalName": "부평깡통시장",
+      "previousClassification": "representative_core",
+      "conflictType": "시간 조건 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_4",
+          "sourceText": "매일 19:30-24:00",
+          "appliesTo": "area"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "1878218",
+          "sourceText": "- 08:00~20:00 - 야시장 19:30~23:30 ※ 점포별로 상이함",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "400",
+          "sourceText": "매일 19:30-24:00",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "매일19:3024:00",
+        "08:0020:00야시장19:3023:30※점포별로상이함"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_427",
+      "canonicalName": "브레이크인커피",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_427",
+          "sourceText": "월-일 : 10:00-21:50\n(21:00 라스트 오더)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "2853145",
+          "sourceText": "10:00~21:50 (라스트오더 21:00)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_food",
+          "sourceIdOrUrl": "1464",
+          "sourceText": "월-일 : 10:00-21:50 (21:00 라스트 오더)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "월일:10:0021:50(21:00)",
+        "10:0021:50(21:00)"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_3",
+      "canonicalName": "신세계백화점 센텀시티점",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_3",
+          "sourceText": "월-목 10:30~20:00\n금-일 10:30~20:30",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "548",
+          "sourceText": "월-목 10:30~20:00 금-일 10:30~20:30",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "월목10:3020:00금일10:3020:30"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_630",
+      "canonicalName": "아미산전망대",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_630",
+          "sourceText": "화~일 / 09:00 ~ 18:00(입장 17:00까지) ",
+          "appliesTo": "outdoor_route"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "287",
+          "sourceText": "화~일 / 09:00 ~ 18:00(입장 17:00까지)",
+          "appliesTo": "outdoor_route"
+        }
+      ],
+      "normalizedValues": [
+        "화일/09:0018:00(입장17:00까지)"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_2",
+      "canonicalName": "영도 흰여울해안터널",
+      "previousClassification": "representative_core",
+      "conflictType": "범위 불일치",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_2",
+          "sourceText": "매일",
+          "appliesTo": "area"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "2606221",
+          "sourceText": "상시 개방",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "255",
+          "sourceText": "매일",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "매일",
+        "상시개방"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_207",
+      "canonicalName": "용호별빛공원",
+      "previousClassification": "representative_standard",
+      "conflictType": "시간 조건 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_207",
+          "sourceText": "매일 09:00~22:00 (전시체험관의 경우, 13:00-21:00 월·화 휴관)",
+          "appliesTo": "area"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "2822240",
+          "sourceText": "- 용호별빛공원 09:00~22:00 - 전시체험관 13:00~21:00 - 경관조명 : 일몰 시~22:00",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "2133",
+          "sourceText": "매일 09:00~22:00 (전시체험관의 경우, 13:00-21:00 월·화 휴관)",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "매일09:0022:00(전시체험관의경우,13:0021:00월·화휴관)",
+        "용호별빛공원09:0022:00전시체험관13:0021:00경관조명:일몰시22:00"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_641",
+      "canonicalName": "을숙도",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_641",
+          "sourceText": "을숙도생태공원 매일 *야간출입 제한(20:00~익일 08:00)\n낙동강하구에코센터 화~일요일 09:00~18:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "304",
+          "sourceText": "을숙도생태공원 매일 *야간출입 제한(20:00~익일 08:00) 낙동강하구에코센터 화~일요일 09:00~18:00",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "을숙도생태공원매일*야간출입제한(20:00익일08:00)낙동강하구에코센터화일요일09:0018:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_719",
+      "canonicalName": "정중앙공원",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_719",
+          "sourceText": "상시운영 ",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "1772",
+          "sourceText": "상시운영",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "상시운영"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_616",
+      "canonicalName": "조선통신사역사관",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_616",
+          "sourceText": "09:00~18:00\n마지막 입장시간: 17:30",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "269",
+          "sourceText": "09:00~18:00 마지막 입장시간: 17:30",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "09:0018:00마지막입장시간:17:30"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_53",
+      "canonicalName": "주식회사아래모래",
+      "previousClassification": "representative_standard",
+      "conflictType": "실질 충돌",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_53",
+          "sourceText": "09:00 ~ 18:00 (3월-10월)\n09:00 ~ 17:00 (11월-2월)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "3511011",
+          "sourceText": "월요일~일요일 10:00~19:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "365",
+          "sourceText": "09:00 ~ 18:00 (3월-10월) 09:00 ~ 17:00 (11월-2월)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "09:0018:00(3월10월)09:0017:00(11월2월)",
+        "월요일일요일10:0019:00"
+      ],
+      "decision": "hold",
+      "decisionReason": "원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "hold",
+      "nextReviewDueAt": "2026-08-24"
+    },
+    {
+      "placeId": "poi_225",
+      "canonicalName": "친환경 스카이웨이 전망대(이바구길)",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_225",
+          "sourceText": "24시간",
+          "appliesTo": "outdoor_route"
+        },
+        {
+          "source": "tourapi_detailIntro2",
+          "sourceIdOrUrl": "2656194",
+          "sourceText": "상시 개방",
+          "appliesTo": "outdoor_route"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceIdOrUrl": "1868",
+          "sourceText": "24시간",
+          "appliesTo": "outdoor_route"
+        }
+      ],
+      "normalizedValues": [
+        "24시간",
+        "상시개방"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_1060",
+      "canonicalName": "카페호밀",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_1060",
+          "sourceText": "수-토 10:30-18:00\n일 10:30-17:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_food",
+          "sourceIdOrUrl": "1803",
+          "sourceText": "수-토 10:30-18:00 일 10:30-17:00",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "수토10:3018:00일10:3017:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_1051",
+      "canonicalName": "커피스가모 인 서면",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_1051",
+          "sourceText": "월-일  : 10:30-22:00",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_food",
+          "sourceIdOrUrl": "1447",
+          "sourceText": "월-일 : 10:30-22:00",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "월일:10:3022:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_1059",
+      "canonicalName": "토북베이커리",
+      "previousClassification": "representative_standard",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_1059",
+          "sourceText": "10:00-22:00 연중무휴\n(21:40 라스트오더)",
+          "appliesTo": "point_facility"
+        },
+        {
+          "source": "busan_food",
+          "sourceIdOrUrl": "1802",
+          "sourceText": "10:00-22:00 연중무휴 (21:40 라스트오더)",
+          "appliesTo": "point_facility"
+        }
+      ],
+      "normalizedValues": [
+        "10:0022:00연중무휴(21:40)"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_standard",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_807",
+      "canonicalName": "NC백화점 부산대점",
+      "previousClassification": "representative_core",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_807",
+          "sourceText": "패션&킴스 : (월-목) 10:30-21:00 (금-일) 10:30-22:00\n식당가/카페 : (월-목) 10:30-21:00 (금-일) 10:30-22:00",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "555",
+          "sourceText": "패션&킴스 : (월-목) 10:30-21:00 (금-일) 10:30-22:00 식당가/카페 : (월-목) 10:30-21:00 (금-일) 10:30-22:00",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "패션&킴스:(월목)10:3021:00(금일)10:3022:00식당가/카페:(월목)10:3021:00(금일)10:3022:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_core",
+      "nextReviewDueAt": "2026-11-21"
+    },
+    {
+      "placeId": "poi_806",
+      "canonicalName": "NC백화점 해운대점",
+      "previousClassification": "representative_core",
+      "conflictType": "표기 차이",
+      "sourceValues": [
+        {
+          "source": "runtime_catalog_pre_reclassification",
+          "sourceIdOrUrl": "poi_806",
+          "sourceText": "월~목 10:30~21:00\n금~일 10:30~22:00",
+          "appliesTo": "area"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceIdOrUrl": "554",
+          "sourceText": "월~목 10:30~21:00 금~일 10:30~22:00",
+          "appliesTo": "area"
+        }
+      ],
+      "normalizedValues": [
+        "월목10:3021:00금일10:3022:00"
+      ],
+      "decision": "retain_representative",
+      "decisionReason": "공백·줄바꿈·기호 또는 입장/주문 마감 부연만 다르고 기본 이용 시간 범위가 동일하다. 두 원문을 보존한다.",
+      "reviewedAt": "2026-08-24",
+      "reviewer": "data-curation",
+      "newClassification": "representative_core",
+      "nextReviewDueAt": "2026-11-21"
+    }
+  ]
+}

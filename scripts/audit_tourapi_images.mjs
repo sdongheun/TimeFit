@@ -8,6 +8,7 @@ const key = process.env.TOURAPI_KEY ?? process.env.EXPO_PUBLIC_TOURAPI_KEY;
 if (!key) throw new Error('TOURAPI_KEY 또는 EXPO_PUBLIC_TOURAPI_KEY가 필요합니다.');
 
 const limit = Number(process.env.TOURAPI_IMAGE_LIMIT ?? 20);
+const OUTPUT = process.env.TOURAPI_IMAGE_OUTPUT ?? 'data/processed/review/현재사용_TourAPI_대표이미지_감사.json';
 const catalog = JSON.parse(fs.readFileSync('src/data/busan_poi_catalog.json', 'utf8'));
 const rows = [...catalog.matched.data, ...catalog.unmatched.data]
   .filter((row) => row.tourapiContentId)
@@ -48,6 +49,8 @@ for (const row of rows) {
     samples.push({
       contentId: row.contentId,
       title: row.title,
+      classification: row.classification,
+      sourceEvidence: row.sourceEvidence,
       tourapiContentId: row.tourapiContentId,
       image: item?.firstimage ?? item?.firstimage2 ?? null,
       response: item
@@ -56,24 +59,33 @@ for (const row of rows) {
       rawPreview: item ? undefined : result.rawPreview,
     });
   } catch (error) {
-    samples.push({ contentId: row.contentId, title: row.title, tourapiContentId: row.tourapiContentId, image: null, response: String(error) });
+    samples.push({ contentId: row.contentId, title: row.title, classification: row.classification, sourceEvidence: row.sourceEvidence, tourapiContentId: row.tourapiContentId, image: null, response: String(error) });
   }
   await new Promise((resolve) => setTimeout(resolve, 100));
 }
 
 const withImage = samples.filter((sample) => sample.image).length;
 const report = {
+  meta: { generatedAt: new Date().toISOString(), endpoint: 'TourAPI KorService2 detailCommon2', requested: samples.length, requestIntervalMs: 100 },
   checked: samples.length,
   withImage,
   withoutImage: samples.length - withImage,
+  byClassification: Object.fromEntries(['representative_core', 'representative_standard', 'conditional_more'].map((classification) => {
+    const subset = samples.filter((sample) => sample.classification === classification);
+    return [classification, { checked: subset.length, withImage: subset.filter((sample) => sample.image).length, withoutImage: subset.filter((sample) => !sample.image).length }];
+  })),
   samples,
 };
+
+fs.writeFileSync(OUTPUT, `${JSON.stringify(report, null, 2)}\n`);
 
 if (process.env.TOURAPI_IMAGE_SUMMARY === '1') {
   console.log(JSON.stringify({
     checked: report.checked,
     withImage: report.withImage,
     withoutImage: report.withoutImage,
+    byClassification: report.byClassification,
+    output: OUTPUT,
   }));
 } else {
   console.log(JSON.stringify(report, null, 2));
