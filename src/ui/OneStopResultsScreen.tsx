@@ -14,7 +14,7 @@ import { fmtHM, RootStackParamList } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Results'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'LegacyResults'>;
 type Page = 'results' | 'map' | 'detail' | 'hours' | 'confirm';
 type DetailState = {
   item: OneStopRecommendation;

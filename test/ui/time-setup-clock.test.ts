@@ -11,7 +11,7 @@ test('개발 테스트 시각은 실제 날짜 유형을 유지하면서 추천�
   assert.deepEqual(resolveTimeSetupClock(real, null), real);
 });
 
-test('테스트 시각을 바꾸면 종료 시각은 최대 2시간 뒤로 재설정하고 자정을 넘기지 않는다', () => {
-  assert.equal(suggestedEndForTestClock(14 * 60 + 20), 16 * 60 + 20);
+test('테스트 시각을 바꾸면 종료 시각은 최대 3시간 뒤로 재설정하고 자정을 넘기지 않는다', () => {
+  assert.equal(suggestedEndForTestClock(14 * 60 + 20), 17 * 60 + 20);
   assert.equal(suggestedEndForTestClock(23 * 60 + 30), 23 * 60 + 59);
 });

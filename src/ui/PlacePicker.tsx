@@ -1,6 +1,6 @@
 // 장소 선택 모달 (검색 전용, 지도 없음 — WebView 미의존이라 재빌드 불필요)
-// 검색어 하나로 Kakao Local 우선 + TMAP 폴백 POI/주소 지오코딩을 조회해 합쳐 보여준다.
-import { useState } from 'react';
+// 장소명 검색 전용: Kakao Local 우선 + TMAP POI fallback만 사용한다. 주소는 별도 정책·모드가 생길 때까지 섞지 않는다.
+import { useRef, useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
@@ -9,12 +9,16 @@ import {
   Poi,
   geocodeAddr,
   kakaoGeocodeAddr,
-  kakaoPoiSearchMulti,
   kakaoReverseGeocode,
-  poiSearchMulti,
   reverseGeocode,
 } from '../engine';
+import { kakaoPoiSearchMultiResult, type PlaceSearchResult } from '../engine/kakao';
+import { tmapPoiSearchMultiResult } from '../engine/travel';
+import { searchPlaceSuggestions, type PlaceSearchSuggestion } from '../services/placeSearchSuggestionAdapter';
 import { C } from './theme';
+import { diagnosePlaceSearchSuggestions, initialPlaceSearchSelection } from './placeSearchRanking';
+import { placeSearchCompletionDiagnostic, placeSearchDisplayStateFromResults } from './placeSearchStateModel';
+import { placeSuggestionLineLabel } from './placeSearchSuggestionModel';
 
 export type Place = { label: string; lat: number; lon: number };
 
@@ -30,30 +34,55 @@ type Props = {
 export function PlacePicker({ visible, title, center, showGps = true, onClose, onConfirm }: Props) {
   const insets = useSafeAreaInsets();
   const [q, setQ] = useState('');
-  const [cands, setCands] = useState<Poi[]>([]);
-  const [sel, setSel] = useState(-1);
+  const [cands, setCands] = useState<PlaceSearchSuggestion[]>([]);
+  const [sel, setSel] = useState(initialPlaceSearchSelection);
   const [busy, setBusy] = useState<'search' | 'gps' | ''>('');
-  const [msg, setMsg] = useState('카카오 장소 이름 또는 주소로 검색하세요');
+  const [msg, setMsg] = useState('장소 이름으로 검색하세요');
+  const requestId = useRef(0);
+
+  function changeQuery(value: string) {
+    requestId.current += 1;
+    setQ(value);
+    setCands([]);
+    setSel(initialPlaceSearchSelection);
+    setBusy('');
+    setMsg(value.trim() ? '검색 버튼을 눌러 장소를 찾으세요' : '장소 이름으로 검색하세요');
+  }
 
   async function search() {
-    if (!q.trim()) return;
-    setBusy('search'); setSel(-1);
-    // Kakao Local 우선. 결과가 부족하면 기존 TMAP 검색을 폴백으로 섞는다.
-    let [pois, addrs] = await Promise.all([
-      kakaoPoiSearchMulti(q, center, 5),
-      kakaoGeocodeAddr(q, 3),
-    ]);
-    if (!pois.length) pois = await kakaoPoiSearchMulti(q, undefined, 5);
-    if (pois.length < 3) {
-      const tmapPois = await poiSearchMulti(q, center, 5 - pois.length);
-      pois = mergePois([...pois, ...tmapPois]);
+    const query = q.trim();
+    if (!query) return;
+    const searchId = requestId.current + 1;
+    requestId.current = searchId;
+    setBusy('search'); setSel(initialPlaceSearchSelection);
+    // API-S-4 제안 계약만 소비한다. 주소 결과는 기본 장소명 목록에 절대 섞지 않는다.
+    const response = await searchPlaceSuggestions({
+      query,
+      searchers: {
+        kakao: (nextQuery) => kakaoPoiSearchMultiResult(nextQuery, undefined, 5),
+        tmap: (nextQuery) => tmapPoiSearchMultiResult(nextQuery, undefined, 5),
+      },
+    });
+    const diagnostic = diagnosePlaceSearchSuggestions(query, response.suggestions);
+    const staleIgnored = searchId !== requestId.current;
+    const kakao = response.results.filter((result) => result.provider === 'kakao').at(-1) as PlaceSearchResult;
+    const tmap = response.results.filter((result) => result.provider === 'tmap').at(-1) as PlaceSearchResult;
+    if (typeof __DEV__ !== 'undefined' && __DEV__) {
+      console.info('[place-search-complete]', placeSearchCompletionDiagnostic({
+        kakao,
+        tmap,
+        rankingCounts: diagnostic.counts,
+        staleIgnored,
+        fallbackCalls: response.diagnostics.fallbackCalls,
+        rawPoiCount: response.results.reduce((sum, result) => sum + (result.metrics?.rawPoiCount ?? result.pois.length), 0),
+      }));
     }
-    if (addrs.length < 1) addrs = await geocodeAddr(q, 3);
+    if (staleIgnored) return;
     setBusy('');
-    const list = mergePois([...pois, ...addrs]);
+    const list = diagnostic.results;
     setCands(list);
-    if (!list.length) { setMsg('검색 결과 없음 — 다른 이름/주소로 시도해보세요'); return; }
-    setMsg(''); setSel(0);
+    const state = placeSearchDisplayStateFromResults(response.results, list.length);
+    setMsg(state === 'empty' ? '장소명 결과가 없어요' : state === 'retry' ? '장소 검색을 준비하지 못했어요. 잠시 후 다시 시도해 주세요.' : '목록에서 위치를 선택하세요');
   }
 
   // 내 위치(GPS) → 주소 라벨로 바로 선택 가능
@@ -69,13 +98,13 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
       const targetLat = geocoded ? geocoded.lat : lat;
       const targetLon = geocoded ? geocoded.lon : lon;
       const me: Poi = { name: addr ? `내 위치 · ${addr}` : `내 위치 (${lat.toFixed(4)}, ${lon.toFixed(4)})`, lat: targetLat, lon: targetLon, addr: 'GPS' };
-      setCands([me]); setSel(0); setMsg('');
+      setCands([{ poi: me, match: 'direct', label: me.name, labelSource: 'provider_name' }]); setSel(0); setMsg('');
     } catch { setMsg('위치를 가져오지 못했어요'); }
     finally { setBusy(''); }
   }
 
   const choice: Place | null = sel >= 0 && cands[sel]
-    ? { label: cands[sel].name, lat: cands[sel].lat, lon: cands[sel].lon } : null;
+    ? { label: cands[sel].label, lat: cands[sel].poi.lat, lon: cands[sel].poi.lon } : null;
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
@@ -86,8 +115,8 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
         </View>
 
         <View style={s.searchRow}>
-          <TextInput style={s.input} value={q} onChangeText={setQ} autoFocus
-            placeholder="예: 부산역 / 벡스코 / 부산진구 중앙대로 672" placeholderTextColor={C.muted}
+          <TextInput style={s.input} value={q} onChangeText={changeQuery} autoFocus
+            placeholder="예: 부산역 / 벡스코 / 사상역" placeholderTextColor={C.muted}
             returnKeyType="search" onSubmitEditing={search} />
           <Pressable style={s.searchBtn} onPress={search} disabled={busy === 'search'}>
             {busy === 'search' ? <ActivityIndicator size="small" color={C.accent} /> : <Text style={s.searchBtnTxt}>검색</Text>}
@@ -107,11 +136,11 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
             <Pressable key={i} style={[s.row, i === sel && s.rowOn]} onPress={() => setSel(i)}>
               <Text style={[s.rowDot, i === sel && { color: C.accent }]}>{i === sel ? '●' : '○'}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={s.rowName} numberOfLines={1}>{p.name}</Text>
-                <Text style={s.rowAddr} numberOfLines={1}>{p.addr}</Text>
+                <Text style={s.rowName} numberOfLines={1}>{p.label}</Text>
+                <Text style={s.rowAddr} numberOfLines={1}>{p.poi.addr}</Text>
               </View>
-              {p.addr === '주소' && <Text style={s.tag}>주소</Text>}
-              {p.addr === 'GPS' && <Text style={[s.tag, { color: C.green, borderColor: C.green }]}>GPS</Text>}
+              {placeSuggestionLineLabel(p) && <Text style={s.tag}>{placeSuggestionLineLabel(p)}</Text>}
+              {p.poi.addr === 'GPS' && <Text style={[s.tag, { color: C.green, borderColor: C.green }]}>GPS</Text>}
             </Pressable>
           ))}
         </ScrollView>
@@ -128,18 +157,6 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
       </View>
     </Modal>
   );
-}
-
-function mergePois(list: Poi[]): Poi[] {
-  const seen = new Set<string>();
-  const out: Poi[] = [];
-  for (const p of list) {
-    const key = `${p.name.replace(/\s/g, '').toLowerCase()}|${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    out.push(p);
-  }
-  return out;
 }
 
 const s = StyleSheet.create({

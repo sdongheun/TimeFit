@@ -1,4 +1,4 @@
-import { Course, DayType, HourBucket, LatLon, Mode, PlanResult } from '../engine';
+import { Course, DayType, HourBucket, LatLon, Mode, PlanResult, type CourseV1LimitedResult, type VerifiedCourseV1 } from '../engine';
 
 // 다음 약속(선택): 장소 프리셋 + 라벨. null = 왕복
 export type Appointment = { label: string; lat: number; lon: number } | null;
@@ -19,6 +19,14 @@ export type PlanCtx = {
   isManualTime?: boolean;
 };
 
+export type RecommendationSession = {
+  nowIso: string;
+  origin: { id: string; lat: number; lon: number; label: string };
+  destination: { id: string; lat: number; lon: number; label: string } | null;
+  remainingMin: number;
+  arrivalBufferMin: number;
+};
+
 // 이동수단 라벨 → 아이콘
 export const modeIcon = (label: string) =>
   label.includes('버스') ? '🚌' : label.includes('택시') ? '🚕' : label.includes('자차') || label.includes('차') ? '🚗' : '🚶';
@@ -27,6 +35,16 @@ export type RootStackParamList = {
   Home: undefined;
   TimeSetup: { presetMin?: number } | undefined;
   Results: {
+    session: RecommendationSession;
+    result: CourseV1LimitedResult;
+  };
+  CourseConfirm: {
+    session: RecommendationSession;
+    /** 결과 화면에서 선택한 검증 스냅샷을 그대로 읽기 전용으로 보여 준다. */
+    course: VerifiedCourseV1;
+  };
+  /** V1 저장 계약이 준비되기 전 기존 진행 코스의 변경 흐름만 유지한다. */
+  LegacyResults: {
     result: PlanResult;
     usedTimeLabel: string;
     origin: LatLon;

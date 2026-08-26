@@ -13,6 +13,8 @@ import { RootStackParamList } from "./src/ui/nav";
 import { HomeScreen } from "./src/ui/HomeScreen";
 import { TimeSetupScreen } from "./src/ui/TimeSetupScreen";
 import { ResultsScreen } from "./src/ui/ResultsScreen";
+import { CourseConfirmScreen } from "./src/ui/CourseConfirmScreen";
+import { OneStopResultsScreen } from "./src/ui/OneStopResultsScreen";
 import { ExecutionScreen } from "./src/ui/ExecutionScreen";
 import { FeedbackScreen } from "./src/ui/FeedbackScreen";
 import { ProfileScreen } from "./src/ui/ProfileScreen";
@@ -78,6 +80,12 @@ export default function App() {
                 component={ResultsScreen}
                 options={{ headerShown: false }}
               />
+              <Stack.Screen
+                name="LegacyResults"
+                component={OneStopResultsScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="CourseConfirm" component={CourseConfirmScreen} options={{ headerShown: false }} />
               <Stack.Screen
                 name="MyCourses"
                 component={MyCoursesScreen}

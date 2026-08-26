@@ -270,7 +270,7 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
         Alert.alert('변경 가능한 장소가 없어요', '남은 시간에는 약속 장소로 바로 이동하는 것이 안전해요.');
         return;
       }
-      navigation.replace('Results', {
+      navigation.replace('LegacyResults', {
         result,
         usedTimeLabel: `현재 기준 ${fmtHM(nowMin)}·${time.hourBucket}`,
         origin: currentOrigin,

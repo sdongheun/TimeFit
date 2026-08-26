@@ -31,10 +31,10 @@ export function resetToMyCourses(navigation: NavigationProp<RootStackParamList>)
 
 export function resetToBasket(
   navigation: NavigationProp<RootStackParamList>,
-  params: RootStackParamList['Results'],
+  params: RootStackParamList['LegacyResults'],
 ) {
   navigation.dispatch(CommonActions.reset({
     index: 0,
-    routes: [{ name: 'Results', params }],
+    routes: [{ name: 'LegacyResults', params }],
   }));
 }
