@@ -10,6 +10,8 @@ import {
   selectRepresentativeCourseSetV1,
   type CourseV1Candidate,
   type CourseV1Point,
+  type CourseV1RouteReceipt,
+  type CourseV1RouteReceiptAdapter,
   type CourseV1RouteAdapter,
   type VerifiedCourseV1,
 } from '../src/engine/courseV1';
@@ -39,6 +41,22 @@ function exactRoutes(minutes: Record<string, number>, calls: string[] = []): Cou
       calls.push(key);
       const min = minutes[key];
       return min === undefined ? null : { mode: 'walk', min, exact: true };
+    },
+  };
+}
+
+function receiptRoutes(
+  plans: Record<string, CourseV1RouteReceipt>,
+  calls: string[] = [],
+): CourseV1RouteReceiptAdapter {
+  return {
+    async getRouteReceipt(from, to, budget) {
+      const key = `${from.id}>${to.id}`;
+      calls.push(key);
+      const receipt = plans[key] ?? { result: 'no_route' as const, newProviderAttemptCount: 1 as const, reused: false };
+      return receipt.newProviderAttemptCount <= budget.maxNewProviderAttemptCount
+        ? receipt
+        : { result: 'unavailable', newProviderAttemptCount: 0, reused: false };
     },
   };
 }
@@ -276,6 +294,126 @@ test('ENG-2I-R: 도착지에서도 공간 상위 18개 실패 뒤 19번째 경�
   assert.ok(calls.includes('origin>destination-wide'));
 });
 
+test('ENG-2K-01: 45분 왕복에서 20분 유효 1곳은 30분 다장소 후보와 함께 있어도 검증·반환된다', async () => {
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 45, arrivalBufferMin: 5,
+    provider: provider([
+      place('valid', { lat: origin.lat, lon: origin.lon, recommendedStayMin: 20 }),
+      place('long-a', { lat: origin.lat + 0.0001, lon: origin.lon, recommendedStayMin: 30 }),
+      place('long-b', { lat: origin.lat + 0.0002, lon: origin.lon, recommendedStayMin: 30 }),
+      place('long-c', { lat: origin.lat + 0.0003, lon: origin.lon, recommendedStayMin: 30 }),
+    ]),
+    routes: exactRoutes({ 'origin>valid': 8, 'valid>origin': 8 }),
+  });
+  assert.equal(result.diagnostics.preselectionSlots?.nearSingle, 'valid');
+  assert.deepEqual(result.representativeCourse?.placeIds, ['valid']);
+  assert.equal(result.representativeCourse?.remainingAfterCourseMin, 4);
+});
+
+test('ENG-2K-02: 78분 밀집 후보에서는 독립 1곳과 2곳이 각각 검증되어 비중첩 대안으로 반환된다', async () => {
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 78, arrivalBufferMin: 8,
+    provider: provider([
+      place('near', { lat: origin.lat, lon: origin.lon, recommendedStayMin: 20 }),
+      place('pair-a', { lat: origin.lat + 0.0001, lon: origin.lon, recommendedStayMin: 20 }),
+      place('pair-b', { lat: origin.lat + 0.0002, lon: origin.lon, recommendedStayMin: 30 }),
+      place('crowded', { lat: origin.lat + 0.0003, lon: origin.lon, recommendedStayMin: 45 }),
+    ]),
+    routes: exactRoutes({
+      'origin>near': 8, 'near>origin': 8,
+      'origin>pair-a': 6, 'pair-a>pair-b': 6, 'pair-b>origin': 6,
+      'origin>pair-b': 6, 'pair-b>pair-a': 6, 'pair-a>origin': 6,
+    }),
+  });
+  assert.equal(result.diagnostics.preselectionSlots?.nearSingle, 'near');
+  assert.equal(result.diagnostics.preselectionSlots?.independentTwo, 'pair-b|pair-a');
+  assert.ok([result.representativeCourse, ...result.alternativeCourses].some((course) => course?.id === 'near'));
+  assert.ok([result.representativeCourse, ...result.alternativeCourses]
+    .some((course) => course && [...course.placeIds].sort().join('|') === 'pair-a|pair-b'));
+});
+
+test('ENG-2K-03: 90분 도착지에서 근접·넓은 단일 lane은 각각 검증되고 넓은 유효 후보가 남는다', async () => {
+  const near = Array.from({ length: 18 }, (_, index) => place(`near-${String(index + 1).padStart(2, '0')}`, {
+    lat: origin.lat + (index + 1) * 0.00001, lon: origin.lon,
+  }));
+  const wide = place('wide', { lat: origin.lat + 0.001, lon: origin.lon, recommendedStayMin: 20 });
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination, remainingMin: 90, arrivalBufferMin: 8,
+    provider: provider([...near, wide]),
+    routes: exactRoutes({ 'origin>wide': 10, 'wide>destination': 10 }),
+  });
+  assert.equal(result.diagnostics.preselectionSlots?.nearSingle, 'near-01');
+  assert.equal(result.diagnostics.preselectionSlots?.wideSingle, 'wide');
+  assert.deepEqual(result.representativeCourse?.placeIds, ['wide']);
+});
+
+test('ENG-2K-04: 120분에는 유효한 60분 1곳과 20+30분 독립 2곳을 함께 검증해 이동 부담으로 대표를 정한다', async () => {
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 120, arrivalBufferMin: 10,
+    provider: provider([
+      place('long-one', { lat: origin.lat, lon: origin.lon, recommendedStayMin: 60 }),
+      place('two-a', { lat: origin.lat + 0.0001, lon: origin.lon, recommendedStayMin: 20 }),
+      place('two-b', { lat: origin.lat + 0.0002, lon: origin.lon, recommendedStayMin: 30 }),
+    ]),
+    routes: exactRoutes({
+      'origin>long-one': 10, 'long-one>origin': 10,
+      'origin>two-a': 5, 'two-a>two-b': 5, 'two-b>origin': 10,
+      'origin>two-b': 5, 'two-b>two-a': 5, 'two-a>origin': 10,
+    }),
+  });
+  assert.equal(result.diagnostics.preselectionSlots?.nearSingle, 'long-one');
+  assert.equal(result.diagnostics.preselectionSlots?.independentTwo, 'two-b|two-a');
+  assert.deepEqual(result.representativeCourse?.placeIds, ['long-one']);
+  assert.ok(result.alternativeCourses.some((course) => [...course.placeIds].sort().join('|') === 'two-a|two-b'));
+});
+
+test('ENG-2K-05: 180분에는 독립 1·2·3곳을 모두 검증하고 3곳은 대안으로 남긴다', async () => {
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 180, arrivalBufferMin: 10,
+    provider: provider([
+      place('one', { lat: origin.lat, lon: origin.lon }),
+      place('two-a', { lat: origin.lat + 0.0001, lon: origin.lon }),
+      place('two-b', { lat: origin.lat + 0.0002, lon: origin.lon }),
+      place('three-a', { lat: origin.lat + 0.0003, lon: origin.lon }),
+      place('three-b', { lat: origin.lat + 0.0004, lon: origin.lon }),
+      place('three-c', { lat: origin.lat + 0.0005, lon: origin.lon }),
+    ]),
+    routes: exactRoutes({
+      'origin>one': 5, 'one>origin': 5,
+      'origin>two-a': 5, 'two-a>two-b': 5, 'two-b>origin': 5,
+      'origin>three-a': 5, 'three-a>three-b': 5, 'three-b>three-c': 5, 'three-c>origin': 5,
+      'origin>two-b': 5, 'two-b>two-a': 5, 'two-a>origin': 5,
+      'origin>three-b': 5, 'origin>three-c': 5,
+      'three-a>three-c': 5, 'three-b>three-a': 5,
+      'three-c>three-a': 5, 'three-c>three-b': 5, 'three-a>origin': 5, 'three-b>origin': 5,
+    }),
+  });
+  assert.equal(result.diagnostics.preselectionSlots?.nearSingle, 'one');
+  assert.equal(result.diagnostics.preselectionSlots?.independentTwo, 'two-b|two-a');
+  assert.ok(result.diagnostics.preselectionSlots?.independentThree);
+  assert.ok(result.representativeCourse!.placeIds.length <= 2);
+  assert.ok([result.representativeCourse, ...result.alternativeCourses].some((course) => course?.id === 'one'));
+  assert.ok([result.representativeCourse, ...result.alternativeCourses]
+    .some((course) => course && [...course.placeIds].sort().join('|') === 'two-a|two-b'));
+  assert.ok(result.alternativeCourses.some((course) => [...course.placeIds].sort().join('|') === 'three-a|three-b|three-c'));
+});
+
+test('ENG-2K-06: 유효 코스가 정확히 하나면 60·120분 모두 대안을 부풀리지 않는다', async () => {
+  for (const remainingMin of [60, 120]) {
+    const result = await buildLimitedRepresentativeCourseV1({
+      now, origin, destination: null, remainingMin, arrivalBufferMin: 8,
+      provider: provider([place('only', { recommendedStayMin: 20 })]),
+      routes: exactRoutes({ 'origin>only': 8, 'only>origin': 8 }),
+    });
+    assert.deepEqual(result.representativeCourse?.placeIds, ['only']);
+    assert.deepEqual(result.alternativeCourses, []);
+    assert.equal(result.alternativeState, 'no_alternative_verified_course');
+    assert.deepEqual(result.diagnostics.preselectionSlots, {
+      nearSingle: 'only', wideSingle: null, independentTwo: null, independentThree: null,
+    });
+  }
+});
+
 test('ENG-2I: 실제 검증 뒤에는 1·2곳을 대표로 우선하고, 독립적인 3곳 검증 코스는 대안으로 남긴다', () => {
   const selected = selectRepresentativeCourseSetV1([
     verifiedFixture(['A'], { travelMin: 10, stayMin: 15 }),
@@ -338,4 +476,63 @@ test('ENG-2G: 조건부·needs_review 후보는 검증 stop으로 유입되지 �
   });
   assert.equal(result.resultState, 'no_representative_candidates');
   assert.deepEqual(result.alternativeCourses, []);
+});
+
+test('REC-26: 6개 생활권의 48개 분 단위 receipt fixture는 실제 API 없이 결정적으로 검증된다', async () => {
+  const districts = ['사상', '서면', '부산역', '남포', '광안리', '해운대'];
+  const scenarios = [
+    { remainingMin: 45, destination: null }, { remainingMin: 78, destination: null },
+    { remainingMin: 120, destination: null }, { remainingMin: 180, destination: null },
+    { remainingMin: 45, destination }, { remainingMin: 78, destination },
+    { remainingMin: 120, destination }, { remainingMin: 180, destination },
+  ];
+  for (const district of districts) for (const scenario of scenarios) {
+    const id = `${district}-대표`;
+    const target = scenario.destination?.id ?? origin.id;
+    const result = await buildLimitedRepresentativeCourseV1({
+      now, origin, destination: scenario.destination, remainingMin: scenario.remainingMin, arrivalBufferMin: 5,
+      provider: provider([place(id, { recommendedStayMin: 20 })]), routes: exactRoutes({}),
+      receiptRoutes: receiptRoutes({
+        [`origin>${id}`]: { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+        [`${id}>${target}`]: { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      }),
+    });
+    assert.deepEqual(result.representativeCourse?.placeIds, [id]);
+    assert.ok((result.diagnostics.newProviderAttemptCount ?? 0) <= 8);
+    assert.ok((result.diagnostics.adapterCallCount ?? 0) <= 24);
+  }
+});
+
+test('REC-26: receipt no_route 뒤에는 4개에서 멈추지 않고 뒤 단일 후보를 보충하며 동일 구간은 세션 재사용한다', async () => {
+  const calls: string[] = [];
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 90, arrivalBufferMin: 5,
+    provider: provider(['a', 'b', 'c', 'd', 'e'].map((id, index) => place(id, { lat: origin.lat + index * 0.0001, lon: origin.lon }))),
+    routes: exactRoutes({}),
+    receiptRoutes: receiptRoutes({
+      'origin>a': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>b': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>c': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>d': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>e': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'e>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+    }, calls),
+  });
+  assert.deepEqual(result.representativeCourse?.placeIds, ['e']);
+  assert.ok(result.diagnostics.exactCourseAttemptCount > COURSE_V1_EXACT_COURSE_LIMIT);
+  assert.ok((result.diagnostics.cacheOrSessionReuseCount ?? 0) >= 0);
+  assert.ok(calls.includes('origin>e'));
+});
+
+test('REC-26: 8번째 provider attempt와 unavailable은 fallback 없이 상한·구조화 reason으로 끝난다', async () => {
+  const calls: string[] = [];
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 90, arrivalBufferMin: 5,
+    provider: provider(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'].map((id, index) => place(id, { lat: origin.lat + index * 0.0001, lon: origin.lon }))),
+    routes: exactRoutes({}), receiptRoutes: receiptRoutes({}, calls),
+  });
+  assert.equal(result.primaryOutcomeReason, 'route_verification_unavailable');
+  assert.equal(result.diagnostics.newProviderAttemptCount, 8);
+  assert.ok((result.diagnostics.adapterCallCount ?? 0) <= 24);
+  assert.equal(calls.length, 8);
 });

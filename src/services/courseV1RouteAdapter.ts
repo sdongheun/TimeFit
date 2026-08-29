@@ -3,7 +3,32 @@ import { precompute, precomputeTransit, travelMin, travelSrc } from '../engine/t
 
 /** 기존 경로 모듈의 API/캐시 결과를 읽기 위한 좁은 경계다. */
 export type CourseV1RouteFetcher = {
-  fetch(from: CourseV1Point, to: CourseV1Point, mode: CourseV1TravelMode): Promise<{ min: number; source: string } | null>;
+  /** true이면 실제 legacy transport가 HTTP 직전마다 observer를 호출한다. */
+  providerHttpAttemptsObserved?: boolean;
+  fetch(
+    from: CourseV1Point,
+    to: CourseV1Point,
+    mode: CourseV1TravelMode,
+    transport: CourseV1RouteTransportObserver,
+  ): Promise<{ min: number; source: string } | null>;
+};
+
+export type CourseV1RouteProvider = 'tmap' | 'odsay';
+
+/**
+ * legacy transport가 실제 HTTP 요청 직전에 호출하는 좁은 관찰·예산 경계다.
+ * 기존 direct fetcher는 이 hook을 사용하지 않으므로 HTTP attempt 수를 추정하지 않는다.
+ */
+export type CourseV1RouteTransportObserver = {
+  recordProviderHttpAttempt(provider: CourseV1RouteProvider): boolean;
+};
+
+/** 한 추천 요청에만 적용하는 선택적 호출 상한이다. 값이 없으면 그 종류의 상한도 없다. */
+export type RouteRequestBudget = {
+  logicalSegments?: number;
+  walkFetches?: number;
+  transitFetches?: number;
+  providerHttpAttempts?: Partial<Record<CourseV1RouteProvider, number>>;
 };
 
 export const COURSE_V1_ROUTE_SUCCESS_TTL_MS = 24 * 60 * 60 * 1000;
@@ -20,6 +45,17 @@ export type CourseV1RouteDiagnostics = {
   cacheHits: number;
   sharedInFlightWaits: number;
   failures: number;
+  logicalSegments: number;
+  adapterFetches: Record<CourseV1TravelMode, number>;
+  providerHttpAttempts: Record<CourseV1RouteProvider, number>;
+  /** transport hook을 호출한 fixture/client가 있을 때만 true다. */
+  providerHttpAttemptsObserved: boolean;
+  limited: {
+    logicalSegments: number;
+    walkFetches: number;
+    transitFetches: number;
+    providerHttpAttempts: number;
+  };
 };
 
 export type CourseV1RouteAdapterWithDiagnostics = CourseV1RouteAdapter & {
@@ -39,15 +75,20 @@ export type CourseV1RouteAdapterOptions = {
   autoWalkLimitMin?: number;
 };
 
+export type CourseV1RouteRequestScopeOptions = CourseV1RouteAdapterOptions & {
+  budget: RouteRequestBudget;
+};
+
 /**
  * Course v1은 TMAP 보행과 ODsay 대중교통의 실제 응답만 쓴다.
  * travel.ts가 보관하는 haversine/transit_fallback/walk_short 값은 이 경계에서 null이다.
  */
 export const defaultCourseV1RouteFetcher: CourseV1RouteFetcher = {
-  async fetch(from, to, mode) {
+  providerHttpAttemptsObserved: true,
+  async fetch(from, to, mode, transport) {
     const pair: [{ lat: number; lon: number }, { lat: number; lon: number }] = [from, to];
-    if (mode === 'walk') await precompute([pair], 'walk', { retryFallback: true });
-    else await precomputeTransit([pair], { retryFallback: true });
+    if (mode === 'walk') await precompute([pair], 'walk', { retryFallback: true, transportObserver: transport });
+    else await precomputeTransit([pair], { retryFallback: true, transportObserver: transport });
     return { min: travelMin(from, to, mode), source: travelSrc(from, to, mode) };
   },
 };
@@ -56,22 +97,55 @@ export const defaultCourseV1RouteFetcher: CourseV1RouteFetcher = {
  * 명시적 owner는 테스트·독립 작업 단위용이고, 옵션 없는 기본 생성은 앱 실행 중
  * 하나의 owner를 재사용한다. 어느 쪽도 위치를 영속 저장하지 않는다.
  */
-export function createCourseV1RouteCacheOwner(options: CourseV1RouteAdapterOptions = {}): CourseV1RouteCacheOwner {
+export function createCourseV1RouteCacheOwner(
+  options: CourseV1RouteAdapterOptions = {},
+  budget?: RouteRequestBudget,
+): CourseV1RouteCacheOwner {
   const fetcher = options.fetcher ?? defaultCourseV1RouteFetcher;
   const now = options.now ?? Date.now;
   const successTtlMs = options.successTtlMs ?? COURSE_V1_ROUTE_SUCCESS_TTL_MS;
   const failureTtlMs = options.failureTtlMs ?? COURSE_V1_ROUTE_FAILURE_TTL_MS;
   const autoWalkLimitMin = options.autoWalkLimitMin ?? COURSE_V1_AUTO_WALK_LIMIT_MIN;
   const cache = new Map<string, CachedRoute>();
-  const inFlight = new Map<string, Promise<ExactRoute | null>>();
-  const counters: CourseV1RouteDiagnostics = { fetchRequests: 0, cacheHits: 0, sharedInFlightWaits: 0, failures: 0 };
+  const inFlight = new Map<string, Promise<RouteLookup>>();
+  const counters: CourseV1RouteDiagnostics = {
+    fetchRequests: 0,
+    cacheHits: 0,
+    sharedInFlightWaits: 0,
+    failures: 0,
+    logicalSegments: 0,
+    adapterFetches: { walk: 0, transit: 0 },
+    providerHttpAttempts: { tmap: 0, odsay: 0 },
+    providerHttpAttemptsObserved: false,
+    limited: { logicalSegments: 0, walkFetches: 0, transitFetches: 0, providerHttpAttempts: 0 },
+  };
 
-  async function getExactRoute(from: CourseV1Point, to: CourseV1Point, mode: CourseV1TravelMode): Promise<ExactRoute | null> {
+  function diagnostics(): CourseV1RouteDiagnostics {
+    return {
+      ...counters,
+      adapterFetches: { ...counters.adapterFetches },
+      providerHttpAttempts: { ...counters.providerHttpAttempts },
+      limited: { ...counters.limited },
+    };
+  }
+
+  function recordProviderHttpAttempt(provider: CourseV1RouteProvider): boolean {
+    counters.providerHttpAttemptsObserved = true;
+    const limit = budget?.providerHttpAttempts?.[provider];
+    if (limit !== undefined && counters.providerHttpAttempts[provider] >= limit) {
+      counters.limited.providerHttpAttempts += 1;
+      return false;
+    }
+    counters.providerHttpAttempts[provider] += 1;
+    return true;
+  }
+
+  async function getExactRoute(from: CourseV1Point, to: CourseV1Point, mode: CourseV1TravelMode): Promise<RouteLookup> {
     const key = courseV1RouteCacheKey(mode, from, to);
     const cached = cache.get(key);
     if (cached && now() - cached.cachedAt < (cached.value ? successTtlMs : failureTtlMs)) {
       counters.cacheHits += 1;
-      return cached.value;
+      return { value: cached.value, limited: false };
     }
     if (cached) cache.delete(key);
     const existing = inFlight.get(key);
@@ -82,16 +156,40 @@ export function createCourseV1RouteCacheOwner(options: CourseV1RouteAdapterOptio
 
     const pending = (async () => {
       let response: { min: number; source: string } | null = null;
+      let limited = false;
       try {
+        if (hasProviderHttpBudget(budget) && fetcher.providerHttpAttemptsObserved !== true) {
+          counters.limited.providerHttpAttempts += 1;
+          return { value: null, limited: true };
+        }
+        const fetchLimit = mode === 'walk' ? budget?.walkFetches : budget?.transitFetches;
+        if (fetchLimit !== undefined && counters.adapterFetches[mode] >= fetchLimit) {
+          counters.limited[mode === 'walk' ? 'walkFetches' : 'transitFetches'] += 1;
+          return { value: null, limited: true };
+        }
         counters.fetchRequests += 1;
-        response = await fetcher.fetch(from, to, mode);
+        counters.adapterFetches[mode] += 1;
+        let providerAttemptLimited = false;
+        response = await fetcher.fetch(from, to, mode, {
+          recordProviderHttpAttempt(provider) {
+            const accepted = recordProviderHttpAttempt(provider);
+            if (!accepted) providerAttemptLimited = true;
+            return accepted;
+          },
+        });
+        // transport가 거부 신호를 무시해도 제한된 결과를 exact route로 승격하지 않는다.
+        if (providerAttemptLimited) {
+          limited = true;
+          response = null;
+        }
       } catch {
         // 네트워크·SDK 오류도 근사치로 바꾸지 않는다.
       }
       const value: ExactRoute | null = isExactResponse(mode, response) ? { mode, min: response.min, exact: true } : null;
       if (!value) counters.failures += 1;
-      cache.set(key, { value, cachedAt: now() });
-      return value;
+      // 예산 소진은 다음 scope의 실패 cache가 아니라 해당 새 구간의 limited 상태다.
+      if (!limited) cache.set(key, { value, cachedAt: now() });
+      return { value, limited };
     })().finally(() => inFlight.delete(key));
     inFlight.set(key, pending);
     return pending;
@@ -100,17 +198,39 @@ export function createCourseV1RouteCacheOwner(options: CourseV1RouteAdapterOptio
   function createAdapter(): CourseV1RouteAdapterWithDiagnostics {
     return {
       async getRoute(from, to) {
+        counters.logicalSegments += 1;
+        if (budget?.logicalSegments !== undefined && counters.logicalSegments > budget.logicalSegments) {
+          counters.limited.logicalSegments += 1;
+          return null;
+        }
         const walk = await getExactRoute(from, to, 'walk');
-        if (walk && walk.min <= autoWalkLimitMin) return walk;
+        if (walk.limited) return null;
+        if (walk.value && walk.value.min <= autoWalkLimitMin) return walk.value;
 
         // 먼 구간 또는 도보 실패는 실제 ODsay 결과가 있어야만 대중교통으로 전환한다.
-        return getExactRoute(from, to, 'transit');
+        const transit = await getExactRoute(from, to, 'transit');
+        return transit.limited ? null : transit.value;
       },
-      diagnostics: () => ({ ...counters }),
+      diagnostics,
     };
   }
 
-  return { createAdapter, diagnostics: () => ({ ...counters }) };
+  return { createAdapter, diagnostics };
+}
+
+type RouteLookup = { value: ExactRoute | null; limited: boolean };
+
+function hasProviderHttpBudget(budget: RouteRequestBudget | undefined): boolean {
+  return budget?.providerHttpAttempts?.tmap !== undefined || budget?.providerHttpAttempts?.odsay !== undefined;
+}
+
+/**
+ * 추천 1회 수명용 cache·in-flight·예산 scope다. UI 기본 adapter에는 연결하지 않는다.
+ * cache hit/shared in-flight은 논리 구간으로만 기록되며 새 fetch/HTTP attempt를 소비하지 않는다.
+ */
+export function createCourseV1RouteRequestScope(options: CourseV1RouteRequestScopeOptions): CourseV1RouteCacheOwner {
+  const { budget, ...adapterOptions } = options;
+  return createCourseV1RouteCacheOwner(adapterOptions, budget);
 }
 
 let appSessionRouteAdapter: CourseV1RouteAdapterWithDiagnostics | undefined;

@@ -11,6 +11,20 @@ const ODSAY_KEY = process.env.EXPO_PUBLIC_ODSAY_API_KEY ?? process.env.ODSAY_API
 const ROUTE_USAGE_KEY = 'timefit:tmap-route-usage:v1';
 const ODSAY_USAGE_KEY = 'timefit:odsay-transit-usage:v1';
 
+/** legacy route transport가 실제 HTTP 직전에만 사용하는 호출 관찰·취소 경계다. */
+export type LegacyRouteTransportObserver = {
+  recordProviderHttpAttempt(provider: 'tmap' | 'odsay'): boolean;
+};
+
+export async function attemptLegacyRouteHttp<T>(
+  provider: 'tmap' | 'odsay',
+  observer: LegacyRouteTransportObserver | undefined,
+  request: () => Promise<T>,
+): Promise<T | undefined> {
+  if (observer && !observer.recordProviderHttpAttempt(provider)) return undefined;
+  return request();
+}
+
 type RouteUsageStats = {
   date: string;
   total: number;
@@ -255,20 +269,26 @@ export function haversineMin(a: LatLon, b: LatLon, mode: Mode): number {
 }
 
 // TMAP 경로: 소요시간 + 경로좌표(geometry) — geometry는 지도 실경로 표시용
-async function tmapTravel(a: LatLon, b: LatLon, mode: RoadMode): Promise<{ min: number; geo: LatLon[] } | null> {
+async function tmapTravel(
+  a: LatLon,
+  b: LatLon,
+  mode: RoadMode,
+  observer?: LegacyRouteTransportObserver,
+): Promise<{ min: number; geo: LatLon[] } | null> {
   if (!TMAP_KEY) return null;
-  const callNo = await markRouteCall(mode, a, b);
-  const ped = mode === 'walk';
-  const url = ped
-    ? 'https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json'
-    : 'https://apis.openapi.sk.com/tmap/routes?version=1&format=json';
-  const body: any = {
-    startX: a.lon, startY: a.lat, endX: b.lon, endY: b.lat,
-    reqCoordType: 'WGS84GEO', resCoordType: 'WGS84GEO',
-    startName: encodeURIComponent('출발'), endName: encodeURIComponent('도착'),
-  };
-  if (!ped) { body.searchOption = '0'; body.trafficInfo = 'N'; }
-  try {
+  return (await attemptLegacyRouteHttp('tmap', observer, async () => {
+    const callNo = await markRouteCall(mode, a, b);
+    const ped = mode === 'walk';
+    const url = ped
+      ? 'https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json'
+      : 'https://apis.openapi.sk.com/tmap/routes?version=1&format=json';
+    const body: any = {
+      startX: a.lon, startY: a.lat, endX: b.lon, endY: b.lat,
+      reqCoordType: 'WGS84GEO', resCoordType: 'WGS84GEO',
+      startName: encodeURIComponent('출발'), endName: encodeURIComponent('도착'),
+    };
+    if (!ped) { body.searchOption = '0'; body.trafficInfo = 'N'; }
+    try {
     const res = await fetch(url, {
       method: 'POST',
       headers: { appKey: TMAP_KEY, 'Content-Type': 'application/json' },
@@ -309,10 +329,11 @@ async function tmapTravel(a: LatLon, b: LatLon, mode: RoadMode): Promise<{ min: 
     const min = Math.round(sec / 60);
     await markRouteResult(callNo, mode, true, min);
     return { min, geo };
-  } catch {
-    await markRouteResult(callNo, mode, false);
-    return null;
-  }
+    } catch {
+      await markRouteResult(callNo, mode, false);
+      return null;
+    }
+  })) ?? null;
 }
 
 // 캐시: 약관상 취득 데이터 24시간 이상 보관 금지 → TTL 24h
@@ -333,7 +354,7 @@ export type PrecomputeStat = { ok: number; fail: number; skipped?: number };
 export async function precompute(
   pairs: [LatLon, LatLon][],
   mode: RoadMode,
-  options: { retryFallback?: boolean } = {},
+  options: { retryFallback?: boolean; transportObserver?: LegacyRouteTransportObserver } = {},
 ): Promise<PrecomputeStat> {
   let ok = 0, fail = 0;
   let cacheHit = 0;
@@ -342,7 +363,7 @@ export async function precompute(
     const cached = getCache(k);
     // TMAP 오류로 저장된 직선 추정값은 장바구니 최종 검토에서만 다시 시도한다.
     if (cached && !(options.retryFallback && cached.src === 'haversine')) { cacheHit++; continue; }
-    const t = await tmapTravel(a, b, mode);
+    const t = await tmapTravel(a, b, mode, options.transportObserver);
     if (t != null) { cache.set(k, { min: t.min, src: 'TMAP', geo: t.geo, ts: Date.now() }); ok++; }
     else { cache.set(k, { min: haversineMin(a, b, mode), src: 'haversine', ts: Date.now() }); fail++; }
   }
@@ -456,18 +477,23 @@ function transitGeo(path: any, origin: LatLon, destination: LatLon): LatLon[] | 
   return points.length > 2 ? points : undefined;
 }
 
-async function odsayTransit(a: LatLon, b: LatLon): Promise<{ min: number; meta: TransitMeta } | null> {
+async function odsayTransit(
+  a: LatLon,
+  b: LatLon,
+  observer?: LegacyRouteTransportObserver,
+): Promise<{ min: number; meta: TransitMeta } | null> {
   if (!ODSAY_KEY) return null;
-  const callNo = await markOdsayCall(a, b);
-  const qs = new URLSearchParams({
-    SX: String(a.lon),
-    SY: String(a.lat),
-    EX: String(b.lon),
-    EY: String(b.lat),
-    SearchType: '0',
-    apiKey: ODSAY_KEY,
-  });
-  try {
+  return (await attemptLegacyRouteHttp('odsay', observer, async () => {
+    const callNo = await markOdsayCall(a, b);
+    const qs = new URLSearchParams({
+      SX: String(a.lon),
+      SY: String(a.lat),
+      EX: String(b.lon),
+      EY: String(b.lat),
+      SearchType: '0',
+      apiKey: ODSAY_KEY,
+    });
+    try {
     const res = await fetch(`https://api.odsay.com/v1/api/searchPubTransPathT?${qs}`);
     if (!res.ok) {
       await markOdsayResult(callNo, false);
@@ -503,15 +529,16 @@ async function odsayTransit(a: LatLon, b: LatLon): Promise<{ min: number; meta: 
         geo: transitGeo(best, a, b),
       },
     };
-  } catch {
-    await markOdsayResult(callNo, false);
-    return null;
-  }
+    } catch {
+      await markOdsayResult(callNo, false);
+      return null;
+    }
+  })) ?? null;
 }
 
 export async function precomputeTransit(
   pairs: [LatLon, LatLon][],
-  options: { retryFallback?: boolean } = {},
+  options: { retryFallback?: boolean; transportObserver?: LegacyRouteTransportObserver } = {},
 ): Promise<PrecomputeStat> {
   let ok = 0, fail = 0;
   let cacheHit = 0;
@@ -525,7 +552,7 @@ export async function precomputeTransit(
       skipped++;
       continue;
     }
-    const t = await odsayTransit(a, b);
+    const t = await odsayTransit(a, b, options.transportObserver);
     if (t) { transitCache.set(k, { min: t.min, src: 'ODsay', meta: t.meta, ts: Date.now() }); ok++; }
     else { transitCache.set(k, { min: transitFallbackMin(a, b), src: 'transit_fallback', ts: Date.now() }); fail++; }
   }
