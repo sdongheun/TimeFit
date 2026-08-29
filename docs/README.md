@@ -15,6 +15,7 @@
 | 화면 공통 규칙 | [03_product/UIUX_공통규칙.md](03_product/UIUX_공통규칙.md) | 현행 규칙, 구현 전환 필요 |
 | UIUX 작업 기준 | [03_product/UIUX_작업기록.md](03_product/UIUX_작업기록.md) | UIUX의 작업 명령·결과·피드백을 시간순으로 누적하는 단일 작업 파일 |
 | QA·출시 작업 기준 | [05_release/QA출시_작업기록.md](05_release/QA출시_작업기록.md) | 현행 회귀 게이트·레거시 테스트 격리·실기기 확인 기록 |
+| 실기기 추천 검증 | [05_release/실기기_추천검증.md](05_release/실기기_추천검증.md) | 사용자가 직접 기록하는 실제 Route Proxy·추천 체감 시나리오 |
 | 외부 API 작업 기준 | [04_backend/외부API_작업기록.md](04_backend/외부API_작업기록.md) | 서버 Route Proxy·구간 캐시·호출량 예산 계약 |
 | DB·개인화 작업 기준 | [04_backend/DB개인화_작업기록.md](04_backend/DB개인화_작업기록.md) | 검증 코스 저장·RLS·개인정보 경계의 후속 작업 |
 | 화면 흐름·와이어프레임 | [03_product/UIUX_와이어프레임_계획.md](03_product/UIUX_와이어프레임_계획.md) | 현행 계획, 화면 재구성 필요 |
