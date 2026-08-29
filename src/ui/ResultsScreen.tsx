@@ -11,6 +11,7 @@ import { startMinuteForRecommendation } from './recommendation/recommendationSes
 import { CourseV1PlacePreview } from './recommendation/CourseV1PlacePreview';
 import { openKakaoPlace, type CourseV1DisplayPlace } from './recommendation/courseV1PlacePreviewModel';
 import { buildCourseV1AlternativeList, buildCourseV1ResultListItem, selectedCourseForConfirm } from './recommendation/courseV1ResultListModel';
+import { courseV1OutcomeMessage } from './recommendation/courseV1OutcomeMessageModel';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Results'>;
 type RuntimePlace = (typeof runtimeCatalog.matched.data)[number] | (typeof runtimeCatalog.unmatched.data)[number];
@@ -30,7 +31,8 @@ export function ResultsScreen({ route, navigation }: Props) {
   if (!course) {
     const exhausted = result.resultState === 'no_verified_course_within_limit';
     const noRepresentativeCandidates = result.resultState === 'no_representative_candidates';
-    return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{header}<View style={s.empty}><Text style={s.emptyTitle}>{exhausted ? '실제 경로로 확인할 수 있는\n코스를 찾지 못했어요' : '이 조건에서 확신 있게 추천할\n코스를 찾지 못했어요'}</Text><Text style={s.copy}>{exhausted ? '경로를 확인한 코스가 시간 안에 들어오지 않았어요.' : '시간과 운영 상태를 함께 만족하는 후보가 없어요.'}</Text><Pressable style={s.secondary} onPress={() => navigation.goBack()}><Text style={s.secondaryText}>{noRepresentativeCandidates ? '조건 다시 설정' : '시간과 위치 다시 설정'}</Text></Pressable></View></ScrollView></View>;
+    const outcomeMessage = courseV1OutcomeMessage(result.primaryOutcomeReason);
+    return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{header}<View style={s.empty}><Text style={s.emptyTitle}>{exhausted ? '실제 경로로 확인할 수 있는\n코스를 찾지 못했어요' : '이 조건에서 확신 있게 추천할\n코스를 찾지 못했어요'}</Text><Text style={s.copy}>{outcomeMessage ?? (exhausted ? '경로를 확인한 코스가 시간 안에 들어오지 않았어요.' : '시간과 운영 상태를 함께 만족하는 후보가 없어요.')}</Text><Pressable style={s.secondary} onPress={() => navigation.goBack()}><Text style={s.secondaryText}>{noRepresentativeCandidates ? '조건 다시 설정' : '시간과 위치 다시 설정'}</Text></Pressable></View></ScrollView></View>;
   }
   const representative = buildCourseV1ResultListItem(course, (id) => places.get(id));
   const alternatives = buildCourseV1AlternativeList(result, (id) => places.get(id));

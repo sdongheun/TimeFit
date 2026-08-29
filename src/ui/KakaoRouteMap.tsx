@@ -35,17 +35,22 @@ type Props = {
   showMarkerLabels?: boolean;
   usePhotoMarkers?: boolean;
   focusedMarkerOffsetY?: number;
+  initialCenter?: LatLon;
   recenterPoint?: LatLon;
   recenterToken?: number;
   recenterOffsetY?: number;
   boundsPadding?: { top: number; right: number; bottom: number; left: number };
   onMarkerTap?: (index: number) => void;
   onMapTap?: (point: LatLon) => void;
+  onMapCenterChange?: (point: LatLon) => void;
+  onMapReady?: () => void;
+  onMapError?: () => void;
   style?: StyleProp<ViewStyle>;
 };
 
-export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, focusedMarkerOffsetY = 0, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, onMapTap, style }: Props) {
+export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, focusedMarkerOffsetY = 0, initialCenter, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, onMapTap, onMapCenterChange, onMapReady, onMapError, style }: Props) {
   const ref = useRef<WebView>(null);
+  const errorReported = useRef(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
   const routeSegments = useMemo(
@@ -55,8 +60,28 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
   const routePoints = useMemo(() => routeSegments.flatMap((seg) => seg.points), [routeSegments]);
   const hasApprox = routeSegments.some((seg) => seg.quality === 'approx');
   const hasFallback = routeSegments.some((seg) => seg.quality === 'fallback');
-  const center = useMemo(() => centerOf([...points, ...routePoints]), [points, routePoints]);
-  const html = useMemo(() => buildHtml(center), []);
+  const center = useMemo(() => initialCenter ?? centerOf([...points, ...routePoints]), [initialCenter, points, routePoints]);
+  const html = useMemo(() => buildHtml(center), [center]);
+
+  const reportMapError = () => {
+    if (errorReported.current) return;
+    errorReported.current = true;
+    onMapError?.();
+  };
+
+  useEffect(() => {
+    if (!KAKAO_JS_KEY) {
+      setError('Kakao 지도 키가 없습니다.');
+      reportMapError();
+      return;
+    }
+    if (ready) return;
+    const timeout = setTimeout(() => {
+      setError('Kakao 지도 준비 시간이 초과됐어요.');
+      reportMapError();
+    }, 7000);
+    return () => clearTimeout(timeout);
+  }, [ready]);
 
   useEffect(() => {
     if (!ready) return;
@@ -97,20 +122,24 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
         javaScriptEnabled
         domStorageEnabled
         mixedContentMode="always"
-        onError={(e) => setError(e.nativeEvent.description)}
-        onHttpError={(e) => setError(`HTTP ${e.nativeEvent.statusCode}`)}
+        onError={(e) => { setError(e.nativeEvent.description); reportMapError(); }}
+        onHttpError={(e) => { setError(`HTTP ${e.nativeEvent.statusCode}`); reportMapError(); }}
         onMessage={(e) => {
           try {
             const m = JSON.parse(e.nativeEvent.data);
             if (m.type === 'ready') {
               setReady(true);
               setError('');
+              onMapReady?.();
             } else if (m.type === 'error') {
               setError(m.message || 'Kakao 지도 로드 실패');
+              reportMapError();
             } else if (m.type === 'marker' && typeof m.index === 'number') {
               onMarkerTap?.(m.index);
             } else if (m.type === 'mapTap' && Number.isFinite(m.lat) && Number.isFinite(m.lon)) {
               onMapTap?.({ lat: m.lat, lon: m.lon });
+            } else if (m.type === 'mapCenter' && Number.isFinite(m.lat) && Number.isFinite(m.lon)) {
+              onMapCenterChange?.({ lat: m.lat, lon: m.lon });
             }
           } catch {
             // WebView 지도 이벤트는 표시 상태만 사용한다.
@@ -453,6 +482,10 @@ function initMap(){
       if (!mapTapEnabled) return;
       var point = mouseEvent.latLng;
       post({ type:'mapTap', lat:point.getLat(), lon:point.getLng() });
+    });
+    kakao.maps.event.addListener(map, 'idle', function(){
+      var point = map.getCenter();
+      post({ type:'mapCenter', lat:point.getLat(), lon:point.getLng() });
     });
     post({ type:'ready' });
   });

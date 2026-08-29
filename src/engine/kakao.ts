@@ -35,6 +35,11 @@ export type PlaceSearchMetrics = { rawPoiCount: number; directNameMatchCount: nu
 
 export type PlaceSearchObserver = (event: Pick<PlaceSearchResult, 'provider' | 'status'> & { resultCount: number }) => void;
 export type KakaoPoiSearchOptions = { fetcher?: typeof fetch; apiKey?: string; observe?: PlaceSearchObserver };
+export type KakaoReverseGeocodeResult = Pick<PlaceSearchResult, 'provider' | 'status' | 'statusCode'> & {
+  /** Kakao가 제공한 도로명 또는 지번 주소만 보존한다. */
+  label?: string;
+  address?: string;
+};
 
 const kakaoHeaders = () => ({ Authorization: `KakaoAK ${KAKAO_REST_KEY}` });
 
@@ -130,16 +135,46 @@ export async function kakaoPoiSearchMultiResult(keyword: string, center?: LatLon
 }
 
 export async function kakaoGeocodeAddr(fullAddr: string, count = 3): Promise<Poi[]> {
-  if (!fullAddr.trim()) return [];
-  const result = await kakaoGet('search/address.json', { query: fullAddr.trim(), size: Math.min(10, Math.max(1, count)) });
-  return (result.documents ?? []).map((doc) => toPoi(doc, fullAddr)).filter((p): p is Poi => !!p).slice(0, count);
+  return (await kakaoAddressSearchResult(fullAddr, count)).pois;
+}
+
+/** 상태형 Kakao 주소 검색. 위치 선택 adapter가 keyword 검색과 같은 실패 경계를 사용한다. */
+export async function kakaoAddressSearchResult(fullAddr: string, count = 3, options: KakaoPoiSearchOptions = {}): Promise<PlaceSearchResult> {
+  if (!fullAddr.trim()) return observe({ provider: 'kakao', status: 'ok', pois: [], metrics: placeSearchMetrics('', 0, []) }, options.observe);
+  const result = await kakaoGet('search/address.json', { query: fullAddr.trim(), size: Math.min(10, Math.max(1, count)) }, options);
+  if (result.status !== 'ok') return result;
+  const pois = (result.documents ?? []).map((doc) => toPoi(doc, fullAddr)).filter((p): p is Poi => !!p).slice(0, count);
+  return observe({ provider: 'kakao', status: 'ok', pois, metrics: placeSearchMetrics(fullAddr, result.documents?.length ?? 0, pois) }, options.observe);
 }
 
 export async function kakaoReverseGeocode(lat: number, lon: number): Promise<string | null> {
-  const result = await kakaoGet('geo/coord2address.json', { x: lon, y: lat });
+  return (await kakaoReverseGeocodeResult(lat, lon)).address ?? null;
+}
+
+/** 핀 확정용 상태형 Kakao 역지오코딩. 좌표와 원문 응답은 반환하지 않는다. */
+export async function kakaoReverseGeocodeResult(lat: number, lon: number, options: KakaoPoiSearchOptions = {}): Promise<KakaoReverseGeocodeResult> {
+  const result = await kakaoGet('geo/coord2address.json', { x: lon, y: lat }, options);
+  if (result.status !== 'ok') {
+    return result.statusCode === undefined
+      ? { provider: 'kakao', status: result.status }
+      : { provider: 'kakao', status: result.status, statusCode: result.statusCode };
+  }
   const docs = result.documents ?? [];
   const doc = docs[0];
-  return doc?.road_address?.address_name || doc?.address?.address_name || doc?.road_address_name || doc?.address_name || null;
+  const address = doc?.road_address?.address_name || doc?.address?.address_name || doc?.road_address_name || doc?.address_name;
+  return address ? { provider: 'kakao', status: 'ok', label: address, address } : { provider: 'kakao', status: 'ok' };
+}
+
+/** 주소가 없는 좌표의 행정구역 fallback. provider address_name 외에는 라벨로 쓰지 않는다. */
+export async function kakaoRegionCodeResult(lat: number, lon: number, options: KakaoPoiSearchOptions = {}): Promise<KakaoReverseGeocodeResult> {
+  const result = await kakaoGet('geo/coord2regioncode.json', { x: lon, y: lat }, options);
+  if (result.status !== 'ok') {
+    return result.statusCode === undefined
+      ? { provider: 'kakao', status: result.status }
+      : { provider: 'kakao', status: result.status, statusCode: result.statusCode };
+  }
+  const address = result.documents?.[0]?.address_name;
+  return address ? { provider: 'kakao', status: 'ok', label: address, address } : { provider: 'kakao', status: 'ok' };
 }
 
 export function hasKakaoRestKey(): boolean {

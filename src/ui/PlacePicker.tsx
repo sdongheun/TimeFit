@@ -1,91 +1,84 @@
-// 장소 선택 모달 (검색 전용, 지도 없음 — WebView 미의존이라 재빌드 불필요)
-// 장소명 검색 전용: Kakao Local 우선 + TMAP POI fallback만 사용한다. 주소는 별도 정책·모드가 생길 때까지 섞지 않는다.
-import { useRef, useState } from 'react';
+// 통합 위치 선택: 빈 입력에서는 GPS/지도, 두 글자 입력 뒤에는 Kakao 장소·주소 제안을 소비한다.
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import {
   LatLon,
-  Poi,
-  geocodeAddr,
-  kakaoGeocodeAddr,
-  kakaoReverseGeocode,
-  reverseGeocode,
 } from '../engine';
-import { kakaoPoiSearchMultiResult, type PlaceSearchResult } from '../engine/kakao';
-import { tmapPoiSearchMultiResult } from '../engine/travel';
-import { searchPlaceSuggestions, type PlaceSearchSuggestion } from '../services/placeSearchSuggestionAdapter';
+import { createKakaoLocationSearchAdapter, type LocationSuggestion } from '../services/kakaoLocationSearchAdapter';
 import { C } from './theme';
-import { diagnosePlaceSearchSuggestions, initialPlaceSearchSelection } from './placeSearchRanking';
-import { placeSearchCompletionDiagnostic, placeSearchDisplayStateFromResults } from './placeSearchStateModel';
-import { placeSuggestionLineLabel } from './placeSearchSuggestionModel';
+import { initialPlaceSearchSelection } from './placeSearchRanking';
+import { shouldDebounceLocationSearch } from './locationSelectionModel';
 
-export type Place = { label: string; lat: number; lon: number };
+export type Place = { label: string; lat: number; lon: number; source: 'device' | 'provider' };
 
 type Props = {
   visible: boolean;
   title: string;
   center: LatLon;              // POI 검색 가까운 순 기준
   showGps?: boolean;
+  onOpenMap: () => void;
   onClose: () => void;
   onConfirm: (p: Place) => void;
 };
 
-export function PlacePicker({ visible, title, center, showGps = true, onClose, onConfirm }: Props) {
+export function PlacePicker({ visible, title, center, showGps = true, onOpenMap, onClose, onConfirm }: Props) {
   const insets = useSafeAreaInsets();
   const [q, setQ] = useState('');
-  const [cands, setCands] = useState<PlaceSearchSuggestion[]>([]);
+  const [cands, setCands] = useState<LocationSuggestion[]>([]);
+  const [deviceLocation, setDeviceLocation] = useState<Place | null>(null);
   const [sel, setSel] = useState(initialPlaceSearchSelection);
   const [busy, setBusy] = useState<'search' | 'gps' | ''>('');
   const [msg, setMsg] = useState('장소 이름으로 검색하세요');
   const requestId = useRef(0);
+  const submittedQuery = useRef<string | null>(null);
+  const locationSearch = useRef(createKakaoLocationSearchAdapter()).current;
 
   function changeQuery(value: string) {
     requestId.current += 1;
+    submittedQuery.current = null;
     setQ(value);
     setCands([]);
+    setDeviceLocation(null);
     setSel(initialPlaceSearchSelection);
     setBusy('');
     setMsg(value.trim() ? '검색 버튼을 눌러 장소를 찾으세요' : '장소 이름으로 검색하세요');
   }
 
+  useEffect(() => {
+    const query = q.trim();
+    if (!shouldDebounceLocationSearch(query)) return;
+    const timer = setTimeout(() => {
+      // 키보드/버튼으로 이미 같은 입력을 보냈다면 debounce 호출을 중복하지 않는다.
+      if (submittedQuery.current !== query) void search();
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [q]);
+
   async function search() {
     const query = q.trim();
     if (!query) return;
+    submittedQuery.current = query;
     const searchId = requestId.current + 1;
     requestId.current = searchId;
     setBusy('search'); setSel(initialPlaceSearchSelection);
-    // API-S-4 제안 계약만 소비한다. 주소 결과는 기본 장소명 목록에 절대 섞지 않는다.
-    const response = await searchPlaceSuggestions({
-      query,
-      searchers: {
-        kakao: (nextQuery) => kakaoPoiSearchMultiResult(nextQuery, undefined, 5),
-        tmap: (nextQuery) => tmapPoiSearchMultiResult(nextQuery, undefined, 5),
-      },
-    });
-    const diagnostic = diagnosePlaceSearchSuggestions(query, response.suggestions);
+    setDeviceLocation(null);
+    // API-S-5의 단일 Kakao 위치검색/TTL 계약만 소비한다. UI는 주소·노선·추가 제공사를 보정하지 않는다.
+    const response = await locationSearch.search(query);
     const staleIgnored = searchId !== requestId.current;
-    const kakao = response.results.filter((result) => result.provider === 'kakao').at(-1) as PlaceSearchResult;
-    const tmap = response.results.filter((result) => result.provider === 'tmap').at(-1) as PlaceSearchResult;
     if (typeof __DEV__ !== 'undefined' && __DEV__) {
-      console.info('[place-search-complete]', placeSearchCompletionDiagnostic({
-        kakao,
-        tmap,
-        rankingCounts: diagnostic.counts,
-        staleIgnored,
-        fallbackCalls: response.diagnostics.fallbackCalls,
-        rawPoiCount: response.results.reduce((sum, result) => sum + (result.metrics?.rawPoiCount ?? result.pois.length), 0),
-      }));
+      console.info('[location-search-complete]', { attempts: response.attempts.map((attempt) => attempt.status), providerRequests: response.diagnostics.providerRequests, fallbackCount: response.diagnostics.fallbackCount, cache: response.diagnostics.cache, resultCount: response.suggestions.length, staleIgnored });
     }
     if (staleIgnored) return;
     setBusy('');
-    const list = diagnostic.results;
+    const list = response.suggestions;
     setCands(list);
-    const state = placeSearchDisplayStateFromResults(response.results, list.length);
-    setMsg(state === 'empty' ? '장소명 결과가 없어요' : state === 'retry' ? '장소 검색을 준비하지 못했어요. 잠시 후 다시 시도해 주세요.' : '목록에서 위치를 선택하세요');
+    const allOk = response.attempts.every((attempt) => attempt.status === 'ok');
+    setMsg(list.length ? '목록에서 위치를 선택하세요' : allOk ? '장소 또는 주소 결과가 없어요' : '위치 검색을 준비하지 못했어요. 잠시 후 다시 시도해 주세요.');
   }
 
-  // 내 위치(GPS) → 주소 라벨로 바로 선택 가능
+  // 기기 GPS는 제공사 장소/주소 제안과 다른 선택 상태로 보존한다.
   async function useMyLocation() {
     setBusy('gps');
     try {
@@ -93,18 +86,13 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
       if (status !== 'granted') { setMsg('위치 권한이 거부됐어요'); return; }
       const p = await Location.getCurrentPositionAsync({});
       const lat = p.coords.latitude, lon = p.coords.longitude;
-      const addr = await kakaoReverseGeocode(lat, lon) ?? await reverseGeocode(lat, lon);
-      const geocoded = addr ? (await kakaoGeocodeAddr(addr, 1))[0] ?? (await geocodeAddr(addr, 1))[0] : null;
-      const targetLat = geocoded ? geocoded.lat : lat;
-      const targetLon = geocoded ? geocoded.lon : lon;
-      const me: Poi = { name: addr ? `내 위치 · ${addr}` : `내 위치 (${lat.toFixed(4)}, ${lon.toFixed(4)})`, lat: targetLat, lon: targetLon, addr: 'GPS' };
-      setCands([{ poi: me, match: 'direct', label: me.name, labelSource: 'provider_name' }]); setSel(0); setMsg('');
+      setCands([]); setSel(initialPlaceSearchSelection); setDeviceLocation({ label: '현재 위치', lat, lon, source: 'device' }); setMsg('기기 위치를 확정하세요');
     } catch { setMsg('위치를 가져오지 못했어요'); }
     finally { setBusy(''); }
   }
 
-  const choice: Place | null = sel >= 0 && cands[sel]
-    ? { label: cands[sel].label, lat: cands[sel].poi.lat, lon: cands[sel].poi.lon } : null;
+  const choice: Place | null = deviceLocation ?? (sel >= 0 && cands[sel]
+    ? { label: cands[sel].label, lat: cands[sel].lat, lon: cands[sel].lon, source: 'provider' } : null);
 
   return (
     <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
@@ -115,7 +103,7 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
         </View>
 
         <View style={s.searchRow}>
-          <TextInput style={s.input} value={q} onChangeText={changeQuery} autoFocus
+          <TextInput testID="location-search-input" style={s.input} value={q} onChangeText={changeQuery} autoFocus
             placeholder="예: 부산역 / 벡스코 / 사상역" placeholderTextColor={C.muted}
             returnKeyType="search" onSubmitEditing={search} />
           <Pressable style={s.searchBtn} onPress={search} disabled={busy === 'search'}>
@@ -124,23 +112,24 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
         </View>
         {showGps && (
           <View style={s.searchRow}>
-            <Pressable style={[s.searchBtn, { flex: 1 }]} onPress={useMyLocation} disabled={busy === 'gps'}>
+            <Pressable testID="location-current" style={[s.searchBtn, { flex: 1 }]} onPress={useMyLocation} disabled={busy === 'gps'}>
               {busy === 'gps' ? <ActivityIndicator size="small" color={C.accent} /> : <Text style={s.searchBtnTxt}>📍 현재 위치 사용</Text>}
             </Pressable>
           </View>
         )}
+        {!q.trim() && <View style={s.searchRow}><Pressable testID="location-map" style={[s.searchBtn, { flex: 1 }]} onPress={onOpenMap}><Text style={s.searchBtnTxt}>지도에서 선택</Text></Pressable></View>}
 
         {msg ? <Text style={s.msg}>{msg}</Text> : null}
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingHorizontal: 14 }} keyboardShouldPersistTaps="handled">
+          {deviceLocation ? <View testID="device-location-selection" style={[s.row, s.rowOn]}><Text style={[s.rowDot, { color: C.accent }]}>●</Text><View style={{ flex: 1 }}><Text style={s.rowName}>현재 위치</Text><Text style={s.rowAddr}>기기 위치</Text></View><Text style={s.tag}>기기 위치</Text></View> : null}
           {cands.map((p, i) => (
-            <Pressable key={i} style={[s.row, i === sel && s.rowOn]} onPress={() => setSel(i)}>
+            <Pressable testID={`location-suggestion-${i}`} key={i} style={[s.row, i === sel && s.rowOn]} onPress={() => { setDeviceLocation(null); setSel(i); }}>
               <Text style={[s.rowDot, i === sel && { color: C.accent }]}>{i === sel ? '●' : '○'}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={s.rowName} numberOfLines={1}>{p.label}</Text>
-                <Text style={s.rowAddr} numberOfLines={1}>{p.poi.addr}</Text>
+                <Text style={s.rowAddr} numberOfLines={1}>{p.address}</Text>
               </View>
-              {placeSuggestionLineLabel(p) && <Text style={s.tag}>{placeSuggestionLineLabel(p)}</Text>}
-              {p.poi.addr === 'GPS' && <Text style={[s.tag, { color: C.green, borderColor: C.green }]}>GPS</Text>}
+              <Text style={s.tag}>{p.kind === 'address' ? '주소' : p.providerLineLabels?.join(' · ') ?? (p.address === 'GPS' ? 'GPS' : '장소')}</Text>
             </Pressable>
           ))}
         </ScrollView>
@@ -148,7 +137,7 @@ export function PlacePicker({ visible, title, center, showGps = true, onClose, o
         <View style={s.footer}>
           <Pressable
             style={[s.cta, !choice && s.ctaOff]}
-            disabled={!choice}
+            testID="location-confirm" disabled={!choice}
             onPress={() => { if (choice) { onConfirm(choice); onClose(); } }}
           >
             <Text style={s.ctaTxt} numberOfLines={1}>{choice ? `이 위치로 확정 — ${choice.label}` : '위치를 선택하세요'}</Text>
