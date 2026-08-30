@@ -586,7 +586,7 @@ QA 세션은 `test/`와 이 작업기록만 수정한다. `src/engine/`, `src/se
 
 ### 2026-08-30 — RD-01~03 실기기 재검증 완료
 
-**상태: 완료·원인 판정 보류.** iPhone (iOS 26.6), 최신 internal build에서 기존 session을 유지한 채 RD-01~03을 수행했다. 고정 입력·결과 상세는 [실기기 추천 검증](실기기_추천검증.md)의 각 2-L 재검증 코멘트에 기록했다. token·JWT·key·raw URL·좌표·실사용 GPS는 기록하지 않았고, 화면에 표시되지 않은 provider attempt/cache·budget/legacy transport은 추정하지 않았다.
+**상태: 완료·원인 판정 보류.** iPhone (iOS 26.6), 최신 internal build에서 기존 session을 유지한 채 RD-01~03을 수행했다. 고정 입력·결과 상세는 [실기기 추천 검증](../real-device-recommendation.md)의 각 2-L 재검증 코멘트에 기록했다. token·JWT·key·raw URL·좌표·실사용 GPS는 기록하지 않았고, 화면에 표시되지 않은 provider attempt/cache·budget/legacy transport은 추정하지 않았다.
 
 | 시나리오 | 고정 입력 준수 | 관찰 결과 | 판정 / diagnostics |
 |---|---|---|---|

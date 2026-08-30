@@ -20,4 +20,4 @@
 - cache/session reuse가 있으면 새 provider attempt를 A8과 수치 비교하지 않고, 재사용·tier 결과를 함께 기록한다.
 - 결과 수가 같아도 구조화된 time/no-route/운영 사유가 납득 가능하면 실패로 단정하지 않는다.
 
-`docs/05_release/실기기_추천검증.md`에는 화면상 policy label·판정·수치·오류만 기록한다. URL·좌표·token/JWT·cache key·식별자·비밀값은 기록하지 않는다.
+[`real-device-recommendation.md`](real-device-recommendation.md)에는 화면상 policy label·판정·수치·오류만 기록한다. URL·좌표·token/JWT·cache key·식별자·비밀값은 기록하지 않는다.
