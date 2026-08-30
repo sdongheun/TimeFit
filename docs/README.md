@@ -8,17 +8,17 @@
 | --- | --- | --- |
 | 추천 정책 단일 기준 | [03_product/추천로직.md](03_product/추천로직.md) | 현행 정책, 구현 전환 필요 |
 | 역할별 현재 작업 | [work/README.md](work/README.md) | 새 세션의 짧은 역할 색인과 활성 작업 파일. 과거 작업기록 전체를 읽지 않는다. |
-| 추천 엔진 작업 이력 | [03_product/추천엔진_작업기록.md](03_product/추천엔진_작업기록.md) | 수락·보완·fixture의 append-only 감사 이력 |
+| 추천 엔진 작업 이력 | [work/recommendation-engine/archive/2026-08-history.md](work/recommendation-engine/archive/2026-08-history.md) | 수락·보완·fixture의 append-only 감사 이력 |
 | 세션 간 작업 조정 | [작업조정_보드.md](작업조정_보드.md) | 역할 간 의존성·상태·활성 작업 파일 색인 |
 | 추천 엔진 현행정책 감사 | [03_product/추천엔진_현행정책정합성_감사프롬프트.md](03_product/추천엔진_현행정책정합성_감사프롬프트.md) | 코드 전환 범위 확인용, 감사 전용 |
 | 추천 엔진 점진 전환 지침 | [03_product/추천엔진_점진적전환_작업지침.md](03_product/추천엔진_점진적전환_작업지침.md) | 체감 검증용 v1부터 고도화하는 구현 순서 |
 | 사용자 요구·검증 상태 | [테스트.md](테스트.md) | 현행 요구, 미검증 항목 있음 |
 | 화면 공통 규칙 | [03_product/UIUX_공통규칙.md](03_product/UIUX_공통규칙.md) | 현행 규칙, 구현 전환 필요 |
-| UIUX 작업 이력 | [03_product/UIUX_작업기록.md](03_product/UIUX_작업기록.md) | 화면·테스트의 append-only 감사 이력 |
-| QA·출시 작업 이력 | [05_release/QA출시_작업기록.md](05_release/QA출시_작업기록.md) | 회귀 게이트·실기기 확인의 append-only 감사 이력 |
-| 실기기 추천 검증 | [05_release/실기기_추천검증.md](05_release/실기기_추천검증.md) | 사용자가 직접 기록하는 실제 Route Proxy·추천 체감 시나리오 |
-| 외부 API 작업 기준 | [04_backend/외부API_작업기록.md](04_backend/외부API_작업기록.md) | 서버 Route Proxy·구간 캐시·호출량 예산 계약 |
-| DB·개인화 작업 기준 | [04_backend/DB개인화_작업기록.md](04_backend/DB개인화_작업기록.md) | 검증 코스 저장·RLS·개인정보 경계의 후속 작업 |
+| UIUX 작업 이력 | [work/uiux/archive/2026-08-history.md](work/uiux/archive/2026-08-history.md) | 화면·테스트의 append-only 감사 이력 |
+| QA·출시 작업 이력 | [work/qa-release/archive/2026-08-history.md](work/qa-release/archive/2026-08-history.md) | 회귀 게이트·실기기 확인의 append-only 감사 이력 |
+| 실기기 추천 검증 | [work/qa-release/real-device-recommendation.md](work/qa-release/real-device-recommendation.md) | 사용자가 직접 기록하는 실제 Route Proxy·추천 체감 시나리오 |
+| 외부 API 작업 기준 | [work/external-api/archive/2026-08-history.md](work/external-api/archive/2026-08-history.md) | 서버 Route Proxy·구간 캐시·호출량 예산 계약 |
+| DB·개인화 작업 기준 | [work/db-personalization/archive/2026-08-history.md](work/db-personalization/archive/2026-08-history.md) | 검증 코스 저장·RLS·개인정보 경계의 후속 작업 |
 | 화면 흐름·와이어프레임 | [03_product/UIUX_와이어프레임_계획.md](03_product/UIUX_와이어프레임_계획.md) | 현행 계획, 화면 재구성 필요 |
 | UIUX 수동·E2E 명세 | [03_product/UIUX_테스트명세.md](03_product/UIUX_테스트명세.md) | 현행 명세, 자동화 미착수 |
 | DB 계약·마이그레이션 | [04_backend/데이터베이스설계.md](04_backend/데이터베이스설계.md) | 현행 DB 구조 기준 |
@@ -79,5 +79,5 @@
 
 - 여러 역할이 함께 봐야 하는 현재 상태·선행 조건은 [작업 조정 보드](작업조정_보드.md)에 짧게 기록한다.
 - 새 세션의 상세 지시는 `work/<role>/README.md`와 그 README가 링크한 **활성 작업 묶음 파일**에만 둔다. 현재 작업과 무관한 기존 작업기록 전체 읽기는 금지한다.
-- 역할별 기존 `작업기록.md`는 완료 이력·수락 근거·감사를 위한 append-only 문서다. 완료 시 네 항목(변경 파일 / 유지 계약 / 테스트 / 다음 결정)을 요약해 남기되, 다음 작업의 상세 명령을 계속 누적하지 않는다.
+- 역할별 `work/<role>/archive/`는 완료 이력·수락 근거·감사를 위한 append-only 보관소다. 완료 시 네 항목(변경 파일 / 유지 계약 / 테스트 / 다음 결정)을 요약해 남기되, 다음 작업의 상세 명령을 계속 누적하지 않는다. 실행에 필요한 현재 규칙은 별도 작업 묶음으로 짧게 정리한다.
 - 하나의 파일은 같은 목표·공개 계약·선행 조건을 공유하는 작업 묶음만 다룬다. 독립 목표는 같은 역할이라도 새 묶음 파일로 분리한다.
