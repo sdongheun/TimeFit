@@ -1,6 +1,6 @@
 # 외부 API 현재 작업
 
-현재 활성 구현 작업은 없다. 새 작업 전에는 `AGENTS.md`, `docs/README.md`, `docs/작업조정_보드.md`와 작업 목적에 맞는 현재 묶음만 읽는다.
+새 구현 작업은 없다. 다만 `API-4-F`의 1회 runtime 활성화 게이트가 대기 중이다. 새 작업 전에는 `AGENTS.md`, `docs/README.md`, `docs/작업조정_보드.md`와 작업 목적에 맞는 현재 묶음만 읽는다.
 
 - [장소 검색·위치](place-search-location.md)
 - [Route Proxy 활성화·호출량](route-proxy-activation.md)

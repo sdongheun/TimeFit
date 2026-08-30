@@ -14,6 +14,15 @@
 
 B12 internal 비교는 API 계약을 바꾸지 않는다. 실기기 RD-B12는 기존 안전 경로를 두 번만 사용한다.
 
+## 현재 활성화 게이트: API-4-F
+
+새 구현 작업이 아니라, 배포된 `route-proxy`의 fail-closed receipt 경계가 실제 앱에서도 유지되는지 확인하는 제한된 runtime 확인이다.
+
+- 기존 anonymous session과 공개 고정 입력을 사용해 한 번만 확인한다.
+- CAPTCHA → Auth → 기존 session → SDK HTTP → typed receipt → 2-J 순서를 관찰하되, token·URL·좌표·원문 응답은 기록하지 않는다.
+- 재시도, cache 삭제, 새 provider 호출, Edge/Cloudflare/Supabase 설정 변경은 이 게이트 범위 밖이다.
+- non-2xx가 transport로 평탄화되거나 receipt가 복원되지 않으면 수락하지 않고, 비밀 없는 reason·재현 조건만 남긴다.
+
 ## 상세 이력
 
 [2026-08 archive](archive/2026-08-history.md)
