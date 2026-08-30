@@ -13,7 +13,7 @@
 
 ## 역할 폴더
 
-- [통합·결정](integration-decision/README.md)
+- [통합·결정](integration-decision/README.md) — 완료 보드 행은 [통합 archive](integration-decision/archive/2026-08-board-history.md)에 보관
 - [추천 엔진](recommendation-engine/README.md)
 - [UIUX](uiux/README.md)
 - [외부 API](external-api/README.md)

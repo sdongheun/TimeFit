@@ -15,4 +15,4 @@
 
 - 기준: `docs/03_product/추천로직.md`, `docs/테스트.md`, `docs/03_product/UIUX_공통규칙.md`
 - 현재 상태: `docs/작업조정_보드.md`
-- 과거 수락·지시: 역할별 `work/<role>/archive/2026-08-history.md` (현재 작업에는 필요한 anchor만 참조)
+- 과거 수락·지시: 역할별 `work/<role>/archive/2026-08-history.md`와 [보드 archive](archive/2026-08-board-history.md) (현재 작업에는 필요한 anchor만 참조)
