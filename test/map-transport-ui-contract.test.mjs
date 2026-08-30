@@ -124,6 +124,12 @@ test('UCAP-09: Route Proxy reason은 internal diagnostics에서만 화면 state�
   assert.doesNotMatch(setup, /reason\.(message|cause)|console\.(log|info|warn|error)/);
 });
 
+test('URECDIAG01: 추천량 진단은 exact internal flag일 때만 Results 최하단에 표시하며 행동을 추가하지 않는다', () => {
+  assert.match(results, /recommendationDiagnosticsEnabled\(process\.env\.EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS\)/);
+  assert.match(results, /<RecommendationInternalDiagnosticsPanel diagnostics=\{recommendationInternalDiagnosticsModel\(result, renderedCourseCount\)\} \/>/);
+  assert.doesNotMatch(results, /navigate\([^\n]*추천 진단|console\.(log|info|warn).*진단|fetch\([^\n]*진단/);
+});
+
 test('결과 진입점은 V1 대표 코스와 읽기 전용 확인 화면을 사용한다', () => {
   assert.match(resultEntry, /CourseV1Journey/);
   assert.match(resultEntry, /CourseConfirm/);

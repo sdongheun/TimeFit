@@ -1540,3 +1540,94 @@ UIUX 세션은 `src/ui/recommendation/v1Session.ts`, `src/ui/ResultsScreen.tsx`,
 ### 통합·결정 수락 (2026-08-29)
 
 U-1-REC-01을 수락한다. Proxy 활성 시 같은 route port가 `routes`와 `receiptRoutes`에 함께 주입되고, port 누락·생성 실패는 legacy 요청 0회로 안전 오류가 된다. 여섯 outcome reason은 provider·quota·HTTP·좌표·token 없이 고정 사용자 문구로만 표시하며, reason 없는 기존 빈 상태는 유지한다. 통합 재실행에서 `npm run test:ui` 118 통과·1 skip, 전체 `npm test` 101/101, typecheck, diff 검사가 통과했다. 다음은 QA-05다.
+
+---
+
+## 2026-08-30 — 통합·결정 지시 U-1-REC-DIAG-01: internal 추천량 원인 관찰
+
+### 목적과 판단 범위
+
+RD-01~03에서 서면은 가까운 1곳 대안 3개로 개선됐지만, 사상→서면은 2개에 머물렀고 110분에도 2곳 코스가 보이지 않았다. 이 작업은 추천 수를 늘리거나 8회 상한을 바꾸지 않는다. 이미 엔진 결과에 있는 비밀 없는 집계를 **internal build에서만** 표시해, 다음 두 실제 실행에서 부족 원인을 `후보 부족 / route·시간 탈락 / 8·24 상한 중단 / 화면 표시 제한`으로 분리하는 것이 목적이다.
+
+### 소유 범위와 수정 금지 경계
+
+UIUX 세션은 `src/ui/ResultsScreen.tsx`, `src/ui/recommendation/`의 순수 표시 model·UI fixture, 이 작업기록만 수정한다. 엔진(`src/engine/`), API/Route Proxy/Edge·Cloudflare·Supabase, 데이터/카탈로그/DB, navigation session 타입, CAPTCHA sheet·token 처리, 제품 정책 문서, 작업조정 보드는 수정하지 않는다. 실제 API/Auth/CAPTCHA/GPS 호출은 0회다.
+
+### 반드시 소비할 기존 계약
+
+- `CourseV1LimitedResult.diagnostics`에 이미 있는 `providerCandidateCount`, `preselectionCandidateCount`, `candidatePoolCount`, `classificationExcluded`, `newProviderAttemptCount`, `adapterCallCount`, `cacheOrSessionReuseCount`, `outcomeReasonCounts`, `verificationTiers`만 읽는다.
+- `verificationTiers`의 N1/N2/W/T에는 후보·시도·검증·새 provider attempt·고정 stop reason만 있다. provider명, HTTP 상태/본문, URL, 좌표, cache key, token/JWT, user ID는 이 타입에도 추가하지 않고 화면에도 표시하지 않는다.
+- 엔진이 반환한 코스 수는 `representativeCourse ? 1 + alternativeCourses.length : 0`으로 계산한다. ResultsScreen이 실제로 렌더하는 대표+대안 카드 수를 별도로 계산해 둘을 함께 표시한다. 현재 둘이 같으면 UI 제한이 원인이 아님을, 다르면 화면 제한 검토가 필요함을 보인다.
+
+### 구현 규칙
+
+1. 순수 `recommendationInternalDiagnosticsModel`을 만든다. 모델 입력은 `CourseV1LimitedResult`와 `renderedCourseCount`뿐이며, 출력은 아래의 **고정 한국어 label·정수·허용 enum**만 가진다. `Error`, route object, 장소명, 날짜, source 문자열, 임의 message를 입력/출력에 넣지 않는다.
+   - `엔진 코스 / 화면 코스`
+   - `원천 후보 / 조건 통과 후보 / 공간 후보 / 사전 제외`
+   - `새 경로 확인 / adapter 호출 / 재사용`
+   - N1, N2, W, T 각 `후보 / 시도 / 검증 / 새 경로 확인 / 중단` (중단은 고정 reason label과 수량만; 없으면 생략)
+   - 결과 탈락은 `route_not_verified`, `route_verification_unavailable`, `time_budget_exceeded`, `no_eligible_candidates`, `no_open_candidates`, `no_distinct_verified_alternative`만 고정 한국어 label로 집계한다. 0인 항목과 알 수 없는 enum은 표시하지 않는다.
+2. `ResultsScreen`의 대표 결과와 빈 결과 모두에서 모델을 만들되, `process.env.EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS === 'true'`일 때만 화면 최하단에 작고 읽기 쉬운 “개발용 추천 진단” 패널을 표시한다. false/누락이면 panel과 관련 accessibility label이 0개여야 한다.
+3. 패널은 사용자용 추천 카드와 시각적으로 구분한다. 버튼·새 추천·네비게이션·저장·analytics·console/network 요청을 만들지 않는다. 대안 목록의 순서/수와 카카오맵 CTA는 바꾸지 않는다.
+4. `verificationTiers`가 없는 legacy 결과도 안전하게 표시한다. 이때 기본 후보·코스 수만 표시하거나 panel 자체를 숨기되, 값을 0으로 꾸며 엔진/화면 제한이라고 오해시키지 않는다.
+5. public Expo env 값은 비밀이 아니지만 production build의 값은 `true`로 두지 않는다. 코드·문서에는 실제 env 값이나 키를 기록하지 않고, QA에게는 internal build에만 flag를 켜라고 인계한다.
+
+### 필수 fixture와 완료 기준
+
+1. **표시 모델:** N1 성공·N2 `route_not_verified`·W gate·T provider limit 및 result-level 시간 초과가 섞인 고정 `CourseV1LimitedResult`에서 고정 label/수량만 출력한다. 금지 정보가 출력 문자열에 없는지 검증한다.
+2. **빈 결과:** `no_verified_course_within_limit` + tier diagnostics와 legacy 결과(verificationTiers 없음)를 각각 검증한다. legacy에서 허위 0 진단을 만들지 않는다.
+3. **feature flag:** enabled는 패널 1개와 모델 값, disabled/누락은 패널·진단 accessibility label 0개를 ResultsScreen 또는 순수 화면 계약 fixture로 검증한다.
+4. **표시 수:** 대표 1 + 대안 2인 고정 결과에서 `엔진 코스=3`, `화면 코스=3`을 검증한다. 화면이 의도적으로 일부만 렌더하는 fixture가 가능하면 두 수의 차이도 정직하게 표시한다.
+5. 기존 Results 목록 선택이 새 engine/API 호출을 만들지 않고, 결과 카드/빈 상태/카카오맵 CTA 계약이 바뀌지 않음을 회귀한다.
+6. `npm run test:typecheck`, `npm run test:ui`, `npm test`, `git diff --check`를 실행한다.
+
+### 완료 인계와 다음 게이트
+
+완료 기록에는 변경 파일, 유지한 공개 경계, fixture별 결과, internal flag false의 production 비표시, 실제 호출 0회를 남긴다. 통합·결정 수락 뒤에만 QA가 아래 두 고정 입력을 **각 1회** 실행한다.
+
+- 서면역 부산1호선 복귀, 테스트 15:00→17:00, 여유 10분
+- 사상역 2호선→서면역 2호선, 테스트 15:00→17:00, 여유 10분
+
+QA는 패널의 숫자와 화면 코스 수만 `실기기_추천검증.md`에 기록한다. 그 결과가 없이는 8→12/16 상한, 카탈로그 보강, UI 목록 확대 중 어느 것도 진행하지 않는다.
+
+### 완료 인계 — U-1-REC-DIAG-01 (UIUX, 2026-08-30)
+
+1. **변경 파일 / 목적:** `src/ui/recommendation/recommendationInternalDiagnosticsModel.ts`에서 기존 `CourseV1LimitedResult.diagnostics`를 고정 한국어 label·정수만의 internal 표시 모델로 투영했다. `src/ui/recommendation/RecommendationInternalDiagnostics.tsx`와 `src/ui/ResultsScreen.tsx`는 exact `EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS === 'true'`일 때만 결과·빈 상태 화면 최하단에 비대화형 “개발용 추천 진단” 패널을 렌더한다. UI fixture와 기존 결과 화면 정적 계약 fixture를 추가·보완했다.
+2. **유지한 공개 계약·정책 경계:** 엔진·API/Route Proxy/Edge·Cloudflare·Supabase·데이터·DB·navigation session·CAPTCHA token 처리·추천 상한/목록 순서·카카오맵 CTA·작업조정 보드는 수정하지 않았다. 패널은 버튼·저장·analytics·console·network 요청을 만들지 않으며 provider/HTTP/URL/좌표/cache key/token/JWT/user ID/장소명·날짜·임의 오류를 표시하지 않는다.
+3. **fixture·검증 결과:** tier N1/N2/W/T, 결과 탈락, 새 경로 8·adapter 24·재사용, 엔진 코스 3/화면 코스 3의 고정 모델 fixture를 통과했다. `no_verified_course_within_limit`와 `verificationTiers` 없는 legacy 결과는 허위 tier·요청 0을 만들지 않음을 검증했다. flag `true`만 허용하고 false/누락에서는 진단 panel/accessibility label이 만들어지지 않는 계약을 검증했다. `npm run test:typecheck`, `npm run test:ui`, `npm test`(102/102), `git diff --check`를 통과했고 실제 API/Auth/CAPTCHA/GPS 호출은 0회다.
+4. **다음 결정 / QA 조건:** 통합·결정 수락 뒤 QA는 internal build에서 flag만 켜고, 서면역 부산1호선 복귀 및 사상역 2호선→서면역 2호선의 15:00→17:00·여유 10분 입력을 각각 정확히 1회 실행한다. `실기기_추천검증.md`에는 패널 숫자와 화면 코스 수만 기록한다. 이 관찰 전에는 8→12/16 상한 변경, 카탈로그 보강, UI 목록 확대를 진행하지 않는다. production build에서는 flag를 `true`로 두지 않는다.
+
+### 통합·결정 수락 (2026-08-30)
+
+U-1-REC-DIAG-01을 수락한다. 진단은 기존 엔진 결과의 집계만 읽으며, exact internal flag가 아닌 경우 패널과 접근성 label이 생성되지 않는다. 추천 계산·상한·카드 목록·API/인증/저장 경계와 실제 호출은 바뀌지 않았다. 통합 재실행에서 `npm run test:typecheck`, `npm run test:ui`(122 통과·1 skip), `npm test`(102/102), `git diff --check`를 통과했다.
+
+다음 게이트는 QA·사용자의 `RD-DIAG-01`, `RD-DIAG-02`다. internal build에만 `EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS=true`를 포함하고, 이미 정한 두 고정 입력을 각각 한 번만 실행한다. production build에는 이 flag를 포함하지 않는다.
+
+---
+
+## 2026-08-30 — 통합·결정 지시 U-1-REC-02: B12 internal build 조립·식별
+
+### 선행 조건과 목적
+
+`2-N`이 제공하는 **고정 B12 internal 엔진 진입점**을 받은 뒤에만 시작한다. 목적은 2-M에서 수락된 B12를 internal diagnostics build에서만 실행·식별하는 것이며, 사용자에게 정책 선택권을 노출하거나 production 기본 A8을 바꾸는 일이 아니다.
+
+- 수정 소유: `src/ui/`, UI 관련 순수 테스트, 이 작업기록만.
+- 수정 금지: `src/engine/` 정책·상한, API/Route Proxy/cache, 카탈로그·DB, navigation 흐름, `docs/작업조정_보드.md`.
+
+### 구현 계약
+
+1. recommendation session 조립 지점에서만 2-N의 고정 B12 entry를 선택한다. exact `EXPO_PUBLIC_RECOMMENDATION_INTERNAL_B12 === 'true'` **그리고** 기존 exact diagnostics flag가 `true`인 internal build일 때만 B12를 쓴다. 둘 중 하나라도 false/누락이면 기존 기본 A8 entry만 호출한다.
+2. 환경값은 사용자 설정·화면 토글·원격 설정·저장값이 아니다. `B12`, `12`, `A/B`, 임의 숫자 같은 값을 받아 정책을 조합하는 parser를 만들지 않는다. production build의 두 flag는 false/누락이어야 하며, B12 flag만 켠 build도 A8로 fail-closed한다.
+3. diagnostics panel이 이미 표시되는 internal build에서만 고정 문구 `내부 정책: B12` 또는 `내부 정책: A8`을 읽기 전용으로 표시한다. 일반 사용자 화면·accessibility tree에는 이 문구와 flag 정보가 0개여야 한다. provider·HTTP·URL·좌표·token·cache key·사용자 ID는 계속 표시하지 않는다.
+4. 선택은 추천 계산 시작 전에 한 번만 결정한다. 결과 렌더·새 추천·상세/카카오맵 CTA·저장/로그인·CAPTCHA·Route Proxy 요청 수와 navigation을 바꾸지 않는다. B12 내부 실행이라고 추가 재시도, cache 삭제, parallel recommendation을 만들면 안 된다.
+
+### 필수 fixture와 완료 기준
+
+1. 네 조합 `(diagnostics, B12) = (true,true), (true,false), (false,true), (false,false/undefined)`을 고정해 선택 builder와 panel 문구를 검증한다. B12 builder는 `(true,true)` 한 경우만 1회 선택되고, 나머지는 A8 builder만 선택돼야 한다.
+2. B12와 A8의 결과 fixture에서 대표/대안 렌더 수가 엔진 결과 수와 같고, policy label을 제외한 카드·빈 상태·CTA·저장/navigation event·request 수가 같음을 검증한다.
+3. source 검사만으로 끝내지 말고 session builder stub을 주입해 실제 선택된 entry와 route port 호출 수를 비교한다. false/누락 환경에서 B12 entry 또는 diagnostics accessibility label이 생기지 않아야 한다.
+4. `npm run test:typecheck`, `npm run test:ui`, `npm test`, `git diff --check`를 실행한다. 실제 API/Auth/CAPTCHA/GPS 호출은 0회다.
+
+### 인계와 다음 게이트
+
+완료 기록에는 변경 파일, exact flag 조합표, B12/A8 builder 선택 fixture, production 비노출, 실제 호출 0회를 남긴다. 통합·결정 수락 뒤 QA·사용자는 새 internal build에서 `RD-B12-01/02`만 각 한 번 실행한다. Expo public 환경값 변경은 번들에 반영되어야 하므로, 기존 설치본에 flag만 추가해 테스트했다고 간주하지 않는다.
