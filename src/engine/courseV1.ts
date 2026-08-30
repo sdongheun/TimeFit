@@ -138,12 +138,38 @@ export type CourseV1LimitedInput = Omit<CourseV1Input, 'candidates'> & {
   receiptRoutes?: CourseV1RouteReceiptAdapter;
 };
 
+/** 2-M 고정 fixture 전용이며 engine barrel·앱 입력 계약에 노출하지 않는다. */
+type CourseV1ReceiptEvaluationPolicy = {
+  providerAttemptLimit: 8 | 12 | 16;
+  queueOrder: 'A' | 'B';
+};
+
+type CourseV1ReceiptEvaluationOptions = { receiptPolicy: CourseV1ReceiptEvaluationPolicy };
+
 /** 화면·저장에는 전달하지 않는 사전선정 슬롯의 결정적 관찰값. */
 export type CourseV1PreselectionSlots = {
   nearSingle: string | null;
   wideSingle: string | null;
   independentTwo: string | null;
   independentThree: string | null;
+};
+
+/** receipt 검증 대기열의 내부 우선순위. 화면·저장 payload에는 노출하지 않는다. */
+export type CourseV1VerificationTier = 'N1' | 'N2' | 'W' | 'T';
+export type CourseV1TierStopReason =
+  | 'provider_attempt_limit'
+  | 'adapter_call_limit'
+  | 'verified_course_limit'
+  | 'gated_by_near_single_verification'
+  | 'route_not_verified'
+  | 'route_verification_unavailable'
+  | 'time_budget_exceeded';
+export type CourseV1TierDiagnostics = {
+  candidateCount: number;
+  attemptedCourseCount: number;
+  verifiedCourseCount: number;
+  newProviderAttemptCount: number;
+  stopReasons: CourseV1TierStopReason[];
 };
 
 export type CourseV1LimitedDiagnostics = {
@@ -166,6 +192,8 @@ export type CourseV1LimitedDiagnostics = {
   newProviderAttemptCount?: number;
   adapterCallCount?: number;
   cacheOrSessionReuseCount?: number;
+  /** 2-L receipt queue의 tier별 안전 관찰값. provider·URL·좌표·cache key는 포함하지 않는다. */
+  verificationTiers?: Record<CourseV1VerificationTier, CourseV1TierDiagnostics>;
 };
 
 export type CourseV1OutcomeReason =
@@ -205,6 +233,17 @@ export type CourseV1LimitedResult = {
 export const COURSE_V1_PROVIDER_ATTEMPT_LIMIT = 8;
 export const COURSE_V1_ADAPTER_CALL_LIMIT = 24;
 export const COURSE_V1_VERIFIED_COURSE_LIMIT = 9;
+
+const DEFAULT_RECEIPT_EVALUATION_POLICY: CourseV1ReceiptEvaluationPolicy = {
+  providerAttemptLimit: COURSE_V1_PROVIDER_ATTEMPT_LIMIT,
+  queueOrder: 'A',
+};
+
+/** 2-N: 통합·결정이 수락한 internal build 전용 고정 정책이다. */
+const INTERNAL_B12_RECEIPT_EVALUATION_POLICY: CourseV1ReceiptEvaluationPolicy = {
+  providerAttemptLimit: 12,
+  queueOrder: 'B',
+};
 
 const representative = new Set<CourseV1Classification>(['representative_core', 'representative_standard']);
 
@@ -279,7 +318,24 @@ function exactRouteOrNull(route: ExactRoute | null): ExactRoute | null {
  * 근사 거리/시간은 여기서 결과나 성공 판정에 사용하지 않는다. 순수 사전선정은
  * 체류시간·분류·운영가능성으로만 최대 네 코스를 고르고, 그 네 코스만 실제 경로로 검증한다.
  */
-export async function buildLimitedRepresentativeCourseV1(input: CourseV1LimitedInput): Promise<CourseV1LimitedResult> {
+export async function buildLimitedRepresentativeCourseV1(
+  input: CourseV1LimitedInput,
+): Promise<CourseV1LimitedResult> {
+  return buildLimitedRepresentativeCourseV1WithEvaluation(input);
+}
+
+/** 2-M 고정 matrix 전용이다. engine barrel·production 조립 경로에서 export하지 않는다. */
+export async function buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation(
+  input: CourseV1LimitedInput,
+  evaluationOptions: CourseV1ReceiptEvaluationOptions,
+): Promise<CourseV1LimitedResult> {
+  return buildLimitedRepresentativeCourseV1WithEvaluation(input, evaluationOptions);
+}
+
+async function buildLimitedRepresentativeCourseV1WithEvaluation(
+  input: CourseV1LimitedInput,
+  evaluationOptions?: CourseV1ReceiptEvaluationOptions,
+): Promise<CourseV1LimitedResult> {
   validateInput(input);
   const supplied = input.provider.listRepresentativeCandidates(input.now);
   const diagnostics: CourseV1LimitedDiagnostics = {
@@ -310,7 +366,7 @@ export async function buildLimitedRepresentativeCourseV1(input: CourseV1LimitedI
     return limitedNoCourse('no_representative_candidates', diagnostics);
   }
 
-  if (input.receiptRoutes) return buildReceiptBudgetedRepresentativeCourseV1(input, preselection, diagnostics);
+  if (input.receiptRoutes) return buildReceiptBudgetedRepresentativeCourseV1(input, preselection, diagnostics, evaluationOptions?.receiptPolicy);
 
   const candidates = preselection.candidatePool;
   const preselected = preselection.candidateCourses;
@@ -353,12 +409,26 @@ export async function buildLimitedRepresentativeCourseV1(input: CourseV1LimitedI
   };
 }
 
+/**
+ * internal diagnostics build에서만 쓰는 고정 B12 receipt 진입점이다.
+ * 정책 객체·상한·queue 순서를 호출자에게 받지 않으며 production 기본 entry의 A8을 바꾸지 않는다.
+ */
+export async function buildLimitedRepresentativeCourseV1ForInternalB12(
+  input: CourseV1LimitedInput,
+): Promise<CourseV1LimitedResult> {
+  return buildLimitedRepresentativeCourseV1WithEvaluation(input, {
+    receiptPolicy: INTERNAL_B12_RECEIPT_EVALUATION_POLICY,
+  });
+}
+
 async function buildReceiptBudgetedRepresentativeCourseV1(
   input: CourseV1LimitedInput,
   preselection: CourseV1PreselectionResult,
   diagnostics: CourseV1LimitedDiagnostics,
+  receiptEvaluationPolicy?: CourseV1ReceiptEvaluationPolicy,
 ): Promise<CourseV1LimitedResult> {
   const receiptAdapter = input.receiptRoutes!;
+  const evaluationPolicy = receiptEvaluationPolicy ?? DEFAULT_RECEIPT_EVALUATION_POLICY;
   const target = input.destination ?? input.origin;
   const reasonCounts: Partial<Record<CourseV1OutcomeReason, number>> = {};
   const countReason = (reason: CourseV1OutcomeReason) => { reasonCounts[reason] = (reasonCounts[reason] ?? 0) + 1; };
@@ -374,7 +444,7 @@ async function buildReceiptBudgetedRepresentativeCourseV1(
       reuseCount += 1;
       return cached;
     }
-    const remainingAttempts = COURSE_V1_PROVIDER_ATTEMPT_LIMIT - providerAttempts;
+    const remainingAttempts = evaluationPolicy.providerAttemptLimit - providerAttempts;
     if (remainingAttempts <= 0 || adapterCalls >= COURSE_V1_ADAPTER_CALL_LIMIT) {
       budgetStopped = true;
       return { result: 'unavailable', newProviderAttemptCount: 0, reused: false };
@@ -392,26 +462,68 @@ async function buildReceiptBudgetedRepresentativeCourseV1(
 
   const verified: VerifiedCourseV1[] = [];
   const attemptedSets = new Set<string>();
-  for (const places of preselection.candidateQueue) {
-    if (verified.length >= COURSE_V1_VERIFIED_COURSE_LIMIT || providerAttempts >= COURSE_V1_PROVIDER_ATTEMPT_LIMIT || adapterCalls >= COURSE_V1_ADAPTER_CALL_LIMIT) {
-      budgetStopped = true;
-      break;
+  const tiers = receiptVerificationTiers(preselection);
+  const tierDiagnostics = emptyTierDiagnostics(tiers);
+  const budgetStopReason = (): CourseV1TierStopReason | null => {
+    if (verified.length >= COURSE_V1_VERIFIED_COURSE_LIMIT) return 'verified_course_limit';
+    if (providerAttempts >= evaluationPolicy.providerAttemptLimit) return 'provider_attempt_limit';
+    if (adapterCalls >= COURSE_V1_ADAPTER_CALL_LIMIT) return 'adapter_call_limit';
+    return null;
+  };
+  const runTier = async (tier: CourseV1VerificationTier, stopAfterVerifiedCount?: number) => {
+    const tierDiagnostic = tierDiagnostics[tier];
+    const attemptsAtStart = providerAttempts;
+    for (const places of tiers[tier]) {
+      if (stopAfterVerifiedCount !== undefined && tierDiagnostic.verifiedCourseCount >= stopAfterVerifiedCount) break;
+      const stopReason = budgetStopReason();
+      if (stopReason) {
+        budgetStopped = true;
+        tierDiagnostic.stopReasons.push(stopReason);
+        break;
+      }
+      const setKey = places.map((place) => place.id).sort().join('|');
+      if (attemptedSets.has(setKey)) continue;
+      // 부분 겹침은 허용한다. 동일·부분집합·상위집합만 현행 반환 계약대로 제외한다.
+      if (verified.some((course) => hasNestedPlaceSet(places.map((place) => place.id), course.placeIds))) continue;
+      attemptedSets.add(setKey);
+      tierDiagnostic.attemptedCourseCount += 1;
+      diagnostics.exactCourseAttemptCount += 1;
+      const outcome = await verifyCourseWithReceipts(places, input, target, getReceipt);
+      if (outcome.kind === 'verified') {
+        verified.push(outcome.course);
+        tierDiagnostic.verifiedCourseCount += 1;
+      } else {
+        countReason(outcome.reason);
+        tierDiagnostic.stopReasons.push(outcome.reason);
+      }
     }
-    const setKey = places.map((place) => place.id).sort().join('|');
-    if (attemptedSets.has(setKey)) continue;
-    if (verified.some((course) => hasNestedPlaceSet(places.map((place) => place.id), course.placeIds))) continue;
-    attemptedSets.add(setKey);
-    diagnostics.exactCourseAttemptCount += 1;
-    const outcome = await verifyCourseWithReceipts(places, input, target, getReceipt);
-    if (outcome.kind === 'verified') verified.push(outcome.course);
-    else countReason(outcome.reason);
+    tierDiagnostic.newProviderAttemptCount = providerAttempts - attemptsAtStart;
+  };
+
+  // 2-L: 정적 2-K 슬롯이 아니라 지연 tier를 순서대로 연다. N1/N2의 실제 검증
+  // 기회를 먼저 소진해야 넓은 한 곳이나 3곳이 가까운 대안을 밀어내지 않는다.
+  if (evaluationPolicy.queueOrder === 'B') {
+    // B: N1에서 하나를 실제 검증한 뒤 N2를 한 번 열고 남은 N1으로 돌아간다.
+    await runTier('N1', 1);
+    await runTier('N2');
+    await runTier('N1');
+  } else {
+    await runTier('N1');
+    await runTier('N2');
   }
+  if (input.remainingMin <= 120 && tierDiagnostics.N1.verifiedCourseCount > 0) {
+    tierDiagnostics.W.stopReasons.push('gated_by_near_single_verification');
+  } else {
+    await runTier('W');
+  }
+  await runTier('T');
 
   diagnostics.preselectedCourseIds = [...attemptedSets];
   diagnostics.outcomeReasonCounts = reasonCounts;
   diagnostics.newProviderAttemptCount = providerAttempts;
   diagnostics.adapterCallCount = adapterCalls;
   diagnostics.cacheOrSessionReuseCount = reuseCount;
+  diagnostics.verificationTiers = tierDiagnostics;
   const selected = selectRepresentativeCourseSetV1(deduplicateCourses(verified)).slice(0, COURSE_V1_VERIFIED_COURSE_LIMIT);
   const [representativeCourse, ...alternativeCourses] = selected;
   if (!representativeCourse) {
@@ -640,17 +752,68 @@ export function preselectLimitedCourseV1(input: CourseV1PreselectionInput): Cour
     if (item.places.length === 3) continue;
     add(item);
   }
+  // receipt port는 이 지연 순서를 소비한다. legacy 4코스는 candidateCourses를 계속
+  // 사용하므로 2-K의 공개 슬롯/호환 동작은 바뀌지 않는다.
+  const candidateQueue: CourseV1Candidate[][] = [];
+  const queuedSets = new Set<string>();
+  const enqueue = (places: CourseV1Candidate[]) => {
+    const key = setKeyOf(places);
+    if (queuedSets.has(key)) return false;
+    queuedSets.add(key);
+    candidateQueue.push(places);
+    return true;
+  };
+  let nearbySingles = 0;
+  for (const candidate of candidatePool) {
+    if (candidate.id === wideSingleCandidateId || nearbySingles >= 3) continue;
+    enqueue([candidate]);
+    nearbySingles += 1;
+  }
+  // N2도 가까운 세 쌍까지만 지연 대기열에 넣는다. 무한한 2곳 순열이 24 adapter
+  // call을 모두 소진해 W/T의 fallback 기회를 없애지 않도록 하는 내부 예산 경계다.
+  let nearbyTwos = 0;
+  for (const item of ranked) {
+    if (item.places.length !== 2 || nearbyTwos >= 3) continue;
+    if (enqueue(item.places)) nearbyTwos += 1;
+  }
+  if (wideSingleCandidateId) {
+    const wideSingle = ranked.find((item) => item.places.length === 1 && item.places[0]?.id === wideSingleCandidateId);
+    if (wideSingle) enqueue(wideSingle.places);
+  }
+  for (const item of ranked) if (item.places.length === 3) enqueue(item.places);
   return {
     candidatePool,
     candidateCourses: selected,
-    candidateQueue: [...selected, ...ranked
-      .filter((item) => !seenSets.has(setKeyOf(item.places)))
-      .map((item) => item.places)],
+    candidateQueue,
     wideSingleCandidateId,
     preselectionSlots,
     generatedOrderedCourseCount: ranked.length,
     eligibleCandidateCount: eligible.length,
     classificationExcluded,
+  };
+}
+
+function receiptVerificationTiers(preselection: CourseV1PreselectionResult): Record<CourseV1VerificationTier, CourseV1Candidate[][]> {
+  const wideId = preselection.wideSingleCandidateId;
+  const tiers: Record<CourseV1VerificationTier, CourseV1Candidate[][]> = { N1: [], N2: [], W: [], T: [] };
+  for (const places of preselection.candidateQueue) {
+    if (places.length === 1) {
+      if (places[0]?.id === wideId) tiers.W.push(places);
+      else if (tiers.N1.length < 3) tiers.N1.push(places);
+    } else if (places.length === 2) tiers.N2.push(places);
+    else if (places.length === 3) tiers.T.push(places);
+  }
+  return tiers;
+}
+
+function emptyTierDiagnostics(
+  tiers: Record<CourseV1VerificationTier, CourseV1Candidate[][]>,
+): Record<CourseV1VerificationTier, CourseV1TierDiagnostics> {
+  return {
+    N1: { candidateCount: tiers.N1.length, attemptedCourseCount: 0, verifiedCourseCount: 0, newProviderAttemptCount: 0, stopReasons: [] },
+    N2: { candidateCount: tiers.N2.length, attemptedCourseCount: 0, verifiedCourseCount: 0, newProviderAttemptCount: 0, stopReasons: [] },
+    W: { candidateCount: tiers.W.length, attemptedCourseCount: 0, verifiedCourseCount: 0, newProviderAttemptCount: 0, stopReasons: [] },
+    T: { candidateCount: tiers.T.length, attemptedCourseCount: 0, verifiedCourseCount: 0, newProviderAttemptCount: 0, stopReasons: [] },
   };
 }
 

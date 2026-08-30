@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   buildLimitedRepresentativeCourseV1,
+  buildLimitedRepresentativeCourseV1ForInternalB12,
   COURSE_V1_EXACT_COURSE_LIMIT,
   COURSE_V1_PRESELECTION_ORDERED_COURSE_LIMIT,
   COURSE_V1_PRESELECTION_PLACE_POOL_LIMIT,
@@ -15,11 +16,18 @@ import {
   type CourseV1RouteAdapter,
   type VerifiedCourseV1,
 } from '../src/engine/courseV1';
+import { buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation } from '../src/engine/courseV1.testOnly';
 import { createCourseV1CandidateProvider } from '../src/data/courseV1CandidateProvider';
 
 const now = new Date('2026-08-24T10:00:00+09:00');
 const origin = { id: 'origin', lat: 35.1578, lon: 129.0594 };
 const destination = { id: 'destination', lat: 35.153, lon: 129.118 };
+
+if (false) {
+  const input = null as unknown as Parameters<typeof buildLimitedRepresentativeCourseV1>[0];
+  // @ts-expect-error 기본 공개 entry는 A8 input 하나만 받으며 runtime 정책 주입을 허용하지 않는다.
+  buildLimitedRepresentativeCourseV1(input, { receiptPolicy: { providerAttemptLimit: 12, queueOrder: 'B' } });
+}
 
 function place(id: string, options: Partial<CourseV1Candidate> = {}): CourseV1Candidate {
   return {
@@ -48,12 +56,13 @@ function exactRoutes(minutes: Record<string, number>, calls: string[] = []): Cou
 function receiptRoutes(
   plans: Record<string, CourseV1RouteReceipt>,
   calls: string[] = [],
+  fallback: CourseV1RouteReceipt = { result: 'no_route', newProviderAttemptCount: 1, reused: false },
 ): CourseV1RouteReceiptAdapter {
   return {
     async getRouteReceipt(from, to, budget) {
       const key = `${from.id}>${to.id}`;
       calls.push(key);
-      const receipt = plans[key] ?? { result: 'no_route' as const, newProviderAttemptCount: 1 as const, reused: false };
+      const receipt = plans[key] ?? fallback;
       return receipt.newProviderAttemptCount <= budget.maxNewProviderAttemptCount
         ? receipt
         : { result: 'unavailable', newProviderAttemptCount: 0, reused: false };
@@ -503,7 +512,7 @@ test('REC-26: 6개 생활권의 48개 분 단위 receipt fixture는 실제 API �
   }
 });
 
-test('REC-26: receipt no_route 뒤에는 4개에서 멈추지 않고 뒤 단일 후보를 보충하며 동일 구간은 세션 재사용한다', async () => {
+test('REC-26: receipt no_route 뒤에는 N1의 뒤 가까운 단일 후보를 보충하며 동일 구간은 세션 재사용한다', async () => {
   const calls: string[] = [];
   const result = await buildLimitedRepresentativeCourseV1({
     now, origin, destination: null, remainingMin: 90, arrivalBufferMin: 5,
@@ -512,27 +521,338 @@ test('REC-26: receipt no_route 뒤에는 4개에서 멈추지 않고 뒤 단일 
     receiptRoutes: receiptRoutes({
       'origin>a': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
       'origin>b': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
-      'origin>c': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
-      'origin>d': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
-      'origin>e': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
-      'e>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'origin>c': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'c>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
     }, calls),
   });
-  assert.deepEqual(result.representativeCourse?.placeIds, ['e']);
-  assert.ok(result.diagnostics.exactCourseAttemptCount > COURSE_V1_EXACT_COURSE_LIMIT);
+  assert.deepEqual(result.representativeCourse?.placeIds, ['c']);
+  assert.equal(result.diagnostics.verificationTiers?.N1.attemptedCourseCount, 3);
   assert.ok((result.diagnostics.cacheOrSessionReuseCount ?? 0) >= 0);
-  assert.ok(calls.includes('origin>e'));
+  assert.ok(calls.includes('origin>c'));
 });
 
-test('REC-26: 8번째 provider attempt와 unavailable은 fallback 없이 상한·구조화 reason으로 끝난다', async () => {
+test('L-01: 110분 왕복에서 가까운 N1 A/B가 넓은 W·3곳보다 먼저 receipt 예산을 쓰고 반환된다', async () => {
+  const calls: string[] = [];
+  const nearby = Array.from({ length: 18 }, (_, index) => place(String.fromCharCode(65 + index), {
+    lat: origin.lat + (index + 1) * 0.00001, lon: origin.lon,
+  }));
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 110, arrivalBufferMin: 5,
+    provider: provider([...nearby, place('W', { lat: origin.lat + 0.01, lon: origin.lon })]), routes: exactRoutes({}),
+    receiptRoutes: receiptRoutes({
+      'origin>A': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'A>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'origin>B': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'B>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+    }, calls),
+  });
+  assert.deepEqual(result.representativeCourse?.placeIds, ['A']);
+  assert.ok(result.alternativeCourses.some((course) => course.id === 'B'));
+  assert.ok(calls.indexOf('origin>A') < calls.findIndex((call) => call.includes('>W')) || !calls.some((call) => call.includes('>W')));
+  assert.ok(calls.indexOf('origin>B') < calls.findIndex((call) => call.includes('>W')) || !calls.some((call) => call.includes('>W')));
+  assert.equal(result.diagnostics.verificationTiers?.W.verifiedCourseCount, 0);
+  assert.deepEqual(result.diagnostics.verificationTiers?.W.stopReasons, ['gated_by_near_single_verification']);
+});
+
+test('L-02: 110분 N1 no_route·운영 종료·시간 초과 뒤에는 W가 열리고 fail-closed reason을 남긴다', async () => {
+  const calls: string[] = [];
+  const nearby = Array.from({ length: 18 }, (_, index) => place(`n${index}`, index === 1
+    ? { lat: origin.lat + (index + 1) * 0.00001, lon: origin.lon, availability: { status: 'structured', alwaysAccessible: false, dayTypes: ['weekday'], windows: [{ startMin: 600, endMin: 617 }] } }
+    : { lat: origin.lat + (index + 1) * 0.00001, lon: origin.lon },
+  ));
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 110, arrivalBufferMin: 5,
+    provider: provider([...nearby, place('W', { lat: origin.lat + 0.01, lon: origin.lon })]), routes: exactRoutes({}),
+    receiptRoutes: receiptRoutes({
+      'origin>n0': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>n1': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'origin>n2': { result: 'exact', route: { mode: 'walk', min: 60, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'n2>origin': { result: 'exact', route: { mode: 'walk', min: 60, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'origin>W': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'W>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+    }, calls, { result: 'no_route', newProviderAttemptCount: 0, reused: true }),
+  });
+  assert.deepEqual(result.representativeCourse?.placeIds, ['W'], JSON.stringify({ calls, diagnostics: result.diagnostics, outcomeReasons: result.outcomeReasons }));
+  assert.equal(result.diagnostics.verificationTiers?.N1.verifiedCourseCount, 0);
+  assert.equal(result.diagnostics.verificationTiers?.W.verifiedCourseCount, 1);
+  assert.ok(result.diagnostics.outcomeReasonCounts?.route_not_verified);
+  assert.ok(calls.indexOf('origin>W') > calls.indexOf('origin>n2'));
+});
+
+test('L-03: 180분 receipt 대기열은 N1/N2의 실제 탈락 뒤에만 W를 열어 반환한다', async () => {
+  const calls: string[] = [];
+  const nearby = Array.from({ length: 18 }, (_, index) => place(`n${index}`, {
+    lat: origin.lat + (index + 1) * 0.00001, lon: origin.lon,
+  }));
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 180, arrivalBufferMin: 5,
+    provider: provider([...nearby, place('W', { lat: origin.lat + 0.01, lon: origin.lon })]), routes: exactRoutes({}),
+    receiptRoutes: receiptRoutes({
+      'origin>n0': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>n1': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>n2': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>W': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'W>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+    }, calls, { result: 'no_route', newProviderAttemptCount: 0, reused: true }),
+  });
+  assert.deepEqual(result.representativeCourse?.placeIds, ['W']);
+  assert.equal(result.diagnostics.verificationTiers?.N1.verifiedCourseCount, 0);
+  assert.ok((result.diagnostics.verificationTiers?.N2.attemptedCourseCount ?? 0) > 0);
+  assert.equal(result.diagnostics.verificationTiers?.W.attemptedCourseCount, 1);
+  assert.equal(result.diagnostics.verificationTiers?.W.verifiedCourseCount, 1);
+  assert.ok(calls.indexOf('origin>W') > calls.indexOf('origin>n2'));
+});
+
+test('L-04: 1·2곳이 모두 route 불가이면 마지막 T의 3곳 fallback은 유지된다', async () => {
+  const calls: string[] = [];
+  const result = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 180, arrivalBufferMin: 5,
+    provider: provider(['d', 'e', 'f'].map((id, index) => place(id, { lat: origin.lat + index * 0.00001, lon: origin.lon }))), routes: exactRoutes({}),
+    receiptRoutes: receiptRoutes({
+      'origin>d': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true },
+      'origin>e': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'origin>f': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'd>origin': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'e>origin': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'f>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true },
+      'd>e': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true },
+      'e>d': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true },
+      'd>f': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'f>d': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'e>f': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true },
+      'f>e': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+    }, calls),
+  });
+  assert.ok(result.representativeCourse?.placeIds.length === 3 || result.alternativeCourses.some((course) => course.placeIds.length === 3));
+  assert.ok((result.diagnostics.verificationTiers?.T.attemptedCourseCount ?? 0) > 0);
+  assert.ok(calls.indexOf('origin>d') < calls.findIndex((call) => call === 'd>e'));
+});
+
+test('REC-26: receipt no_route 연쇄는 fallback 없이 8 provider attempt·24 adapter call 상한 안에서 구조화 reason으로 끝난다', async () => {
   const calls: string[] = [];
   const result = await buildLimitedRepresentativeCourseV1({
     now, origin, destination: null, remainingMin: 90, arrivalBufferMin: 5,
     provider: provider(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'].map((id, index) => place(id, { lat: origin.lat + index * 0.0001, lon: origin.lon }))),
-    routes: exactRoutes({}), receiptRoutes: receiptRoutes({}, calls),
+    routes: exactRoutes({}), receiptRoutes: receiptRoutes({
+      'origin>a': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'a>origin': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>b': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'b>origin': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'origin>c': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'c>origin': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'a>b': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+      'a>c': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    }, calls),
   });
   assert.equal(result.primaryOutcomeReason, 'route_verification_unavailable');
   assert.equal(result.diagnostics.newProviderAttemptCount, 8);
   assert.ok((result.diagnostics.adapterCallCount ?? 0) <= 24);
   assert.equal(calls.length, 8);
+});
+
+test('M-01: A/B × 8/12/16은 같은 receipt에서 1곳·2곳 완료 기회와 예산을 결정적으로 비교한다', async () => {
+  const policies = [
+    { id: 'A8', providerAttemptLimit: 8 as const, queueOrder: 'A' as const },
+    { id: 'A12', providerAttemptLimit: 12 as const, queueOrder: 'A' as const },
+    { id: 'A16', providerAttemptLimit: 16 as const, queueOrder: 'A' as const },
+    { id: 'B8', providerAttemptLimit: 8 as const, queueOrder: 'B' as const },
+    { id: 'B12', providerAttemptLimit: 12 as const, queueOrder: 'B' as const },
+    { id: 'B16', providerAttemptLimit: 16 as const, queueOrder: 'B' as const },
+  ];
+  const candidates = [...['a', 'b', 'c'], ...Array.from({ length: 15 }, (_, index) => `f${index}`), 'W']
+    .map((id, index) => place(id, { lat: origin.lat + (index + 1) * 0.00001, lon: origin.lon }));
+  const plans: Record<string, CourseV1RouteReceipt> = {};
+  for (const id of ['a', 'b', 'c']) {
+    plans[`origin>${id}`] = { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 2, reused: false };
+    plans[`${id}>origin`] = { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 2, reused: false };
+  }
+  plans['b>c'] = { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 2, reused: false };
+  const matrix = new Map<string, Awaited<ReturnType<typeof buildLimitedRepresentativeCourseV1>>>();
+  for (const policy of policies) {
+    matrix.set(policy.id, await buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation({
+      now, origin, destination: null, remainingMin: 180, arrivalBufferMin: 5,
+      provider: provider(candidates), routes: exactRoutes({}), receiptRoutes: receiptRoutes(plans),
+    }, { receiptPolicy: policy }));
+  }
+  const courseCounts = (result: Awaited<ReturnType<typeof buildLimitedRepresentativeCourseV1>>) => {
+    const courses = [result.representativeCourse, ...result.alternativeCourses].filter((course): course is NonNullable<typeof course> => course !== null);
+    return { one: courses.filter((course) => course.placeIds.length === 1).length, two: courses.filter((course) => course.placeIds.length === 2).length };
+  };
+  for (const policy of policies) {
+    const result = matrix.get(policy.id)!;
+    assert.ok((result.diagnostics.newProviderAttemptCount ?? 0) <= policy.providerAttemptLimit);
+    assert.ok((result.diagnostics.adapterCallCount ?? 0) <= 24);
+    assert.ok([result.representativeCourse, ...result.alternativeCourses].filter(Boolean).length <= 9);
+  }
+  assert.equal(courseCounts(matrix.get('A8')!).two, 0);
+  assert.ok(courseCounts(matrix.get('B12')!).two >= 1, JSON.stringify({ courses: matrix.get('B12')!.alternativeCourses.map((course) => course.placeIds), representative: matrix.get('B12')!.representativeCourse?.placeIds, diagnostics: matrix.get('B12')!.diagnostics }));
+  assert.ok(courseCounts(matrix.get('B16')!).two >= 1);
+  const defaultA8 = await buildLimitedRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 180, arrivalBufferMin: 5,
+    provider: provider(candidates), routes: exactRoutes({}), receiptRoutes: receiptRoutes(plans),
+  });
+  assert.deepEqual(defaultA8, matrix.get('A8')!);
+  const fixedB12 = await buildLimitedRepresentativeCourseV1ForInternalB12({
+    now, origin, destination: null, remainingMin: 180, arrivalBufferMin: 5,
+    provider: provider(candidates), routes: exactRoutes({}), receiptRoutes: receiptRoutes(plans),
+  });
+  assert.deepEqual(fixedB12, matrix.get('B12')!);
+});
+
+test('M-02: 여섯 정책에서 N1 세 실패 유형 뒤 N2가 먼저 열리고 W/T는 provider attempt를 선점하지 않는다', async () => {
+  const policies = [
+    { providerAttemptLimit: 8 as const, queueOrder: 'A' as const }, { providerAttemptLimit: 12 as const, queueOrder: 'A' as const }, { providerAttemptLimit: 16 as const, queueOrder: 'A' as const },
+    { providerAttemptLimit: 8 as const, queueOrder: 'B' as const }, { providerAttemptLimit: 12 as const, queueOrder: 'B' as const }, { providerAttemptLimit: 16 as const, queueOrder: 'B' as const },
+  ];
+  for (const receiptPolicy of policies) for (const first of ['no_route', 'unavailable', 'time'] as const) {
+    const candidates = [...['a', 'b', 'c'], ...Array.from({ length: 15 }, (_, index) => `f${index}`), 'W']
+      .map((id, index) => place(id, { lat: origin.lat + (index + 1) * 0.00001, lon: origin.lon }));
+    const plans: Record<string, CourseV1RouteReceipt> = {
+      'origin>a': first === 'unavailable' ? { result: 'unavailable', newProviderAttemptCount: 1, reused: false } : { result: first === 'no_route' ? 'no_route' : 'exact', ...(first === 'time' ? { route: { mode: 'walk' as const, min: 170, exact: true } } : {}), newProviderAttemptCount: 1, reused: false } as CourseV1RouteReceipt,
+      'origin>b': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'origin>c': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'a>origin': { result: 'exact', route: { mode: 'walk', min: 20, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'b>c': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'c>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+    };
+    const calls: string[] = [];
+    const result = await buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation({ now, origin, destination: null, remainingMin: 180, arrivalBufferMin: 5, provider: provider(candidates), routes: exactRoutes({}), receiptRoutes: receiptRoutes(plans, calls, { result: 'no_route', newProviderAttemptCount: 0, reused: true }) }, { receiptPolicy });
+    assert.equal(result.diagnostics.verificationTiers?.N1.verifiedCourseCount, 0);
+    assert.ok((result.diagnostics.verificationTiers?.N2.attemptedCourseCount ?? 0) > 0);
+    assert.ok(calls.indexOf('b>c') >= 0 || result.diagnostics.verificationTiers?.N2.stopReasons.includes('route_not_verified'));
+    const firstWide = calls.findIndex((call) => call.includes('>W'));
+    assert.ok(firstWide < 0 || firstWide > calls.findIndex((call) => call === 'b>c'));
+  }
+});
+
+test('M-03: 여섯 정책에서 engine cache hit와 adapter 재사용 receipt는 새 provider 호출로 다시 세지 않는다', async () => {
+  const policies = [8, 12, 16].flatMap((providerAttemptLimit) => ([{ providerAttemptLimit: providerAttemptLimit as 8 | 12 | 16, queueOrder: 'A' as const }, { providerAttemptLimit: providerAttemptLimit as 8 | 12 | 16, queueOrder: 'B' as const }]));
+  for (const receiptPolicy of policies) {
+    const calls: string[] = [];
+    const result = await buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation({ now, origin, destination: null, remainingMin: 120, arrivalBufferMin: 5, provider: provider([place('a'), place('b')]), routes: exactRoutes({}), receiptRoutes: receiptRoutes({
+      'origin>a': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      'a>origin': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'a>b': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      'origin>b': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+    }, calls) }, { receiptPolicy });
+    assert.equal(calls.filter((call) => call === 'origin>a').length, 1);
+    assert.ok((result.diagnostics.cacheOrSessionReuseCount ?? 0) > 0);
+    assert.ok((result.diagnostics.newProviderAttemptCount ?? 0) <= 1);
+  }
+});
+
+test('M-02~04: 모든 평가 정책은 N1 탈락·cache 재사용·관계/W/T fallback의 안전 gate를 유지한다', async () => {
+  const policies = [
+    { providerAttemptLimit: 8 as const, queueOrder: 'A' as const }, { providerAttemptLimit: 12 as const, queueOrder: 'A' as const }, { providerAttemptLimit: 16 as const, queueOrder: 'A' as const },
+    { providerAttemptLimit: 8 as const, queueOrder: 'B' as const }, { providerAttemptLimit: 12 as const, queueOrder: 'B' as const }, { providerAttemptLimit: 16 as const, queueOrder: 'B' as const },
+  ];
+  const candidates = [...['a', 'b', 'c'], ...Array.from({ length: 15 }, (_, index) => `f${index}`), 'W']
+    .map((id, index) => place(id, { lat: origin.lat + (index + 1) * 0.00001, lon: origin.lon }));
+  for (const receiptEvaluationPolicy of policies) {
+    const result = await buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation({
+      now, origin, destination: null, remainingMin: 120, arrivalBufferMin: 5,
+      provider: provider(candidates), routes: exactRoutes({}),
+      receiptRoutes: receiptRoutes({
+        'origin>a': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+        'origin>b': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+        'origin>c': { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+        'origin>W': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+        'W>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      }, [], { result: 'no_route', newProviderAttemptCount: 0, reused: true }),
+    }, { receiptPolicy: receiptEvaluationPolicy });
+    assert.deepEqual(result.representativeCourse?.placeIds, ['W']);
+    assert.equal(result.diagnostics.verificationTiers?.N1.verifiedCourseCount, 0);
+    assert.equal(result.diagnostics.verificationTiers?.W.verifiedCourseCount, 1);
+    assert.ok((result.diagnostics.newProviderAttemptCount ?? 0) <= receiptEvaluationPolicy.providerAttemptLimit);
+    assert.ok((result.diagnostics.adapterCallCount ?? 0) <= 24);
+    assert.ok((result.diagnostics.cacheOrSessionReuseCount ?? 0) > 0);
+  }
+});
+
+test('M-04: 6정책·4시간·복귀/도착지에서 운영·관계 gate를 지키며 W와 T fallback을 각각 검증한다', async () => {
+  const policies = [8, 12, 16].flatMap((providerAttemptLimit) => ([
+    { providerAttemptLimit: providerAttemptLimit as 8 | 12 | 16, queueOrder: 'A' as const },
+    { providerAttemptLimit: providerAttemptLimit as 8 | 12 | 16, queueOrder: 'B' as const },
+  ]));
+  const durations = [45, 78, 120, 180];
+  const buildCandidates = () => {
+    const near = ['a', 'b', 'c', 'd', 'e', 'f'].map((id, index) => place(id, {
+      lat: origin.lat + (index + 1) * 0.00001, lon: origin.lon, minStayMin: 1, recommendedStayMin: 1,
+      ...(id === 'a' ? { siteGroupId: 'near-group' } : {}),
+    }));
+    const filler = Array.from({ length: 12 }, (_, index) => place(`f${index}`, {
+      lat: origin.lat + 0.02 + index * 0.001, lon: origin.lon, minStayMin: 1, recommendedStayMin: 1,
+    }));
+    return [
+      ...near,
+      place('same-a', { lat: origin.lat + 0.07, lon: origin.lon, siteGroupId: 'near-group', minStayMin: 1, recommendedStayMin: 1 }),
+      place('closed', { lat: origin.lat + 0.03, lon: origin.lon, minStayMin: 15, recommendedStayMin: 15, availability: { status: 'structured', alwaysAccessible: false, dayTypes: ['weekday'], windows: [{ startMin: 600, endMin: 614 }] } }),
+      ...filler,
+      place('W', { lat: origin.lat + 0.06, lon: origin.lon, minStayMin: 1, recommendedStayMin: 1 }),
+    ];
+  };
+  const candidates = buildCandidates();
+  const tripleCandidates = ['d', 'e', 'f'].map((id, index) => place(id, { lat: origin.lat + index * 0.00001, lon: origin.lon, minStayMin: 1, recommendedStayMin: 1 }));
+  const preselection = preselectLimitedCourseV1({ now, origin, destination: null, remainingMin: 120, arrivalBufferMin: 5, candidates });
+  assert.ok(!preselection.candidatePool.some((candidate) => candidate.id === 'closed'));
+  assert.equal(preselection.wideSingleCandidateId, 'W');
+  assert.ok(!preselection.candidateQueue.some((course) => course.some((candidate) => candidate.id === 'a') && course.some((candidate) => candidate.id === 'same-a')));
+
+  for (const receiptPolicy of policies) for (const remainingMin of durations) for (const useDestination of [false, true]) {
+    const target = useDestination ? destination : origin;
+    const commonFailures: Record<string, CourseV1RouteReceipt> = Object.fromEntries(
+      ['a', 'b', 'c'].map((id) => [`origin>${id}`, { result: 'no_route', newProviderAttemptCount: 0, reused: true }]),
+    );
+    const input = { now, origin, destination: useDestination ? destination : null, remainingMin, arrivalBufferMin: 5, provider: provider(candidates), routes: exactRoutes({}) };
+    if (remainingMin === 45 || remainingMin === 120) {
+    const widePlans: Record<string, CourseV1RouteReceipt> = {
+      ...commonFailures,
+      'origin>W': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+      [`W>${target.id}`]: { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+    };
+    const wide = await buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation({ ...input, receiptRoutes: receiptRoutes(widePlans, [], { result: 'no_route', newProviderAttemptCount: 0, reused: true }) }, { receiptPolicy });
+    if (wide.representativeCourse?.placeIds.join('|') !== 'W') throw new Error(JSON.stringify({ receiptPolicy, remainingMin, useDestination, representative: wide.representativeCourse?.placeIds, tiers: wide.diagnostics.verificationTiers }));
+    assert.equal(wide.diagnostics.verificationTiers?.N1.verifiedCourseCount, 0, JSON.stringify({ receiptPolicy, remainingMin, useDestination, tiers: wide.diagnostics.verificationTiers, representative: wide.representativeCourse?.placeIds }));
+    assert.equal(wide.diagnostics.verificationTiers?.N2.verifiedCourseCount, 0);
+    assert.equal(wide.diagnostics.verificationTiers?.W.verifiedCourseCount, 1);
+    assert.ok((wide.diagnostics.newProviderAttemptCount ?? 0) <= receiptPolicy.providerAttemptLimit);
+    assert.ok((wide.diagnostics.adapterCallCount ?? 0) <= 24);
+    if (remainingMin === 120) assert.equal(wide.diagnostics.verificationTiers?.W.stopReasons.includes('gated_by_near_single_verification'), false);
+
+    if (receiptPolicy.providerAttemptLimit === 8 && receiptPolicy.queueOrder === 'A' && remainingMin === 120 && !useDestination) {
+      const defaultWide = await buildLimitedRepresentativeCourseV1({ ...input, receiptRoutes: receiptRoutes(widePlans, [], { result: 'no_route', newProviderAttemptCount: 0, reused: true }) });
+      assert.deepEqual(defaultWide, wide);
+      const explicitB12 = await buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation({ ...input, receiptRoutes: receiptRoutes(widePlans, [], { result: 'no_route', newProviderAttemptCount: 0, reused: true }) }, { receiptPolicy: { providerAttemptLimit: 12, queueOrder: 'B' } });
+      const fixedB12 = await buildLimitedRepresentativeCourseV1ForInternalB12({ ...input, receiptRoutes: receiptRoutes(widePlans, [], { result: 'no_route', newProviderAttemptCount: 0, reused: true }) });
+      assert.deepEqual(fixedB12, explicitB12);
+      assert.equal(fixedB12.diagnostics.verificationTiers?.N1.verifiedCourseCount, 0);
+      assert.equal(fixedB12.diagnostics.verificationTiers?.N2.verifiedCourseCount, 0);
+      assert.equal(fixedB12.diagnostics.verificationTiers?.W.verifiedCourseCount, 1);
+      assert.ok((fixedB12.diagnostics.newProviderAttemptCount ?? 0) <= 12);
+      assert.ok((fixedB12.diagnostics.adapterCallCount ?? 0) <= 24);
+    }
+    } else {
+    const scenarioTripleIds = preselectLimitedCourseV1({ ...input, candidates: tripleCandidates })
+      .candidateQueue.find((course) => course.length === 3)!.map((candidate) => candidate.id);
+
+    const triplePlans: Record<string, CourseV1RouteReceipt> = {
+      ...Object.fromEntries(tripleCandidates.map((candidate) => [`origin>${candidate.id}`, { result: 'no_route', newProviderAttemptCount: 0, reused: true }])),
+      [`origin>${scenarioTripleIds[0]}`]: { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true },
+      [`${scenarioTripleIds[0]}>${target.id}`]: { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      [`${scenarioTripleIds[0]}>${scenarioTripleIds[1]}`]: { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true },
+      [`${scenarioTripleIds[1]}>${target.id}`]: { result: 'no_route', newProviderAttemptCount: 0, reused: true },
+      [`${scenarioTripleIds[1]}>${scenarioTripleIds[2]}`]: { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true },
+      [`${scenarioTripleIds[2]}>${target.id}`]: { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true },
+    };
+    const triple = await buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation({ ...input, provider: provider(tripleCandidates), receiptRoutes: receiptRoutes(triplePlans, [], { result: 'no_route', newProviderAttemptCount: 0, reused: true }) }, { receiptPolicy });
+    if (triple.representativeCourse?.placeIds.length !== 3) throw new Error(JSON.stringify({ receiptPolicy, remainingMin, useDestination, tiers: triple.diagnostics.verificationTiers, reasons: triple.diagnostics.outcomeReasonCounts }));
+    assert.equal(triple.diagnostics.verificationTiers?.N1.verifiedCourseCount, 0);
+    assert.equal(triple.diagnostics.verificationTiers?.N2.verifiedCourseCount, 0);
+    assert.equal(triple.diagnostics.verificationTiers?.W.verifiedCourseCount, 0);
+    assert.equal(triple.diagnostics.verificationTiers?.T.verifiedCourseCount, 1);
+    assert.ok((triple.diagnostics.newProviderAttemptCount ?? 0) <= receiptPolicy.providerAttemptLimit);
+    assert.ok((triple.diagnostics.adapterCallCount ?? 0) <= 24);
+    if (remainingMin === 120) assert.equal(triple.diagnostics.verificationTiers?.W.stopReasons.includes('gated_by_near_single_verification'), false);
+    }
+  }
 });
