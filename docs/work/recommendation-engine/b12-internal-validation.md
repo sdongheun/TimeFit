@@ -24,4 +24,4 @@ UIUX는 [U-1-REC-02 작업](../uiux/b12-internal-build.md)에서만 B12 entry를
 
 ## 이력 위치
 
-상세 fixture와 수락 이력: `docs/03_product/추천엔진_작업기록.md`의 `2-M`, `2-N` anchor.
+상세 fixture와 수락 이력: [추천 엔진 archive](archive/2026-08-history.md)의 `2-M`, `2-N` anchor.
