@@ -7,14 +7,15 @@
 | 목적 | 문서 | 상태 |
 | --- | --- | --- |
 | 추천 정책 단일 기준 | [03_product/추천로직.md](03_product/추천로직.md) | 현행 정책, 구현 전환 필요 |
-| 추천 엔진 작업 기준 | [03_product/추천엔진_작업기록.md](03_product/추천엔진_작업기록.md) | 추천 엔진의 작업 명령·결과·피드백을 시간순으로 누적하는 단일 작업 파일 |
-| 세션 간 작업 조정 | [작업조정_보드.md](작업조정_보드.md) | 역할 간 의존성·상태·산출물 색인. 상세 명령은 역할별 작업기록에만 둠 |
+| 역할별 현재 작업 | [work/README.md](work/README.md) | 새 세션의 짧은 역할 색인과 활성 작업 파일. 과거 작업기록 전체를 읽지 않는다. |
+| 추천 엔진 작업 이력 | [03_product/추천엔진_작업기록.md](03_product/추천엔진_작업기록.md) | 수락·보완·fixture의 append-only 감사 이력 |
+| 세션 간 작업 조정 | [작업조정_보드.md](작업조정_보드.md) | 역할 간 의존성·상태·활성 작업 파일 색인 |
 | 추천 엔진 현행정책 감사 | [03_product/추천엔진_현행정책정합성_감사프롬프트.md](03_product/추천엔진_현행정책정합성_감사프롬프트.md) | 코드 전환 범위 확인용, 감사 전용 |
 | 추천 엔진 점진 전환 지침 | [03_product/추천엔진_점진적전환_작업지침.md](03_product/추천엔진_점진적전환_작업지침.md) | 체감 검증용 v1부터 고도화하는 구현 순서 |
 | 사용자 요구·검증 상태 | [테스트.md](테스트.md) | 현행 요구, 미검증 항목 있음 |
 | 화면 공통 규칙 | [03_product/UIUX_공통규칙.md](03_product/UIUX_공통규칙.md) | 현행 규칙, 구현 전환 필요 |
-| UIUX 작업 기준 | [03_product/UIUX_작업기록.md](03_product/UIUX_작업기록.md) | UIUX의 작업 명령·결과·피드백을 시간순으로 누적하는 단일 작업 파일 |
-| QA·출시 작업 기준 | [05_release/QA출시_작업기록.md](05_release/QA출시_작업기록.md) | 현행 회귀 게이트·레거시 테스트 격리·실기기 확인 기록 |
+| UIUX 작업 이력 | [03_product/UIUX_작업기록.md](03_product/UIUX_작업기록.md) | 화면·테스트의 append-only 감사 이력 |
+| QA·출시 작업 이력 | [05_release/QA출시_작업기록.md](05_release/QA출시_작업기록.md) | 회귀 게이트·실기기 확인의 append-only 감사 이력 |
 | 실기기 추천 검증 | [05_release/실기기_추천검증.md](05_release/실기기_추천검증.md) | 사용자가 직접 기록하는 실제 Route Proxy·추천 체감 시나리오 |
 | 외부 API 작업 기준 | [04_backend/외부API_작업기록.md](04_backend/외부API_작업기록.md) | 서버 Route Proxy·구간 캐시·호출량 예산 계약 |
 | DB·개인화 작업 기준 | [04_backend/DB개인화_작업기록.md](04_backend/DB개인화_작업기록.md) | 검증 코스 저장·RLS·개인정보 경계의 후속 작업 |
@@ -64,18 +65,19 @@
 
 | 역할 | 시작 시 추가로 읽을 문서 | 주 소유 경로 | 완료 인수인계 |
 | --- | --- | --- | --- |
-| 통합·결정 | `추천로직.md`, `테스트.md`, 관련 UIUX/DB 기준 | 기준 문서 | 결정 ID, 충돌 여부, 다음 구현 범위 |
-| 데이터 정제 | `02_data` 근거 문서, `추천로직.md`의 데이터 절 | `data/`, `scripts/build_*`, `src/data/` | 입력·출력 파일, 데이터 수, 제외 근거 |
-| 추천 엔진 | `추천로직.md`, 해당 단위 테스트 | `src/engine/`, 순수 테스트 | 입출력 계약, fixture, 회귀 시나리오 |
-| API 어댑터 | API 관련 계약·호출량 기록 | adapter/cache, 계약 테스트 | 캐시 키·TTL, 실패 폴백, 실제 호출 수 |
-| UIUX | `UIUX_공통규칙.md`, `UIUX_테스트명세.md` | `src/ui/`, UI 테스트 | 화면 전환, 접근성, 수동 확인 항목 |
-| DB·개인화 | `데이터베이스설계.md`, `DB개인화_작업기록.md` | migration/repository/RLS 테스트 | migration ID, RLS 결과, payload 호환성 |
-| QA·출시 | `테스트.md`, `UIUX_테스트명세.md`, 출시 체크리스트 | `test/`, fixture, E2E, 출시 문서 | 시나리오 ID, fixture, 캡처/로그, 잔여 위험 |
+| 통합·결정 | `work/integration-decision/README.md`, `추천로직.md`, `테스트.md` | 기준 문서 | 결정 ID, 충돌 여부, 다음 구현 범위 |
+| 데이터 정제 | `work/data-curation/README.md`, `02_data` 근거 문서, `추천로직.md`의 데이터 절 | `data/`, `scripts/build_*`, `src/data/` | 입력·출력 파일, 데이터 수, 제외 근거 |
+| 추천 엔진 | `work/recommendation-engine/README.md`, `추천로직.md`, 해당 단위 테스트 | `src/engine/`, 순수 테스트 | 입출력 계약, fixture, 회귀 시나리오 |
+| API 어댑터 | `work/external-api/README.md`, API 관련 계약·호출량 기록 | adapter/cache, 계약 테스트 | 캐시 키·TTL, 실패 폴백, 실제 호출 수 |
+| UIUX | `work/uiux/README.md`, `UIUX_공통규칙.md`, `UIUX_테스트명세.md` | `src/ui/`, UI 테스트 | 화면 전환, 접근성, 수동 확인 항목 |
+| DB·개인화 | `work/db-personalization/README.md`, `데이터베이스설계.md` | migration/repository/RLS 테스트 | migration ID, RLS 결과, payload 호환성 |
+| QA·출시 | `work/qa-release/README.md`, `테스트.md`, `UIUX_테스트명세.md` | `test/`, fixture, E2E, 출시 문서 | 시나리오 ID, fixture, 캡처/로그, 잔여 위험 |
 
 공통 인수인계 형식은 `변경 파일 / 유지한 계약 / 테스트 결과 / 다음 결정` 네 항목이다. 단일 작성자 파일 목록과 역할 경계는 루트 `AGENTS.md`를 따른다.
 
-## 7. 작업기록 분리 원칙
+## 7. 현재 작업·이력 분리 원칙
 
 - 여러 역할이 함께 봐야 하는 현재 상태·선행 조건은 [작업 조정 보드](작업조정_보드.md)에 짧게 기록한다.
-- 통합·결정과 한 역할만 소통하는 상세 지시·완료 기록은 해당 역할의 고유 작업기록에만 기록한다.
-- 기존 `추천엔진_작업기록.md`의 교차 역할 과거 인계는 감사 이력으로 보존한다. 새 교차 역할 지시를 그 파일에 계속 추가하지 않는다.
+- 새 세션의 상세 지시는 `work/<role>/README.md`와 그 README가 링크한 **활성 작업 묶음 파일**에만 둔다. 현재 작업과 무관한 기존 작업기록 전체 읽기는 금지한다.
+- 역할별 기존 `작업기록.md`는 완료 이력·수락 근거·감사를 위한 append-only 문서다. 완료 시 네 항목(변경 파일 / 유지 계약 / 테스트 / 다음 결정)을 요약해 남기되, 다음 작업의 상세 명령을 계속 누적하지 않는다.
+- 하나의 파일은 같은 목표·공개 계약·선행 조건을 공유하는 작업 묶음만 다룬다. 독립 목표는 같은 역할이라도 새 묶음 파일로 분리한다.
