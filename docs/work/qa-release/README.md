@@ -19,10 +19,11 @@
    - [핵심 추천 UX 체감 확인](core-user-experience-review.md)
    - [실제 다장소 탈락 원인 최소 관찰](production-shape-diagnosis.md)
    - [다장소 receipt unavailable 원인 실기기 판정](multistop-receipt-reason-device-validation.md)
+   - [최대 2곳 제한 조립 자동 통합 게이트](two-stop-limited-assembly-validation.md)
 
 ## 현재 상태
 
-과거 다장소·B12·공급량 QA는 완료 이력으로만 보존한다. 출시 기본 one-stop과 `QA-ONE-MORE-01`은 수락됐다. [QA-COURSE-GEOMETRY-02](course-confirm-route-geometry-validation.md)도 자동 하네스와 사용자 실기기 transit one-stop 1건을 통과해 최종 수락됐으며, 하차지점→장소 도보 완결성 게이트는 닫혔다. 같은 운영 smoke를 반복하지 않는다.
+과거 다장소·B12·공급량 QA는 완료 이력으로만 보존한다. 출시 기본 one-stop, `QA-ONE-MORE-01`, [QA-COURSE-GEOMETRY-02](course-confirm-route-geometry-validation.md)는 수락됐다. [QA-TWO-STOP-01](two-stop-limited-assembly-validation.md)은 UI session reuse와 TS-14 connector fixture 계약을 복구한 뒤 runtime 17/17, typecheck, UI 225 통과·기존 skip 1, core 117/117, diff check까지 통과해 수락됐다. 자동 fixture 범위의 잔여 실패는 없고, production 연결 뒤에는 소수 실기기 smoke만 별도 수행한다.
 
 ## 이력
 
