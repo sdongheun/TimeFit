@@ -382,7 +382,11 @@ export type CourseV1ReleaseOneStopContinuation = Readonly<{
   routeReceiptKeys: readonly string[];
   stopReason?: CourseV1ReleaseOneStopContinuationStopReason;
 }>;
-export type CourseV1ReleaseOneStopContinuationInput = CourseV1LimitedInput & { continuation: CourseV1ReleaseOneStopContinuation };
+export type CourseV1ReleaseOneStopContinuationInput = CourseV1LimitedInput & {
+  continuation: CourseV1ReleaseOneStopContinuation;
+  /** 2-Y enabled session만 shared budget 잔여를 전달한다. 생략 시 기존 page 8회를 유지한다. */
+  pageProviderAttemptLimit?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+};
 export type CourseV1ReleaseOneStopContinuationResult = Readonly<{
   appendedCourses: readonly VerifiedCourseV1[];
   continuation: CourseV1ReleaseOneStopContinuation;
@@ -649,7 +653,9 @@ export async function continueReleaseOneStopRepresentativeCourseV1(
     pageState: 'continuation_unavailable',
     outcomeReasons: ['route_verification_unavailable'], diagnostics,
   });
-  if (!input.receiptRoutes || !isValidReleaseOneStopContinuation(input.continuation, selection)) return unavailable();
+  if (!input.receiptRoutes || !isValidReleaseOneStopContinuation(input.continuation, selection)
+    || (input.pageProviderAttemptLimit !== undefined
+      && (!Number.isInteger(input.pageProviderAttemptLimit) || input.pageProviderAttemptLimit < 0 || input.pageProviderAttemptLimit > 8))) return unavailable();
   if (input.continuation.stopReason === 'provider_unavailable') {
     return { appendedCourses: [], continuation: input.continuation, pageState: 'provider_unavailable', outcomeReasons: ['route_verification_unavailable'], diagnostics };
   }
@@ -657,7 +663,7 @@ export async function continueReleaseOneStopRepresentativeCourseV1(
     return { appendedCourses: [], continuation: input.continuation, pageState: 'exhausted', outcomeReasons: [], diagnostics };
   }
   if (input.continuation.stopReason === 'continuation_unavailable') return unavailable();
-  const page = await verifyReleaseOneStopPage(input, selection, input.continuation, 3, diagnostics);
+  const page = await verifyReleaseOneStopPage(input, selection, input.continuation, 3, diagnostics, input.pageProviderAttemptLimit);
   return {
     appendedCourses: page.courses,
     continuation: page.continuation,
@@ -716,6 +722,7 @@ async function verifyReleaseOneStopPage(
   continuation: CourseV1ReleaseOneStopContinuation,
   targetCourseCount: 3 | 4,
   diagnostics: CourseV1LimitedDiagnostics,
+  providerAttemptLimit: number = COURSE_V1_PROVIDER_ATTEMPT_LIMIT,
 ): Promise<CourseV1ReleaseOneStopPage> {
   const attempted = new Set(continuation.attemptedCandidateIds);
   const rejected = new Set(continuation.rejectedCandidateIds);
@@ -734,11 +741,11 @@ async function verifyReleaseOneStopPage(
     const key = `${from.id}>${to.id}`;
     const cached = receiptCache.get(key);
     if (cached) { reuseCount += 1; return cached; }
-    if (providerAttempts >= COURSE_V1_PROVIDER_ATTEMPT_LIMIT || adapterCalls >= COURSE_V1_ADAPTER_CALL_LIMIT) {
+    if (providerAttempts >= providerAttemptLimit || adapterCalls >= COURSE_V1_ADAPTER_CALL_LIMIT) {
       localBudgetExhausted = true;
       return { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 0, reused: false };
     }
-    const budget = Math.min(2, COURSE_V1_PROVIDER_ATTEMPT_LIMIT - providerAttempts) as 0 | 1 | 2;
+    const budget = Math.min(2, providerAttemptLimit - providerAttempts) as 0 | 1 | 2;
     adapterCalls += 1;
     const receipt = input.receiptRoutes!.getRouteReceipt(from, to, { maxNewProviderAttemptCount: budget })
       .then((value) => normalizeReceipt(value, budget));
@@ -756,7 +763,7 @@ async function verifyReleaseOneStopPage(
       attempted.add(candidate.id); rejected.add(candidate.id); cursor += 1;
       continue;
     }
-    if (providerAttempts >= COURSE_V1_PROVIDER_ATTEMPT_LIMIT || adapterCalls >= COURSE_V1_ADAPTER_CALL_LIMIT) break;
+    if (providerAttempts >= providerAttemptLimit || adapterCalls >= COURSE_V1_ADAPTER_CALL_LIMIT) break;
     localBudgetExhausted = false;
     diagnostics.exactCourseAttemptCount += 1;
     const outcome = await verifyCourseWithReceipts([candidate], input, input.destination ?? input.origin, getReceipt);
@@ -2015,4 +2022,39 @@ function deduplicateCourses(courses: readonly VerifiedCourseV1[]): VerifiedCours
     }
   }
   return [...unique.values()];
+}
+
+/**
+ * 2-Y pair-only 모듈이 one-stop과 동일한 후보·운영·체류 정책을 재사용하는 내부 경계다.
+ * engine barrel에는 노출하지 않으며 UI/API가 직접 호출하지 않는다.
+ */
+export function selectReleaseTwoStopCandidatePoolInternal(input: CourseV1PreselectionInput): CourseV1Candidate[] {
+  return selectReleaseOneStopCandidates(input).candidatePool;
+}
+
+export function isCourseV1CandidateAvailableInternal(
+  candidate: CourseV1Candidate,
+  arrival: Date,
+  dwellMin: number,
+): boolean {
+  return isAvailable(candidate.availability, arrival, dwellMin);
+}
+
+export function selectCourseV1StayPlanInternal(
+  places: readonly CourseV1Candidate[],
+  input: Pick<CourseV1Input, 'now' | 'remainingMin' | 'arrivalBufferMin'>,
+  legs: readonly CourseV1Leg[],
+): { stops: CourseV1Stop[]; stayMin: number; totalMin: number } | null {
+  return selectStayPlan(places, input, legs);
+}
+
+export function courseV1LegInternal(fromId: string, toId: string, route: ExactRoute): CourseV1Leg {
+  return courseV1Leg(fromId, toId, route);
+}
+
+export function normalizeCourseV1ReceiptInternal(
+  receipt: CourseV1RouteReceipt,
+  maxNewProviderAttemptCount: 0 | 1 | 2,
+): CourseV1RouteReceipt {
+  return normalizeReceipt(receipt, maxNewProviderAttemptCount);
 }
