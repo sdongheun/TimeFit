@@ -14,13 +14,19 @@
       "./plugins/withoutPushEntitlement.cjs",
       "expo-notifications",
       "expo-status-bar",
-      "expo-font"
+      "expo-font",
+      "expo-web-browser"
     ],
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
       "deploymentTarget": "16.4",
-      "bundleIdentifier": "com.dongheun.mobile"
+      "bundleIdentifier": "com.dongheun.mobile",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": [
+          "kakaomap"
+        ]
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

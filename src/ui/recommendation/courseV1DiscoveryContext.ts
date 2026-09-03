@@ -1,5 +1,6 @@
 type CatalogDisplayPlace = {
   addr1?: string | null;
+  category?: string | null;
   shortStay?: { type?: string | null } | null;
 };
 
@@ -10,6 +11,14 @@ const activityLabels: Record<string, string> = {
   quick_rest: '잠깐 쉬기',
 };
 
+/** 카탈로그의 활동 근거만 사용자용 이름으로 바꾼다. 알 수 없는 활동은 새로 추정하지 않는다. */
+export function getPlaceActivityLabel(place: CatalogDisplayPlace | undefined): string | null {
+  const activityType = place?.shortStay?.type;
+  if (activityType && activityLabels[activityType]) return activityLabels[activityType];
+  const category = place?.category?.trim();
+  return category || null;
+}
+
 function getDistrict(address: string | null | undefined): string | null {
   if (!address) return null;
   return address.split(/\s+/).find((part) => /(?:구|군)$/.test(part)) ?? null;
@@ -18,7 +27,7 @@ function getDistrict(address: string | null | undefined): string | null {
 /** 카탈로그 근거를 사용자용 맥락으로만 바꾼다. 없거나 알 수 없는 값은 추정하지 않는다. */
 export function getPlaceDiscoveryContext(place: CatalogDisplayPlace | undefined): string | null {
   const district = getDistrict(place?.addr1);
-  const activity = place?.shortStay?.type ? activityLabels[place.shortStay.type] : null;
+  const activity = getPlaceActivityLabel(place);
   return district && activity ? `${district} · ${activity}` : null;
 }
 

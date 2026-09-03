@@ -11,6 +11,13 @@ const kakaoMap = fs.readFileSync('src/ui/KakaoRouteMap.tsx', 'utf-8');
 const placePicker = fs.readFileSync('src/ui/PlacePicker.tsx', 'utf-8');
 const captchaSheet = fs.readFileSync('src/ui/CaptchaVerificationSheet.tsx', 'utf-8');
 const recommendationSession = fs.readFileSync('src/ui/recommendation/v1Session.ts', 'utf-8');
+const explorationCard = fs.readFileSync('src/ui/recommendation/ExplorationPlaceCard.tsx', 'utf-8');
+const courseConfirm = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8');
+const legacyResults = fs.readFileSync('src/ui/OneStopResultsScreen.tsx', 'utf-8');
+const execution = fs.readFileSync('src/ui/ExecutionScreen.tsx', 'utf-8');
+const executionSchedule = fs.readFileSync('src/ui/execution/schedule.ts', 'utf-8');
+const verifiedProgress = fs.readFileSync('src/ui/VerifiedCourseProgressScreen.tsx', 'utf-8');
+const courseConfirmV1 = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8');
 
 test('메인은 한 가지 시작 행동과 진행 중 코스 진입점만 둔다', () => {
   assert.match(home, /지금 남는 시간을\{`\\n`\}정해볼까요\?/);
@@ -29,7 +36,8 @@ test('시간 설정은 단일 경로 설정과 분 단위 시각·여유를 분�
   assert.match(setup, /const \[arrivalBufferMin, setArrivalBufferMin\] = useState\(10\)/);
   assert.match(setup, /TimeWheel values=\{HOURS_12\}/);
   assert.match(setup, /TimeWheel values=\{MINUTES\}/);
-  assert.match(setup, /const MAX_MINUTES = 180/);
+  assert.match(setup, /releaseTimeSetupValidation/);
+  assert.match(setup, /최대 2시간/);
   assert.match(setup, /const SHOW_TEST_CLOCK = typeof __DEV__ !== 'undefined' && __DEV__/);
   assert.match(setup, /testID="dev-test-clock"/);
   assert.match(setup, /테스트 현재 시각/);
@@ -78,7 +86,7 @@ test('출발지 검색은 관련성 순서만 제시하고 사용자의 명시 �
 });
 
 test('추천 계산은 V1 실제 경로 세션만 시작하고 legacy 차량·baseline을 호출하지 않는다', () => {
-  assert.match(setup, /runRecommendationSession\(session, \{ routeProxyEnabled: proxyEnabled, captchaToken \}\)/);
+  assert.match(setup, /runRecommendationSession\(session, \{ routeProxyEnabled: input\.proxyEnabled, captchaToken: input\.captchaToken \}\)/);
   assert.doesNotMatch(setup, /candidateModes: \['walk', 'transit'\]|getActualRouteBaselines\(origin, target\)|planTimeFit\(/);
   assert.match(setup, /현재 위치와 도착지 확인/);
   assert.match(setup, /이동 가능한 범위 계산/);
@@ -93,7 +101,8 @@ test('UCAP-03: Proxy 활성화 때만 CAPTCHA·활성 경로를 사용하고 tok
   assert.match(setup, /resolveCaptchaChallengeUrl\(process\.env\.EXPO_PUBLIC_CAPTCHA_CHALLENGE_URL\)/);
   assert.doesNotMatch(setup, /functions\/v1\/captcha-challenge|EXPO_PUBLIC_SUPABASE_URL/);
   assert.match(setup, /<CaptchaVerificationSheet visible=\{captchaVisible\}/);
-  assert.match(setup, /onVerified=\{\(token\) => \{ setCaptchaVisible\(false\); void startRecommendation\(token, true\); \}\}/);
+  assert.match(setup, /onVerified=\{verifiedCaptcha\}/);
+  assert.doesNotMatch(setup, /useState[^\n]*(captchaToken|token)|setCaptchaToken/);
   assert.match(recommendationSession, /if \(!options\.routeProxyEnabled\) return \{ routes: dependencies\.createLegacyRoutes\(\) \}/);
   assert.match(recommendationSession, /return \{ routes: activatedRoutes, receiptRoutes: activatedRoutes \}/);
   assert.match(recommendationSession, /throw new RouteProxyUnavailableError\(\)/);
@@ -121,12 +130,14 @@ test('UCAP-09: Route Proxy reason은 internal diagnostics에서만 화면 state�
   assert.match(setup, /recommendationFailureDisplay\(reason, captchaDiagnosticsEnabled\)/);
   assert.match(setup, /testID="route-proxy-diagnostic"/);
   assert.match(setup, /CAPTCHA 진단: \{captchaDiagnostic\}/);
-  assert.doesNotMatch(setup, /reason\.(message|cause)|console\.(log|info|warn|error)/);
+  assert.doesNotMatch(setup, /reason\.(message|cause)|console\.(log|warn|error)/);
+  assert.match(setup, /if \(line\) console\.info\(line\)/);
+  assert.doesNotMatch(setup, /console\.info\((?!line\))/);
 });
 
 test('URECDIAG01: 추천량 진단은 exact internal flag일 때만 Results 최하단에 표시하며 행동을 추가하지 않는다', () => {
   assert.match(results, /recommendationDiagnosticsEnabled\(process\.env\.EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS\)/);
-  assert.match(results, /<RecommendationInternalDiagnosticsPanel diagnostics=\{recommendationInternalDiagnosticsModel\(result, renderedCourseCount\)\} \/>/);
+  assert.match(results, /<RecommendationInternalDiagnosticsPanel diagnostics=\{recommendationInternalDiagnosticsModel\(engineResult, renderedCourseCount\)\} policy=\{recommendationInternalPolicyForEnvironment\(/);
   assert.doesNotMatch(results, /navigate\([^\n]*추천 진단|console\.(log|info|warn).*진단|fetch\([^\n]*진단/);
 });
 
@@ -136,27 +147,82 @@ test('결과 진입점은 V1 대표 코스와 읽기 전용 확인 화면을 사
   assert.doesNotMatch(resultEntry, /OneStopResultsScreen|BasketPanel|candidateRadiusKm/);
 });
 
-test('결과는 대표 1~3곳, 검증 대안, 두 빈 상태를 제공한다', () => {
-  assert.match(results, /result\.representativeCourse/);
+test('URELEASEONESTOP01/UONEMORE01: 결과는 single 대표·누적 대안과 조건부 정보 확인 영역만 분리한다', () => {
+  assert.match(results, /moreState\.representativeCourse/);
   assert.match(results, /no_representative_candidates/);
   assert.match(results, /no_verified_course_within_limit/);
   assert.match(results, /CourseV1PlacePreview/);
+  assert.match(results, /이 시간에 가능한 다른 장소/);
+  assert.match(results, /releaseOneStopDisplayResult/);
+  assert.match(results, /testID="verified-course-more"/);
+  assert.match(results, /다른 장소 더 보기/);
+  assert.match(results, /continueReleaseRecommendationSession/);
+  assert.match(recommendationSession, /continueReleaseOneStopRepresentativeCourseV1/);
+  assert.doesNotMatch(results, /continueRecommendationSession|continueLimitedRepresentativeCourseV1|다른 검증 코스 더 보기|검증 대안/);
+  assert.match(results, /운영시간 확인 후 들러볼 곳/);
+  assert.match(results, /운영시간을 카카오맵에서 확인해 주세요/);
+  assert.match(results, /conditionalVisitPage/);
+  assert.match(results, /AppState\.addEventListener/);
+  assert.match(results, /millisecondsUntilConditionalVisibilityBoundary/);
+  assert.match(results, /conditionalVisible \? <ConditionalVisitSection/);
   assert.match(results, /openKakaoPlace/);
+  assert.match(results, /Linking\.canOpenURL/);
+  assert.match(results, /WebBrowser\.openBrowserAsync/);
+  assert.match(courseConfirm, /WebBrowser\.openBrowserAsync/);
+  assert.match(courseConfirm, /Linking\.canOpenURL/);
+  assert.match(results, /createCourseV1CandidateProvider\(\)\.listConditionalVisitCandidates/);
+  assert.match(results, /runConditionalManualAction/);
+  assert.match(results, /확인했어요, 이 장소로 코스 계산/);
+  assert.match(results, /운영시간 확인 필요\(사용자 확인\)/);
+  assert.match(results, /conditionalManualLocks\.tryLock/);
+  assert.match(results, /testID="conditional-visit-more"/);
+  assert.doesNotMatch(results, /buildRecommendationExplorationPage|verifyRecommendationExplorationPlace|ExplorationPlaceCard/);
   assert.doesNotMatch(results, /지도에서 더 보기/);
-  assert.match(results, /이 시간에 가능한 다른 코스/);
-  assert.match(results, /buildCourseV1AlternativeList/);
-  assert.doesNotMatch(results, /advanceVerifiedAlternative|새 추천/);
-  assert.doesNotMatch(results, /representative\.remainingAfterCourseMin/);
   assert.doesNotMatch(results, /길찾기 시작|장바구니|buildBasketCourse/);
 });
 
-test('V1 결과는 엔진의 권장 체류와 단일 남는 시간 스냅샷만 표시하며 최대 체류를 새로 만들지 않는다', () => {
+test('UKAKAO-DEEPLINK01: 활성·레거시 장소와 길찾기는 canOpenURL 확인 뒤 앱 우선으로 연다', () => {
+  assert.match(legacyResults, /openKakaoPlaceWithAppFallback/);
+  assert.match(legacyResults, /canOpenApp: Linking\.canOpenURL/);
+  assert.match(legacyResults, /openBrowser: WebBrowser\.openBrowserAsync/);
+  assert.doesNotMatch(legacyResults, /Linking\.openURL\(spot\.kakaoPlaceUrl/);
+  assert.match(execution, /openKakaoRouteWithFallback/);
+  assert.match(execution, /canOpenApp: Linking\.canOpenURL/);
+  assert.match(execution, /openBrowser: WebBrowser\.openBrowserAsync/);
+  assert.match(executionSchedule, /sp=\$\{from\.lat\},\$\{from\.lon\}/);
+  assert.match(executionSchedule, /link\/by\/\$\{kakaoWebRouteMode\(mode\)\}/);
+  assert.match(executionSchedule, /await ports\.openBrowser\(webUrl\)/);
+});
+
+test('URELEASEONESTOP01: 새 V1 흐름은 체류 분을 숨기고 short 의미만 숫자 없이 표시한다', () => {
   const journey = fs.readFileSync('src/ui/recommendation/CourseV1Journey.tsx', 'utf-8');
   const preview = fs.readFileSync('src/ui/recommendation/CourseV1PlacePreview.tsx', 'utf-8');
   const listModel = fs.readFileSync('src/ui/recommendation/courseV1ResultListModel.ts', 'utf-8');
 
-  assert.match(preview, /stayMin\?: number/);
+  assert.doesNotMatch(preview, /stayMin|stayState|courseV1StopDwellLabel/);
+  assert.match(journey, /segment\.stayState === 'short'/);
+  assert.match(journey, /가볍게 둘러보기/);
+  assert.doesNotMatch(`${results}\n${journey}\n${preview}\n${courseConfirmV1}\n${verifiedProgress}`, /짧게 가능|활동 \$\{segment\.min\}분|분 머물기|출발 예정/);
   assert.doesNotMatch(`${results}\n${journey}\n${preview}`, /maxStay|minStay|최대\s*체류/);
+  assert.doesNotMatch(`${results}\n${journey}\n${preview}`, /Slider|체류시간.*(수정|조절)|setStay/);
   assert.match(listModel, /remainingAfterCourseMin/);
   assert.doesNotMatch(listModel, /remainingAfterArrivalBufferMin/);
+});
+
+test('UPROGRESS01: V1 진행은 검증 snapshot과 명시 단계 전환만 사용하고 legacy 자동화 경계를 호출하지 않는다', () => {
+  const progressModel = fs.readFileSync('src/ui/recommendation/verifiedCourseProgressModel.ts', 'utf-8');
+  const progressContract = `${verifiedProgress}\n${progressModel}`;
+  assert.match(verifiedProgress, /buildVerifiedCourseProgressSteps/);
+  assert.match(verifiedProgress, /openKakaoRouteWithFallback/);
+  assert.match(verifiedProgress, /카카오맵에서 길찾기/);
+  assert.match(progressContract, /다음 장소 길찾기/);
+  assert.match(progressContract, /도착지 길찾기/);
+  assert.match(progressContract, /복귀 길찾기/);
+  assert.match(verifiedProgress, /도착 후 코스 마치기/);
+  assert.match(verifiedProgress, /requestNextVerifiedCourseRoute/);
+  assert.match(verifiedProgress, /routeOpenLock\.tryLock/);
+  assert.match(courseConfirmV1, /코스 시작하기/);
+  assert.doesNotMatch(courseConfirmV1, /코스 시작 · 첫 장소 길찾기/);
+  assert.match(verifiedProgress, /resetToMyCourses/);
+  assert.doesNotMatch(verifiedProgress, /expo-location|Location\.|useAppFlow|scheduleCourseNotifications|planTimeFit|Route Proxy|Live Activity|AsyncStorage|supabase/);
 });

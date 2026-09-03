@@ -14,6 +14,7 @@
     "expo-location": "~56.0.23",
     "expo-notifications": "~56.0.23",
     "expo-status-bar": "~56.0.4",
+    "expo-web-browser": "~56.0.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.85.3",
@@ -38,6 +39,7 @@
     "test:qa:scenario": "tsx --test test/qa02-recommendation-harness.test.ts",
     "test:qa:supply": "tsx --test test/qa03-supply-diversity.test.ts",
     "test:qa:real-preselection": "tsx --test test/qa03r-real-provider-preselection.test.ts",
+    "test:qa:release-one-stop": "tsx --test test/qa-release-one-stop-harness.test.ts",
     "test:typecheck": "tsc --noEmit",
     "interview:requirements": "node scripts/requirements_interview.mjs"
   },

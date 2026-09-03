@@ -2,7 +2,7 @@ import type { VerifiedCourseV1 } from '../../engine';
 
 export type CourseV1JourneySegment =
   | { kind: 'leg'; key: string; min: number; mode: 'walk' | 'transit'; fromId: string; toId: string }
-  | { kind: 'stop'; key: string; min: number; placeId: string; arrivalAt: string; departureAt: string; availabilityState: 'structured_verified' }
+  | { kind: 'stop'; key: string; min: number; placeId: string; stayState?: 'recommended' | 'short'; arrivalAt: string; departureAt: string; availabilityState: 'structured_verified' }
   | { kind: 'buffer'; key: 'arrival-buffer'; min: number }
   | { kind: 'remaining'; key: 'remaining-after-course'; min: number };
 
@@ -15,7 +15,7 @@ export function buildCourseV1JourneySegments(course: VerifiedCourseV1): CourseV1
     const stop = course.stops[index];
     if (leg.toId !== stop.placeId || stop.placeId !== course.placeIds[index]) return null;
     segments.push({ kind: 'leg', key: `leg-${index}-${leg.fromId}-${leg.toId}`, min: leg.min, mode: leg.mode, fromId: leg.fromId, toId: leg.toId });
-    segments.push({ kind: 'stop', key: `stop-${index}-${stop.placeId}`, min: stop.stayMin, placeId: stop.placeId, arrivalAt: stop.arrivalAt, departureAt: stop.departureAt, availabilityState: stop.availabilityState });
+    segments.push({ kind: 'stop', key: `stop-${index}-${stop.placeId}`, min: stop.stayMin, placeId: stop.placeId, stayState: stop.stayState, arrivalAt: stop.arrivalAt, departureAt: stop.departureAt, availabilityState: stop.availabilityState });
   }
   const lastLeg = course.legs.at(-1);
   if (!lastLeg || lastLeg.fromId !== course.placeIds.at(-1)) return null;

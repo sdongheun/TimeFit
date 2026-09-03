@@ -45,6 +45,56 @@ test('URECDIAG01-02: 빈 결과와 legacy 진단은 허위 tier·요청 0을 만
   assert.deepEqual([model.requestCounts, model.tiers], [[], []]);
 });
 
+test('UDIAGSHAPE01-01: production shape 집계만 있어도 1·2·3곳의 안전 숫자와 총 요청을 투영한다', () => {
+  const model = recommendationInternalDiagnosticsModel(resultFixture({
+    verificationTiers: undefined,
+    shapeDiagnostics: {
+      1: { queueCount: 7, attemptedCourseCount: 4, verifiedCourseCount: 2, timeBudgetExceededCount: 1, routeNotVerifiedCount: 1, routeVerificationUnavailableCount: 0 },
+      2: { queueCount: 5, attemptedCourseCount: 3, verifiedCourseCount: 1, timeBudgetExceededCount: 0, routeNotVerifiedCount: 2, routeVerificationUnavailableCount: 1 },
+      3: { queueCount: 2, attemptedCourseCount: 1, verifiedCourseCount: 0, timeBudgetExceededCount: 1, routeNotVerifiedCount: 0, routeVerificationUnavailableCount: 0 },
+    },
+  }), 3);
+  assert.deepEqual(model.requestCounts, [{ label: '새 경로 확인', value: 8 }, { label: 'adapter 호출', value: 24 }, { label: '재사용', value: 3 }]);
+  assert.deepEqual(model.shapes, [
+    { shape: 1, values: [{ label: '큐 후보', value: 7 }, { label: '시도', value: 4 }, { label: '검증', value: 2 }, { label: '시간 예산 초과', value: 1 }, { label: '경로 미검증', value: 1 }, { label: '경로 확인 불가', value: 0 }], unavailableReasons: [] },
+    { shape: 2, values: [{ label: '큐 후보', value: 5 }, { label: '시도', value: 3 }, { label: '검증', value: 1 }, { label: '시간 예산 초과', value: 0 }, { label: '경로 미검증', value: 2 }, { label: '경로 확인 불가', value: 1 }], unavailableReasons: [] },
+    { shape: 3, values: [{ label: '큐 후보', value: 2 }, { label: '시도', value: 1 }, { label: '검증', value: 0 }, { label: '시간 예산 초과', value: 1 }, { label: '경로 미검증', value: 0 }, { label: '경로 확인 불가', value: 0 }], unavailableReasons: [] },
+  ]);
+  assert.doesNotMatch(JSON.stringify(model), /http|token|jwt|url|좌표|cache key|secret|place|address|provider/i);
+});
+
+test('UDIAGSHAPE01-02: shape 없는 일반 결과는 새 섹션을 만들지 않는다', () => {
+  assert.deepEqual(recommendationInternalDiagnosticsModel(resultFixture(), 3).shapes, []);
+});
+
+test('UDIAGSHAPE02-01: 2곳 unavailable safe reason은 non-zero enum만 별도 투영한다', () => {
+  const model = recommendationInternalDiagnosticsModel(resultFixture({
+    verificationTiers: undefined,
+    shapeDiagnostics: {
+      1: { queueCount: 0, attemptedCourseCount: 0, verifiedCourseCount: 0, timeBudgetExceededCount: 0, routeNotVerifiedCount: 0, routeVerificationUnavailableCount: 0, unavailableReasonCounts: { limited: 0, in_flight: 0, store: 0, provider: 0, transport: 0, invalid_response: 0, rejected: 0, unknown: 0 } },
+      2: { queueCount: 3, attemptedCourseCount: 1, verifiedCourseCount: 0, timeBudgetExceededCount: 0, routeNotVerifiedCount: 0, routeVerificationUnavailableCount: 1, unavailableReasonCounts: { limited: 0, in_flight: 2, store: 0, provider: 1, transport: 0, invalid_response: 0, rejected: 0, unknown: 0 } },
+      3: { queueCount: 0, attemptedCourseCount: 0, verifiedCourseCount: 0, timeBudgetExceededCount: 0, routeNotVerifiedCount: 0, routeVerificationUnavailableCount: 0, unavailableReasonCounts: { limited: 0, in_flight: 0, store: 0, provider: 0, transport: 0, invalid_response: 0, rejected: 0, unknown: 0 } },
+    },
+  }), 1);
+  assert.deepEqual(model.shapes.map(({ shape, unavailableReasons }) => [shape, unavailableReasons]), [
+    [1, []],
+    [2, [{ label: '동일 경로 처리 중', value: 2 }, { label: '경로 제공사', value: 1 }]],
+    [3, []],
+  ]);
+});
+
+test('UDIAGSHAPE02-02: reason map 없음·0·오염 값은 확인 불가 사유를 만들지 않는다', () => {
+  const malformedReasons = { limited: -1, in_flight: 1.5, unexpected: 4 } as unknown as NonNullable<NonNullable<CourseV1LimitedResult['diagnostics']['shapeDiagnostics']>[2]['unavailableReasonCounts']>;
+  const model = recommendationInternalDiagnosticsModel(resultFixture({
+    shapeDiagnostics: {
+      1: { queueCount: 0, attemptedCourseCount: 0, verifiedCourseCount: 0, timeBudgetExceededCount: 0, routeNotVerifiedCount: 0, routeVerificationUnavailableCount: 0 },
+      2: { queueCount: 1, attemptedCourseCount: 1, verifiedCourseCount: 0, timeBudgetExceededCount: 0, routeNotVerifiedCount: 0, routeVerificationUnavailableCount: 1, unavailableReasonCounts: malformedReasons },
+      3: { queueCount: 0, attemptedCourseCount: 0, verifiedCourseCount: 0, timeBudgetExceededCount: 0, routeNotVerifiedCount: 0, routeVerificationUnavailableCount: 0, unavailableReasonCounts: { limited: 0, in_flight: 0, store: 0, provider: 0, transport: 0, invalid_response: 0, rejected: 0, unknown: 0 } },
+    },
+  }), 1);
+  assert.deepEqual(model.shapes.map(({ unavailableReasons }) => unavailableReasons), [[], [], []]);
+});
+
 test('URECDIAG01-03: exact true만 internal panel을 허용하고 false·누락은 접근성 진단도 만들지 않는다', () => {
   assert.equal(recommendationDiagnosticsEnabled('true'), true);
   assert.equal(recommendationDiagnosticsEnabled('false'), false);

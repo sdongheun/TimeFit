@@ -5,6 +5,8 @@ import type { PlanCtx } from "../../src/ui/nav";
 import {
   buildExecutionSchedule,
   kakaoRouteUrl,
+  kakaoWebFallback,
+  openKakaoRouteWithFallback,
 } from "../../src/ui/execution/schedule";
 
 const origin: LatLon = { lat: 35.15, lon: 129.05 };
@@ -40,8 +42,57 @@ test("진행 일정은 이동·체류 구간을 누적해 마지막 약속 출�
   assert.deepEqual(schedule.alerts, [{ min: 767, msg: "약속 장소(으)로 출발하세요" }]);
 });
 
-test("카카오 길찾기 링크는 구간 이동수단을 카카오 형식으로 변환한다", () => {
-  assert.match(kakaoRouteUrl(spot, "walk"), /by=foot/);
-  assert.match(kakaoRouteUrl(spot, "transit"), /by=publictransit/);
-  assert.match(kakaoRouteUrl(spot, "car"), /by=car/);
+test("DECKAKAOROUTE01: 카카오 길찾기 app·web 링크는 출발·도착과 수단을 모두 보존한다", () => {
+  const stage = { from: { name: '출발', point: origin }, to: { name: '도착', point: spot } };
+  assert.match(kakaoRouteUrl(origin, spot, "walk"), /sp=35\.15,129\.05&ep=35\.16,129\.06&by=foot/);
+  assert.match(kakaoRouteUrl(origin, spot, "transit"), /by=publictransit/);
+  assert.match(kakaoRouteUrl(origin, spot, "car"), /by=car/);
+  assert.match(kakaoWebFallback(stage, 'walk'), /link\/by\/walk\/.*\/.*$/);
+  assert.match(kakaoWebFallback(stage, 'transit'), /link\/by\/traffic\//);
+  assert.match(kakaoWebFallback(stage, 'car'), /link\/by\/car\//);
+  assert.doesNotMatch(kakaoWebFallback(stage, 'walk'), /link\/to/);
+});
+
+test("DECKAKAOROUTE01: 카카오 길찾기는 app→HTTPS→browser를 각 한 번만 시도한다", async () => {
+  const schedule = buildExecutionSchedule({ course, ctx, origin });
+  const departure = schedule.stops[0];
+  const destination = schedule.stops[1];
+  const stage = { from: { name: departure.name, point: departure.point }, to: { name: destination.name, point: destination.point } };
+  const opened: string[] = [];
+  const installed = await openKakaoRouteWithFallback(stage, "walk", {
+    canOpenApp: async () => true,
+    openApp: async (url) => { opened.push(url); },
+    openWeb: async (url) => { opened.push(url); },
+    openBrowser: async (url) => { opened.push(url); },
+  });
+  assert.equal(installed, "app_opened");
+  assert.match(opened[0], /^kakaomap:\/\/route\?sp=35\.15,129\.05&ep=35\.16,129\.06/);
+
+  opened.length = 0;
+  const uninstalled = await openKakaoRouteWithFallback(stage, "walk", {
+    canOpenApp: async () => false,
+    openApp: async (url) => { opened.push(url); },
+    openWeb: async (url) => { opened.push(url); },
+    openBrowser: async (url) => { opened.push(url); },
+  });
+  assert.equal(uninstalled, "web_opened");
+  assert.match(opened[0], /^https:\/\/map\.kakao\.com\/link\/by\/walk\//);
+
+  const fallbackAttempts: string[] = [];
+  const browserFallback = await openKakaoRouteWithFallback(stage, "walk", {
+    canOpenApp: async () => true,
+    openApp: async () => { fallbackAttempts.push('app'); throw new Error("scheme failed"); },
+    openWeb: async () => { fallbackAttempts.push('web'); throw new Error("web failed"); },
+    openBrowser: async () => { fallbackAttempts.push('browser'); },
+  });
+  assert.equal(browserFallback, 'browser_fallback_opened');
+  assert.deepEqual(fallbackAttempts, ['app', 'web', 'browser']);
+  const allFailed = await openKakaoRouteWithFallback(stage, "walk", {
+    canOpenApp: async () => true,
+    openApp: async () => { throw new Error("scheme failed"); },
+    openWeb: async () => { throw new Error("web failed"); },
+    openBrowser: async () => { throw new Error('browser failed'); },
+  });
+  assert.equal(allFailed, "failed");
+  assert.equal(await openKakaoRouteWithFallback({ ...stage, from: { name: '잘못됨', point: { lat: Number.NaN, lon: 129 } } }, 'walk', { canOpenApp: async () => { throw new Error('must not query'); }, openApp: async () => { throw new Error('must not open'); }, openWeb: async () => { throw new Error('must not open'); }, openBrowser: async () => { throw new Error('must not open'); } }), 'invalid_stage');
 });

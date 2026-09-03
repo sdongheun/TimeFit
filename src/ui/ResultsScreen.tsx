@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useState } from 'react';
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { AppState, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import runtimeCatalog from '../data/busan_poi_catalog.json';
 import { C } from './theme';
@@ -9,40 +10,140 @@ import { CourseV1Journey } from './recommendation/CourseV1Journey';
 import { getPlaceDiscoveryContext } from './recommendation/courseV1DiscoveryContext';
 import { startMinuteForRecommendation } from './recommendation/recommendationSessionTime';
 import { CourseV1PlacePreview } from './recommendation/CourseV1PlacePreview';
-import { openKakaoPlace, type CourseV1DisplayPlace } from './recommendation/courseV1PlacePreviewModel';
-import { buildCourseV1AlternativeList, buildCourseV1ResultListItem, selectedCourseForConfirm } from './recommendation/courseV1ResultListModel';
+import { openKakaoPlaceWithAppFallback, type CourseV1DisplayPlace } from './recommendation/courseV1PlacePreviewModel';
+import { buildCourseV1CardSummary, type CourseV1CardSummary } from './recommendation/courseV1CardDetailModel';
+import { CourseV1SummaryCard } from './recommendation/CourseV1SummaryCard';
 import { courseV1OutcomeMessage } from './recommendation/courseV1OutcomeMessageModel';
 import { RecommendationInternalDiagnosticsPanel } from './recommendation/RecommendationInternalDiagnostics';
 import { recommendationDiagnosticsEnabled, recommendationInternalDiagnosticsModel } from './recommendation/recommendationInternalDiagnosticsModel';
+import { recommendationInternalPolicyForEnvironment } from './recommendation/recommendationInternalBuildModel';
+import { continueReleaseRecommendationSession, requestConditionalManualCourse } from './recommendation/v1Session';
+import { createCourseV1CandidateProvider, type CourseV1ConditionalVisitCandidate } from '../data/courseV1CandidateProvider';
+import type { VerifiedCourseV1 } from '../engine';
+import { conditionalManualMessage, conditionalVisitPage, createKeyedInFlightLock, isConditionalManualConfirmTime, millisecondsUntilConditionalVisibilityBoundary, runConditionalManualAction } from './recommendation/verifiedCourseResultsModel';
+import { releaseOneStopDisplayResult } from './recommendation/releaseOneStopResultsModel';
+import { appendReleaseOneStopPage, createReleaseOneStopMoreInFlightLock, initialReleaseOneStopMoreState, releaseOneStopMoreEndMessage, type ReleaseOneStopMoreState } from './recommendation/releaseOneStopMoreResultsModel';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Results'>;
 type RuntimePlace = (typeof runtimeCatalog.matched.data)[number] | (typeof runtimeCatalog.unmatched.data)[number];
 const places = new Map<string, RuntimePlace>([...runtimeCatalog.matched.data, ...runtimeCatalog.unmatched.data].map((place) => [place.contentId, place]));
+type ConditionalManualState = Readonly<{ loading: boolean; course?: VerifiedCourseV1; error?: string }>;
 
 export function ResultsScreen({ route, navigation }: Props) {
-  const { result, session } = route.params;
+  const { result: engineResult, session } = route.params;
+  const result = releaseOneStopDisplayResult(engineResult);
+  const initialMoreState = useMemo(() => initialReleaseOneStopMoreState(engineResult), [engineResult]);
+  const [moreState, setMoreState] = useState<ReleaseOneStopMoreState>(initialMoreState);
+  const [moreLoading, setMoreLoading] = useState(false);
+  const moreLock = useRef(createReleaseOneStopMoreInFlightLock()).current;
   const insets = useSafeAreaInsets();
   const [linkError, setLinkError] = useState('');
-  const course = result.representativeCourse;
-  const renderedCourseCount = (course ? 1 : 0) + result.alternativeCourses.length;
-  const diagnosticsPanel = recommendationDiagnosticsEnabled(process.env.EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS)
-    ? <RecommendationInternalDiagnosticsPanel diagnostics={recommendationInternalDiagnosticsModel(result, renderedCourseCount)} /> : null;
+  const alternativeCourses = moreState.alternativeCourses;
+  const course = moreState.representativeCourse;
+  const renderedCourseCount = (course ? 1 : 0) + alternativeCourses.length;
+  const diagnosticsEnabled = recommendationDiagnosticsEnabled(process.env.EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS);
+  const diagnosticsPanel = diagnosticsEnabled
+    ? <RecommendationInternalDiagnosticsPanel diagnostics={recommendationInternalDiagnosticsModel(engineResult, renderedCourseCount)} policy={recommendationInternalPolicyForEnvironment({ diagnostics: process.env.EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS, internalB12: process.env.EXPO_PUBLIC_RECOMMENDATION_INTERNAL_B12 })} /> : null;
   const displayPlace = (id: string): CourseV1DisplayPlace => places.get(id) ?? { title: id, lat: Number.NaN, lon: Number.NaN };
   const openPlace = async (place: CourseV1DisplayPlace) => {
-    const status = await openKakaoPlace(place, Linking.openURL);
-    setLinkError(status === 'failed' ? '카카오맵을 열지 못했어요. 잠시 후 다시 시도해 주세요.' : '');
+    const status = await openKakaoPlaceWithAppFallback(place, { canOpenApp: Linking.canOpenURL, openApp: Linking.openURL, openExternal: Linking.openURL, openBrowser: WebBrowser.openBrowserAsync });
+    setLinkError(status === 'app_opened' || status === 'external_opened' || status === 'browser_fallback_opened' ? '' : '카카오맵을 열지 못했어요. 잠시 후 다시 시도해 주세요.');
+  };
+  const conditionalCandidates = useMemo(() => createCourseV1CandidateProvider().listConditionalVisitCandidates(new Date(session.nowIso)), [session.nowIso]);
+  const [conditionalActualNow, setConditionalActualNow] = useState(() => new Date());
+  const initialConditionalPage = useMemo(() => conditionalVisitPage(conditionalCandidates, session, conditionalActualNow), [conditionalActualNow, conditionalCandidates, session]);
+  const [conditionalPlaces, setConditionalPlaces] = useState<readonly CourseV1ConditionalVisitCandidate[]>(initialConditionalPage.places);
+  const [conditionalCursor, setConditionalCursor] = useState(initialConditionalPage.nextCursor);
+  const [conditionalManual, setConditionalManual] = useState<Readonly<Record<string, ConditionalManualState>>>({});
+  const conditionalManualLocks = useRef(createKeyedInFlightLock()).current;
+  const conditionalVisible = isConditionalManualConfirmTime(conditionalActualNow);
+  useEffect(() => {
+    const refreshActualNow = () => setConditionalActualNow(new Date());
+    const timer = setTimeout(refreshActualNow, millisecondsUntilConditionalVisibilityBoundary(conditionalActualNow));
+    const appState = AppState.addEventListener('change', (state) => { if (state === 'active') refreshActualNow(); });
+    return () => { clearTimeout(timer); appState.remove(); };
+  }, [conditionalActualNow]);
+  useEffect(() => {
+    if (!conditionalVisible) return;
+    const page = conditionalVisitPage(conditionalCandidates, session, conditionalActualNow);
+    setConditionalPlaces(page.places);
+    setConditionalCursor(page.nextCursor);
+  }, [conditionalActualNow, conditionalCandidates, conditionalVisible, session]);
+  const showMoreConditionalPlaces = () => {
+    if (!conditionalVisible || conditionalCursor === null) return;
+    const next = conditionalVisitPage(conditionalCandidates, session, conditionalActualNow, conditionalCursor);
+    setConditionalPlaces((current) => [...current, ...next.places.filter((place) => !current.some((shown) => shown.id === place.id))]);
+    setConditionalCursor(next.nextCursor);
+  };
+  const confirmConditionalPlace = async (placeId: string) => {
+    if (!conditionalManualLocks.tryLock(placeId)) return;
+    const confirmedAt = new Date();
+    setConditionalManual((current) => ({ ...current, [placeId]: { loading: true } }));
+    try {
+      const manual = await runConditionalManualAction(confirmedAt, () => requestConditionalManualCourse(session, placeId, confirmedAt));
+      if (manual.state === 'success') {
+        setConditionalManual((current) => ({ ...current, [placeId]: { loading: false, course: manual.course } }));
+        return;
+      }
+      const error = manual.state === 'after_window'
+        ? '조건부 장소는 오후 6시 전 확인 후 계산할 수 있어요. 다시 추천해 주세요.'
+        : manual.state === 'unavailable'
+        ? conditionalManualMessage('unavailable')
+        : conditionalManualMessage(manual.reason === 'conditional_confirmation_required' ? 'conditional_candidate_not_eligible' : manual.reason);
+      setConditionalManual((current) => ({ ...current, [placeId]: { loading: false, error } }));
+    } catch {
+      setConditionalManual((current) => ({ ...current, [placeId]: { loading: false, error: conditionalManualMessage('unavailable') } }));
+    } finally {
+      conditionalManualLocks.release(placeId);
+    }
+  };
+  const showMoreVerifiedPlaces = async () => {
+    if (moreLoading || moreState.pageState !== 'more_available' || !moreState.continuation || !moreLock.tryLock()) return;
+    setMoreLoading(true);
+    try {
+      const page = await continueReleaseRecommendationSession(session, moreState.continuation);
+      setMoreState((current) => page
+        ? appendReleaseOneStopPage(current, page)
+        : { ...current, pageState: 'continuation_unavailable' });
+    } catch {
+      setMoreState((current) => ({ ...current, pageState: 'provider_unavailable' }));
+    } finally {
+      moreLock.release();
+      setMoreLoading(false);
+    }
   };
   const header = <View style={s.header}><Pressable accessibilityLabel="시간 설정으로 돌아가기" style={s.icon} onPress={() => navigation.goBack()}><Text style={s.back}>‹</Text></Pressable><Text style={s.title}>시간의 추천</Text><View style={s.icon} /></View>;
   if (!course) {
+    if (moreState.pageState === 'more_available') {
+      return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{header}<View style={s.empty}><Text style={s.emptyTitle}>아직 확인된 장소가 없어요</Text><Text style={s.copy}>남은 후보를 실제 경로로 더 확인할 수 있어요.</Text><VerifiedCourseMoreControl loading={moreLoading} onPress={showMoreVerifiedPlaces} /></View>{conditionalVisible ? <ConditionalVisitSection places={conditionalPlaces} nextCursor={conditionalCursor} displayPlace={displayPlace} onOpenKakao={openPlace} onMore={showMoreConditionalPlaces} manualStates={conditionalManual} onConfirm={confirmConditionalPlace} session={session} /> : null}{diagnosticsPanel}</ScrollView></View>;
+    }
     const exhausted = result.resultState === 'no_verified_course_within_limit';
     const noRepresentativeCandidates = result.resultState === 'no_representative_candidates';
     const outcomeMessage = courseV1OutcomeMessage(result.primaryOutcomeReason);
-    return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{header}<View style={s.empty}><Text style={s.emptyTitle}>{exhausted ? '실제 경로로 확인할 수 있는\n코스를 찾지 못했어요' : '이 조건에서 확신 있게 추천할\n코스를 찾지 못했어요'}</Text><Text style={s.copy}>{outcomeMessage ?? (exhausted ? '경로를 확인한 코스가 시간 안에 들어오지 않았어요.' : '시간과 운영 상태를 함께 만족하는 후보가 없어요.')}</Text><Pressable style={s.secondary} onPress={() => navigation.goBack()}><Text style={s.secondaryText}>{noRepresentativeCandidates ? '조건 다시 설정' : '시간과 위치 다시 설정'}</Text></Pressable></View>{diagnosticsPanel}</ScrollView></View>;
+    return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{header}<View style={s.empty}><Text style={s.emptyTitle}>{exhausted ? '실제 경로로 확인할 수 있는\n코스를 찾지 못했어요' : '이 조건에서 확신 있게 추천할\n코스를 찾지 못했어요'}</Text><Text style={s.copy}>{outcomeMessage ?? (exhausted ? '경로를 확인한 코스가 시간 안에 들어오지 않았어요.' : '시간과 운영 상태를 함께 만족하는 후보가 없어요.')}</Text><Pressable style={s.secondary} onPress={() => navigation.goBack()}><Text style={s.secondaryText}>{noRepresentativeCandidates ? '조건 다시 설정' : '시간과 위치 다시 설정'}</Text></Pressable></View>{conditionalVisible ? <ConditionalVisitSection places={conditionalPlaces} nextCursor={conditionalCursor} displayPlace={displayPlace} onOpenKakao={openPlace} onMore={showMoreConditionalPlaces} manualStates={conditionalManual} onConfirm={confirmConditionalPlace} session={session} /> : null}{diagnosticsPanel}</ScrollView></View>;
   }
-  const representative = buildCourseV1ResultListItem(course, (id) => places.get(id));
-  const alternatives = buildCourseV1AlternativeList(result, (id) => places.get(id));
-  const courseSummary = (item: typeof representative) => `${item.placeNames.join(' → ')} · ${item.totalMin}분`;
-  return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14, paddingBottom: 34 }]}>{header}<View style={s.budget}><Text style={s.budgetTitle}>{session.remainingMin}분 안에</Text><Text style={s.copy}>도착 전 {course.arrivalBufferMin}분 여유를 포함해 검증한 코스</Text></View><View style={s.card}><Text style={s.eyebrow}>대표 추천 · {course.placeIds.length}곳</Text><Text style={s.courseName}>{representative.placeNames.join(' → ')}</Text>{representative.context ? <Text style={s.discoveryContext}>{representative.context}</Text> : null}<CourseV1Journey course={course} startMin={startMinuteForRecommendation(session.nowIso)} /><View style={s.placeList}>{course.placeIds.map((id, index) => <CourseV1PlacePreview key={id} place={displayPlace(id)} context={getPlaceDiscoveryContext(places.get(id))} stayMin={course.stops[index]?.stayMin} onOpenKakao={openPlace} />)}</View></View>{linkError ? <Text accessibilityRole="alert" style={s.error}>{linkError}</Text> : null}<Pressable accessibilityLabel={`${courseSummary(representative)} 코스 확인`} style={s.secondary} onPress={() => navigation.navigate('CourseConfirm', { session, course: selectedCourseForConfirm(representative) })}><Text style={s.secondaryText}>코스 확인</Text></Pressable><View style={s.alternatives}><Text style={s.sectionTitle}>이 시간에 가능한 다른 코스</Text>{alternatives.length ? alternatives.map((item) => <Pressable key={item.course.id} accessibilityLabel={`${courseSummary(item)}${item.context ? `, ${item.context}` : ''}${item.remainingAfterCourseMin !== null ? `, 남는 시간 ${item.remainingAfterCourseMin}분` : ''} 코스 확인`} style={s.alternativeCard} onPress={() => navigation.navigate('CourseConfirm', { session, course: selectedCourseForConfirm(item) })}><Text style={s.alternativeTitle}>{courseSummary(item)}</Text>{item.context ? <Text style={s.discoveryContext}>{item.context}</Text> : null}{item.remainingAfterCourseMin !== null ? <Text style={s.remaining}>남는 시간 {item.remainingAfterCourseMin}분</Text> : null}</Pressable>) : <View style={s.exhausted}><Text style={s.copy}>이 조건에서 다른 검증 코스가 없어요</Text></View>}</View>{diagnosticsPanel}</ScrollView></View>;
+  const representative = buildCourseV1CardSummary(course, '대표 추천', (id) => places.get(id));
+  const alternatives = alternativeCourses
+    .map((alternative, index) => buildCourseV1CardSummary(alternative, `다른 추천 ${index + 1}`, (id) => places.get(id)))
+    .filter((item): item is CourseV1CardSummary => item !== null);
+  if (!representative) {
+    return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{header}<View style={s.empty}><Text style={s.emptyTitle}>코스 정보를 안전하게 표시할 수 없어요</Text><Text style={s.copy}>시간과 위치를 다시 설정해 추천을 받아 주세요.</Text><Pressable style={s.secondary} onPress={() => navigation.goBack()}><Text style={s.secondaryText}>시간과 위치 다시 설정</Text></Pressable></View>{diagnosticsPanel}</ScrollView></View>;
+  }
+  const moreEndMessage = releaseOneStopMoreEndMessage(moreState.pageState);
+  return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14, paddingBottom: 34 }]}>{header}<View style={s.budget}><Text style={s.budgetTitle}>{session.remainingMin}분 안에</Text><Text style={s.copy}>도착 전 {course.arrivalBufferMin}분 여유를 포함해 검증한 장소</Text></View><VerifiedCourseCard summary={representative} onConfirm={() => navigation.navigate('CourseConfirm', { session, course: representative.course })} />{linkError ? <Text accessibilityRole="alert" style={s.error}>{linkError}</Text> : null}<View style={s.exploration}><Text style={s.sectionTitle}>이 시간에 가능한 다른 장소</Text>{alternatives.map((alternative) => <VerifiedCourseCard key={alternative.course.id} summary={alternative} onConfirm={() => navigation.navigate('CourseConfirm', { session, course: alternative.course })} />)}{moreState.pageState === 'more_available' ? <VerifiedCourseMoreControl loading={moreLoading} onPress={showMoreVerifiedPlaces} /> : moreEndMessage ? <Text accessibilityLiveRegion="polite" style={s.moreEnd}>{moreEndMessage}</Text> : alternatives.length === 0 ? <Text style={s.copy}>이 조건에서 확인된 다른 장소는 없어요.</Text> : null}</View>{conditionalVisible ? <ConditionalVisitSection places={conditionalPlaces} nextCursor={conditionalCursor} displayPlace={displayPlace} onOpenKakao={openPlace} onMore={showMoreConditionalPlaces} manualStates={conditionalManual} onConfirm={confirmConditionalPlace} session={session} /> : null}{diagnosticsPanel}</ScrollView></View>;
 }
 
-const s = StyleSheet.create({ root: { flex: 1, backgroundColor: C.bg }, body: { paddingHorizontal: 22, gap: 14 }, header: { height: 52, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, icon: { width: 42, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2 }, back: { color: C.txt, fontSize: 32, lineHeight: 34 }, title: { color: C.txt, fontSize: 17, fontWeight: '800' }, budget: { marginTop: 8 }, budgetTitle: { color: C.txt, fontSize: 26, fontWeight: '800' }, copy: { color: C.muted, fontSize: 13, lineHeight: 20, marginTop: 5 }, card: { padding: 17, gap: 13, borderRadius: 16, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel }, eyebrow: { color: '#74b0ff', fontSize: 13, fontWeight: '800' }, courseName: { color: C.txt, fontSize: 22, lineHeight: 30, fontWeight: '800' }, discoveryContext: { color: '#b9d8ff', fontSize: 13, fontWeight: '700', marginTop: -6 }, placeList: { paddingTop: 3, gap: 5 }, remaining: { color: '#c8b4ff', fontSize: 13, fontWeight: '800' }, error: { color: C.red, fontSize: 13, lineHeight: 19 }, secondary: { minHeight: 52, justifyContent: 'center', alignItems: 'center', borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2 }, secondaryText: { color: C.txt, fontSize: 16, fontWeight: '800' }, alternatives: { gap: 10, paddingTop: 10 }, sectionTitle: { color: C.txt, fontSize: 18, fontWeight: '800' }, alternativeCard: { padding: 15, gap: 7, borderRadius: 14, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel }, alternativeTitle: { color: C.txt, fontSize: 16, lineHeight: 23, fontWeight: '800' }, exhausted: { alignItems: 'center', paddingTop: 8 }, empty: { minHeight: 400, justifyContent: 'center', alignItems: 'center' }, emptyTitle: { color: C.txt, fontSize: 25, lineHeight: 34, fontWeight: '800', textAlign: 'center' } });
+function VerifiedCourseCard({ summary, onConfirm }: { summary: CourseV1CardSummary; onConfirm: () => void }) {
+  return <CourseV1SummaryCard summary={summary} onPress={onConfirm} />;
+}
+
+function VerifiedCourseMoreControl({ loading, onPress }: { loading: boolean; onPress: () => void }) {
+  return <Pressable testID="verified-course-more" accessibilityRole="button" accessibilityLabel={loading ? '다른 장소 확인 중' : '다른 장소 더 보기'} accessibilityState={{ disabled: loading, busy: loading }} disabled={loading} style={({ pressed }) => [s.moreButton, pressed && !loading && s.morePressed, loading && s.moreDisabled]} onPress={() => void onPress()}><Text style={s.moreButtonText}>{loading ? '다른 장소 확인 중…' : '다른 장소 더 보기'}</Text></Pressable>;
+}
+
+function ConditionalVisitSection({ places: conditionalPlaces, nextCursor, displayPlace, onOpenKakao, onMore, manualStates, onConfirm, session }: { places: readonly CourseV1ConditionalVisitCandidate[]; nextCursor: number | null; displayPlace: (id: string) => CourseV1DisplayPlace; onOpenKakao: (place: CourseV1DisplayPlace) => void; onMore: () => void; manualStates: Readonly<Record<string, ConditionalManualState>>; onConfirm: (placeId: string) => void; session: Props['route']['params']['session'] }) {
+  if (!conditionalPlaces.length) return null;
+  return <View style={s.exploration}><Text style={s.sectionTitle}>운영시간 확인 후 들러볼 곳</Text>{conditionalPlaces.map((place) => { const display = displayPlace(place.id); const manual = manualStates[place.id]; const manualCourse = manual?.course; return <View key={place.id} style={s.card}><Text style={s.courseName}>{place.title}</Text><Text style={s.copy}>운영시간을 카카오맵에서 확인해 주세요</Text><Pressable style={s.secondary} onPress={() => void onOpenKakao(display)}><Text style={s.secondaryText}>카카오맵에서 확인</Text></Pressable><Pressable testID={`conditional-manual-${place.id}`} disabled={manual?.loading} style={s.secondary} onPress={() => void onConfirm(place.id)}><Text style={s.secondaryText}>{manual?.loading ? '실제 경로를 확인하고 있어요' : '확인했어요, 이 장소로 코스 계산'}</Text></Pressable>{manual?.error ? <Text accessibilityRole="alert" style={s.error}>{manual.error}</Text> : null}{manualCourse ? <View style={s.manualResult}><Text style={s.manualLabel}>운영시간 확인 필요(사용자 확인)</Text><CourseV1Journey course={manualCourse} startMin={startMinuteForRecommendation(session.nowIso)} /><View style={s.placeList}>{manualCourse.placeIds.map((id) => <CourseV1PlacePreview key={id} place={displayPlace(id)} context={getPlaceDiscoveryContext(places.get(id))} onOpenKakao={onOpenKakao} />)}</View></View> : null}</View>; })}{nextCursor !== null ? <Pressable testID="conditional-visit-more" style={s.secondary} onPress={onMore}><Text style={s.secondaryText}>더 보기</Text></Pressable> : null}</View>;
+}
+
+const s = StyleSheet.create({ root: { flex: 1, backgroundColor: C.bg }, body: { paddingHorizontal: 22, gap: 14 }, header: { height: 52, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, icon: { width: 42, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2 }, back: { color: C.txt, fontSize: 32, lineHeight: 34 }, title: { color: C.txt, fontSize: 17, fontWeight: '800' }, budget: { marginTop: 8 }, budgetTitle: { color: C.txt, fontSize: 26, fontWeight: '800' }, copy: { color: C.muted, fontSize: 13, lineHeight: 20, marginTop: 5 }, card: { padding: 17, gap: 13, borderRadius: 16, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel }, eyebrow: { color: '#74b0ff', fontSize: 13, fontWeight: '800' }, shortState: { color: '#ffd08a', fontSize: 13, fontWeight: '800', marginTop: -6 }, courseName: { color: C.txt, fontSize: 22, lineHeight: 30, fontWeight: '800' }, discoveryContext: { color: '#b9d8ff', fontSize: 13, fontWeight: '700', marginTop: -6 }, placeList: { paddingTop: 3, gap: 5 }, manualResult: { gap: 10, borderTopWidth: 1, borderTopColor: C.line, paddingTop: 12 }, manualLabel: { color: '#ffd08a', fontSize: 14, fontWeight: '800' }, remaining: { color: '#c8b4ff', fontSize: 13, fontWeight: '800' }, error: { color: C.red, fontSize: 13, lineHeight: 19 }, secondary: { minHeight: 52, justifyContent: 'center', alignItems: 'center', borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2 }, secondaryText: { color: C.txt, fontSize: 16, fontWeight: '800' }, moreButton: { minHeight: 50, justifyContent: 'center', alignItems: 'center', borderRadius: 14, borderWidth: 1, borderColor: '#4d9df5', backgroundColor: '#17283a' }, morePressed: { opacity: 0.82 }, moreDisabled: { opacity: 0.62 }, moreButtonText: { color: '#9dcbff', fontSize: 15, fontWeight: '800' }, moreEnd: { color: C.muted, fontSize: 13, lineHeight: 20, textAlign: 'center', paddingVertical: 10 }, exploration: { gap: 10, paddingTop: 10, paddingBottom: 20 }, sectionTitle: { color: C.txt, fontSize: 18, fontWeight: '800' }, exhausted: { alignItems: 'center', paddingTop: 8 }, empty: { minHeight: 400, justifyContent: 'center', alignItems: 'center' }, emptyTitle: { color: C.txt, fontSize: 25, lineHeight: 34, fontWeight: '800', textAlign: 'center' } });

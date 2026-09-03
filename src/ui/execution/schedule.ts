@@ -86,12 +86,64 @@ function kakaoRouteMode(mode: Mode): "car" | "foot" | "publictransit" {
   return "foot";
 }
 
-export function kakaoRouteUrl(to: LatLon, mode: Mode): string {
-  return `kakaomap://route?ep=${to.lat},${to.lon}&by=${kakaoRouteMode(mode)}`;
+export type KakaoRouteTarget = Pick<ExecutionStop, 'name' | 'point'>;
+export type KakaoRouteStage = Readonly<{ from: KakaoRouteTarget; to: KakaoRouteTarget }>;
+
+function hasValidRoutePoint(point: LatLon): boolean {
+  return Number.isFinite(point.lat) && Number.isFinite(point.lon) && Math.abs(point.lat) <= 90 && Math.abs(point.lon) <= 180;
 }
 
-export function kakaoWebFallback(to: ExecutionStop): string {
-  return `https://map.kakao.com/link/to/${encodeURIComponent(to.name)},${to.point.lat},${to.point.lon}`;
+export function kakaoRouteUrl(from: LatLon, to: LatLon, mode: Mode): string {
+  return `kakaomap://route?sp=${from.lat},${from.lon}&ep=${to.lat},${to.lon}&by=${kakaoRouteMode(mode)}`;
+}
+
+function kakaoWebRouteMode(mode: Mode): 'walk' | 'traffic' | 'car' {
+  if (mode === 'transit') return 'traffic';
+  return mode;
+}
+
+export function kakaoWebFallback(stage: KakaoRouteStage, mode: Mode): string {
+  const from = `${encodeURIComponent(stage.from.name)},${stage.from.point.lat},${stage.from.point.lon}`;
+  const to = `${encodeURIComponent(stage.to.name)},${stage.to.point.lat},${stage.to.point.lon}`;
+  return `https://map.kakao.com/link/by/${kakaoWebRouteMode(mode)}/${from}/${to}`;
+}
+
+export type KakaoRouteOpenResult = "app_opened" | "web_opened" | "browser_fallback_opened" | "invalid_stage" | "failed";
+
+/** 설치된 카카오맵만 scheme으로 열고, 그 외에는 기존 HTTPS 길찾기로 한 번 전환한다. */
+export async function openKakaoRouteWithFallback(
+  stage: KakaoRouteStage,
+  mode: Mode,
+  ports: {
+    canOpenApp: (url: string) => Promise<boolean>;
+    openApp: (url: string) => Promise<unknown>;
+    openWeb: (url: string) => Promise<unknown>;
+    openBrowser: (url: string) => Promise<unknown>;
+  },
+): Promise<KakaoRouteOpenResult> {
+  if (!hasValidRoutePoint(stage.from.point) || !hasValidRoutePoint(stage.to.point)) return 'invalid_stage';
+  const appUrl = kakaoRouteUrl(stage.from.point, stage.to.point, mode);
+  try {
+    if (await ports.canOpenApp(appUrl)) {
+      try {
+        await ports.openApp(appUrl);
+        return "app_opened";
+      } catch { /* HTTPS fallback below */ }
+    }
+  } catch { /* HTTPS fallback below */ }
+
+  const webUrl = kakaoWebFallback(stage, mode);
+  try {
+    await ports.openWeb(webUrl);
+    return "web_opened";
+  } catch {
+    try {
+      await ports.openBrowser(webUrl);
+      return 'browser_fallback_opened';
+    } catch {
+      return "failed";
+    }
+  }
 }
 
 export function currentMinuteOfDay(now = new Date()): number {

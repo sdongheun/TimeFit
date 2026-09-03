@@ -1,4 +1,4 @@
-import { Course, DayType, HourBucket, LatLon, Mode, PlanResult, type CourseV1LimitedResult, type VerifiedCourseV1 } from '../engine';
+import { Course, DayType, HourBucket, LatLon, Mode, PlanResult, type CourseV1LimitedResult, type CourseV1ReleaseOneStopResult, type VerifiedCourseV1 } from '../engine';
 
 // 다음 약속(선택): 장소 프리셋 + 라벨. null = 왕복
 export type Appointment = { label: string; lat: number; lon: number } | null;
@@ -36,11 +36,16 @@ export type RootStackParamList = {
   TimeSetup: { presetMin?: number } | undefined;
   Results: {
     session: RecommendationSession;
-    result: CourseV1LimitedResult;
+    result: CourseV1LimitedResult | CourseV1ReleaseOneStopResult;
   };
   CourseConfirm: {
     session: RecommendationSession;
     /** 결과 화면에서 선택한 검증 스냅샷을 그대로 읽기 전용으로 보여 준다. */
+    course: VerifiedCourseV1;
+  };
+  /** 저장·위치 추적 없이 검증 snapshot을 따라가는 일회성 V1 진행 화면이다. */
+  VerifiedCourseProgress: {
+    session: RecommendationSession;
     course: VerifiedCourseV1;
   };
   /** V1 저장 계약이 준비되기 전 기존 진행 코스의 변경 흐름만 유지한다. */

@@ -31,9 +31,11 @@ type Props = {
   points: LatLon[];
   line: LatLon[];
   markers: RouteMapMarker[];
-  segments?: RouteMapSegment[];
+  segments?: readonly RouteMapSegment[];
   showMarkerLabels?: boolean;
   usePhotoMarkers?: boolean;
+  showRouteLegend?: boolean;
+  safeErrorPresentation?: boolean;
   focusedMarkerOffsetY?: number;
   initialCenter?: LatLon;
   recenterPoint?: LatLon;
@@ -48,13 +50,13 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, focusedMarkerOffsetY = 0, initialCenter, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, onMapTap, onMapCenterChange, onMapReady, onMapError, style }: Props) {
+export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, showRouteLegend = true, safeErrorPresentation = false, focusedMarkerOffsetY = 0, initialCenter, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, onMapTap, onMapCenterChange, onMapReady, onMapError, style }: Props) {
   const ref = useRef<WebView>(null);
   const errorReported = useRef(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
   const routeSegments = useMemo(
-    () => segments?.length ? segments : [{ points: line, quality: 'fallback' as const }],
+    () => segments !== undefined ? segments : [{ points: line, quality: 'fallback' as const }],
     [segments, line],
   );
   const routePoints = useMemo(() => routeSegments.flatMap((seg) => seg.points), [routeSegments]);
@@ -106,8 +108,8 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
   if (!KAKAO_JS_KEY) {
     return (
       <View style={[s.fallback, style]}>
-        <Text style={s.fallbackTitle}>Kakao 지도 키가 필요합니다.</Text>
-        <Text style={s.fallbackTxt}>EXPO_PUBLIC_KAKAO_JAVASCRIPT_API_KEY를 .env에 추가하세요.</Text>
+        <Text style={s.fallbackTitle}>{safeErrorPresentation ? '지도를 표시할 수 없어요' : 'Kakao 지도 키가 필요합니다.'}</Text>
+        <Text style={s.fallbackTxt}>{safeErrorPresentation ? '아래 코스 정보는 계속 확인할 수 있어요.' : 'EXPO_PUBLIC_KAKAO_JAVASCRIPT_API_KEY를 .env에 추가하세요.'}</Text>
       </View>
     );
   }
@@ -146,16 +148,15 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
           }
         }}
       />
-      <View pointerEvents="none" style={s.legend}>
+      {showRouteLegend ? <View pointerEvents="none" style={s.legend}>
         <View style={s.legendRow}><View style={[s.legendLine, s.legendPrecise]} /><Text style={s.legendTxt}>실경로</Text></View>
         {hasApprox ? <View style={s.legendRow}><View style={[s.legendLine, s.legendApprox]} /><Text style={s.legendTxt}>약식 경로</Text></View> : null}
         {hasFallback ? <View style={s.legendRow}><View style={[s.legendLine, s.legendFallback]} /><Text style={s.legendTxt}>직선 추정</Text></View> : null}
-      </View>
+      </View> : null}
       {error ? (
         <View pointerEvents="none" style={s.errorBox}>
-          <Text style={s.errorTitle}>Kakao 지도 로드 실패</Text>
-          <Text style={s.errorTxt}>{error}</Text>
-          <Text style={s.errorTxt}>카카오 개발자 콘솔 JavaScript 플랫폼에 {KAKAO_WEBVIEW_BASE_URL} 등록이 필요할 수 있습니다.</Text>
+          <Text style={s.errorTitle}>{safeErrorPresentation ? '지도를 표시할 수 없어요' : 'Kakao 지도 로드 실패'}</Text>
+          {safeErrorPresentation ? <Text style={s.errorTxt}>아래 코스 정보는 계속 확인할 수 있어요.</Text> : <><Text style={s.errorTxt}>{error}</Text><Text style={s.errorTxt}>카카오 개발자 콘솔 JavaScript 플랫폼에 {KAKAO_WEBVIEW_BASE_URL} 등록이 필요할 수 있습니다.</Text></>}
         </View>
       ) : null}
     </View>
@@ -187,6 +188,8 @@ html,body,#map{margin:0;padding:0;width:100%;height:100%;background:#111820}
 .arrow.approx{background:rgba(240,249,255,.88)}
 .arrow.approx path.body{stroke:#38bdf8}
 .arrow.fallback{background:rgba(248,250,252,.82)}
+.arrow.walk path.body{stroke:${C.accent}}
+.arrow.transit path.body{stroke:${C.amber}}
 .arrow.fallback path.body{stroke:#94a3b8;stroke-dasharray:2 2}
 </style>
 <script>
@@ -367,16 +370,18 @@ function setRoute(data){
     if (path.length <= 1) return;
     var isApprox = seg.quality === 'approx';
     var isFallback = seg.quality === 'fallback';
+    var isWalk = seg.mode === 'walk';
+    var isTransit = seg.mode === 'transit';
     var line = new kakao.maps.Polyline({
       map: map,
       path: path,
       strokeWeight: isFallback ? 4 : 5,
-      strokeColor: isFallback ? '#94a3b8' : isApprox ? '#38bdf8' : '${C.accent}',
+      strokeColor: isWalk ? '${C.accent}' : isTransit ? '${C.amber}' : isFallback ? '#94a3b8' : isApprox ? '#38bdf8' : '${C.accent}',
       strokeOpacity: isFallback ? 0.65 : isApprox ? 0.75 : 0.92,
-      strokeStyle: isFallback ? 'shortdash' : isApprox ? 'dash' : 'solid'
+      strokeStyle: isTransit ? 'dash' : isFallback ? 'shortdash' : isApprox ? 'dash' : 'solid'
     });
     overlays.push(line);
-    addDirectionArrows(seg.points || [], seg.quality);
+    addDirectionArrows(seg.points || [], seg.mode || seg.quality);
   });
   (data.markers || []).forEach(function(m, i){
     var point = ll(m);

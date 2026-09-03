@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import type { CourseV1RouteAdapter, CourseV1RouteReceiptAdapter } from '../../src/engine';
+import type { CourseV1LimitedResult, CourseV1ReleaseOneStopResult, CourseV1RouteAdapter, CourseV1RouteReceiptAdapter } from '../../src/engine';
 import { RouteProxyUnavailableError } from '../../src/services/routeProxyActivatedCourseAdapter';
-import { buildRecommendationLimitedInput, recommendationPortsFor, recommendationRoutesFor } from '../../src/ui/recommendation/v1Session';
+import { buildRecommendationLimitedInput, recommendationBuilderForEnvironment, recommendationPortsFor, recommendationRoutesFor, runRecommendationSession } from '../../src/ui/recommendation/v1Session';
+import { recommendationInternalPolicyForEnvironment, recommendationInternalPolicyLabel } from '../../src/ui/recommendation/recommendationInternalBuildModel';
 
 const legacy = { async getRoute() { return null; } } as CourseV1RouteAdapter;
 const proxy = { async getRoute() { return null; }, async getRouteReceipt() { return { result: 'unavailable' as const, newProviderAttemptCount: 0 as const, reused: false }; } } as CourseV1RouteAdapter & CourseV1RouteReceiptAdapter;
@@ -38,4 +39,40 @@ test('UREC01-03: activated receipt port 생성 실패는 legacy 또는 engine ro
   const deps = { createLegacyRoutes: () => { legacyCalls += 1; return legacy; }, createActivatedProxyRoutes: async () => { proxyCalls += 1; throw new Error('secret transport detail'); } };
   await assert.rejects(() => recommendationPortsFor({ routeProxyEnabled: true }, deps), RouteProxyUnavailableError);
   assert.deepEqual([legacyCalls, proxyCalls], [0, 1]);
+});
+
+test('URELEASEONESTOP01: exact B12 외 모든 환경은 release entry만 한 번 선택한다', async () => {
+  const session = { nowIso: '2026-08-30T06:00:00.000Z', origin: { id: 'origin', label: '출발', lat: 35.1, lon: 129.0 }, destination: { id: 'destination', label: '도착', lat: 35.2, lon: 129.1 }, remainingMin: 60, arrivalBufferMin: 5 };
+  const result = { representativeCourse: null, alternativeCourses: [], resultState: 'no_representative_candidates', alternativeState: 'no_candidates', diagnostics: { providerCandidateCount: 0, preselectionCandidateCount: 0, candidatePoolCount: 0, generatedOrderedCourseCount: 0, preselectedCourseIds: [], exactCourseAttemptCount: 0, routeRejected: 0, openingRejected: 0, budgetRejected: 0, relationshipRejected: 0, classificationExcluded: 0 } } as CourseV1LimitedResult;
+  let releaseCalls = 0; let a8Calls = 0; let b12Calls = 0; let routePortCalls = 0;
+  const combinations = [
+    { diagnostics: 'true', internalB12: 'true', expected: 'B12' },
+    { diagnostics: 'true', internalB12: 'false', expected: 'RELEASE_ONE_STOP' },
+    { diagnostics: 'false', internalB12: 'true', expected: 'RELEASE_ONE_STOP' },
+    { diagnostics: 'false', internalB12: 'false', expected: 'RELEASE_ONE_STOP' },
+    { diagnostics: undefined, internalB12: undefined, expected: 'RELEASE_ONE_STOP' },
+  ] as const;
+  for (const environment of combinations) {
+    const received = await runRecommendationSession(session, { routeProxyEnabled: false }, {
+      createLegacyRoutes: () => { routePortCalls += 1; return legacy; },
+      getPublicRecommendationEnvironment: () => environment,
+      buildRelease: async () => { releaseCalls += 1; return result as CourseV1ReleaseOneStopResult; },
+      buildA8: async () => { a8Calls += 1; return result; },
+      buildInternalB12: async () => { b12Calls += 1; return result; },
+    });
+    assert.equal(received, result);
+    assert.equal(recommendationInternalPolicyForEnvironment(environment), environment.expected);
+  }
+  assert.deepEqual([releaseCalls, a8Calls, b12Calls, routePortCalls], [4, 0, 1, 5]);
+});
+
+test('URELEASEONESTOP01: 정책 label과 builder seam은 출시 1곳과 exact B12를 구분한다', () => {
+  assert.equal(recommendationInternalPolicyLabel('RELEASE_ONE_STOP'), '내부 정책: 출시 1곳');
+  assert.equal(recommendationInternalPolicyLabel('B12'), '내부 정책: B12');
+  const release = async () => ({}) as CourseV1ReleaseOneStopResult;
+  const a8 = async () => ({}) as CourseV1LimitedResult;
+  const b12 = async () => ({}) as CourseV1LimitedResult;
+  assert.equal(recommendationBuilderForEnvironment({ diagnostics: 'true', internalB12: 'false' }, { buildRelease: release, buildA8: a8, buildInternalB12: b12 }), release);
+  assert.equal(recommendationBuilderForEnvironment({ diagnostics: 'false', internalB12: 'true' }, { buildRelease: release, buildA8: a8, buildInternalB12: b12 }), release);
+  assert.equal(recommendationBuilderForEnvironment({ diagnostics: 'true', internalB12: 'true' }, { buildRelease: release, buildA8: a8, buildInternalB12: b12 }), b12);
 });

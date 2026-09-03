@@ -13,6 +13,8 @@ import { KakaoRouteMap } from './KakaoRouteMap';
 import { fmtHM, RootStackParamList } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
+import { CourseV1DisplayPlace, openKakaoPlaceWithAppFallback } from './recommendation/courseV1PlacePreviewModel';
+import * as WebBrowser from 'expo-web-browser';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LegacyResults'>;
 type Page = 'results' | 'map' | 'detail' | 'hours' | 'confirm';
@@ -25,6 +27,19 @@ type DetailState = {
 };
 const statusText = (status: OneStopRecommendation['status']) => status === 'recommended' ? '추천' : status === 'short' ? '빠듯' : '불가';
 const statusColor = (status: OneStopRecommendation['status']) => status === 'recommended' ? C.green : status === 'short' ? C.amber : C.muted;
+
+function asKakaoDisplayPlace(spot: Spot): CourseV1DisplayPlace {
+  return {
+    title: spot.title,
+    lat: spot.lat,
+    lon: spot.lon,
+    mapVerification: {
+      status: spot.mapVerificationStatus,
+      placeId: spot.kakaoPlaceId,
+      placeUrl: spot.kakaoPlaceUrl,
+    },
+  };
+}
 
 export function OneStopResultsScreen({ route, navigation }: Props) {
   const { result, origin, ctx } = route.params;
@@ -48,7 +63,15 @@ export function OneStopResultsScreen({ route, navigation }: Props) {
   const available = useMemo(() => items.filter((item) => item.status !== 'unavailable'), [items]);
   const active = detail?.exact ?? representative;
   const endMin = ctx.startMin + ctx.remainingMin;
-  const openKakao = async (spot: Spot) => { try { await Linking.openURL(spot.kakaoPlaceUrl ?? `https://map.kakao.com/link/map/${encodeURIComponent(spot.title)},${spot.lat},${spot.lon}`); } catch { Alert.alert('카카오맵을 열 수 없어요', '잠시 후 다시 시도해 주세요.'); } };
+  const openKakao = async (spot: Spot) => {
+    const result = await openKakaoPlaceWithAppFallback(asKakaoDisplayPlace(spot), {
+      canOpenApp: Linking.canOpenURL,
+      openApp: Linking.openURL,
+      openExternal: Linking.openURL,
+      openBrowser: WebBrowser.openBrowserAsync,
+    });
+    if (result === 'failed' || result === 'unavailable') Alert.alert('카카오맵을 열 수 없어요', '잠시 후 다시 시도해 주세요.');
+  };
   const openKakaoNearby = async () => {
     try { await Linking.openURL(`https://map.kakao.com/link/search/${encodeURIComponent('카페')}`); }
     catch { Alert.alert('카카오맵을 열 수 없어요', '잠시 후 다시 시도해 주세요.'); }

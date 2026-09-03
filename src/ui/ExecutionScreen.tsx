@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useState } from 'react';
 import { Alert, AppState, AppStateStatus, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import * as Location from 'expo-location';
 import { getActualRouteBaselines, LatLon, Mode, planTimeFit, timeContext, travelGeo } from '../engine';
 import { RootStackParamList, fmtHM } from './nav';
@@ -18,8 +19,7 @@ import {
 import {
   buildExecutionSchedule,
   currentMinuteOfDay,
-  kakaoRouteUrl,
-  kakaoWebFallback,
+  openKakaoRouteWithFallback,
 } from './execution/schedule';
 import { CourseProgress } from './execution/CourseProgress';
 
@@ -206,16 +206,19 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
   async function openCurrentRoute() {
     if (!next) return;
     const now = currentMinuteOfDay();
-    setRouteOpened(true);
     setTransitionMsg('');
-    setActualDepartMinByStep((prev) => ({ ...prev, [step]: now }));
-    const url = kakaoRouteUrl(next.point, next.incomingMode ?? ctx.mode);
-    const fallback = kakaoWebFallback(next);
-    try {
-      await Linking.openURL(url);
-    } catch {
-      await Linking.openURL(fallback);
+    const result = await openKakaoRouteWithFallback({ from: { name: current.name, point: current.point }, to: { name: next.name, point: next.point } }, next.incomingMode ?? ctx.mode, {
+      canOpenApp: Linking.canOpenURL,
+      openApp: Linking.openURL,
+      openWeb: Linking.openURL,
+      openBrowser: WebBrowser.openBrowserAsync,
+    });
+    if (result === 'failed' || result === 'invalid_stage') {
+      Alert.alert('카카오맵을 열 수 없어요', '잠시 후 다시 시도해 주세요.');
+      return;
     }
+    setRouteOpened(true);
+    setActualDepartMinByStep((prev) => ({ ...prev, [step]: now }));
   }
 
   function continueToNextStep() {

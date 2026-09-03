@@ -1,4 +1,5 @@
 import type { PlanInput } from '../../engine/types';
+import { RELEASE_MAX_MINUTES } from './releaseTimeBoundary';
 
 export type TimeSetupClock = {
   nowMin: number;
@@ -13,7 +14,7 @@ export function resolveTimeSetupClock(real: TimeSetupClock, testNowMin: number |
 }
 
 export function suggestedEndForTestClock(nowMin: number): number {
-  return Math.min(23 * 60 + 59, nowMin + 180);
+  return Math.min(23 * 60 + 59, nowMin + RELEASE_MAX_MINUTES);
 }
 
 export function hourBucketForMinute(minuteOfDay: number): PlanInput['hourBucket'] {

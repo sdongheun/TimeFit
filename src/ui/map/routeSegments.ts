@@ -1,8 +1,12 @@
-import type { LatLon } from "../../engine";
+import type { CourseV1TravelMode, LatLon } from "../../engine";
 
 export type RouteMapSegment = {
   points: LatLon[];
   quality: "precise" | "approx" | "fallback";
+  /** 검증 코스 snapshot에만 쓰는 표시 mode. 없으면 기존 quality 표현을 유지한다. */
+  mode?: CourseV1TravelMode;
+  legIndex?: number;
+  pathIndex?: number;
 };
 
 export function buildRouteMapSegments(
