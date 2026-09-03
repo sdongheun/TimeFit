@@ -28,3 +28,34 @@
 ## 완료 인계
 
 변경 파일, flag 조합표, builder 선택 fixture, production 비노출, 실제 호출 0회를 남긴다. 수락 뒤에만 QA의 [RD-B12](../qa-release/b12-device-comparison.md)를 시작한다.
+
+## 완료 인계 — 2026-08-30
+
+### 변경 파일
+
+- `src/ui/recommendation/recommendationInternalBuildModel.ts`: 두 public env의 exact 조합을 A8/B12 고정 정책으로 변환하고 internal label을 제공한다.
+- `src/ui/recommendation/v1Session.ts`: 추천 시작 직전에 환경을 한 번 읽어 A8 또는 engine barrel의 고정 B12 entry 하나를 선택한다. 테스트 전용 builder/environment seam은 사용자 토글·저장값·원격 설정을 만들지 않는다.
+- `src/ui/ResultsScreen.tsx`, `src/ui/recommendation/RecommendationInternalDiagnostics.tsx`: 이미 diagnostics가 표시되는 internal 화면에서만 `내부 정책: A8|B12`을 읽기 전용으로 추가했다.
+- `test/ui/recommendation-runtime-boundary.test.ts`, `test/map-transport-ui-contract.test.mjs`: 네 flag 조합, builder 선택 3:1, route port 호출 수, internal label과 행동 추가 금지를 고정했다.
+
+### 유지한 계약
+
+- `2-N`의 engine B12 entry와 A8 정책·상한·queue는 수정하지 않았고, UI는 engine barrel의 두 고정 builder만 소비한다.
+- diagnostics 또는 B12 flag가 false/누락이면 B12 entry·정책 label·diagnostics accessibility tree는 만들어지지 않는다. B12만 true이고 diagnostics가 false인 경우도 A8이다.
+- 결과 카드·빈 상태·CTA·저장·navigation·로그인·CAPTCHA·Route Proxy/cache 및 실제 route port 계약은 변경하지 않았다. 실제 API/Auth/CAPTCHA/GPS 호출은 0회다.
+
+### 테스트 결과
+
+| diagnostics | B12 | builder | 결과 |
+| --- | --- | --- | --- |
+| true | true | B12 1회 | 통과 |
+| true | false | A8 | 통과 |
+| false | true | A8 | 통과 |
+| 누락 | 누락 | A8 | 통과 |
+
+- `npm run test:typecheck`, `npm run test:ui`, `npm test`(102/102), `git diff --check`를 통과했다.
+
+### 다음 결정·위험
+
+- 통합·결정 수락 뒤에만 QA가 [RD-B12](../qa-release/b12-device-comparison.md)를 internal build의 지정 두 입력에서 각 1회 실행한다.
+- 그 전에는 cache 삭제·재시도·production 전환, A8 production 상한·tier 순서 변경을 하지 않는다. production build에는 두 internal flag를 `true`로 두지 않는다.
