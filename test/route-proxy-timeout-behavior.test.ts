@@ -115,7 +115,7 @@ test('API4AR2RB-06: deadline 설정이 없으면 provider·budget·lease RPC 전
   const setup = fixture({ mode: 'transit', invalidDeadline: true, fetch: async () => { fetches += 1; return response({}); } });
   assert.deepEqual(await (await setup.handler(setup.request())).json(), { provider: 'kakao', mode: 'transit', status: 'network_error' });
   assert.equal(fetches, 0);
-  assert.deepEqual(setup.store.calls, []);
+  assert.deepEqual(setup.store.calls, ['route_proxy_get_route']);
 });
 
 test('API4ACT02K-04: walk·transit 성공은 mode별 Kakao HTTP 한 번과 독립 cache/budget/lease를 사용한다', async () => {
@@ -153,7 +153,7 @@ test('API4ACT02K-06: Kakao secret 누락과 auth/abuse gate는 provider·budget�
     const setup = fixture({ mode: 'walk', ...item, fetch: async () => { fetches += 1; return response({}); } });
     assert.deepEqual(await (await setup.handler(setup.request())).json(), item.expected);
     assert.equal(fetches, 0);
-    assert.deepEqual(setup.store.calls, []);
+    assert.deepEqual(setup.store.calls, item.missingSecret ? ['route_proxy_get_route'] : []);
   }
 });
 

@@ -6,6 +6,8 @@ export type RouteProxyClientScope = RouteProxyPublicScope | RouteProxyPrivateSco
 export type RouteProxyFunctionRequest = {
   mode: CourseV1TravelMode;
   scope: RouteProxyClientScope;
+  /** Per-mode Edge allowance. Omitted preserves the legacy single-attempt behavior. */
+  maxNewProviderAttemptCount?: 0 | 1;
   /** Private coordinates are sent only for the provider request; never for public cache lookup. */
   origin?: { lat: number; lon: number };
   destination?: { lat: number; lon: number };
@@ -64,25 +66,50 @@ const validPoint = (point: CourseV1Point) => Number.isFinite(point.lat) && Numbe
  * TMAP transit, vehicle routes, or estimates. Public scopes intentionally omit client coordinates.
  */
 export function createCourseV1ProxyRouteAdapter(input: { invoker: RouteProxyFunctionInvoker; resolveScope: CourseV1ProxyScopeResolver }): CourseV1RouteAdapter & CourseV1RouteReceiptAdapter {
-  const invoke = async (from: CourseV1Point, to: CourseV1Point, mode: CourseV1TravelMode, scope: RouteProxyClientScope) => {
-    const response = await input.invoker.invoke({ mode, scope, ...(scope.kind === 'private_request' ? { origin: { lat: from.lat, lon: from.lon }, destination: { lat: to.lat, lon: to.lon } } : {}) });
+  const invoke = async (from: CourseV1Point, to: CourseV1Point, mode: CourseV1TravelMode, scope: RouteProxyClientScope, maxNewProviderAttemptCount?: 0 | 1) => {
+    const response = await input.invoker.invoke({ mode, scope, ...(maxNewProviderAttemptCount === undefined ? {} : { maxNewProviderAttemptCount }), ...(scope.kind === 'private_request' ? { origin: { lat: from.lat, lon: from.lon }, destination: { lat: to.lat, lon: to.lon } } : {}) });
     const receipt = response.receipt;
-    return { response, receipt: receipt && (receipt.newProviderAttemptCount === 0 || receipt.newProviderAttemptCount === 1) ? receipt : undefined };
+    return { response, receipt: validRouteProxyReceipt(receipt) ? receipt : undefined };
   };
   const getRouteReceipt = async (from: CourseV1Point, to: CourseV1Point, budget: { maxNewProviderAttemptCount: 0 | 1 | 2 }): Promise<CourseV1RouteReceipt> => {
-    if (!validPoint(from) || !validPoint(to) || budget.maxNewProviderAttemptCount === 0) return unavailableReceipt(0, false);
-    const scope = input.resolveScope(from, to); const walk = await invoke(from, to, 'walk', scope); const receipts = walk.receipt ? [walk.receipt] : [];
+    if (!validPoint(from) || !validPoint(to)) return unavailableReceipt(0, false);
+    const scope = input.resolveScope(from, to);
+    if (budget.maxNewProviderAttemptCount === 0) {
+      if (scope.kind === 'private_request') return unavailableReceipt(0, false);
+      const receipts: RouteProxyReceipt[] = [];
+      const walk = await invoke(from, to, 'walk', scope, 0); if (walk.receipt) receipts.push(walk.receipt);
+      const walkRoute = exact('walk', walk.response);
+      if (!walk.receipt) return unavailableReceipt(0, false);
+      if (walkRoute) {
+        if (walk.receipt.result !== 'exact' || walk.receipt.newProviderAttemptCount !== 0 || walk.receipt.reuse !== 'server_cache_hit') return invalidResponseReceipt(receipts);
+        if (walkRoute.min <= 14) return engineReceipt('exact', walkRoute, receipts);
+      } else if (!cacheOnlyContinuation(walk.response, walk.receipt)) return walk.receipt.result === 'unavailable'
+        ? engineReceipt('unavailable', undefined, receipts, walk.response)
+        : invalidResponseReceipt(receipts);
+      const transit = await invoke(from, to, 'transit', scope, 0); if (transit.receipt) receipts.push(transit.receipt);
+      if (!transit.receipt) return unavailableReceipt(0, false);
+      const transitRoute = exact('transit', transit.response);
+      if (transitRoute && transit.receipt.result === 'exact' && transit.receipt.newProviderAttemptCount === 0 && transit.receipt.reuse === 'server_cache_hit') return engineReceipt('exact', transitRoute, receipts);
+      if (transit.response.status === 'no_route' && transit.receipt.result === 'no_route' && transit.receipt.newProviderAttemptCount === 0) return engineReceipt('no_route', undefined, receipts);
+      if (transit.receipt.result === 'unavailable' && transit.receipt.newProviderAttemptCount === 0) return engineReceipt('unavailable', undefined, receipts, transit.response);
+      return invalidResponseReceipt(receipts);
+    }
+    const walk = await invoke(from, to, 'walk', scope, 1); const receipts = walk.receipt ? [walk.receipt] : [];
     const walkRoute = exact('walk', walk.response); const walkAttempts = receiptCount(receipts);
     if (!walk.receipt) return unavailableReceipt(0, false);
     if (walk.receipt.result === 'unavailable') return engineReceipt('unavailable', undefined, receipts, walk.response);
-    if (walkRoute && walkRoute.min <= 14) return engineReceipt('exact', walkRoute, receipts);
+    if (walkRoute) {
+      if (walk.receipt.result !== 'exact') return invalidResponseReceipt(receipts);
+      if (walkRoute.min <= 14) return engineReceipt('exact', walkRoute, receipts);
+    } else if (walk.response.status !== 'no_route' || walk.receipt.result !== 'no_route') return invalidResponseReceipt(receipts);
     if (walkAttempts >= budget.maxNewProviderAttemptCount) return unavailableReceipt(walkAttempts, false);
-    const transit = await invoke(from, to, 'transit', scope); if (transit.receipt) receipts.push(transit.receipt);
+    const transit = await invoke(from, to, 'transit', scope, 1); if (transit.receipt) receipts.push(transit.receipt);
     if (!transit.receipt) return unavailableReceipt(receiptCount(receipts), false);
     const transitRoute = exact('transit', transit.response);
     if (transit.receipt.result === 'unavailable') return engineReceipt('unavailable', undefined, receipts, transit.response);
-    if (transitRoute) return engineReceipt('exact', transitRoute, receipts);
-    return engineReceipt('no_route', undefined, receipts);
+    if (transitRoute && transit.receipt.result === 'exact') return engineReceipt('exact', transitRoute, receipts);
+    if (transit.response.status === 'no_route' && transit.receipt.result === 'no_route') return engineReceipt('no_route', undefined, receipts);
+    return invalidResponseReceipt(receipts);
   };
   return {
     async getRoute(from, to) {
@@ -106,6 +133,14 @@ const engineReceipt = (result: 'exact' | 'no_route' | 'unavailable', route: Exac
 };
 
 const unavailableReceipt = (newProviderAttemptCount: 0 | 1 | 2, reused: boolean): CourseV1RouteReceipt => ({ result: 'unavailable', reason: 'unknown', newProviderAttemptCount, reused });
+const invalidResponseReceipt = (receipts: RouteProxyReceipt[]): CourseV1RouteReceipt => ({ result: 'unavailable', reason: 'invalid_response', newProviderAttemptCount: receiptCount(receipts), reused: false });
+const validRouteProxyReceipt = (receipt: RouteProxyReceipt | undefined): receipt is RouteProxyReceipt => !!receipt
+  && (receipt.result === 'exact' || receipt.result === 'no_route' || receipt.result === 'unavailable')
+  && (receipt.newProviderAttemptCount === 0 || receipt.newProviderAttemptCount === 1)
+  && (receipt.reuse === 'session_hit' || receipt.reuse === 'server_cache_hit' || receipt.reuse === 'provider_attempt' || receipt.reuse === 'in_flight_reuse');
+const cacheOnlyContinuation = (response: RouteProxyFunctionResponse, receipt: RouteProxyReceipt) => receipt.newProviderAttemptCount === 0
+  && ((response.status === 'no_route' && receipt.result === 'no_route')
+    || (response.status === 'limited' && receipt.result === 'unavailable' && receipt.unavailableReason === 'limited'));
 const safeUnavailableReasons = new Set<CourseV1RouteUnavailableReason>(['limited', 'in_flight', 'store', 'provider', 'transport', 'invalid_response', 'rejected', 'unknown']);
 const receiptStatuses = new Set<RouteProxyFunctionResponse['status']>(['limited', 'in_flight', 'route_proxy_unavailable', 'store_unavailable', 'unconfigured', 'http_error', 'network_error', 'invalid_response', 'rejected']);
 

@@ -9,7 +9,8 @@
 - [다장소 receipt unavailable 원인 감사](multistop-receipt-unavailable-audit.md)
 - [다장소 receipt unavailable 안전 reason 전달](multistop-receipt-reason-mapping.md)
 - [대표 구간 Route Proxy 저장소 준비 상태 감사](public-route-store-readiness-audit.md)
+- [2곳 route receipt·public store·예산 재사용](two-stop-route-budget.md)
 
 `API-MULTISTOP-RECEIPT-01`은 과거 실행을 읽기 전용으로 감사했으나 reason을 안전하게 연결할 로그 창이 없어 원인을 특정하지 못했다. `2-T`와 `API-MULTISTOP-RECEIPT-02`는 원인을 고치지 않고 safe reason을 engine 진단까지 보존했다. QA-MULTISTOP-RECEIPT-01은 A8 두 입력 모두 첫 다장소 receipt가 `store`로 중단됨을 확인했다. [API-PUBLIC-STORE-01](public-route-store-readiness-audit.md)은 remote migration·Function secret 이름·RPC signature/권한의 국소 결함이 없음을 확인했고, 이로써 `DEC-RELEASE-MULTISTOP-01`의 1곳 출시 전환 조건이 발동했다. 외부 API의 추가 추적·배포는 하지 않으며, 다음은 추천 엔진의 1곳 전용 release entry다. Route Proxy·Kakao cache·CAPTCHA의 과거 기록은 [archive/2026-08-history.md](archive/2026-08-history.md)에 보존한다.
 
-`DEC-ONE-STOP-MORE-01`의 one-stop page 계약과 [API-ROUTE-GEOMETRY-01/02/03](route-geometry.md)을 따른다. API-02는 14개 transit route 모두 시작·마지막 WALKING path가 없고 endpoint gap이 `51–250m`임을 확인했다. 사용자가 선택한 코스 상세의 private walk connector인 API-03은 통합 수락됐다. 현재 Auth 세션만 재사용하고 walk-only·10분/64개 프로세스 메모리 재사용·private 좌표 비영속을 지킨다. 외부 API의 후속 수정은 없으며 다음 소유자는 `U-COURSE-GEOMETRY-02` UIUX다.
+`DEC-ONE-STOP-MORE-01`의 one-stop page 계약과 [API-ROUTE-GEOMETRY-01/02/03](route-geometry.md)은 유지한다. [API-TWO-STOP-01/02](two-stop-route-budget.md)의 public A↔B receipt, private/public scope, 명시적 `maxNewProviderAttemptCount: 0 | 1`, cache-only miss provider 0, provider 후처리 실패의 실제 attempt 보존은 코드·fixture 통합 검토에서 수락됐다. 실제 원격 Edge 배포와 운영 cache 검증은 아직 하지 않았다. 외부 API 세션의 독립 구현은 재실행하지 않고 필수 네 항목 인수인계만 보충하며, 이후 QA 통합 실패가 API 소유 재현으로 돌아오거나 단 한 번의 원격 배포가 승인될 때만 재개한다.

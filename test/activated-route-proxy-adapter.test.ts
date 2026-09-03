@@ -108,18 +108,19 @@ test('API4ACT04BR-06: service는 public build/Worker URL 설정을 읽거나 추
 test('API4D-01: 활성 진입점 receipt port는 budget 전에 다음 mode 시작을 멈추고 실제 Edge 호출을 센다', async () => {
   const modes: string[] = [];
   const { edge } = edgeFixture(async (body) => {
-    const mode = (body as { mode: 'walk' | 'transit' }).mode; modes.push(mode);
+    const { mode, maxNewProviderAttemptCount } = body as { mode: 'walk' | 'transit'; maxNewProviderAttemptCount?: 0 | 1 }; modes.push(mode);
+    if (maxNewProviderAttemptCount === 0) return { status: 'limited', mode, receipt: { result: 'unavailable', newProviderAttemptCount: 0, reuse: 'provider_attempt', unavailableReason: 'limited' } };
     return mode === 'walk'
       ? { status: 'ok', mode, totalMin: 20, receipt: { result: 'exact', newProviderAttemptCount: 1, reuse: 'provider_attempt' } }
       : { status: 'ok', mode, totalMin: 7, receipt: { result: 'exact', newProviderAttemptCount: 1, reuse: 'provider_attempt' } };
   });
   const adapter = await createActivatedCourseV1RouteAdapter({ enabled: true, auth: authFixture('jwt'), edge, snapshot });
-  assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 0 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 0, reused: false });
-  assert.deepEqual(modes, []);
+  assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 0 }), { result: 'unavailable', reason: 'limited', newProviderAttemptCount: 0, reused: false });
+  assert.deepEqual(modes, ['walk', 'transit']);
   assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 1 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 1, reused: false });
-  assert.deepEqual(modes, ['walk']);
+  assert.deepEqual(modes, ['walk', 'transit', 'walk']);
   assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 2 }), { result: 'exact', route: { mode: 'transit', min: 7, exact: true }, newProviderAttemptCount: 2, reused: false });
-  assert.deepEqual(modes, ['walk', 'walk', 'transit']);
+  assert.deepEqual(modes, ['walk', 'transit', 'walk', 'walk', 'transit']);
 });
 
 test('API4D-02: 활성 receipt port는 cache/in-flight 재사용, no_route 및 fail-closed receipt를 engine 계약으로 보존한다', async () => {

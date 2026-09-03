@@ -142,21 +142,24 @@ export function createRouteProxyHandler(deps: RouteProxyHandlerDependencies) {
   };
   const requestShape = (body: any) => {
     if (!body || !['walk', 'transit'].includes(body.mode) || !body.scope || !['public_segment', 'private_request'].includes(body.scope.kind)) return null;
+    const maxNewProviderAttemptCount = body.maxNewProviderAttemptCount === undefined ? 1 : body.maxNewProviderAttemptCount;
+    if (maxNewProviderAttemptCount !== 0 && maxNewProviderAttemptCount !== 1) return { mode: body.mode as Mode, rejectedAttemptAllowance: true };
     if (body.scope.kind === 'public_segment') {
       if (![body.scope.catalogVersion, body.scope.fromPoiId, body.scope.toPoiId].every((value: unknown) => typeof value === 'string' && value.length > 0 && value.length <= 160)) return null;
       const resolved = resolvePublicPoints(body.scope);
       // A syntactically valid public scope that cannot be resolved is a stale/missing server
       // snapshot, not a malformed client request. Return a safe receipt below without auth,
       // store, cache, or provider work so mobile can preserve `route_proxy_rejected`.
-      return resolved ? { mode: body.mode as Mode, scope: body.scope, ...resolved } : { mode: body.mode as Mode, rejectedPublicSnapshot: true };
+      return resolved ? { mode: body.mode as Mode, scope: body.scope, maxNewProviderAttemptCount, ...resolved } : { mode: body.mode as Mode, rejectedPublicSnapshot: true };
     }
     const origin = point(body.origin); const destination = point(body.destination);
-    return origin && destination ? { mode: body.mode as Mode, scope: body.scope, origin, destination } : null;
+    return origin && destination ? { mode: body.mode as Mode, scope: body.scope, maxNewProviderAttemptCount, origin, destination } : null;
   };
   return async (request: Request): Promise<Response> => {
     if (request.method !== 'POST') return json({ status: 'rejected' }, 405);
     let body: unknown; try { body = await request.json(); } catch { return json({ status: 'rejected' }, 400); }
     const input = requestShape(body); if (!input) return json({ status: 'rejected' }, 400);
+    if (input.rejectedAttemptAllowance) return json(routeResult('kakao', input.mode, 'rejected'), 400);
     if (input.rejectedPublicSnapshot) return json(routeResult('kakao', input.mode, 'rejected', undefined, undefined, 'session_hit'), 400);
     if (!deps.storeAvailable()) return json(routeResult('kakao', input.mode, 'store_unavailable'), 503);
     const token = request.headers.get('Authorization')?.match(/^Bearer\s+(.+)$/i)?.[1];
@@ -166,9 +169,7 @@ export function createRouteProxyHandler(deps: RouteProxyHandlerDependencies) {
     if (auth.user.is_anonymous && deps.env('ROUTE_PROXY_ANONYMOUS_AUTH_ENABLED') !== 'true') return json(routeResult('kakao', input.mode, 'rejected'), 503);
     if (deps.env('ROUTE_PROXY_ABUSE_GUARD_APPROVED') !== 'true' || !(await deps.consumeRate(token))) return json(routeResult('kakao', input.mode, 'limited'), 429);
     const deadline = resolveRouteProxyDeadlineConfig({ leaseTtlMs: deps.env('ROUTE_PROXY_FETCH_LEASE_TTL_MS'), providerDeadlineMs: deps.env('ROUTE_PROXY_PROVIDER_DEADLINE_MS') });
-    if (!deadline) return json(routeResult('kakao', input.mode, 'network_error'), 503);
     const kakaoRouteKey = deps.env('KAKAO_ROUTE_REST_API_KEY').trim();
-    if (!kakaoRouteKey) return json(routeResult('kakao', input.mode, 'unconfigured'));
     const publicScope = input.scope.kind === 'public_segment';
     const walkHard = numberEnv(deps.env, 'ROUTE_PROXY_KAKAO_WALK_DAILY_HARD_LIMIT', 1000);
     const transitHard = numberEnv(deps.env, 'ROUTE_PROXY_KAKAO_TRANSIT_DAILY_HARD_LIMIT', 1000);
@@ -177,6 +178,7 @@ export function createRouteProxyHandler(deps: RouteProxyHandlerDependencies) {
       transit: { hard: transitHard, soft: softLimitEnv(deps.env, 'ROUTE_PROXY_KAKAO_TRANSIT_DAILY_SOFT_LIMIT', transitHard), rate: numberEnv(deps.env, 'ROUTE_PROXY_KAKAO_TRANSIT_PER_SECOND_LIMIT', 5) },
     };
     const today = new Date(deps.now()).toISOString().slice(0, 10); const second = Math.floor(deps.now() / 1000);
+    let providerAttemptStarted: 0 | 1 = 0;
     const keyArgs = (provider: Provider) => ({ p_provider: provider, p_mode: input.mode, p_from_poi_id: input.scope.fromPoiId, p_to_poi_id: input.scope.toPoiId, p_catalog_version: input.scope.catalogVersion });
     const rpc = async (name: string, args: Record<string, unknown>) => { const reply = await deps.rpc(name, args); if (reply.error) throw reply.error; return reply.data; };
     const cached = async (provider: Provider) => { if (!publicScope) return null; const data = await rpc('route_proxy_get_route', { ...keyArgs(provider), p_now: new Date(deps.now()).toISOString() }); const row = data?.[0]; return row?.total_min ? routeResult(provider, input.mode, 'ok', row.total_min, geometryFromCacheSteps(row.steps), 'server_cache_hit') : null; };
@@ -193,7 +195,7 @@ export function createRouteProxyHandler(deps: RouteProxyHandlerDependencies) {
       if ((await reserve(provider)) === 'limited') return routeResult(provider, input.mode, 'limited');
       const kind = input.mode === 'walk' ? 'walk' : 'publictraffic';
       const providerRequest = buildKakaoRouteRequest(kind, { origin: input.origin, destination: input.destination, key: kakaoRouteKey });
-      const attempted = await withinProviderDeadline(deadline.providerDeadlineMs, async (signal) => { const response = await deps.fetch(providerRequest.url, { method: providerRequest.method, headers: providerRequest.headers, signal }); return { response, raw: await response.json() }; }, deps.deadlineScheduler);
+      const attempted = await withinProviderDeadline(deadline.providerDeadlineMs, async (signal) => { providerAttemptStarted = 1; const response = await deps.fetch(providerRequest.url, { method: providerRequest.method, headers: providerRequest.headers, signal }); return { response, raw: await response.json() }; }, deps.deadlineScheduler);
       if (attempted.status === 'deadline_exceeded') return routeResult(provider, input.mode, 'deadline_exceeded', undefined, undefined, 'provider_attempt', 1); if (attempted.status === 'error') return routeResult(provider, input.mode, 'network_error', undefined, undefined, 'provider_attempt', 1); if (!attempted.value.response.ok) return routeResult(provider, input.mode, 'http_error', undefined, undefined, 'provider_attempt', 1);
       if (attempted.value.raw?.status !== 'OK') return routeResult(provider, input.mode, 'invalid_response', undefined, undefined, 'provider_attempt', 1);
       const route = input.mode === 'walk' ? attempted.value.raw?.route : attempted.value.raw?.routes?.[0]; const total = minute(route?.properties?.totalTime);
@@ -211,7 +213,10 @@ export function createRouteProxyHandler(deps: RouteProxyHandlerDependencies) {
     };
     try {
       { const hit = await cached('kakao'); if (hit) return json(hit); }
+      if (input.maxNewProviderAttemptCount === 0) return json(routeResult('kakao', input.mode, 'limited'));
+      if (!deadline) return json(routeResult('kakao', input.mode, 'network_error'), 503);
+      if (!kakaoRouteKey) return json(routeResult('kakao', input.mode, 'unconfigured'));
       return json(await callWithLease('kakao'));
-    } catch { return json(routeResult('kakao', input.mode, 'store_unavailable'), 503); }
+    } catch { return json(routeResult('kakao', input.mode, 'store_unavailable', undefined, undefined, 'provider_attempt', providerAttemptStarted), 503); }
   };
 }

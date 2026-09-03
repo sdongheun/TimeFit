@@ -60,7 +60,7 @@ test('API-MULTISTOP-RECEIPT-02: receipt 누락·오염과 local budget unavailab
   assert.deepEqual(await adapter.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 1 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 0, reused: false });
   assert.deepEqual(await adapter.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 1 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 0, reused: false });
   assert.deepEqual(await adapter.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 0 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 0, reused: false });
-  assert.equal(invocations, 2);
+  assert.equal(invocations, 3);
 });
 
 test('API-MULTISTOP-RECEIPT-02: exact/no_route에는 unavailable reason을 붙이지 않는다', async () => {
