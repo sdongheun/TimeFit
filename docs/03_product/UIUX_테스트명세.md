@@ -83,3 +83,12 @@
 - **금지:** 직선·endpoint 좌표 강제 삽입·실시간 GPS·transit 재조회·보충 walk 분 수를 추천 시간에 합산하는 처리는 하지 않는다.
 - **검증:** 50m/51m, walk/transit, 시작/종점, 두 leg, 왕복/목적지, 성공/부분/실패, 연타/뒤로가기 메모리 재사용, private 비영속, 최대 4회를 fixture로 확인한다. 순서는 `API-ROUTE-GEOMETRY-03 → U-COURSE-GEOMETRY-02 → QA-COURSE-GEOMETRY-02`다.
 - **상태:** 검증 완료. `QA-COURSE-GEOMETRY-02` 자동 하네스와 실기기 transit one-stop 1/1에서 하차지점→파란 도보선→장소 marker 연결, 기존 상세·CTA·시간 snapshot 유지를 확인했다.
+
+### UXV-47 — 최대 2곳 제한 선택·취소 복원
+
+- **관계:** UXV-20·29·44·45를 보완한다. one-stop 일반 사용자 fallback과 카드 전체 tap 상세는 유지하고, 1~3곳 자동 코스·자유 장바구니를 재활성화하지 않는다.
+- **기대 결과:** one-stop 상세의 `한 곳 더 고르기`에서만 A 선택이 시작된다. 결과 화면은 A와 확인 진행을 먼저 보여 주고 exact 성공 B를 안정된 순서로 점진 표시한다. B 선택은 추가 route 없이 엔진의 2곳 snapshot 상세를 연다.
+- **취소:** A 선택 직전의 카드 ID·순서·이미 연 더보기·종료 상태·스크롤을 복원한다. 취소 자체 route 0, stale 응답 반영 0, 재선택 뒤 session 누적 attempt 36 이하를 만족한다.
+- **수량·실패:** 기본 B 3개는 목표일 뿐 보장이 아니며 0~2개와 이유를 허용한다. 더보기 포함 누적 6개를 넘지 않는다. 후보 없음·시간 불충족·no-route·provider/store/한도 실패에서도 A one-stop을 유지한다.
+- **검증:** 고정 fixture로 점진 1→2→3, 0/1/2개 종료, 두 순서와 동률 A 우선, 취소 중 늦은 성공·실패, 다른 A 재선택, 첫 목록 더보기와 공유 12회 소진, B 상세 추가 route 0을 확인한다. 자동 게이트 전 Simulator 조작과 실제 API 호출은 하지 않는다.
+- **상태:** 로컬 구현·자동 검증 완료, 원격·실기기 미검증. `2-Y`, `API-TWO-STOP-02`, `U-TWO-STOP-01/02`, `QA-TWO-STOP-01`을 수락했다. CourseConfirm secondary, Results 선택 상태, one-stop/pair 공유 12회 ledger와 실제 표시 snapshot allowlist gate가 연결됐다. 다음은 원격 Edge 단일 배포와 최소 실기기 smoke다.

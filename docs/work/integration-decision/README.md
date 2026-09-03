@@ -8,9 +8,11 @@
 
 ## 현재 게이트
 
+- [DEC-TWO-STOP-SELECTION-01](two-stop-limited-assembly.md)(2026-09-03, 제품 결정 확정·로컬 production 연결 수락): 검증 one-stop의 `한 곳 더 고르기`에서만 최대 2곳 제한 조립을 시작한다. `2-Y`, `API-TWO-STOP-02`, `U-TWO-STOP-01/02`, `QA-TWO-STOP-01` 자동 계약과 secondary eligibility 보완이 모두 통과했다. 원격 Edge 단일 배포와 출시 후보 실기기 2건 전까지 운영 활성화 완료로 해석하지 않는다.
+
 - [DEC-ONE-STOP-MORE-01](release-one-stop-more-results.md)(2026-09-02, 현행): 출시 one-stop 첫 결과는 신규 provider attempt 최대 8회·대표 1+첫 대안 최대 3개를 유지한다. 미검증 single 후보가 남을 때만 `다른 장소 더 보기`를 표시하고, tap마다 다음 후보를 신규 attempt 최대 8회로 검증해 새 one-stop 최대 3개를 기존 목록 뒤에 누적한다. 자동 16회·자동 연속 page·2/3곳 queue는 금지한다. 기존 `API-PAGE-01` 계약을 재사용한 `2-V → U-ONE-MORE-01 → QA-ONE-MORE-01`은 모두 수락됐으며, 네이티브 화면 확인은 출시 후보의 최종 수동 smoke에서 한 번만 수행한다.
 - [DEC-COURSE-GEOMETRY-01](course-confirm-route-geometry.md)(2026-09-03, 현행·보완 구현 대기): API-02에서 14개 transit route 모두 endpoint WALKING이 없음을 확인했다. 추천 중 선조회는 금지하고 사용자가 코스 카드를 눌러 상세를 열 때만, transit geometry와 실제 endpoint의 50m 초과 gap을 private Kakao walk로 최대 4개 보충한다. 추천 시간·순위는 불변이고 private 좌표는 비영속이다. 순서는 `API-ROUTE-GEOMETRY-03 → U-COURSE-GEOMETRY-02 → QA-COURSE-GEOMETRY-02`다.
-- [DEC-RELEASE-MULTISTOP-01](release-multistop-timebox.md)(2026-09-03, one-stop 유지·2-X 감사 수락): 엔진 primitive는 2곳에 재사용 가능하지만 pair-only entry 분리, public A→B store 원인 규명, 코스당 최대 6 attempt, 3-leg UI와 상세 connector 상한 결정이 선행돼야 한다. `공모전 이후 권장`은 기본 권고이며, 출시 전 구현 여부는 사용자가 다시 결정한다. 현재 production one-stop은 불변이다.
+- [DEC-RELEASE-MULTISTOP-01](release-multistop-timebox.md)(2026-09-03, 제한적 재개로 부분 교체): 당시 mixed 2·3곳 자동 복구는 중단했고 그 판단은 유지한다. 이후 사용자가 별도 pair-only 최대 2곳 제한 조립을 선택해 `DEC-TWO-STOP-SELECTION-01`로 구현을 재개했다. 3곳·mixed queue·자유 장바구니는 계속 보류하고 production one-stop은 새 자동 게이트 전까지 불변이다.
 
 - `DEC-RESULTS-02`(2026-08-31): 2-P의 무경로 장소 탐색 목록은 검증 대안을 대체하지 못하므로 결과 역할을 철회한다. 첫 결과는 대표 1개 + 검증 대안 최대 3개를 목표로 하며, 첫 8회 뒤 4개 미만이고 후보 큐가 남을 때만 최대 16회까지 보충한다. `다른 검증 코스 더 보기`는 같은 cursor의 새 후보만 최대 8회 검증해 최대 3개를 append하며 총 결과 수를 자르지 않는다. 시장·거리·골목은 `conditional_visit`으로 분리해 10:00–18:00 탐색 노출·카카오맵 확인·명시 수동 계산만 허용하고, 자동 추천/검증 상태로 승격하지 않는다. 상태: 구현 전.
 
