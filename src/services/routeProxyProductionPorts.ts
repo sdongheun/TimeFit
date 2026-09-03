@@ -9,7 +9,7 @@ export function createSupabaseRouteProxyPorts(): { auth: RouteProxyAnonymousAuth
     auth: {
       async getSession() {
         const { data } = await supabase.auth.getSession();
-        return data.session?.access_token ? { accessToken: data.session.access_token } : null;
+        return data.session?.access_token ? { accessToken: data.session.access_token, expiresAt: data.session.expires_at } : null;
       },
       async signInAnonymously(captchaToken) {
         const { data, error } = await supabase.auth.signInAnonymously({ options: { captchaToken } });

@@ -30,6 +30,46 @@ test('API4C-02: walk/transit receipt는 새 provider attempt만 0~2 합산하고
   assert.deepEqual(await adapter.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 2 }), { result: 'exact', route: { mode: 'transit', min: 8, exact: true }, newProviderAttemptCount: 1, reused: false });
 });
 
+test('API-MULTISTOP-RECEIPT-02: typed unavailable은 원문 없이 engine safe reason으로만 전달한다', async () => {
+  const cases = [
+    ['limited', 'limited', 'limited'],
+    ['store_unavailable', 'store', 'store'],
+    ['http_error', 'provider', 'provider'],
+    ['network_error', 'transport', 'transport'],
+    ['invalid_response', 'invalid_response', 'invalid_response'],
+    ['rejected', 'rejected', 'rejected'],
+    ['in_flight', 'transport', 'in_flight'],
+  ] as const;
+  for (const [status, unavailableReason, expected] of cases) {
+    const adapter = createCourseV1ProxyRouteAdapter({
+      resolveScope: () => ({ kind: 'public_segment', catalogVersion: 'v1', fromPoiId: 'a', toPoiId: 'b' }),
+      invoker: { async invoke(request) { return { mode: request.mode, status, receipt: { result: 'unavailable', newProviderAttemptCount: 0, reuse: status === 'in_flight' ? 'in_flight_reuse' : 'provider_attempt', unavailableReason } }; } },
+    });
+    assert.deepEqual(await adapter.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 1 }), { result: 'unavailable', reason: expected, newProviderAttemptCount: 0, reused: status === 'in_flight' });
+  }
+});
+
+test('API-MULTISTOP-RECEIPT-02: receipt 누락·오염과 local budget unavailable은 API 원인을 만들지 않고 unknown이다', async () => {
+  let invocations = 0;
+  const adapter = createCourseV1ProxyRouteAdapter({
+    resolveScope: () => ({ kind: 'public_segment', catalogVersion: 'v1', fromPoiId: 'a', toPoiId: 'b' }),
+    invoker: { async invoke(request) { invocations += 1; return invocations === 1
+      ? { mode: request.mode, status: 'limited', receipt: { result: 'unavailable', newProviderAttemptCount: 0, reuse: 'provider_attempt', unavailableReason: 'not-safe' } as never }
+      : { mode: request.mode, status: 'limited' }; } },
+  });
+  assert.deepEqual(await adapter.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 1 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 0, reused: false });
+  assert.deepEqual(await adapter.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 1 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 0, reused: false });
+  assert.deepEqual(await adapter.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 0 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 0, reused: false });
+  assert.equal(invocations, 2);
+});
+
+test('API-MULTISTOP-RECEIPT-02: exact/no_route에는 unavailable reason을 붙이지 않는다', async () => {
+  const exact = createCourseV1ProxyRouteAdapter({ resolveScope: () => ({ kind: 'private_request' }), invoker: { async invoke() { return { mode: 'walk', status: 'ok', totalMin: 8, receipt: { result: 'exact', newProviderAttemptCount: 1, reuse: 'provider_attempt' } }; } } });
+  const noRoute = createCourseV1ProxyRouteAdapter({ resolveScope: () => ({ kind: 'private_request' }), invoker: { async invoke(request) { return { mode: request.mode, status: 'no_route', receipt: { result: 'no_route', newProviderAttemptCount: 0, reuse: 'server_cache_hit' } }; } } });
+  assert.deepEqual(await exact.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 1 }), { result: 'exact', route: { mode: 'walk', min: 8, exact: true }, newProviderAttemptCount: 1, reused: false });
+  assert.deepEqual(await noRoute.getRouteReceipt(a, b, { maxNewProviderAttemptCount: 1 }), { result: 'no_route', newProviderAttemptCount: 0, reused: true });
+});
+
 test('API4AR2-01: session은 재사용하고, 익명 Auth가 비활성/실패하면 route proxy unavailable로 끝낸다', async () => {
   let created = 0;
   const captcha = { async requestToken() { return 'fixture-captcha'; } };

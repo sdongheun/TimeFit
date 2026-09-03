@@ -84,7 +84,7 @@ function validReceipt(receipt: RouteProxyReceipt | undefined): receipt is RouteP
 }
 
 /** Converts Edge transport, typed statuses, and malformed success bodies into fail-closed reasons. */
-function createRequiredRouteProxyInvoker(input: RouteProxyFunctionInvoker): RouteProxyFunctionInvoker {
+function createRequiredRouteProxyInvoker(input: RouteProxyFunctionInvoker, preserveRejectedReceipt = false): RouteProxyFunctionInvoker {
   return {
     async invoke(request) {
       let response;
@@ -98,6 +98,9 @@ function createRequiredRouteProxyInvoker(input: RouteProxyFunctionInvoker): Rout
         return unavailable('route_proxy_invalid_response');
       }
       if (response.receipt.result === 'no_route' && response.status === 'no_route') return response;
+      // Snapshot rejection is a safe configuration/version boundary. Surface it distinctly so a
+      // restored non-2xx body is never flattened into a generic SDK transport failure.
+      if (response.receipt.result === 'unavailable' && response.status === 'rejected' && !preserveRejectedReceipt) return unavailable('route_proxy_rejected');
       if (response.receipt.result === 'unavailable' && response.status !== 'ok') return response;
       if (response.status !== 'ok') return unavailable(edgeFailureReason(response.status));
       if (response.receipt.result !== 'exact' || response.mode !== request.mode || !Number.isInteger(response.totalMin) || (response.totalMin ?? 0) <= 0) return unavailable('route_proxy_invalid_response');
@@ -114,8 +117,11 @@ export async function createActivatedCourseV1RouteAdapter(input: ActivatedCourse
   if (!input.enabled) return unavailable('route_proxy_unconfigured');
   const existing = await input.auth.getSession().catch(() => null);
   const accessToken = existing?.accessToken || await createAnonymousSession(input);
-  const invoker = createRequiredRouteProxyInvoker(createAuthenticatedRouteProxyInvoker({ edge: input.edge, accessToken }));
-  return createCourseV1ProxyRouteAdapter({ invoker, resolveScope: createRouteProxyCatalogScopeResolver({ snapshot: input.snapshot }) });
+  const rawInvoker = createAuthenticatedRouteProxyInvoker({ edge: input.edge, accessToken });
+  const resolveScope = createRouteProxyCatalogScopeResolver({ snapshot: input.snapshot });
+  const routeAdapter = createCourseV1ProxyRouteAdapter({ invoker: createRequiredRouteProxyInvoker(rawInvoker), resolveScope });
+  const receiptAdapter = createCourseV1ProxyRouteAdapter({ invoker: createRequiredRouteProxyInvoker(rawInvoker, true), resolveScope });
+  return { getRoute: routeAdapter.getRoute, getRouteReceipt: receiptAdapter.getRouteReceipt };
 }
 
 async function createAnonymousSession(input: ActivatedCourseV1RouteAdapterInput): Promise<string> {

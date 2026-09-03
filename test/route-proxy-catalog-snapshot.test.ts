@@ -3,9 +3,10 @@ import test from 'node:test';
 import { buildRouteProxyCatalogSnapshot, routeProxyCatalogSnapshot } from '../src/services/routeProxyCatalogSnapshot';
 import { createCourseV1CandidateProvider } from '../src/data/courseV1CandidateProvider';
 
-test('API4ACT03-04: representative 190개만 결정적 snapshot point가 되며 conditional/hold를 새로 해석하지 않는다', () => {
+test('API-SNAPSHOT-SYNC-01: representative 191개만 결정적 snapshot point가 되며 conditional/hold를 새로 해석하지 않는다', () => {
   const provider = createCourseV1CandidateProvider();
   const expected = provider.fixtureSummary.representativeTotal;
+  assert.equal(expected, 191);
   assert.equal(Object.keys(routeProxyCatalogSnapshot.points).length, expected);
   assert.equal(routeProxyCatalogSnapshot.version, buildRouteProxyCatalogSnapshot().version);
   assert.equal(routeProxyCatalogSnapshot.json, buildRouteProxyCatalogSnapshot().json);

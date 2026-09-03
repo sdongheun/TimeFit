@@ -114,9 +114,9 @@ test('API4D-01: 활성 진입점 receipt port는 budget 전에 다음 mode 시�
       : { status: 'ok', mode, totalMin: 7, receipt: { result: 'exact', newProviderAttemptCount: 1, reuse: 'provider_attempt' } };
   });
   const adapter = await createActivatedCourseV1RouteAdapter({ enabled: true, auth: authFixture('jwt'), edge, snapshot });
-  assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 0 }), { result: 'unavailable', newProviderAttemptCount: 0, reused: false });
+  assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 0 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 0, reused: false });
   assert.deepEqual(modes, []);
-  assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 1 }), { result: 'unavailable', newProviderAttemptCount: 1, reused: false });
+  assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 1 }), { result: 'unavailable', reason: 'unknown', newProviderAttemptCount: 1, reused: false });
   assert.deepEqual(modes, ['walk']);
   assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 2 }), { result: 'exact', route: { mode: 'transit', min: 7, exact: true }, newProviderAttemptCount: 2, reused: false });
   assert.deepEqual(modes, ['walk', 'walk', 'transit']);
@@ -135,6 +135,6 @@ test('API4D-02: 활성 receipt port는 cache/in-flight 재사용, no_route 및 f
   const adapter = await createActivatedCourseV1RouteAdapter({ enabled: true, auth: authFixture('jwt'), edge, snapshot });
   assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 1 }), { result: 'exact', route: { mode: 'transit', min: 7, exact: true }, newProviderAttemptCount: 1, reused: false });
   assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 2 }), { result: 'no_route', newProviderAttemptCount: 0, reused: true });
-  assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 2 }), { result: 'unavailable', newProviderAttemptCount: 0, reused: false });
+  assert.deepEqual(await adapter.getRouteReceipt(representativeA, representativeB, { maxNewProviderAttemptCount: 2 }), { result: 'unavailable', reason: 'limited', newProviderAttemptCount: 0, reused: false });
   assert.deepEqual(modes, ['walk', 'transit', 'walk', 'transit', 'walk']);
 });

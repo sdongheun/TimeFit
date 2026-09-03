@@ -4,7 +4,7 @@ import type { RouteProxyFunctionResponse, RouteProxyReceipt } from './routeProxy
 type RouteProxyHttpErrorContext = { json(): Promise<unknown> };
 
 const statuses = new Set<RouteProxyFunctionResponse['status']>(['ok', 'no_route', 'limited', 'in_flight', 'route_proxy_unavailable', 'store_unavailable', 'unconfigured', 'http_error', 'network_error', 'invalid_response', 'rejected']);
-const unavailableReasons = new Set<NonNullable<RouteProxyReceipt['unavailableReason']>>(['limited', 'transport', 'store', 'provider', 'invalid_response', 'rejected']);
+const unavailableReasons = new Set<NonNullable<RouteProxyReceipt['unavailableReason']>>(['limited', 'in_flight', 'transport', 'store', 'provider', 'invalid_response', 'rejected']);
 
 function isReceipt(value: unknown): value is RouteProxyReceipt {
   if (!value || typeof value !== 'object') return false;

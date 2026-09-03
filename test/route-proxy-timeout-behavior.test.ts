@@ -6,12 +6,13 @@ type Store = ReturnType<typeof fakeStore>;
 
 type BudgetReply = { granted: boolean; reason?: 'soft_limit' | 'daily_limit' | 'rate_limit' };
 
-function fakeStore(options: { cachedTotal?: number; reserveGranted?: boolean; reserveResults?: Partial<Record<'walk' | 'transit', BudgetReply[]>>; leaseInFlight?: boolean } = {}) {
+function fakeStore(options: { cachedTotal?: number; reserveGranted?: boolean; reserveResults?: Partial<Record<'walk' | 'transit', BudgetReply[]>>; leaseInFlight?: boolean; failRpc?: string } = {}) {
   let next = 0;
   const active = new Map<string, string>();
   const claims: string[] = []; const releases: string[] = []; const completes: string[] = []; const calls: string[] = []; const reservations: Record<string, unknown>[] = [];
   const rpc: RouteProxyHandlerDependencies['rpc'] = async (name, args) => {
     calls.push(name);
+    if (name === options.failRpc) throw new Error('fixture store failure');
     const provider = String(args.p_provider ?? ''); const key = `${provider}|${args.p_mode ?? ''}|${args.p_from_poi_id ?? ''}|${args.p_to_poi_id ?? ''}`;
     if (name === 'route_proxy_get_route') return { data: options.cachedTotal ? [{ total_min: options.cachedTotal, steps: [] }] : [] };
     if (name === 'route_proxy_read_budget') throw new Error('provider-only budget read must not be used');
@@ -51,7 +52,7 @@ async function fireDeadline(clock: ReturnType<typeof scheduler>) {
 
 function response(raw: unknown) { return new Response(JSON.stringify(raw), { status: 200 }); }
 
-function fixture(options: { mode: 'walk' | 'transit'; private?: boolean; invalidDeadline?: boolean; missingSecret?: boolean; anonymousDisabled?: boolean; abuseDenied?: boolean; authDenied?: boolean; storeUnavailable?: boolean; cachedTotal?: number; reserveGranted?: boolean; reserveResults?: Partial<Record<'walk' | 'transit', BudgetReply[]>>; leaseInFlight?: boolean; fetch: RouteProxyHandlerDependencies['fetch'] }) {
+function fixture(options: { mode: 'walk' | 'transit'; private?: boolean; invalidDeadline?: boolean; missingSecret?: boolean; anonymousDisabled?: boolean; abuseDenied?: boolean; authDenied?: boolean; storeUnavailable?: boolean; cachedTotal?: number; reserveGranted?: boolean; reserveResults?: Partial<Record<'walk' | 'transit', BudgetReply[]>>; leaseInFlight?: boolean; failRpc?: string; fetch: RouteProxyHandlerDependencies['fetch'] }) {
   const store = fakeStore(options); const clock = scheduler();
   const values: Record<string, string> = {
     ROUTE_PROXY_ANONYMOUS_AUTH_ENABLED: options.anonymousDisabled ? 'false' : 'true', ROUTE_PROXY_ABUSE_GUARD_APPROVED: options.abuseDenied ? 'false' : 'true', ROUTE_PROXY_FETCH_LEASE_TTL_MS: options.invalidDeadline ? '' : '5000', ROUTE_PROXY_PROVIDER_DEADLINE_MS: options.invalidDeadline ? '' : '4750', ROUTE_PROXY_KAKAO_WALK_DAILY_HARD_LIMIT: '10', ROUTE_PROXY_KAKAO_WALK_DAILY_SOFT_LIMIT: '9', ROUTE_PROXY_KAKAO_WALK_PER_SECOND_LIMIT: '3', ROUTE_PROXY_KAKAO_TRANSIT_DAILY_HARD_LIMIT: '20', ROUTE_PROXY_KAKAO_TRANSIT_DAILY_SOFT_LIMIT: '18', ROUTE_PROXY_KAKAO_TRANSIT_PER_SECOND_LIMIT: '4', KAKAO_ROUTE_REST_API_KEY: options.missingSecret ? '' : 'fixture', ROUTE_PROXY_CATALOG_SNAPSHOT_JSON: JSON.stringify({ version: 'fixture-v1', points: { from: { lat: 35.1, lon: 129.0 }, to: { lat: 35.2, lon: 129.1 } } }),
@@ -193,6 +194,24 @@ test('API4ACT03-01: private walk·transit도 provider HTTP 직전 mode별 reserv
     assert.deepEqual(setup.store.reservations.map((args) => args.p_mode), [mode]);
     assert.deepEqual(setup.store.calls.filter((name) => name.includes('route') || name.includes('lease')), ['route_proxy_reserve_budget']);
   }
+});
+
+test('API-PUBLIC-STORE-01: private 구간은 public cache lookup 없이 budget RPC 뒤 provider 경계로 진행한다', async () => {
+  let fetches = 0;
+  const setup = fixture({ mode: 'walk', private: true, fetch: async () => { fetches += 1; return response({ status: 'OK', route: { properties: { totalTime: 60 } } }); } });
+  const body = await (await setup.rawHandler(setup.request())).json();
+  assert.deepEqual(body.receipt, { result: 'exact', newProviderAttemptCount: 1, reuse: 'provider_attempt' });
+  assert.equal(fetches, 1);
+  assert.deepEqual(setup.store.calls, ['route_proxy_reserve_budget']);
+});
+
+test('API-PUBLIC-STORE-01: public cache RPC 하나의 실패는 provider 0회 store_unavailable receipt로 끝난다', async () => {
+  let fetches = 0;
+  const setup = fixture({ mode: 'walk', failRpc: 'route_proxy_get_route', fetch: async () => { fetches += 1; return response({ status: 'OK', route: { properties: { totalTime: 60 } } }); } });
+  const responseBody = await (await setup.rawHandler(setup.request())).json();
+  assert.deepEqual(responseBody, { mode: 'walk', status: 'store_unavailable', receipt: { result: 'unavailable', newProviderAttemptCount: 0, reuse: 'provider_attempt', unavailableReason: 'store' } });
+  assert.equal(fetches, 0);
+  assert.deepEqual(setup.store.calls, ['route_proxy_get_route']);
 });
 
 test('API4ACT03-02: private typed soft/daily/rate 제한은 Kakao HTTP·cache·lease 없이 limited로 끝난다', async () => {

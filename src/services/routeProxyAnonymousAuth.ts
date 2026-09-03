@@ -1,4 +1,8 @@
-export type RouteProxySession = { accessToken: string };
+export type RouteProxySession = {
+  accessToken: string;
+  /** Unix seconds when Supabase exposes it; consumers may fail closed before an Edge request. */
+  expiresAt?: number;
+};
 export type RouteProxyAnonymousAuthPort = {
   getSession(): Promise<RouteProxySession | null>;
   /** Maps to supabase.auth.signInAnonymously({ options: { captchaToken } }). */
