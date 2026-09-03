@@ -108,28 +108,30 @@ export function buildCourseV1RouteGeometryModel(
 
 type CourseV1ConnectorPlace = Readonly<{ lat: number; lon: number }>;
 const CONNECTOR_GAP_METERS = 50;
-const CONNECTOR_LIMIT = 4;
+const CONNECTOR_LIMIT = 6;
 const CONNECTOR_CONCURRENCY = 2;
 
-/** one-stop snapshot의 유효한 transit 선 끝과 기대 endpoint만 비교한다. */
+/** one/two-stop snapshot의 유효한 transit 선 끝과 기대 endpoint만 비교한다. */
 export function buildCourseV1ConnectorRequests(
   course: VerifiedCourseV1,
   session: RecommendationSession,
   getPlace: (placeId: string) => CourseV1ConnectorPlace | undefined,
 ): CourseV1ConnectorRequest[] {
-  if (course.placeIds.length !== 1 || course.stops.length !== 1 || course.legs.length !== 2) return [];
-  const placeId = course.placeIds[0];
-  const place = getPlace(placeId);
+  if (course.placeIds.length < 1 || course.placeIds.length > 2
+    || course.stops.length !== course.placeIds.length
+    || course.legs.length !== course.placeIds.length + 1) return [];
+  const places = course.placeIds.map(getPlace);
   const destination = session.destination ?? session.origin;
-  if (!validPoint(session.origin) || !validPoint(place) || !validPoint(destination)) return [];
-  if (course.stops[0]?.placeId !== placeId) return [];
-  if (course.legs[0]?.fromId !== session.origin.id || course.legs[0]?.toId !== placeId) return [];
-  if (course.legs[1]?.fromId !== placeId || course.legs[1]?.toId !== destination.id) return [];
+  if (!validPoint(session.origin) || places.some((place) => !validPoint(place)) || !validPoint(destination)) return [];
+  if (course.stops.some((stop, index) => stop.placeId !== course.placeIds[index])) return [];
+  const pointIds = [session.origin.id, ...course.placeIds, destination.id];
+  if (course.legs.some((leg, index) => leg.fromId !== pointIds[index] || leg.toId !== pointIds[index + 1])) return [];
 
-  const endpoints: ReadonlyArray<Readonly<{ from: CourseV1ConnectorPlace; to: CourseV1ConnectorPlace }>> = [
-    { from: session.origin, to: place },
-    { from: place, to: destination },
-  ];
+  const points = [session.origin, ...(places as CourseV1ConnectorPlace[]), destination];
+  const endpoints: ReadonlyArray<Readonly<{ from: CourseV1ConnectorPlace; to: CourseV1ConnectorPlace }>> = course.legs.map((_, index) => ({
+    from: points[index],
+    to: points[index + 1],
+  }));
   const requests: CourseV1ConnectorRequest[] = [];
   course.legs.forEach((leg, legIndex) => {
     if (leg.mode !== 'transit' || !hasValidGeometry(leg.geometry)) return;
@@ -148,7 +150,7 @@ export function buildCourseV1ConnectorRequests(
   return requests.slice(0, CONNECTOR_LIMIT);
 }
 
-/** 호출은 최대 4개·동시 2개이며 결과는 응답 도착 순서가 아닌 request 순서로 돌려준다. */
+/** 호출은 2곳 상세 기준 최대 6개·동시 2개이며 결과는 응답 도착 순서가 아닌 request 순서로 돌려준다. */
 export async function loadCourseV1WalkConnectors(
   requests: readonly CourseV1ConnectorRequest[],
   port: PrivateWalkConnectorPort,

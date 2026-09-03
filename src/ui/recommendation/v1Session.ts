@@ -1,11 +1,13 @@
-import { buildConfirmedConditionalManualCourseV1, buildExplorationPageV1, buildLimitedRepresentativeCourseV1ForInternalB12, buildReleaseOneStopRepresentativeCourseV1, continueLimitedRepresentativeCourseV1, continueReleaseOneStopRepresentativeCourseV1, verifySelectedExplorationPlaceV1, type ConditionalManualCourseV1Result, type CourseV1Continuation, type CourseV1ContinuationResult, type CourseV1ExplorationPage, type CourseV1LimitedInput, type CourseV1LimitedResult, type CourseV1ReleaseOneStopContinuation, type CourseV1ReleaseOneStopContinuationResult, type CourseV1ReleaseOneStopResult, type CourseV1RouteAdapter, type CourseV1RouteReceiptAdapter, type ExplorationSelectionReason, type SelectedExplorationResult } from '../../engine';
+import { buildConfirmedConditionalManualCourseV1, buildExplorationPageV1, buildLimitedRepresentativeCourseV1ForInternalB12, buildReleaseOneStopRepresentativeCourseV1, continueLimitedRepresentativeCourseV1, continueReleaseOneStopRepresentativeCourseV1, verifySelectedExplorationPlaceV1, type ConditionalManualCourseV1Result, type CourseV1Continuation, type CourseV1ContinuationResult, type CourseV1ExplorationPage, type CourseV1LimitedInput, type CourseV1LimitedResult, type CourseV1ReleaseOneStopContinuation, type CourseV1ReleaseOneStopContinuationResult, type CourseV1ReleaseOneStopResult, type CourseV1RouteAdapter, type CourseV1RouteReceiptAdapter, type ExplorationSelectionReason, type ReleaseTwoStopAttemptLedger, type SelectedExplorationResult, type VerifiedCourseV1 } from '../../engine';
 import { createCourseV1CandidateProvider } from '../../data/courseV1CandidateProvider';
 import { createCourseV1RouteAdapter } from '../../services/courseV1RouteAdapter';
 import { createActivatedCourseV1RouteAdapter, RouteProxyUnavailableError } from '../../services/routeProxyActivatedCourseAdapter';
 import type { RecommendationSession } from '../nav';
 import { parseRecommendationNowIso } from './recommendationSessionTime';
 import { recommendationInternalPolicyForEnvironment, type RecommendationPublicEnvironment } from './recommendationInternalBuildModel';
-import type { RecommendationResult } from './releaseOneStopResultsModel';
+import { releaseOneStopDisplayResult, type RecommendationResult } from './releaseOneStopResultsModel';
+import { createTwoStopSelectionEnginePort } from './twoStopSelectionEnginePort';
+import type { TwoStopSelectionPort } from './twoStopSelectionModel';
 
 export type RecommendationRuntimeOptions = {
   routeProxyEnabled: boolean;
@@ -38,7 +40,128 @@ const productionRecommendationRuntimeDependencies: RecommendationRuntimeDependen
 };
 
 // navigation payload에는 provider·route port를 넣지 않는다. 같은 화면 메모리에서만 이어보기를 재조립한다.
+type PairSelectionIntent = Readonly<{ course: VerifiedCourseV1 }>;
+type RecommendationSessionRuntime = {
+  input: CourseV1LimitedInput;
+  ledger: ReleaseTwoStopAttemptLedger;
+  twoStopPort: TwoStopSelectionPort | null;
+  pairIntent: PairSelectionIntent | null;
+  eligibleOneStopCourses: Map<string, VerifiedCourseV1>;
+  operationTail: Promise<void>;
+  operationCount: number;
+};
+
 const continuationInputs = new WeakMap<RecommendationSession, CourseV1LimitedInput>();
+const sessionRuntimes = new WeakMap<RecommendationSession, RecommendationSessionRuntime>();
+
+export type ReleaseOneStopUiContinuationResult = CourseV1ReleaseOneStopContinuationResult | Readonly<{
+  appendedCourses: readonly VerifiedCourseV1[];
+  continuation: CourseV1ReleaseOneStopContinuation;
+  pageState: 'shared_attempt_limit';
+  outcomeReasons: readonly [];
+  diagnostics: Readonly<{ newProviderAttemptCount: 0 }>;
+}>;
+
+function initialAttemptCount(result: RecommendationResult): number {
+  const value = result.diagnostics.newProviderAttemptCount;
+  return Number.isInteger(value) && value! >= 0 && value! <= 8 ? value! : 8;
+}
+
+function commitLedger(runtime: RecommendationSessionRuntime, next: ReleaseTwoStopAttemptLedger): void {
+  const initialOneStopAttempts = runtime.ledger.initialOneStopAttempts;
+  const automaticTwoStopAttempts = Math.min(16, Math.max(runtime.ledger.automaticTwoStopAttempts, next.automaticTwoStopAttempts));
+  const sharedExpansionAttempts = Math.min(12, Math.max(runtime.ledger.sharedExpansionAttempts, next.sharedExpansionAttempts));
+  runtime.ledger = {
+    version: 1,
+    initialOneStopAttempts,
+    automaticTwoStopAttempts,
+    sharedExpansionAttempts,
+    totalNewProviderAttempts: initialOneStopAttempts + automaticTwoStopAttempts + sharedExpansionAttempts,
+  };
+}
+
+function runSessionOperation<T>(runtime: RecommendationSessionRuntime, operation: () => Promise<T>): Promise<T> {
+  runtime.operationCount += 1;
+  const task = runtime.operationTail.then(operation, operation);
+  runtime.operationTail = task.then(() => undefined, () => undefined);
+  return task.finally(() => { runtime.operationCount = Math.max(0, runtime.operationCount - 1); });
+}
+
+function createSessionRuntime(input: CourseV1LimitedInput, result: RecommendationResult, pairEnabled: boolean): RecommendationSessionRuntime {
+  const initialOneStopAttempts = initialAttemptCount(result);
+  const displayed = releaseOneStopDisplayResult(result);
+  const runtime: RecommendationSessionRuntime = {
+    input,
+    ledger: { version: 1, initialOneStopAttempts, automaticTwoStopAttempts: 0, sharedExpansionAttempts: 0, totalNewProviderAttempts: initialOneStopAttempts },
+    twoStopPort: null,
+    pairIntent: null,
+    eligibleOneStopCourses: new Map(
+      [displayed.representativeCourse, ...displayed.alternativeCourses]
+        .filter((course): course is VerifiedCourseV1 => course?.placeIds.length === 1)
+        .map((course) => [course.id, course]),
+    ),
+    operationTail: Promise.resolve(),
+    operationCount: 0,
+  };
+  if (pairEnabled && input.receiptRoutes) {
+    const enginePort = createTwoStopSelectionEnginePort({
+      ...input,
+      receiptRoutes: input.receiptRoutes,
+      ledger: runtime.ledger,
+      ledgerStore: { read: () => runtime.ledger, commit: (next) => commitLedger(runtime, next) },
+    });
+    runtime.twoStopPort = {
+      begin: (request) => runSessionOperation(runtime, () => enginePort.begin(request)),
+      continue: (request) => runSessionOperation(runtime, () => enginePort.continue(request)),
+    };
+  }
+  return runtime;
+}
+
+function registerDisplayedOneStopPage(runtime: RecommendationSessionRuntime, courses: readonly VerifiedCourseV1[]): void {
+  const shownPlaceIds = new Set(
+    [...runtime.eligibleOneStopCourses.values()].flatMap((course) => course.placeIds.length === 1 ? course.placeIds : []),
+  );
+  for (const course of courses.slice(0, 3)) {
+    const placeId = course.placeIds.length === 1 ? course.placeIds[0] : undefined;
+    if (!placeId || shownPlaceIds.has(placeId)) continue;
+    shownPlaceIds.add(placeId);
+    runtime.eligibleOneStopCourses.set(course.id, course);
+  }
+}
+
+export function getTwoStopSelectionPort(session: RecommendationSession): TwoStopSelectionPort | null {
+  return sessionRuntimes.get(session)?.twoStopPort ?? null;
+}
+
+export function getRecommendationSessionAttemptLedger(session: RecommendationSession): ReleaseTwoStopAttemptLedger | null {
+  return sessionRuntimes.get(session)?.ledger ?? null;
+}
+
+export function isRecommendationSessionOperationInFlight(session: RecommendationSession): boolean {
+  return (sessionRuntimes.get(session)?.operationCount ?? 0) > 0;
+}
+
+/** Secondary 렌더와 intent 기록이 동일한 exact Results snapshot 경계를 사용한다. */
+export function canRecordTwoStopSelectionIntent(session: RecommendationSession, course: VerifiedCourseV1): boolean {
+  const runtime = sessionRuntimes.get(session);
+  if (!runtime?.twoStopPort) return false;
+  return runtime.operationCount === 0 && runtime.eligibleOneStopCourses.get(course.id) === course;
+}
+
+export function recordTwoStopSelectionIntent(session: RecommendationSession, course: VerifiedCourseV1): boolean {
+  const runtime = sessionRuntimes.get(session);
+  if (!runtime || !canRecordTwoStopSelectionIntent(session, course)) return false;
+  runtime.pairIntent = { course };
+  return true;
+}
+
+export function consumeTwoStopSelectionIntent(session: RecommendationSession): VerifiedCourseV1 | null {
+  const runtime = sessionRuntimes.get(session);
+  const intent = runtime?.pairIntent ?? null;
+  if (runtime) runtime.pairIntent = null;
+  return intent?.course ?? null;
+}
 
 export type RecommendationRuntimePorts = {
   routes: CourseV1RouteAdapter;
@@ -158,10 +281,13 @@ export async function runRecommendationSession(
   options: RecommendationRuntimeOptions = { routeProxyEnabled: false },
   dependencies: RecommendationRuntimeDependencies = productionRecommendationRuntimeDependencies,
 ): Promise<RecommendationResult> {
-  const builder = recommendationBuilderForEnvironment(publicRecommendationEnvironment(dependencies), dependencies);
+  const environment = publicRecommendationEnvironment(dependencies);
+  const internalPolicy = recommendationInternalPolicyForEnvironment(environment);
+  const builder = recommendationBuilderForEnvironment(environment, dependencies);
   const input = await buildRecommendationLimitedInput(session, options, dependencies);
   const result = await builder(input);
   continuationInputs.set(session, input);
+  sessionRuntimes.set(session, createSessionRuntime(input, result, internalPolicy !== 'B12'));
   return result;
 }
 
@@ -180,10 +306,24 @@ export async function continueReleaseRecommendationSession(
   session: RecommendationSession,
   continuation: CourseV1ReleaseOneStopContinuation,
   dependencies: Pick<RecommendationRuntimeDependencies, 'continueRelease'> = {},
-): Promise<CourseV1ReleaseOneStopContinuationResult | null> {
-  const originalInput = continuationInputs.get(session);
+): Promise<ReleaseOneStopUiContinuationResult | null> {
+  const runtime = sessionRuntimes.get(session);
+  const originalInput = runtime?.input ?? continuationInputs.get(session);
   if (!originalInput) return null;
-  return (dependencies.continueRelease ?? continueReleaseOneStopRepresentativeCourseV1)({ ...originalInput, continuation });
+  if (!runtime) return (dependencies.continueRelease ?? continueReleaseOneStopRepresentativeCourseV1)({ ...originalInput, continuation });
+  return runSessionOperation(runtime, async () => {
+    const remaining = Math.max(0, 12 - runtime.ledger.sharedExpansionAttempts);
+    if (remaining === 0) {
+      return { appendedCourses: [], continuation, pageState: 'shared_attempt_limit', outcomeReasons: [], diagnostics: { newProviderAttemptCount: 0 } };
+    }
+    const pageProviderAttemptLimit = Math.min(8, remaining) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+    const page = await (dependencies.continueRelease ?? continueReleaseOneStopRepresentativeCourseV1)({ ...originalInput, continuation, pageProviderAttemptLimit });
+    registerDisplayedOneStopPage(runtime, page.appendedCourses);
+    const observed = page.diagnostics.newProviderAttemptCount;
+    const added = Number.isInteger(observed) && observed! >= 0 && observed! <= pageProviderAttemptLimit ? observed! : pageProviderAttemptLimit;
+    commitLedger(runtime, { ...runtime.ledger, sharedExpansionAttempts: runtime.ledger.sharedExpansionAttempts + added });
+    return page;
+  });
 }
 
 export type ConditionalManualUiResult = ConditionalManualCourseV1Result | Readonly<{

@@ -60,7 +60,10 @@ const connectorSession: RecommendationSession = {
   remainingMin: 80,
   arrivalBufferMin: 10,
 };
-const connectorPlaces = { A: { lat: 35.005, lon: 129.005 } };
+const connectorPlaces = {
+  A: { lat: 35.004, lon: 129.004 },
+  B: { lat: 35.007, lon: 129.007 },
+};
 
 function oneStop(
   modes: ['walk' | 'transit', 'walk' | 'transit'],
@@ -86,6 +89,18 @@ function oneStop(
     arrivalBufferMin: 5,
     totalMin: 25,
   };
+}
+
+function twoStop(
+  modes: ['transit', 'transit', 'transit'],
+  gaps: [[number, number], [number, number], [number, number]],
+): VerifiedCourseV1 {
+  const expected = [connectorSession.origin, connectorPlaces.A, connectorPlaces.B, connectorSession.destination!];
+  const geometries = gaps.map(([startGap, endGap], index) => ({ paths: [path(
+    [expected[index].lat + metersNorth(startGap), expected[index].lon],
+    [expected[index + 1].lat + metersNorth(endGap), expected[index + 1].lon],
+  )] }));
+  return course(modes, geometries);
 }
 
 test('UCOURSEGEOMETRY01: 모든 path를 leg/path 순서대로 별도 선으로 투영한다', () => {
@@ -176,6 +191,17 @@ test('UCOURSEGEOMETRY02: walk/transit 조합은 유효 transit endpoint만 최�
   }
   const requests = buildCourseV1ConnectorRequests(oneStop(['transit', 'transit'], [[51, 51], [51, 51]]), connectorSession, (id) => connectorPlaces[id as 'A']);
   assert.deepEqual(requests.map(({ key }) => key), ['0:start', '0:end', '1:start', '1:end']);
+});
+
+test('UTWOSTOP01: 2곳 상세는 세 transit leg의 누락 endpoint를 방문 순서대로 최대 6개 보충한다', () => {
+  const snapshot = twoStop(['transit', 'transit', 'transit'], [[51, 51], [51, 51], [51, 51]]);
+  const requests = buildCourseV1ConnectorRequests(snapshot, connectorSession, (id) => connectorPlaces[id as 'A' | 'B']);
+  assert.deepEqual(requests.map(({ key }) => key), [
+    '0:start', '0:end', '1:start', '1:end', '2:start', '2:end',
+  ]);
+  assert.deepEqual(requests[2]?.from, connectorPlaces.A);
+  assert.deepEqual(requests[3]?.to, connectorPlaces.B);
+  assert.deepEqual(requests[5]?.to, connectorSession.destination);
 });
 
 test('UCOURSEGEOMETRY02: 왕복 endpoint를 쓰고 손상·불일치·walk snapshot은 호출 0으로 닫는다', () => {
