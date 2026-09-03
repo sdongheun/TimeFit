@@ -9,6 +9,7 @@ const DECISIONS = 'data/processed/review/부산_자투리장소_보류및제외.
 const HOURS = 'data/processed/review/사용중_장소_운영시간_원천감사.json';
 const CONFLICT_RESOLUTIONS = 'data/processed/review/운영시간_충돌_처리결과.json';
 const HELD_DISCOVERY_REVIEW = 'data/processed/review/보류_발견장소_재검토_결과.json';
+const TARGETED_SUPPLY_REVIEW = 'data/processed/review/생활권_대표후보_보강_감사.json';
 const OUTPUT = process.env.DATA_CLASSIFICATION_OUTPUT ?? 'data/processed/review/부산_장소_근거프로필_재분류.json';
 const BASELINE = process.env.DATA_CLASSIFICATION_BASELINE ?? 'data/processed/review/부산_장소_근거프로필_기준선.json';
 const NOW = process.env.DATA_CLASSIFICATION_DATE ?? '2026-08-24';
@@ -42,6 +43,8 @@ const decisions = read(DECISIONS);
 const auditById = new Map(read(HOURS).data.map((row) => [row.contentId, row]));
 const conflictById = new Map(read(CONFLICT_RESOLUTIONS).data.map((row) => [row.placeId, row]));
 const heldDiscoveryReviewById = new Map((fs.existsSync(HELD_DISCOVERY_REVIEW) ? read(HELD_DISCOVERY_REVIEW).data : [])
+  .map((row) => [row.placeId, row]));
+const targetedSupplyReviewById = new Map((fs.existsSync(TARGETED_SUPPLY_REVIEW) ? read(TARGETED_SUPPLY_REVIEW).data : [])
   .map((row) => [row.placeId, row]));
 const all = [...active, ...decisions.review, ...decisions.excluded];
 if (new Set(all.map((place) => place.id)).size !== all.length) throw new Error('기준선 장소 ID가 중복되었습니다.');
@@ -112,6 +115,33 @@ function reviewDue(availabilityValue) {
   if (availabilityValue === 'event_window') return NOW;
   return dateText(plusDays(EVIDENCE_DATE, 90));
 }
+
+function applyTargetedSupplyReview(result, review) {
+  if (!review || review.finalClassification !== 'representative_standard') return result;
+  if (review.reviewDueAt < NOW) return result;
+  const availability = review.availability;
+  if (availability?.kind !== 'area_hours' || availability.windows?.length !== 1
+    || availability.windows[0].start !== '09:00' || availability.windows[0].end !== '20:00'
+    || !Array.isArray(availability.runtimeOperatingHours)) throw new Error(`${result.id}: invalid targeted supply availability`);
+  const source = review.officialEvidence;
+  if (!source?.url || !source.sourceText || !review.reviewedAt || !review.reviewDueAt) throw new Error(`${result.id}: missing targeted supply official evidence`);
+  return {
+    ...result,
+    operatingHours: availability.runtimeOperatingHours,
+    availability: availability.kind,
+    accessFriction: 'open',
+    evidence: [
+      ...result.evidence.filter((item) => !['availability', 'accessFriction'].includes(item.field)),
+      { field: 'availability', source: 'targeted_representative_supply', sourceIdOrUrl: source.url, sourceText: source.sourceText, retrievedAt: review.reviewedAt, appliesTo: 'area' },
+      { field: 'accessFriction', source: 'targeted_representative_supply', sourceIdOrUrl: source.url, sourceText: '공식 권역 안내에 따른 공개 시장 접근; 개별 점포 이용 조건은 상속하지 않음', retrievedAt: review.reviewedAt, appliesTo: 'area' },
+    ],
+    verifiedAt: review.reviewedAt,
+    reviewDueAt: review.reviewDueAt,
+    classification: 'representative_standard',
+    classificationReason: 'DATA-SUPPLY-01: official area access hours and existing short-stay evidence are connected; promoted without widening dwell or policy.',
+    nextReviewAction: null,
+  };
+}
 function nextAction(place, reason) {
   if (/represented_by_parent_area/.test(reason)) return '대표 권역과 내부 장소 관계를 유지하고 내부 장소를 자동 추천에서 제외한다.';
   if (/food|long_or|non_visit/.test(reason)) return '자투리 활동 정책이 바뀌기 전까지 하드 제외를 유지한다.';
@@ -179,13 +209,13 @@ function classify(place) {
   };
   const review = heldDiscoveryReviewById.get(place.id);
   // 재검토 결과도 일반 근거와 같은 만료 게이트를 통과해야 한다.
-  if (!review || review.outcome === 'hold' || review.reviewDueAt < NOW) return result;
+  if (!review || review.outcome === 'hold' || review.reviewDueAt < NOW) return applyTargetedSupplyReview(result, targetedSupplyReviewById.get(place.id));
   const isConditional = review.outcome === 'conditional_more';
   const activity = review.officialEvidence.activity;
   const stay = review.officialEvidence.stayTemplate;
   const availabilityEvidence = review.officialEvidence.availability;
   const maxStayMin = review.activityReview.activityType === 'compact_culture' ? 120 : 60;
-  return {
+  return applyTargetedSupplyReview({
     ...result,
     shortStayType: review.activityReview.activityType,
     minStayMin: 20,
@@ -211,7 +241,7 @@ function classify(place) {
     classificationReason: review.decisionReason,
     reviewDueAt: review.reviewDueAt,
     nextReviewAction: review.nextReviewAction,
-  };
+  }, targetedSupplyReviewById.get(place.id));
 }
 
 const data = all.map(classify).sort((a, b) => a.id.localeCompare(b.id, 'en'));

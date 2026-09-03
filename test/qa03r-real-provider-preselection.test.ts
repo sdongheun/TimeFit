@@ -17,7 +17,7 @@ test('QA03-R: 실제 대표 provider의 고정 생활권 사전선정은 결정�
   assert.equal(first.length, 4);
 
   for (const record of first) {
-    assert.equal(record.providerCandidateCount, 190, record.scenarioId);
+    assert.equal(record.providerCandidateCount, 191, record.scenarioId);
     assert.ok(record.candidatePool.length <= COURSE_V1_PRESELECTION_PLACE_POOL_LIMIT, record.scenarioId);
     assert.ok(record.generatedOrderedCourseCount <= COURSE_V1_PRESELECTION_ORDERED_COURSE_LIMIT, record.scenarioId);
     assert.ok(record.preselectedCourses.length <= COURSE_V1_EXACT_COURSE_LIMIT, record.scenarioId);

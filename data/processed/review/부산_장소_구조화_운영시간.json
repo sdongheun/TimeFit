@@ -8658,47 +8658,15 @@
     },
     {
       "placeId": "poi_4",
-      "sourceText": "- 08:00~20:00 - 야시장 19:30~23:30 ※ 점포별로 상이함 / 매일 19:30-24:00 / 매일 19:30-24:00 / - 08:00~20:00 - 야시장 19:30~23:30 ※ 점포별로 상이함 / 매일 19:30-24:00",
+      "sourceText": "부평깡통야시장: 이용시간 09:00~20:00, 야시장 19:30~24:00, 연중무휴.",
       "sourceEvidence": [
         {
           "field": "availability",
-          "source": "tourapi_detailIntro2",
-          "sourceIdOrUrl": "1878218",
-          "sourceText": "- 08:00~20:00 - 야시장 19:30~23:30 ※ 점포별로 상이함",
-          "retrievedAt": "2026-08-23",
+          "source": "targeted_representative_supply",
+          "sourceIdOrUrl": "https://www.bsjunggu.go.kr/board/view.junggu?CATEGORY_CODE2=A01%2CA02%2CA03%2CB02%2CB03%2CC01%2CC02%2CC03%2CD01%2CD02%2CD04&CATEGORY_CODE3=&boardId=LIFE&dataSid=55998&keyword=&menuCd=DOM_000000201001000000&nowPage=2&searchType=DATA_TITLE",
+          "sourceText": "부평깡통야시장: 이용시간 09:00~20:00, 야시장 19:30~24:00, 연중무휴.",
+          "retrievedAt": "2026-09-01",
           "appliesTo": "area"
-        },
-        {
-          "field": "availability",
-          "source": "busan_shopping",
-          "sourceIdOrUrl": "400",
-          "sourceText": "매일 19:30-24:00",
-          "retrievedAt": "2026-08-23",
-          "appliesTo": "area"
-        },
-        {
-          "field": "availability",
-          "source": "runtime_catalog_pre_reclassification",
-          "sourceIdOrUrl": "poi_4",
-          "sourceText": "매일 19:30-24:00",
-          "appliesTo": "area",
-          "retrievedAt": "2026-08-24"
-        },
-        {
-          "field": "availability",
-          "source": "tourapi_detailIntro2",
-          "sourceIdOrUrl": "1878218",
-          "sourceText": "- 08:00~20:00 - 야시장 19:30~23:30 ※ 점포별로 상이함",
-          "appliesTo": "area",
-          "retrievedAt": "2026-08-24"
-        },
-        {
-          "field": "availability",
-          "source": "busan_shopping",
-          "sourceIdOrUrl": "400",
-          "sourceText": "매일 19:30-24:00",
-          "appliesTo": "area",
-          "retrievedAt": "2026-08-24"
         }
       ],
       "version": "2026-08-24 availability normalization",
@@ -8710,28 +8678,8 @@
       "alwaysAccessible": false,
       "windows": [
         {
-          "startMin": 480,
+          "startMin": 540,
           "endMin": 1200
-        },
-        {
-          "startMin": 1170,
-          "endMin": 1410
-        },
-        {
-          "startMin": 1170,
-          "endMin": 1440
-        },
-        {
-          "startMin": 1170,
-          "endMin": 1440
-        },
-        {
-          "startMin": 480,
-          "endMin": 1200
-        },
-        {
-          "startMin": 1170,
-          "endMin": 1410
         },
         {
           "startMin": 1170,

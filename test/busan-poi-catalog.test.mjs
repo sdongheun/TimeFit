@@ -19,7 +19,7 @@ test('런타임 카탈로그는 검토한 자투리 활동 장소를 정확히 �
   assert.equal(rows.length, activeSource.length);
   assert.equal(catalog.summary.total, activeSource.length);
   assert.equal(catalog.summary.matched + catalog.summary.unmatched, activeSource.length);
-  assert.deepEqual(catalog.summary.classification, { representative_core: 28, conditional_more: 178, representative_standard: 162 });
+  assert.deepEqual(catalog.summary.classification, { representative_core: 28, conditional_more: 178, representative_standard: 163 });
 });
 
 test('모든 런타임 장소는 짧은 활동 유형과 최소·권장·최대 체류 범위를 가진다', () => {

@@ -78,12 +78,12 @@ test('QA03: 생활권·시간 예산별 공급과 다양성은 QA02 원본 fixtu
     });
   }
   assert.equal(rows.length, 4);
-  assert.deepEqual(rows.map((row) => row.resultState), ['no_verified_course_within_limit', 'verified', 'verified', 'verified']);
-  assert.equal(rows.filter((row) => row.representative).length, 3);
+  assert.deepEqual(rows.map((row) => row.resultState), ['verified', 'verified', 'verified', 'verified']);
+  assert.equal(rows.filter((row) => row.representative).length, 4);
   assert.ok(rows.every((row) => row.initialRouteMisses > 0 && row.replayRouteCacheHits > 0));
   assert.ok(rows.every((row) => row.wideSinglePreselected));
   assert.ok(rows.every((row) => row.exactCourseAttemptCount <= 4));
-  assert.ok(rows.every((row) => row.rejections.classification === 2));
+  assert.ok(rows.every((row) => row.rejections.classification === 3));
   assert.ok(rows.some((row) => row.rejections.budget > 0));
   assert.ok(rows.every((row) => row.verifiedCourseCount === row.alternativeCount + (row.representative ? 1 : 0)));
   console.log(`QA03 measurement ${JSON.stringify(rows)}`);

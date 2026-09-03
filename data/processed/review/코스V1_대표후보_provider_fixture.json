@@ -9,10 +9,10 @@
     "purpose": "CourseV1CandidateProvider 입력·제외 계약 고정 fixture"
   },
   "summary": {
-    "runtimeTotal": 368,
-    "representativeTotal": 190,
+    "runtimeTotal": 369,
+    "representativeTotal": 191,
     "conditionalTotal": 178,
-    "holdTotal": 669
+    "holdTotal": 668
   },
   "representativeCandidateIds": [
     "poi_1",
@@ -104,6 +104,7 @@
     "poi_34",
     "poi_37",
     "poi_378",
+    "poi_4",
     "poi_403",
     "poi_421",
     "poi_427",
@@ -677,7 +678,6 @@
     "poi_397",
     "poi_398",
     "poi_399",
-    "poi_4",
     "poi_40",
     "poi_400",
     "poi_402",
@@ -1153,6 +1153,7 @@
     "poi_34",
     "poi_37",
     "poi_378",
+    "poi_4",
     "poi_403",
     "poi_421",
     "poi_427",
@@ -3549,6 +3550,35 @@
           {
             "startMin": 660,
             "endMin": 1170
+          }
+        ]
+      }
+    },
+    {
+      "id": "poi_4",
+      "title": "부평깡통시장",
+      "lat": 35.1015921962,
+      "lon": 129.0260517037,
+      "classification": "representative_standard",
+      "minStayMin": 20,
+      "recommendedStayMin": 30,
+      "siteGroupId": null,
+      "reviewDueAt": "2026-11-21",
+      "availability": {
+        "status": "structured",
+        "alwaysAccessible": false,
+        "dayTypes": [
+          "weekday",
+          "weekend"
+        ],
+        "windows": [
+          {
+            "startMin": 540,
+            "endMin": 1200
+          },
+          {
+            "startMin": 1170,
+            "endMin": 1440
           }
         ]
       }

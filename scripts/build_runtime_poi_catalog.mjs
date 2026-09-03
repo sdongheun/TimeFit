@@ -9,6 +9,8 @@ const OUTPUT = 'src/data/busan_poi_catalog.json';
 const TOURAPI_IMAGE_AUDIT = 'data/processed/review/현재사용_TourAPI_대표이미지_감사.json';
 const TOURAPI_IMAGE_HTTPS_VALIDATION = 'data/processed/review/현재사용_TourAPI_대표이미지_HTTPS검증.json';
 const TOURAPI_REPRESENTATIVE_IMAGE_HTTPS_VALIDATION = 'data/processed/review/현재사용_대표후보_TourAPI_HTTPS검증결과.json';
+const AREA_DISCOVERY_AUDIT = 'data/processed/review/권역형_발견후보_감사.json';
+const CONDITIONAL_MARKET_AUDIT = 'data/processed/review/조건부_시장거리_발견후보_감사.json';
 const OFFICIAL_SOURCES = {
   busan_attraction: 'data/processed/부산시_명소정보.json',
   busan_shopping: 'data/processed/부산시_쇼핑정보.json',
@@ -29,6 +31,10 @@ const legacyPlaces = [...legacy.matched.data, ...legacy.unmatched.data];
 const legacyByContentId = new Map(legacyPlaces.map((place) => [String(place.contentId), place]));
 const existingPlaces = existing ? [...existing.matched.data, ...existing.unmatched.data] : [];
 const existingByContentId = new Map(existingPlaces.map((place) => [String(place.contentId), place]));
+const areaDiscoveryByContentId = fs.existsSync(AREA_DISCOVERY_AUDIT)
+  ? new Map(read(AREA_DISCOVERY_AUDIT).data.map((item) => [item.contentId, item])) : new Map();
+const conditionalMarketByContentId = fs.existsSync(CONDITIONAL_MARKET_AUDIT)
+  ? new Map(read(CONDITIONAL_MARKET_AUDIT).data.map((item) => [item.contentId, item])) : new Map();
 const categoryDwell = legacy.categoryDwell;
 const tourapiImageAuditByContentId = fs.existsSync(TOURAPI_IMAGE_AUDIT)
   ? new Map(read(TOURAPI_IMAGE_AUDIT).samples.map((item) => [item.contentId, item])) : new Map();
@@ -123,6 +129,34 @@ function mapVerificationFor(place, existingPlace, legacyPlace) {
   };
 }
 
+function discoveryFor(place) {
+  const reviewed = areaDiscoveryByContentId.get(place.id);
+  // 새 감사 결과가 없는 항목은 자동 탐색으로 조용히 들어가지 않는다.
+  if (!reviewed) return { eligibility: 'conditional', exclusionReason: 'discovery_audit_missing' };
+  if (reviewed.discoveryEligibility === 'area_access') {
+    return {
+      eligibility: 'area_access',
+      accessEvidence: reviewed.accessEvidence,
+      accessWindow: reviewed.accessWindow,
+    };
+  }
+  return {
+    eligibility: reviewed.discoveryEligibility,
+    ...(reviewed.exclusionReason ? { exclusionReason: reviewed.exclusionReason } : {}),
+  };
+}
+
+function conditionalVisitFor(place) {
+  const reviewed = conditionalMarketByContentId.get(place.id);
+  if (place.classification !== 'conditional_more' || reviewed?.decision !== 'conditional_visit') return null;
+  const value = reviewed.conditionalVisit;
+  if (value?.kind !== 'market_or_street'
+    || value.displayWindow?.start !== '10:00'
+    || value.displayWindow?.end !== '18:00'
+    || value.requiresUserHoursConfirmation !== true) return null;
+  return value;
+}
+
 function toRuntime(place) {
   const tourapiContentId = sourceTourApiId(place);
   const legacyPlace = tourapiContentId ? legacyByContentId.get(String(tourapiContentId)) : null;
@@ -171,6 +205,8 @@ function toRuntime(place) {
     },
     classification: place.classification,
     classificationReason: place.classificationReason,
+    discovery: discoveryFor(place),
+    ...(conditionalVisitFor(place) ? { conditionalVisit: conditionalVisitFor(place) } : {}),
     evidenceProfile: {
       identity: place.identity,
       placeKind: place.placeKind,

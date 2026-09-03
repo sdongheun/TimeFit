@@ -59,7 +59,7 @@ export type Qa02ScenarioRecord = {
 };
 
 const availability: StructuredAvailability = { status: 'structured', alwaysAccessible: true, dayTypes: ['weekday', 'weekend'], windows: [{ startMin: 0, endMin: 1440 }] };
-const candidate = (id: string, title: string, lat: number, lon: number, options: Partial<CourseV1Candidate> = {}): CourseV1Candidate => ({ id, title, lat, lon, classification: 'representative_standard', minStayMin: 20, recommendedStayMin: 30, availability, ...options });
+const candidate = (id: string, title: string, lat: number, lon: number, options: Partial<CourseV1Candidate> = {}): CourseV1Candidate => ({ id, title, lat, lon, classification: 'representative_standard', minStayMin: 20, recommendedStayMin: 30, maxStayMin: 60, availability, ...options });
 const key = (from: CourseV1Point, to: CourseV1Point) => `${from.id}>${to.id}`;
 const plan = (mode: CourseV1TravelMode, min: number, extra: Partial<Qa02RoutePlan> = {}): Qa02RoutePlan => ({ mode, min, status: 'ok', ...extra });
 

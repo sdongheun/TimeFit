@@ -22,6 +22,7 @@ const nampoMeasurement = JSON.parse(fs.readFileSync('data/processed/review/코�
 const busanMeasurement = JSON.parse(fs.readFileSync('data/processed/review/코스공급량_부산500m_실경로측정.json', 'utf8'));
 const activityReviewQueue = JSON.parse(fs.readFileSync('data/processed/review/활동근거_재검토큐.json', 'utf8'));
 const heldDiscoveryReview = JSON.parse(fs.readFileSync('data/processed/review/보류_발견장소_재검토_결과.json', 'utf8'));
+const targetedSupplyReview = JSON.parse(fs.readFileSync('data/processed/review/생활권_대표후보_보강_감사.json', 'utf8'));
 const allRuntime = [...runtime.matched.data, ...runtime.unmatched.data];
 const FIELDS = ['identity', 'activityEvidence', 'stayEvidence', 'availability', 'accessFriction'];
 
@@ -109,10 +110,18 @@ test('실제 동일 장소의 원천별 중복은 siteGroupId로 하드 관계 �
 test('후속 충돌 게이트: 미해결 운영시간 충돌은 대표 추천에 남지 않는다', () => {
   assert.equal(conflicts.summary.total, 39);
   const profileById = new Map(profile.data.map((place) => [place.id, place]));
+  const targetedPromotionIds = new Set(targetedSupplyReview.data
+    .filter((row) => row.finalClassification === 'representative_standard' && row.officialEvidence?.url)
+    .map((row) => row.placeId));
   for (const conflict of conflicts.data) {
     const place = profileById.get(conflict.placeId);
     assert.ok(place, `${conflict.placeId}: profile exists`);
     if (conflict.decision === 'hold') {
+      if (targetedPromotionIds.has(conflict.placeId)) {
+        assert.equal(place.classification, 'representative_standard', `${conflict.placeId}: later official re-review promoted`);
+        assert.ok(place.evidence.some((item) => item.source === 'targeted_representative_supply'), `${conflict.placeId}: official re-review evidence`);
+        continue;
+      }
       assert.equal(place.classification, 'hold', `${conflict.placeId}: unresolved conflict held`);
       assert.ok(place.nextReviewAction, `${conflict.placeId}: review queue`);
     } else {

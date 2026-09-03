@@ -1,0 +1,4416 @@
+{
+  "meta": {
+    "generatedAt": "2026-08-31T03:59:49.148Z",
+    "source": "data/processed/review/부산_장소_근거프로필_재분류.json",
+    "method": "보존된 conditional_more 근거 프로필만 사용한 무호출 감사",
+    "policy": "conditional_visit의 10:00–18:00은 제품 탐색 창이며 공식 운영시간·안전시간·자동 추천 근거가 아니다."
+  },
+  "summary": {
+    "reviewedConditionalTotal": 178,
+    "eligibleConditionalVisitTotal": 142,
+    "excludedTotal": 36
+  },
+  "breakdown": {
+    "eligibleByAreaCharacter": {
+      "거리·골목": 8,
+      "시장": 134
+    },
+    "excludedByReason": {
+      "not_area_place_kind": 20,
+      "not_market_or_street_scope": 6,
+      "wholesale_or_dawn_specialized": 6,
+      "not_market_or_street_activity": 2,
+      "reservation_or_long_visit_uncertain": 2
+    }
+  },
+  "data": [
+    {
+      "contentId": "poi_10",
+      "title": "미술의거리",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "985921"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_177",
+      "title": "부산 치유의 숲",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2660770"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "848"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_243",
+      "title": "금정문화원",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "130383"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_251",
+      "title": "반여도서관",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "130796"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_254",
+      "title": "부산광역시 기장도서관",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "130799"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_255",
+      "title": "부산광역시 영도도서관",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "130793"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_259",
+      "title": "부산광역시립 중앙도서관",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "130795"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_261",
+      "title": "부산문화회관",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "129725"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_267",
+      "title": "을숙도문화회관",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1748028"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_276",
+      "title": "해성아트베이",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "3451794"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_277",
+      "title": "해운대문화회관",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1748157"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_282",
+      "title": "송도해안볼레길",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "해변·해안",
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2784356"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_market_or_street_scope"
+    },
+    {
+      "contentId": "poi_283",
+      "title": "해안누리길 몰운대길",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "해변·해안",
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2708164"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_market_or_street_scope"
+    },
+    {
+      "contentId": "poi_286",
+      "title": "구서오시게시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1303759"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_288",
+      "title": "남산시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2788830"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_289",
+      "title": "남천 해변시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1303784"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_292",
+      "title": "남항시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1942298"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_294",
+      "title": "대변시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2796940"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_295",
+      "title": "덕포시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2785611"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_298",
+      "title": "반송3동골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2875862"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_299",
+      "title": "부곡상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2763881"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_303",
+      "title": "부산 중앙시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "132572"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_307",
+      "title": "송정전통재래시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1117817"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_308",
+      "title": "수영팔도시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2869279"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_309",
+      "title": "신평종합시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2867542"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_310",
+      "title": "연동시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2788444"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_311",
+      "title": "장림골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2788451"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_312",
+      "title": "정관신도시시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2776286"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_313",
+      "title": "좌동재래시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2875886"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_314",
+      "title": "좌천동 가구거리",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1304515"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_317",
+      "title": "청학시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2790483"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_318",
+      "title": "초량시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2869135"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_319",
+      "title": "충무동 새벽시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "2744582"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "wholesale_or_dawn_specialized"
+    },
+    {
+      "contentId": "poi_320",
+      "title": "해운대 로데오거리",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_fallback",
+          "sourceId": "1304431"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_41",
+      "title": "놀이마루",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2763856"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_5",
+      "title": "부평동한복거리",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "132550"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_618",
+      "title": "보수동책방골목",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "272"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_646",
+      "title": "암남공원/송도해안볼레길",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "해변·해안",
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "326"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_market_or_street_scope"
+    },
+    {
+      "contentId": "poi_662",
+      "title": "다대포 해수욕장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "해변·해안",
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "366"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_market_or_street_scope"
+    },
+    {
+      "contentId": "poi_667",
+      "title": "F1963",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "372"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_673",
+      "title": "상해거리",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "415"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_70",
+      "title": "벡스코(BEXCO)",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "130668"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "420"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_703",
+      "title": "KT&G상상마당 부산",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1185"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_704",
+      "title": "광안종합시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1305"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_72",
+      "title": "조명의거리",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "1013721"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_722",
+      "title": "땅뫼산 황토숲길",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1798"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_723",
+      "title": "부산 인도문화원",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1857"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_733",
+      "title": "용소웰빙공원",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "공원·정원",
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2065"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_market_or_street_scope"
+    },
+    {
+      "contentId": "poi_755",
+      "title": "오시리아 해안 산책로",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2172"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_market_or_street_activity"
+    },
+    {
+      "contentId": "poi_758",
+      "title": " 부산항 제 1부두",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2187"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_778",
+      "title": "황령산봉수전망대",
+      "previousClassification": "conditional_more",
+      "placeKind": "outdoor_route",
+      "areaCharacter": null,
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2551"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_781",
+      "title": "충무동 해안시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2588"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_791",
+      "title": "서면시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "328"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_793",
+      "title": "동래시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "422"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_797",
+      "title": "부산 그대로를 담은 부산관광기념품",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "533"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_816",
+      "title": "부산",
+      "previousClassification": "conditional_more",
+      "placeKind": "point_facility",
+      "areaCharacter": null,
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2141"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_area_place_kind"
+    },
+    {
+      "contentId": "poi_828",
+      "title": "문현동 골동품거리",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "busan_shopping",
+          "sourceId": "2589"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "poi_90",
+      "title": "부산 영화의 전당",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": null,
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2456837"
+        },
+        {
+          "source": "busan_attraction",
+          "sourceId": "421"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_market_or_street_scope"
+    },
+    {
+      "contentId": "poi_96",
+      "title": "부전마켓타운",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "132188"
+        },
+        {
+          "source": "busan_shopping",
+          "sourceId": "327"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "reservation_or_long_visit_uncertain"
+    },
+    {
+      "contentId": "poi_99",
+      "title": "송도 구름산책로",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "거리·골목",
+      "shortStayType": "scenic_pause",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "tourapi_aihub",
+          "sourceId": "2557807"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "not_market_or_street_activity"
+    },
+    {
+      "contentId": "traditional_market_001",
+      "title": "우동종합상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "우동종합상가시장:35.170679:129.138864"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_002",
+      "title": "신평골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "신평골목시장:35.091078:128.977124"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_003",
+      "title": "개금골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "개금골목시장:35.151832:129.024797"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_004",
+      "title": "반송골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "반송골목시장:35.224288:129.150330"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_005",
+      "title": "반송큰시장(반송2동시장)",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "반송큰시장:35.231117:129.156210"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_007",
+      "title": "영주시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "영주시장:35.111682:129.037369"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_008",
+      "title": "새영주시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "새영주시장:35.112702:129.036309"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_009",
+      "title": "만물의거리시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "만물의거리시장:35.101484:129.028551"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_010",
+      "title": "신창상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "신창상가:35.101177:129.030201"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_012",
+      "title": "창선상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "창선상가:35.101939:129.027751"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_013",
+      "title": "보수종합시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "보수종합시장:35.104211:129.021818"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_014",
+      "title": "신천지시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "신천지시장:35.097045:129.027816"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_016",
+      "title": "부산자갈밭시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부산자갈밭시장:35.096629:129.030569"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_017",
+      "title": "연일시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "연일시장:35.185570:129.084887"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_018",
+      "title": "연미새시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "연미새시장:35.252209:129.208839"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_019",
+      "title": "영남종합시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "영남종합시장:35.180776:129.077026"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_020",
+      "title": "거제시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "거제시장:35.181932:129.072793"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_021",
+      "title": "민락씨랜드시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "민락씨랜드시장:35.156976:129.126396"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_022",
+      "title": "민락골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "민락골목시장:35.157112:129.124453"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_023",
+      "title": "재송한마음시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "재송한마음시장:35.186079:129.124602"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_024",
+      "title": "재송시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "재송시장:35.186581:129.123672"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_025",
+      "title": "반여3동골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "반여3동골목시장:35.199942:129.132056"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_026",
+      "title": "반여2동상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "반여2동상가시장:35.196021:129.129044"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_027",
+      "title": "반여시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "반여시장:35.197701:129.133424"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_028",
+      "title": "민락회타운시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "민락회타운시장:35.155552:129.123819"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "wholesale_or_dawn_specialized"
+    },
+    {
+      "contentId": "traditional_market_029",
+      "title": "장전상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "장전상가시장:35.230850:129.086111"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_030",
+      "title": "장성시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "장성시장:35.237447:129.085555"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_031",
+      "title": "서동향토시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "서동향토시장:35.215935:129.103353"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_032",
+      "title": "서동전통골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "서동전통골목시장:35.215278:129.102249"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_033",
+      "title": "서동시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "서동시장:35.216412:129.102359"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_034",
+      "title": "금사제일상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "금사제일상가시장:35.220452:129.112551"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_035",
+      "title": "민락어패류시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "민락어패류시장:35.155696:129.124361"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "wholesale_or_dawn_specialized"
+    },
+    {
+      "contentId": "traditional_market_036",
+      "title": "충렬상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "충렬상가시장:35.198096:129.109953"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_037",
+      "title": "안락상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "안락상가시장:35.195480:129.103308"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_038",
+      "title": "서원시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "서원시장:35.200394:129.099011"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_039",
+      "title": "수안인정시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "수안인정시장:35.201492:129.086578"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_040",
+      "title": "사직시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "사직시장:35.200051:129.062322"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_041",
+      "title": "국민시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "국민시장:35.198401:129.058241"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_042",
+      "title": "신정시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "신정시장:35.196791:129.069486"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_043",
+      "title": "명장시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "명장시장:35.204031:129.107471"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_044",
+      "title": "초량전통시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "초량전통시장:35.118041:129.039666"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_045",
+      "title": "초량상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "초량상가시장:35.118901:129.039984"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_046",
+      "title": "수정전통시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "수정전통시장:0.000000:0.000000"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_047",
+      "title": "수정시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "수정시장:35.128237:129.046392"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_048",
+      "title": "범일골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "범일골목시장:35.141615:129.054461"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_049",
+      "title": "부산남문시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부산남문시장:35.135923:129.058685"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_050",
+      "title": "부산자유시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부산자유시장:35.140966:129.061039"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_051",
+      "title": "우암골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "우암골목시장:35.126181:129.070911"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_052",
+      "title": "용호1동골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "용호1동골목시장:35.124358:129.110204"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_053",
+      "title": "용호시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "용호시장:35.114914:129.112773"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_054",
+      "title": "용호삼성시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "용호삼성시장:35.123899:129.110537"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_055",
+      "title": "용호골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "용호골목시장:35.116406:129.111462"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_056",
+      "title": "대연시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "대연시장:35.135676:129.088418"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_057",
+      "title": "못골골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "못골골목시장:35.135862:129.089630"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_058",
+      "title": "남광시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "남광시장:35.123993:129.088718"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_059",
+      "title": "성곡종합시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "성곡종합시장:35.174786:129.048078"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_060",
+      "title": "전포놀이터시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "전포놀이터시장:35.158729:129.067303"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_061",
+      "title": "서면중앙시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "서면중앙시장:35.160879:129.063289"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_062",
+      "title": "연지시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "연지시장:35.170904:129.051400"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_063",
+      "title": "양정전통시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "양정전통시장:35.173594:129.069435"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_064",
+      "title": "양정시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "양정시장:35.172781:129.069788"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_065",
+      "title": "부전기장골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부전기장골목시장:35.162203:129.061234"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_067",
+      "title": "부전상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부전상가:35.160348:129.059553"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_068",
+      "title": "부전인삼시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부전인삼시장:35.163234:129.060906"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_069",
+      "title": "서면종합시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "서면종합시장:35.161917:129.058978"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_070",
+      "title": "골드테마거리",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "골드테마거리:35.141933:129.059780"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_071",
+      "title": "철뚝시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "철뚝시장:35.142219:129.061564"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_072",
+      "title": "부산평화시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부산평화시장:35.141693:129.060673"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_073",
+      "title": "동평새시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "동평새시장:35.166629:129.040912"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_074",
+      "title": "국제상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "국제상가:35.168438:129.028205"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_075",
+      "title": "당감새시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "당감새시장:35.165059:129.042146"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_076",
+      "title": "당감골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "당감골목시장:35.163548:129.041428"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_077",
+      "title": "개금큰시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "개금큰시장:35.148511:129.017886"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_078",
+      "title": "가야벽산상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "가야벽산상가:35.147463:129.028134"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_080",
+      "title": "금성상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "금성상가시장:35.208177:129.071937"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_081",
+      "title": "금강시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "금강시장:35.201621:129.068565"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_082",
+      "title": "사하시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "사하시장:35.098351:128.986466"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_083",
+      "title": "괴정골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "괴정골목시장:35.099341:128.993705"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_084",
+      "title": "감천2동시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "감천2동시장:35.093879:129.008848"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_085",
+      "title": "감천시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "감천시장:35.088270:129.005538"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_086",
+      "title": "영해종합시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "영해종합시장:35.140709:128.987956"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_087",
+      "title": "학장반도보라상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "학장반도보라상가:35.137284:128.979173"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_088",
+      "title": "구덕대림상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "구덕대림상가:35.135322:128.992246"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_089",
+      "title": "주례럭키종합상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "주례럭키종합상가:35.148745:129.002919"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_090",
+      "title": "주례현대무지개상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "주례현대무지개상가:35.144962:129.004988"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_093",
+      "title": "모라전통시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "모라전통시장:35.187633:128.987441"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_094",
+      "title": "우신종합상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "우신종합상가:35.183118:128.991282"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_095",
+      "title": "복이있는덕포시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "복이있는덕포시장:35.171281:128.982258"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_096",
+      "title": "사상시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "사상시장:35.166658:128.985503"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_097",
+      "title": "르네시떼시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "르네시떼시장:35.164335:128.977721"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_099",
+      "title": "감전시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "compact_culture",
+      "siteRole": null,
+      "reservationRequired": "unknown",
+      "accessFriction": "medium",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "감전시장:35.156102:128.984607"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "reservation_or_long_visit_uncertain"
+    },
+    {
+      "contentId": "traditional_market_100",
+      "title": "부산산업용재유통상가",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "부산산업용재유통상가:35.153296:128.981080"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "wholesale_or_dawn_specialized"
+    },
+    {
+      "contentId": "traditional_market_101",
+      "title": "감전제일상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "감전제일상가시장:35.156329:128.984550"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_102",
+      "title": "만덕2동제일상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "만덕2동제일상가시장:35.202234:129.036127"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_103",
+      "title": "만덕시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "만덕시장:35.214497:129.035368"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_104",
+      "title": "구포축산물도매시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "구포축산물도매시장:35.196192:128.989208"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "wholesale_or_dawn_specialized"
+    },
+    {
+      "contentId": "traditional_market_105",
+      "title": "정이있는구포시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "정이있는구포시장:35.208360:129.003856"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_106",
+      "title": "초읍시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "초읍시장:35.177317:129.052860"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_107",
+      "title": "광안어패류시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "광안어패류시장:35.155594:129.124533"
+        }
+      ],
+      "decision": "excluded",
+      "exclusionReason": "wholesale_or_dawn_specialized"
+    },
+    {
+      "contentId": "traditional_market_108",
+      "title": "망미중앙시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "망미중앙시장:35.175682:129.106878"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_109",
+      "title": "망미새상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "망미새상가시장:35.173605:129.100461"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_110",
+      "title": "망미삼성상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "망미삼성상가시장:35.169426:129.102813"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_111",
+      "title": "삼익비치A상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "삼익비치a상가시장:35.143216:129.113987"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_112",
+      "title": "삼익비치B상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "삼익비치b상가시장:35.143216:129.113987"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_113",
+      "title": "광안시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "광안시장:35.160179:129.112467"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_114",
+      "title": "충무동골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "충무동골목시장:35.094284:129.023658"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_115",
+      "title": "송남시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "송남시장:35.078510:129.016811"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_116",
+      "title": "아미시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "아미시장:35.099650:129.017486"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_117",
+      "title": "서대신동골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "서대신동골목시장:35.110413:129.017323"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_118",
+      "title": "서대신1동골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "서대신1동골목시장:35.108659:129.014440"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_119",
+      "title": "대신시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "대신시장:35.110373:129.019702"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_120",
+      "title": "동대신1동골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "동대신1동골목시장:35.110310:129.019196"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_121",
+      "title": "에덴골목시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "에덴골목시장:35.111147:128.962726"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_122",
+      "title": "하단오일상설시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "하단오일상설시장:35.103726:128.970806"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_123",
+      "title": "장림시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "장림시장:35.080930:128.967746"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_124",
+      "title": "하단시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "하단시장:35.106279:128.969485"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_125",
+      "title": "당리시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "당리시장:35.105463:128.975344"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    },
+    {
+      "contentId": "traditional_market_126",
+      "title": "가락타운상가시장",
+      "previousClassification": "conditional_more",
+      "placeKind": "area",
+      "areaCharacter": "시장",
+      "shortStayType": "quick_browse",
+      "siteRole": null,
+      "reservationRequired": false,
+      "accessFriction": "low",
+      "sourceEvidence": [
+        {
+          "source": "traditional_market_standard",
+          "sourceId": "가락타운상가시장:35.101077:128.957967"
+        }
+      ],
+      "decision": "conditional_visit",
+      "conditionalVisit": {
+        "kind": "market_or_street",
+        "displayWindow": {
+          "start": "10:00",
+          "end": "18:00"
+        },
+        "requiresUserHoursConfirmation": true
+      }
+    }
+  ]
+}

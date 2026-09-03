@@ -12,9 +12,9 @@
     "total": 1037,
     "classification": {
       "conditional_more": 178,
-      "hold": 669,
+      "hold": 668,
       "representative_core": 28,
-      "representative_standard": 162
+      "representative_standard": 163
     },
     "legacySelectionStatus": {
       "approved": 49,
@@ -46293,7 +46293,7 @@
         }
       },
       "operatingHours": [
-        "매일 19:30-24:00"
+        "매일 09:00~20:00"
       ],
       "selectionEvidence": {
         "exactAihubMatch": true,
@@ -46391,66 +46391,26 @@
         },
         {
           "field": "availability",
-          "source": "tourapi_detailIntro2",
-          "sourceIdOrUrl": "1878218",
-          "sourceText": "- 08:00~20:00 - 야시장 19:30~23:30 ※ 점포별로 상이함",
-          "retrievedAt": "2026-08-23",
-          "appliesTo": "area"
-        },
-        {
-          "field": "availability",
-          "source": "busan_shopping",
-          "sourceIdOrUrl": "400",
-          "sourceText": "매일 19:30-24:00",
-          "retrievedAt": "2026-08-23",
+          "source": "targeted_representative_supply",
+          "sourceIdOrUrl": "https://www.bsjunggu.go.kr/board/view.junggu?CATEGORY_CODE2=A01%2CA02%2CA03%2CB02%2CB03%2CC01%2CC02%2CC03%2CD01%2CD02%2CD04&CATEGORY_CODE3=&boardId=LIFE&dataSid=55998&keyword=&menuCd=DOM_000000201001000000&nowPage=2&searchType=DATA_TITLE",
+          "sourceText": "부평깡통야시장: 이용시간 09:00~20:00, 야시장 19:30~24:00, 연중무휴.",
+          "retrievedAt": "2026-09-01",
           "appliesTo": "area"
         },
         {
           "field": "accessFriction",
-          "source": "tourapi_aihub",
-          "sourceIdOrUrl": "1878218",
-          "sourceText": "입장 부담: open",
-          "retrievedAt": "2026-08-23",
+          "source": "targeted_representative_supply",
+          "sourceIdOrUrl": "https://www.bsjunggu.go.kr/board/view.junggu?CATEGORY_CODE2=A01%2CA02%2CA03%2CB02%2CB03%2CC01%2CC02%2CC03%2CD01%2CD02%2CD04&CATEGORY_CODE3=&boardId=LIFE&dataSid=55998&keyword=&menuCd=DOM_000000201001000000&nowPage=2&searchType=DATA_TITLE",
+          "sourceText": "공식 권역 안내에 따른 공개 시장 접근; 개별 점포 이용 조건은 상속하지 않음",
+          "retrievedAt": "2026-09-01",
           "appliesTo": "area"
-        },
-        {
-          "field": "accessFriction",
-          "source": "busan_shopping",
-          "sourceIdOrUrl": "400",
-          "sourceText": "입장 부담: open",
-          "retrievedAt": "2026-08-23",
-          "appliesTo": "area"
-        },
-        {
-          "field": "availability",
-          "source": "runtime_catalog_pre_reclassification",
-          "sourceIdOrUrl": "poi_4",
-          "sourceText": "매일 19:30-24:00",
-          "appliesTo": "area",
-          "retrievedAt": "2026-08-24"
-        },
-        {
-          "field": "availability",
-          "source": "tourapi_detailIntro2",
-          "sourceIdOrUrl": "1878218",
-          "sourceText": "- 08:00~20:00 - 야시장 19:30~23:30 ※ 점포별로 상이함",
-          "appliesTo": "area",
-          "retrievedAt": "2026-08-24"
-        },
-        {
-          "field": "availability",
-          "source": "busan_shopping",
-          "sourceIdOrUrl": "400",
-          "sourceText": "매일 19:30-24:00",
-          "appliesTo": "area",
-          "retrievedAt": "2026-08-24"
         }
       ],
-      "verifiedAt": "2026-08-23",
+      "verifiedAt": "2026-09-01",
       "reviewDueAt": "2026-11-21",
-      "classification": "hold",
-      "classificationReason": "opening-hours conflict (시간 조건 차이): 원문 범위·요일·계절·프로그램 또는 장소 범위 차이를 현재 운영시간 파서가 안전하게 단일 규칙으로 표현하지 못한다. 임의 선택 없이 보류한다.",
-      "nextReviewAction": "공식 원천의 장소 범위·요일·계절·프로그램 조건을 확인해 단일하게 파싱 가능한 운영시간으로 재검토한다."
+      "classification": "representative_standard",
+      "classificationReason": "DATA-SUPPLY-01: official area access hours and existing short-stay evidence are connected; promoted without widening dwell or policy.",
+      "nextReviewAction": null
     },
     {
       "id": "poi_40",
