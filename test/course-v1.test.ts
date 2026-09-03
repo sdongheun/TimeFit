@@ -19,6 +19,7 @@ function candidate(id: string, options: Partial<CourseV1Candidate> = {}): Course
     classification: 'representative_standard',
     minStayMin: 10,
     recommendedStayMin: 15,
+    maxStayMin: 60,
     availability: { status: 'structured', alwaysAccessible: true, dayTypes: ['weekday', 'weekend'], windows: [{ startMin: 0, endMin: 1440 }] },
     ...options,
   };
@@ -105,6 +106,18 @@ test('운영시간 종료 직전·실경로 실패·관계 중복은 대표와 �
   assert.ok(result.alternativeCourseIds.every((id) => !id.includes('group-a|group-b') && !id.includes('group-b|group-a')));
   assert.ok(result.diagnostics.openingRejected > 0);
   assert.ok(result.diagnostics.relationshipRejected > 0);
+});
+
+test('2-O 보완: 최소 시간표 탈락은 운영시간과 예산의 기존 거절 사유를 구분한다', async () => {
+  const budget = await buildRepresentativeCourseV1({
+    now, origin, destination: null, remainingMin: 45, arrivalBufferMin: 5,
+    candidates: [candidate('too-far', { minStayMin: 10, recommendedStayMin: 15, maxStayMin: 60 })],
+    routes: routes({ 'origin>too-far': 20, 'too-far>origin': 20 }),
+  });
+
+  assert.equal(budget.representativeCourse, null);
+  assert.equal(budget.diagnostics.budgetRejected, 1);
+  assert.equal(budget.diagnostics.openingRejected, 0);
 });
 
 test('후보가 없거나 유효 코스가 없으면 대표 null과 결정적 상태를 반환한다', async () => {
