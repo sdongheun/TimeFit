@@ -1,5 +1,6 @@
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Animated, Image, StyleSheet, Text, View } from "react-native";
+import { AnimatedPressable as Pressable } from "../AnimatedPressable";
 import type { Mode, Spot } from "../../engine";
 import { C } from "../theme";
 import { TransportGlyph } from "./TransportGlyph";
@@ -60,7 +61,7 @@ export function CandidateDetail({
           <Text style={s.title} numberOfLines={1}>{spot.title}</Text>
           <Text style={s.categoryText}>{spot.category}</Text>
         </View>
-        <Pressable style={s.close} onPress={onClose} accessibilityLabel="장소 목록으로 접기">
+        <Pressable variant="icon" style={s.close} onPress={onClose} accessibilityLabel="장소 목록으로 접기">
           <Feather color={C.txt2} name="chevron-down" size={22} />
         </Pressable>
       </View>
@@ -316,5 +317,3 @@ const s = StyleSheet.create({
   confirmText: { color: C.onAccent, fontSize: 15.5, fontWeight: "900" },
   confirmTextOff: { color: C.muted },
 });
-
-

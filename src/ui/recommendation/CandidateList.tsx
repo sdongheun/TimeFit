@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { AnimatedPressable as Pressable } from "../AnimatedPressable";
 import type { LatLon } from "../../engine";
 import { haversineKm } from "../../engine/travel";
 import { C } from "../theme";

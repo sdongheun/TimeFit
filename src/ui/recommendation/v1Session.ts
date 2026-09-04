@@ -1,4 +1,4 @@
-import { buildConfirmedConditionalManualCourseV1, buildExplorationPageV1, buildLimitedRepresentativeCourseV1ForInternalB12, buildReleaseOneStopRepresentativeCourseV1, continueLimitedRepresentativeCourseV1, continueReleaseOneStopRepresentativeCourseV1, verifySelectedExplorationPlaceV1, type ConditionalManualCourseV1Result, type CourseV1Continuation, type CourseV1ContinuationResult, type CourseV1ExplorationPage, type CourseV1LimitedInput, type CourseV1LimitedResult, type CourseV1ReleaseOneStopContinuation, type CourseV1ReleaseOneStopContinuationResult, type CourseV1ReleaseOneStopResult, type CourseV1RouteAdapter, type CourseV1RouteReceiptAdapter, type ExplorationSelectionReason, type ReleaseTwoStopAttemptLedger, type SelectedExplorationResult, type VerifiedCourseV1 } from '../../engine';
+import { buildConfirmedConditionalManualCourseV1, buildExplorationPageV1, buildLimitedRepresentativeCourseV1ForInternalB12, buildReleaseOneStopRepresentativeCourseV1, continueLimitedRepresentativeCourseV1, continueReleaseOneStopRepresentativeCourseV1, verifySelectedExplorationPlaceV1, type ConditionalManualCourseV1Result, type CourseV1Continuation, type CourseV1ContinuationResult, type CourseV1ExplorationPage, type CourseV1LimitedInput, type CourseV1LimitedResult, type CourseV1ReleaseOneStopContinuation, type CourseV1ReleaseOneStopContinuationResult, type CourseV1ReleaseOneStopResult, type CourseV1RouteAdapter, type CourseV1RouteReceiptAdapter, type ExplorationSelectionReason, type ReleaseTwoStopAttemptLedger, type ReleaseTwoStopSelectionResult, type ReleaseTwoStopSessionToken, type ReleaseTwoStopVerifiedPairSeed, type SelectedExplorationResult, type VerifiedCourseV1 } from '../../engine';
 import { createCourseV1CandidateProvider } from '../../data/courseV1CandidateProvider';
 import { createCourseV1RouteAdapter } from '../../services/courseV1RouteAdapter';
 import { createActivatedCourseV1RouteAdapter, RouteProxyUnavailableError } from '../../services/routeProxyActivatedCourseAdapter';
@@ -47,6 +47,8 @@ type RecommendationSessionRuntime = {
   twoStopPort: TwoStopSelectionPort | null;
   pairIntent: PairSelectionIntent | null;
   eligibleOneStopCourses: Map<string, VerifiedCourseV1>;
+  pairSessionToken: ReleaseTwoStopSessionToken;
+  verifiedPairSeeds: Map<string, ReleaseTwoStopVerifiedPairSeed>;
   operationTail: Promise<void>;
   operationCount: number;
 };
@@ -87,6 +89,58 @@ function runSessionOperation<T>(runtime: RecommendationSessionRuntime, operation
   return task.finally(() => { runtime.operationCount = Math.max(0, runtime.operationCount - 1); });
 }
 
+/** 표시 완료 one-stop과 완료 exact pair를 A별 최초 begin에 동결해 같은 branch 요청에 재사용한다. */
+export function createFrozenTwoStopSeedPort(
+  port: TwoStopSelectionPort,
+  getDisplayedOneStopCourses: () => readonly VerifiedCourseV1[],
+  getVerifiedPairSeeds: () => readonly ReleaseTwoStopVerifiedPairSeed[] = () => [],
+  recommendationSessionToken?: ReleaseTwoStopSessionToken,
+): TwoStopSelectionPort {
+  const seedByFirstPlace = new Map<string, Readonly<{
+    oneStopCourses: readonly VerifiedCourseV1[];
+    pairCourses: readonly ReleaseTwoStopVerifiedPairSeed[];
+  }>>();
+  const frozenSeed = (firstCourse: VerifiedCourseV1) => {
+    const firstPlaceId = firstCourse.placeIds.length === 1 ? firstCourse.placeIds[0] : '';
+    const existing = seedByFirstPlace.get(firstPlaceId);
+    if (existing) return existing;
+    const seed = Object.freeze({
+      oneStopCourses: Object.freeze(getDisplayedOneStopCourses().filter((course) => course.placeIds.length === 1).slice()),
+      pairCourses: Object.freeze(getVerifiedPairSeeds().filter(({ course }) => course.placeIds.includes(firstPlaceId)).slice()),
+    });
+    if (firstPlaceId) seedByFirstPlace.set(firstPlaceId, seed);
+    return seed;
+  };
+  return {
+    begin: (request) => {
+      const seed = frozenSeed(request.firstCourse);
+      return port.begin({ ...request, verifiedOneStopCourses: seed.oneStopCourses, recommendationSessionToken, verifiedPairCourses: seed.pairCourses });
+    },
+    continue: (request) => {
+      const seed = frozenSeed(request.firstCourse);
+      return port.continue({ ...request, verifiedOneStopCourses: seed.oneStopCourses, recommendationSessionToken, verifiedPairCourses: seed.pairCourses });
+    },
+  };
+}
+
+function exactPairKey(course: VerifiedCourseV1): string | null {
+  if (course.placeIds.length !== 2 || new Set(course.placeIds).size !== 2) return null;
+  return [...course.placeIds].sort().join('\u0000');
+}
+
+function commitVerifiedPairResult(runtime: RecommendationSessionRuntime, result: ReleaseTwoStopSelectionResult): void {
+  for (const course of result.courses) {
+    const key = exactPairKey(course);
+    if (!key || runtime.verifiedPairSeeds.has(key)) continue;
+    runtime.verifiedPairSeeds.set(key, Object.freeze({
+      course,
+      recommendationSessionToken: runtime.pairSessionToken,
+      inputSignature: result.continuation.inputSignature,
+      providerSignature: result.continuation.providerSignature,
+    }));
+  }
+}
+
 function createSessionRuntime(input: CourseV1LimitedInput, result: RecommendationResult, pairEnabled: boolean): RecommendationSessionRuntime {
   const initialOneStopAttempts = initialAttemptCount(result);
   const displayed = releaseOneStopDisplayResult(result);
@@ -100,6 +154,8 @@ function createSessionRuntime(input: CourseV1LimitedInput, result: Recommendatio
         .filter((course): course is VerifiedCourseV1 => course?.placeIds.length === 1)
         .map((course) => [course.id, course]),
     ),
+    pairSessionToken: {},
+    verifiedPairSeeds: new Map(),
     operationTail: Promise.resolve(),
     operationCount: 0,
   };
@@ -109,10 +165,17 @@ function createSessionRuntime(input: CourseV1LimitedInput, result: Recommendatio
       receiptRoutes: input.receiptRoutes,
       ledger: runtime.ledger,
       ledgerStore: { read: () => runtime.ledger, commit: (next) => commitLedger(runtime, next) },
+      onCompletedExact: (completed) => commitVerifiedPairResult(runtime, completed),
     });
+    const seededPort = createFrozenTwoStopSeedPort(
+      enginePort,
+      () => [...runtime.eligibleOneStopCourses.values()],
+      () => [...runtime.verifiedPairSeeds.values()],
+      runtime.pairSessionToken,
+    );
     runtime.twoStopPort = {
-      begin: (request) => runSessionOperation(runtime, () => enginePort.begin(request)),
-      continue: (request) => runSessionOperation(runtime, () => enginePort.continue(request)),
+      begin: (request) => runSessionOperation(runtime, () => seededPort.begin(request)),
+      continue: (request) => runSessionOperation(runtime, () => seededPort.continue(request)),
     };
   }
   return runtime;

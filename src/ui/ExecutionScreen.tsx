@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, AppState, AppStateStatus, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, AppState, AppStateStatus, Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import * as WebBrowser from 'expo-web-browser';
 import * as Location from 'expo-location';
 import { getActualRouteBaselines, LatLon, Mode, planTimeFit, timeContext, travelGeo } from '../engine';

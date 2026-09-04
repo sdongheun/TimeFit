@@ -1,44 +1,93 @@
-import { useEffect, useRef } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View, type AccessibilityActionEvent, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
 import { C } from './theme';
+import { requestExpoSelectionHaptic } from './expoSelectionHaptic';
+import { dispatchSelectionHaptic, type SelectionHapticRequest } from './selectionHaptic';
+import { createTimeWheelInteraction, timeWheelMomentumExpected, type TimeWheelDecision } from './timeWheelInteraction';
 
 const ROW_HEIGHT = 44;
 const VISIBLE_ROWS = 4;
 
 type Props = {
-  values: string[];
+  values: readonly string[];
   index: number;
   onChange: (index: number) => void;
+  accessibilityLabel: string;
+  requestSelectionHaptic?: SelectionHapticRequest;
 };
 
-export function TimeWheel({ values, index, onChange }: Props) {
+export function TimeWheel({ values, index, onChange, accessibilityLabel, requestSelectionHaptic = requestExpoSelectionHaptic }: Props) {
   const ref = useRef<ScrollView>(null);
+  const controller = useRef(createTimeWheelInteraction(index, values.length)).current;
+  const didSetInitialOffset = useRef(false);
+  const [activeIndex, setActiveIndex] = useState(controller.getActiveIndex());
   const height = ROW_HEIGHT * VISIBLE_ROWS;
   const pad = (height - ROW_HEIGHT) / 2;
 
+  const apply = (decision: TimeWheelDecision) => {
+    setActiveIndex(decision.activeIndex);
+    if (decision.scrollToIndex !== undefined && decision.scrollToIndex >= 0) {
+      ref.current?.scrollTo({ y: decision.scrollToIndex * ROW_HEIGHT, animated: false });
+    }
+    dispatchSelectionHaptic(decision.haptic, requestSelectionHaptic);
+    if (decision.commitIndex !== undefined) onChange(decision.commitIndex);
+  };
+
   useEffect(() => {
-    ref.current?.scrollTo({ y: index * ROW_HEIGHT, animated: false });
+    const next = controller.setValueCount(values.length, index);
+    apply(next);
+    if (!didSetInitialOffset.current) {
+      didSetInitialOffset.current = true;
+      if (next.activeIndex >= 0) ref.current?.scrollTo({ y: next.activeIndex * ROW_HEIGHT, animated: false });
+    }
+  }, [values.length]);
+
+  useEffect(() => {
+    apply(controller.syncExternal(index));
   }, [index]);
 
-  const commit = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const next = Math.round(event.nativeEvent.contentOffset.y / ROW_HEIGHT);
-    onChange(Math.max(0, Math.min(values.length - 1, next)));
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    apply(controller.observeOffset(event.nativeEvent.contentOffset.y, ROW_HEIGHT));
+  };
+  const onScrollEndDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const nativeEvent = event.nativeEvent as NativeScrollEvent & { targetContentOffset?: { y?: number } };
+    apply(controller.endDrag(timeWheelMomentumExpected(
+      nativeEvent.velocity?.y,
+      nativeEvent.contentOffset.y,
+      nativeEvent.targetContentOffset?.y,
+    )));
+  };
+  const onAccessibilityAction = (event: AccessibilityActionEvent) => {
+    if (event.nativeEvent.actionName === 'increment') apply(controller.adjust(1));
+    if (event.nativeEvent.actionName === 'decrement') apply(controller.adjust(-1));
   };
 
   return (
-    <View style={[s.root, { height }]}>
+    <View
+      accessible
+      accessibilityRole="adjustable"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityValue={{ text: activeIndex >= 0 ? values[activeIndex] : '선택 항목 없음' }}
+      accessibilityActions={[{ name: 'increment', label: '다음 값' }, { name: 'decrement', label: '이전 값' }]}
+      onAccessibilityAction={onAccessibilityAction}
+      style={[s.root, { height }]}
+    >
       <View pointerEvents="none" style={[s.band, { top: pad }]} />
       <ScrollView
         ref={ref}
         showsVerticalScrollIndicator={false}
         snapToInterval={ROW_HEIGHT}
         decelerationRate="fast"
-        onMomentumScrollEnd={commit}
-        onScrollEndDrag={commit}
+        onScrollBeginDrag={() => apply(controller.beginDrag())}
+        onScroll={onScroll}
+        onScrollEndDrag={onScrollEndDrag}
+        onMomentumScrollBegin={() => apply(controller.beginMomentum())}
+        onMomentumScrollEnd={() => apply(controller.endMomentum())}
+        scrollEventThrottle={16}
         contentContainerStyle={{ paddingVertical: pad }}
       >
         {values.map((value, valueIndex) => {
-          const distance = Math.abs(valueIndex - index);
+          const distance = Math.abs(valueIndex - activeIndex);
           return (
             <View key={`${value}-${valueIndex}`} style={s.row}>
               <Text style={[s.value, distance === 0 && s.valueSelected, { opacity: distance === 0 ? 1 : distance === 1 ? 0.45 : 0.18 }]}>

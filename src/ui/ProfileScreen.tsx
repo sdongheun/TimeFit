@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RootStackParamList } from './nav';
 import { C } from './theme';

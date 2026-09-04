@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { C } from './theme';
 

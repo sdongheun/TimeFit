@@ -1,76 +1,68 @@
 import { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import { C } from '../theme';
-import type { CourseV1CardSummary } from './courseV1CardDetailModel';
 import { getPlacePreviewKind } from './courseV1PlacePreviewModel';
 import {
   twoStopSelectionReasonMessage,
+  twoStopCandidateDurationLabel,
   type TwoStopCandidateCard,
+  type ResultsCourseRegionMode,
   type TwoStopSelectionState,
 } from './twoStopSelectionModel';
 
 type Props = Readonly<{
-  state: TwoStopSelectionState;
-  firstSummary: CourseV1CardSummary;
+  state: TwoStopSelectionState | null;
+  pairEnabled: boolean;
+  regionMode: ResultsCourseRegionMode;
   candidates: readonly TwoStopCandidateCard[];
-  onCancel(): void;
-  onStartFirst(): void;
+  selectedPairCourse: TwoStopCandidateCard['course'] | null;
   onSelectCandidate(course: TwoStopCandidateCard['course']): void;
   onContinue(): void;
 }>;
 
-export function TwoStopSecondaryAction({ available, onPress }: { available: boolean; onPress(): void }) {
-  if (!available) return null;
-  return <Pressable testID="two-stop-select-first" accessibilityRole="button" accessibilityLabel="이 장소와 함께 갈 한 곳 더 고르기" style={s.secondary} onPress={onPress}><Text style={s.secondaryText}>한 곳 더 고르기</Text></Pressable>;
-}
-
 /** 동일 recommendation session의 controller 상태만 표시하며 API·ledger를 직접 소유하지 않는다. */
-export function TwoStopSelectionPanel({ state, firstSummary, candidates, onCancel, onStartFirst, onSelectCandidate, onContinue }: Props) {
+export function TwoStopSelectionPanel({ state, pairEnabled, regionMode, candidates, selectedPairCourse, onSelectCandidate, onContinue }: Props) {
   return <View style={s.root}>
-    <View style={s.header}>
-      <View style={s.headerCopy}><Text style={s.eyebrow}>선택한 장소</Text><Text style={s.title}>{firstSummary.place.title}</Text><Text style={s.activity}>{firstSummary.activityLabel} · 약 {firstSummary.courseMin}분 코스</Text></View>
-      <Pressable accessibilityRole="button" accessibilityLabel="함께 갈 장소 선택 취소" style={s.cancel} onPress={onCancel}><Text style={s.cancelText}>선택 취소</Text></Pressable>
-    </View>
-    <Pressable accessibilityRole="button" style={s.start} onPress={onStartFirst}><Text style={s.startText}>선택한 장소 코스 시작하기</Text></Pressable>
     <View style={s.status}>
       <Text style={s.sectionTitle}>선택한 장소와 함께 가능한 곳</Text>
-      {state.loading ? <Text accessibilityLiveRegion="polite" style={s.statusText}>함께 갈 수 있는 장소 확인 중 · 현재 {candidates.length}곳</Text> : null}
-      {!state.loading && state.reason ? <Text accessibilityRole="alert" style={s.statusText}>{twoStopSelectionReasonMessage(state.reason)}</Text> : null}
+      {!pairEnabled ? <Text style={s.statusText}>이 장소는 한 곳 코스로 확인할 수 있어요</Text> : null}
+      {pairEnabled && (!state || state.loading) ? <Text accessibilityLiveRegion="polite" style={s.statusText}>함께 갈 장소를 확인하고 있어요{candidates.length ? ` · 현재 ${candidates.length}곳` : ''}</Text> : null}
+      {pairEnabled && state && !state.loading && state.reason ? <Text accessibilityRole="alert" style={s.statusText}>{twoStopSelectionReasonMessage(state.reason)}</Text> : null}
+      {pairEnabled && regionMode === 'pair_terminal' && !state?.reason ? <Text style={s.statusText}>함께 갈 수 있는 다른 장소를 찾지 못했어요</Text> : null}
     </View>
-    {candidates.map((candidate) => <TwoStopCandidate key={candidate.placeId} candidate={candidate} onPress={() => onSelectCandidate(candidate.course)} />)}
-    {state.pageState === 'more_available' ? <Pressable accessibilityRole="button" accessibilityState={{ disabled: state.loading, busy: state.loading }} disabled={state.loading} style={[s.more, state.loading && s.disabled]} onPress={onContinue}><Text style={s.moreText}>{state.loading ? '함께 갈 장소 확인 중…' : '함께 갈 장소 더 보기'}</Text></Pressable> : null}
+    {regionMode === 'pair_loading' ? <View testID="two-stop-pair-skeletons" accessible={false} style={s.skeletonList}>{[0, 1, 2].map((slot) => <View key={slot} testID={`two-stop-pair-skeleton-${slot}`} pointerEvents="none" style={s.skeleton}><View style={s.skeletonMedia} /><View style={s.skeletonCopy}><View style={s.skeletonLineWide} /><View style={s.skeletonLine} /></View></View>)}</View> : null}
+    {candidates.map((candidate) => <TwoStopCandidate key={candidate.placeId} candidate={candidate} selected={candidate.course === selectedPairCourse} onPress={() => onSelectCandidate(candidate.course)} />)}
+    {pairEnabled && state?.pageState === 'more_available' ? <Pressable accessibilityRole="button" accessibilityState={{ disabled: state.loading, busy: state.loading }} disabled={state.loading} style={[s.more, state.loading && s.disabled]} onPress={onContinue}><Text style={s.moreText}>{state.loading ? '함께 갈 장소 확인 중…' : '함께 갈 장소 더 보기'}</Text></Pressable> : null}
   </View>;
 }
 
-function TwoStopCandidate({ candidate, onPress }: { candidate: TwoStopCandidateCard; onPress(): void }) {
+function TwoStopCandidate({ candidate, selected, onPress }: { candidate: TwoStopCandidateCard; selected: boolean; onPress(): void }) {
   const [imageFailed, setImageFailed] = useState(false);
   const preview = getPlacePreviewKind(candidate.place, imageFailed);
-  return <Pressable accessibilityRole="button" accessibilityLabel={candidate.accessibilityLabel} style={({ pressed }) => [s.card, pressed && s.pressed]} onPress={onPress}>
+  return <Pressable accessibilityRole="button" accessibilityLabel={`${candidate.accessibilityLabel}${selected ? ', 선택됨' : ''}`} accessibilityState={{ selected }} style={({ pressed }) => [s.card, selected && s.selected, pressed && s.pressed]} onPress={onPress}>
     <View style={s.media}>{preview.kind === 'image'
       ? <Image accessible={false} source={{ uri: candidate.place.imageUrl! }} style={s.image} onError={() => setImageFailed(true)} />
       : <View accessible={false} style={s.placeholder}><Text style={s.placeholderText}>{candidate.activityLabel}</Text></View>}
     </View>
-    <View style={s.content}><Text style={s.cardEyebrow}>함께 둘러볼 장소</Text><Text style={s.cardTitle}>{candidate.title}</Text><Text style={s.activity}>{candidate.activityLabel}</Text><Text style={s.duration}>약 {candidate.courseMin}분 코스</Text></View>
+    <View style={s.content}><Text style={s.cardEyebrow}>{selected ? '✓ 선택됨' : '함께 둘러볼 장소'}</Text><Text style={s.cardTitle}>{candidate.title}</Text><Text style={s.activity}>{candidate.activityLabel}</Text><Text style={s.duration}>{twoStopCandidateDurationLabel(candidate)}</Text></View>
   </Pressable>;
 }
 
 const s = StyleSheet.create({
   root: { gap: 12 },
-  header: { flexDirection: 'row', gap: 12, padding: 16, borderRadius: 16, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
-  headerCopy: { flex: 1, gap: 5 },
-  eyebrow: { color: '#74b0ff', fontSize: 13, fontWeight: '800' },
-  title: { color: C.txt, fontSize: 21, lineHeight: 28, fontWeight: '800' },
   activity: { color: '#b9d8ff', fontSize: 13, fontWeight: '700' },
-  cancel: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 10 },
-  cancelText: { color: C.txt2, fontSize: 14, fontWeight: '800' },
-  start: { minHeight: 50, alignItems: 'center', justifyContent: 'center', borderRadius: 12, backgroundColor: C.accent },
-  startText: { color: C.onAccent, fontSize: 15, fontWeight: '800' },
-  secondary: { minHeight: 50, alignItems: 'center', justifyContent: 'center', borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2 },
-  secondaryText: { color: C.txt, fontSize: 15, fontWeight: '800' },
   status: { gap: 5, paddingTop: 6 },
   sectionTitle: { color: C.txt, fontSize: 18, fontWeight: '800' },
   statusText: { color: C.muted, fontSize: 13, lineHeight: 19 },
+  skeletonList: { gap: 12 },
+  skeleton: { overflow: 'hidden', borderRadius: 17, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
+  skeletonMedia: { height: 126, backgroundColor: C.panel2 },
+  skeletonCopy: { padding: 15, gap: 9 },
+  skeletonLineWide: { width: '68%', height: 17, borderRadius: 6, backgroundColor: C.panel2 },
+  skeletonLine: { width: '42%', height: 13, borderRadius: 6, backgroundColor: C.panel2 },
   card: { overflow: 'hidden', borderRadius: 17, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
+  selected: { borderWidth: 2, borderColor: C.accent },
   pressed: { opacity: 0.82 },
   media: { height: 126, backgroundColor: C.panel2 },
   image: { width: '100%', height: '100%' },

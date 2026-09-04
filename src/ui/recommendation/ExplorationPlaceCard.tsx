@@ -1,4 +1,5 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import type { ExplorationPlace } from '../../engine';
 import { C } from '../theme';
 import { buildKakaoPlaceUrl, getPlacePreviewKind, type CourseV1DisplayPlace } from './courseV1PlacePreviewModel';

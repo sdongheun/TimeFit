@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Modal, StyleSheet, Text, View } from 'react-native';
+import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import { captchaAllowedOrigins, captchaDiagnosticsEnabled, captchaNavigationFailure, captchaStateFor, firstCaptchaFailure, isTrustedCaptchaMessageSource, parseCaptchaMessage, resolveCaptchaChallengeUrl, type CaptchaFailure, type CaptchaVerificationState } from './captchaVerificationModel';
@@ -48,7 +49,7 @@ export function CaptchaVerificationSheet({ visible, challengeUrl, onVerified, on
   };
   const cancel = () => { setState(captchaStateFor('cancelled')); onClose(); };
 
-  return <Modal visible={visible} transparent animationType="fade" onRequestClose={cancel}>
+  return <Modal visible={visible} transparent animationType="slide" onRequestClose={cancel}>
     <View style={s.scrim}><View style={[s.sheet, { paddingBottom: Math.max(insets.bottom, 20) }]} accessibilityViewIsModal>
       <View style={s.handle} />
       <Text accessibilityRole="header" style={s.title}>안전 확인 중</Text>

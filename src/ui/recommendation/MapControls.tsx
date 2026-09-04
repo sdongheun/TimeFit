@@ -1,13 +1,13 @@
 import { Feather } from "@expo/vector-icons";
 import type { ComponentProps } from "react";
 import {
-  Pressable,
   StyleProp,
   StyleSheet,
   Text,
   View,
   ViewStyle,
 } from "react-native";
+import { AnimatedPressable as Pressable } from "../AnimatedPressable";
 import { C } from "../theme";
 import { UI_RADIUS, UI_SIZE } from "../tokens";
 
@@ -32,7 +32,7 @@ export function MapIconButton({
   style,
 }: IconButtonProps) {
   return (
-    <Pressable style={[s.iconButton, style]} onPress={onPress} accessibilityLabel={accessibilityLabel}>
+    <Pressable variant="icon" style={[s.iconButton, style]} onPress={onPress} accessibilityLabel={accessibilityLabel}>
       <Feather color={C.txt} name={icon} size={21} />
     </Pressable>
   );
@@ -55,6 +55,7 @@ export function RecommendationMapTopBar({
         <Text style={s.timePillValue}>코스 만들기 · {remainingMin}분 남음</Text>
       </View>
       <Pressable
+        variant="icon"
         style={s.cartButton}
         onPress={onOpenBasket}
         accessibilityLabel={`장바구니, ${basketCount}곳 선택됨`}

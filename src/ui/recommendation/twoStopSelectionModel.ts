@@ -1,4 +1,4 @@
-import type { VerifiedCourseV1 } from '../../engine';
+import type { ReleaseTwoStopSessionToken, ReleaseTwoStopVerifiedPairSeed, VerifiedCourseV1 } from '../../engine';
 import { getPlaceActivityLabel } from './courseV1DiscoveryContext';
 import type { CourseV1CatalogDisplayPlace } from './courseV1CardDetailModel';
 
@@ -39,12 +39,18 @@ export type TwoStopSelectionPortResult = Readonly<{
 export type TwoStopSelectionPort = Readonly<{
   begin(input: Readonly<{
     firstCourse: VerifiedCourseV1;
+    verifiedOneStopCourses?: readonly VerifiedCourseV1[];
+    recommendationSessionToken?: ReleaseTwoStopSessionToken;
+    verifiedPairCourses?: readonly ReleaseTwoStopVerifiedPairSeed[];
     requestId: string;
     onProgress(event: TwoStopProgressEvent): void;
     signal: AbortSignal;
   }>): Promise<TwoStopSelectionPortResult>;
   continue(input: Readonly<{
     firstCourse: VerifiedCourseV1;
+    verifiedOneStopCourses?: readonly VerifiedCourseV1[];
+    recommendationSessionToken?: ReleaseTwoStopSessionToken;
+    verifiedPairCourses?: readonly ReleaseTwoStopVerifiedPairSeed[];
     continuation: JsonValue;
     requestId: string;
     onProgress(event: TwoStopProgressEvent): void;
@@ -70,7 +76,8 @@ export type TwoStopCandidateCard = Readonly<{
   title: string;
   activityLabel: string;
   place: CourseV1CatalogDisplayPlace;
-  courseMin: number;
+  durationKind: 'additional' | 'total';
+  durationMin: number;
   course: VerifiedCourseV1;
   accessibilityLabel: string;
 }>;
@@ -100,9 +107,10 @@ export function canOfferTwoStopSelection(course: VerifiedCourseV1, port: TwoStop
 
 export function buildTwoStopCandidateCard(
   course: VerifiedCourseV1,
-  firstPlaceId: string,
+  firstCourse: VerifiedCourseV1 | string,
   getPlace: (placeId: string) => CourseV1CatalogDisplayPlace | undefined,
 ): TwoStopCandidateCard | null {
+  const firstPlaceId = typeof firstCourse === 'string' ? firstCourse : firstCourse.placeIds[0] ?? '';
   if (course.placeIds.length !== 2 || course.stops.length !== 2 || course.legs.length !== 3) return null;
   if (course.placeIds.filter((id) => id === firstPlaceId).length !== 1) return null;
   const placeId = course.placeIds.find((id) => id !== firstPlaceId);
@@ -110,16 +118,38 @@ export function buildTwoStopCandidateCard(
   const place = getPlace(placeId);
   const activityLabel = getPlaceActivityLabel(place);
   if (!place?.title?.trim() || !activityLabel) return null;
-  const courseMin = course.travelMin + course.stayMin;
+  const pairDisplayMin = course.travelMin + course.stayMin;
+  const firstDisplayMin = typeof firstCourse === 'string' ? Number.NaN : firstCourse.travelMin + firstCourse.stayMin;
+  const validFirstCourse = typeof firstCourse !== 'string' && firstCourse.placeIds.length === 1
+    && firstCourse.stops.length === 1
+    && firstCourse.legs.length === 2
+    && firstCourse.stops[0]?.placeId === firstPlaceId
+    && firstCourse.legs[0]?.toId === firstPlaceId
+    && firstCourse.legs[1]?.fromId === firstPlaceId
+    && firstCourse.travelMin === firstCourse.legs.reduce((sum, leg) => sum + leg.min, 0)
+    && firstCourse.stayMin === firstCourse.stops[0].stayMin;
+  const additionalMin = pairDisplayMin - firstDisplayMin;
+  const durationKind = validFirstCourse && additionalMin > 0 ? 'additional' : 'total';
+  const durationMin = durationKind === 'additional' ? additionalMin : pairDisplayMin;
+  const durationLabel = durationKind === 'additional'
+    ? `함께 가면 약 ${durationMin}분 추가`
+    : `선택 시 전체 약 ${durationMin}분`;
   return {
     placeId,
     title: place.title,
     activityLabel,
     place,
-    courseMin,
+    durationKind,
+    durationMin,
     course,
-    accessibilityLabel: `선택한 장소와 함께 가능한 곳, ${place.title}, ${activityLabel}, 약 ${courseMin}분 코스`,
+    accessibilityLabel: `선택한 장소와 함께 가능한 곳, ${place.title}, ${activityLabel}, ${durationLabel}`,
   };
+}
+
+export function twoStopCandidateDurationLabel(candidate: Pick<TwoStopCandidateCard, 'durationKind' | 'durationMin'>): string {
+  return candidate.durationKind === 'additional'
+    ? `함께 가면 약 ${candidate.durationMin}분 추가`
+    : `선택 시 전체 약 ${candidate.durationMin}분`;
 }
 
 export function createTwoStopSelectionController(port: TwoStopSelectionPort) {
@@ -215,6 +245,79 @@ export function createTwoStopSelectionController(port: TwoStopSelectionPort) {
       continueLocked = false;
       update(null);
       return snapshot;
+    },
+  };
+}
+
+export type InlineTwoStopSelectionState =
+  | Readonly<{ mode: 'idle' }>
+  | Readonly<{
+    mode: 'first_selected' | 'pair_selected';
+    firstCourse: VerifiedCourseV1;
+    selectedPairCourse: VerifiedCourseV1 | null;
+    snapshot: TwoStopSelectionSnapshot;
+    pairEnabled: boolean;
+  }>;
+
+export type ResultsCourseRegionMode = 'one_stop' | 'pair_loading' | 'pair_results' | 'pair_terminal';
+
+export function resultsCourseRegionMode(
+  inlineState: InlineTwoStopSelectionState,
+  pairSelection: TwoStopSelectionState | null,
+): ResultsCourseRegionMode {
+  if (inlineState.mode === 'idle') return 'one_stop';
+  if (!inlineState.pairEnabled) return 'pair_terminal';
+  if (!pairSelection || (pairSelection.loading && pairSelection.courses.length === 0)) return 'pair_loading';
+  if (pairSelection.courses.length > 0) return 'pair_results';
+  return pairSelection.loading ? 'pair_loading' : 'pair_terminal';
+}
+
+/** Results 안의 A/B 선택만 소유한다. pair 계산과 호출 예산은 기존 controller/session에 위임한다. */
+export function createInlineTwoStopSelectionController(
+  pairController: ReturnType<typeof createTwoStopSelectionController> | null,
+  canBeginPair: (course: VerifiedCourseV1) => boolean,
+) {
+  let state: InlineTwoStopSelectionState = { mode: 'idle' };
+  const listeners = new Set<(next: InlineTwoStopSelectionState) => void>();
+  const emit = () => listeners.forEach((listener) => listener(state));
+  const update = (next: InlineTwoStopSelectionState) => { state = next; emit(); };
+  const unsubscribePair = pairController?.subscribe(() => emit()) ?? null;
+
+  return {
+    getState: () => state,
+    getPairSelection: () => pairController?.getState().selection ?? null,
+    getSelectedCourse: () => state.mode === 'idle' ? null : state.selectedPairCourse ?? state.firstCourse,
+    subscribe(listener: (next: InlineTwoStopSelectionState) => void) { listeners.add(listener); return () => listeners.delete(listener); },
+    async selectFirst(firstCourse: VerifiedCourseV1, selectionSnapshot: TwoStopSelectionSnapshot): Promise<boolean> {
+      if (state.mode !== 'idle') return false;
+      const pairEnabled = Boolean(pairController && canBeginPair(firstCourse));
+      update({ mode: 'first_selected', firstCourse, selectedPairCourse: null, snapshot: selectionSnapshot, pairEnabled });
+      if (pairEnabled) await pairController!.begin(firstCourse, selectionSnapshot);
+      return true;
+    },
+    selectPair(course: VerifiedCourseV1): boolean {
+      if (state.mode === 'idle' || !state.pairEnabled) return false;
+      const selection = pairController?.getState().selection;
+      if (!selection || selection.firstCourse !== state.firstCourse || !selection.courses.some((candidate) => candidate === course)) return false;
+      update({ ...state, mode: 'pair_selected', selectedPairCourse: course });
+      return true;
+    },
+    clearPair(): boolean {
+      if (state.mode !== 'pair_selected') return false;
+      update({ ...state, mode: 'first_selected', selectedPairCourse: null });
+      return true;
+    },
+    cancelFirst(): TwoStopSelectionSnapshot | null {
+      if (state.mode === 'idle') return null;
+      const selectionSnapshot = state.snapshot;
+      if (state.pairEnabled) pairController?.cancel();
+      update({ mode: 'idle' });
+      return selectionSnapshot;
+    },
+    dispose() {
+      unsubscribePair?.();
+      if (state.mode !== 'idle' && state.pairEnabled) pairController?.cancel();
+      listeners.clear();
     },
   };
 }

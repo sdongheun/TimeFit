@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { C } from './theme';
 
 export function Chip({ active, onPress, text }: { active: boolean; onPress: () => void; text: string }) {

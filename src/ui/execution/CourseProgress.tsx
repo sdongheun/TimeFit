@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { AnimatedPressable as Pressable } from "../AnimatedPressable";
 import type { ScheduleResult } from "../../services/courseNotifications";
 import { fmtHM } from "../nav";
 import { C } from "../theme";

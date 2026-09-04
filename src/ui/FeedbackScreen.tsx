@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { Feather } from '@expo/vector-icons';
 import { RootStackParamList } from './nav';
 import { C } from './theme';

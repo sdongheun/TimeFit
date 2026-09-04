@@ -1,6 +1,7 @@
 // 통합 위치 선택: 빈 입력에서는 GPS/지도, 두 글자 입력 뒤에는 Kakao 장소·주소 제안을 소비한다.
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import {
@@ -99,7 +100,7 @@ export function PlacePicker({ visible, title, center, showGps = true, onOpenMap,
       <View style={s.root}>
         <View style={[s.head, { paddingTop: insets.top + 12 }]}>
           <Text style={s.title}>{title}</Text>
-          <Pressable onPress={onClose} hitSlop={12}><Text style={s.close}>✕</Text></Pressable>
+          <Pressable variant="icon" onPress={onClose} hitSlop={12}><Text style={s.close}>✕</Text></Pressable>
         </View>
 
         <View style={s.searchRow}>

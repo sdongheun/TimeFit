@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { AnimatedPressable as Pressable } from "../AnimatedPressable";
 import type { Course, Mode, Spot } from "../../engine";
 import { C } from "../theme";
 import { TransportGlyph } from "./TransportGlyph";
@@ -100,6 +101,7 @@ export function BasketPanel({
                     </View>
                     <View style={s.controls}>
                       <Pressable
+                        variant="icon"
                         style={[s.btnOrder, index === 0 && s.btnDisabled]}
                         disabled={index === 0}
                         onPress={() => onMove(index, -1)}
@@ -109,6 +111,7 @@ export function BasketPanel({
                         <Feather name="chevron-up" size={18} color={index === 0 ? C.muted : C.txt2} />
                       </Pressable>
                       <Pressable
+                        variant="icon"
                         style={[s.btnOrder, index === selected.length - 1 && s.btnDisabled]}
                         disabled={index === selected.length - 1}
                         onPress={() => onMove(index, 1)}

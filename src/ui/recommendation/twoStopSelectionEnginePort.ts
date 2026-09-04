@@ -24,6 +24,7 @@ export type TwoStopSelectionEngineContext = Omit<
     read(): ReleaseTwoStopAttemptLedger;
     commit(next: ReleaseTwoStopAttemptLedger): void;
   }>;
+  onCompletedExact?(result: ReleaseTwoStopSelectionResult): void;
 }>;
 
 /**
@@ -32,7 +33,7 @@ export type TwoStopSelectionEngineContext = Omit<
  */
 export function createTwoStopSelectionEnginePort(context: TwoStopSelectionEngineContext): TwoStopSelectionPort {
   let ledger = context.ledger;
-  const { ledgerStore, ...engineContext } = context;
+  const { ledgerStore, onCompletedExact, ...engineContext } = context;
   const readLedger = () => ledgerStore?.read() ?? ledger;
   const commitLedger = (next: ReleaseTwoStopAttemptLedger) => {
     ledger = next;
@@ -66,7 +67,7 @@ export function createTwoStopSelectionEnginePort(context: TwoStopSelectionEngine
   };
 
   return {
-    async begin({ firstCourse, requestId, onProgress, signal }) {
+    async begin({ firstCourse, verifiedOneStopCourses, recommendationSessionToken, verifiedPairCourses, requestId, onProgress, signal }) {
       const firstPlaceId = firstCourse.placeIds[0] ?? '';
       const reuse = reuseByFirstPlace.get(firstPlaceId);
       const inputLedger = readLedger();
@@ -74,6 +75,9 @@ export function createTwoStopSelectionEnginePort(context: TwoStopSelectionEngine
       const result = await beginReleaseTwoStopSelectionV1({
         ...engineContext,
         firstCourse,
+        verifiedOneStopCourses,
+        recommendationSessionToken,
+        verifiedPairCourses,
         ledger: inputLedger,
         requestId,
         signal,
@@ -84,10 +88,11 @@ export function createTwoStopSelectionEnginePort(context: TwoStopSelectionEngine
         },
       });
       trackLedger(result.ledger);
+      if (canStoreCompletedExactResult(result, requestId, firstPlaceId, signal.aborted)) onCompletedExact?.(result);
       storeReusableResult(reuseByFirstPlace, firstPlaceId, requestId, [], result, signal);
       return normalizeTwoStopSelectionEngineResult(result, 'automatic');
     },
-    async continue({ firstCourse, continuation, requestId, onProgress, signal }) {
+    async continue({ firstCourse, verifiedOneStopCourses, recommendationSessionToken, verifiedPairCourses, continuation, requestId, onProgress, signal }) {
       const engineContinuation = parseContinuation(continuation);
       if (!engineContinuation) {
         return {
@@ -103,6 +108,9 @@ export function createTwoStopSelectionEnginePort(context: TwoStopSelectionEngine
       const result = await continueReleaseTwoStopSelectionV1({
         ...engineContext,
         firstCourse,
+        verifiedOneStopCourses,
+        recommendationSessionToken,
+        verifiedPairCourses,
         ledger: inputLedger,
         continuation: engineContinuation,
         requestId,
@@ -113,6 +121,7 @@ export function createTwoStopSelectionEnginePort(context: TwoStopSelectionEngine
         },
       });
       trackLedger(result.ledger);
+      if (canStoreCompletedExactResult(result, requestId, firstCourse.placeIds[0] ?? '', signal.aborted)) onCompletedExact?.(result);
       storeReusableResult(
         reuseByFirstPlace,
         firstCourse.placeIds[0] ?? '',
@@ -126,6 +135,26 @@ export function createTwoStopSelectionEnginePort(context: TwoStopSelectionEngine
   };
 }
 
+/** same-A reuse와 unordered pair store가 동일한 완료 결과만 신뢰하게 하는 순수 저장 자격 판정이다. */
+export function canStoreCompletedExactResult(
+  result: ReleaseTwoStopSelectionResult,
+  requestId: string,
+  firstPlaceId: string,
+  aborted: boolean,
+): boolean {
+  return Boolean(firstPlaceId)
+    && !aborted
+    && result.requestId === requestId
+    && result.firstPlaceId === firstPlaceId
+    && result.continuation.firstPlaceId === firstPlaceId
+    && result.courses.length > 0
+    && result.state !== 'unavailable'
+    && result.state !== 'continuation_unavailable'
+    && !result.reasons.some((reason) => reason === 'provider_unavailable'
+      || reason === 'store_unavailable'
+      || reason === 'continuation_unavailable');
+}
+
 function storeReusableResult(
   store: Map<string, Readonly<{ courses: readonly ReleaseTwoStopSelectionResult['courses'][number][]; continuation: ReleaseTwoStopSelectionContinuation }>>,
   firstPlaceId: string,
@@ -134,11 +163,7 @@ function storeReusableResult(
   result: ReleaseTwoStopSelectionResult,
   signal: AbortSignal,
 ): void {
-  if (!firstPlaceId || signal.aborted || result.requestId !== requestId || result.firstPlaceId !== firstPlaceId
-    || result.continuation.firstPlaceId !== firstPlaceId
-    || result.state === 'unavailable' || result.state === 'continuation_unavailable'
-    || result.reasons.some((reason) => reason === 'provider_unavailable'
-      || reason === 'store_unavailable' || reason === 'continuation_unavailable')) return;
+  if (!canStoreCompletedExactResult(result, requestId, firstPlaceId, signal.aborted)) return;
   const courses = mergeReusableCourses(existingCourses, result.courses, firstPlaceId);
   if (courses.length !== result.continuation.verifiedCount) return;
   store.set(firstPlaceId, { courses, continuation: result.continuation });

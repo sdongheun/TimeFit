@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Modal, StyleSheet, Text, View } from 'react-native';
+import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { LatLon } from '../engine';
 import { createKakaoLocationLabelAdapter } from '../services/kakaoLocationLabelAdapter';
@@ -39,7 +40,7 @@ export function MapPlacePicker({ visible, title, center, labelAdapter, onClose, 
   return <Modal visible={visible} animationType="slide" onRequestClose={onClose}><View style={s.root}>
     <KakaoRouteMap key={mapRetryKey} style={s.map} points={[]} line={[]} markers={[]} initialCenter={center} recenterPoint={center} recenterToken={recenterToken} onMapCenterChange={updateCenter} onMapReady={() => setMapReady(true)} onMapError={() => { setMapFailed(true); setMapReady(false); }} />
     <View pointerEvents="none" style={s.pinWrap}><View style={s.pin}><View style={s.pinDot} /></View><View style={s.pinTail} /></View>
-    <View style={[s.top, { top: insets.top + 8 }]}><Pressable accessibilityLabel="뒤로가기" onPress={onClose} style={s.close}><Text style={s.closeText}>‹</Text></Pressable><Text style={s.title}>{title}</Text><Pressable onPress={onSearch} style={s.search}><Text style={s.searchText}>검색</Text></Pressable></View>
+    <View style={[s.top, { top: insets.top + 8 }]}><Pressable variant="icon" accessibilityLabel="뒤로가기" onPress={onClose} style={s.close}><Text style={s.closeText}>‹</Text></Pressable><Text style={s.title}>{title}</Text><Pressable onPress={onSearch} style={s.search}><Text style={s.searchText}>검색</Text></Pressable></View>
     <View style={[s.bottom, { paddingBottom: Math.max(insets.bottom, 16) }]}><Text testID="map-fixed-pin" style={s.hint}>{mapReady ? '지도를 움직여 중앙 핀 위치를 맞추세요' : '지도를 불러오는 중이에요'}</Text>{mapFailed ? <Text style={s.mapError}>지도를 불러오지 못했어요. 다시 시도하거나 검색으로 선택하세요.</Text> : null}{confirmMessage ? <Text style={s.mapError}>{confirmMessage}</Text> : null}<View style={s.actions}><Pressable testID="map-retry" style={s.secondary} onPress={() => { setMapFailed(false); setMapReady(false); setMapRetryKey((value) => value + 1); }}><Text style={s.secondaryText}>지도 다시 시도</Text></Pressable><Pressable testID="map-search-alternative" style={s.secondary} onPress={onSearch}><Text style={s.secondaryText}>검색으로 선택</Text></Pressable></View>{confirmMessage ? <Pressable testID="map-coordinate-confirm" style={s.secondary} onPress={confirmCoordinate}><Text style={s.secondaryText}>좌표로 선택</Text></Pressable> : null}<Pressable testID="map-confirm" style={[s.cta, (!mapReady || confirming) && s.ctaOff]} disabled={!mapReady || confirming} onPress={() => { void confirm(); }}>{confirming ? <ActivityIndicator color={C.onAccent} /> : <Text style={s.ctaText}>이 위치로 확정</Text>}</Pressable></View>
   </View></Modal>;
 }

@@ -7,8 +7,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Feather } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { Pressable } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AnimatedPressable as Pressable } from "./src/ui/AnimatedPressable";
 import { RootStackParamList } from "./src/ui/nav";
 import { HomeScreen } from "./src/ui/HomeScreen";
 import { TimeSetupScreen } from "./src/ui/TimeSetupScreen";
@@ -62,8 +62,6 @@ export default function App() {
                 headerTitleStyle: { fontWeight: "700" },
                 headerShadowVisible: false,
                 contentStyle: { backgroundColor: C.bg },
-                animation: "fade",
-                animationDuration: 250,
               }}
             >
               <Stack.Screen
@@ -101,6 +99,7 @@ export default function App() {
                   headerBackVisible: false,
                   headerLeft: () => (
                     <Pressable
+                      variant="icon"
                       accessibilityRole="button"
                       accessibilityLabel="내 코스로 돌아가기"
                       hitSlop={8}

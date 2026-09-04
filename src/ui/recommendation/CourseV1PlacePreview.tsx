@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import { C } from '../theme';
 import { getPlacePreviewKind, type CourseV1DisplayPlace } from './courseV1PlacePreviewModel';
 
