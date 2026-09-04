@@ -1,5 +1,7 @@
 import {
   COURSE_V1_ADAPTER_CALL_LIMIT,
+  COURSE_V1_ROUTE_GEOMETRY_PATH_LIMIT,
+  COURSE_V1_ROUTE_GEOMETRY_POINT_LIMIT,
   type CourseV1Candidate,
   type CourseV1Leg,
   type CourseV1LimitedInput,
@@ -62,8 +64,24 @@ export type ReleaseTwoStopProgressEvent =
   | Readonly<{ type: 'candidate_rejected'; requestId: string; firstPlaceId: string; reason: ReleaseTwoStopFailureReason; ledger: ReleaseTwoStopAttemptLedger }>
   | Readonly<{ type: 'completed'; requestId: string; firstPlaceId: string; state: ReleaseTwoStopSelectionResult['state']; continuation: ReleaseTwoStopSelectionContinuation; ledger: ReleaseTwoStopAttemptLedger }>;
 
-type ReleaseTwoStopRuntimeInput = Readonly<{
+/** UI recommendation session closure 안에서만 공유하는 비직렬 객체 identity다. */
+export type ReleaseTwoStopSessionToken = Readonly<object>;
+
+export type ReleaseTwoStopVerifiedPairSeed = Readonly<{
+  course: VerifiedCourseV1;
+  recommendationSessionToken: ReleaseTwoStopSessionToken;
+  inputSignature: string;
+  providerSignature: string;
+}>;
+
+export type ReleaseTwoStopRuntimeInput = Readonly<{
   firstCourse: VerifiedCourseV1;
+  /** 같은 Results session에서 표시 완료된 exact one-stop snapshot. continuation에는 직렬화하지 않는다. */
+  verifiedOneStopCourses?: readonly VerifiedCourseV1[];
+  /** pair seed와 객체 identity가 일치해야 하며 continuation에는 넣지 않는다. */
+  recommendationSessionToken?: ReleaseTwoStopSessionToken;
+  /** 같은 Results session에서 이미 완료된 exact pair snapshot과 원 branch signature다. */
+  verifiedPairCourses?: readonly ReleaseTwoStopVerifiedPairSeed[];
   ledger: ReleaseTwoStopAttemptLedger;
   requestId: string;
   onProgress?: (event: ReleaseTwoStopProgressEvent) => void;
@@ -97,6 +115,9 @@ type PairVerification =
 type Prepared = {
   first: CourseV1Candidate;
   candidates: CourseV1Candidate[];
+  seedReceipts: ReadonlyMap<string, CourseV1RouteReceipt>;
+  pairSeedCourses: readonly VerifiedCourseV1[];
+  runtimeSeedSignature?: string;
   inputSignature: string;
   providerSignature: string;
   firstCourseSignature: string;
@@ -144,17 +165,20 @@ function prepare(input: ReleaseTwoStopSelectionInput | ReleaseTwoStopSelectionCo
   if (!first || (first.classification !== 'representative_core' && first.classification !== 'representative_standard')
     || first.conditionalVisit || first.minStayMin < 20 || input.firstCourse.stops[0]!.stayMin < first.minStayMin) return null;
   const pool = selectReleaseTwoStopCandidatePoolInternal({ ...input, candidates: supplied });
-  const candidates = pool.filter((candidate) => candidate.id !== first.id
+  const baseCandidates = pool.filter((candidate) => candidate.id !== first.id
     && candidate.id !== input.origin.id
     && candidate.id !== (input.destination ?? input.origin).id
     && (!first.siteGroupId || !candidate.siteGroupId || first.siteGroupId !== candidate.siteGroupId)
     && first.minStayMin + candidate.minStayMin + input.arrivalBufferMin < input.remainingMin);
-  const orderedCandidateIds = candidates.map((candidate) => candidate.id);
   const providerSignature = signature(supplied.map(candidateFingerprint));
   const inputSignature = signature([
     input.now.toISOString(), pointFingerprint(input.origin), pointFingerprint(input.destination ?? input.origin),
     String(input.remainingMin), String(input.arrivalBufferMin),
   ]);
+  const runtimeSeeds = prepareRuntimeSeeds(input, first, baseCandidates, inputSignature, providerSignature);
+  const candidates = runtimeSeeds.orderedCandidateIds.length
+    ? runtimeSeeds.orderedCandidateIds.map((id) => baseCandidates.find((candidate) => candidate.id === id)!)
+    : baseCandidates;
   const firstCourseSignature = signature([courseFingerprint(input.firstCourse)]);
   let initialReason: ReleaseTwoStopFailureReason | undefined;
   if (!candidates.length) {
@@ -167,7 +191,205 @@ function prepare(input: ReleaseTwoStopSelectionInput | ReleaseTwoStopSelectionCo
         ? 'second_place_closed'
         : 'no_nearby_second_candidate';
   }
-  return { first, candidates, inputSignature, providerSignature, firstCourseSignature, initialReason };
+  return {
+    first, candidates, seedReceipts: runtimeSeeds.receipts, pairSeedCourses: runtimeSeeds.pairCourses,
+    runtimeSeedSignature: runtimeSeeds.signature,
+    inputSignature, providerSignature, firstCourseSignature, initialReason,
+  };
+}
+
+function prepareRuntimeSeeds(
+  input: ReleaseTwoStopSelectionInput | ReleaseTwoStopSelectionContinuationInput,
+  first: CourseV1Candidate,
+  candidates: readonly CourseV1Candidate[],
+  inputSignature: string,
+  providerSignature: string,
+): {
+  orderedCandidateIds: string[];
+  receipts: ReadonlyMap<string, CourseV1RouteReceipt>;
+  pairCourses: readonly VerifiedCourseV1[];
+  signature?: string;
+} {
+  const suppliedOneStop = input.verifiedOneStopCourses;
+  const suppliedPairs = input.verifiedPairCourses;
+  if ((!Array.isArray(suppliedOneStop) || suppliedOneStop.length === 0)
+    && (!Array.isArray(suppliedPairs) || suppliedPairs.length === 0)) {
+    return { orderedCandidateIds: [], receipts: new Map(), pairCourses: [] };
+  }
+
+  const target = input.destination ?? input.origin;
+  const byId = new Map(candidates.map((candidate) => [candidate.id, candidate]));
+  const validCourses: VerifiedCourseV1[] = [];
+  if (Array.isArray(suppliedOneStop) && suppliedOneStop.length > 0
+    && validOneStopSeed(input.firstCourse, first, input, target)) validCourses.push(input.firstCourse);
+
+  const seenPlaceIds = new Set<string>([first.id]);
+  const prioritizedIds: string[] = [];
+  for (const course of Array.isArray(suppliedOneStop) ? suppliedOneStop : []) {
+    const placeId = course?.placeIds?.[0];
+    if (!placeId || seenPlaceIds.has(placeId)) continue;
+    const candidate = byId.get(placeId);
+    if (!candidate || !validOneStopSeed(course, candidate, input, target)) continue;
+    seenPlaceIds.add(placeId);
+    prioritizedIds.push(placeId);
+    validCourses.push(course);
+  }
+
+  const orderedCandidateIds = [...prioritizedIds, ...candidates.map((candidate) => candidate.id)
+    .filter((id) => !seenPlaceIds.has(id))];
+  const receipts = seedReceiptMap(validCourses);
+  const pairCourses = validPairSeeds(input, first, candidates, target, inputSignature, providerSignature);
+  const fingerprints = [
+    ...validCourses.map((course) => `one:${courseFingerprint(course)}`),
+    ...pairCourses.map((course) => `pair:${courseFingerprint(course)}`),
+  ];
+  return {
+    orderedCandidateIds,
+    receipts,
+    pairCourses,
+    ...(fingerprints.length ? { signature: signature(fingerprints) } : {}),
+  };
+}
+
+function validPairSeeds(
+  input: ReleaseTwoStopSelectionInput | ReleaseTwoStopSelectionContinuationInput,
+  first: CourseV1Candidate,
+  candidates: readonly CourseV1Candidate[],
+  target: CourseV1Point,
+  inputSignature: string,
+  providerSignature: string,
+): readonly VerifiedCourseV1[] {
+  if (input.signal?.aborted || !input.recommendationSessionToken || !Array.isArray(input.verifiedPairCourses)) return [];
+  const suppliedPairs = input.verifiedPairCourses as readonly ReleaseTwoStopVerifiedPairSeed[];
+  const byId = new Map<string, CourseV1Candidate>([[first.id, first], ...candidates.map((candidate) => [candidate.id, candidate] as const)]);
+  const valid: VerifiedCourseV1[] = [];
+  const seenPairs = new Set<string>();
+  for (const seed of suppliedPairs) {
+    if (!seed || seed.recommendationSessionToken !== input.recommendationSessionToken
+      || seed.inputSignature !== inputSignature || seed.providerSignature !== providerSignature) continue;
+    const course = seed.course;
+    if (!Array.isArray(course?.placeIds) || course.placeIds.length !== 2
+      || new Set(course.placeIds).size !== 2
+      || course.placeIds.filter((id) => id === first.id).length !== 1) continue;
+    const otherId = course.placeIds.find((id) => id !== first.id);
+    const other = otherId ? candidates.find((candidate) => candidate.id === otherId) : undefined;
+    const places = course.placeIds.map((id) => byId.get(id));
+    const pairKey = unorderedPairKey(course.placeIds[0]!, course.placeIds[1]!);
+    if (!other || places.some((place) => !place) || seenPairs.has(pairKey)
+      || !validPairSeedCourse(course, places as [CourseV1Candidate, CourseV1Candidate], input, target)) continue;
+    seenPairs.add(pairKey);
+    valid.push(course);
+  }
+  return valid;
+}
+
+function validPairSeedCourse(
+  course: VerifiedCourseV1,
+  places: readonly [CourseV1Candidate, CourseV1Candidate],
+  input: Pick<ReleaseTwoStopRuntimeInput & CourseV1LimitedInput, 'now' | 'origin' | 'remainingMin' | 'arrivalBufferMin'>,
+  target: CourseV1Point,
+): boolean {
+  if (course.stops?.length !== 2 || course.legs?.length !== 3
+    || course.legs[0]?.fromId !== input.origin.id || course.legs[0].toId !== places[0].id
+    || course.legs[1]?.fromId !== places[0].id || course.legs[1].toId !== places[1].id
+    || course.legs[2]?.fromId !== places[1].id || course.legs[2].toId !== target.id
+    || course.stops[0]?.placeId !== places[0].id || course.stops[1]?.placeId !== places[1].id
+    || course.stops.some((stop) => stop.availabilityState !== 'structured_verified')
+    || course.legs.some((leg) => !validSeedLeg(leg))
+    || course.stops.some((stop, index) => !Number.isInteger(stop.stayMin) || stop.stayMin < places[index]!.minStayMin)
+    || course.travelMin !== course.legs.reduce((sum, leg) => sum + leg.min, 0)
+    || course.stayMin !== course.stops.reduce((sum, stop) => sum + stop.stayMin, 0)
+    || course.arrivalBufferMin !== input.arrivalBufferMin
+    || course.totalMin !== course.travelMin + course.stayMin + course.arrivalBufferMin
+    || !Number.isInteger(course.totalMin) || course.totalMin <= 0 || course.totalMin > input.remainingMin
+    || course.remainingAfterArrivalBufferMin !== input.remainingMin - course.totalMin
+    || (course.remainingAfterCourseMin !== undefined && course.remainingAfterCourseMin !== input.remainingMin - course.totalMin)) return false;
+
+  let elapsedMin = 0;
+  for (let index = 0; index < places.length; index += 1) {
+    const leg = course.legs[index]!;
+    const stop = course.stops[index]!;
+    elapsedMin += leg.min;
+    const arrival = new Date(input.now.getTime() + elapsedMin * 60_000);
+    const departure = new Date(arrival.getTime() + stop.stayMin * 60_000);
+    if (stop.arrivalAt !== arrival.toISOString() || stop.departureAt !== departure.toISOString()
+      || !isCourseV1CandidateAvailableInternal(places[index]!, arrival, stop.stayMin)) return false;
+    elapsedMin += stop.stayMin;
+  }
+  return true;
+}
+
+function validOneStopSeed(
+  course: VerifiedCourseV1,
+  candidate: CourseV1Candidate,
+  input: Pick<ReleaseTwoStopRuntimeInput & CourseV1LimitedInput, 'now' | 'origin' | 'remainingMin' | 'arrivalBufferMin'>,
+  target: CourseV1Point,
+): boolean {
+  const firstLeg = course?.legs?.[0];
+  const secondLeg = course?.legs?.[1];
+  const stop = course?.stops?.[0];
+  if (course?.placeIds?.length !== 1 || course.placeIds[0] !== candidate.id
+    || course.stops?.length !== 1 || stop?.placeId !== candidate.id || stop.availabilityState !== 'structured_verified'
+    || course.legs?.length !== 2
+    || firstLeg?.fromId !== input.origin.id || firstLeg.toId !== candidate.id
+    || secondLeg?.fromId !== candidate.id || secondLeg.toId !== target.id
+    || !validSeedLeg(firstLeg) || !validSeedLeg(secondLeg)
+    || !Number.isInteger(stop.stayMin) || stop.stayMin < candidate.minStayMin
+    || course.travelMin !== firstLeg.min + secondLeg.min
+    || course.stayMin !== stop.stayMin
+    || course.arrivalBufferMin !== input.arrivalBufferMin
+    || course.totalMin !== course.travelMin + course.stayMin + course.arrivalBufferMin
+    || !Number.isInteger(course.totalMin) || course.totalMin <= 0 || course.totalMin > input.remainingMin
+    || course.remainingAfterArrivalBufferMin !== input.remainingMin - course.totalMin
+    || (course.remainingAfterCourseMin !== undefined && course.remainingAfterCourseMin !== input.remainingMin - course.totalMin)) return false;
+
+  const arrivalAt = new Date(input.now.getTime() + firstLeg.min * 60_000);
+  const departureAt = new Date(arrivalAt.getTime() + stop.stayMin * 60_000);
+  return stop.arrivalAt === arrivalAt.toISOString()
+    && stop.departureAt === departureAt.toISOString()
+    && isCourseV1CandidateAvailableInternal(candidate, arrivalAt, stop.stayMin);
+}
+
+function validSeedLeg(leg: CourseV1Leg | undefined): leg is CourseV1Leg {
+  if (!leg || (leg.mode !== 'walk' && leg.mode !== 'transit') || !Number.isInteger(leg.min) || leg.min <= 0) return false;
+  if (leg.geometry === undefined) return true;
+  const paths = leg.geometry?.paths;
+  if (!Array.isArray(paths) || paths.length === 0 || paths.length > COURSE_V1_ROUTE_GEOMETRY_PATH_LIMIT) return false;
+  let pointCount = 0;
+  for (const path of paths) {
+    if (!Array.isArray(path?.points) || path.points.length < 2) return false;
+    for (const point of path.points) {
+      if (!Number.isFinite(point?.lat) || !Number.isFinite(point?.lon)
+        || point.lat < -90 || point.lat > 90 || point.lon < -180 || point.lon > 180
+        || ++pointCount > COURSE_V1_ROUTE_GEOMETRY_POINT_LIMIT) return false;
+    }
+  }
+  return true;
+}
+
+function seedReceiptMap(courses: readonly VerifiedCourseV1[]): ReadonlyMap<string, CourseV1RouteReceipt> {
+  const receipts = new Map<string, CourseV1RouteReceipt>();
+  const conflicts = new Set<string>();
+  for (const course of courses) {
+    for (const leg of course.legs) {
+      const key = `${leg.fromId}>${leg.toId}`;
+      if (conflicts.has(key)) continue;
+      const previous = receipts.get(key);
+      if (previous?.result === 'exact'
+        && (previous.route.mode !== leg.mode || previous.route.min !== leg.min)) {
+        receipts.delete(key);
+        conflicts.add(key);
+        continue;
+      }
+      receipts.set(key, {
+        result: 'exact',
+        route: { mode: leg.mode, min: leg.min, exact: true, ...(leg.geometry ? { geometry: leg.geometry } : {}) },
+        newProviderAttemptCount: 0,
+        reused: true,
+      });
+    }
+  }
+  return receipts;
 }
 
 function validFirstCourse(
@@ -191,7 +413,7 @@ function emptyContinuation(prepared: Prepared, ledger: ReleaseTwoStopAttemptLedg
   const orderedCandidateIds = prepared.candidates.map((candidate) => candidate.id);
   return {
     version: 1, firstPlaceId: prepared.first.id, cursor: 0, orderedCandidateIds,
-    candidateSetSignature: signature(orderedCandidateIds), inputSignature: prepared.inputSignature,
+    candidateSetSignature: candidateSetSignature(prepared), inputSignature: prepared.inputSignature,
     providerSignature: prepared.providerSignature, firstCourseSignature: prepared.firstCourseSignature,
     attemptedPairSignatures: [], rejectedPairSignatures: [], verifiedPairSignatures: [], routeReceiptKeys: [],
     verifiedCount: 0, ledger,
@@ -215,16 +437,13 @@ async function verifyPage(
     : RELEASE_TWO_STOP_SHARED_ATTEMPT_LIMIT - continuation.ledger.sharedExpansionAttempts;
   const sessionRemaining = RELEASE_TWO_STOP_SESSION_ATTEMPT_LIMIT - continuation.ledger.totalNewProviderAttempts;
   const attemptLimit = Math.max(0, Math.min(stageRemaining, sessionRemaining));
-  if (!attemptLimit) {
-    const stopped = { ...continuation, stopReason: 'attempt_limit_reached' as const };
-    return emitCompleted(input, [], stopped, ['attempt_limit_reached']);
-  }
-
   const attempted = new Set(continuation.attemptedPairSignatures);
   const rejected = new Set(continuation.rejectedPairSignatures);
   const verified = new Set(continuation.verifiedPairSignatures);
   const routeReceiptKeys = new Set(continuation.routeReceiptKeys);
-  const receiptCache = new Map<string, Promise<CourseV1RouteReceipt>>();
+  const receiptCache = new Map<string, Promise<CourseV1RouteReceipt>>(
+    [...prepared.seedReceipts].map(([key, receipt]) => [key, Promise.resolve(receipt)]),
+  );
   const courses: VerifiedCourseV1[] = [];
   const reasons: ReleaseTwoStopFailureReason[] = [];
   let cursor = continuation.cursor;
@@ -235,6 +454,20 @@ async function verifyPage(
   let terminal: ReleaseTwoStopFailureReason | undefined;
 
   const currentLedger = (): ReleaseTwoStopAttemptLedger => addAttempts(continuation.ledger, stage, pageAttempts);
+  for (const course of prepared.pairSeedCourses) {
+    if (continuation.verifiedCount + courses.length >= RELEASE_TWO_STOP_TOTAL_LIMIT
+      || courses.length >= RELEASE_TWO_STOP_INITIAL_TARGET) break;
+    const pairSignature = unorderedPairKey(course.placeIds[0]!, course.placeIds[1]!);
+    if (attempted.has(pairSignature)) continue;
+    attempted.add(pairSignature);
+    verified.add(pairSignature);
+    courses.push(course);
+    input.onProgress?.({
+      type: 'candidate_verified', requestId: input.requestId, firstPlaceId: prepared.first.id,
+      course, ledger: currentLedger(),
+    });
+  }
+
   const getReceipt = async (from: CourseV1Point, to: CourseV1Point): Promise<CourseV1RouteReceipt> => {
     const key = `${from.id}>${to.id}`;
     const cached = receiptCache.get(key);
@@ -263,7 +496,7 @@ async function verifyPage(
     && courses.length < RELEASE_TWO_STOP_INITIAL_TARGET) {
     if (input.signal?.aborted) { aborted = true; break; }
     const candidate = prepared.candidates[cursor]!;
-    const pairSignature = signature([prepared.first.id, candidate.id].sort());
+    const pairSignature = unorderedPairKey(prepared.first.id, candidate.id);
     if (attempted.has(pairSignature)) { cursor += 1; continue; }
     const firstOrder = await verifyOrderedPair([prepared.first, candidate], input, getReceipt, () => localStop || aborted);
     if (firstOrder.kind === 'budget') break;
@@ -289,8 +522,11 @@ async function verifyPage(
 
   let stopReason: ReleaseTwoStopFailureReason | undefined = terminal;
   if (!stopReason && continuation.verifiedCount + courses.length >= RELEASE_TWO_STOP_TOTAL_LIMIT) stopReason = 'attempt_limit_reached';
+  if (!stopReason && attemptLimit === 0) stopReason = 'attempt_limit_reached';
   if (!stopReason && cursor >= prepared.candidates.length) stopReason = reasons[0] ?? 'no_nearby_second_candidate';
-  if (!stopReason && (localStop || pageAttempts >= attemptLimit)) reasons.push('attempt_limit_reached');
+  if (!stopReason && (localStop || pageAttempts >= attemptLimit) && courses.length < RELEASE_TWO_STOP_INITIAL_TARGET) {
+    reasons.push('attempt_limit_reached');
+  }
   const ledger = currentLedger();
   const next: ReleaseTwoStopSelectionContinuation = {
     ...continuation, cursor,
@@ -391,11 +627,11 @@ function validContinuation(continuation: ReleaseTwoStopSelectionContinuation, pr
     || !Number.isInteger(continuation.cursor) || continuation.cursor < 0 || continuation.cursor > prepared.candidates.length
     || !Number.isInteger(continuation.verifiedCount) || continuation.verifiedCount < 0 || continuation.verifiedCount > RELEASE_TWO_STOP_TOTAL_LIMIT
     || !arraysEqual(continuation.orderedCandidateIds, prepared.candidates.map((candidate) => candidate.id))
-    || continuation.candidateSetSignature !== signature(continuation.orderedCandidateIds)
+    || continuation.candidateSetSignature !== candidateSetSignature(prepared)
     || !validStringSet(continuation.attemptedPairSignatures) || !validStringSet(continuation.rejectedPairSignatures)
     || !validStringSet(continuation.verifiedPairSignatures) || !validStringSet(continuation.routeReceiptKeys)
     || !ledgerCanAdvance(continuation.ledger, ledger)) return false;
-  const expected = new Set(prepared.candidates.map((candidate) => signature([prepared.first.id, candidate.id].sort())));
+  const expected = new Set(prepared.candidates.map((candidate) => unorderedPairKey(prepared.first.id, candidate.id)));
   const attempted = new Set(continuation.attemptedPairSignatures);
   const rejected = new Set(continuation.rejectedPairSignatures);
   const verified = new Set(continuation.verifiedPairSignatures);
@@ -414,7 +650,7 @@ function validReusedCourses(courses: readonly VerifiedCourseV1[], firstPlaceId: 
     const second = course.placeIds.find((id) => id !== firstPlaceId);
     if (!second || secondIds.has(second)) return false;
     secondIds.add(second);
-    return continuation.verifiedPairSignatures.includes(signature([firstPlaceId, second].sort()));
+    return continuation.verifiedPairSignatures.includes(unorderedPairKey(firstPlaceId, second));
   });
 }
 
@@ -478,10 +714,19 @@ function pointFingerprint(point: CourseV1Point): string { return `${point.id}:${
 function courseFingerprint(course: VerifiedCourseV1): string {
   return JSON.stringify({ id: course.id, placeIds: course.placeIds, stops: course.stops, legs: course.legs, stayMin: course.stayMin, travelMin: course.travelMin, totalMin: course.totalMin, arrivalBufferMin: course.arrivalBufferMin });
 }
+function candidateSetSignature(prepared: Prepared): string {
+  const orderedCandidateIds = prepared.candidates.map((candidate) => candidate.id);
+  return signature(prepared.runtimeSeedSignature
+    ? [...orderedCandidateIds, prepared.runtimeSeedSignature]
+    : orderedCandidateIds);
+}
 function signature(values: readonly string[]): string {
   let hash = 2166136261;
   for (const char of values.join('\u001f')) { hash ^= char.charCodeAt(0); hash = Math.imul(hash, 16777619); }
   return `t2-${(hash >>> 0).toString(36)}`;
+}
+function unorderedPairKey(firstPlaceId: string, secondPlaceId: string): string {
+  return signature([firstPlaceId, secondPlaceId].sort());
 }
 function arraysEqual(left: readonly string[], right: readonly string[]): boolean {
   return Array.isArray(left) && left.length === right.length && left.every((item, index) => item === right[index]);
