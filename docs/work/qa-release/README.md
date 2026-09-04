@@ -20,10 +20,13 @@
    - [실제 다장소 탈락 원인 최소 관찰](production-shape-diagnosis.md)
    - [다장소 receipt unavailable 원인 실기기 판정](multistop-receipt-reason-device-validation.md)
    - [최대 2곳 제한 조립 자동 통합 게이트](two-stop-limited-assembly-validation.md)
+   - [Live Activity 체류 측정·개인화 출시 게이트](live-activity-dwell-validation.md)
 
 ## 현재 상태
 
-과거 다장소·B12·공급량 QA는 완료 이력으로만 보존한다. 출시 기본 one-stop, `QA-ONE-MORE-01`, [QA-COURSE-GEOMETRY-02](course-confirm-route-geometry-validation.md)는 수락됐다. [QA-TWO-STOP-01](two-stop-limited-assembly-validation.md)은 UI session reuse와 TS-14 connector fixture 계약을 복구한 뒤 runtime 17/17, typecheck, UI 225 통과·기존 skip 1, core 117/117, diff check까지 통과해 수락됐다. 자동 fixture 범위의 잔여 실패는 없고, production 연결 뒤에는 소수 실기기 smoke만 별도 수행한다.
+과거 다장소·B12·공급량 QA는 완료 이력으로만 보존한다. 출시 기본 one-stop, `QA-ONE-MORE-01`, [QA-COURSE-GEOMETRY-02](course-confirm-route-geometry-validation.md)는 수락됐다. [QA-TWO-STOP-02](two-stop-limited-assembly-validation.md)는 동일 세션 exact `{A,B}` 역선택 0-call, terminal partial 비저장, attempt-limit exact partial 유지, 새 세션 비재사용과 B 추가시간을 고정 fixture로 통과해 수락됐다. 자동 범위의 실패는 없고 Simulator·실제 API는 사용하지 않았다. 작은 iPhone의 중간 B 카드·고정 CTA·취소 스크롤 복원 체감만 출시 후보 수동 smoke 한 번에 합친다.
+
+[QA-LIVE-ACTIVITY-01](live-activity-dwell-validation.md)은 **대기**다. DB-DWELL-01·2-AB·U-LIVE-ACTIVITY-01 수락과 QA 대상 Supabase migration 적용 뒤 고정 clock/notification/activity/repository fixture를 우선 실행하고, iOS 17 실기기에서는 1곳·2곳 코스 각 1회와 권한 거절 1회만 확인한다.
 
 ## 이력
 

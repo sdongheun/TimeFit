@@ -8,7 +8,9 @@
 
 ## 현재 게이트
 
-- [DEC-TWO-STOP-SELECTION-01](two-stop-limited-assembly.md)(2026-09-03, 제품 결정 확정·로컬 production 연결 수락): 검증 one-stop의 `한 곳 더 고르기`에서만 최대 2곳 제한 조립을 시작한다. `2-Y`, `API-TWO-STOP-02`, `U-TWO-STOP-01/02`, `QA-TWO-STOP-01` 자동 계약과 secondary eligibility 보완이 모두 통과했다. 원격 Edge 단일 배포와 출시 후보 실기기 2건 전까지 운영 활성화 완료로 해석하지 않는다.
+- [DEC-LIVE-DWELL-01](live-activity-dwell-personalization.md)(2026-09-04, 제품 정책 확정·구현 전): iOS 17 Live Activity는 길찾기 성공 뒤 로컬 진행을 시작하고, 예상 이동 `moveMin`에 20%·3~10분 유예를 둔 사용자 확인만 체류 표본으로 인정한다. GPS/background location과 원격 ActivityKit push는 이번 출시에서 제외한다. 일반 로그인+별도 동의+완료 표본만 같은 `category + subCategory`에 최근 최대 5개 중앙값으로 적용한다. 순서는 `U-INTERACTION-01 수락 → DB-DWELL-01·2-AB 병렬 → U-LIVE-ACTIVITY-01 → QA-LIVE-ACTIVITY-01`이다.
+
+- [DEC-TWO-STOP-SELECTION-01](two-stop-limited-assembly.md)(2026-09-04, 자동 통합 수락·실기기 체감만 남음): 같은 session/input의 exact pair 0-call seed와 production runtime 역선택 연결을 완료했다. provider/store terminal partial 비저장과 attempt-limit exact partial 유지가 하나의 predicate로 고정됐고, B 카드는 A+B 전체 88분 대신 A one-stop 대비 `함께 가면 약 37분 추가`를 표시한다. `QA-TWO-STOP-02` 고정 fixture 게이트도 통과했으며 작은 iPhone 체감은 출시 후보 smoke에 합친다.
 
 - [DEC-ONE-STOP-MORE-01](release-one-stop-more-results.md)(2026-09-02, 현행): 출시 one-stop 첫 결과는 신규 provider attempt 최대 8회·대표 1+첫 대안 최대 3개를 유지한다. 미검증 single 후보가 남을 때만 `다른 장소 더 보기`를 표시하고, tap마다 다음 후보를 신규 attempt 최대 8회로 검증해 새 one-stop 최대 3개를 기존 목록 뒤에 누적한다. 자동 16회·자동 연속 page·2/3곳 queue는 금지한다. 기존 `API-PAGE-01` 계약을 재사용한 `2-V → U-ONE-MORE-01 → QA-ONE-MORE-01`은 모두 수락됐으며, 네이티브 화면 확인은 출시 후보의 최종 수동 smoke에서 한 번만 수행한다.
 - [DEC-COURSE-GEOMETRY-01](course-confirm-route-geometry.md)(2026-09-03, 현행·보완 구현 대기): API-02에서 14개 transit route 모두 endpoint WALKING이 없음을 확인했다. 추천 중 선조회는 금지하고 사용자가 코스 카드를 눌러 상세를 열 때만, transit geometry와 실제 endpoint의 50m 초과 gap을 private Kakao walk로 최대 4개 보충한다. 추천 시간·순위는 불변이고 private 좌표는 비영속이다. 순서는 `API-ROUTE-GEOMETRY-03 → U-COURSE-GEOMETRY-02 → QA-COURSE-GEOMETRY-02`다.
@@ -20,7 +22,7 @@
 
 - `DEC-COURSE-STORAGE-01`(2026-08-31): 비로그인 추천은 유지하되, V1 검증 코스 저장은 이메일 인증을 마친 일반 로그인 사용자에게만 허용한다. 익명 Auth는 Route Proxy authorization 전용이며 profile·코스·좌표·이력에 연결하지 않는다. 이전 legacy 자유 장바구니/guest local 성공 반환은 검증 스냅샷 저장에 재사용하지 않는다. 저장은 실제 경로 검증 결과의 1~3 stop·선택 체류·실제 legs·여유·버전 스냅샷을 원자적으로 보존한다. 조건부 수동 코스·진행 중 편집·후기·개인화는 구현 전이다. 상태: `DB-1` 구현 예정.
 
-- `DEC-PROGRESS-FIRST-01`(2026-08-31): 공모전 배포의 이번 주 우선순위는 저장·자동 위치 수집이 아니라, 검증 V1 코스를 실제로 따라가는 흐름이다. `CourseConfirm → V1 진행 → 현재/다음 장소 카카오맵 길찾기 → 완료`를 먼저 구현한다. 기존 legacy Execution의 근사 경로 재계산·저장·알림·코스 변경은 V1에 이식하지 않는다. 장소 공급량은 Live Activity보다 먼저 제한된 실기기 게이트로 평가해 부족 권역만 보강한다. 상태: `U-PROGRESS-01` 구현 예정, `DB-1` 보류.
+- `DEC-PROGRESS-FIRST-01`(2026-08-31, 선행 순서 달성): 검증 V1 진행·카카오 길찾기와 장소 공급량을 Live Activity보다 먼저 확인한다는 우선순위였다. `U-PROGRESS-01`, 공급량·one-stop/pair-only 게이트와 route geometry 확인이 끝났으므로 이 순서 제한은 달성됐다. GPS 자동 수집은 계속 철회하며, 다음 사용자 확인 체류 작업은 `DEC-LIVE-DWELL-01`이 대체 기준이다.
 
 - [DEC-KAKAO-ROUTE-01](kakao-route-handoff-contract.md)(2026-08-31, 2026-09-01 수락): 실기기 실패를 확인한 결과 iOS scheme whitelist가 아니라 공유 route URL이 출발지 `sp` 없이 목적지 `ep`만 전달하고, HTTPS fallback도 길찾기가 아닌 목적지 보기였음이 확인됐다. V1과 legacy는 검증 snapshot의 구간 출발·도착을 함께 사용해 공식 app route scheme 및 web route link로 교체했다. 구간 fixture 14개·지도 계약 14개·타입 검사와 새 internal build의 출발·도착 route 화면을 통과했다.
 

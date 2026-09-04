@@ -22,6 +22,8 @@
    - [출시 코스 카드·세로 상세 재구성](course-card-and-vertical-detail.md)
    - [출시 1곳 추천 다른 장소 더 보기](release-one-stop-more-results.md)
    - [최대 2곳 제한 선택·취소 복원](two-stop-limited-assembly.md)
+   - [전역 상호작용 모션·시간 휠·화면 전환](global-interaction-motion.md)
+   - [iOS 17 Live Activity·체류 확인](live-activity-dwell-progress.md)
 
 ## 현재 작업
 
@@ -29,7 +31,13 @@
 
 [U-QA-HARNESS-01](qa-release-one-stop-launcher.md), [U-COURSE-CARD-DETAIL-01](course-card-and-vertical-detail.md), [U-ONE-MORE-01](release-one-stop-more-results.md), [U-COURSE-GEOMETRY-01/02](course-confirm-route-geometry.md)는 수락됐다. 코스를 선택한 뒤에만 50m 초과 transit endpoint gap의 private walk를 최대 4개 보충하며, 직선·transit 재조회·추천 시간 수정은 하지 않는다. `QA-COURSE-GEOMETRY-02`의 자동·실기기 검증도 통과해 이 경로 표시 묶음은 완료됐다.
 
-최신 [U-TWO-STOP-01/02](two-stop-limited-assembly.md)과 `QA-TWO-STOP-01` 자동 게이트는 수락됐다. `U-TWO-STOP-02`는 production session·공유 12회 ledger·Results 선택 흐름을 연결했고, secondary 표시와 intent 기록을 동일한 allowlist identity predicate로 통일했다. production session 6/6, selection 20/20, QA integration 17/17과 전체 회귀가 통과했다. UIUX의 활성 구현은 없으며 다음은 외부 API 소유의 원격 Edge 단일 배포와 출시 후보 실기기 2건이다.
+최신 [U-TWO-STOP-03](two-stop-limited-assembly.md#2026-09-04-u-two-stop-03-사용자-반환-보완-완료-인계)은 자동 수락됐다. 선택 전후 동일 Results 트리·헤더·시간 요약·ScrollView를 유지하고 기존 one-stop 카드 영역만 B loading/exact 후보로 교체한다. A tray와 A-only CTA는 즉시 보이며, 취소 시 목록·더보기·scroll snapshot을 복원한다. 표시 완료 one-stop seed도 A branch별로 동결해 `2-Z` begin/continue/reuse에 연결했다. 실제 작은 iPhone에서 중간 카드 선택 시 스크롤 이동 체감과 fixed CTA 가림 여부만 출시 후보 smoke 한 번에 확인한다.
+
+[U-TWO-STOP-04](two-stop-limited-assembly.md#u-two-stop-04-수락-전-보완-완료-인수인계-2026-09-04-uiux)와 `QA-TWO-STOP-02`는 수락됐다. 동일 session exact pair 역선택 0-call, terminal partial 비저장, attempt-limit exact partial 유지와 B 추가시간을 자동 통합 확인했다. 작은 iPhone의 A/B 카드·고정 CTA·취소 복원은 출시 후보 smoke에 합친다.
+
+[U-INTERACTION-01](global-interaction-motion.md)은 **최종 수락**이다. 공용 `AnimatedPressable` style 복구, 일반 버튼 햅틱 0, 시간 wheel 새 행과 도착 여유 slider 새 5분 값의 selection haptic, 중복/programmatic 0회, native stack/Results 전환을 자동 검증했고 `ExpoHaptics`가 포함된 새 internal build의 iOS 실기기 촉각 확인도 완료했다. 후속 작업은 이 공용 interaction 경계를 재사용한다.
+
+[U-LIVE-ACTIVITY-01](live-activity-dwell-progress.md)은 **대기**다. `U-INTERACTION-01` 수락과 DB/엔진 공개 계약 뒤 iOS 17 Widget Extension·App Group·App Intent, 로컬 알림, 도착/출발 확인, 내 정보 동의/권한 상태를 한 작업에서 연결한다. GPS·background location·원격 ActivityKit push와 추가 Kakao/Route Proxy 호출은 금지한다.
 
 ## 이력
 

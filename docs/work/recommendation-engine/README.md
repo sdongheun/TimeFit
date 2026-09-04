@@ -19,10 +19,11 @@
    - [검증 코스 구간 geometry snapshot](verified-route-geometry.md)
    - [출시 2곳 코스 재도입 준비 감사](release-two-stop-readiness-audit.md)
    - [최대 2곳 제한 조립 엔진](two-stop-limited-assembly.md)
+   - [서브카테고리 사용자 체류 개인화](dwell-personalization.md)
 
 ## 현재 상태
 
-`2-M`부터 [2-W](verified-route-geometry.md)까지 출시 one-stop 엔진 계약과 [2-X](release-two-stop-readiness-audit.md) 준비 감사는 수락됐다. 사용자는 이후 `DEC-TWO-STOP-SELECTION-01`의 최대 2곳 제한 조립을 확정했다. [2-Y](two-stop-limited-assembly.md)의 pair-only entry, 양방향 exact 비교, 점진 progress, 누적 36회 ledger는 구현·통합 검토까지 수락됐다. 추천 엔진 세션의 독립 후속 작업은 현재 없으며, `API-TWO-STOP-02`·UI 표시 보완 뒤 Wave 2 composition/QA 실패가 엔진 소유 재현으로 돌아올 때만 재개한다. production one-stop은 자동 통합 게이트 전까지 유지한다.
+`2-M`부터 [2-W](verified-route-geometry.md)까지 출시 one-stop 엔진 계약과 [2-X](release-two-stop-readiness-audit.md) 준비 감사는 수락됐다. [2-Y](two-stop-limited-assembly.md)의 pair-only entry, **2-Z**의 검증 one-stop leg 재사용, `U-TWO-STOP-03`의 production session 연결도 자동 수락됐다. [2-AA 완료 인계](two-stop-limited-assembly.md#2026-09-04-2-aa-추천-엔진-완료-인계)에서 A별 cache 때문에 발생한 동일 세션 역선택 비대칭을 failure-first로 재현하고, 동일 session/input의 exact pair만 runtime seed로 adapter/provider 0회에 재사용하는 엔진 계약을 수락했다. 다음 엔진 작업은 [2-AB](dwell-personalization.md)다. DB 작업과 병렬로 순수 개인화 계산만 구현하며, 기존 후보·route attempt·one-stop/pair 계약은 바꾸지 않는다.
 
 ## 이력
 
