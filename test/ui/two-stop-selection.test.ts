@@ -3,10 +3,13 @@ import fs from 'node:fs';
 import test from 'node:test';
 import type { CourseV1Candidate, CourseV1RouteReceiptAdapter, ReleaseTwoStopSelectionResult, VerifiedCourseV1 } from '../../src/engine';
 import { createTwoStopSelectionEnginePort, normalizeTwoStopSelectionEngineResult } from '../../src/ui/recommendation/twoStopSelectionEnginePort';
+import { createFrozenTwoStopSeedPort } from '../../src/ui/recommendation/v1Session';
 import {
   buildTwoStopCandidateCard,
   canOfferTwoStopSelection,
+  createInlineTwoStopSelectionController,
   createTwoStopSelectionController,
+  resultsCourseRegionMode,
   twoStopSelectionReasonMessage,
   type TwoStopSelectionPort,
   type TwoStopSelectionSnapshot,
@@ -51,6 +54,8 @@ function engineFirstCourse(id: string, stayMin = 20): VerifiedCourseV1 {
 function enginePortFixture(
   ids: string[],
   getRouteReceipt?: CourseV1RouteReceiptAdapter['getRouteReceipt'],
+  onCompletedExact?: (result: ReleaseTwoStopSelectionResult) => void,
+  initialLedger = { version: 1 as const, initialOneStopAttempts: 8, automaticTwoStopAttempts: 0, sharedExpansionAttempts: 0, totalNewProviderAttempts: 8 },
 ) {
   let calls = 0;
   const candidates: CourseV1Candidate[] = ids.map((id, index) => ({
@@ -74,7 +79,8 @@ function enginePortFixture(
           : { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true };
       },
     },
-    ledger: { version: 1, initialOneStopAttempts: 8, automaticTwoStopAttempts: 0, sharedExpansionAttempts: 0, totalNewProviderAttempts: 8 },
+    ledger: initialLedger,
+    onCompletedExact,
   });
   return { port, calls: () => calls };
 }
@@ -200,7 +206,7 @@ test('UTWOSTOP01: 취소·같은 A·다른 A 재선택은 session port ledger를
 
 test('UTWOSTOP01: B→A snapshot은 엔진 순서를 유지하고 카드는 방문 순서를 단정하지 않는다', () => {
   const pair = course(['B', 'A']);
-  const card = buildTwoStopCandidateCard(pair, 'A', (id) => ({ title: id === 'B' ? '두 번째 후보' : '선택 A', lat: 35.1, lon: 129.1, category: '문화시설', shortStay: { type: 'compact_culture' } }));
+  const card = buildTwoStopCandidateCard(pair, first, (id) => ({ title: id === 'B' ? '두 번째 후보' : '선택 A', lat: 35.1, lon: 129.1, category: '문화시설', shortStay: { type: 'compact_culture' } }));
   assert.ok(card);
   assert.equal(card.placeId, 'B');
   assert.equal(card.title, '두 번째 후보');
@@ -208,6 +214,102 @@ test('UTWOSTOP01: B→A snapshot은 엔진 순서를 유지하고 카드는 방�
   assert.match(card.accessibilityLabel, /선택한 장소와 함께 가능한 곳/);
   assert.doesNotMatch(card.accessibilityLabel, /(^|[ ,])A([ ,]|$)|(^|[ ,])B([ ,]|$)/);
   assert.doesNotMatch(card.accessibilityLabel, /첫 번째 방문/);
+});
+
+test('UTWOSTOP04 수락 전 보완 failure-first: B 카드는 A one-stop 대비 추가 소요시간과 명시 total fallback을 구분한다', () => {
+  const first51 = {
+    ...course(['A']),
+    stops: [{ ...course(['A']).stops[0]!, stayMin: 40 }],
+    legs: [{ ...course(['A']).legs[0]!, min: 5 }, { ...course(['A']).legs[1]!, min: 6 }],
+    travelMin: 11, stayMin: 40, totalMin: 61,
+  };
+  const pair88 = {
+    ...course(['B', 'A']),
+    stops: course(['B', 'A']).stops.map((stop) => ({ ...stop, stayMin: 30 })),
+    legs: course(['B', 'A']).legs.map((leg, index) => ({ ...leg, min: [8, 10, 10][index]! })),
+    travelMin: 28, stayMin: 60, totalMin: 98,
+  };
+  const getPlace = (id: string) => ({ title: id, lat: 35.1, lon: 129.1, category: '문화시설', shortStay: { type: 'compact_culture' as const } });
+  const additional = buildTwoStopCandidateCard(pair88, first51, getPlace);
+  assert.ok(additional);
+  assert.deepEqual({ kind: additional.durationKind, min: additional.durationMin }, { kind: 'additional', min: 37 });
+  assert.match(additional.accessibilityLabel, /함께 가면 약 37분 추가/);
+  assert.doesNotMatch(additional.accessibilityLabel, /약 88분 코스/);
+
+  const nonPositive = buildTwoStopCandidateCard({ ...pair88, travelMin: 10, stayMin: 40 }, first51, getPlace);
+  assert.deepEqual(nonPositive && { kind: nonPositive.durationKind, min: nonPositive.durationMin }, { kind: 'total', min: 50 });
+  assert.match(nonPositive?.accessibilityLabel ?? '', /선택 시 전체 약 50분/);
+  const invalidFirst = buildTwoStopCandidateCard(pair88, course(['A', 'X']), getPlace);
+  assert.deepEqual(invalidFirst && { kind: invalidFirst.durationKind, min: invalidFirst.durationMin }, { kind: 'total', min: 88 });
+});
+
+test('UTWOSTOP04 수락 전 보완 failure-first: exact 일부 뒤 provider/store terminal은 callback과 역선택 seed가 0이다', async () => {
+  for (const unavailableReason of ['provider', 'store'] as const) {
+    const token = {};
+    const stored: Array<{ course: VerifiedCourseV1; recommendationSessionToken: object; inputSignature: string; providerSignature: string }> = [];
+    const fixture = enginePortFixture(['A', 'B', 'C'], async (from, to) => {
+      if (from.id === 'A' && to.id === 'C') return { result: 'unavailable', reason: unavailableReason, newProviderAttemptCount: 0, reused: false };
+      return { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true };
+    }, (result) => result.courses.forEach((item) => stored.push({
+      course: item,
+      recommendationSessionToken: token,
+      inputSignature: result.continuation.inputSignature,
+      providerSignature: result.continuation.providerSignature,
+    })));
+    const observedPairSeeds: Array<readonly unknown[] | undefined> = [];
+    const observingPort: TwoStopSelectionPort = {
+      begin(input) { observedPairSeeds.push(input.verifiedPairCourses); return fixture.port.begin(input); },
+      continue(input) { observedPairSeeds.push(input.verifiedPairCourses); return fixture.port.continue(input); },
+    };
+    const A = engineFirstCourse('A');
+    const B = engineFirstCourse('B');
+    const seeded = createFrozenTwoStopSeedPort(observingPort, () => [A, B, engineFirstCourse('C')], () => stored, token);
+    const firstResult = await seeded.begin({ firstCourse: A, requestId: `terminal-${unavailableReason}-A`, signal: new AbortController().signal, onProgress() {} });
+    assert.equal(firstResult.courses.length, 1);
+    assert.equal(firstResult.reason, `${unavailableReason}_unavailable`);
+    assert.equal(stored.length, 0);
+    await seeded.begin({ firstCourse: B, requestId: `terminal-${unavailableReason}-B`, signal: new AbortController().signal, onProgress() {} });
+    assert.deepEqual(observedPairSeeds[1], []);
+  }
+
+  let attemptLimitCommits = 0;
+  const attemptLimit = enginePortFixture(['A', 'B', 'C'], async (from, to) => {
+    return { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false };
+  }, () => { attemptLimitCommits += 1; }, {
+    version: 1, initialOneStopAttempts: 8, automaticTwoStopAttempts: 14, sharedExpansionAttempts: 0, totalNewProviderAttempts: 22,
+  });
+  const attemptLimitResult = await attemptLimit.port.begin({
+    firstCourse: engineFirstCourse('A'),
+    verifiedOneStopCourses: ['A', 'B', 'C'].map((id) => engineFirstCourse(id)),
+    requestId: 'terminal-attempt-limit', signal: new AbortController().signal, onProgress() {},
+  });
+  assert.equal(attemptLimitResult.courses.length, 1);
+  assert.equal(attemptLimitResult.reason, undefined);
+  assert.equal(attemptLimitCommits, 1);
+});
+
+test('UTWOSTOP04 수락 전 보완: begin과 continue는 terminal partial 저장 predicate를 함께 사용한다', async () => {
+  for (const unavailableReason of ['provider', 'store'] as const) {
+    const committed: ReleaseTwoStopSelectionResult[] = [];
+    const fixture = enginePortFixture(['A', 'B', 'C', 'D', 'E', 'F'], async (from, to) => {
+      if (from.id === 'A' && to.id === 'F') return { result: 'unavailable', reason: unavailableReason, newProviderAttemptCount: 0, reused: false };
+      return { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true };
+    }, (result) => committed.push(result));
+    const common = {
+      firstCourse: engineFirstCourse('A'),
+      verifiedOneStopCourses: ['A', 'B', 'C', 'D', 'E', 'F'].map((id) => engineFirstCourse(id)),
+      signal: new AbortController().signal,
+      onProgress() {},
+    };
+    const firstPage = await fixture.port.begin({ ...common, requestId: `continue-${unavailableReason}-begin` });
+    assert.equal(firstPage.courses.length, 3);
+    assert.equal(committed.length, 1);
+    assert.ok(firstPage.continuation);
+    const terminalPage = await fixture.port.continue({ ...common, requestId: `continue-${unavailableReason}-terminal`, continuation: firstPage.continuation! });
+    assert.equal(terminalPage.courses.length, 1);
+    assert.equal(terminalPage.reason, `${unavailableReason}_unavailable`);
+    assert.equal(committed.length, 1);
+  }
 });
 
 test('UTWOSTOP01: safe reason은 고정 문구만 쓰고 A one-stop 유지 여부를 바꾸지 않는다', () => {
@@ -291,26 +393,116 @@ test('UTWOSTOP01 표시 보완: 다음 완료에 reason이 없으면 이전 page
   assert.equal(controller.getState().selection?.reason, undefined);
 });
 
-test('UTWOSTOP02: 표시 컴포넌트는 선택·취소·시작을 위임하고 production entry에 연결된다', () => {
+test('UTWOSTOP03: production은 인라인 선택·sticky tray·fixed CTA만 사용하고 과거 secondary를 제거한다', () => {
   const panel = fs.readFileSync('src/ui/recommendation/TwoStopSelectionPanel.tsx', 'utf8');
+  const tray = fs.readFileSync('src/ui/recommendation/TwoStopSelectionTray.tsx', 'utf8');
   const confirm = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf8');
   const results = fs.readFileSync('src/ui/ResultsScreen.tsx', 'utf8');
   assert.match(panel, /선택한 장소/);
-  assert.match(panel, /함께 갈 수 있는 장소 확인 중/);
-  assert.match(panel, /선택 취소/);
-  assert.match(panel, /선택한 장소 코스 시작하기/);
+  assert.match(panel, /함께 갈 장소를 확인하고 있어요/);
+  assert.match(panel, /twoStopCandidateDurationLabel\(candidate\)/);
+  assert.doesNotMatch(panel, /candidate\.courseMin/);
+  assert.match(panel, /accessibilityState=\{\{ selected \}\}/);
+  assert.match(panel, /✓ 선택됨/);
+  assert.doesNotMatch(panel, /선택한 장소 코스 시작하기/);
   assert.match(panel, /선택한 장소와 함께 가능한 곳/);
   assert.match(panel, /함께 둘러볼 장소/);
   assert.doesNotMatch(panel, />A[^<]*</);
   assert.doesNotMatch(panel, /첫 번째 장소/);
-  assert.match(panel, /한 곳 더 고르기/);
+  assert.match(tray, /two-stop-selection-tray/);
+  assert.match(tray, /two-stop-fixed-cta/);
+  assert.match(tray, /이 장소로 코스 보기/);
+  assert.match(tray, /선택한 2곳 코스 보기/);
+  assert.match(tray, /width: 44, height: 44/);
+  assert.match(tray, /minHeight: 52/);
   assert.match(confirm, /testID="verified-course-start"/);
-  assert.match(confirm, /TwoStopSecondaryAction/);
-  assert.match(confirm, /canRecordTwoStopSelectionIntent/);
-  assert.match(confirm, /recordTwoStopSelectionIntent/);
+  assert.doesNotMatch(confirm, /TwoStopSecondaryAction|한 곳 더 고르기|recordTwoStopSelectionIntent/);
   assert.match(results, /TwoStopSelectionPanel/);
-  assert.match(results, /consumeTwoStopSelectionIntent/);
+  assert.match(results, /createInlineTwoStopSelectionController/);
+  assert.match(results, /beforeRemove/);
+  assert.match(results, /selected \? 86 \+ Math\.max\(insets\.bottom, 10\) : 34/);
+  assert.doesNotMatch(results, /consumeTwoStopSelectionIntent/);
   assert.doesNotMatch(results, /beginReleaseTwoStopSelectionV1/);
+});
+
+test('UTWOSTOP03 사용자 반환 failure-first: 선택 전후는 같은 Results ScrollView에서 course region만 교체한다', () => {
+  const results = fs.readFileSync('src/ui/ResultsScreen.tsx', 'utf8');
+  assert.equal((results.match(/ref=\{scrollRef\}/g) ?? []).length, 1);
+  assert.doesNotMatch(results, /if \(inlineState\.mode !== 'idle'\) \{[\s\S]*?return <View style=\{s\.root\}>/);
+  assert.match(results, /resultsCourseRegionMode/);
+  assert.match(results, /style=\{s\.traySlot\}/);
+  assert.match(results, /style=\{s\.ctaSlot\}/);
+  const immediate = { mode: 'first_selected', firstCourse: first, selectedPairCourse: null, snapshot, pairEnabled: true } as const;
+  assert.equal(resultsCourseRegionMode({ mode: 'idle' }, null), 'one_stop');
+  assert.equal(resultsCourseRegionMode(immediate, null), 'pair_loading');
+  assert.equal(resultsCourseRegionMode({ ...immediate, pairEnabled: false }, null), 'pair_terminal');
+});
+
+test('UTWOSTOP03 failure-first: A는 즉시 선택되고 pair begin은 연타에도 한 번만 실행된다', async () => {
+  let beginCalls = 0;
+  const pair = createTwoStopSelectionController({
+    async begin(input) { beginCalls += 1; return { requestId: input.requestId, firstPlaceId: 'A', courses: [], pageState: 'no_candidate' }; },
+    async continue(input) { return { requestId: input.requestId, firstPlaceId: 'A', courses: [], pageState: 'exhausted' }; },
+  });
+  const inline = createInlineTwoStopSelectionController(pair, () => true);
+  const firstBegin = inline.selectFirst(first, snapshot);
+  const duplicateBegin = inline.selectFirst(first, snapshot);
+  assert.equal(inline.getState().mode, 'first_selected');
+  assert.equal(inline.getSelectedCourse(), first);
+  assert.equal(await firstBegin, true);
+  assert.equal(await duplicateBegin, false);
+  assert.equal(beginCalls, 1);
+});
+
+test('UTWOSTOP03: exact B 선택·교체·해제는 호출 없이 identity와 후보 상태를 보존한다', async () => {
+  let beginCalls = 0;
+  let aborts = 0;
+  const pairs = [course(['A', 'B1']), course(['B2', 'A'])];
+  const pair = createTwoStopSelectionController({
+    async begin(input) {
+      beginCalls += 1;
+      input.signal.addEventListener('abort', () => { aborts += 1; });
+      return { requestId: input.requestId, firstPlaceId: 'A', courses: pairs, pageState: 'more_available', continuation: { cursor: 2 }, reason: 'no_exact_route' };
+    },
+    async continue(input) { return { requestId: input.requestId, firstPlaceId: 'A', courses: [], pageState: 'exhausted' }; },
+  });
+  const inline = createInlineTwoStopSelectionController(pair, () => true);
+  await inline.selectFirst(first, snapshot);
+  const before = pair.getState().selection;
+  assert.equal(inline.selectPair(pairs[0]), true);
+  assert.equal(inline.getState().mode, 'pair_selected');
+  assert.equal(inline.getSelectedCourse(), pairs[0]);
+  assert.equal(inline.selectPair({ ...pairs[1] }), false);
+  assert.equal(inline.selectPair(pairs[1]), true);
+  assert.equal(inline.getSelectedCourse(), pairs[1]);
+  assert.equal(inline.clearPair(), true);
+  assert.equal(inline.getState().mode, 'first_selected');
+  assert.equal(pair.getState().selection, before);
+  assert.equal(beginCalls, 1);
+  assert.equal(aborts, 0);
+});
+
+test('UTWOSTOP03: A 취소는 snapshot을 복원하고 pending을 abort하며 route-only도 one-stop 선택은 허용한다', async () => {
+  let aborts = 0;
+  const pair = createTwoStopSelectionController({
+    async begin(input) {
+      await new Promise<void>((resolve) => input.signal.addEventListener('abort', () => { aborts += 1; resolve(); }));
+      return { requestId: input.requestId, firstPlaceId: 'A', courses: [], pageState: 'unavailable' };
+    },
+    async continue(input) { return { requestId: input.requestId, firstPlaceId: 'A', courses: [], pageState: 'exhausted' }; },
+  });
+  const inline = createInlineTwoStopSelectionController(pair, () => true);
+  const pending = inline.selectFirst(first, snapshot);
+  assert.deepEqual(inline.cancelFirst(), snapshot);
+  await pending;
+  assert.equal(aborts, 1);
+  assert.equal(inline.getState().mode, 'idle');
+
+  const routeOnly = createInlineTwoStopSelectionController(null, () => false);
+  assert.equal(await routeOnly.selectFirst(first, snapshot), true);
+  assert.equal(routeOnly.getState().mode, 'first_selected');
+  assert.equal(routeOnly.getPairSelection(), null);
+  assert.equal(routeOnly.getSelectedCourse(), first);
 });
 
 test('UTWOSTOP01: secondary action은 fixture port와 exact one-stop이 함께 있을 때만 열린다', () => {
@@ -381,6 +573,17 @@ test('UTWOSTOP01: 2-Y adapter는 공개 begin export를 UI progress·JSON contin
   assert.equal(routeCalls, firstRouteCalls);
   assert.deepEqual(reused.courses.map(({ id }) => id), result.courses.map(({ id }) => id));
   assert.deepEqual(reused.continuation, result.continuation);
+});
+
+test('UTWOSTOP03 사용자 반환: frozen 표시 seed는 2-Z engine port에서 endpoint 4구간을 재사용한다', async () => {
+  const fixture = enginePortFixture(['A', 'B']);
+  const A = engineFirstCourse('A');
+  const B = engineFirstCourse('B');
+  const port = createFrozenTwoStopSeedPort(fixture.port, () => [A, B]);
+  const result = await port.begin({ firstCourse: A, requestId: 'seeded-ui-port', signal: new AbortController().signal, onProgress() {} });
+  assert.equal(result.courses.length, 1, JSON.stringify(result));
+  assert.equal(fixture.calls(), 2);
+  assert.deepEqual(new Set(result.courses[0].placeIds), new Set(['A', 'B']));
 });
 
 test('UTWOSTOP01 session reuse: pair 더보기 누적 6도 취소 뒤 같은 선택에서 route 0으로 복원한다', async () => {

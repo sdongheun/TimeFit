@@ -34,8 +34,9 @@ test('시간 설정은 단일 경로 설정과 분 단위 시각·여유를 분�
   assert.doesNotMatch(setup, /현재 위치로 돌아오기/);
   assert.match(setup, /minimumValue=\{5\} maximumValue=\{30\} step=\{5\}/);
   assert.match(setup, /const \[arrivalBufferMin, setArrivalBufferMin\] = useState\(10\)/);
-  assert.match(setup, /TimeWheel values=\{HOURS_12\}/);
-  assert.match(setup, /TimeWheel values=\{MINUTES\}/);
+  assert.match(setup, /TimeWheel[^>]*values=\{MERIDIEMS\}/);
+  assert.match(setup, /TimeWheel[^>]*values=\{HOURS_12\}/);
+  assert.match(setup, /TimeWheel[^>]*values=\{MINUTES\}/);
   assert.match(setup, /releaseTimeSetupValidation/);
   assert.match(setup, /최대 2시간/);
   assert.match(setup, /const SHOW_TEST_CLOCK = typeof __DEV__ !== 'undefined' && __DEV__/);

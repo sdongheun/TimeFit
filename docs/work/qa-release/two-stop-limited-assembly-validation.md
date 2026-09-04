@@ -167,3 +167,126 @@ git diff --check
 - 통합·결정 세션이 전용 하네스 17/17, `npm run test:typecheck`, `npm run test:ui`(225 통과·기존 skip 1), `npm test`(117/117), `git diff --check`를 다시 실행해 모두 통과함을 확인했다.
 - 자동 검증 범위에서 동일 장소 취소·재선택의 신규 adapter 호출 0, 선택 확정 뒤 추가 route 0, provider attempt 최대 36, connector 최대 6·동시 2, stale 화면 반영 0 계약을 수락한다.
 - 이 수락은 아직 일반 사용자 화면에서 2곳 선택이 활성화됐다는 뜻이 아니다. 실기기·운영 API·원격 Edge는 검증하지 않았으며, 다음 작업에서 production Results/CourseConfirm composition을 연결한 뒤 최소 smoke로 확인한다.
+
+## QA-TWO-STOP-02 — 역선택 pair 재사용 회귀 게이트
+
+상태: **수락**. `2-AA`와 보완된 `U-TWO-STOP-04`의 자동 통합 회귀가 통과했으며, 작은 iPhone UI 체감만 출시 후보 smoke에 남긴다.
+
+### 목적과 선행 조건
+
+`2-AA`와 `U-TWO-STOP-04` 완료 뒤 실행한다. 사용자가 관찰한 `포셋 A에서는 롯데 B가 보이지만, 취소 후 롯데 A에서는 포셋 B가 사라짐`을 실제 외부 API 없이 production session public entry와 deterministic receipt fixture로 재현·검증한다.
+
+### 필수 시나리오
+
+1. 동일 session/input: A begin에서 `{A,B}` exact → 취소 → B begin에서 A가 첫 후보, adapter/provider delta 0.
+2. 원 exact 방문 순서가 A→B와 B→A인 두 경우 모두 역선택이 snapshot 순서를 바꾸지 않음.
+3. automatic 16 소진 후 역선택 seed는 보이고 미검증 후보 호출 0.
+4. cached reverse 1 + 신규 후보 2 = initial 3, 중복 0; 더보기 포함 6 이하.
+5. 같은 A 재선택 cache, 반대 A pair seed, verified one-stop endpoint seed가 동시에 있어도 pair·ledger 중복 0.
+6. 취소 직전/직후 late progress, abort, 다른 requestId가 store·화면에 유입되지 않음.
+7. 새 session과 now/origin/destination/remaining/buffer/provider/catalog 변경은 reverse reuse 0.
+8. 손상 course·조건부·pool 밖·same site group은 false verified 0.
+9. 아직 검증하지 않은 fresh reverse pair는 첫 3개를 강제하지 않고 기존 후보 순서와 예산을 유지.
+10. one-stop 더보기, A/B 취소 복원, CourseConfirm, geometry connector, 3/6·16/12/36 계약 회귀 불변.
+11. A one-stop 이동+체류 51분과 pair 이동+체류 88분에서 B 카드는 `함께 가면 약 37분 추가`를 표시하고 `약 88분 코스`로 B 자체 시간을 오인시키지 않는다. B→A 순서도 동일하며 비양수·snapshot 불일치는 `선택 시 전체 약 N분` fallback, 계산·선택 route 0회다.
+12. `{A,B,C}`에서 B exact를 먼저 얻은 뒤 C 확인 중 provider terminal과 store terminal이 각각 발생하는 begin fixture를 둔다. 현재 branch에는 이미 받은 partial B가 보일 수 있지만 `onCompletedExact` callback·unordered pair store·취소 뒤 B branch reverse seed는 각각 0이어야 한다. continue fixture는 첫 정상 page의 기존 commit 수를 보존하고 terminal page가 새 commit을 추가하지 않아야 한다. 반대되는 양성 fixture로 automatic ledger 14→16의 attempt-limit exact partial은 callback/store 1과 역선택 0-call을 유지해야 한다.
+
+### 실행·중단 기준
+
+```bash
+node --import tsx --test test/qa-two-stop-integration.test.ts
+node --import tsx --test test/release-two-stop-selection.test.ts
+node --import tsx --test test/ui/two-stop-production-session.test.ts test/ui/two-stop-selection.test.ts
+npm run test:typecheck
+npm run test:ui
+npm test
+git diff --check
+```
+
+하나라도 실패하면 실제 API·Simulator로 우회하지 않고 실패 fixture·adapter call·provider attempt·ledger 전후를 기록해 중단한다. 전부 통과하면 역선택 0-call과 새 세션 비재사용, terminal partial의 callback/store/reverse-seed 0, attempt-limit 양성 반례, B 추가시간을 machine-readable receipt로 남긴다.
+
+완료 인수인계에는 다음 네 항목을 반드시 기록한다.
+
+1. 변경한 QA fixture·문서와 목적
+2. 제품 코드·정책·실제 API·Simulator를 변경하거나 실행하지 않았다는 경계
+3. 시나리오 1~12별 통과 여부와 adapter/provider/ledger/store 핵심 수치, 전체 명령 결과
+4. 실패가 있다면 최초 실패 fixture와 재현값, 모두 통과하면 출시 후보 실기기 smoke에 남길 UI 체감 항목
+
+QA는 제품 코드·정책 문서·보드를 수정하지 않고 이 문서와 QA 소유 fixture만 수정한다. 기존 통과 테스트를 삭제·완화하거나 실제 API 결과로 fixture 실패를 덮지 않는다. commit·push는 사용자 요청 전 금지한다.
+
+## 2026-09-04 QA-TWO-STOP-02 완료 인수인계
+
+### 1. 변경 파일과 변경 목적
+
+- 이 작업 문서만 수정해 역선택 pair 재사용 시나리오 1~12의 고정 fixture 결과, machine-readable receipt, 실행 명령과 출시 후보 실기기 smoke 잔여 항목을 기록했다.
+- QA fixture는 수정하지 않았다. 수락된 `test/qa-two-stop-integration.test.ts`, `test/release-two-stop-selection.test.ts`, `test/ui/two-stop-production-session.test.ts`, `test/ui/two-stop-selection.test.ts`가 필수 시나리오를 이미 직접 검증하므로 같은 계약을 별도 구현으로 복제하지 않았다.
+
+### 2. 변경하지 않은 공개 계약·정책 경계
+
+- `src/engine/`, `src/services/`, `src/ui/`, App/navigation, Edge/migration/data/env, 제품 기준 문서와 `docs/작업조정_보드.md`를 수정하지 않았다.
+- 최대 2곳, initial 3·누적 6, automatic 16 + shared 12, 총 신규 provider attempt 36, connector 최대 6·동시 2, one-stop fallback과 verified snapshot 순서 보존 계약을 변경하지 않았다.
+- 실제 API·Supabase·원격 Edge·GPS·Simulator·실기기·Metro·Xcode 실행은 모두 0회다. commit·push도 수행하지 않았다.
+
+### 3. 시나리오·테스트 결과
+
+- 시나리오 1: **통과** — 동일 session의 반대 A branch 첫 후보가 원 exact snapshot이며 reverse adapter/provider delta는 각각 0이다.
+- 시나리오 2: **통과** — A→B와 B→A 모두 `placeIds`·legs·stops의 원 방문 순서를 그대로 유지한다.
+- 시나리오 3: **통과** — automatic ledger 16 소진 상태에서 cached pair 1개를 노출하고 미검증 adapter/provider 호출은 0이다.
+- 시나리오 4: **통과** — cached reverse 1 + 신규 2 = initial 3, pair 중복 0이며 initial 3·continue 3으로 누적 6을 넘지 않는다.
+- 시나리오 5: **통과** — same-A cache, 반대 pair seed, verified one-stop endpoint seed 동시 입력에서 결과 1·verified count 1·추가 호출 0으로 중복되지 않는다.
+- 시나리오 6: **통과** — cancel 전후 late progress·abort·다른 requestId의 화면/store 유입은 0이다. 기존 TS-11의 stale 반영도 0을 유지한다.
+- 시나리오 7: **통과** — 새 session 및 now/origin/destination/remaining/buffer/provider/catalog signature 변경의 reverse reuse는 0이며 fresh 검증 경계로 분리된다.
+- 시나리오 8: **통과** — 손상 course·조건부·pool 밖·same site group seed의 false verified count는 0이다.
+- 시나리오 9: **통과** — 새 session의 미검증 reverse pair를 첫 3개에 강제하지 않고 baseline 후보 순서와 ledger를 유지한다.
+- 시나리오 10: **통과** — one-stop 더보기·취소 복원·CourseConfirm·geometry와 initial 3/누적 6·automatic 16/shared 12/총 36 계약이 불변이다. TS-14 connector 호출 6·최대 동시 2, TS-13 선택 추가 route 0을 유지한다.
+- 시나리오 11: **통과** — one-stop 51분 대비 pair 88분은 `함께 가면 약 37분 추가`이고, 비양수·snapshot 불일치는 `선택 시 전체 약 N분` fallback이다. 계산·선택 추가 route는 0이다.
+- 시나리오 12: **통과** — provider/store terminal partial은 callback 0·store 0·reverse seed 0이고 continue terminal은 기존 commit만 보존한다. automatic ledger 14→16 attempt-limit 양성 partial은 callback/store 1을 유지하며 역선택은 0-call이다.
+
+```json
+{
+  "gate": "QA-TWO-STOP-02",
+  "date": "2026-09-04",
+  "fixtureOnly": true,
+  "actualApiCalls": 0,
+  "simulatorRuns": 0,
+  "scenarios": {
+    "1": { "status": "pass", "reverseAdapterDelta": 0, "reverseProviderDelta": 0 },
+    "2": { "status": "pass", "snapshotOrderPreserved": true },
+    "3": { "status": "pass", "automaticAttempts": 16, "cachedPairs": 1, "unverifiedCalls": 0 },
+    "4": { "status": "pass", "cached": 1, "new": 2, "initial": 3, "maximumDisplayed": 6, "duplicates": 0 },
+    "5": { "status": "pass", "courses": 1, "verifiedCount": 1, "additionalCalls": 0 },
+    "6": { "status": "pass", "staleScreenUpdates": 0, "staleStoreCommits": 0 },
+    "7": { "status": "pass", "reverseReuse": 0 },
+    "8": { "status": "pass", "falseVerified": 0 },
+    "9": { "status": "pass", "forcedFreshReverseSeeds": 0, "baselineOrderPreserved": true },
+    "10": { "status": "pass", "initial": 3, "maximumDisplayed": 6, "automatic": 16, "shared": 12, "providerMaximum": 36, "connectorMaximum": 6, "selectionRouteDelta": 0 },
+    "11": { "status": "pass", "oneStopMinutes": 51, "pairMinutes": 88, "additionalMinutes": 37, "calculationRouteDelta": 0, "selectionRouteDelta": 0 },
+    "12": { "status": "pass", "terminalPartial": { "callbacks": 0, "storeCommits": 0, "reverseSeeds": 0 }, "attemptLimitPositive": { "ledgerBefore": 14, "ledgerAfter": 16, "callbacks": 1, "storeCommits": 1, "reverseAdapterDelta": 0 } }
+  },
+  "commands": {
+    "qaHarness": { "passed": 17, "failed": 0 },
+    "engineContract": { "passed": 35, "failed": 0 },
+    "focusedUi": { "passed": 37, "failed": 0 },
+    "typecheck": "pass",
+    "ui": { "passed": 242, "failed": 0, "skipped": 1 },
+    "core": { "passed": 117, "failed": 0 },
+    "diffCheck": "pass"
+  }
+}
+```
+
+- `node --import tsx --test test/qa-two-stop-integration.test.ts`: **17/17 통과**.
+- `node --import tsx --test test/release-two-stop-selection.test.ts`: **35/35 통과**.
+- `node --import tsx --test test/ui/two-stop-production-session.test.ts test/ui/two-stop-selection.test.ts`: **37/37 통과**.
+- `npm run test:typecheck`: **통과**.
+- `npm run test:ui`: **242 통과 / 0 실패 / 기존 skip 1**. skip은 `철회 이력: 순차 새 추천은 다음 검증 코스로 대표를 교체했다`이며 현행 회귀 실패가 아니다.
+- `npm test`: **117/117 통과**.
+- `git diff --check`: **통과**.
+- 최초 sandbox의 `npm run test:ui`는 TSX IPC socket 권한 오류 `EPERM`으로 시작하지 못했다. 제품/fixture 실패가 아니며 동일한 고정 fixture 명령을 허용된 로컬 실행으로 재실행해 위 결과를 확인했다.
+
+### 4. 다음 결정 필요 사항·위험·재현 조건
+
+- QA-TWO-STOP-02 자동 게이트 상태: **완료 / 통합·결정 수락 요청 가능**.
+- 출시 후보 실기기 smoke에는 작은 iPhone 화면에서 중간 B 카드와 CTA가 가려지지 않는지, 취소 시 원래 스크롤·카드 순서가 복원되는지, A→취소→반대 A에서 cached 상대가 중복·재로딩 체감 없이 먼저 보이는지만 남긴다.
+- B 카드에는 `함께 가면 약 N분 추가`가 보이고 선택 뒤 CourseConfirm에는 엔진 snapshot의 실제 방문 순서가 유지되는지 확인한다. 자동 fixture에서 증명한 호출 수·예산·terminal 시나리오는 실기기에서 반복하지 않는다.
+- 자동 범위에서 남은 실패는 없다. 실기기 UI 체감과 운영 provider 정확성은 이번 고정 fixture 게이트의 증명 범위가 아니며, QA 세션은 production entry나 정책을 직접 변경하지 않는다.

@@ -3,6 +3,7 @@ import test from 'node:test';
 import type { CourseV1ReleaseOneStopResult, VerifiedCourseV1 } from '../../src/engine';
 import {
   canRecordTwoStopSelectionIntent,
+  createFrozenTwoStopSeedPort,
   consumeTwoStopSelectionIntent,
   continueReleaseRecommendationSession,
   getRecommendationSessionAttemptLedger,
@@ -11,6 +12,7 @@ import {
   recordTwoStopSelectionIntent,
   runRecommendationSession,
 } from '../../src/ui/recommendation/v1Session';
+import type { TwoStopSelectionPort } from '../../src/ui/recommendation/twoStopSelectionModel';
 
 const session = () => ({
   nowIso: '2026-09-03T01:00:00.000Z',
@@ -70,6 +72,103 @@ test('UTWOSTOP02 failure-first: runtime은 receipt port·fail-closed ledger·일
   assert.equal(consumeTwoStopSelectionIntent(recommendationSession), first);
   assert.equal(consumeTwoStopSelectionIntent(recommendationSession), null);
   assert.equal(JSON.stringify(recommendationSession).includes('provider'), false);
+});
+
+test('UTWOSTOP03 사용자 반환 failure-first: A branch는 최초 표시 순서 seed를 begin/continue/reuse에 동결한다', async () => {
+  const A = course('A');
+  const B = course('B');
+  const C = course('C');
+  const D = course('D');
+  let displayed = [A, B, C] as readonly VerifiedCourseV1[];
+  const observed: Array<readonly VerifiedCourseV1[] | undefined> = [];
+  const base: TwoStopSelectionPort = {
+    async begin(input) {
+      observed.push(input.verifiedOneStopCourses);
+      return { requestId: input.requestId, firstPlaceId: input.firstCourse.placeIds[0], courses: [], pageState: 'more_available', continuation: { cursor: 1 } };
+    },
+    async continue(input) {
+      observed.push(input.verifiedOneStopCourses);
+      return { requestId: input.requestId, firstPlaceId: input.firstCourse.placeIds[0], courses: [], pageState: 'exhausted' };
+    },
+  };
+  const seeded = createFrozenTwoStopSeedPort(base, () => displayed);
+  const common = { requestId: 'seed-1', onProgress() {}, signal: new AbortController().signal };
+  await seeded.begin({ ...common, firstCourse: A });
+  displayed = [A, B, C, D];
+  await seeded.continue({ ...common, requestId: 'seed-2', firstCourse: A, continuation: { cursor: 1 } });
+  await seeded.begin({ ...common, requestId: 'seed-3', firstCourse: A });
+  await seeded.begin({ ...common, requestId: 'seed-4', firstCourse: D });
+
+  assert.deepEqual(observed.map((seed) => seed?.map(({ id }) => id)), [
+    [A.id, B.id, C.id], [A.id, B.id, C.id], [A.id, B.id, C.id], [A.id, B.id, C.id, D.id],
+  ]);
+  assert.equal(observed[0], observed[1]);
+  assert.equal(observed[0], observed[2]);
+  assert.notEqual(observed[0], observed[3]);
+  assert.equal(Object.isFrozen(observed[0]), true);
+});
+
+test('UTWOSTOP04 failure-first: exact pair store는 역선택 B branch에 같은 token과 frozen seed를 전달한다', async () => {
+  const A = course('A');
+  const B = course('B');
+  const pair = { ...A, id: 'pair-A-B', placeIds: ['A', 'B'] } as VerifiedCourseV1;
+  const token = {};
+  const pairSeeds = [{ course: pair, recommendationSessionToken: token, inputSignature: 'input', providerSignature: 'provider' }];
+  const observed: Array<{ token?: object; pairs?: readonly unknown[] }> = [];
+  const base: TwoStopSelectionPort = {
+    async begin(input) {
+      observed.push({ token: input.recommendationSessionToken, pairs: input.verifiedPairCourses });
+      return { requestId: input.requestId, firstPlaceId: input.firstCourse.placeIds[0], courses: [], pageState: 'exhausted' };
+    },
+    async continue(input) {
+      observed.push({ token: input.recommendationSessionToken, pairs: input.verifiedPairCourses });
+      return { requestId: input.requestId, firstPlaceId: input.firstCourse.placeIds[0], courses: [], pageState: 'exhausted' };
+    },
+  };
+  const seeded = createFrozenTwoStopSeedPort(base, () => [A, B], () => pairSeeds, token);
+  const common = { firstCourse: B, requestId: 'reverse-1', onProgress() {}, signal: new AbortController().signal };
+  await seeded.begin(common);
+  pairSeeds.push({ ...pairSeeds[0], course: { ...pair, id: 'late-pair' } });
+  await seeded.continue({ ...common, requestId: 'reverse-2', continuation: { cursor: 1 } });
+
+  assert.equal(observed[0]?.token, token);
+  assert.equal(observed[0]?.pairs, observed[1]?.pairs);
+  assert.deepEqual(observed[0]?.pairs, pairSeeds.slice(0, 1));
+  assert.equal(Object.isFrozen(observed[0]?.pairs), true);
+});
+
+test('UTWOSTOP04: production session은 완료 exact pair를 역선택 첫 후보로 route 0 재사용한다', async () => {
+  const recommendationSession = session();
+  let receiptCalls = 0;
+  const result = await runRecommendationSession(recommendationSession, { routeProxyEnabled: true }, {
+    createLegacyRoutes: () => ({ async getRoute() { return null; } }),
+    createActivatedProxyRoutes: async () => ({
+      async getRoute() { return null; },
+      async getRouteReceipt() {
+        receiptCalls += 1;
+        return { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 0, reused: true };
+      },
+    }),
+  });
+  const displayed = [result.representativeCourse, ...result.alternativeCourses].filter((item): item is VerifiedCourseV1 => Boolean(item));
+  assert.ok(displayed.length >= 2);
+  const first = displayed[0];
+  const port = getTwoStopSelectionPort(recommendationSession)!;
+  const initial = await port.begin({ firstCourse: first, requestId: 'production-forward', signal: new AbortController().signal, onProgress() {} });
+  const exactPair = initial.courses.find((item) => displayed.some((candidate) => candidate.placeIds[0] === item.placeIds.find((id) => id !== first.placeIds[0])));
+  assert.ok(exactPair);
+  const reverseFirst = displayed.find((candidate) => exactPair.placeIds.includes(candidate.placeIds[0]) && candidate !== first)!;
+  const beforeReverse = receiptCalls;
+  let callsAtReverseSeed = -1;
+  const reverse = await port.begin({
+    firstCourse: reverseFirst,
+    requestId: 'production-reverse',
+    signal: new AbortController().signal,
+    onProgress(event) { if (event.type === 'candidate_verified' && event.course === exactPair) callsAtReverseSeed = receiptCalls; },
+  });
+  assert.equal(callsAtReverseSeed, beforeReverse);
+  assert.equal(reverse.courses[0], exactPair);
+  assert.deepEqual(reverse.courses[0].placeIds, exactPair.placeIds);
 });
 
 test('UTWOSTOP02 eligibility 반환: secondary 조회는 실제 allowlist snapshot만 허용하고 intent를 변경하지 않는다', async () => {
