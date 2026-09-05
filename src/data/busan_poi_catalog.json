@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-08-31T15:45:56.083Z",
+    "generatedAt": "2026-09-05T04:53:07.381Z",
     "targetRegion": "부산",
     "source": "부산 자투리장소 검토 카탈로그 (TourAPI·부산 공공데이터·AI-Hub 기반)",
     "sourceCatalog": "data/processed/review/부산_장소_근거프로필_재분류.json",
@@ -339,6 +339,7 @@
             "sourceId": "174"
           }
         ],
+        "detailDescription": "바다와 카페라는 테마를 이야기할 때 항상 거론되는 로스토리 카페로 전문 큐그레이더가 직접 가져온 스페셜티 커피를 이용한 드립 커피 등 커피 베리에이션 메뉴가 전문이다. 야외에 해변을 바라볼 수 있는 자리와 담요가 구비되어 있다.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "웨이브온커피",
@@ -472,6 +473,7 @@
             "sourceId": "412"
           }
         ],
+        "detailDescription": "‘오이소! 보이소! 사이소!’ 한 번은 들어봤을 이 말은 바로 자갈치시장을 나타내는 유명한 문구다. 인근에 위치한 국제시장, 부평깡통시장과 함께 부산을 대표하는 전통시장 자갈치시장. 한국 최대 어시장 중 하나인 자갈치시장의 싱싱함 속으로 들어가 보자. 바닷가에 주먹만 한 자갈들이 있어서 붙은 이름 자갈치시장은 일제강점기 때부터 수산물을 파는 노점들이 형성되어 있었다.",
         "tourapiContentId": "132190",
         "tourapiContentTypeId": "38",
         "matchScope": "area_context",
@@ -781,6 +783,7 @@
             "sourceId": "2274"
           }
         ],
+        "detailDescription": "옛 선조들도 섬의 아름다움에 감탄했다는 이곳, ‘동백섬’. 오랜 세월 퇴적작용으로 인해 육지와 연결되었지만, 여전히 ‘섬’이라는 지명을 사용하며 옛 지형의 흔적을 간직하고 있습니다. 신라 시대 문인 ‘해운’ 최치원이 섬의 아름다움에 감탄해 자신의 호를 바위에 새긴 데서 지금의 ‘해운대’라는 지명이 유래했을 만큼, 오래전부터 그 경관이 뛰어나기로 유명하죠. 역사적인 상징물이 많은 만큼 둘러보는 재미도 쏠쏠한데요.",
         "tourapiContentId": "128810",
         "tourapiContentTypeId": "12",
         "matchScope": "area_context",
@@ -1081,6 +1084,7 @@
             "sourceId": "289"
           }
         ],
+        "detailDescription": "대형‧소형 전시실, 로비전시실, 옥외전시실, 어린이미술관, 이우환공간, 카페테리아 등을 갖춘 복합문화공간이다. 다양한 현대미술작품을 발굴하여 전시하고 있으며, 다채로운 문화행사와 체험프로그램도 운영한다.",
         "tourapiContentId": "130166",
         "tourapiContentTypeId": "14",
         "matchScope": "direct_place",
@@ -1554,6 +1558,7 @@
             "sourceId": "400"
           }
         ],
+        "detailDescription": "골목 입구에서 풍겨 나오는 맛있는 냄새를 따라 이끌려온 이 곳. 밤이 되면 그 냄새가 더욱 짙어지는 이곳, 바로 부평깡통시장이다.",
         "tourapiContentId": "1878218",
         "tourapiContentTypeId": "38",
         "matchScope": "area_context",
@@ -1983,6 +1988,7 @@
             "sourceId": "257"
           }
         ],
+        "detailDescription": "부산하면 바다, 바다하면 부산이라고들 하지만 우리는 대한민국 해양에 대해 얼마나 알고 있을까? 세상의 모든 바다 이야기가 시작되는 국립해양박물관이 과거와 현재 그리고 미래의 바다로 안내한다. 부산 앞 바다를 배경으로 웅장한 외관을 자랑하는 건물이 눈에 띈다. 물방울이 튀어 오르는 모양을 형상화한 외관은 마치 은하계를 가로지르는 우주선 같다.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "국립해양박물관",
@@ -2127,6 +2133,7 @@
             "sourceId": "272"
           }
         ],
+        "detailDescription": "시간을 되돌아가는 길 마음에 책갈피 하나를 꽂다, 보수동책방골목 갈수록 바빠지는 삶. ‘빨리 빨리’를 좇다 보면 가끔은 모든 것을 내려놓고 잠시 쉬고 싶을 때가 있다. 그럴 때 가던 걸음을 멈추고 한숨 돌리기 좋은 곳, 보수동책방골목으로 가보자! 부산 중구 보수동에 위치한 보수동책방골목은 한국전쟁 당시 부산이 임시수도가 되었을 때 조성된 곳이다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "보수동책방골목",
@@ -2266,6 +2273,7 @@
             "sourceId": "286"
           }
         ],
+        "detailDescription": "나이 지긋한 어르신의 추억 속 해수욕장이 젊은이들의 핫플로 다시 태어났다면? SNS를 뜨겁게 달구며 너도나도 업로드 경쟁중인 장소의 주인공 송도해수욕장으로 간다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "송도해수욕장",
@@ -2393,6 +2401,7 @@
             "sourceId": "340"
           }
         ],
+        "detailDescription": "114만 명, 국립부산과학관 유치서명을 할 때 참가한 부산시민의 숫자라고 한다. 부산인구가 350만 명 쯤 되니까, 얼마나 많은 부산시민들이 과학관을 원했는지 느낄 수 있다. 이렇게 큰 관심과 응원 속에서 세워진 국립부산과학관은 과학 꿈나무들을 태우고 항해하는 멋진 배 모양으로 우리 앞에 우뚝 서 있다. 정문을 통과해 보이는 국립부산과학관은 마치 작은 우주기지 같은 신비감을 느끼게 한다.",
         "matchScope": "direct_place",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "국립부산과학관",
@@ -2517,6 +2526,7 @@
             "sourceId": "354"
           }
         ],
+        "detailDescription": "군부대와 공원. 정반대에 놓여있는 느낌의 두 단어다. 하지만 군부대가 공원으로 다시 태어난 곳이 있으니, 바로 부산시민공원이다. 광복 후 미군 하야리아 부대로 이 땅이 불린지 70여 년 만에 부산시민의 따뜻한 쉼터로 돌아온 부산시민공원을 둘러본다. 먼저 눈에 들어오는 건 분수와 함께 있는 도심 백사장. 공원 안에 백사장이라니, 참 부산스럽기도 하다. 백사장 한가운데 모래놀이 삼매경에 빠진 아빠와 두 아들의 모습이 정겹다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산시민공원",
@@ -2645,6 +2655,7 @@
             "sourceId": "366"
           }
         ],
+        "detailDescription": "낙동강과 남해안이 만나 양질의 모래밭을 만든 곳, 일출과 일몰 조망지로 부산 최고인 곳, 다대포해수욕장은 자연이 주는 황홀경을 맘껏 즐길 수 있는 기분 좋은 장소이다. 다대포해수욕장의 희고 고운 모래는 오랜 풍화작용 덕에 매우 부드러운 것이 특징이다. 모래사장을 거닐 때 발가락 사이로 흘러내리는 모래알의 색다른 감촉이 상쾌한 기분을 만들어주는 것도 이 때문이다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "다대포 해수욕장",
@@ -2788,6 +2799,7 @@
             "sourceId": "372"
           }
         ],
+        "detailDescription": "누구나 ‘나만 알고 싶은 공간’을 가지고 있기 마련이다. 그러나 이번만큼은 수영구의 숨겨진 아지트를 공개해도 좋겠다. 복합문화공간 F1963을 소개한다.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "F1963",
@@ -2918,6 +2930,7 @@
             "sourceId": "377"
           }
         ],
+        "detailDescription": "광안대교라는 랜드마크와 함께 부산을 대표하는 해수욕장 중 하나로 꼽히는 광안리 해수욕장. 도심과 가장 가까운 해변이자 부산 젊은이들의 성지라 할 수 있다. 전국에서 모여드는 이들의 입맛을 모두 충족시킬 수 있는 다양한 맛집의 향연, 바다가 보이는 카페, 골목 곳곳에 위치한 이색 공간, 봄이면 온 거리를 분홍빛으로 물들이는 남천동 벚꽃거리까지. 새하얀 백사장과 푸르른 바다 말고도, 광안리가 간직한 매력은 무궁무진하다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "광안리 해수욕장",
@@ -3319,6 +3332,7 @@
             "sourceId": "420"
           }
         ],
+        "detailDescription": "부산에서 제법 규모가 있는 행사나 박람회는 모두 이곳에서 열린다. 바로 국제적인 규모를 자랑하는 전시컨벤션센터 벡스코(BEXCO)다. 체험 형태의 전시 뿐 아니라 다양한 문화공연과 행사가 365일 펼쳐지는 곳이다. 전체 행사일정을 미리 확인하여 사전등록을 신청하면 관람료가 무료이거나 훨씬 저렴해진다.",
         "tourapiContentId": "130668",
         "tourapiContentTypeId": "14",
         "matchScope": "direct_place",
@@ -3491,6 +3505,7 @@
             "sourceId": "1185"
           }
         ],
+        "detailDescription": "부산의 모든 길은 서면으로 통한다고 했던가요? 언제부터인가 부산을 대표하는 곳으로 해운대를 떠올리지만 부산 사람들에게는 여전히 서면이 부산의 중심지입니다. 그곳에 최근 문을 연 따끈따끈한 신상 여행지가 있으니. 바로 KT&G 상상마당입니다. KT&G 상상마당 부산",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "KT&G상상마당 부산",
@@ -3621,6 +3636,7 @@
             "sourceId": "1444"
           }
         ],
+        "detailDescription": "국제시장과 보수동책방골목, 임시수도기념관 등이 있는 부산 중구 일대는 부산의 근현대사를 오롯이 품고 있는 살아 있는 역사 교과서입니다. 특히 일제강점기 때 동양척식주식회사로 활용됐던 부산근대역사관은 부산 근현대사의 상징적인 공간으로 부산 역사 기행의 중심입니다. 복합문화공간으로 변신한 부산근현대역사관 별관으로 지금 함께 떠나보시죠.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산근현대역사관",
@@ -3886,6 +3902,7 @@
             "sourceId": "1653"
           }
         ],
+        "detailDescription": "아름다운 공간미술 속으로 들어가 작품을 완성해보는 시간을 서면미술관에서 만들어보세요.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "서면미술관",
@@ -4009,6 +4026,7 @@
             "sourceId": "1671"
           }
         ],
+        "detailDescription": "을숙도문화회관 뒤편으로 향하면 마치 오래전부터 이곳에 있었던 것처럼 담쟁이넝쿨이 인상적인 건물이 나온다. 2018년 6월 개관한 부산현대미술관이다.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산현대미술관",
@@ -4547,6 +4565,7 @@
             "sourceId": "2581"
           }
         ],
+        "detailDescription": "부산 해운대에 있는 ‘고래서이뻐’는 해리단길 주택을 개조해서 만든 소품샵입니다. 부산의 바다와 고래를 모티브로 한 소라 자개 핸드메이드 소품과 기념품을 판매하는 곳입니다.",
         "tourapiContentId": "3336600",
         "tourapiContentTypeId": "38",
         "matchScope": "direct_place",
@@ -5402,6 +5421,7 @@
             "sourceId": "2252"
           }
         ],
+        "detailDescription": "식물과 뜨개, 주방 소품 등 다양한 리빙 소품들로 가득한 소품샵, ‘페이퍼 가든’. 순백의 종이 위에 각자 꿈꾸는 정원을 그려본다는 뜻의 이름이라고 합니다. 실내 공간은 다양한 식물과 화분, 뜨개식물 등이 조화롭게 어우러져 있는데요. ‘가든’이라는 컨셉에 맞게 따뜻하고 평화로운 느낌을 줍니다.",
         "matchScope": "direct_place",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "페이퍼가든",
@@ -5525,6 +5545,7 @@
             "sourceId": "2417"
           }
         ],
+        "detailDescription": "‘오브젝트 서면점’은 화이트 톤 간판과 커다란 통유리로 감각적인 큐레이션을 더욱 돋보이게 하는 소품샵입니다. 매장에 들어서면 문구류, 패션 잡화, 주방용품, 인테리어 소품 등 실용성과 디자인을 겸비한 다양한 상품이 시선을 사로잡습니다.",
         "matchScope": "direct_place",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "오브젝트 서면점",
@@ -5654,6 +5675,7 @@
             "sourceId": "402"
           }
         ],
+        "detailDescription": "부산 금정구 범어사는 해인사, 통도사와 함께 영남의 3대 사찰로 꼽힌다. 신라 문무왕 때 건축됐으며 역사적으로도 많은 고승을 배출한 수행사찰로 유명하다. 특히 아름다운 계곡과 빼어난 산세를 자랑하는 금정산 자락에 위치해 사시사철 많은 사람들의 발걸음이 끊이질 않는다. 범어사 입구로 들어서면 당간지주와 하마석이 가장 먼저 눈에 들어온다. 1,300년 동안 한자리를 지킨 당간지주는 절을 지키는 수호신처럼 당당한 모습이다.",
         "tourapiContentId": "2554111",
         "tourapiContentTypeId": "14",
         "matchScope": "direct_place",
@@ -5853,6 +5875,7 @@
             "sourceId": "421"
           }
         ],
+        "detailDescription": "아시아를 넘어 세계적으로 인정받는 부산국제영화제, 부산이 영화의 도시라 불리는 가장 큰 이유다. 그리고 또 하나, 빅루프의 LED조명과 함께 부산의 랜드마크가 된 영화의 전당이 있다. 영화제 기간에는 개‧폐막식 등 중요 행사가 진행되고, 평상시에는 영화와 공연을 즐길 수 있는 복합문화공간이 된다. 저렴한 관람료에 최고의 영상과 음향을 자랑한다.",
         "tourapiContentId": "2456837",
         "tourapiContentTypeId": "12",
         "matchScope": "area_context",
@@ -6030,6 +6053,7 @@
             "sourceId": "1881"
           }
         ],
+        "detailDescription": "생활용품 브랜드 ‘럭키’를 기억하시나요? 세계적인 기업 LG 그룹의 모태, 락희화학공업사가 제작해 해방 이후부터 한국인의 생활 건강을 책임진 추억의 브랜드입니다. 더 놀라운 사실은 LG의 시초이자 오랫동안 사랑받은 브랜드 ‘럭키’가 부산의 가정집 마당에서부터 시작했다는 점입니다. 이렇듯 부산의 근현대사는 대한민국의 굵직한 사건뿐만 아니라 소소한 역사와도 맞닿아 있어 우리의 흥미를 더욱 자극합니다.",
         "tourapiContentId": "3083767",
         "tourapiContentTypeId": "14",
         "matchScope": "direct_place",
@@ -6228,6 +6252,7 @@
             "sourceId": "550"
           }
         ],
+        "detailDescription": "부산항이 넓게 내다보이며 360도 아름다운 전망을 볼 수 있는 곳. 문화와 관광을 한번에 즐길 수 있는 부산관광의 대표 랜드마크.",
         "tourapiContentId": "1277679",
         "tourapiContentTypeId": "12",
         "matchScope": "direct_place",
@@ -6372,6 +6397,7 @@
             "sourceId": "327"
           }
         ],
+        "detailDescription": "한국전쟁 이후 피난민들이 모여 일군 삶의 터전, 부전시장. 지금은 부전마켓타운이라는 다소 현대적인 이름을 가졌지만 부산 사람들은 여전히 부전시장이라 부른다. 이른 새벽부터 농수산물 직거래로 시장은 활기가 넘친다. 자갈치 시장에 버금가는 싱싱한 수산물, 구포시장을 능가하는 각양각색 장터음식은 물론 각종 생활용품까지 시장 곳곳을 구경하는 것만으로도 활력충전이 되는 곳이다. 부전시장에 가면 마음 가득 삶의 에너지를 담게 된다.",
         "tourapiContentId": "132188",
         "tourapiContentTypeId": "38",
         "matchScope": "area_context",
@@ -6940,6 +6966,7 @@
             "sourceId": "174"
           }
         ],
+        "detailDescription": "바다와 카페라는 테마를 이야기할 때 항상 거론되는 로스토리 카페로 전문 큐그레이더가 직접 가져온 스페셜티 커피를 이용한 드립 커피 등 커피 베리에이션 메뉴가 전문이다. 야외에 해변을 바라볼 수 있는 자리와 담요가 구비되어 있다.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "웨이브온커피",
@@ -7073,6 +7100,7 @@
             "sourceId": "412"
           }
         ],
+        "detailDescription": "‘오이소! 보이소! 사이소!’ 한 번은 들어봤을 이 말은 바로 자갈치시장을 나타내는 유명한 문구다. 인근에 위치한 국제시장, 부평깡통시장과 함께 부산을 대표하는 전통시장 자갈치시장. 한국 최대 어시장 중 하나인 자갈치시장의 싱싱함 속으로 들어가 보자. 바닷가에 주먹만 한 자갈들이 있어서 붙은 이름 자갈치시장은 일제강점기 때부터 수산물을 파는 노점들이 형성되어 있었다.",
         "tourapiContentId": "132190",
         "tourapiContentTypeId": "38",
         "matchScope": "area_context",
@@ -7382,6 +7410,7 @@
             "sourceId": "2274"
           }
         ],
+        "detailDescription": "옛 선조들도 섬의 아름다움에 감탄했다는 이곳, ‘동백섬’. 오랜 세월 퇴적작용으로 인해 육지와 연결되었지만, 여전히 ‘섬’이라는 지명을 사용하며 옛 지형의 흔적을 간직하고 있습니다. 신라 시대 문인 ‘해운’ 최치원이 섬의 아름다움에 감탄해 자신의 호를 바위에 새긴 데서 지금의 ‘해운대’라는 지명이 유래했을 만큼, 오래전부터 그 경관이 뛰어나기로 유명하죠. 역사적인 상징물이 많은 만큼 둘러보는 재미도 쏠쏠한데요.",
         "tourapiContentId": "128810",
         "tourapiContentTypeId": "12",
         "matchScope": "area_context",
@@ -7682,6 +7711,7 @@
             "sourceId": "289"
           }
         ],
+        "detailDescription": "대형‧소형 전시실, 로비전시실, 옥외전시실, 어린이미술관, 이우환공간, 카페테리아 등을 갖춘 복합문화공간이다. 다양한 현대미술작품을 발굴하여 전시하고 있으며, 다채로운 문화행사와 체험프로그램도 운영한다.",
         "tourapiContentId": "130166",
         "tourapiContentTypeId": "14",
         "matchScope": "direct_place",
@@ -8155,6 +8185,7 @@
             "sourceId": "400"
           }
         ],
+        "detailDescription": "골목 입구에서 풍겨 나오는 맛있는 냄새를 따라 이끌려온 이 곳. 밤이 되면 그 냄새가 더욱 짙어지는 이곳, 바로 부평깡통시장이다.",
         "tourapiContentId": "1878218",
         "tourapiContentTypeId": "38",
         "matchScope": "area_context",
@@ -8584,6 +8615,7 @@
             "sourceId": "257"
           }
         ],
+        "detailDescription": "부산하면 바다, 바다하면 부산이라고들 하지만 우리는 대한민국 해양에 대해 얼마나 알고 있을까? 세상의 모든 바다 이야기가 시작되는 국립해양박물관이 과거와 현재 그리고 미래의 바다로 안내한다. 부산 앞 바다를 배경으로 웅장한 외관을 자랑하는 건물이 눈에 띈다. 물방울이 튀어 오르는 모양을 형상화한 외관은 마치 은하계를 가로지르는 우주선 같다.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "국립해양박물관",
@@ -8728,6 +8760,7 @@
             "sourceId": "272"
           }
         ],
+        "detailDescription": "시간을 되돌아가는 길 마음에 책갈피 하나를 꽂다, 보수동책방골목 갈수록 바빠지는 삶. ‘빨리 빨리’를 좇다 보면 가끔은 모든 것을 내려놓고 잠시 쉬고 싶을 때가 있다. 그럴 때 가던 걸음을 멈추고 한숨 돌리기 좋은 곳, 보수동책방골목으로 가보자! 부산 중구 보수동에 위치한 보수동책방골목은 한국전쟁 당시 부산이 임시수도가 되었을 때 조성된 곳이다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "보수동책방골목",
@@ -8867,6 +8900,7 @@
             "sourceId": "286"
           }
         ],
+        "detailDescription": "나이 지긋한 어르신의 추억 속 해수욕장이 젊은이들의 핫플로 다시 태어났다면? SNS를 뜨겁게 달구며 너도나도 업로드 경쟁중인 장소의 주인공 송도해수욕장으로 간다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "송도해수욕장",
@@ -8994,6 +9028,7 @@
             "sourceId": "340"
           }
         ],
+        "detailDescription": "114만 명, 국립부산과학관 유치서명을 할 때 참가한 부산시민의 숫자라고 한다. 부산인구가 350만 명 쯤 되니까, 얼마나 많은 부산시민들이 과학관을 원했는지 느낄 수 있다. 이렇게 큰 관심과 응원 속에서 세워진 국립부산과학관은 과학 꿈나무들을 태우고 항해하는 멋진 배 모양으로 우리 앞에 우뚝 서 있다. 정문을 통과해 보이는 국립부산과학관은 마치 작은 우주기지 같은 신비감을 느끼게 한다.",
         "matchScope": "direct_place",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "국립부산과학관",
@@ -9118,6 +9153,7 @@
             "sourceId": "354"
           }
         ],
+        "detailDescription": "군부대와 공원. 정반대에 놓여있는 느낌의 두 단어다. 하지만 군부대가 공원으로 다시 태어난 곳이 있으니, 바로 부산시민공원이다. 광복 후 미군 하야리아 부대로 이 땅이 불린지 70여 년 만에 부산시민의 따뜻한 쉼터로 돌아온 부산시민공원을 둘러본다. 먼저 눈에 들어오는 건 분수와 함께 있는 도심 백사장. 공원 안에 백사장이라니, 참 부산스럽기도 하다. 백사장 한가운데 모래놀이 삼매경에 빠진 아빠와 두 아들의 모습이 정겹다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산시민공원",
@@ -9246,6 +9282,7 @@
             "sourceId": "366"
           }
         ],
+        "detailDescription": "낙동강과 남해안이 만나 양질의 모래밭을 만든 곳, 일출과 일몰 조망지로 부산 최고인 곳, 다대포해수욕장은 자연이 주는 황홀경을 맘껏 즐길 수 있는 기분 좋은 장소이다. 다대포해수욕장의 희고 고운 모래는 오랜 풍화작용 덕에 매우 부드러운 것이 특징이다. 모래사장을 거닐 때 발가락 사이로 흘러내리는 모래알의 색다른 감촉이 상쾌한 기분을 만들어주는 것도 이 때문이다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "다대포 해수욕장",
@@ -9389,6 +9426,7 @@
             "sourceId": "372"
           }
         ],
+        "detailDescription": "누구나 ‘나만 알고 싶은 공간’을 가지고 있기 마련이다. 그러나 이번만큼은 수영구의 숨겨진 아지트를 공개해도 좋겠다. 복합문화공간 F1963을 소개한다.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "F1963",
@@ -9519,6 +9557,7 @@
             "sourceId": "377"
           }
         ],
+        "detailDescription": "광안대교라는 랜드마크와 함께 부산을 대표하는 해수욕장 중 하나로 꼽히는 광안리 해수욕장. 도심과 가장 가까운 해변이자 부산 젊은이들의 성지라 할 수 있다. 전국에서 모여드는 이들의 입맛을 모두 충족시킬 수 있는 다양한 맛집의 향연, 바다가 보이는 카페, 골목 곳곳에 위치한 이색 공간, 봄이면 온 거리를 분홍빛으로 물들이는 남천동 벚꽃거리까지. 새하얀 백사장과 푸르른 바다 말고도, 광안리가 간직한 매력은 무궁무진하다.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "광안리 해수욕장",
@@ -9920,6 +9959,7 @@
             "sourceId": "420"
           }
         ],
+        "detailDescription": "부산에서 제법 규모가 있는 행사나 박람회는 모두 이곳에서 열린다. 바로 국제적인 규모를 자랑하는 전시컨벤션센터 벡스코(BEXCO)다. 체험 형태의 전시 뿐 아니라 다양한 문화공연과 행사가 365일 펼쳐지는 곳이다. 전체 행사일정을 미리 확인하여 사전등록을 신청하면 관람료가 무료이거나 훨씬 저렴해진다.",
         "tourapiContentId": "130668",
         "tourapiContentTypeId": "14",
         "matchScope": "direct_place",
@@ -10092,6 +10132,7 @@
             "sourceId": "1185"
           }
         ],
+        "detailDescription": "부산의 모든 길은 서면으로 통한다고 했던가요? 언제부터인가 부산을 대표하는 곳으로 해운대를 떠올리지만 부산 사람들에게는 여전히 서면이 부산의 중심지입니다. 그곳에 최근 문을 연 따끈따끈한 신상 여행지가 있으니. 바로 KT&G 상상마당입니다. KT&G 상상마당 부산",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "KT&G상상마당 부산",
@@ -10222,6 +10263,7 @@
             "sourceId": "1444"
           }
         ],
+        "detailDescription": "국제시장과 보수동책방골목, 임시수도기념관 등이 있는 부산 중구 일대는 부산의 근현대사를 오롯이 품고 있는 살아 있는 역사 교과서입니다. 특히 일제강점기 때 동양척식주식회사로 활용됐던 부산근대역사관은 부산 근현대사의 상징적인 공간으로 부산 역사 기행의 중심입니다. 복합문화공간으로 변신한 부산근현대역사관 별관으로 지금 함께 떠나보시죠.",
         "matchScope": "area_context",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산근현대역사관",
@@ -10487,6 +10529,7 @@
             "sourceId": "1653"
           }
         ],
+        "detailDescription": "아름다운 공간미술 속으로 들어가 작품을 완성해보는 시간을 서면미술관에서 만들어보세요.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "서면미술관",
@@ -10610,6 +10653,7 @@
             "sourceId": "1671"
           }
         ],
+        "detailDescription": "을숙도문화회관 뒤편으로 향하면 마치 오래전부터 이곳에 있었던 것처럼 담쟁이넝쿨이 인상적인 건물이 나온다. 2018년 6월 개관한 부산현대미술관이다.",
         "matchScope": "direct_place",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산현대미술관",
@@ -11148,6 +11192,7 @@
             "sourceId": "2581"
           }
         ],
+        "detailDescription": "부산 해운대에 있는 ‘고래서이뻐’는 해리단길 주택을 개조해서 만든 소품샵입니다. 부산의 바다와 고래를 모티브로 한 소라 자개 핸드메이드 소품과 기념품을 판매하는 곳입니다.",
         "tourapiContentId": "3336600",
         "tourapiContentTypeId": "38",
         "matchScope": "direct_place",
@@ -12003,6 +12048,7 @@
             "sourceId": "2252"
           }
         ],
+        "detailDescription": "식물과 뜨개, 주방 소품 등 다양한 리빙 소품들로 가득한 소품샵, ‘페이퍼 가든’. 순백의 종이 위에 각자 꿈꾸는 정원을 그려본다는 뜻의 이름이라고 합니다. 실내 공간은 다양한 식물과 화분, 뜨개식물 등이 조화롭게 어우러져 있는데요. ‘가든’이라는 컨셉에 맞게 따뜻하고 평화로운 느낌을 줍니다.",
         "matchScope": "direct_place",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "페이퍼가든",
@@ -12126,6 +12172,7 @@
             "sourceId": "2417"
           }
         ],
+        "detailDescription": "‘오브젝트 서면점’은 화이트 톤 간판과 커다란 통유리로 감각적인 큐레이션을 더욱 돋보이게 하는 소품샵입니다. 매장에 들어서면 문구류, 패션 잡화, 주방용품, 인테리어 소품 등 실용성과 디자인을 겸비한 다양한 상품이 시선을 사로잡습니다.",
         "matchScope": "direct_place",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "오브젝트 서면점",
@@ -12255,6 +12302,7 @@
             "sourceId": "402"
           }
         ],
+        "detailDescription": "부산 금정구 범어사는 해인사, 통도사와 함께 영남의 3대 사찰로 꼽힌다. 신라 문무왕 때 건축됐으며 역사적으로도 많은 고승을 배출한 수행사찰로 유명하다. 특히 아름다운 계곡과 빼어난 산세를 자랑하는 금정산 자락에 위치해 사시사철 많은 사람들의 발걸음이 끊이질 않는다. 범어사 입구로 들어서면 당간지주와 하마석이 가장 먼저 눈에 들어온다. 1,300년 동안 한자리를 지킨 당간지주는 절을 지키는 수호신처럼 당당한 모습이다.",
         "tourapiContentId": "2554111",
         "tourapiContentTypeId": "14",
         "matchScope": "direct_place",
@@ -12454,6 +12502,7 @@
             "sourceId": "421"
           }
         ],
+        "detailDescription": "아시아를 넘어 세계적으로 인정받는 부산국제영화제, 부산이 영화의 도시라 불리는 가장 큰 이유다. 그리고 또 하나, 빅루프의 LED조명과 함께 부산의 랜드마크가 된 영화의 전당이 있다. 영화제 기간에는 개‧폐막식 등 중요 행사가 진행되고, 평상시에는 영화와 공연을 즐길 수 있는 복합문화공간이 된다. 저렴한 관람료에 최고의 영상과 음향을 자랑한다.",
         "tourapiContentId": "2456837",
         "tourapiContentTypeId": "12",
         "matchScope": "area_context",
@@ -12631,6 +12680,7 @@
             "sourceId": "1881"
           }
         ],
+        "detailDescription": "생활용품 브랜드 ‘럭키’를 기억하시나요? 세계적인 기업 LG 그룹의 모태, 락희화학공업사가 제작해 해방 이후부터 한국인의 생활 건강을 책임진 추억의 브랜드입니다. 더 놀라운 사실은 LG의 시초이자 오랫동안 사랑받은 브랜드 ‘럭키’가 부산의 가정집 마당에서부터 시작했다는 점입니다. 이렇듯 부산의 근현대사는 대한민국의 굵직한 사건뿐만 아니라 소소한 역사와도 맞닿아 있어 우리의 흥미를 더욱 자극합니다.",
         "tourapiContentId": "3083767",
         "tourapiContentTypeId": "14",
         "matchScope": "direct_place",
@@ -12829,6 +12879,7 @@
             "sourceId": "550"
           }
         ],
+        "detailDescription": "부산항이 넓게 내다보이며 360도 아름다운 전망을 볼 수 있는 곳. 문화와 관광을 한번에 즐길 수 있는 부산관광의 대표 랜드마크.",
         "tourapiContentId": "1277679",
         "tourapiContentTypeId": "12",
         "matchScope": "direct_place",
@@ -12973,6 +13024,7 @@
             "sourceId": "327"
           }
         ],
+        "detailDescription": "한국전쟁 이후 피난민들이 모여 일군 삶의 터전, 부전시장. 지금은 부전마켓타운이라는 다소 현대적인 이름을 가졌지만 부산 사람들은 여전히 부전시장이라 부른다. 이른 새벽부터 농수산물 직거래로 시장은 활기가 넘친다. 자갈치 시장에 버금가는 싱싱한 수산물, 구포시장을 능가하는 각양각색 장터음식은 물론 각종 생활용품까지 시장 곳곳을 구경하는 것만으로도 활력충전이 되는 곳이다. 부전시장에 가면 마음 가득 삶의 에너지를 담게 된다.",
         "tourapiContentId": "132188",
         "tourapiContentTypeId": "38",
         "matchScope": "area_context",
@@ -13281,6 +13333,7 @@
             "sourceId": "1445"
           }
         ],
+        "detailDescription": "하버뷰를 자랑하는 거대한 베이커리카페로 주말이면 유원지라도 온 듯 많은 인파가 몰리지만, 워낙 넓은 공간을 가지고 있어 웨이팅은 생각보다 짧다. 약 80여 종의 다양한 베이커리와 음료, 아이스크림이 준비되어 있고 볼거리가 많은 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "피아크 카페&베이커리",
@@ -13393,6 +13446,7 @@
             "sourceId": "1447"
           }
         ],
+        "detailDescription": "아주 드물게 전통적인 핸드드립과 사이폰을 이용해 커피를 내리는 이곳은 시간은 조금 더 걸리지만 색다른 커피를 즐길 수 있는 곳이다. 고급스러운 실내와 테이블 착석 후 주문하고 후불 결제하는 고풍스러운 운영을 고수하는 것도 인상적이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "커피스가모 인 서면",
@@ -13526,6 +13580,7 @@
             "sourceId": "1452"
           }
         ],
+        "detailDescription": "너무나도 유명한 대한민국 제과명장의 베이커리로 4년간 간수 뺀 신안천일염, 제철 우리 농산물 등 좋은 재료를 사용한 100여종의 빵과 디저트를 매일 직접 구워 제공하고 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "이흥용과자점 부산대직영점",
@@ -13643,6 +13698,7 @@
             "sourceId": "1466"
           }
         ],
+        "detailDescription": "맛있고도 건강한 빵을 연구하는 이곳은 버터향 가득한 소금빵이 바삭하고 쫄깃한 식감으로 인기 있으며, 대표메뉴인 천연발효종 유럽빵과 통밀 건강빵이 다양한 종류로 준비되어 있다",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "보리종파티세리 본점",
@@ -13760,6 +13816,7 @@
             "sourceId": "1802"
           }
         ],
+        "detailDescription": "넓은 한옥 인테리어의 카페로 대한민국 제과제빵명장 ‘김덕규 베이커리’를 함께 즐길 수 있다. 한옥과 어우러진 마당을 바라보며 사계절을 아름답게 바라볼 수 있는 매력적인 장소다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "토북베이커리",
@@ -13893,6 +13950,7 @@
             "sourceId": "1803"
           }
         ],
+        "detailDescription": "유기농 밀가루와 천연발효종인 르방을 사용하여 빵을 만들고 있는 곳으로 프랑스 발효 버터와 100% 동물성 생크림, 마다가스카르 바닐라빈, 동물복지 유정란을 사용해 당일 만들어서 당일 판매하고 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "카페호밀",
@@ -14026,6 +14084,7 @@
             "sourceId": "1838"
           }
         ],
+        "detailDescription": "행복한 공간을 추구하는 부부의 취향이 온전히담긴 감성적인 카페로 직접 로스팅한 ‘강배전 스페셜티 커피’와 함께 행복한 기분을 느낄 수 있도록 세심하게 구성된 공간이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "그리다부부",
@@ -14143,6 +14202,7 @@
             "sourceId": "2354"
           }
         ],
+        "detailDescription": "프랑스 르 꼬르동 블루를 졸업하고, 호텔 샹그릴라 파리, 호텔리츠 파리 등 14년간 파리에서 활동한 김지연 파티시에의 디저트가게로 프랑스제과가 기초가 된 프랑스디저트 전문점이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "보느파티쓰리",
@@ -14388,6 +14448,7 @@
             "sourceId": "2371"
           }
         ],
+        "detailDescription": "조용하고 정갈한 공간에서, 건강하고 좋은 재료를 사용하여 만드는 디저트를 만날 수 있는 곳으로, 제철과일과 채소를 이용한 케이크와 구움과자를 만들고 있는 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "연화제과",
@@ -14505,6 +14566,7 @@
             "sourceId": "2386"
           }
         ],
+        "detailDescription": "공간도 커피도 마지막까지 편안하고 부드러운 것을 지향하는 이곳은 밸런스 좋고 여운이 깔끔한 커피를 완성하는 것에 가장 많은 시간과 노력을 기울인다고 한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "히떼로스터리 전포점",
@@ -14750,6 +14812,7 @@
             "sourceId": "1611"
           }
         ],
+        "detailDescription": "부산에서 오래된 빵집으로, 60년 넘는 역사를 자랑한다. 부드러운 빵에 콘샐러드가 들어간 크로이즌이 인기 있다. 세련되지는 않으나 예스러운 맛의 빵이 많으며 향수를 느끼는 사람들이 많이 찾는다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "백구당",
@@ -14867,6 +14930,7 @@
             "sourceId": "1628"
           }
         ],
+        "detailDescription": "고급스러운 플레이팅의 디저트를 맛볼 수 있는 곳이다. 연보라색의 라벤더 무스를 올린 비올렛이 인기메뉴로, 라즈베리 잼과 타르트지가 잘 조화된다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "머그디저트랩",
@@ -14979,6 +15043,7 @@
             "sourceId": "1630"
           }
         ],
+        "detailDescription": "달콤한 빵, 구움과자, 케이크를 전문으로 하는 디저트 카페. 디저트와 즐길 수 있는 차도 다양한 종류를 선보인다. 몽블랑, 포레블랑쉬 등이 인기 메뉴.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "보느파티쓰 리",
@@ -15089,6 +15154,7 @@
             "sourceId": "1631"
           }
         ],
+        "detailDescription": "다양한 종류의 베이커리를 선보이는 빵집. 여러가지 종류의 바게트가 인기 메뉴다. 페이스트리 결이 잘 느껴지는 크루아상과 담백한 식빵도 맛있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "브레드365",
@@ -15204,6 +15270,7 @@
             "sourceId": "1637"
           }
         ],
+        "detailDescription": "전포동의 새롭게 떠오르는 스페셜티커피. 수영 지역에서 시작을 했다가, 최근 전포동으로 매장을 이전했다. 메쉬, 딥블루레이크와 함께 한국을 상징하는 라이트로스팅 커피 매장. 과일향과 꽃향이 선명한 개성있는 생두를 기준으로 로스팅을 작업하면서 매혹적인 밸런스와 단맛이 좋은 커피까지 잘 발현한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "히떼로스터리",
@@ -17325,6 +17392,7 @@
             "sourceId": "848"
           }
         ],
+        "detailDescription": "청정자연을 그대로 품은 부산치유의 숲에서 힐링하고 가세요! 아홉산 자락에 넓게 자리한 부산치유의 숲은 부산 최초로 조성된 치유의 숲이랍니다. 체계적인 산림치유 프로그램을 운영하고 있기도 하죠. 지금은 코로나19로 인해 프로그램 운영 관련 변동이 있을 수도 있으니 이 부분은 별도로 문의를 해보셔야 해요.",
         "tourapiContentId": "2660770",
         "tourapiContentTypeId": "12",
         "matchScope": "category_fallback",
@@ -17587,6 +17655,7 @@
             "sourceId": "2106"
           }
         ],
+        "detailDescription": "색채마을은 오래된 주택 벽을 알록달록하게 꾸며 벽화들이 가득한 예쁜 길로, 천천히 감상하며 걸을 수 있는 이색적인 관광지입니다. 2009년 부산시의 색채계획 사업으로 조성된 이곳은 한적하고 평화로운 분위기를 자아냅니다. 마을에는 주황색 모노레일이 오르막길을 따라 운행하며, 산복도로의 귀여운 벽화들과 소품들이 힘든 오르막길을 잊게 해줍니다.",
         "tourapiContentId": "3064931",
         "tourapiContentTypeId": "12",
         "matchScope": "category_fallback",
@@ -18958,6 +19027,7 @@
             "sourceId": "1868"
           }
         ],
+        "detailDescription": "한국전쟁 당시 피란민들의 애환이 서려 있는 부산의 산복도로. 동구 초량동의 이바구길과 연결되는 망양로는 그 자체로 멋진 전망대입니다.",
         "tourapiContentId": "2656194",
         "tourapiContentTypeId": "12",
         "matchScope": "category_fallback",
@@ -19639,6 +19709,7 @@
             "sourceId": "457"
           }
         ],
+        "detailDescription": "부산의 명산 금정산 자락에 사뿐히 내려앉은 화명수목원. 계곡을 채워 흐르는 시원한 물줄기와 산내음 가득한 바람이 기분 좋은 하루를 만들어 주는 곳. 수목원 곳곳이 산책로이자 쉼터인 덕에 숲속을 여유롭게 즐기기만 하면 된다. 연못 위로 가로놓인 구름다리마저 자연이 되고, 침엽수와 활엽수는 물론 야생화와 아열대 식물까지 거대한 식물도감이 되어 눈앞에 펼쳐진다.",
         "tourapiContentId": "2756696",
         "tourapiContentTypeId": "12",
         "matchScope": "category_fallback",
@@ -20248,6 +20319,7 @@
             "sourceId": "2121"
           }
         ],
+        "detailDescription": "해운대해수욕장 바로 옆 동백섬에 위치한 누리마루 APEC하우스, 화려하게 불을 밝힌 광안대교 뒤로 붉은 노을이 번지고 누리마루 지붕에도 환한 조명이 켜지면 한 폭의 그림 같은 부산야경이 완성됩니다. 등대 광장에 서서 이토록 아름다운 야경을 보며 조용히 파도소리를 듣노라면 마음이 저절로 편안해짐을 느낍니다. 동백섬에는 해안산책로가 있어 무더운 여름 밤 시원하게 야간산책을 하기에도 안성맞춤입니다.",
         "tourapiContentId": "1918263",
         "tourapiContentTypeId": "14",
         "matchScope": "category_fallback",
@@ -23677,6 +23749,7 @@
             "sourceId": "363"
           }
         ],
+        "detailDescription": "전국 최대 오일장이 열렸던 구포장터가 구포시장으로 새로 단장한지 오래지만, 지금도 장이 서는 날이면 몰려드는 인파로 더욱 북적이는 구포시장. 상설 점포는 물론 골목골목 노점상에서도 물건 재 놓기 바쁘게 팔려 나간다. 인근 지역에서 생산된 물품이 모두 구포장으로 몰려들던 과거의 번성이 현재까지 이어져 온 듯하다. 싱싱한 해산물과 건어물, 셀 수 없을 정도의 다양한 품목이 즐비한 구포시장. 각종 먹거리도 넘쳐난다.",
         "tourapiContentId": "1250885",
         "tourapiContentTypeId": "38",
         "matchScope": "category_fallback",
@@ -24968,6 +25041,7 @@
             "sourceId": "548"
           }
         ],
+        "detailDescription": "해운대 센텀시티에 위치한 신세계 백화점은 만남과 휴식을 테마로 하는 편안한 쇼핑공간을 지향한다. 외국인을 위한 환전, 통역, 세금환급 서비스 등을 제공해 글로벌 쇼핑의 편리함도 추구한다.",
         "tourapiContentId": "767084",
         "tourapiContentTypeId": "38",
         "matchScope": "category_fallback",
@@ -27407,6 +27481,7 @@
             "sourceId": "1634"
           }
         ],
+        "detailDescription": "2019월드 바리스타 챔피언십(WBC) 우승자가 있는 이 곳은 카페의 도시 부산에서도 가장 유명한 카페 중 하나인 모모스커피. 고급 원두를 직접 로스팅하여 커피를 준비하며, 커피에 대한 애정이 가득한 공간이다.",
         "tourapiContentId": "2832729",
         "tourapiContentTypeId": "39",
         "matchScope": "category_fallback",
@@ -27777,6 +27852,7 @@
             "sourceId": "1464"
           }
         ],
+        "detailDescription": "일상에서 벗어나 파노라마 숲속에서 커피 한 잔의 여유를 즐길 수 있는 곳으로, 카페라고는 하지만 22년 경력 제과기능장의 빵을 맛볼 수 있는 베이커리이기도 하다. 재미있는 모양의 수박식빵과 호랑이식빵이 인기있다.",
         "tourapiContentId": "2853145",
         "tourapiContentTypeId": "39",
         "matchScope": "category_fallback",
@@ -29211,6 +29287,7 @@
             "sourceId": "262"
           }
         ],
+        "detailDescription": "여름하면 바다, 바다하면 부산이지만 아직까지 타지인들에게는 많이 알려지지 않은 해수욕장이 있다. 부산 시민이 사랑하는, 기장군의 양대 해수욕장 중 하나인 임랑해수욕장이 그 주인공이다. 입에 머무르는 느낌마저 따뜻한 ‘임랑’이라는 이름은 아름다운 송림(松林)과 달빛에 반짝이는 은빛 파랑(波浪)의 두 글자에서 유래되었다. 임랑해수욕장의 백사장은 1km 이상 이어지며 바다를 감싸고 있는데 그 색이 매우 밝은 게 특징이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "임랑해수욕장",
@@ -29329,6 +29406,7 @@
             "sourceId": "267"
           }
         ],
+        "detailDescription": "백산 안희제 선생은 고향땅을 팔아 백산상회를 열고 그 수익금으로 독립운동 자금을 지원했다. 백산상회는 1919년 백산무역주식회사로 확대된 후 1928년 일제의 탄압으로 문을 닫기까지 국내독립운동의 중요한 거점으로 활용되었다. 1942년 일경에 체포된 선생은 모진 고문의 후유증으로 끝내 독립을 보지 못하고 1943년 순국하였다. 백산기념관은 백산 안희제 선생의 자주독립정신을 기리기 위해 백산상회가 있던 그 자리에 건립되었다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "백산기념관",
@@ -29443,6 +29521,7 @@
             "sourceId": "268"
           }
         ],
+        "detailDescription": "중앙동 원도심 골목길을 걷다가 만나게 되는 한성1918은 한성은행 부산지점으로 1918년에 설립되어 40여 년간 은행업무를 보던 곳이었다. 근대 부산의 부흥기를 함께한 대표적인 금융권 건물이다. 구조보강 과정을 거쳐 2018년 4월 한성1918-부산생활문화센터로 새롭게 탄생하였다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "한성1918 부산생활문화센터",
@@ -29562,6 +29641,7 @@
             "sourceId": "269"
           }
         ],
+        "detailDescription": "조선통신사역사관은 한‧일 양국의 평화를 위해 조선에서 일본으로 파견된 대규모 국가사절단인 조선통신사의 행적을 재미있게 알려주는 탐방 공간이다. 이와 더불어 매년 5월 광복로 일원에서는 한‧일 양국이 참가하는 통신사 행렬 재현 조선통신사축제가 열린다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "조선통신사역사관",
@@ -29696,6 +29776,7 @@
             "sourceId": "270"
           }
         ],
+        "detailDescription": "바닷속 신비함을 만날 수 있는 부산해양자연사박물관은 살아있는 해양의 보고다. 국제적으로 희귀한 자연사 자료 25,000여 점을 수집‧전시하고 있다. 호기심 가득한 어린이들을 위한 최고의 체험관.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산해양자연사박물관",
@@ -29815,6 +29896,7 @@
             "sourceId": "273"
           }
         ],
+        "detailDescription": "1950년 6월 25일, 민족 최대의 비극 한국전쟁이 일어난 직후 대통령을 비롯한 정부 기관들이 부산으로 옮겨졌고 부산은 임시수도가 되었다. 이때 경남 도지사 관사를 대통령 관저로 사용하게 된 것이, 오늘날까지 부산의 역사를 담은 기념물로 이어져오고 있다. 현재의 임시수도기념관은 대통령 관저 건물과 전시관으로 나누어진다. 대통령 관저 내부에는 응접실, 서재, 집무실 등을 그대로 재현하였다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "임시수도기념관",
@@ -29929,6 +30011,7 @@
             "sourceId": "274"
           }
         ],
+        "detailDescription": "등록문화재 41호, 부산 임시수도정부청사, 대한민국 3대 대학박물관. 하나의 건물을 일컫는 세 가지 이름, 동아대학교 석당박물관이 그 주인공이다. 임시정부청사와 부산지방검찰청으로 사용된 건물을 동아대학교에서 매입해 현재의 석당박물관을 개관하였다. 근대문화유산의 역사적 가치를 인정받아 2002년 등록문화재 41호로 지정되었다. 석당박물관은 국보 2점, 보물 14점 등을 포함해 약 3만 점의 유물 보유량을 자랑한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "동아대학교 석당박물관",
@@ -30048,6 +30131,7 @@
             "sourceId": "275"
           }
         ],
+        "detailDescription": "중일전쟁 발발 후 국가총동원법을 제정한 일본은 조선인들을 강제 동원하여 노동착취 및 인권을 유린했다. 탄광 노무자, 군인, 여자근로정신대라는 이름으로 일본, 만주 등지로 끌려간 조선인들은 혹독한 굶주림과 노역에 시달려야만 했다. 잊으려야 잊을 수 없는 가슴 아픈 역사, 국립일제강제동원역사관에서 함께 기억하고 널리 알리자. ‘일본 땅 와보니 배고파 못살겠네. 배고파 죽겠는데 그 말만하면 몽둥이를 맞았네.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "국립일제강제동원역사관",
@@ -30166,6 +30250,7 @@
             "sourceId": "276"
           }
         ],
+        "detailDescription": "‘부산’이라는 이름의 박물관. 그만큼 부산을 대표하는 박물관이자 대한민국의 역사를 담고 있는 곳이다. 1978년 11월에 개관한 ‘부산박물관’은 부산시민의 휴식처이자 구석기 유물부터 고려시대, 조선시대를 거쳐 근현대에 이르기까지 부산의 역사를 한 번에 아우르는 방대한 규모의 전시관이다. 상설전시실은 크게 동래관과 부산관으로 나누어진다. 동래관은 구석기 시대부터 고려시대까지 부산지역에서 발견된 유물을 중심으로 전시하고 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산박물관",
@@ -30301,6 +30386,7 @@
             "sourceId": "285"
           }
         ],
+        "detailDescription": "바다에서 불어오는 바람을 가장 먼저 맞는 곳. 마린시티와 광안대교의 야경을 가장 가까운 곳에서 만나는 곳. 여름이면 남녀노소가 모이는 휴식처, 민락수변공원이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "민락수변공원",
@@ -30419,6 +30505,7 @@
             "sourceId": "287"
           }
         ],
+        "detailDescription": "영남지방 전역을 시원하게 관통하는 낙동강, 그 끝자락이 남해와 만나 바다가 되기 직전 강줄기 따라 실려 온 모래는 거대한 삼각주가 되어 비옥한 땅을 이룬다. 풍부한 먹이와 깨끗한 수질로 수많은 철새들의 삶의 터전이 되는 낙동강 하류. 강과 바다가 만나 이루는 환상적인 분위기를 느끼고 싶다면 아미산전망대로 가보자.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "아미산전망대",
@@ -30554,6 +30641,7 @@
             "sourceId": "290"
           }
         ],
+        "detailDescription": "갯바위에 부딪치는 파도소리가 마음의 평안을 가져다주는 오랑대공원. 해안가 산책로를 걸으며 바다감성 만끽하고 밤이면 인근 대변항의 야경까지 더해 낭만적인 시간을 보낼 수 있는 곳. 언제부턴가 캠핑을 즐기는 사람들이 삼삼오오 모여들었다. 바다 야경과 일출을 모두 볼 수 있는 곳으로 오랑대공원 만한 곳이 있을까. 금빛 바다를 배경으로 우뚝 솟은 용왕단의 검은 실루엣은 오랑대 일출의 장관이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "오랑대공원",
@@ -30672,6 +30760,7 @@
             "sourceId": "297"
           }
         ],
+        "detailDescription": "일본에서 나고 자란 농학자 우장춘 박사는 해방 후 한국정부의 초청으로 귀국한 뒤 일본에 의존할 수밖에 없었던 채소종자를 품종개량을 통해 국내 완전자급이 가능하도록 전력을 기울인 분이다. 아버지의 지난 과오에 속죄하는 마음으로 우리나라 땅에 맞는 작물을 연구‧개발하는데 헌신하였고 그 덕에 후손들은 맛있는 토종 작물을 먹을 수 있게 되었다. 오늘은 기념관에 들러 우장춘 박사께 존경의 마음을 전해보는 건 어떨까.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "우장춘 기념관",
@@ -30785,6 +30874,7 @@
             "sourceId": "298"
           }
         ],
+        "detailDescription": "부산 산복도로의 추억을 공유하고 싶은 여행자에게 바다와 하늘과 도심을 모두 바라보는 누리바라기 전망대를 추천한다. 부산항의 아름다운 풍경과 더불어 부산타워와 영도대교까지 조망할 수 있고, 시원하게 펼쳐지는 산과 바다 그리고 도심의 파노라마가 감동으로 다가오는 곳이다. 밤이 오면 산복도로의 은은한 야경과 부산항의 화려한 조명이 대비되어 색다른 장면을 선사한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "누리바라기전망대",
@@ -30904,6 +30994,7 @@
             "sourceId": "301"
           }
         ],
+        "detailDescription": "조선시대 남해안 수군지휘부 경상좌도수군절도사영이 있던 자리가 현재의 수영사적공원이다. 수군절도사영의 줄임말 ‘수영’이 현재의 지명으로 그대로 굳어졌다고 한다. 역사적 상징성을 가진 유적공원이지만 시민들의 가벼운 산책공간으로 더 친근하다. 나무가 우거진 시원한 오솔길은 도심 속 힐링 장소로 손색이 없다. 놀이마당에서는 수영야류 등 무형문화재 공연이 정기적으로 열린다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "수영사적공원",
@@ -31023,6 +31114,7 @@
             "sourceId": "304"
           }
         ],
+        "detailDescription": "낙동강줄기와 남해 바닷물이 하나 되는 곳, 비옥한 토양과 민물 어패류의 생태적 보고, 넓은 지대와 풍부한 먹이 덕에 겨울 철새들이 모여드는 곳, 부산의 아름다운 섬, 을숙도를 찾았다. 을숙도는 강 하구에 토사가 쌓여 만들어진 섬이다. 이름에서도 알 수 있듯, 새가 많고 물이 맑은 섬 을숙도는 우리나라 제1의 철새도래지로도 유명하다. 1950년대에는 아시아 최대 철새도래지로 손꼽히던 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "을숙도",
@@ -31158,6 +31250,7 @@
             "sourceId": "325"
           }
         ],
+        "detailDescription": "유유히 흘러가는 낙동강 줄기 옆으로 삼락동 둔치에 넓게 자리 잡은 삼락생태공원. 넓이만 472만 2000㎡에 이르는 공원은 계절마다 각기 다른 매력을 뽐내며 방문객의 사랑을 받고 있다. 특히 부산의 허파 기능을 담당하는 삼락생태공원에서는 그 이름에 걸맞게 습지를 비롯한 다양한 식생을 관찰할 수 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "삼락생태공원",
@@ -31278,6 +31371,7 @@
             "sourceId": "326"
           }
         ],
+        "detailDescription": "소나무 숲 사이로 보이는 남해 바다. 그 위로 비치는 햇빛. 반짝이는 물결 사이로 떠 있는 배들의 모습. 여행자의 마음에 여유를 선물하는 아름다운 곳, 암남반도 남쪽 끝자락에 위치한 암남공원이 그곳이다. 오랜 시간 군사보호구역으로 묶여 출입이 통제되었던 암남공원은 산림이 우거진 산책로와 기암절벽으로 이뤄진 해안풍경이 눈길을 사로잡는 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "암남공원/송도해안볼레길",
@@ -31414,6 +31508,7 @@
             "sourceId": "344"
           }
         ],
+        "detailDescription": "아이와 함께라면? 일단 어린이대공원으로 가자. 부산 어린이대공원이 아름다운 순환산책로의 탄생과 함께 가족 방문객들의 최애 장소로 변모했다. 어린이회관에 이르는 길은 오르막이긴 하지만 어린이 놀이터를 비롯해 볼거리, 놀거리가 많아 동심은 끊임없이 즐겁다. 우거진 숲속엔 꼬마 아이들도 쉽게 걸을 수 있는 산책로가 있고, 나무 사이사이 피크닉을 즐길 수 있는 야외테이블도 자리한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산어린이대공원",
@@ -31533,6 +31628,7 @@
             "sourceId": "361"
           }
         ],
+        "detailDescription": "슬레이트는 이미 준비됐다. 신(scene) 넘버 원 영화의 거리 ‘레디~~ 액션!’ 천만관객을 이끈 많은 영화들이 부산에서 촬영한 거라고? 어떤 영화들이 있을까? 영화의 거리에서 정답 확인! ‘넌 감독이고 난 배우야’ 배우놀이도 잠깐 해볼까. 배우가 자기 자신을 온전히 버리고 영화 속 캐릭터를 완벽하게 소화하는 것을 상상해보면 그 치밀함에 대해 새삼 놀라게 된다. 세계 영웅 스파이더맨도 해운대에 와 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "영화의 거리",
@@ -31652,6 +31748,7 @@
             "sourceId": "362"
           }
         ],
+        "detailDescription": "변화 없는 일상이 지루할 때, 혹은 변화무쌍한 매일이 지칠 때. 책 한권 달랑 들고 조용한 APEC나루공원으로 간다. 수영강변 따라 뻗어 있는 도심 속 작은 공원이지만 책을 읽을 수 있는 테이블도 있고, 산책로, 조깅코스, 조각공원까지 갖춘 내실탄탄한 공원이다. 나무그늘 아래 한 자리, 강바람 느끼며 책장을 넘길 수 있는 여유를 맘껏 즐긴다. 독서가 체질이 아닌가? 그럼 살랑살랑 산책은 어떨까.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "APEC나루공원",
@@ -31771,6 +31868,7 @@
             "sourceId": "364"
           }
         ],
+        "detailDescription": "정든 산천 떠나와 40계단 층층대에 앉아 울던 나그네는 어떻게 되었을까. 고향 길이 열리기만 사무치게 기다리던 모든 피난민의 삶의 터전, 그들이 남긴 삶의 애환을 느끼며 40계단을 걸어보자.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "40계단",
@@ -31890,6 +31988,7 @@
             "sourceId": "371"
           }
         ],
+        "detailDescription": "부산의 4개 구에 걸쳐 자리한 황령산, 도심을 감싸며 시원하게 뻗어 내린 산맥이 초록의 울창한 숲을 선물처럼 내어준다. 숲길 걷기 좋아하는 등산객들에겐 숲과 바람과 하늘을 내어주고, 야경을 즐기는 관광객들에겐 황홀한 빛의 세계를 선사해 주는 곳, 황령산 전망쉼터를 소개한다. 황령산은 부산 중심부에 넓게 자리하고 있어 정상으로 오르는 길이 다양하다. 자신의 위치에서 가장 가까운 길을 선택하면 된다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "황령산 전망쉼터",
@@ -32009,6 +32108,7 @@
             "sourceId": "415"
           }
         ],
+        "detailDescription": "부산 상해거리는 동구 초량동에 위치한 중국인 최대 거주지역이다. 일제강점기를 지나면서 중국인들이 하나둘 이주해 형성되기 시작한 거리인데 과거 중국 영사관이 있기도 했다. 상해거리는 지난 2007년 국내 유일의 차이나타운특구로 지정된 바 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "상해거리",
@@ -32138,6 +32238,7 @@
             "sourceId": "418"
           }
         ],
+        "detailDescription": "그림 밖에 몰랐던 천재화가 이중섭이 전쟁의 포화를 피해 부산으로 피란 와 정착한 곳. 허름한 판잣집이 다닥다닥 붙어 있던 범일동 산비탈에서도 그림에 대한 열정은 계속되었다. 이중섭 전망대에 서서 빼곡히 들어선 주택가를 내려다보며 호락호락하지 않았을 그의 삶을 잠시 상상해본다. 전망대 옆 희망의 100계단은 아내를 향한 그리움이 그의 작품과 함께 전시된 계단갤러리다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "이중섭문화거리",
@@ -32252,6 +32353,7 @@
             "sourceId": "456"
           }
         ],
+        "detailDescription": "수령 높은 노목들이 오색찬란하게 빛을 발하는 도심 속 휴식 공간 대신공원은 대한민국 아름다운 숲 대회에서 누리상을 수상한 숲이기도 하다. 그만큼 울창한 숲과 맑은 계곡을 지닌 자연 그대로의 힐링 쉼터이다. 계곡물에 발 담그고 찰방찰방하는 사람들 구경하며 산책을 이어간다. 입구에서 멀지 않은 곳에 자리한 빽빽한 편백림은 건강한 기운을 마구마구 뿜어낸다. 기분이 꽤 상쾌하다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "대신공원",
@@ -32370,6 +32472,7 @@
             "sourceId": "508"
           }
         ],
+        "detailDescription": "2018년, 전포카페거리 근처에 부산 최초 커피전문박물관이 문을 열었다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산커피박물관",
@@ -32488,6 +32591,7 @@
             "sourceId": "511"
           }
         ],
+        "detailDescription": "사상생활사박물관은 근대 부산경제의 중심지였던 사상지역과 그 생활사를 소개하고 주민 간 소통을 이어가기 위해 건립되었다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "사상생활사박물관",
@@ -32608,6 +32712,7 @@
             "sourceId": "757"
           }
         ],
+        "detailDescription": "어느 덧 옷차림이 짧아지는 계절을 맞이하고 있지만 생활 속 거리두기로 여전히 답답한 마음을 해소할 길이 없으실 거예요. 이럴 땐 사람들이 많이 모이는 곳을 피해 짧은 산책을 해 보는 것도 좋겠죠?",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "신평소공원",
@@ -32727,6 +32832,7 @@
             "sourceId": "813"
           }
         ],
+        "detailDescription": "한국의 신발산업은 과거부터 국내를 넘어 해외에서도 우수한 품질을 인정받았다는 사실! 다들 알고 계시나요? 그 자랑스러운 신발역사의 중심에는 부산이 있습니다. 부산은 70~80년대에 신발산업계의 거물이었으며, 그로 인해 한국 신발산업은 화려하고 풍요로운 전성기를 누렸다고 해요~ 역사가 쓰이는 순간을 들여다보면 그 시절 많은 사람들의 피땀눈물이 들어가 있습니다. 부산 신발산업의 과거와 현재를 함께 보러 가보실까요?",
         "matchScope": "category_fallback",
         "dwellSourceName": "scenic_pause 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "부산신발이야기",
@@ -32841,6 +32947,7 @@
             "sourceId": "1031"
           }
         ],
+        "detailDescription": "존재 자체만으로도 가보고 싶은 이유가 되는 부산도서관이 문을 열었습니다. 개관을 오랫동안 기다려온 시민들의 일상에도 행복한 변화가 찾아왔습니다. 슬기로운 부산도서관 생활을 위한 우리 모두의 열린 서재를 본격 탐방해 볼까요? 깔끔한 외관이 눈길을 끄는 부산도서관, 반듯한 4층 건물의 전면이 유리창으로 이루어져 있습니다. 창문 너머로 한 가득 쏟아지는 햇살을 품은 1층 중앙홀은 마치 고급 북카페를 연상시킵니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산도서관",
@@ -32977,6 +33084,7 @@
             "sourceId": "1305"
           }
         ],
+        "detailDescription": "어느덧 여름휴가를 떠나야 할 계절입니다. 여름휴가엔 부산의 멋진 바다가 제격이지만 여행 내내 바다만 바라보고 있을 순 없죠! 골목골목 아날로그 감성으로 가득한 보석 같은 여행지를 소개합니다. 요즘 부산의 힙스터들이 줄을 선다는 그곳! 광안종합시장으로 여러분을 안내합니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "광안종합시장",
@@ -33105,6 +33213,7 @@
             "sourceId": "1322"
           }
         ],
+        "detailDescription": "옛 고려철강 공장 건물을 문화시설로 꾸민 F1963에 현대자동차의 '현대 모터스튜디오 부산'이 들어섰습니다. 디자인 콘텐츠를 경험할 수 있는 현대 모터스튜디오로 지금 함께 떠나보시죠!",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "현대 모터스튜디오 부산",
@@ -33220,6 +33329,7 @@
             "sourceId": "1673"
           }
         ],
+        "detailDescription": "강서구청역 바로 옆엔 부산의 대표적인 자연생태 친수공간인 대저생태공원이 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "대저생태공원",
@@ -33340,6 +33450,7 @@
             "sourceId": "1674"
           }
         ],
+        "detailDescription": "부산의 서쪽 낙동강변에는 저마다 특색을 가진 6개의 생태공원이 있다. 이 생태공원 중에서 잘 알려져 있지 않지만 자연 그대로의 모습으로 사랑받는 맥도생태공원을 소개한다. 맥도생태공원을 여행하는 가장 좋은 방법은 걷는 것이다. 공원이 그리 크지 않아서 공원 전체를 천천히 걸어도 1시간 30분을 넘기지 않는다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "맥도생태공원",
@@ -33460,6 +33571,7 @@
             "sourceId": "1731"
           }
         ],
+        "detailDescription": "유엔평화공원은 유엔기념공원 근처에 있는 근린공원으로 2005 APEC 정상회담을 계기로 정비돼 부산 시민들에게 아름다운 산책길 코스로 큰 인기를 얻고 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "유엔평화공원",
@@ -33580,6 +33692,7 @@
             "sourceId": "1772"
           }
         ],
+        "detailDescription": "부산의 기운이 뿜뿜 솟아오르는 명당자리를 아시나요? 바로 부산의 정중앙의 위치, 북위 35도 10분 4초, 동경 129도 2분 17초의 자리랍니다. 건강, 행복, 재물, 효자 자손이 많이 난다는 기운을 갖고 있어 소원을 이루고 싶은 시민들의 발길이 모여드는 곳이에요.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "정중앙공원",
@@ -33715,6 +33828,7 @@
             "sourceId": "1798"
           }
         ],
+        "detailDescription": "땅뫼산 황토숲길은 울창한 숲과 탁 트인 호수가 어우러진 회동수원지 내 산책로입니다. ‘땅뫼산 맨발 황토길’이라는 안내에 걸맞게, 이곳에서는 맨발로 흙의 감촉을 느끼며 자연과 교감할 수 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "scenic_pause 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "땅뫼산 황토숲길",
@@ -33828,6 +33942,7 @@
             "sourceId": "1857"
           }
         ],
+        "detailDescription": "차, 요가, 왕실 요리까지! 가장 고급지게 인도를 즐길 수 있는 곳, 부산 인도문화원입니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산 인도문화원",
@@ -33943,6 +34058,7 @@
             "sourceId": "1862"
           }
         ],
+        "detailDescription": "이름조차 낯선 ‘아세안’, 친해지고 싶다고? 부산 KF아세안문화원에서 경험해 보자구요!",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "KF아세안문화원",
@@ -34063,6 +34179,7 @@
             "sourceId": "2065"
           }
         ],
+        "detailDescription": "사계절 내내 아름다운 자연풍경을 느끼며 숲길 산책로와 용소골저수지를 즐길 수 있는 숨은 산책 코스 중 하나입니다. 저수지에서 은은하게 불어오는 바람과 함께 여유로운 계절 내음을 맡아보세요. 산책으로 또 다른 기장을 느낄 수 있을 거예요.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "용소웰빙공원",
@@ -34181,6 +34298,7 @@
             "sourceId": "2077"
           }
         ],
+        "detailDescription": "부산수학문화관과 함께라면 우리 모두 수포자 탈출 가능! 세계 최대 규모 수학 문화공간, 부산수학문화관에서 흥미로운 수학의 세계를 탐험해봐요.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산 수학문화관",
@@ -34301,6 +34419,7 @@
             "sourceId": "2081"
           }
         ],
+        "detailDescription": "도심 속 바다와 미래적인 조경의 만남, 북항 친수공원에서 특별한 밤 산책 즐겨보세요!",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "북항 친수공원",
@@ -34420,6 +34539,7 @@
             "sourceId": "2085"
           }
         ],
+        "detailDescription": "문화와 예술이 살아 숨 쉬는 북구의 예술 공간, 문화예술플랫폼에서 예술적인 하루를 보내보세요!",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "문화예술플랫폼",
@@ -34555,6 +34675,7 @@
             "sourceId": "2102"
           }
         ],
+        "detailDescription": "망양로 산복도로 전시관은 부산의 역사와 문화를 체험할 수 있는 특별한 공간입니다. 전시관 아카이브존은 10가지 주제로 구성되어, 일제강점기부터 한국전쟁을 거친 동구의 역사를 요약해 보여줍니다. ‘가대기’라는 주제로 노동자의 삶과 역사를 다루며, 피란민의 삶과 사라져가는 자연을 표현한 파노라마도 감상할 수 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "망양로 산복도로 전시관",
@@ -34675,6 +34796,7 @@
             "sourceId": "2104"
           }
         ],
+        "detailDescription": "닥밭골 벽화마을은 6가지 테마로 꾸며진 형형색색의 마을로, 1953년 부산역전 대화재 이후 정착한 주민들과 구본호 작가가 2010년 함께 조성했습니다. 마을의 소망계단은 192개 계단으로, 소원을 빌면 이루어진다는 전설이 있습니다. 주민을 위한 귀여운 모노레일도 있어 독특한 매력을 더합니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "닥밭골 벽화마을",
@@ -34789,6 +34911,7 @@
             "sourceId": "2105"
           }
         ],
+        "detailDescription": "부산의 야경을 감상하기 위해 찾은 대청스카이전망대는 망양로 색채마을과 인접한 곳에 있습니다. 이곳에서는 부산항대교부터 봉래산, 부산타워, 남항대교까지 한눈에 담을 수 있는 멋진 야경을 즐길 수 있습니다. 다채로운 불빛이 가득한 야경을 보면서 산복도로가 아름다운 장소가 되기까지 쌓인 이야기를 마음에 잘 기록하면 좋겠습니다. 골목골목에서 빛나는 색을 오래 기억하면 좋겠습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "대청스카이전망대",
@@ -34903,6 +35026,7 @@
             "sourceId": "2119"
           }
         ],
+        "detailDescription": "LP 마니아들을 위한 특별한 공간, ‘뮤직컴플렉스 서울 부산점’을 소개합니다! 빨간 조명과 특유의 높은 층고가 특징인 ‘뮤직컴플렉스 서울 부산점’. 무려 2만여 장의 LP판을 보유한 곳으로도 유명한데요. 앨범의 양만큼 종류도 다양해 많은 사람의 취향을 저격합니다. 1인당 2만 원의 입장료로 별도의 시간제한 없이 음악을 감상할 수 있다는 점도 매력적이죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "scenic_pause 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "뮤직컴플렉스 서울 부산점",
@@ -35017,6 +35141,7 @@
             "sourceId": "2145"
           }
         ],
+        "detailDescription": "부산의 과거와 미래를 잇는 공간, ‘도모헌’. (구) 부산시장 관사 건물을 리모델링해 시민들에게 열린 산책과 휴식, 지적 교류의 장소로 재탄생했습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "scenic_pause 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "도모헌",
@@ -35132,6 +35257,7 @@
             "sourceId": "2172"
           }
         ],
+        "detailDescription": "기장 바다와 함께 걷는 기분 좋은 산책로, ‘오시리아 해안 산책로’. 탁 트인 바다를 배경으로 산책로가 조성되어 있고, 곳곳에 멋진 풍경을 감상할 수 있는 쉼터가 있어 여유롭게 걷기에 좋습니다. 해안 절경과 다양한 야생화, 소나무가 우거진 숲 등이 어우러져 산책하는 내내 자연으로 힐링하는 곳이기도 하죠. 기장의 아름다운 사찰 중 하나인 해동용궁사 전경을 볼 수 있다는 점도 이곳의 특징입니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "오시리아 해안 산책로",
@@ -35250,6 +35376,7 @@
             "sourceId": "2187"
           }
         ],
+        "detailDescription": "피란민의 아픔에서 부산의 경제 발전으로, 재건의 시작 '부산 제1부두'를 소개합니다. 부산 제1부두는 조선 시대부터 중요한 무역의 요충지였습니다. 1876년 강화도 조약에 따라 개항되었고, 부산항의 발전과 함께 역사적 의미를 더해왔는데요. 일제강점기에는 제1부두가 완공되고, 경부선 철도가 개통되면서 일본의 대륙 침략 거점이자 군수 물자 수송의 중심지로 기능했습니다. 6.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": " 부산항 제 1부두",
@@ -35368,6 +35495,7 @@
             "sourceId": "2188"
           }
         ],
+        "detailDescription": "6.25 전쟁 당시 이야기를 상세하게 공부할 수 있는 곳, 유엔평화기념관을 소개합니다. 유엔평화기념관은 6.25 전쟁의 발발 원인과 전개 과정, 전쟁에 참전한 UN군의 이야기와 현재 유엔의 비전에 이르기까지 폭넓은 내용을 다루고 있습니다. 특히 한반도의 평화를 위해 힘썼던 26개 연합국과 참전용사의 흔적을 마음 깊이 되새길 수 있다는 점에서 역사적 가치가 높죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "유엔평화기념관",
@@ -35482,6 +35610,7 @@
             "sourceId": "2191"
           }
         ],
+        "detailDescription": "포디움다이브엠은 예술, 책, 커피 등 다양한 즐길 거리를 한곳에서 만날 수 있는 전시 복합 문화 공간입니다. 외국에 온 듯한 감각적인 인테리어와 여유로운 분위기로 실내 데이트 장소로도 인기죠. 건물 중앙이 뻥 뚫린 독특한 구조가 돋보이며 세련된 디테일 덕분에 곳곳이 포토존이기도 합니다. 지하 1층에서는 광안리 인근 맛집과 명소를 소개하는 로컬 콘텐츠 큐레이션을 통해 여행의 시작점을 제시합니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "포디움다이브엠",
@@ -35596,6 +35725,7 @@
             "sourceId": "2200"
           }
         ],
+        "detailDescription": "동구 수정동에 위치한 갤러리 수정은 50년 된 수정아파트를 개조해 만든 특별한 공간입니다. 부산의 옛 정서를 담아내며, 무명작가들에게 소중한 전시 기회를 제공하는 곳이죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "갤러리 수정",
@@ -35731,6 +35861,7 @@
             "sourceId": "2204"
           }
         ],
+        "detailDescription": "부산의 네 번째 사립미술관인 디오티 미술관은 전시를 넘어, 지역 예술가들의 작업을 응원합니다. 또, 주민들에게 문화예술을 가까이에서 경험할 기회를 제공하죠. \"삶과 예술을 잇다\"라는 슬로건 아래, 작가와 관람객을 비롯한 다양한 관계를 연결하며 예술적 가치를 실현하고 있는데요.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "디오티 미술관",
@@ -35850,6 +35981,7 @@
             "sourceId": "2210"
           }
         ],
+        "detailDescription": "부산 중구에 자리한 사설 미술관, 갤러리 플레이리스트. 현대미술을 사랑하는 분들에게 새로운 영감을 선사하는 공간입니다. 여러 신진 현대미술 작가들의 전시를 활발히 주최해 부산 전시예술의 폭을 넓히고 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "갤러리 플레이리스트",
@@ -35969,6 +36101,7 @@
             "sourceId": "2284"
           }
         ],
+        "detailDescription": "BNK부산은행 아트시네마 모퉁이극장은 독립영화와 고전 명작 등 흔히 볼 수 없는 작품을 주로 상영하는 소규모 영화관입니다. 조조·경로우대 5,000원, 청소년 7,000원, 일반 8,000원으로 부담 없는 가격에 수준 높은 영화를 즐길 수 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "BNK부산은행 아트시네마 모퉁이극장",
@@ -36082,6 +36215,7 @@
             "sourceId": "2551"
           }
         ],
+        "detailDescription": "부산 도심 속 숨은 명소, 황령산봉수전망대에서 부산 전경을 한눈에 감상해보는 건 어떨까? 광안대교, 해운대, 부산항까지 내려다볼 수 있어 부산 야경 명소로도 제격인 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "황령산봉수전망대",
@@ -36195,6 +36329,7 @@
             "sourceId": "2588"
           }
         ],
+        "detailDescription": "부산 서구 충무동에 자리한 해안시장은 항구 도시의 생생한 정취가 그대로 묻어나는 전통시장입니다. 부산 남항과 인접해 해산물을 구하기 쉬운 입지 덕분에 형성되었으며, 자연스럽게 어선 선원들을 대상으로 한 점포들이 모이기 시작했습니다. 1960년대 초반에는 새벽에만 장이 섰다가, 1965년 정식으로 충무동 해안시장이 개설되었습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "충무동 해안시장",
@@ -36320,6 +36455,7 @@
             "sourceId": "2598"
           }
         ],
+        "detailDescription": "부산 수영구의 조용한 산업단지 안을 걷다 보면 만나는 특별한 공간, 고려제강기념관이 있습니다. 이곳은 1960년대부터 부산의 산업 발전을 이끌어온 고려제강의 역사를 담은 곳입니다. 핵심 소재인 ‘와이어’에 대한 대중적 이해의 폭을 넓히고자 문화와 건축으로 재해석한 독특한 산업 문화 공간입니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "고려제강기념관",
@@ -36433,6 +36569,7 @@
             "sourceId": "2678"
           }
         ],
+        "detailDescription": "1943년 미국 뉴욕에서 출판된 이후 지금까지도 전 세계 독자들의 사랑을 받고 있는 작품, ‘어린왕자’. 순수한 시선으로 세상을 바라보는 이 이야기는 세대를 넘어 많은 이들의 마음에 잔잔한 울림을 전하고 있습니다. 부산 감천문화마을에 자리한 어린왕자 동상 역시 이러한 감성을 느낄 수 있는 곳으로, 관광객들이 꼭 들르는 대표적인 포토존으로 알려져 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "리틀 프린스 하우스",
@@ -36548,6 +36685,7 @@
             "sourceId": "292"
           }
         ],
+        "detailDescription": "알록달록 파라솔 사이로 정이 넘치는 기장 아지매들의 환한 미소가 빛난다. 바다에서 금방 건져 올린 싱싱한 해산물은 물론 토실토실 살 오른 농산물까지 없는 게 없다. 활어뿐만 아니라 봄에는 명물 기장미역과 해조류가, 가을에는 갈치가 좌판 위에 펼쳐진다. 골목 양옆으로 즐비한 대게식당은 기장시장의 또 다른 명물 중 하나이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "기장시장",
@@ -36668,6 +36806,7 @@
             "sourceId": "294"
           }
         ],
+        "detailDescription": "해운대 해수욕장과 5분 거리에 위치한 해운대시장은 다양한 먹거리와 볼거리로 항상 북적인다. 전국적으로 유명세를 탄 떡볶이, 튀김, 칼국수, 꽈배기, 돼지국밥 등의 가게 앞에는 기다리는 사람들로 인산인해를 이룬다. 각종 부식거리를 비롯하여 활어회, 곰장어구이 등도 성업 중이라 말 그대로 골라먹는 천국이다. 구경거리 많은 재래시장 돌아보며 인심 좋은 주인장 만나 덤 하나 얻어오는 행운도 누릴 수 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "해운대시장",
@@ -36787,6 +36926,7 @@
             "sourceId": "300"
           }
         ],
+        "detailDescription": "영도의 오랜 정취가 살아있는 남항시장과 봉래시장으로 가족나들이 어떠세요? 남항시장 피란민이 일군 전통시장으로 싱싱한 해산물이 특화된 시장이다. 가격 착한 맛집이 종류별로 성업 중이라 시장은 항상 많은 인파로 북적인다. 봉래시장 일제강점기 시절 형성되어 역사와 전통을 자랑하는 시장이다. 50년 이상 삼진어묵 본점이 자리하고 있어 어묵의 본고장이라 할 수 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "남항시장 / 봉래시장",
@@ -36906,6 +37046,7 @@
             "sourceId": "328"
           }
         ],
+        "detailDescription": "화려한 상권이 형성된 부산 최대 번화가 서면에서 60년 가까이 전통시장으로 인기몰이 중인 서면시장. 맛집으로 소문난 칼국수 가게들과 옛날통닭, 돼지국밥, 먹자골목이 줄지어 있어 사람들의 발걸음이 끊이지 않는 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "서면시장",
@@ -37034,6 +37175,7 @@
             "sourceId": "422"
           }
         ],
+        "detailDescription": "2층짜리 깔끔한 현대식 건물인 동래시장의 나이는 벌써 250살. 조선시대 부산지역 최대 5일장이었던 동래장터가 현재까지 동래에서 가장 큰 규모를 자랑하는 전통시장으로 이어지고 있다. 시장 내 점포들도 오랜 기간 전통을 유지해 온 집들이 많다. 건물 바깥쪽을 둘러싼 한약재상, 가격을 좀처럼 올리지 않는 식당가, 애교로 흥정이 가능한 패션잡화 등 대부분의 가게가 최소 40 ~ 50년 경력을 자랑한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "동래시장",
@@ -37162,6 +37304,7 @@
             "sourceId": "533"
           }
         ],
+        "detailDescription": "부산시 공모절차를 거쳐 선정된 부산관광기념품을 소개한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산 그대로를 담은 부산관광기념품",
@@ -37275,6 +37418,7 @@
             "sourceId": "540"
           }
         ],
+        "detailDescription": "100여개의 다양한 브랜드가 입점해 있어 김해공항을 이용하는 여행자들에게 즐거운 면세 쇼핑을 제공한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "롯데면세점 김해공항점",
@@ -37514,6 +37658,7 @@
             "sourceId": "552"
           }
         ],
+        "detailDescription": "부산 프리미엄 아울렛에 들어서면 이탈리아의 어느 활기찬 골목을 연상시키는 건축양식이 먼저 시선을 사로잡는다. 1층 중앙광장의 분수대를 기준으로 로우 스트리트(Low Street), 미들 스트리트(Middle Street), 하이 스트리트(High Street)가 고풍스런 계단으로 연결되고, 180여 개의 국내외 유명 브랜드가 입점해 있어 이국적인 쇼핑을 경험하려는 사람들의 관심을 한 몸에 받고 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산프리미엄아울렛",
@@ -37649,6 +37794,7 @@
             "sourceId": "1667"
           }
         ],
+        "detailDescription": "전국구로 유명한 해운대해수욕장, 수많은 여행자들이 세우는 부산 여행 계획에서 빠질 수 없는 곳입니다. 여행을 갔을 때 여행지를 기념할 만한 기념품에도 관심이 많을 텐데요, 해운대를 여행 중이라면 ‘해운대 선물가게’에 한번 들러보는 건 어떨까요?",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "해운대 선물가게",
@@ -37768,6 +37914,7 @@
             "sourceId": "2141"
           }
         ],
+        "detailDescription": "부산광역시와 부산관광공사는 부산의 상징성과 상품성이 결합된, 경쟁력 있는 우수 관광기념품의 집중 발굴과 육성을 위해 '부산 대표 관광기념품 10선'을 선정하였습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산",
@@ -37881,6 +38028,7 @@
             "sourceId": "2165"
           }
         ],
+        "detailDescription": "소품샵계의 올영이 떴다?!! 숨은 보물을 찾고 있다면 절대 빈손으로 나올 수 없는 키덜트들의 방앗간, '아비베르컴퍼니'를 소개합니다. 이곳은 프리미엄 디자인 편집샵으로, 다양한 파트너 브랜드와 매력적인 상품들이 가득해요. 매장 곳곳에는 키치한 상품들이 진열되어 있습니다. 쇼핑은 물론 인테리어 참고와 포토존으로도 활용 가능하죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "아비베르컴퍼니",
@@ -37994,6 +38142,7 @@
             "sourceId": "2537"
           }
         ],
+        "detailDescription": "부산의 감성 골목 전포 카페거리에는 다양한 개성을 지닌 소품샵들이 모여 있습니다. 그중에서도 ‘오월상점’은 외관부터 사랑스러운 파스텔 톤으로 꾸며져 있어, 따뜻하고 부드러운 분위기를 자아냅니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "오월상점",
@@ -38107,6 +38256,7 @@
             "sourceId": "2539"
           }
         ],
+        "detailDescription": "오래된 전자상가 건물 C동 2층, 낯선 듯 익숙한 공간에 자리한 ‘포셋 전포’는 엽서를 중심으로 한 감성 소품샵입니다. 세월의 흔적이 깃든 이곳은 현대적인 감각을 잃지 않으면서도, 아날로그 감성을 자연스럽게 끌어올리는 유니크한 경험을 선사합니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "포셋 전포",
@@ -38220,6 +38370,7 @@
             "sourceId": "2541"
           }
         ],
+        "detailDescription": "부산의 슬램덩크 감성 인증샷 성지인 청사포에 들린다면, 여기도 함께 가보면 어떨까요? 바로 청사포의 매력을 한가득 담은 ‘부산슈퍼 청사포점’입니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "부산슈퍼 청사포점",
@@ -38333,6 +38484,7 @@
             "sourceId": "2555"
           }
         ],
+        "detailDescription": "부산 영도에 위치한 귀여움 폭발하는 힐링 공간, 미피카페를 소개합니다. 오렌지빛 컨테이너 건물 안엔 층마다 미피 조형물과 기념품이 가득하고, 루프탑에서는 부산항대교와 바다가 눈앞에 펼쳐지죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "미피카페 부산",
@@ -38467,6 +38619,7 @@
             "sourceId": "2589"
           }
         ],
+        "detailDescription": "부산 남구 문현동에 자리한 ‘문현동 골동품거리’는 시간의 흔적이 고스란히 남은 공간입니다. 금융단지 BIFC 옆 골목에 자리해, 현대와 과거가 공존하는 독특한 분위기를 느낄 수 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "문현동 골동품거리",
@@ -52716,6 +52869,7 @@
             "sourceId": "1445"
           }
         ],
+        "detailDescription": "하버뷰를 자랑하는 거대한 베이커리카페로 주말이면 유원지라도 온 듯 많은 인파가 몰리지만, 워낙 넓은 공간을 가지고 있어 웨이팅은 생각보다 짧다. 약 80여 종의 다양한 베이커리와 음료, 아이스크림이 준비되어 있고 볼거리가 많은 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "피아크 카페&베이커리",
@@ -52828,6 +52982,7 @@
             "sourceId": "1447"
           }
         ],
+        "detailDescription": "아주 드물게 전통적인 핸드드립과 사이폰을 이용해 커피를 내리는 이곳은 시간은 조금 더 걸리지만 색다른 커피를 즐길 수 있는 곳이다. 고급스러운 실내와 테이블 착석 후 주문하고 후불 결제하는 고풍스러운 운영을 고수하는 것도 인상적이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "커피스가모 인 서면",
@@ -52961,6 +53116,7 @@
             "sourceId": "1452"
           }
         ],
+        "detailDescription": "너무나도 유명한 대한민국 제과명장의 베이커리로 4년간 간수 뺀 신안천일염, 제철 우리 농산물 등 좋은 재료를 사용한 100여종의 빵과 디저트를 매일 직접 구워 제공하고 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "이흥용과자점 부산대직영점",
@@ -53078,6 +53234,7 @@
             "sourceId": "1466"
           }
         ],
+        "detailDescription": "맛있고도 건강한 빵을 연구하는 이곳은 버터향 가득한 소금빵이 바삭하고 쫄깃한 식감으로 인기 있으며, 대표메뉴인 천연발효종 유럽빵과 통밀 건강빵이 다양한 종류로 준비되어 있다",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "보리종파티세리 본점",
@@ -53195,6 +53352,7 @@
             "sourceId": "1802"
           }
         ],
+        "detailDescription": "넓은 한옥 인테리어의 카페로 대한민국 제과제빵명장 ‘김덕규 베이커리’를 함께 즐길 수 있다. 한옥과 어우러진 마당을 바라보며 사계절을 아름답게 바라볼 수 있는 매력적인 장소다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "토북베이커리",
@@ -53328,6 +53486,7 @@
             "sourceId": "1803"
           }
         ],
+        "detailDescription": "유기농 밀가루와 천연발효종인 르방을 사용하여 빵을 만들고 있는 곳으로 프랑스 발효 버터와 100% 동물성 생크림, 마다가스카르 바닐라빈, 동물복지 유정란을 사용해 당일 만들어서 당일 판매하고 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "카페호밀",
@@ -53461,6 +53620,7 @@
             "sourceId": "1838"
           }
         ],
+        "detailDescription": "행복한 공간을 추구하는 부부의 취향이 온전히담긴 감성적인 카페로 직접 로스팅한 ‘강배전 스페셜티 커피’와 함께 행복한 기분을 느낄 수 있도록 세심하게 구성된 공간이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "그리다부부",
@@ -53578,6 +53738,7 @@
             "sourceId": "2354"
           }
         ],
+        "detailDescription": "프랑스 르 꼬르동 블루를 졸업하고, 호텔 샹그릴라 파리, 호텔리츠 파리 등 14년간 파리에서 활동한 김지연 파티시에의 디저트가게로 프랑스제과가 기초가 된 프랑스디저트 전문점이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "보느파티쓰리",
@@ -53823,6 +53984,7 @@
             "sourceId": "2371"
           }
         ],
+        "detailDescription": "조용하고 정갈한 공간에서, 건강하고 좋은 재료를 사용하여 만드는 디저트를 만날 수 있는 곳으로, 제철과일과 채소를 이용한 케이크와 구움과자를 만들고 있는 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "연화제과",
@@ -53940,6 +54102,7 @@
             "sourceId": "2386"
           }
         ],
+        "detailDescription": "공간도 커피도 마지막까지 편안하고 부드러운 것을 지향하는 이곳은 밸런스 좋고 여운이 깔끔한 커피를 완성하는 것에 가장 많은 시간과 노력을 기울인다고 한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "히떼로스터리 전포점",
@@ -54185,6 +54348,7 @@
             "sourceId": "1611"
           }
         ],
+        "detailDescription": "부산에서 오래된 빵집으로, 60년 넘는 역사를 자랑한다. 부드러운 빵에 콘샐러드가 들어간 크로이즌이 인기 있다. 세련되지는 않으나 예스러운 맛의 빵이 많으며 향수를 느끼는 사람들이 많이 찾는다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "백구당",
@@ -54302,6 +54466,7 @@
             "sourceId": "1628"
           }
         ],
+        "detailDescription": "고급스러운 플레이팅의 디저트를 맛볼 수 있는 곳이다. 연보라색의 라벤더 무스를 올린 비올렛이 인기메뉴로, 라즈베리 잼과 타르트지가 잘 조화된다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "머그디저트랩",
@@ -54414,6 +54579,7 @@
             "sourceId": "1630"
           }
         ],
+        "detailDescription": "달콤한 빵, 구움과자, 케이크를 전문으로 하는 디저트 카페. 디저트와 즐길 수 있는 차도 다양한 종류를 선보인다. 몽블랑, 포레블랑쉬 등이 인기 메뉴.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "보느파티쓰 리",
@@ -54524,6 +54690,7 @@
             "sourceId": "1631"
           }
         ],
+        "detailDescription": "다양한 종류의 베이커리를 선보이는 빵집. 여러가지 종류의 바게트가 인기 메뉴다. 페이스트리 결이 잘 느껴지는 크루아상과 담백한 식빵도 맛있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "브레드365",
@@ -54639,6 +54806,7 @@
             "sourceId": "1637"
           }
         ],
+        "detailDescription": "전포동의 새롭게 떠오르는 스페셜티커피. 수영 지역에서 시작을 했다가, 최근 전포동으로 매장을 이전했다. 메쉬, 딥블루레이크와 함께 한국을 상징하는 라이트로스팅 커피 매장. 과일향과 꽃향이 선명한 개성있는 생두를 기준으로 로스팅을 작업하면서 매혹적인 밸런스와 단맛이 좋은 커피까지 잘 발현한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "히떼로스터리",
@@ -56760,6 +56928,7 @@
             "sourceId": "848"
           }
         ],
+        "detailDescription": "청정자연을 그대로 품은 부산치유의 숲에서 힐링하고 가세요! 아홉산 자락에 넓게 자리한 부산치유의 숲은 부산 최초로 조성된 치유의 숲이랍니다. 체계적인 산림치유 프로그램을 운영하고 있기도 하죠. 지금은 코로나19로 인해 프로그램 운영 관련 변동이 있을 수도 있으니 이 부분은 별도로 문의를 해보셔야 해요.",
         "tourapiContentId": "2660770",
         "tourapiContentTypeId": "12",
         "matchScope": "category_fallback",
@@ -57022,6 +57191,7 @@
             "sourceId": "2106"
           }
         ],
+        "detailDescription": "색채마을은 오래된 주택 벽을 알록달록하게 꾸며 벽화들이 가득한 예쁜 길로, 천천히 감상하며 걸을 수 있는 이색적인 관광지입니다. 2009년 부산시의 색채계획 사업으로 조성된 이곳은 한적하고 평화로운 분위기를 자아냅니다. 마을에는 주황색 모노레일이 오르막길을 따라 운행하며, 산복도로의 귀여운 벽화들과 소품들이 힘든 오르막길을 잊게 해줍니다.",
         "tourapiContentId": "3064931",
         "tourapiContentTypeId": "12",
         "matchScope": "category_fallback",
@@ -58393,6 +58563,7 @@
             "sourceId": "1868"
           }
         ],
+        "detailDescription": "한국전쟁 당시 피란민들의 애환이 서려 있는 부산의 산복도로. 동구 초량동의 이바구길과 연결되는 망양로는 그 자체로 멋진 전망대입니다.",
         "tourapiContentId": "2656194",
         "tourapiContentTypeId": "12",
         "matchScope": "category_fallback",
@@ -59074,6 +59245,7 @@
             "sourceId": "457"
           }
         ],
+        "detailDescription": "부산의 명산 금정산 자락에 사뿐히 내려앉은 화명수목원. 계곡을 채워 흐르는 시원한 물줄기와 산내음 가득한 바람이 기분 좋은 하루를 만들어 주는 곳. 수목원 곳곳이 산책로이자 쉼터인 덕에 숲속을 여유롭게 즐기기만 하면 된다. 연못 위로 가로놓인 구름다리마저 자연이 되고, 침엽수와 활엽수는 물론 야생화와 아열대 식물까지 거대한 식물도감이 되어 눈앞에 펼쳐진다.",
         "tourapiContentId": "2756696",
         "tourapiContentTypeId": "12",
         "matchScope": "category_fallback",
@@ -59683,6 +59855,7 @@
             "sourceId": "2121"
           }
         ],
+        "detailDescription": "해운대해수욕장 바로 옆 동백섬에 위치한 누리마루 APEC하우스, 화려하게 불을 밝힌 광안대교 뒤로 붉은 노을이 번지고 누리마루 지붕에도 환한 조명이 켜지면 한 폭의 그림 같은 부산야경이 완성됩니다. 등대 광장에 서서 이토록 아름다운 야경을 보며 조용히 파도소리를 듣노라면 마음이 저절로 편안해짐을 느낍니다. 동백섬에는 해안산책로가 있어 무더운 여름 밤 시원하게 야간산책을 하기에도 안성맞춤입니다.",
         "tourapiContentId": "1918263",
         "tourapiContentTypeId": "14",
         "matchScope": "category_fallback",
@@ -63112,6 +63285,7 @@
             "sourceId": "363"
           }
         ],
+        "detailDescription": "전국 최대 오일장이 열렸던 구포장터가 구포시장으로 새로 단장한지 오래지만, 지금도 장이 서는 날이면 몰려드는 인파로 더욱 북적이는 구포시장. 상설 점포는 물론 골목골목 노점상에서도 물건 재 놓기 바쁘게 팔려 나간다. 인근 지역에서 생산된 물품이 모두 구포장으로 몰려들던 과거의 번성이 현재까지 이어져 온 듯하다. 싱싱한 해산물과 건어물, 셀 수 없을 정도의 다양한 품목이 즐비한 구포시장. 각종 먹거리도 넘쳐난다.",
         "tourapiContentId": "1250885",
         "tourapiContentTypeId": "38",
         "matchScope": "category_fallback",
@@ -64403,6 +64577,7 @@
             "sourceId": "548"
           }
         ],
+        "detailDescription": "해운대 센텀시티에 위치한 신세계 백화점은 만남과 휴식을 테마로 하는 편안한 쇼핑공간을 지향한다. 외국인을 위한 환전, 통역, 세금환급 서비스 등을 제공해 글로벌 쇼핑의 편리함도 추구한다.",
         "tourapiContentId": "767084",
         "tourapiContentTypeId": "38",
         "matchScope": "category_fallback",
@@ -66842,6 +67017,7 @@
             "sourceId": "1634"
           }
         ],
+        "detailDescription": "2019월드 바리스타 챔피언십(WBC) 우승자가 있는 이 곳은 카페의 도시 부산에서도 가장 유명한 카페 중 하나인 모모스커피. 고급 원두를 직접 로스팅하여 커피를 준비하며, 커피에 대한 애정이 가득한 공간이다.",
         "tourapiContentId": "2832729",
         "tourapiContentTypeId": "39",
         "matchScope": "category_fallback",
@@ -67212,6 +67388,7 @@
             "sourceId": "1464"
           }
         ],
+        "detailDescription": "일상에서 벗어나 파노라마 숲속에서 커피 한 잔의 여유를 즐길 수 있는 곳으로, 카페라고는 하지만 22년 경력 제과기능장의 빵을 맛볼 수 있는 베이커리이기도 하다. 재미있는 모양의 수박식빵과 호랑이식빵이 인기있다.",
         "tourapiContentId": "2853145",
         "tourapiContentTypeId": "39",
         "matchScope": "category_fallback",
@@ -68646,6 +68823,7 @@
             "sourceId": "262"
           }
         ],
+        "detailDescription": "여름하면 바다, 바다하면 부산이지만 아직까지 타지인들에게는 많이 알려지지 않은 해수욕장이 있다. 부산 시민이 사랑하는, 기장군의 양대 해수욕장 중 하나인 임랑해수욕장이 그 주인공이다. 입에 머무르는 느낌마저 따뜻한 ‘임랑’이라는 이름은 아름다운 송림(松林)과 달빛에 반짝이는 은빛 파랑(波浪)의 두 글자에서 유래되었다. 임랑해수욕장의 백사장은 1km 이상 이어지며 바다를 감싸고 있는데 그 색이 매우 밝은 게 특징이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "임랑해수욕장",
@@ -68764,6 +68942,7 @@
             "sourceId": "267"
           }
         ],
+        "detailDescription": "백산 안희제 선생은 고향땅을 팔아 백산상회를 열고 그 수익금으로 독립운동 자금을 지원했다. 백산상회는 1919년 백산무역주식회사로 확대된 후 1928년 일제의 탄압으로 문을 닫기까지 국내독립운동의 중요한 거점으로 활용되었다. 1942년 일경에 체포된 선생은 모진 고문의 후유증으로 끝내 독립을 보지 못하고 1943년 순국하였다. 백산기념관은 백산 안희제 선생의 자주독립정신을 기리기 위해 백산상회가 있던 그 자리에 건립되었다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "백산기념관",
@@ -68878,6 +69057,7 @@
             "sourceId": "268"
           }
         ],
+        "detailDescription": "중앙동 원도심 골목길을 걷다가 만나게 되는 한성1918은 한성은행 부산지점으로 1918년에 설립되어 40여 년간 은행업무를 보던 곳이었다. 근대 부산의 부흥기를 함께한 대표적인 금융권 건물이다. 구조보강 과정을 거쳐 2018년 4월 한성1918-부산생활문화센터로 새롭게 탄생하였다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "한성1918 부산생활문화센터",
@@ -68997,6 +69177,7 @@
             "sourceId": "269"
           }
         ],
+        "detailDescription": "조선통신사역사관은 한‧일 양국의 평화를 위해 조선에서 일본으로 파견된 대규모 국가사절단인 조선통신사의 행적을 재미있게 알려주는 탐방 공간이다. 이와 더불어 매년 5월 광복로 일원에서는 한‧일 양국이 참가하는 통신사 행렬 재현 조선통신사축제가 열린다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "조선통신사역사관",
@@ -69131,6 +69312,7 @@
             "sourceId": "270"
           }
         ],
+        "detailDescription": "바닷속 신비함을 만날 수 있는 부산해양자연사박물관은 살아있는 해양의 보고다. 국제적으로 희귀한 자연사 자료 25,000여 점을 수집‧전시하고 있다. 호기심 가득한 어린이들을 위한 최고의 체험관.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산해양자연사박물관",
@@ -69250,6 +69432,7 @@
             "sourceId": "273"
           }
         ],
+        "detailDescription": "1950년 6월 25일, 민족 최대의 비극 한국전쟁이 일어난 직후 대통령을 비롯한 정부 기관들이 부산으로 옮겨졌고 부산은 임시수도가 되었다. 이때 경남 도지사 관사를 대통령 관저로 사용하게 된 것이, 오늘날까지 부산의 역사를 담은 기념물로 이어져오고 있다. 현재의 임시수도기념관은 대통령 관저 건물과 전시관으로 나누어진다. 대통령 관저 내부에는 응접실, 서재, 집무실 등을 그대로 재현하였다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "임시수도기념관",
@@ -69364,6 +69547,7 @@
             "sourceId": "274"
           }
         ],
+        "detailDescription": "등록문화재 41호, 부산 임시수도정부청사, 대한민국 3대 대학박물관. 하나의 건물을 일컫는 세 가지 이름, 동아대학교 석당박물관이 그 주인공이다. 임시정부청사와 부산지방검찰청으로 사용된 건물을 동아대학교에서 매입해 현재의 석당박물관을 개관하였다. 근대문화유산의 역사적 가치를 인정받아 2002년 등록문화재 41호로 지정되었다. 석당박물관은 국보 2점, 보물 14점 등을 포함해 약 3만 점의 유물 보유량을 자랑한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "동아대학교 석당박물관",
@@ -69483,6 +69667,7 @@
             "sourceId": "275"
           }
         ],
+        "detailDescription": "중일전쟁 발발 후 국가총동원법을 제정한 일본은 조선인들을 강제 동원하여 노동착취 및 인권을 유린했다. 탄광 노무자, 군인, 여자근로정신대라는 이름으로 일본, 만주 등지로 끌려간 조선인들은 혹독한 굶주림과 노역에 시달려야만 했다. 잊으려야 잊을 수 없는 가슴 아픈 역사, 국립일제강제동원역사관에서 함께 기억하고 널리 알리자. ‘일본 땅 와보니 배고파 못살겠네. 배고파 죽겠는데 그 말만하면 몽둥이를 맞았네.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "국립일제강제동원역사관",
@@ -69601,6 +69786,7 @@
             "sourceId": "276"
           }
         ],
+        "detailDescription": "‘부산’이라는 이름의 박물관. 그만큼 부산을 대표하는 박물관이자 대한민국의 역사를 담고 있는 곳이다. 1978년 11월에 개관한 ‘부산박물관’은 부산시민의 휴식처이자 구석기 유물부터 고려시대, 조선시대를 거쳐 근현대에 이르기까지 부산의 역사를 한 번에 아우르는 방대한 규모의 전시관이다. 상설전시실은 크게 동래관과 부산관으로 나누어진다. 동래관은 구석기 시대부터 고려시대까지 부산지역에서 발견된 유물을 중심으로 전시하고 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산박물관",
@@ -69736,6 +69922,7 @@
             "sourceId": "285"
           }
         ],
+        "detailDescription": "바다에서 불어오는 바람을 가장 먼저 맞는 곳. 마린시티와 광안대교의 야경을 가장 가까운 곳에서 만나는 곳. 여름이면 남녀노소가 모이는 휴식처, 민락수변공원이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "민락수변공원",
@@ -69854,6 +70041,7 @@
             "sourceId": "287"
           }
         ],
+        "detailDescription": "영남지방 전역을 시원하게 관통하는 낙동강, 그 끝자락이 남해와 만나 바다가 되기 직전 강줄기 따라 실려 온 모래는 거대한 삼각주가 되어 비옥한 땅을 이룬다. 풍부한 먹이와 깨끗한 수질로 수많은 철새들의 삶의 터전이 되는 낙동강 하류. 강과 바다가 만나 이루는 환상적인 분위기를 느끼고 싶다면 아미산전망대로 가보자.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "아미산전망대",
@@ -69989,6 +70177,7 @@
             "sourceId": "290"
           }
         ],
+        "detailDescription": "갯바위에 부딪치는 파도소리가 마음의 평안을 가져다주는 오랑대공원. 해안가 산책로를 걸으며 바다감성 만끽하고 밤이면 인근 대변항의 야경까지 더해 낭만적인 시간을 보낼 수 있는 곳. 언제부턴가 캠핑을 즐기는 사람들이 삼삼오오 모여들었다. 바다 야경과 일출을 모두 볼 수 있는 곳으로 오랑대공원 만한 곳이 있을까. 금빛 바다를 배경으로 우뚝 솟은 용왕단의 검은 실루엣은 오랑대 일출의 장관이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "오랑대공원",
@@ -70107,6 +70296,7 @@
             "sourceId": "297"
           }
         ],
+        "detailDescription": "일본에서 나고 자란 농학자 우장춘 박사는 해방 후 한국정부의 초청으로 귀국한 뒤 일본에 의존할 수밖에 없었던 채소종자를 품종개량을 통해 국내 완전자급이 가능하도록 전력을 기울인 분이다. 아버지의 지난 과오에 속죄하는 마음으로 우리나라 땅에 맞는 작물을 연구‧개발하는데 헌신하였고 그 덕에 후손들은 맛있는 토종 작물을 먹을 수 있게 되었다. 오늘은 기념관에 들러 우장춘 박사께 존경의 마음을 전해보는 건 어떨까.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "우장춘 기념관",
@@ -70220,6 +70410,7 @@
             "sourceId": "298"
           }
         ],
+        "detailDescription": "부산 산복도로의 추억을 공유하고 싶은 여행자에게 바다와 하늘과 도심을 모두 바라보는 누리바라기 전망대를 추천한다. 부산항의 아름다운 풍경과 더불어 부산타워와 영도대교까지 조망할 수 있고, 시원하게 펼쳐지는 산과 바다 그리고 도심의 파노라마가 감동으로 다가오는 곳이다. 밤이 오면 산복도로의 은은한 야경과 부산항의 화려한 조명이 대비되어 색다른 장면을 선사한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "누리바라기전망대",
@@ -70339,6 +70530,7 @@
             "sourceId": "301"
           }
         ],
+        "detailDescription": "조선시대 남해안 수군지휘부 경상좌도수군절도사영이 있던 자리가 현재의 수영사적공원이다. 수군절도사영의 줄임말 ‘수영’이 현재의 지명으로 그대로 굳어졌다고 한다. 역사적 상징성을 가진 유적공원이지만 시민들의 가벼운 산책공간으로 더 친근하다. 나무가 우거진 시원한 오솔길은 도심 속 힐링 장소로 손색이 없다. 놀이마당에서는 수영야류 등 무형문화재 공연이 정기적으로 열린다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "수영사적공원",
@@ -70458,6 +70650,7 @@
             "sourceId": "304"
           }
         ],
+        "detailDescription": "낙동강줄기와 남해 바닷물이 하나 되는 곳, 비옥한 토양과 민물 어패류의 생태적 보고, 넓은 지대와 풍부한 먹이 덕에 겨울 철새들이 모여드는 곳, 부산의 아름다운 섬, 을숙도를 찾았다. 을숙도는 강 하구에 토사가 쌓여 만들어진 섬이다. 이름에서도 알 수 있듯, 새가 많고 물이 맑은 섬 을숙도는 우리나라 제1의 철새도래지로도 유명하다. 1950년대에는 아시아 최대 철새도래지로 손꼽히던 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "을숙도",
@@ -70593,6 +70786,7 @@
             "sourceId": "325"
           }
         ],
+        "detailDescription": "유유히 흘러가는 낙동강 줄기 옆으로 삼락동 둔치에 넓게 자리 잡은 삼락생태공원. 넓이만 472만 2000㎡에 이르는 공원은 계절마다 각기 다른 매력을 뽐내며 방문객의 사랑을 받고 있다. 특히 부산의 허파 기능을 담당하는 삼락생태공원에서는 그 이름에 걸맞게 습지를 비롯한 다양한 식생을 관찰할 수 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "삼락생태공원",
@@ -70713,6 +70907,7 @@
             "sourceId": "326"
           }
         ],
+        "detailDescription": "소나무 숲 사이로 보이는 남해 바다. 그 위로 비치는 햇빛. 반짝이는 물결 사이로 떠 있는 배들의 모습. 여행자의 마음에 여유를 선물하는 아름다운 곳, 암남반도 남쪽 끝자락에 위치한 암남공원이 그곳이다. 오랜 시간 군사보호구역으로 묶여 출입이 통제되었던 암남공원은 산림이 우거진 산책로와 기암절벽으로 이뤄진 해안풍경이 눈길을 사로잡는 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "암남공원/송도해안볼레길",
@@ -70849,6 +71044,7 @@
             "sourceId": "344"
           }
         ],
+        "detailDescription": "아이와 함께라면? 일단 어린이대공원으로 가자. 부산 어린이대공원이 아름다운 순환산책로의 탄생과 함께 가족 방문객들의 최애 장소로 변모했다. 어린이회관에 이르는 길은 오르막이긴 하지만 어린이 놀이터를 비롯해 볼거리, 놀거리가 많아 동심은 끊임없이 즐겁다. 우거진 숲속엔 꼬마 아이들도 쉽게 걸을 수 있는 산책로가 있고, 나무 사이사이 피크닉을 즐길 수 있는 야외테이블도 자리한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산어린이대공원",
@@ -70968,6 +71164,7 @@
             "sourceId": "361"
           }
         ],
+        "detailDescription": "슬레이트는 이미 준비됐다. 신(scene) 넘버 원 영화의 거리 ‘레디~~ 액션!’ 천만관객을 이끈 많은 영화들이 부산에서 촬영한 거라고? 어떤 영화들이 있을까? 영화의 거리에서 정답 확인! ‘넌 감독이고 난 배우야’ 배우놀이도 잠깐 해볼까. 배우가 자기 자신을 온전히 버리고 영화 속 캐릭터를 완벽하게 소화하는 것을 상상해보면 그 치밀함에 대해 새삼 놀라게 된다. 세계 영웅 스파이더맨도 해운대에 와 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "영화의 거리",
@@ -71087,6 +71284,7 @@
             "sourceId": "362"
           }
         ],
+        "detailDescription": "변화 없는 일상이 지루할 때, 혹은 변화무쌍한 매일이 지칠 때. 책 한권 달랑 들고 조용한 APEC나루공원으로 간다. 수영강변 따라 뻗어 있는 도심 속 작은 공원이지만 책을 읽을 수 있는 테이블도 있고, 산책로, 조깅코스, 조각공원까지 갖춘 내실탄탄한 공원이다. 나무그늘 아래 한 자리, 강바람 느끼며 책장을 넘길 수 있는 여유를 맘껏 즐긴다. 독서가 체질이 아닌가? 그럼 살랑살랑 산책은 어떨까.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "APEC나루공원",
@@ -71206,6 +71404,7 @@
             "sourceId": "364"
           }
         ],
+        "detailDescription": "정든 산천 떠나와 40계단 층층대에 앉아 울던 나그네는 어떻게 되었을까. 고향 길이 열리기만 사무치게 기다리던 모든 피난민의 삶의 터전, 그들이 남긴 삶의 애환을 느끼며 40계단을 걸어보자.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "40계단",
@@ -71325,6 +71524,7 @@
             "sourceId": "371"
           }
         ],
+        "detailDescription": "부산의 4개 구에 걸쳐 자리한 황령산, 도심을 감싸며 시원하게 뻗어 내린 산맥이 초록의 울창한 숲을 선물처럼 내어준다. 숲길 걷기 좋아하는 등산객들에겐 숲과 바람과 하늘을 내어주고, 야경을 즐기는 관광객들에겐 황홀한 빛의 세계를 선사해 주는 곳, 황령산 전망쉼터를 소개한다. 황령산은 부산 중심부에 넓게 자리하고 있어 정상으로 오르는 길이 다양하다. 자신의 위치에서 가장 가까운 길을 선택하면 된다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "황령산 전망쉼터",
@@ -71444,6 +71644,7 @@
             "sourceId": "415"
           }
         ],
+        "detailDescription": "부산 상해거리는 동구 초량동에 위치한 중국인 최대 거주지역이다. 일제강점기를 지나면서 중국인들이 하나둘 이주해 형성되기 시작한 거리인데 과거 중국 영사관이 있기도 했다. 상해거리는 지난 2007년 국내 유일의 차이나타운특구로 지정된 바 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "상해거리",
@@ -71573,6 +71774,7 @@
             "sourceId": "418"
           }
         ],
+        "detailDescription": "그림 밖에 몰랐던 천재화가 이중섭이 전쟁의 포화를 피해 부산으로 피란 와 정착한 곳. 허름한 판잣집이 다닥다닥 붙어 있던 범일동 산비탈에서도 그림에 대한 열정은 계속되었다. 이중섭 전망대에 서서 빼곡히 들어선 주택가를 내려다보며 호락호락하지 않았을 그의 삶을 잠시 상상해본다. 전망대 옆 희망의 100계단은 아내를 향한 그리움이 그의 작품과 함께 전시된 계단갤러리다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "이중섭문화거리",
@@ -71687,6 +71889,7 @@
             "sourceId": "456"
           }
         ],
+        "detailDescription": "수령 높은 노목들이 오색찬란하게 빛을 발하는 도심 속 휴식 공간 대신공원은 대한민국 아름다운 숲 대회에서 누리상을 수상한 숲이기도 하다. 그만큼 울창한 숲과 맑은 계곡을 지닌 자연 그대로의 힐링 쉼터이다. 계곡물에 발 담그고 찰방찰방하는 사람들 구경하며 산책을 이어간다. 입구에서 멀지 않은 곳에 자리한 빽빽한 편백림은 건강한 기운을 마구마구 뿜어낸다. 기분이 꽤 상쾌하다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "대신공원",
@@ -71805,6 +72008,7 @@
             "sourceId": "508"
           }
         ],
+        "detailDescription": "2018년, 전포카페거리 근처에 부산 최초 커피전문박물관이 문을 열었다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산커피박물관",
@@ -71923,6 +72127,7 @@
             "sourceId": "511"
           }
         ],
+        "detailDescription": "사상생활사박물관은 근대 부산경제의 중심지였던 사상지역과 그 생활사를 소개하고 주민 간 소통을 이어가기 위해 건립되었다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "사상생활사박물관",
@@ -72043,6 +72248,7 @@
             "sourceId": "757"
           }
         ],
+        "detailDescription": "어느 덧 옷차림이 짧아지는 계절을 맞이하고 있지만 생활 속 거리두기로 여전히 답답한 마음을 해소할 길이 없으실 거예요. 이럴 땐 사람들이 많이 모이는 곳을 피해 짧은 산책을 해 보는 것도 좋겠죠?",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "신평소공원",
@@ -72162,6 +72368,7 @@
             "sourceId": "813"
           }
         ],
+        "detailDescription": "한국의 신발산업은 과거부터 국내를 넘어 해외에서도 우수한 품질을 인정받았다는 사실! 다들 알고 계시나요? 그 자랑스러운 신발역사의 중심에는 부산이 있습니다. 부산은 70~80년대에 신발산업계의 거물이었으며, 그로 인해 한국 신발산업은 화려하고 풍요로운 전성기를 누렸다고 해요~ 역사가 쓰이는 순간을 들여다보면 그 시절 많은 사람들의 피땀눈물이 들어가 있습니다. 부산 신발산업의 과거와 현재를 함께 보러 가보실까요?",
         "matchScope": "category_fallback",
         "dwellSourceName": "scenic_pause 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "부산신발이야기",
@@ -72276,6 +72483,7 @@
             "sourceId": "1031"
           }
         ],
+        "detailDescription": "존재 자체만으로도 가보고 싶은 이유가 되는 부산도서관이 문을 열었습니다. 개관을 오랫동안 기다려온 시민들의 일상에도 행복한 변화가 찾아왔습니다. 슬기로운 부산도서관 생활을 위한 우리 모두의 열린 서재를 본격 탐방해 볼까요? 깔끔한 외관이 눈길을 끄는 부산도서관, 반듯한 4층 건물의 전면이 유리창으로 이루어져 있습니다. 창문 너머로 한 가득 쏟아지는 햇살을 품은 1층 중앙홀은 마치 고급 북카페를 연상시킵니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산도서관",
@@ -72412,6 +72620,7 @@
             "sourceId": "1305"
           }
         ],
+        "detailDescription": "어느덧 여름휴가를 떠나야 할 계절입니다. 여름휴가엔 부산의 멋진 바다가 제격이지만 여행 내내 바다만 바라보고 있을 순 없죠! 골목골목 아날로그 감성으로 가득한 보석 같은 여행지를 소개합니다. 요즘 부산의 힙스터들이 줄을 선다는 그곳! 광안종합시장으로 여러분을 안내합니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "광안종합시장",
@@ -72540,6 +72749,7 @@
             "sourceId": "1322"
           }
         ],
+        "detailDescription": "옛 고려철강 공장 건물을 문화시설로 꾸민 F1963에 현대자동차의 '현대 모터스튜디오 부산'이 들어섰습니다. 디자인 콘텐츠를 경험할 수 있는 현대 모터스튜디오로 지금 함께 떠나보시죠!",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "현대 모터스튜디오 부산",
@@ -72655,6 +72865,7 @@
             "sourceId": "1673"
           }
         ],
+        "detailDescription": "강서구청역 바로 옆엔 부산의 대표적인 자연생태 친수공간인 대저생태공원이 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "대저생태공원",
@@ -72775,6 +72986,7 @@
             "sourceId": "1674"
           }
         ],
+        "detailDescription": "부산의 서쪽 낙동강변에는 저마다 특색을 가진 6개의 생태공원이 있다. 이 생태공원 중에서 잘 알려져 있지 않지만 자연 그대로의 모습으로 사랑받는 맥도생태공원을 소개한다. 맥도생태공원을 여행하는 가장 좋은 방법은 걷는 것이다. 공원이 그리 크지 않아서 공원 전체를 천천히 걸어도 1시간 30분을 넘기지 않는다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "맥도생태공원",
@@ -72895,6 +73107,7 @@
             "sourceId": "1731"
           }
         ],
+        "detailDescription": "유엔평화공원은 유엔기념공원 근처에 있는 근린공원으로 2005 APEC 정상회담을 계기로 정비돼 부산 시민들에게 아름다운 산책길 코스로 큰 인기를 얻고 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "유엔평화공원",
@@ -73015,6 +73228,7 @@
             "sourceId": "1772"
           }
         ],
+        "detailDescription": "부산의 기운이 뿜뿜 솟아오르는 명당자리를 아시나요? 바로 부산의 정중앙의 위치, 북위 35도 10분 4초, 동경 129도 2분 17초의 자리랍니다. 건강, 행복, 재물, 효자 자손이 많이 난다는 기운을 갖고 있어 소원을 이루고 싶은 시민들의 발길이 모여드는 곳이에요.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "정중앙공원",
@@ -73150,6 +73364,7 @@
             "sourceId": "1798"
           }
         ],
+        "detailDescription": "땅뫼산 황토숲길은 울창한 숲과 탁 트인 호수가 어우러진 회동수원지 내 산책로입니다. ‘땅뫼산 맨발 황토길’이라는 안내에 걸맞게, 이곳에서는 맨발로 흙의 감촉을 느끼며 자연과 교감할 수 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "scenic_pause 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "땅뫼산 황토숲길",
@@ -73263,6 +73478,7 @@
             "sourceId": "1857"
           }
         ],
+        "detailDescription": "차, 요가, 왕실 요리까지! 가장 고급지게 인도를 즐길 수 있는 곳, 부산 인도문화원입니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산 인도문화원",
@@ -73378,6 +73594,7 @@
             "sourceId": "1862"
           }
         ],
+        "detailDescription": "이름조차 낯선 ‘아세안’, 친해지고 싶다고? 부산 KF아세안문화원에서 경험해 보자구요!",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "KF아세안문화원",
@@ -73498,6 +73715,7 @@
             "sourceId": "2065"
           }
         ],
+        "detailDescription": "사계절 내내 아름다운 자연풍경을 느끼며 숲길 산책로와 용소골저수지를 즐길 수 있는 숨은 산책 코스 중 하나입니다. 저수지에서 은은하게 불어오는 바람과 함께 여유로운 계절 내음을 맡아보세요. 산책으로 또 다른 기장을 느낄 수 있을 거예요.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "용소웰빙공원",
@@ -73616,6 +73834,7 @@
             "sourceId": "2077"
           }
         ],
+        "detailDescription": "부산수학문화관과 함께라면 우리 모두 수포자 탈출 가능! 세계 최대 규모 수학 문화공간, 부산수학문화관에서 흥미로운 수학의 세계를 탐험해봐요.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산 수학문화관",
@@ -73736,6 +73955,7 @@
             "sourceId": "2081"
           }
         ],
+        "detailDescription": "도심 속 바다와 미래적인 조경의 만남, 북항 친수공원에서 특별한 밤 산책 즐겨보세요!",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "북항 친수공원",
@@ -73855,6 +74075,7 @@
             "sourceId": "2085"
           }
         ],
+        "detailDescription": "문화와 예술이 살아 숨 쉬는 북구의 예술 공간, 문화예술플랫폼에서 예술적인 하루를 보내보세요!",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "문화예술플랫폼",
@@ -73990,6 +74211,7 @@
             "sourceId": "2102"
           }
         ],
+        "detailDescription": "망양로 산복도로 전시관은 부산의 역사와 문화를 체험할 수 있는 특별한 공간입니다. 전시관 아카이브존은 10가지 주제로 구성되어, 일제강점기부터 한국전쟁을 거친 동구의 역사를 요약해 보여줍니다. ‘가대기’라는 주제로 노동자의 삶과 역사를 다루며, 피란민의 삶과 사라져가는 자연을 표현한 파노라마도 감상할 수 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "망양로 산복도로 전시관",
@@ -74110,6 +74332,7 @@
             "sourceId": "2104"
           }
         ],
+        "detailDescription": "닥밭골 벽화마을은 6가지 테마로 꾸며진 형형색색의 마을로, 1953년 부산역전 대화재 이후 정착한 주민들과 구본호 작가가 2010년 함께 조성했습니다. 마을의 소망계단은 192개 계단으로, 소원을 빌면 이루어진다는 전설이 있습니다. 주민을 위한 귀여운 모노레일도 있어 독특한 매력을 더합니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "닥밭골 벽화마을",
@@ -74224,6 +74447,7 @@
             "sourceId": "2105"
           }
         ],
+        "detailDescription": "부산의 야경을 감상하기 위해 찾은 대청스카이전망대는 망양로 색채마을과 인접한 곳에 있습니다. 이곳에서는 부산항대교부터 봉래산, 부산타워, 남항대교까지 한눈에 담을 수 있는 멋진 야경을 즐길 수 있습니다. 다채로운 불빛이 가득한 야경을 보면서 산복도로가 아름다운 장소가 되기까지 쌓인 이야기를 마음에 잘 기록하면 좋겠습니다. 골목골목에서 빛나는 색을 오래 기억하면 좋겠습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "대청스카이전망대",
@@ -74338,6 +74562,7 @@
             "sourceId": "2119"
           }
         ],
+        "detailDescription": "LP 마니아들을 위한 특별한 공간, ‘뮤직컴플렉스 서울 부산점’을 소개합니다! 빨간 조명과 특유의 높은 층고가 특징인 ‘뮤직컴플렉스 서울 부산점’. 무려 2만여 장의 LP판을 보유한 곳으로도 유명한데요. 앨범의 양만큼 종류도 다양해 많은 사람의 취향을 저격합니다. 1인당 2만 원의 입장료로 별도의 시간제한 없이 음악을 감상할 수 있다는 점도 매력적이죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "scenic_pause 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "뮤직컴플렉스 서울 부산점",
@@ -74452,6 +74677,7 @@
             "sourceId": "2145"
           }
         ],
+        "detailDescription": "부산의 과거와 미래를 잇는 공간, ‘도모헌’. (구) 부산시장 관사 건물을 리모델링해 시민들에게 열린 산책과 휴식, 지적 교류의 장소로 재탄생했습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "scenic_pause 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "도모헌",
@@ -74567,6 +74793,7 @@
             "sourceId": "2172"
           }
         ],
+        "detailDescription": "기장 바다와 함께 걷는 기분 좋은 산책로, ‘오시리아 해안 산책로’. 탁 트인 바다를 배경으로 산책로가 조성되어 있고, 곳곳에 멋진 풍경을 감상할 수 있는 쉼터가 있어 여유롭게 걷기에 좋습니다. 해안 절경과 다양한 야생화, 소나무가 우거진 숲 등이 어우러져 산책하는 내내 자연으로 힐링하는 곳이기도 하죠. 기장의 아름다운 사찰 중 하나인 해동용궁사 전경을 볼 수 있다는 점도 이곳의 특징입니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "오시리아 해안 산책로",
@@ -74685,6 +74912,7 @@
             "sourceId": "2187"
           }
         ],
+        "detailDescription": "피란민의 아픔에서 부산의 경제 발전으로, 재건의 시작 '부산 제1부두'를 소개합니다. 부산 제1부두는 조선 시대부터 중요한 무역의 요충지였습니다. 1876년 강화도 조약에 따라 개항되었고, 부산항의 발전과 함께 역사적 의미를 더해왔는데요. 일제강점기에는 제1부두가 완공되고, 경부선 철도가 개통되면서 일본의 대륙 침략 거점이자 군수 물자 수송의 중심지로 기능했습니다. 6.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": " 부산항 제 1부두",
@@ -74803,6 +75031,7 @@
             "sourceId": "2188"
           }
         ],
+        "detailDescription": "6.25 전쟁 당시 이야기를 상세하게 공부할 수 있는 곳, 유엔평화기념관을 소개합니다. 유엔평화기념관은 6.25 전쟁의 발발 원인과 전개 과정, 전쟁에 참전한 UN군의 이야기와 현재 유엔의 비전에 이르기까지 폭넓은 내용을 다루고 있습니다. 특히 한반도의 평화를 위해 힘썼던 26개 연합국과 참전용사의 흔적을 마음 깊이 되새길 수 있다는 점에서 역사적 가치가 높죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "유엔평화기념관",
@@ -74917,6 +75146,7 @@
             "sourceId": "2191"
           }
         ],
+        "detailDescription": "포디움다이브엠은 예술, 책, 커피 등 다양한 즐길 거리를 한곳에서 만날 수 있는 전시 복합 문화 공간입니다. 외국에 온 듯한 감각적인 인테리어와 여유로운 분위기로 실내 데이트 장소로도 인기죠. 건물 중앙이 뻥 뚫린 독특한 구조가 돋보이며 세련된 디테일 덕분에 곳곳이 포토존이기도 합니다. 지하 1층에서는 광안리 인근 맛집과 명소를 소개하는 로컬 콘텐츠 큐레이션을 통해 여행의 시작점을 제시합니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "포디움다이브엠",
@@ -75031,6 +75261,7 @@
             "sourceId": "2200"
           }
         ],
+        "detailDescription": "동구 수정동에 위치한 갤러리 수정은 50년 된 수정아파트를 개조해 만든 특별한 공간입니다. 부산의 옛 정서를 담아내며, 무명작가들에게 소중한 전시 기회를 제공하는 곳이죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "갤러리 수정",
@@ -75166,6 +75397,7 @@
             "sourceId": "2204"
           }
         ],
+        "detailDescription": "부산의 네 번째 사립미술관인 디오티 미술관은 전시를 넘어, 지역 예술가들의 작업을 응원합니다. 또, 주민들에게 문화예술을 가까이에서 경험할 기회를 제공하죠. \"삶과 예술을 잇다\"라는 슬로건 아래, 작가와 관람객을 비롯한 다양한 관계를 연결하며 예술적 가치를 실현하고 있는데요.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "디오티 미술관",
@@ -75285,6 +75517,7 @@
             "sourceId": "2210"
           }
         ],
+        "detailDescription": "부산 중구에 자리한 사설 미술관, 갤러리 플레이리스트. 현대미술을 사랑하는 분들에게 새로운 영감을 선사하는 공간입니다. 여러 신진 현대미술 작가들의 전시를 활발히 주최해 부산 전시예술의 폭을 넓히고 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "갤러리 플레이리스트",
@@ -75404,6 +75637,7 @@
             "sourceId": "2284"
           }
         ],
+        "detailDescription": "BNK부산은행 아트시네마 모퉁이극장은 독립영화와 고전 명작 등 흔히 볼 수 없는 작품을 주로 상영하는 소규모 영화관입니다. 조조·경로우대 5,000원, 청소년 7,000원, 일반 8,000원으로 부담 없는 가격에 수준 높은 영화를 즐길 수 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "BNK부산은행 아트시네마 모퉁이극장",
@@ -75517,6 +75751,7 @@
             "sourceId": "2551"
           }
         ],
+        "detailDescription": "부산 도심 속 숨은 명소, 황령산봉수전망대에서 부산 전경을 한눈에 감상해보는 건 어떨까? 광안대교, 해운대, 부산항까지 내려다볼 수 있어 부산 야경 명소로도 제격인 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "황령산봉수전망대",
@@ -75630,6 +75865,7 @@
             "sourceId": "2588"
           }
         ],
+        "detailDescription": "부산 서구 충무동에 자리한 해안시장은 항구 도시의 생생한 정취가 그대로 묻어나는 전통시장입니다. 부산 남항과 인접해 해산물을 구하기 쉬운 입지 덕분에 형성되었으며, 자연스럽게 어선 선원들을 대상으로 한 점포들이 모이기 시작했습니다. 1960년대 초반에는 새벽에만 장이 섰다가, 1965년 정식으로 충무동 해안시장이 개설되었습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "충무동 해안시장",
@@ -75755,6 +75991,7 @@
             "sourceId": "2598"
           }
         ],
+        "detailDescription": "부산 수영구의 조용한 산업단지 안을 걷다 보면 만나는 특별한 공간, 고려제강기념관이 있습니다. 이곳은 1960년대부터 부산의 산업 발전을 이끌어온 고려제강의 역사를 담은 곳입니다. 핵심 소재인 ‘와이어’에 대한 대중적 이해의 폭을 넓히고자 문화와 건축으로 재해석한 독특한 산업 문화 공간입니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "고려제강기념관",
@@ -75868,6 +76105,7 @@
             "sourceId": "2678"
           }
         ],
+        "detailDescription": "1943년 미국 뉴욕에서 출판된 이후 지금까지도 전 세계 독자들의 사랑을 받고 있는 작품, ‘어린왕자’. 순수한 시선으로 세상을 바라보는 이 이야기는 세대를 넘어 많은 이들의 마음에 잔잔한 울림을 전하고 있습니다. 부산 감천문화마을에 자리한 어린왕자 동상 역시 이러한 감성을 느낄 수 있는 곳으로, 관광객들이 꼭 들르는 대표적인 포토존으로 알려져 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "compact_culture 검토 템플릿: 최소 20분, 권장 30분, 최대 120분",
         "openingHoursSourceName": "리틀 프린스 하우스",
@@ -75983,6 +76221,7 @@
             "sourceId": "292"
           }
         ],
+        "detailDescription": "알록달록 파라솔 사이로 정이 넘치는 기장 아지매들의 환한 미소가 빛난다. 바다에서 금방 건져 올린 싱싱한 해산물은 물론 토실토실 살 오른 농산물까지 없는 게 없다. 활어뿐만 아니라 봄에는 명물 기장미역과 해조류가, 가을에는 갈치가 좌판 위에 펼쳐진다. 골목 양옆으로 즐비한 대게식당은 기장시장의 또 다른 명물 중 하나이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "기장시장",
@@ -76103,6 +76342,7 @@
             "sourceId": "294"
           }
         ],
+        "detailDescription": "해운대 해수욕장과 5분 거리에 위치한 해운대시장은 다양한 먹거리와 볼거리로 항상 북적인다. 전국적으로 유명세를 탄 떡볶이, 튀김, 칼국수, 꽈배기, 돼지국밥 등의 가게 앞에는 기다리는 사람들로 인산인해를 이룬다. 각종 부식거리를 비롯하여 활어회, 곰장어구이 등도 성업 중이라 말 그대로 골라먹는 천국이다. 구경거리 많은 재래시장 돌아보며 인심 좋은 주인장 만나 덤 하나 얻어오는 행운도 누릴 수 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "해운대시장",
@@ -76222,6 +76462,7 @@
             "sourceId": "300"
           }
         ],
+        "detailDescription": "영도의 오랜 정취가 살아있는 남항시장과 봉래시장으로 가족나들이 어떠세요? 남항시장 피란민이 일군 전통시장으로 싱싱한 해산물이 특화된 시장이다. 가격 착한 맛집이 종류별로 성업 중이라 시장은 항상 많은 인파로 북적인다. 봉래시장 일제강점기 시절 형성되어 역사와 전통을 자랑하는 시장이다. 50년 이상 삼진어묵 본점이 자리하고 있어 어묵의 본고장이라 할 수 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "남항시장 / 봉래시장",
@@ -76341,6 +76582,7 @@
             "sourceId": "328"
           }
         ],
+        "detailDescription": "화려한 상권이 형성된 부산 최대 번화가 서면에서 60년 가까이 전통시장으로 인기몰이 중인 서면시장. 맛집으로 소문난 칼국수 가게들과 옛날통닭, 돼지국밥, 먹자골목이 줄지어 있어 사람들의 발걸음이 끊이지 않는 곳이다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "서면시장",
@@ -76469,6 +76711,7 @@
             "sourceId": "422"
           }
         ],
+        "detailDescription": "2층짜리 깔끔한 현대식 건물인 동래시장의 나이는 벌써 250살. 조선시대 부산지역 최대 5일장이었던 동래장터가 현재까지 동래에서 가장 큰 규모를 자랑하는 전통시장으로 이어지고 있다. 시장 내 점포들도 오랜 기간 전통을 유지해 온 집들이 많다. 건물 바깥쪽을 둘러싼 한약재상, 가격을 좀처럼 올리지 않는 식당가, 애교로 흥정이 가능한 패션잡화 등 대부분의 가게가 최소 40 ~ 50년 경력을 자랑한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "동래시장",
@@ -76597,6 +76840,7 @@
             "sourceId": "533"
           }
         ],
+        "detailDescription": "부산시 공모절차를 거쳐 선정된 부산관광기념품을 소개한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산 그대로를 담은 부산관광기념품",
@@ -76710,6 +76954,7 @@
             "sourceId": "540"
           }
         ],
+        "detailDescription": "100여개의 다양한 브랜드가 입점해 있어 김해공항을 이용하는 여행자들에게 즐거운 면세 쇼핑을 제공한다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "롯데면세점 김해공항점",
@@ -76949,6 +77194,7 @@
             "sourceId": "552"
           }
         ],
+        "detailDescription": "부산 프리미엄 아울렛에 들어서면 이탈리아의 어느 활기찬 골목을 연상시키는 건축양식이 먼저 시선을 사로잡는다. 1층 중앙광장의 분수대를 기준으로 로우 스트리트(Low Street), 미들 스트리트(Middle Street), 하이 스트리트(High Street)가 고풍스런 계단으로 연결되고, 180여 개의 국내외 유명 브랜드가 입점해 있어 이국적인 쇼핑을 경험하려는 사람들의 관심을 한 몸에 받고 있다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산프리미엄아울렛",
@@ -77084,6 +77330,7 @@
             "sourceId": "1667"
           }
         ],
+        "detailDescription": "전국구로 유명한 해운대해수욕장, 수많은 여행자들이 세우는 부산 여행 계획에서 빠질 수 없는 곳입니다. 여행을 갔을 때 여행지를 기념할 만한 기념품에도 관심이 많을 텐데요, 해운대를 여행 중이라면 ‘해운대 선물가게’에 한번 들러보는 건 어떨까요?",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "해운대 선물가게",
@@ -77203,6 +77450,7 @@
             "sourceId": "2141"
           }
         ],
+        "detailDescription": "부산광역시와 부산관광공사는 부산의 상징성과 상품성이 결합된, 경쟁력 있는 우수 관광기념품의 집중 발굴과 육성을 위해 '부산 대표 관광기념품 10선'을 선정하였습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "부산",
@@ -77316,6 +77564,7 @@
             "sourceId": "2165"
           }
         ],
+        "detailDescription": "소품샵계의 올영이 떴다?!! 숨은 보물을 찾고 있다면 절대 빈손으로 나올 수 없는 키덜트들의 방앗간, '아비베르컴퍼니'를 소개합니다. 이곳은 프리미엄 디자인 편집샵으로, 다양한 파트너 브랜드와 매력적인 상품들이 가득해요. 매장 곳곳에는 키치한 상품들이 진열되어 있습니다. 쇼핑은 물론 인테리어 참고와 포토존으로도 활용 가능하죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "아비베르컴퍼니",
@@ -77429,6 +77678,7 @@
             "sourceId": "2537"
           }
         ],
+        "detailDescription": "부산의 감성 골목 전포 카페거리에는 다양한 개성을 지닌 소품샵들이 모여 있습니다. 그중에서도 ‘오월상점’은 외관부터 사랑스러운 파스텔 톤으로 꾸며져 있어, 따뜻하고 부드러운 분위기를 자아냅니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "오월상점",
@@ -77542,6 +77792,7 @@
             "sourceId": "2539"
           }
         ],
+        "detailDescription": "오래된 전자상가 건물 C동 2층, 낯선 듯 익숙한 공간에 자리한 ‘포셋 전포’는 엽서를 중심으로 한 감성 소품샵입니다. 세월의 흔적이 깃든 이곳은 현대적인 감각을 잃지 않으면서도, 아날로그 감성을 자연스럽게 끌어올리는 유니크한 경험을 선사합니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "포셋 전포",
@@ -77655,6 +77906,7 @@
             "sourceId": "2541"
           }
         ],
+        "detailDescription": "부산의 슬램덩크 감성 인증샷 성지인 청사포에 들린다면, 여기도 함께 가보면 어떨까요? 바로 청사포의 매력을 한가득 담은 ‘부산슈퍼 청사포점’입니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "quick_browse 검토 템플릿: 최소 20분, 권장 30분, 최대 60분",
         "openingHoursSourceName": "부산슈퍼 청사포점",
@@ -77768,6 +78020,7 @@
             "sourceId": "2555"
           }
         ],
+        "detailDescription": "부산 영도에 위치한 귀여움 폭발하는 힐링 공간, 미피카페를 소개합니다. 오렌지빛 컨테이너 건물 안엔 층마다 미피 조형물과 기념품이 가득하고, 루프탑에서는 부산항대교와 바다가 눈앞에 펼쳐지죠.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "미피카페 부산",
@@ -77902,6 +78155,7 @@
             "sourceId": "2589"
           }
         ],
+        "detailDescription": "부산 남구 문현동에 자리한 ‘문현동 골동품거리’는 시간의 흔적이 고스란히 남은 공간입니다. 금융단지 BIFC 옆 골목에 자리해, 현대와 과거가 공존하는 독특한 분위기를 느낄 수 있습니다.",
         "matchScope": "category_fallback",
         "dwellSourceName": "aihub_category_mode_short_stay_policy",
         "openingHoursSourceName": "문현동 골동품거리",

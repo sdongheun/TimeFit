@@ -2,6 +2,7 @@
 // 검토를 마친 자투리 활동 카탈로그를 앱 번들용 데이터로 변환한다.
 // 원본 검토 카탈로그는 data/processed/review에 보존하고, 앱은 이 출력만 읽는다.
 import fs from 'node:fs';
+import { buildOfficialDetailDescriptionPlan } from './build_place_detail_description.mjs';
 
 const SHORT_STAY_CATALOG = 'data/processed/review/부산_장소_근거프로필_재분류.json';
 const LEGACY = 'src/data/busan_poi_catalog.legacy.json';
@@ -49,6 +50,7 @@ const officialBySource = Object.fromEntries(Object.entries(OFFICIAL_SOURCES).map
   const rows = Array.isArray(payload) ? payload : payload.data ?? payload.items ?? [];
   return [source, new Map(rows.map((row) => [String(row.UC_SEQ), row]))];
 }));
+let officialDetailDescriptions = new Map();
 
 const contentTypeForCategory = {
   자연관광지: '12',
@@ -184,6 +186,9 @@ function toRuntime(place) {
     siteGroupId: place.siteGroupId,
     siteRole: place.siteRole,
     sourceEvidence: place.sourceEvidence ?? [],
+    ...(officialDetailDescriptions.get(place.id)?.detailDescription ? {
+      detailDescription: officialDetailDescriptions.get(place.id).detailDescription,
+    } : {}),
     tourapiContentId: tourapiContentId ? String(tourapiContentId) : undefined,
     tourapiContentTypeId: tourapiContentId ? legacyPlace?.contentTypeId : undefined,
     matchScope,
@@ -231,6 +236,8 @@ function toRuntime(place) {
 
 const source = read(SHORT_STAY_CATALOG);
 const rows = source.data.filter((place) => ['representative_core', 'representative_standard', 'conditional_more'].includes(place.classification));
+const officialDetailPlan = buildOfficialDetailDescriptionPlan(rows, officialBySource);
+officialDetailDescriptions = officialDetailPlan.descriptions;
 const matched = rows
   .filter((place) => place.selectionEvidence?.exactAihubMatch)
   .map(toRuntime);
@@ -276,4 +283,4 @@ const catalog = {
 };
 
 write(OUTPUT, catalog);
-console.log(`자투리 런타임 카탈로그 생성: 매칭 ${matched.length} / 미매칭 ${unmatched.length} / 합계 ${all.length}`);
+console.log(`자투리 런타임 카탈로그 생성: 매칭 ${matched.length} / 미매칭 ${unmatched.length} / 합계 ${all.length} / 공식 설명 ${officialDetailDescriptions.size}`);

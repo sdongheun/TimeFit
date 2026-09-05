@@ -1,0 +1,185 @@
+{
+  "meta": {
+    "sourceCatalog": "data/processed/review/부산_장소_근거프로필_재분류.json",
+    "runtimeCatalog": "src/data/busan_poi_catalog.json",
+    "officialSources": {
+      "busan_attraction": "data/processed/부산시_명소정보.json",
+      "busan_shopping": "data/processed/부산시_쇼핑정보.json",
+      "busan_food": "data/processed/부산시_맛집정보.json"
+    },
+    "policy": "sourceEvidence source+sourceId exact UC_SEQ only; first meaningful paragraph; max 240 Unicode code points; duplicate description omitted"
+  },
+  "baseline": {
+    "sourceCatalogGeneratedAt": "2026-08-31T15:45:56.083Z",
+    "total": 369,
+    "representative": 191,
+    "protectedSemanticSha256": "ffc2bf4a716199c8257ee07a4725367b106a34c7026a8a53c565d8a8fb642670",
+    "all": {
+      "category": {
+        "present": 369,
+        "missing": 0,
+        "rate": 100
+      },
+      "subCategory": {
+        "present": 231,
+        "missing": 138,
+        "rate": 62.6
+      },
+      "addr1": {
+        "present": 367,
+        "missing": 2,
+        "rate": 99.5
+      },
+      "operatingHours": {
+        "present": 122,
+        "missing": 247,
+        "rate": 33.1
+      },
+      "imageUrl": {
+        "present": 203,
+        "missing": 166,
+        "rate": 55
+      },
+      "mapVerification": {
+        "present": 369,
+        "missing": 0,
+        "rate": 100
+      },
+      "detailDescription": {
+        "present": 0,
+        "missing": 369,
+        "rate": 0
+      }
+    },
+    "representatives": {
+      "category": {
+        "present": 191,
+        "missing": 0,
+        "rate": 100
+      },
+      "subCategory": {
+        "present": 74,
+        "missing": 117,
+        "rate": 38.7
+      },
+      "addr1": {
+        "present": 191,
+        "missing": 0,
+        "rate": 100
+      },
+      "operatingHours": {
+        "present": 108,
+        "missing": 83,
+        "rate": 56.5
+      },
+      "imageUrl": {
+        "present": 179,
+        "missing": 12,
+        "rate": 93.7
+      },
+      "mapVerification": {
+        "present": 191,
+        "missing": 0,
+        "rate": 100
+      },
+      "detailDescription": {
+        "present": 0,
+        "missing": 191,
+        "rate": 0
+      }
+    }
+  },
+  "result": {
+    "total": 369,
+    "representative": 191,
+    "exactOfficialCandidates": 132,
+    "duplicateDescriptionGroupsOmitted": 2,
+    "duplicatePlacesOmitted": 5,
+    "descriptions": 127,
+    "representativeDescriptions": 104,
+    "fallbackNoDescription": 242,
+    "representativeFallbackNoDescription": 87,
+    "byOfficialSource": {
+      "busan_food": 18,
+      "busan_shopping": 24,
+      "busan_attraction": 85
+    },
+    "maxDescriptionCodePoints": 238,
+    "current": {
+      "all": {
+        "category": {
+          "present": 369,
+          "missing": 0,
+          "rate": 100
+        },
+        "subCategory": {
+          "present": 231,
+          "missing": 138,
+          "rate": 62.6
+        },
+        "addr1": {
+          "present": 367,
+          "missing": 2,
+          "rate": 99.5
+        },
+        "operatingHours": {
+          "present": 122,
+          "missing": 247,
+          "rate": 33.1
+        },
+        "imageUrl": {
+          "present": 203,
+          "missing": 166,
+          "rate": 55
+        },
+        "mapVerification": {
+          "present": 369,
+          "missing": 0,
+          "rate": 100
+        },
+        "detailDescription": {
+          "present": 127,
+          "missing": 242,
+          "rate": 34.4
+        }
+      },
+      "representatives": {
+        "category": {
+          "present": 191,
+          "missing": 0,
+          "rate": 100
+        },
+        "subCategory": {
+          "present": 74,
+          "missing": 117,
+          "rate": 38.7
+        },
+        "addr1": {
+          "present": 191,
+          "missing": 0,
+          "rate": 100
+        },
+        "operatingHours": {
+          "present": 108,
+          "missing": 83,
+          "rate": 56.5
+        },
+        "imageUrl": {
+          "present": 179,
+          "missing": 12,
+          "rate": 93.7
+        },
+        "mapVerification": {
+          "present": 191,
+          "missing": 0,
+          "rate": 100
+        },
+        "detailDescription": {
+          "present": 104,
+          "missing": 87,
+          "rate": 54.5
+        }
+      }
+    }
+  }
+}
