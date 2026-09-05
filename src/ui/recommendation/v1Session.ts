@@ -8,11 +8,14 @@ import { recommendationInternalPolicyForEnvironment, type RecommendationPublicEn
 import { releaseOneStopDisplayResult, type RecommendationResult } from './releaseOneStopResultsModel';
 import { createTwoStopSelectionEnginePort } from './twoStopSelectionEnginePort';
 import type { TwoStopSelectionPort } from './twoStopSelectionModel';
+import type { RecommendationProgressStage } from './recommendationLoadingModel';
 
 export type RecommendationRuntimeOptions = {
   routeProxyEnabled: boolean;
   /** One request-stack token only. It is never copied into a navigation session or persisted UI state. */
   captchaToken?: string;
+  /** 화면 보조 진행 표시 전용. 저장·navigation·engine input에는 포함하지 않는다. */
+  onProgress?: (stage: RecommendationProgressStage) => void;
 };
 
 export type RecommendationRuntimeDependencies = {
@@ -344,13 +347,20 @@ export async function runRecommendationSession(
   options: RecommendationRuntimeOptions = { routeProxyEnabled: false },
   dependencies: RecommendationRuntimeDependencies = productionRecommendationRuntimeDependencies,
 ): Promise<RecommendationResult> {
+  const emitProgress = (stage: RecommendationProgressStage) => {
+    try { options.onProgress?.(stage); } catch { /* 표시 callback은 추천 성공·실패 의미를 바꾸지 않는다. */ }
+  };
   const environment = publicRecommendationEnvironment(dependencies);
   const internalPolicy = recommendationInternalPolicyForEnvironment(environment);
   const builder = recommendationBuilderForEnvironment(environment, dependencies);
+  emitProgress('input_ready');
   const input = await buildRecommendationLimitedInput(session, options, dependencies);
+  emitProgress('route_port_ready');
+  emitProgress('verifying');
   const result = await builder(input);
   continuationInputs.set(session, input);
   sessionRuntimes.set(session, createSessionRuntime(input, result, internalPolicy !== 'B12'));
+  emitProgress('complete');
   return result;
 }
 

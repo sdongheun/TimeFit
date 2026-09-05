@@ -1,6 +1,6 @@
 # U-LIVE-ACTIVITY-01 — iOS 17 Live Activity·도착/출발 확인·권한 설정
 
-> 상태: **대기 — U-INTERACTION-01 수락 및 DB-DWELL-01·2-AB 공개 계약 필요**
+> 상태: **대기 — U-COMPLETION-HISTORY-01 및 DB-DWELL-01·2-AB 공개 계약 필요**
 > 상위 결정: [DEC-LIVE-DWELL-01](../integration-decision/live-activity-dwell-personalization.md)
 
 ## 목적과 사용자 관찰
@@ -9,14 +9,14 @@
 
 ## 구현 전 원인 확인
 
-- 현재 `VerifiedCourseProgressScreen`은 화면 메모리 전용이며 Live Activity/DB/알림을 사용하지 않는다.
+- 기본 명시 완료 저장과 기록 탭은 `U-COMPLETION-HISTORY-01`에서 먼저 연결한다. 이 작업은 그 `courseRunId`와 repository를 재사용해 App Group 복구·도착/출발 확인으로 확장한다.
 - 현재 `app.json` deployment target은 16.4이고 Widget Extension/App Group/ActivityKit bridge가 없다.
 - 현재 iOS Info.plist에는 기능과 맞지 않는 generic Always location 문구가 생성돼 있으나 이번 결정은 background/Always GPS를 금지한다.
 - 기존 `expo-notifications`에는 legacy 출발 5분 전·정시 알림이 있으므로 그대로 중복 예약하지 말고 새 진행 상태 기준으로 교체/분리해야 한다.
 
 ## 구현 명령
 
-1. `U-INTERACTION-01` 보완이 수락되기 전 `App.tsx`, 공용 Pressable, 현재 화면 파일을 동시에 수정하지 않는다.
+1. `U-COMPLETION-HISTORY-01`이 만든 `courseRunId`, 명시 완료 controller와 repository 소비를 다시 구현하거나 다른 ID로 교체하지 않는다. 같은 run ID를 App Group 활성 진행에 보존·복구하고, Live Activity의 실제 도착/출발이 확인된 경우에만 기존 완료 input의 `actualDwellMin` 연결점을 확장한다.
 2. 먼저 고정 clock과 fake Activity/notification/repository port로 실패하는 상태 전이·부수효과 테스트를 만든다. 화면에서 ActivityKit·Notifications·Supabase를 직접 호출하지 않는다.
 3. iOS deployment target을 17.0으로 일관되게 전환하고 Expo prebuild 재생성에도 유지되는 config plugin/설정을 만든다. Xcode 수동 편집만으로 끝내지 않는다.
 4. 제3자 패키지의 암묵적 target 생성에 의존하지 않는다. 프로젝트 로컬 Expo config plugin과 Swift native bridge로 Widget Extension, App Group, `NSSupportsLiveActivities`, ActivityKit attributes/content state를 생성·연결하고, clean prebuild 뒤에도 target·entitlement·shared type이 재현되는지 검사한다. 한 번에 활성 Live Activity는 하나다.

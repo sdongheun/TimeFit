@@ -22,7 +22,7 @@ export type RouteMapMarker = {
   lat: number;
   lon: number;
   label: string;
-  kind?: 'origin' | 'spot' | 'appointment';
+  kind?: 'origin' | 'spot' | 'appointment' | 'current' | 'selected' | 'candidate';
   active?: boolean;
   imageUrl?: string;
 };
@@ -62,7 +62,8 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
   const routePoints = useMemo(() => routeSegments.flatMap((seg) => seg.points), [routeSegments]);
   const hasApprox = routeSegments.some((seg) => seg.quality === 'approx');
   const hasFallback = routeSegments.some((seg) => seg.quality === 'fallback');
-  const center = useMemo(() => initialCenter ?? centerOf([...points, ...routePoints]), [initialCenter, points, routePoints]);
+  // Keep the WebView document stable; setRoute handles genuine geometry/layout changes.
+  const center = useRef(initialCenter ?? centerOf([...points, ...routePoints])).current;
   const html = useMemo(() => buildHtml(center), [center]);
 
   const reportMapError = () => {
@@ -171,6 +172,9 @@ html,body,#map{margin:0;padding:0;width:100%;height:100%;background:#111820}
 .marker{display:flex;flex-direction:column;align-items:center;border:0;background:transparent;padding:0;margin:0}
 .label{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:14px;border:2px solid #fff;color:#081019;font:900 12px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;box-shadow:0 3px 10px rgba(0,0,0,.25)}
 .origin .label{background:${C.accent}}
+.current .label{background:#ef4444}
+.selected .label{background:#8b5cf6}
+.candidate .label{background:#f59e0b}
 .spot .label{background:#f59e0b}
 .appointment .label{background:${C.green}}
 .marker.active .label{transform:scale(1.22);box-shadow:0 0 0 4px rgba(76,194,255,.28),0 3px 10px rgba(0,0,0,.25)}
@@ -208,6 +212,9 @@ var map, overlays = [], hasInitialRoute = false, mapTapEnabled = false;
 function ll(p){ return new kakao.maps.LatLng(p.lat, p.lon); }
 function markerText(m, i){
   if (m.kind === 'origin') return '출';
+  if (m.kind === 'current') return '현';
+  if (m.kind === 'selected') return '선';
+  if (m.kind === 'candidate') return '후';
   if (m.kind === 'appointment') return '약';
   return String(i);
 }
@@ -236,6 +243,8 @@ function focusCenter(point, offsetY){
 }
 function markerColor(kind){
   if (kind === 'origin') return '${C.accent}';
+  if (kind === 'current') return '#ef4444';
+  if (kind === 'selected') return '#8b5cf6';
   if (kind === 'appointment') return '${C.green}';
   return '#f59e0b';
 }
@@ -273,12 +282,12 @@ function createMapMarker(point, marker, kind, active){
     title: marker.label,
     zIndex: active ? 100 : 10
   };
-  if (kind === 'origin') options.image = currentLocationImage(active);
+  if (kind === 'current') options.image = currentLocationImage(active);
   else if (kind !== 'spot') options.image = colorPinImage(markerColor(kind), active);
   // 이미지가 없는 장소는 카카오 SDK 기본 마커를 그대로 사용한다.
   return new kakao.maps.Marker(options);
 }
-function addSpotLabel(marker, point, index, enabled, active){
+function addMarkerLabel(marker, point, index, enabled, active){
   if (!enabled) return;
   var click = ' onclick="post({type:&quot;marker&quot;,index:' + index + '})"';
   var overlay = new kakao.maps.CustomOverlay({
@@ -358,6 +367,7 @@ function addDirectionArrows(points, quality){
     overlays.push(overlay);
   });
 }
+var lastBoundsKey = null;
 function setRoute(data){
   if (!map) return;
   mapTapEnabled = Boolean(data.mapTapEnabled);
@@ -388,7 +398,7 @@ function setRoute(data){
     bounds.extend(point);
     if (m.active) focusedPoint = point;
     var kind = m.kind || 'spot';
-    var hasPhoto = data.usePhotoMarkers && kind === 'spot' && /^https:\/\//.test(String(m.imageUrl || ''));
+    var hasPhoto = data.usePhotoMarkers && (kind === 'spot' || kind === 'candidate') && /^https:\/\//.test(String(m.imageUrl || ''));
     if (kind === 'origin') {
       var originMarker = createMapMarker(point, m, kind, !!m.active);
       if (data.markerTapEnabled) {
@@ -397,6 +407,7 @@ function setRoute(data){
         })(i));
       }
       overlays.push(originMarker);
+      addMarkerLabel(m, point, i, data.showMarkerLabels, !!m.active);
       return;
     }
     if (hasPhoto) {
@@ -428,7 +439,7 @@ function setRoute(data){
       photoProbe.onload = function(){ fallbackMarker.setMap(null); };
       photoProbe.onerror = function(){ photoOverlay.setMap(null); };
       photoProbe.src = m.imageUrl;
-      addSpotLabel(m, point, i, data.showMarkerLabels, !!m.active);
+      addMarkerLabel(m, point, i, data.showMarkerLabels, !!m.active);
       return;
     }
     if (data.usePhotoMarkers) {
@@ -439,7 +450,7 @@ function setRoute(data){
         })(i));
       }
       overlays.push(marker);
-      if (kind === 'spot') addSpotLabel(m, point, i, data.showMarkerLabels, !!m.active);
+      addMarkerLabel(m, point, i, data.showMarkerLabels, !!m.active);
       return;
     }
     var active = m.active ? ' active' : '';
@@ -455,7 +466,7 @@ function setRoute(data){
       zIndex: m.active ? 100 : 10
     });
     overlays.push(overlay);
-    if (kind === 'spot') addSpotLabel(m, point, i, data.showMarkerLabels, !!m.active);
+    addMarkerLabel(m, point, i, data.showMarkerLabels, !!m.active);
   });
   if (focusedPoint) {
     // 첫 진입만 현재 위치를 기준으로 잡고, 이후에는 사용자가 옮긴 지도 위치를 보존한다.
@@ -466,7 +477,11 @@ function setRoute(data){
     hasInitialRoute = true;
   } else if (!bounds.isEmpty()) {
     var pad = data.boundsPadding || { top:40, right:40, bottom:40, left:40 };
-    map.setBounds(bounds, pad.top, pad.right, pad.bottom, pad.left);
+    var boundsKey = JSON.stringify([(data.markers || []).map(function(m){return [m.lat,m.lon];}), (data.segments || []).map(function(s){return s.points;}), pad]);
+    if (boundsKey !== lastBoundsKey) {
+      map.setBounds(bounds, pad.top, pad.right, pad.bottom, pad.left);
+      lastBoundsKey = boundsKey;
+    }
   }
 }
 function focusMap(point, offsetY){

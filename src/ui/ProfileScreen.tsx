@@ -12,7 +12,7 @@ import { useAuth } from './AuthContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
 export function ProfileScreen({ navigation }: Props) {
-  const { session, isLoading, signIn, signOut, signUp } = useAuth();
+  const { accountSession, authKind, signIn, signOut, signUp } = useAuth();
   const insets = useSafeAreaInsets();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
@@ -78,16 +78,16 @@ export function ProfileScreen({ navigation }: Props) {
   return (
     <View style={s.root}>
       <ScrollView contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]}>
-        <Text style={s.h1}>{session ? '내정보' : '로그인'}</Text>
-        <Text style={s.sub}>{session ? '테스트 계정이 연결되어 있습니다.' : '저장과 개인화 기능을 사용하려면 로그인하세요.'}</Text>
+        <Text style={s.h1}>{authKind === 'account' ? '내정보' : '로그인'}</Text>
+        <Text style={s.sub}>{authKind === 'account' ? '테스트 계정이 연결되어 있습니다.' : '저장과 개인화 기능을 사용하려면 로그인하세요.'}</Text>
 
-        {isLoading ? (
+        {authKind === 'loading' ? (
           <View style={s.loading}><ActivityIndicator color={C.accent} /><Text style={s.value}>로그인 상태 확인 중</Text></View>
-        ) : session ? (
+        ) : authKind === 'account' && accountSession ? (
           <View style={s.card}>
             <Text style={s.cardTitle}>로그인됨</Text>
             <Text style={s.row}>이메일</Text>
-            <Text style={s.email}>{session.user.email ?? '이메일 없음'}</Text>
+            <Text style={s.email}>{accountSession.user.email ?? '계정 이메일을 확인할 수 없어요'}</Text>
             <Text style={s.value}>현재는 인증 연결만 테스트합니다. 코스 저장 동기화는 다음 단계에서 연결합니다.</Text>
             <Pressable disabled={isSubmitting} style={[s.secondaryButton, isSubmitting && s.buttonDisabled]} onPress={logout}>
               <Text style={s.secondaryButtonText}>로그아웃</Text>
@@ -115,6 +115,8 @@ export function ProfileScreen({ navigation }: Props) {
             </Pressable>
           </View>
         )}
+
+        <Text style={s.localRecordNotice}>코스 완료 기록은 로그인 여부와 관계없이 이 기기에만 저장되며 자동으로 계정에 업로드되지 않습니다.</Text>
 
         <View style={{ height: 120 }} />
       </ScrollView>
@@ -148,6 +150,7 @@ const s = StyleSheet.create({
   label: { color: C.txt2, fontSize: 13, fontWeight: '800', marginBottom: 7, marginTop: 12 },
   input: { minHeight: 48, borderWidth: 1, borderColor: C.line, backgroundColor: C.bg, borderRadius: 10, paddingHorizontal: 13, color: C.txt, fontSize: 15 },
   notice: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 14 },
+  localRecordNotice: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 4, paddingHorizontal: 4 },
   primaryButton: { minHeight: 52, borderRadius: 12, backgroundColor: C.accent, justifyContent: 'center', alignItems: 'center', marginTop: 20 },
   primaryButtonText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
   secondaryButton: { minHeight: 46, borderRadius: 10, borderWidth: 1, borderColor: C.line, justifyContent: 'center', alignItems: 'center', marginTop: 18 },

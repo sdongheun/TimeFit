@@ -2,10 +2,12 @@ import { useCallback, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { readPlaceFeedback } from '../services/placeFeedback';
+import { courseCompletionRepository } from '../services/courseCompletionAsyncStorage';
 import { ActivityDonut } from './activity/ActivityDonut';
-import { ActivitySummary, summarizeCompletedActivities } from './activity/activitySummary';
+import { ActivitySummary, loadCompletionHistory } from './activity/activitySummary';
 import { FloatingTabBar } from './FloatingTabBar';
 import { resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
 import { RootStackParamList } from './nav';
@@ -13,7 +15,7 @@ import { C } from './theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ActivityRecord'>;
 
-const EMPTY: ActivitySummary = { completedPlaceCount: 0, completedDwellMin: 0, categories: [] };
+const EMPTY: ActivitySummary = { completedPlaceCount: 0, completedDwellMin: 0, measuredCount: 0, unmeasuredCount: 0, dwellPresentation: { kind: 'empty' }, categories: [] };
 
 function formatDuration(minutes: number) {
   if (minutes < 60) return `${minutes}분`;
@@ -26,16 +28,25 @@ export function ActivityRecordScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const [summary, setSummary] = useState<ActivitySummary>(EMPTY);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<'storage_unavailable' | 'storage_corrupt' | null>(null);
+  const [reloadSequence, setReloadSequence] = useState(0);
 
   useFocusEffect(useCallback(() => {
     let active = true;
     setIsLoading(true);
-    void readPlaceFeedback()
-      .then((records) => { if (active) setSummary(summarizeCompletedActivities(records)); })
-      .catch(() => { if (active) setSummary(EMPTY); })
+    setLoadError(null);
+    void loadCompletionHistory({
+      readCompletions: () => courseCompletionRepository.read(),
+      readLegacyFeedback: readPlaceFeedback,
+    })
+      .then((result) => {
+        if (!active) return;
+        if (result.status === 'ready' || result.status === 'empty') setSummary(result.summary);
+        else setLoadError(result.status);
+      })
       .finally(() => { if (active) setIsLoading(false); });
     return () => { active = false; };
-  }, []));
+  }, [reloadSequence]));
 
   const hasRecords = summary.completedPlaceCount > 0;
   const topCategory = summary.categories[0];
@@ -43,8 +54,12 @@ export function ActivityRecordScreen({ navigation }: Props) {
     <View style={s.root}>
       <ScrollView contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]}>
         <Text style={s.h1}>나의 자투리 기록</Text>
-        <Text style={s.sub}>이번 달 완료한 활동만 기록합니다.</Text>
-        {isLoading ? <View style={s.loading}><ActivityIndicator color={C.accent} /></View> : hasRecords ? <>
+        <Text style={s.sub}>이 기기의 이번 달 완료 기록입니다.</Text>
+        {isLoading ? <View style={s.loading}><ActivityIndicator color={C.accent} /></View> : loadError ? <View style={s.empty}>
+          <Text style={s.emptyTitle}>기기 기록을 불러오지 못했어요</Text>
+          <Text style={s.emptyCopy}>{loadError === 'storage_corrupt' ? '기존 기록을 덮어쓰지 않았어요. 다시 시도해 주세요.' : '잠시 후 다시 시도해 주세요.'}</Text>
+          <Pressable testID="completion-history-retry" style={s.retry} onPress={() => setReloadSequence((value) => value + 1)}><Text style={s.retryText}>다시 시도</Text></Pressable>
+        </View> : hasRecords ? <>
           <View style={s.topGrid}>
             <View style={s.insightCard}>
               <Text style={s.cardLabel}>활동 비율</Text>
@@ -52,8 +67,8 @@ export function ActivityRecordScreen({ navigation }: Props) {
             </View>
             <View style={s.insightCard}>
               <Text style={s.cardLabel}>활용한 시간</Text>
-              <Text style={s.duration}>{formatDuration(summary.completedDwellMin)}</Text>
-              <Text style={s.comment}>자투리 시간을{`\n`}알차게 채웠어요.</Text>
+              <Text style={summary.dwellPresentation.kind === 'unmeasured' ? s.unmeasured : s.duration}>{summary.dwellPresentation.kind === 'unmeasured' ? '체류시간 미측정' : formatDuration(summary.completedDwellMin)}</Text>
+              <Text style={s.comment}>{summary.dwellPresentation.kind === 'partial' ? `측정 ${summary.measuredCount}곳 · 미측정 ${summary.unmeasuredCount}곳` : summary.dwellPresentation.kind === 'measured' ? `${summary.measuredCount}곳에서 측정했어요.` : '완료 장소는 기록하고 체류시간은 추정하지 않아요.'}</Text>
               <View style={s.rule} />
               <Text style={s.smallLabel}>가장 많이 한 활동</Text>
               <Text numberOfLines={2} style={s.topCategory}>{topCategory?.category}</Text>
@@ -63,10 +78,10 @@ export function ActivityRecordScreen({ navigation }: Props) {
             <View style={s.stat}><Text style={s.statValue}>{summary.completedPlaceCount}곳</Text><Text style={s.statLabel}>완료한 장소</Text></View>
             <View style={s.stat}><Text style={s.statValue}>{summary.categories.length}가지</Text><Text style={s.statLabel}>활동 유형</Text></View>
           </View>
-          <View style={s.note}><Text style={s.noteText}>완료 뒤 남긴 후기와 체류 시간만 기록에 반영됩니다.</Text></View>
+          <View style={s.note}><Text style={s.noteText}>코스 마치기로 남긴 기기 기록과 기존 후기를 함께 보여 줍니다. 실제로 측정하지 않은 체류시간은 합산하지 않습니다.</Text></View>
         </> : <View style={s.empty}>
           <Text style={s.emptyTitle}>아직 완료한 활동이 없어요</Text>
-          <Text style={s.emptyCopy}>장소를 다녀온 뒤 후기를 남기면 이곳에 나의 자투리 기록이 쌓입니다.</Text>
+          <Text style={s.emptyCopy}>코스를 마치면 후기 없이도 이 기기에 자투리 기록이 쌓입니다.</Text>
         </View>}
         <View style={{ height: 112 }} />
       </ScrollView>
@@ -91,6 +106,7 @@ const s = StyleSheet.create({
   insightCard: { flex: 1, minHeight: 266, backgroundColor: C.panel, borderWidth: 1, borderColor: C.line, borderRadius: 14, padding: 14 },
   cardLabel: { color: C.muted, fontSize: 12, fontWeight: '900', marginBottom: 14 },
   duration: { color: C.txt, fontSize: 30, fontWeight: '900', lineHeight: 37 },
+  unmeasured: { color: C.txt, fontSize: 20, fontWeight: '900', lineHeight: 28 },
   comment: { color: C.green, fontSize: 14, fontWeight: '800', lineHeight: 21, marginTop: 12 },
   rule: { height: 1, backgroundColor: C.line, marginVertical: 16 },
   smallLabel: { color: C.muted, fontSize: 11, fontWeight: '800' },
@@ -104,4 +120,6 @@ const s = StyleSheet.create({
   empty: { minHeight: 320, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 28 },
   emptyTitle: { color: C.txt, fontSize: 20, fontWeight: '900', textAlign: 'center' },
   emptyCopy: { color: C.muted, fontSize: 14, lineHeight: 21, textAlign: 'center', marginTop: 10 },
+  retry: { minHeight: 46, minWidth: 128, marginTop: 18, paddingHorizontal: 18, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: C.accent },
+  retryText: { color: C.onAccent, fontSize: 14, fontWeight: '800' },
 });

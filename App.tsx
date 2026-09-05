@@ -14,7 +14,7 @@ import { HomeScreen } from "./src/ui/HomeScreen";
 import { TimeSetupScreen } from "./src/ui/TimeSetupScreen";
 import { ResultsScreen } from "./src/ui/ResultsScreen";
 import { CourseConfirmScreen } from "./src/ui/CourseConfirmScreen";
-import { VerifiedCourseProgressScreen } from "./src/ui/VerifiedCourseProgressScreen";
+import { PlaceDetailScreen } from "./src/ui/PlaceDetailScreen";
 import { OneStopResultsScreen } from "./src/ui/OneStopResultsScreen";
 import { ExecutionScreen } from "./src/ui/ExecutionScreen";
 import { FeedbackScreen } from "./src/ui/FeedbackScreen";
@@ -85,7 +85,7 @@ export default function App() {
                 options={{ headerShown: false }}
               />
               <Stack.Screen name="CourseConfirm" component={CourseConfirmScreen} options={{ headerShown: false }} />
-              <Stack.Screen name="VerifiedCourseProgress" component={VerifiedCourseProgressScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="PlaceDetail" component={PlaceDetailScreen} options={{ headerShown: false }} />
               <Stack.Screen
                 name="MyCourses"
                 component={MyCoursesScreen}

@@ -11,12 +11,13 @@ const kakaoMap = fs.readFileSync('src/ui/KakaoRouteMap.tsx', 'utf-8');
 const placePicker = fs.readFileSync('src/ui/PlacePicker.tsx', 'utf-8');
 const captchaSheet = fs.readFileSync('src/ui/CaptchaVerificationSheet.tsx', 'utf-8');
 const recommendationSession = fs.readFileSync('src/ui/recommendation/v1Session.ts', 'utf-8');
+const recommendationLoading = fs.readFileSync('src/ui/recommendation/RecommendationLoadingProgress.tsx', 'utf-8');
 const explorationCard = fs.readFileSync('src/ui/recommendation/ExplorationPlaceCard.tsx', 'utf-8');
 const courseConfirm = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8');
 const legacyResults = fs.readFileSync('src/ui/OneStopResultsScreen.tsx', 'utf-8');
 const execution = fs.readFileSync('src/ui/ExecutionScreen.tsx', 'utf-8');
 const executionSchedule = fs.readFileSync('src/ui/execution/schedule.ts', 'utf-8');
-const verifiedProgress = fs.readFileSync('src/ui/VerifiedCourseProgressScreen.tsx', 'utf-8');
+const verifiedProgress = courseConfirm;
 const courseConfirmV1 = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8');
 
 test('메인은 한 가지 시작 행동과 진행 중 코스 진입점만 둔다', () => {
@@ -26,9 +27,10 @@ test('메인은 한 가지 시작 행동과 진행 중 코스 진입점만 둔�
   assert.match(home, /진행 중인 코스/);
 });
 
-test('시간 설정은 단일 경로 설정과 분 단위 시각·여유를 분리해서 입력한다', () => {
-  assert.match(setup, /type Page = 'setup' \| 'route-setup'/);
-  assert.match(setup, /경로 설정하기/);
+test('시간 설정은 통합 필드와 상시 분 단위 휠·여유를 입력한다', () => {
+  assert.match(setup, /type Page = 'setup' \| 'test-clock'/);
+  assert.match(setup, /UnifiedSetupInputs/);
+  assert.doesNotMatch(setup, /route-setup|route-apply|time-picker/);
   assert.match(setup, /출발지로 돌아오기/);
   assert.match(setup, /도착 시각/);
   assert.doesNotMatch(setup, /현재 위치로 돌아오기/);
@@ -44,11 +46,12 @@ test('시간 설정은 단일 경로 설정과 분 단위 시각·여유를 분�
   assert.match(setup, /테스트 현재 시각/);
 });
 
-test('경로 설정은 하나의 진입점에서 출발·도착을 함께 설정하고 권한은 명시 GPS 행동에서만 요청한다', () => {
-  assert.match(setup, /testID="route-setup-entry"/);
-  assert.match(setup, /testID="route-origin-field"/);
-  assert.match(setup, /testID="route-destination-field"/);
-  assert.match(setup, /testID="route-apply"/);
+test('통합 출발·도착 필드는 picker를 직접 열고 권한은 명시 GPS 행동에서만 요청한다', () => {
+  const inputs = fs.readFileSync('src/ui/timeSetup/UnifiedSetupInputs.tsx', 'utf8');
+  assert.match(inputs, /testID="route-origin-field"/);
+  assert.match(inputs, /testID="route-destination-field"/);
+  assert.match(inputs, /testID="route-return-origin"/);
+  assert.match(setup, /testID="setup-footer"/);
   assert.match(setup, /Location\.getForegroundPermissionsAsync\(\)/);
   assert.doesNotMatch(setup, /origin-choice|location-permission|destination-choice|requestForegroundPermissionsAsync/);
   assert.match(setup, /<MapPlacePicker/);
@@ -61,25 +64,30 @@ test('경로 설정은 하나의 진입점에서 출발·도착을 함께 설정
 test('출발지 검색은 관련성 순서만 제시하고 사용자의 명시 선택 전에는 확정하지 않는다', () => {
   assert.match(placePicker, /createKakaoLocationSearchAdapter/);
   assert.match(placePicker, /locationSearch\.search\(query\)/);
-  assert.match(placePicker, /providerLineLabels/);
+  assert.doesNotMatch(placePicker, /providerLineLabels/);
   assert.match(placePicker, /onOpenMap/);
-  assert.match(placePicker, /setSel\(initialPlaceSearchSelection\)/);
+  const draft = fs.readFileSync('src/ui/locationSearchDraft.ts', 'utf8');
+  assert.match(draft, /selectedId: null/);
+  assert.match(draft, /locationCandidateId/);
   assert.doesNotMatch(placePicker, /setMsg\(''\); setSel\(0\)/);
-  assert.match(placePicker, /목록에서 위치를 선택하세요/);
+  assert.match(draft, /목록에서 위치를 선택하세요/);
   assert.match(placePicker, /onChangeText=\{changeQuery\}/);
   assert.match(placePicker, /setTimeout\(\(\) => \{[\s\S]*\}, 400\)/);
   assert.match(placePicker, /testID="location-search-input"/);
   assert.match(placePicker, /testID="location-confirm"/);
   assert.match(placePicker, /deviceLocation/);
-  assert.match(placePicker, /기기 위치/);
+  assert.match(placePicker, /value=\{state\.query\}/);
+  assert.match(draft, /source: 'device'/);
+  assert.doesNotMatch(placePicker, /testID="device-location-selection"/);
   assert.doesNotMatch(placePicker, /provider: 'kakao', label: '현재 위치'/);
-  assert.match(placePicker, /장소 또는 주소 결과가 없어요/);
+  assert.match(draft, /장소 또는 주소 결과가 없어요/);
   assert.doesNotMatch(placePicker, /searchPlaceSuggestions|tmapPoiSearchMultiResult|kakaoGeocodeAddr\(query|geocodeAddr\(query/);
   assert.match(mapPicker, /testID="map-fixed-pin"/);
   assert.match(mapPicker, /onMapReady=\{\(\) => setMapReady\(true\)\}/);
   assert.match(mapPicker, /onMapError=\{\(\) => \{ setMapFailed\(true\); setMapReady\(false\); \}\}/);
   assert.match(mapPicker, /testID="map-retry"/);
-  assert.match(mapPicker, /testID="map-search-alternative"/);
+  assert.doesNotMatch(mapPicker, /map-search-alternative|onSearch/);
+  assert.match(mapPicker, /뒤로가서 검색/);
   assert.match(mapPicker, /initialCenter=\{center\}/);
   assert.match(mapPicker, /labelAdapter\.resolve\(selected, 'pin_confirm'\)/);
   assert.match(kakaoMap, /initialCenter\?: LatLon/);
@@ -87,12 +95,14 @@ test('출발지 검색은 관련성 순서만 제시하고 사용자의 명시 �
 });
 
 test('추천 계산은 V1 실제 경로 세션만 시작하고 legacy 차량·baseline을 호출하지 않는다', () => {
-  assert.match(setup, /runRecommendationSession\(session, \{ routeProxyEnabled: input\.proxyEnabled, captchaToken: input\.captchaToken \}\)/);
+  assert.match(setup, /runRecommendationSession\(session, \{[\s\S]*routeProxyEnabled: input\.proxyEnabled,[\s\S]*captchaToken: input\.captchaToken,[\s\S]*onProgress:/);
   assert.doesNotMatch(setup, /candidateModes: \['walk', 'transit'\]|getActualRouteBaselines\(origin, target\)|planTimeFit\(/);
-  assert.match(setup, /현재 위치와 도착지 확인/);
-  assert.match(setup, /이동 가능한 범위 계산/);
-  assert.match(setup, /짧게 들를 장소 찾기/);
-  assert.match(setup, /운영 상태 확인/);
+  assert.match(setup, /RecommendationLoadingProgress/);
+  assert.match(recommendationLoading, /recommendationProgressItems\(stage\)/);
+  assert.match(recommendationSession, /emitProgress\('input_ready'\)/);
+  assert.match(recommendationSession, /emitProgress\('route_port_ready'\)/);
+  assert.match(recommendationSession, /emitProgress\('verifying'\)/);
+  assert.match(recommendationSession, /emitProgress\('complete'\)/);
 });
 
 test('UCAP-03: Proxy 활성화 때만 CAPTCHA·활성 경로를 사용하고 token을 화면 state·로그에 남기지 않는다', () => {

@@ -25,6 +25,8 @@ export type RecommendationSession = {
   destination: { id: string; lat: number; lon: number; label: string } | null;
   remainingMin: number;
   arrivalBufferMin: number;
+  /** 이미 허용·획득된 기기 위치의 UI 전용 process snapshot. 추천/API/저장 입력으로 사용하지 않는다. */
+  deviceLocationSnapshot?: { lat: number; lon: number };
 };
 
 // 이동수단 라벨 → 아이콘
@@ -42,11 +44,16 @@ export type RootStackParamList = {
     session: RecommendationSession;
     /** 결과 화면에서 선택한 검증 스냅샷을 그대로 읽기 전용으로 보여 준다. */
     course: VerifiedCourseV1;
+    /** Home 이어가기가 같은 CourseConfirm의 active 상태를 복원할 때만 사용한다. */
+    activeId?: string;
   };
-  /** 저장·위치 추적 없이 검증 snapshot을 따라가는 일회성 V1 진행 화면이다. */
-  VerifiedCourseProgress: {
+  PlaceDetail: {
+    requestId: string;
+    selectionKind: 'first' | 'pair';
+    placeId: string;
     session: RecommendationSession;
     course: VerifiedCourseV1;
+    firstCourse?: VerifiedCourseV1;
   };
   /** V1 저장 계약이 준비되기 전 기존 진행 코스의 변경 흐름만 유지한다. */
   LegacyResults: {

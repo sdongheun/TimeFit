@@ -17,7 +17,7 @@ type Props = {
 export function ActivityDonut({ categories, completedPlaceCount }: Props) {
   let offset = 0;
   return (
-    <View style={s.wrap} accessibilityLabel={`이번 달 완료 장소 ${completedPlaceCount}곳, 카테고리별 활동 시간 비율`}>
+    <View style={s.wrap} accessibilityLabel={`이번 달 완료 장소 ${completedPlaceCount}곳, 카테고리별 완료 장소 비율`}>
       <View style={s.chart}>
         <Svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
           <Circle cx={SIZE / 2} cy={SIZE / 2} r={RADIUS} stroke={C.panel2} strokeWidth={STROKE} fill="none" />

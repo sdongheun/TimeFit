@@ -13,21 +13,22 @@ type Props = {
   index: number;
   onChange: (index: number) => void;
   accessibilityLabel: string;
+  rowHeight?: number;
   requestSelectionHaptic?: SelectionHapticRequest;
 };
 
-export function TimeWheel({ values, index, onChange, accessibilityLabel, requestSelectionHaptic = requestExpoSelectionHaptic }: Props) {
+export function TimeWheel({ values, index, onChange, accessibilityLabel, rowHeight = ROW_HEIGHT, requestSelectionHaptic = requestExpoSelectionHaptic }: Props) {
   const ref = useRef<ScrollView>(null);
   const controller = useRef(createTimeWheelInteraction(index, values.length)).current;
   const didSetInitialOffset = useRef(false);
   const [activeIndex, setActiveIndex] = useState(controller.getActiveIndex());
-  const height = ROW_HEIGHT * VISIBLE_ROWS;
-  const pad = (height - ROW_HEIGHT) / 2;
+  const height = rowHeight * VISIBLE_ROWS;
+  const pad = (height - rowHeight) / 2;
 
   const apply = (decision: TimeWheelDecision) => {
     setActiveIndex(decision.activeIndex);
     if (decision.scrollToIndex !== undefined && decision.scrollToIndex >= 0) {
-      ref.current?.scrollTo({ y: decision.scrollToIndex * ROW_HEIGHT, animated: false });
+      ref.current?.scrollTo({ y: decision.scrollToIndex * rowHeight, animated: false });
     }
     dispatchSelectionHaptic(decision.haptic, requestSelectionHaptic);
     if (decision.commitIndex !== undefined) onChange(decision.commitIndex);
@@ -38,7 +39,7 @@ export function TimeWheel({ values, index, onChange, accessibilityLabel, request
     apply(next);
     if (!didSetInitialOffset.current) {
       didSetInitialOffset.current = true;
-      if (next.activeIndex >= 0) ref.current?.scrollTo({ y: next.activeIndex * ROW_HEIGHT, animated: false });
+      if (next.activeIndex >= 0) ref.current?.scrollTo({ y: next.activeIndex * rowHeight, animated: false });
     }
   }, [values.length]);
 
@@ -46,8 +47,12 @@ export function TimeWheel({ values, index, onChange, accessibilityLabel, request
     apply(controller.syncExternal(index));
   }, [index]);
 
+  useEffect(() => {
+    if (controller.getActiveIndex() >= 0) ref.current?.scrollTo({ y: controller.getActiveIndex() * rowHeight, animated: false });
+  }, [rowHeight]);
+
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    apply(controller.observeOffset(event.nativeEvent.contentOffset.y, ROW_HEIGHT));
+    apply(controller.observeOffset(event.nativeEvent.contentOffset.y, rowHeight));
   };
   const onScrollEndDrag = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const nativeEvent = event.nativeEvent as NativeScrollEvent & { targetContentOffset?: { y?: number } };
@@ -72,11 +77,11 @@ export function TimeWheel({ values, index, onChange, accessibilityLabel, request
       onAccessibilityAction={onAccessibilityAction}
       style={[s.root, { height }]}
     >
-      <View pointerEvents="none" style={[s.band, { top: pad }]} />
+      <View pointerEvents="none" style={[s.band, { top: pad, height: rowHeight }]} />
       <ScrollView
         ref={ref}
         showsVerticalScrollIndicator={false}
-        snapToInterval={ROW_HEIGHT}
+        snapToInterval={rowHeight}
         decelerationRate="fast"
         onScrollBeginDrag={() => apply(controller.beginDrag())}
         onScroll={onScroll}
@@ -89,7 +94,7 @@ export function TimeWheel({ values, index, onChange, accessibilityLabel, request
         {values.map((value, valueIndex) => {
           const distance = Math.abs(valueIndex - activeIndex);
           return (
-            <View key={`${value}-${valueIndex}`} style={s.row}>
+            <View key={`${value}-${valueIndex}`} style={[s.row, { height: rowHeight }]}>
               <Text style={[s.value, distance === 0 && s.valueSelected, { opacity: distance === 0 ? 1 : distance === 1 ? 0.45 : 0.18 }]}>
                 {value}
               </Text>

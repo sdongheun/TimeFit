@@ -23,22 +23,25 @@ export function CourseV1SummaryCard({ summary, onPress }: { summary: CourseV1Car
     <View style={s.content}>
       <Text style={s.eyebrow}>{summary.label}</Text>
       <Text style={s.title}>{summary.place.title}</Text>
-      <Text style={s.activity}>{summary.activityLabel}{summary.short ? ' · 가볍게 둘러보기' : ''}</Text>
-      <Text style={s.duration}>약 {summary.courseMin}분 코스</Text>
+      <View style={s.metaRow}>
+        <Text style={s.activity}>{summary.activityLabel}{summary.short ? ' · 가볍게 둘러보기' : ''}</Text>
+        <Text style={s.duration}>약 {summary.courseMin}분 코스</Text>
+      </View>
     </View>
   </Pressable>;
 }
 
 const s = StyleSheet.create({
-  card: { overflow: 'hidden', borderRadius: 18, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
+  card: { minHeight: 44, overflow: 'hidden', borderRadius: 16, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
   pressed: { opacity: 0.82 },
-  media: { height: 150, backgroundColor: C.panel2 },
+  media: { height: 112, backgroundColor: C.panel2 },
   image: { width: '100%', height: '100%' },
   placeholder: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20, backgroundColor: '#26384a' },
   placeholderText: { color: '#b9d8ff', fontSize: 16, fontWeight: '800', textAlign: 'center' },
-  content: { padding: 17, gap: 6 },
+  content: { padding: 15, gap: 5 },
   eyebrow: { color: '#74b0ff', fontSize: 13, fontWeight: '800' },
-  title: { color: C.txt, fontSize: 22, lineHeight: 29, fontWeight: '800' },
-  activity: { color: '#b9d8ff', fontSize: 13, fontWeight: '700' },
-  duration: { color: C.txt, fontSize: 17, fontWeight: '800', marginTop: 3 },
+  title: { color: C.txt, fontSize: 20, lineHeight: 26, fontWeight: '800' },
+  metaRow: { minHeight: 24, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 10 },
+  activity: { flex: 1, color: '#b9d8ff', fontSize: 13, lineHeight: 18, fontWeight: '700' },
+  duration: { flexShrink: 0, color: C.txt, fontSize: 14, fontWeight: '800' },
 });

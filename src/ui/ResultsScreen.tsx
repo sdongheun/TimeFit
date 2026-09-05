@@ -30,11 +30,17 @@ import { TwoStopSelectionPanel } from './recommendation/TwoStopSelectionPanel';
 import { TwoStopFixedCourseCta, TwoStopSelectionTray, type TwoStopTrayPlace } from './recommendation/TwoStopSelectionTray';
 import { buildTwoStopCandidateCard, createInlineTwoStopSelectionController, createTwoStopSelectionController, resultsCourseRegionMode, type JsonValue } from './recommendation/twoStopSelectionModel';
 import type { CourseV1ReleaseOneStopContinuation, CourseV1ReleaseOneStopPageState } from '../engine';
+import { placeDetailSelectionHandoff, type PlaceDetailRequestIdentity } from './placeDetailModel';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Results'>;
 type RuntimePlace = (typeof runtimeCatalog.matched.data)[number] | (typeof runtimeCatalog.unmatched.data)[number];
 const places = new Map<string, RuntimePlace>([...runtimeCatalog.matched.data, ...runtimeCatalog.unmatched.data].map((place) => [place.contentId, place]));
 type ConditionalManualState = Readonly<{ loading: boolean; course?: VerifiedCourseV1; error?: string }>;
+type PendingDetailSelection = Readonly<{
+  request: PlaceDetailRequestIdentity;
+  course: VerifiedCourseV1;
+  snapshot?: Readonly<{ courses: readonly VerifiedCourseV1[]; singleContinuation: JsonValue; singlePageState: string | null; scrollOffset: number; focusedCourseId?: string }>;
+}>;
 
 export function ResultsScreen({ route, navigation }: Props) {
   const { result: engineResult, session } = route.params;
@@ -55,6 +61,7 @@ export function ResultsScreen({ route, navigation }: Props) {
   ), [session, twoStopController]);
   const [, setTwoStopRevision] = useState(0);
   const forwardNavigationRef = useRef(false);
+  const pendingDetailSelectionRef = useRef<PendingDetailSelection | null>(null);
   const insets = useSafeAreaInsets();
   const [linkError, setLinkError] = useState('');
   const alternativeCourses = moreState.alternativeCourses;
@@ -78,11 +85,27 @@ export function ResultsScreen({ route, navigation }: Props) {
   const conditionalVisible = isConditionalManualConfirmTime(conditionalActualNow);
   useEffect(() => {
     const unsubscribe = inlineSelection.subscribe(() => setTwoStopRevision((value) => value + 1));
-    return () => { unsubscribe(); inlineSelection.cancelFirst(); };
+    return () => {
+      unsubscribe();
+      inlineSelection.cancelFirst();
+      const pending = pendingDetailSelectionRef.current;
+      if (pending) placeDetailSelectionHandoff.cancel(pending.request);
+      pendingDetailSelectionRef.current = null;
+    };
   }, [inlineSelection]);
   useFocusEffect(useCallback(() => {
     forwardNavigationRef.current = false;
-  }, []));
+    const pending = pendingDetailSelectionRef.current;
+    if (!pending) return;
+    const consumed = placeDetailSelectionHandoff.consume(pending.request);
+    pendingDetailSelectionRef.current = null;
+    placeDetailSelectionHandoff.cancel(pending.request);
+    if (!consumed) return;
+    if (pending.request.selectionKind === 'first' && pending.snapshot) {
+      void inlineSelection.selectFirst(pending.course, pending.snapshot);
+      requestAnimationFrame(() => scrollRef.current?.scrollTo({ y: 0, animated: false }));
+    } else if (pending.request.selectionKind === 'pair') inlineSelection.selectPair(pending.course);
+  }, [inlineSelection]));
   useEffect(() => {
     const refreshActualNow = () => setConditionalActualNow(new Date());
     const timer = setTimeout(refreshActualNow, millisecondsUntilConditionalVisibilityBoundary(conditionalActualNow));
@@ -143,8 +166,8 @@ export function ResultsScreen({ route, navigation }: Props) {
       setMoreLoading(false);
     }
   };
-  const selectFirstCourse = (selected: VerifiedCourseV1) => {
-    if (moreLoading || isRecommendationSessionOperationInFlight(session)) return;
+  const openFirstPlaceDetail = (selected: VerifiedCourseV1) => {
+    if (pendingDetailSelectionRef.current || moreLoading || isRecommendationSessionOperationInFlight(session)) return;
     focusedCourseIdRef.current = selected.id;
     const snapshot = {
       courses: [moreState.representativeCourse, ...moreState.alternativeCourses].filter((item): item is VerifiedCourseV1 => Boolean(item)),
@@ -153,8 +176,22 @@ export function ResultsScreen({ route, navigation }: Props) {
       scrollOffset: scrollOffsetRef.current,
       ...(focusedCourseIdRef.current ? { focusedCourseId: focusedCourseIdRef.current } : {}),
     };
-    void inlineSelection.selectFirst(selected, snapshot);
-    requestAnimationFrame(() => scrollRef.current?.scrollTo({ y: 0, animated: false }));
+    const placeId = selected.placeIds[0];
+    if (!placeId) return;
+    const request = placeDetailSelectionHandoff.issue({ selectionKind: 'first', courseId: selected.id, placeId });
+    pendingDetailSelectionRef.current = { request, course: selected, snapshot };
+    forwardNavigationRef.current = true;
+    navigation.navigate('PlaceDetail', { ...request, session, course: selected });
+  };
+  const openPairPlaceDetail = (pairCourse: VerifiedCourseV1, firstCourse: VerifiedCourseV1) => {
+    if (pendingDetailSelectionRef.current) return;
+    const firstPlaceId = firstCourse.placeIds[0];
+    const placeId = pairCourse.placeIds.find((id) => id !== firstPlaceId);
+    if (!firstPlaceId || !placeId) return;
+    const request = placeDetailSelectionHandoff.issue({ selectionKind: 'pair', courseId: pairCourse.id, placeId });
+    pendingDetailSelectionRef.current = { request, course: pairCourse };
+    forwardNavigationRef.current = true;
+    navigation.navigate('PlaceDetail', { ...request, session, course: pairCourse, firstCourse });
   };
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => { scrollOffsetRef.current = event.nativeEvent.contentOffset.y; };
   const cancelTwoStopSelection = () => {
@@ -237,7 +274,7 @@ export function ResultsScreen({ route, navigation }: Props) {
     <View style={s.traySlot}>{selected && firstSummary ? <TwoStopSelectionTray rows={trayRows} announcement={announcement} /> : null}</View>
     <ScrollView ref={scrollRef} onScroll={onScroll} scrollEventThrottle={32} contentContainerStyle={[s.body, { paddingTop: 10, paddingBottom: selected ? 86 + Math.max(insets.bottom, 10) : 34 }]}>
       <InPlaceTransition transitionKey={regionMode}>
-        {regionMode === 'one_stop' ? <><VerifiedCourseCard summary={representative} busy={cardsBusy} onConfirm={() => selectFirstCourse(representative.course)} />{linkError ? <Text accessibilityRole="alert" style={s.error}>{linkError}</Text> : null}<View style={s.exploration}><Text accessibilityLiveRegion="polite" style={s.sectionTitle}>이 시간에 가능한 다른 장소</Text>{alternatives.map((alternative) => <VerifiedCourseCard key={alternative.course.id} summary={alternative} busy={cardsBusy} onConfirm={() => selectFirstCourse(alternative.course)} />)}{moreState.pageState === 'more_available' ? <VerifiedCourseMoreControl loading={moreLoading} onPress={showMoreVerifiedPlaces} /> : moreEndMessage ? <Text accessibilityLiveRegion="polite" style={s.moreEnd}>{moreEndMessage}</Text> : alternatives.length === 0 ? <Text style={s.copy}>이 조건에서 확인된 다른 장소는 없어요.</Text> : null}</View>{conditionalVisible ? <ConditionalVisitSection places={conditionalPlaces} nextCursor={conditionalCursor} displayPlace={displayPlace} onOpenKakao={openPlace} onMore={showMoreConditionalPlaces} manualStates={conditionalManual} onConfirm={confirmConditionalPlace} session={session} /> : null}{diagnosticsPanel}</> : selected && firstSummary ? <TwoStopSelectionPanel state={selection} pairEnabled={inlineState.pairEnabled} regionMode={regionMode} candidates={candidates} selectedPairCourse={inlineState.selectedPairCourse} onSelectCandidate={(pairCourse) => { inlineSelection.selectPair(pairCourse); }} onContinue={() => void twoStopController?.continue()} /> : null}
+        {regionMode === 'one_stop' ? <><VerifiedCourseCard summary={representative} busy={cardsBusy} onConfirm={() => openFirstPlaceDetail(representative.course)} />{linkError ? <Text accessibilityRole="alert" style={s.error}>{linkError}</Text> : null}<View style={s.exploration}><Text accessibilityLiveRegion="polite" style={s.sectionTitle}>이 시간에 가능한 다른 장소</Text>{alternatives.map((alternative) => <VerifiedCourseCard key={alternative.course.id} summary={alternative} busy={cardsBusy} onConfirm={() => openFirstPlaceDetail(alternative.course)} />)}{moreState.pageState === 'more_available' ? <VerifiedCourseMoreControl loading={moreLoading} onPress={showMoreVerifiedPlaces} /> : moreEndMessage ? <Text accessibilityLiveRegion="polite" style={s.moreEnd}>{moreEndMessage}</Text> : alternatives.length === 0 ? <Text style={s.copy}>이 조건에서 확인된 다른 장소는 없어요.</Text> : null}</View>{conditionalVisible ? <ConditionalVisitSection places={conditionalPlaces} nextCursor={conditionalCursor} displayPlace={displayPlace} onOpenKakao={openPlace} onMore={showMoreConditionalPlaces} manualStates={conditionalManual} onConfirm={confirmConditionalPlace} session={session} /> : null}{diagnosticsPanel}</> : selected && firstSummary ? <TwoStopSelectionPanel state={selection} pairEnabled={inlineState.pairEnabled} regionMode={regionMode} candidates={candidates} selectedPairCourse={inlineState.selectedPairCourse} onSelectCandidate={(pairCourse) => openPairPlaceDetail(pairCourse, inlineState.firstCourse)} onContinue={() => void twoStopController?.continue()} /> : null}
       </InPlaceTransition>
     </ScrollView>
     <View style={s.ctaSlot}>{selected ? <TwoStopFixedCourseCta pairSelected={inlineState.mode === 'pair_selected'} bottomInset={insets.bottom} onPress={confirmSelection} /> : null}</View>

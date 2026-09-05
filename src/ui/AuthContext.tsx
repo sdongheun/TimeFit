@@ -2,6 +2,7 @@ import { PropsWithChildren, createContext, useCallback, useContext, useEffect, u
 import { Session } from '@supabase/supabase-js';
 import { Linking } from 'react-native';
 import { supabase } from '../services/supabase';
+import { accountSessionFor, authKindFor, type AuthKind } from './authStateModel';
 
 type SignUpInput = {
   email: string;
@@ -10,7 +11,11 @@ type SignUpInput = {
 };
 
 type AuthContextValue = {
+  /** Route Proxy를 포함한 transport 소비자가 그대로 재사용하는 Supabase raw session. */
   session: Session | null;
+  /** Profile·저장·개인화처럼 일반 계정 의미가 필요한 소비자용 session. */
+  accountSession: Session | null;
+  authKind: AuthKind;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (input: SignUpInput) => Promise<boolean>;
@@ -118,7 +123,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
     if (error) throw error;
   }, []);
 
-  const value = useMemo<AuthContextValue>(() => ({ session, isLoading, signIn, signUp, signOut }), [session, isLoading, signIn, signUp, signOut]);
+  const authKind = authKindFor(session, isLoading);
+  const accountSession = accountSessionFor(session, isLoading);
+  const value = useMemo<AuthContextValue>(() => ({ session, accountSession, authKind, isLoading, signIn, signUp, signOut }), [session, accountSession, authKind, isLoading, signIn, signUp, signOut]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
