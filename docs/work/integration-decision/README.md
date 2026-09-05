@@ -8,7 +8,21 @@
 
 ## 현재 게이트
 
-- [DEC-LIVE-DWELL-01](live-activity-dwell-personalization.md)(2026-09-04, 제품 정책 확정·구현 전): iOS 17 Live Activity는 길찾기 성공 뒤 로컬 진행을 시작하고, 예상 이동 `moveMin`에 20%·3~10분 유예를 둔 사용자 확인만 체류 표본으로 인정한다. GPS/background location과 원격 ActivityKit push는 이번 출시에서 제외한다. 일반 로그인+별도 동의+완료 표본만 같은 `category + subCategory`에 최근 최대 5개 중앙값으로 적용한다. 순서는 `U-INTERACTION-01 수락 → DB-DWELL-01·2-AB 병렬 → U-LIVE-ACTIVITY-01 → QA-LIVE-ACTIVITY-01`이다.
+- [출시 UIUX 통합 체크리스트](release-uiux-checklist.md)(2026-09-05, 현행): 사용자가 확정하거나 검토를 요청한 전체 UIUX를 시간 흐름대로 관리한다. 구현 세션은 직접 체크하지 않고 통합 세션이 코드·자동 회귀·필요한 수동 관찰을 검토한 뒤에만 완료 표시한다.
+
+- [DEC-PLACE-COURSE-FLOW-01](place-detail-and-optimized-course-flow.md)(2026-09-05, 제품 흐름·완료 UI 시나리오 최종 승인·구현 작업 활성화): 추천 카드 tap은 전체 지도형 장소 상세를 열고 명시 선택만 같은 Results의 A/B 상태를 바꾼다. 2곳 방문 순서는 exact route 최적화 결과를 따르며 코스 검토와 진행은 동일 화면 상태로 통합한다. `DATA-PLACE-DETAIL-01`과 `U-PLACE-COURSE-FLOW-01`을 병렬로 시작하고, `QA-PLACE-COURSE-FLOW-01` 최종 판정은 UIUX 완료 뒤 실행한다.
+
+- [WAVE-FOUNDATION-01](parallel-foundation-wave.md)(2026-09-05, 자동 게이트 통과·수동 1건 이관): `DB-COMPLETION-RECORD-01`, `2-AB`, `U-RELEASE-VISUAL-01`의 자동 게이트와 사용자 시각 2건은 통과했다. 당시 발견한 V1 Home active 미연결은 `U-PROGRESS-RESUME-01`에서 구현됐고 `QA-PROGRESS-RESUME-01` 비로그인 실기기 확인이 남았다.
+
+- [U-PROGRESS-RESUME-01](../uiux/active-verified-course-resume.md)(2026-09-05, 수락): 비로그인·로그인 모두 같은 프로세스에서 V1 활성 코스와 마지막 확정 단계를 AppFlow로 이어 Home에서 재진입하며, 자동 회귀와 `QA-PROGRESS-RESUME-01` 비로그인 실기기를 통과했다. 추천/API/DB/영속 storage는 건드리지 않았다. 강제 종료·재부팅 복구와 안정적인 `courseRunId`는 U-LIVE-ACTIVITY-01의 App Group 범위이며, 다른 활성 코스의 silent replace와 익명 Auth 계정 오표시는 별도 후속이다.
+
+- [U-RUNTIME-GUARD-01](../uiux/runtime-course-auth-guard.md)(2026-09-05, 실행 대기): 다른 active가 있는 최종 시작에서 취소·기존 이어가기·새 시작을 명시 선택하고, Route Proxy anonymous raw session은 유지하면서 사용자 account/Profile/saved course/personalization과 분리한다. 같은 UI 상태 파일을 소유하므로 다른 UIUX와 병렬 실행하지 않으며 후속은 `QA-RUNTIME-GUARD-01`이다.
+
+- [U-COMPLETION-HISTORY-01](../uiux/course-completion-history.md)(2026-09-05, QA-RUNTIME-GUARD 뒤 대기): 선택 기능인 Live Activity 때문에 필수 완료 기록이 지연되지 않게 runtime `courseRunId`, 명시 finish repository 호출, 이번 달 device-local 기록과 미측정 표시를 먼저 연결한다. App Group/ActivityKit/알림·서버 동기화는 포함하지 않는다.
+
+- [DEC-COMPLETION-RECORD-01](course-completion-record.md)(2026-09-04, repository 구현 완료·UI 대기): 진행 화면의 명시 `코스 마치기`가 후기 없이도 로컬 완료 기록을 한 번 생성한다. 선택·코스 보기·길찾기 실행은 완료가 아니며, 미확인 실제 체류는 `null`로 두어 장소/카테고리에는 포함하되 활동 시간과 개인화 표본에서는 제외한다. DB repository는 구현됐고 다음은 `U-COMPLETION-HISTORY-01`의 기본 UI 연결이다.
+
+- [DEC-LIVE-DWELL-01](live-activity-dwell-personalization.md)(2026-09-04, 제품 정책 확정·구현 전): iOS 17 Live Activity는 길찾기 성공 뒤 로컬 진행을 시작하고, 예상 이동 `moveMin`에 20%·3~10분 유예를 둔 사용자 확인만 체류 표본으로 인정한다. GPS/background location과 원격 ActivityKit push는 이번 출시에서 제외한다. 일반 로그인+별도 동의+완료 표본만 같은 `category + subCategory`에 최근 최대 5개 중앙값으로 적용한다. 필수 완료 기록은 `U-RUNTIME-GUARD-01 → QA-RUNTIME-GUARD-01 → U-COMPLETION-HISTORY-01`로 먼저 연결하고, 이후 `DB-DWELL-01`·`2-AB` 공개 계약과 UI writer 종료 뒤 `U-LIVE-ACTIVITY-01 → QA-LIVE-ACTIVITY-01` 순서다.
 
 - [DEC-TWO-STOP-SELECTION-01](two-stop-limited-assembly.md)(2026-09-04, 자동 통합 수락·실기기 체감만 남음): 같은 session/input의 exact pair 0-call seed와 production runtime 역선택 연결을 완료했다. provider/store terminal partial 비저장과 attempt-limit exact partial 유지가 하나의 predicate로 고정됐고, B 카드는 A+B 전체 88분 대신 A one-stop 대비 `함께 가면 약 37분 추가`를 표시한다. `QA-TWO-STOP-02` 고정 fixture 게이트도 통과했으며 작은 iPhone 체감은 출시 후보 smoke에 합친다.
 

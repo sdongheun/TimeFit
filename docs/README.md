@@ -19,11 +19,19 @@
 | 실기기 추천 검증 | [work/qa-release/real-device-recommendation.md](work/qa-release/real-device-recommendation.md) | 사용자가 직접 기록하는 실제 Route Proxy·추천 체감 시나리오 |
 | 외부 API 작업 기준 | [work/external-api/archive/2026-08-history.md](work/external-api/archive/2026-08-history.md) | 서버 Route Proxy·구간 캐시·호출량 예산 계약 |
 | DB·개인화 작업 기준 | [work/db-personalization/archive/2026-08-history.md](work/db-personalization/archive/2026-08-history.md) | 검증 코스 저장·RLS·개인정보 경계의 후속 작업 |
-| 화면 흐름·와이어프레임 | [03_product/UIUX_와이어프레임_계획.md](03_product/UIUX_와이어프레임_계획.md) | 현행 계획, 화면 재구성 필요 |
+| 화면 흐름·와이어프레임 이력 | [03_product/UIUX_와이어프레임_계획.md](03_product/UIUX_와이어프레임_계획.md) | 과거 180분·1~3곳 이력, 현행 구현 기준 아님 |
 | UIUX 수동·E2E 명세 | [03_product/UIUX_테스트명세.md](03_product/UIUX_테스트명세.md) | 현행 명세, 자동화 미착수 |
 | DB 계약·마이그레이션 | [04_backend/데이터베이스설계.md](04_backend/데이터베이스설계.md) | 현행 DB 구조 기준 |
 | iOS 출시 게이트 | [05_release/출시준비_체크리스트.md](05_release/출시준비_체크리스트.md) | 출시 전 갱신 |
 | Live Activity 체류 측정 결정 | [work/integration-decision/live-activity-dwell-personalization.md](work/integration-decision/live-activity-dwell-personalization.md) | 제품 정책 확정·역할별 구현 전 |
+| 코스 완료 기록 결정 | [work/integration-decision/course-completion-record.md](work/integration-decision/course-completion-record.md) | 로컬 repository 구현 완료·UI 연결 대기 |
+| 현재 병렬 작업 Wave | [work/integration-decision/parallel-foundation-wave.md](work/integration-decision/parallel-foundation-wave.md) | DB 완료 기록·엔진 개인화·UI 시각 정리를 3개 소유 경계로 병렬 실행 |
+| V1 진행 코스 이어가기 | [work/uiux/active-verified-course-resume.md](work/uiux/active-verified-course-resume.md) | 자동·비로그인 실기기 및 교체 확인 수락 |
+| 진행 코스·인증 runtime guard | [work/uiux/runtime-course-auth-guard.md](work/uiux/runtime-course-auth-guard.md) | 구현 및 QA 자동·수동 게이트 수락 |
+| runtime guard QA | [work/qa-release/runtime-course-auth-guard-validation.md](work/qa-release/runtime-course-auth-guard-validation.md) | 자동 fixture·제한 수동 확인 A·B 수락 |
+| 완료 기록 UI 연결 | [work/uiux/course-completion-history.md](work/uiux/course-completion-history.md) | 선행 runtime QA 통과·실행 가능 |
+| 출시 UIUX 통합 체크리스트 | [work/integration-decision/release-uiux-checklist.md](work/integration-decision/release-uiux-checklist.md) | 사용자 확정 UIUX의 완료·미완료·결정 필요 상태를 통합 검토 후 갱신 |
+| 장소 상세·최적 코스 진행 결정 | [work/integration-decision/place-detail-and-optimized-course-flow.md](work/integration-decision/place-detail-and-optimized-course-flow.md) | 제품 흐름·완료 UI 시나리오 최종 승인·역할별 구현 작업 활성화 |
 
 `구현 전환 필요`은 현재 코드가 문서 정책을 아직 모두 따르지 않는다는 뜻이다. 문서는 아래 확정 정책을 새 구현의 단독 기준으로 사용한다.
 
@@ -43,12 +51,14 @@
 1. 출시 UI의 최대 입력 시간은 현재 시각부터 `2시간(120분)`이다. 121분 이상은 입력 경계에서 차단한다.
 2. 출시 기본 자동 추천은 실제 경로·구조화 운영시간·최소 20분·도착 여유를 통과한 **한 장소**만 계산한다. 첫 결과는 대표 `1개`와 서로 다른 검증된 1곳 대안 최대 `3개`를 목표로 하지만 검증 결과가 적으면 수를 부풀리지 않는다. 미검증 single 후보가 남으면 `다른 장소 더 보기`로 다음 실제 검증 결과를 최대 3개씩 기존 목록 뒤에 누적하며 화면 총량에는 별도 고정 상한을 두지 않는다. 과거 mixed 2·3곳 자동 조립과 candidate-to-candidate queue는 계속 사용하지 않는다. 사용자가 검증 A에서 명시적으로 시작하는 pair-only 2곳만 아래 8번의 별도 계약과 QA 게이트를 따른다.
 3. 첫 계산과 사용자의 더보기 한 번은 각각 신규 provider attempt 최대 8회다. 첫 계산의 자동 8→16회 보충이나 자동 연속 페이지 호출은 하지 않는다. cache/session 재사용은 새 attempt가 아니며, 후보 소진·provider 한도·실경로 실패 때 목표 개수를 채우려고 추가 호출하거나 조건부 후보를 승격하지 않는다.
-4. 장소 카드·코스 확인·진행 화면은 체류 분을 표시하지 않는다. 최소 20분은 엔진 통과 하한으로 유지하고, 선택 체류가 권장 30분 미만일 때만 `가볍게 둘러보기`를 표시한다. 최대 60/120분은 자동 연장하거나 사용자 수치로 노출하지 않는다.
+4. 결과 카드·장소 정보 상세 B·진행(active) 화면은 체류 분을 표시하지 않는다. 최종 코스 확인(review) 상세에서만 검증 snapshot의 선택 체류를 `둘러보기 약 N분`, short이면 `가볍게 둘러보기 약 N분`으로 표시한다. 최소·최대·범위·조절기는 비노출이며 체류를 자동 연장하지 않는다. 전체 코스 시간과 구간 이동 분은 유지한다.
 5. `운영시간 확인 후 들러볼 곳`은 자동 대표·검증 대안과 다른 정보 확인 영역이다. 구조화 운영시간이 없는 조건부 시장·거리·골목은 기기의 실제 현재 시각 `10:00 ≤ t < 18:00`에서만 표시하고, 사용자가 카카오맵을 확인한 뒤 명시적으로 계산한 경우에만 별도의 조건부 수동 코스로 검증한다.
 6. TimeFit의 사용자 가치는 다음 일정 전 계획 밖의 부산 장소를 발견할 기회다. 시간·운영시간·실제 경로 조건이 같은 후보 사이에서만 앱 완료 기록 기반의 지역·활동 발견성을 보조 순위로 사용한다. 소비·관광 활성, GPS 방문·외부 소비 이력, 근거 없는 첫 방문·인기도는 추천 근거나 사용자 약속으로 쓰지 않는다.
 7. 장소는 단일 승인 등급이 아니라 장소 동일성·범위·활동/체류 근거·이용 가능성·이용 부담·근거 이력으로 재분류한다. 자동 대표 추천은 `representative_core / representative_standard`, 운영시간 미확인은 `conditional_more`, 근거 부족·중복·예약 필수 등은 `hold`로 처리한다.
 8. `DEC-TWO-STOP-SELECTION-01`은 Results의 실제 검증 one-stop A를 사용자가 카드로 명시 선택할 때만 최대 2곳 제한 조립을 시작하는 기능이다. 엔진의 기본 B 3개 목표·누적 6개, 두 방문 순서 exact 비교, session 신규 route attempt 최대 36, A 취소 원상 복원은 자동 확인됐다. `2-Z`와 `U-TWO-STOP-03`은 검증 one-stop leg 재사용과 동일 Results/ScrollView 전환까지 자동 수락됐다. 같은 세션의 순서 없는 exact pair 역선택 0-call은 `2-AA → U-TWO-STOP-04`로 연결했고, terminal partial 비저장과 B의 A 대비 추가시간 표시까지 보완해 자동 수락했다. 다음은 `QA-TWO-STOP-02` 고정 fixture 게이트다. 새 세션의 미검증 pair를 모두 첫 3개에 보장하는 요구로 확대하지 않는다. 자유 장바구니·3곳·순서 편집은 재활성화하지 않는다.
 9. `DEC-LIVE-DWELL-01`은 카카오 길찾기 handoff 성공 뒤 iOS 17 Live Activity와 로컬 알림으로 사용자의 명시적 도착·출발을 받는다. 예상 이동시간에 `20%`, 최소 3분·최대 10분 유예를 둔 뒤 도착을 묻고, 최종 도착/복귀 시각에서 사용자 여유·남은 검증 snapshot 이동·이후 계획 체류를 뺀 안전 출발시각 5분 전에 알린다. GPS·백그라운드 위치·원격 ActivityKit push는 이번 출시에서 사용하지 않는다. 일반 로그인과 별도 동의를 모두 만족한 완료 표본만 서버에 저장하며, 같은 `category + subCategory`의 유효 표본 3개부터 최근 최대 5개 중앙값을 제한적으로 적용한다. 최소 지원 버전은 iOS 17.0으로 전환한다. 상태: **정책 확정·구현 전**.
+10. `DEC-COMPLETION-RECORD-01`은 진행 화면의 명시 `코스 마치기`를 후기와 분리된 완료 근거로 사용한다. 비로그인도 로컬 완료 이력을 가질 수 있고 같은 `courseRunId`는 한 번만 기록한다. 실제 체류 미확인은 장소/카테고리 완료에는 포함하지만 활동 시간과 개인화에는 사용하지 않는다. 활성 진행 App Group, 서버 체류 표본, 로그인 코스 저장은 서로 다른 저장 경계다. DB repository, `U-COMPLETION-HISTORY-01` 기본 화면 연결과 `QA-COMPLETION-HISTORY-01` 제한 검증까지 수락됐다.
+11. `DEC-PLACE-COURSE-FLOW-01`은 추천 카드 tap과 장소 선택을 분리한다. tap은 현재 위치·설정 출발지·장소와 근거 있는 상세를 전체 지도형 화면에서 확인하고, 명시 `선택하기`만 같은 Results의 A/B 선택 상태를 갱신한다. 최종 2곳 방문 순서는 선택 순서가 아니라 exact 비교로 최적화하며, 코스 검토와 진행은 동일 snapshot의 한 화면 상태로 운영한다. 현재 다음 구간만 카카오 길찾기를 활성화한다. 상태: **제품 흐름·완료 UI 시나리오 최종 승인·역할별 구현 작업 활성화**.
 
 ## 4. 보관 문서
 

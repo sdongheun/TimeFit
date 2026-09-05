@@ -109,11 +109,14 @@
 현재 코드 감사 결과 `app.json`과 `ios/Podfile.properties.json`은 iOS 16.4, `ios/mobile/Info.plist`에는 generic Always location 설명이 있으며 Widget Extension·App Group·`NSSupportsLiveActivities`는 없다. `VerifiedCourseProgressScreen`도 화면 메모리 전용이라고 명시한다. 이는 문서 충돌이 아니라 아래 작업으로 닫아야 하는 **확인된 구현 격차**이며, 지금 기능이 이미 구현됐다고 해석하면 안 된다.
 
 1. **현재 UI 안정화 완료:** `U-INTERACTION-01`의 공용 눌림·시간 제어 햅틱·전환과 실기기 촉각을 수락했다. 이후에도 같은 `App.tsx`/UI 파일을 동시에 편집하지 않는다.
-2. **Wave 1 병렬:**
-   - DB·개인화 `DB-DWELL-01`: 동의, 완료 표본, 파생 프로필, RLS·삭제 계약.
+2. **Foundation 병렬:**
+   - DB·개인화 `DB-COMPLETION-RECORD-01`: 후기와 분리한 로컬 완료 기록·멱등성·legacy 호환 read model.
    - 추천 엔진 `2-AB`: 순수 개인화 계산과 기존 추천 정책에 대한 bounded 적용.
-3. **Wave 2 UI/네이티브:** `U-LIVE-ACTIVITY-01`이 iOS 17 target, Widget Extension/App Group, ActivityKit/App Intent, 로컬 알림, 진행 화면·내 정보 연결을 한 작업에서 구현한다.
-4. **Wave 3 QA:** `QA-LIVE-ACTIVITY-01`이 고정 clock/notification/activity/DB fixture 후 실제 iOS 기기 1·2곳 코스를 제한 확인한다.
+   - UIUX `U-RELEASE-VISUAL-01`: App/nav/진행 상태를 건드리지 않는 핵심 화면 시각 정리.
+3. **DB 후속:** `DB-COMPLETION-RECORD-01` 수락 뒤 `DB-DWELL-01`이 동의, 실제 완료 체류 표본, 파생 프로필, RLS·삭제 계약을 구현한다. 같은 DB writer 두 작업은 병렬로 실행하지 않는다.
+4. **기본 완료 UI:** `U-RUNTIME-GUARD-01 → QA-RUNTIME-GUARD-01 → U-COMPLETION-HISTORY-01` 순서로 active 교체와 Auth 의미를 먼저 고정하고, 안정적인 runtime `courseRunId`, 명시 완료, device-local 기록 탭을 Live Activity와 분리해 연결한다.
+5. **UI/네이티브:** `U-COMPLETION-HISTORY-01` 수락과 DB-DWELL-01·2-AB 공개 계약 뒤 `U-LIVE-ACTIVITY-01`이 선행 작업의 `courseRunId`와 완료 controller를 재사용해 iOS 17 target, Widget Extension/App Group, ActivityKit/App Intent, 로컬 알림, 진행 화면·내 정보 연결을 구현한다.
+6. **QA:** `QA-LIVE-ACTIVITY-01`이 고정 clock/notification/activity/DB fixture 후 실제 iOS 기기 1·2곳 코스를 제한 확인한다.
 
 외부 API 세션 작업은 없다. 예상 이동시간은 기존 검증 snapshot을 소비하고, Live Activity 때문에 Kakao/Route Proxy를 다시 호출하지 않는다.
 
