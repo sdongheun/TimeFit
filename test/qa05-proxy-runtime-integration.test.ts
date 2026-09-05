@@ -8,6 +8,7 @@ import {
   type CourseV1RouteReceipt,
   type CourseV1RouteReceiptAdapter,
 } from '../src/engine';
+import { buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation } from '../src/engine/courseV1.testOnly';
 import { courseV1OutcomeMessage } from '../src/ui/recommendation/courseV1OutcomeMessageModel';
 import { buildRecommendationLimitedInput } from '../src/ui/recommendation/v1Session';
 
@@ -23,6 +24,7 @@ function place(id: string, input: Partial<CourseV1Candidate> = {}): CourseV1Cand
     classification: 'representative_standard',
     minStayMin: 10,
     recommendedStayMin: 15,
+    maxStayMin: 60,
     availability: { status: 'structured', alwaysAccessible: true, dayTypes: ['weekday', 'weekend'], windows: [{ startMin: 0, endMin: 1440 }] },
     ...input,
   };
@@ -137,6 +139,11 @@ test('QA05-02-R: 운영 종료·시간 초과·no_route 뒤 열린 후보를 Pro
     'origin>timed': { result: 'exact', route: { mode: 'walk', min: 20, exact: true }, newProviderAttemptCount: 1, reused: false },
     'timed>origin': { result: 'exact', route: { mode: 'walk', min: 20, exact: true }, newProviderAttemptCount: 1, reused: false },
     'origin>no-route': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    'no-route>origin': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    'timed>no-route': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    'no-route>timed': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    'open>no-route': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    'no-route>open': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
     'origin>open': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
     'open>origin': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
   });
@@ -180,12 +187,21 @@ test('QA05-02-R: 운영 종료·시간 초과·no_route 뒤 열린 후보를 Pro
 
 test('QA05-03: 8번째 attempt 뒤에는 추가 adapter/provider 요청 없이 unavailable으로 fail-closed한다', async () => {
   const origin = { id: 'origin', lat: 35.1578, lon: 129.0594 };
-  const proxy = fixedProxy(Object.fromEntries(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'].map((id) => [`origin>${id}`, { result: 'no_route', newProviderAttemptCount: 1, reused: false }])));
-  const result = await buildLimitedRepresentativeCourseV1({
-    now, origin, destination: null, remainingMin: 90, arrivalBufferMin: 5,
-    provider: candidateProvider(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'].map((id, index) => place(id, { lat: origin.lat + index * 0.0001, lon: origin.lon }))),
-    routes: proxy.port, receiptRoutes: proxy.port,
+  const proxy = fixedProxy({
+    'origin>a': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+    'a>origin': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    'origin>b': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+    'b>origin': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    'origin>c': { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false },
+    'c>origin': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    'a>b': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
+    'a>c': { result: 'no_route', newProviderAttemptCount: 1, reused: false },
   });
+  const result = await buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation({
+    now, origin, destination: null, remainingMin: 90, arrivalBufferMin: 5,
+    provider: candidateProvider(['a', 'b', 'c'].map((id, index) => place(id, { lat: origin.lat + index * 0.0001, lon: origin.lon }))),
+    routes: proxy.port, receiptRoutes: proxy.port,
+  }, { receiptPolicy: { providerAttemptLimit: 8, queueOrder: 'A' } });
 
   assert.equal(result.primaryOutcomeReason, 'route_verification_unavailable');
   assert.equal(result.diagnostics.newProviderAttemptCount ?? 0, 8);
@@ -206,11 +222,11 @@ test('QA05-04: 다섯 빈 상태는 provider·HTTP·비밀값 없는 Results UI 
   for (const item of cases) {
     const proxy = fixedProxy({ 'origin>slow': item.receipt, 'slow>origin': item.receipt, 'origin>no-route': item.receipt, 'origin>unavailable': item.receipt });
     const candidate = item.candidates[0];
-    const result = await buildLimitedRepresentativeCourseV1({
+    const result = await buildLimitedRepresentativeCourseV1ForTestOnlyReceiptEvaluation({
       now, origin, destination: null, remainingMin: 45, arrivalBufferMin: 5,
       provider: candidateProvider(item.candidates), routes: proxy.port,
       receiptRoutes: { async getRouteReceipt(from, to, budget) { return proxy.port.getRouteReceipt(from, to, budget); } },
-    });
+    }, { receiptPolicy: { providerAttemptLimit: 8, queueOrder: 'A' } });
     assert.equal(result.primaryOutcomeReason, item.expected);
     const message = courseV1OutcomeMessage(item.expected);
     assert.ok(message);

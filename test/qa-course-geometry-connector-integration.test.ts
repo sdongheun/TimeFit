@@ -22,6 +22,7 @@ import {
 
 const origin = { id: 'origin', label: '출발', lat: 35.157, lon: 129.059 };
 const place = { id: 'place', lat: 35.16, lon: 129.062 };
+const secondPlace = { id: 'second-place', lat: 35.164, lon: 129.06 };
 const destination = { id: 'destination', label: '도착', lat: 35.168, lon: 129.057 };
 const session: RecommendationSession = {
   nowIso: '2026-09-03T15:00:00+09:00',
@@ -60,6 +61,45 @@ function transitCourse(gaps: [[number, number], [number, number]]): VerifiedCour
     totalMin: 80,
     remainingAfterCourseMin: 40,
     remainingAfterArrivalBufferMin: 30,
+  };
+}
+
+function twoStopTransitCourse(gaps: [[number, number], [number, number], [number, number]]): VerifiedCourseV1 {
+  const endpoints = [[origin, place], [place, secondPlace], [secondPlace, destination]] as const;
+  return {
+    id: 'qa-two-stop-course-geometry-02',
+    placeIds: ['place', 'second-place'],
+    stops: [
+      {
+        placeId: 'place',
+        stayMin: 20,
+        stayState: 'recommended',
+        availabilityState: 'structured_verified',
+        arrivalAt: '2026-09-03T15:20:00+09:00',
+        departureAt: '2026-09-03T15:40:00+09:00',
+      },
+      {
+        placeId: 'second-place',
+        stayMin: 20,
+        stayState: 'recommended',
+        availabilityState: 'structured_verified',
+        arrivalAt: '2026-09-03T16:00:00+09:00',
+        departureAt: '2026-09-03T16:20:00+09:00',
+      },
+    ],
+    legs: gaps.map(([startGap, endGap], index) => ({
+      fromId: index === 0 ? 'origin' : index === 1 ? 'place' : 'second-place',
+      toId: index === 0 ? 'place' : index === 1 ? 'second-place' : 'destination',
+      mode: 'transit' as const,
+      min: 20,
+      geometry: geometry(pointNorth(endpoints[index][0], startGap), pointNorth(endpoints[index][1], endGap)),
+    })),
+    travelMin: 60,
+    stayMin: 40,
+    arrivalBufferMin: 10,
+    totalMin: 110,
+    remainingAfterCourseMin: 10,
+    remainingAfterArrivalBufferMin: 0,
   };
 }
 
@@ -173,11 +213,31 @@ test('QA-COURSE-GEOMETRY-02 통합: session 부재는 Edge·provider 0회이고 
   assert.equal(JSON.stringify(course), originalSnapshot);
 });
 
-test('QA-COURSE-GEOMETRY-02 통합: 최대 4개·동시 2개, 부분 실패와 의도적 5번째 차단을 안전하게 닫는다', async () => {
-  const course = transitCourse([[51, 51], [51, 51]]);
-  const requests = buildCourseV1ConnectorRequests(course, session, (id) => id === 'place' ? place : undefined);
-  assert.equal(requests.length, 4);
-  const five = [...requests, { ...requests[0], key: '2:start' as const }];
+test('QA-COURSE-GEOMETRY-02 통합: 1곳은 최대 4개, 2곳은 최대 6개 request를 생성한다', () => {
+  const oneStopRequests = buildCourseV1ConnectorRequests(
+    transitCourse([[51, 51], [51, 51]]),
+    session,
+    (id) => id === 'place' ? place : undefined,
+  );
+  assert.equal(oneStopRequests.length, 4);
+
+  const twoStopRequests = buildCourseV1ConnectorRequests(
+    twoStopTransitCourse([[51, 51], [51, 51], [51, 51]]),
+    session,
+    (id) => id === 'place' ? place : id === 'second-place' ? secondPlace : undefined,
+  );
+  assert.equal(twoStopRequests.length, 6);
+});
+
+test('QA-COURSE-GEOMETRY-02 통합: 공통 loader는 최대 6개·동시 2개, 부분 실패와 인위적 7번째 차단을 지킨다', async () => {
+  const course = twoStopTransitCourse([[51, 51], [51, 51], [51, 51]]);
+  const requests = buildCourseV1ConnectorRequests(
+    course,
+    session,
+    (id) => id === 'place' ? place : id === 'second-place' ? secondPlace : undefined,
+  );
+  assert.equal(requests.length, 6);
+  const seven = [...requests, { ...requests[0], key: '3:start' as const }];
   let calls = 0;
   let active = 0;
   let maxActive = 0;
@@ -199,13 +259,13 @@ test('QA-COURSE-GEOMETRY-02 통합: 최대 4개·동시 2개, 부분 실패와 �
     reset() {},
   };
 
-  const loaded = await loadCourseV1WalkConnectors(five, port);
-  assert.equal(calls, 4, '다섯 번째 connector는 provider에 전달하면 안 됩니다.');
+  const loaded = await loadCourseV1WalkConnectors(seven, port);
+  assert.equal(calls, 6, '일곱 번째 connector는 provider에 전달하면 안 됩니다.');
   assert.equal(maxActive, 2);
-  assert.equal(loaded.connectors.length, 3);
+  assert.equal(loaded.connectors.length, 5);
   assert.equal(loaded.failedCount, 2, '부분 실패 1건과 상한으로 차단된 1건을 집계합니다.');
   const model = buildCourseV1RouteGeometryModel(course, loaded.connectors);
-  assert.equal(model.segments.filter(({ mode }) => mode === 'transit').length, 2);
-  assert.equal(model.segments.filter(({ mode }) => mode === 'walk').length, 3);
+  assert.equal(model.segments.filter(({ mode }) => mode === 'transit').length, 3);
+  assert.equal(model.segments.filter(({ mode }) => mode === 'walk').length, 5);
   assert.equal(model.segments.some(({ quality }) => quality === 'fallback'), false);
 });

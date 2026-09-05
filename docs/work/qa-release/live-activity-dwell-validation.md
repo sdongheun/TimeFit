@@ -1,6 +1,6 @@
 # QA-LIVE-ACTIVITY-01 — Live Activity 체류 측정·개인화 출시 게이트
 
-> 상태: **대기 — DB-DWELL-01, 2-AB, U-LIVE-ACTIVITY-01 수락 및 QA 대상 Supabase migration 적용 뒤 실행**
+> 상태: **대기 — U-COMPLETION-HISTORY-01, DB-DWELL-01, 2-AB, U-LIVE-ACTIVITY-01 수락 및 QA 대상 Supabase migration 적용 뒤 실행**
 > 상위 결정: [DEC-LIVE-DWELL-01](../integration-decision/live-activity-dwell-personalization.md)
 
 ## 목적
@@ -17,6 +17,7 @@ GPS와 실제 외부 API 반복 호출 없이 상태·시각·저장 경계를 �
 6. 개인화가 실제 경로·운영시간·최소 체류·도착 여유를 바꾸거나 one-stop/pair 후보를 없애지 않는지 비교한다.
 7. Activity/notification disabled, repository 실패, 재실행 복구, 취소/완료/만료 cleanup을 검증한다.
 8. 기존 one-stop 더보기, 2곳 인라인 선택/취소, route geometry, 전역 interaction 회귀를 함께 실행한다.
+9. 후기 없이 명시 완료해도 로컬 완료 기록이 한 건 생성되고, 같은 `courseRunId`의 action/tap 재전달은 `already_completed`이며, route open·취소는 0건인지 확인한다. 실제 체류 미확인은 장소 수에는 포함하지만 시간·개인화에는 포함하지 않는다.
 
 ## 제한 실기기 게이트
 
