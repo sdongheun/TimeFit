@@ -33,6 +33,8 @@
 
 ## 현재 작업
 
+다음 활성 구현은 [U-NEARBY-BROWSE-01](nearby-browse.md)이다. 약속 시간과 독립된 3km 정보 탐색, 사진 cluster 지도+거리순 하단 sheet를 구현하고 내 코스 최상위 탭을 교체한다. `U-LOCATION-SEARCH-01`은 사용자 수락(키보드 미세 지연 비차단 보류) 상태다. 과거 활성 표기보다 이 항목을 우선한다.
+
 최신 활성 작업은 [U-LOCATION-SEARCH-01](location-search-interaction.md) **구현 가능**이다. U-SETUP-UNIFIED-01 뒤 사용자 추가 요구인 위치 검색 키보드/선택·필드별 draft·지도 왕복 복원·항상 가로 선택 수단·간결한 디자인을 구현한다. 통합 입력 배치는 유지한다.
 
 [U-PLACE-COURSE-FLOW-01](place-detail-and-optimized-course-flow.md)은 **복원 및 QA 수락**이다. review 한정 계획 체류, 1곳 4/2곳 6 connector, 상세 후 선택·단일 코스 화면은 자동 게이트와 사용자 실기기 smoke를 통과했다. 다음은 [U-SETUP-UNIFIED-01](unified-time-route-setup.md)이며 **구성 확정·상시 시간 휠/일반 영역 무스크롤·개발 버튼 유지·구현 가능**다.

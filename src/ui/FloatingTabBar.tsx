@@ -1,5 +1,5 @@
 import { Feather } from '@expo/vector-icons';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, type LayoutRectangle } from 'react-native';
 import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { C } from './theme';
@@ -12,16 +12,17 @@ type Props = {
   onCourse: () => void;
   onRecord: () => void;
   onProfile: () => void;
+  onFrame?: (frame: LayoutRectangle) => void;
 };
 
 const TABS: { key: MainTabKey; label: string; icon: keyof typeof Feather.glyphMap }[] = [
   { key: 'main', label: '메인', icon: 'search' },
-  { key: 'course', label: '내 코스', icon: 'map' },
+  { key: 'course', label: '주변 둘러보기', icon: 'map' },
   { key: 'record', label: '기록', icon: 'pie-chart' },
   { key: 'profile', label: '내정보', icon: 'user' },
 ];
 
-export function FloatingTabBar({ active, onMain, onCourse, onRecord, onProfile }: Props) {
+export function FloatingTabBar({ active, onMain, onCourse, onRecord, onProfile, onFrame }: Props) {
   const insets = useSafeAreaInsets();
   const handlers: Record<MainTabKey, () => void> = {
     main: onMain,
@@ -31,7 +32,7 @@ export function FloatingTabBar({ active, onMain, onCourse, onRecord, onProfile }
   };
 
   return (
-    <View pointerEvents="box-none" style={[s.wrap, { bottom: Math.max(insets.bottom, 18) }]}>
+    <View pointerEvents="box-none" onLayout={({ nativeEvent }) => onFrame?.(nativeEvent.layout)} style={[s.wrap, { bottom: Math.max(insets.bottom, 18) }]}>
       <View style={s.bar}>
         {TABS.map((tab) => {
           const isActive = active === tab.key;

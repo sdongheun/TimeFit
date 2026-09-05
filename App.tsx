@@ -23,6 +23,7 @@ import { ActivityRecordScreen } from "./src/ui/ActivityRecordScreen";
 import { AppFlowProvider } from "./src/ui/AppFlowContext";
 import { AuthProvider } from "./src/ui/AuthContext";
 import { MyCoursesScreen } from "./src/ui/MyCoursesScreen";
+import { NearbyBrowseScreen } from "./src/ui/NearbyBrowseScreen";
 import { C } from "./src/ui/theme";
 import { initializeNotifications } from "./src/services/courseNotifications";
 import { resetToMyCourses } from "./src/ui/mainTabNavigation";
@@ -89,6 +90,11 @@ export default function App() {
               <Stack.Screen
                 name="MyCourses"
                 component={MyCoursesScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="NearbyBrowse"
+                component={NearbyBrowseScreen}
                 options={{ headerShown: false }}
               />
               <Stack.Screen

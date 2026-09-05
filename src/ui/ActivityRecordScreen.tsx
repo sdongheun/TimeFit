@@ -9,7 +9,7 @@ import { courseCompletionRepository } from '../services/courseCompletionAsyncSto
 import { ActivityDonut } from './activity/ActivityDonut';
 import { ActivitySummary, loadCompletionHistory } from './activity/activitySummary';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
+import { resetToMain, resetToNearbyBrowse, resetToProfile } from './mainTabNavigation';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
 
@@ -88,7 +88,7 @@ export function ActivityRecordScreen({ navigation }: Props) {
       <FloatingTabBar
         active="record"
         onMain={() => resetToMain(navigation)}
-        onCourse={() => resetToMyCourses(navigation)}
+        onCourse={() => resetToNearbyBrowse(navigation)}
         onRecord={() => undefined}
         onProfile={() => resetToProfile(navigation)}
       />

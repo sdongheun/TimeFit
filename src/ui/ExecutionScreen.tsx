@@ -10,7 +10,7 @@ import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToActivityRecord, resetToMain, resetToMyCourses, resetToProfile } from './mainTabNavigation';
+import { resetToActivityRecord, resetToMain, resetToMyCourses, resetToNearbyBrowse, resetToProfile } from './mainTabNavigation';
 import { precompute, precomputeTransit } from '../engine/travel';
 import {
   cancelCourseNotifications,
@@ -348,7 +348,7 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
       <FloatingTabBar
         active="course"
         onMain={() => resetToMain(navigation)}
-        onCourse={() => resetToMyCourses(navigation)}
+        onCourse={() => resetToNearbyBrowse(navigation)}
         onRecord={() => resetToActivityRecord(navigation)}
         onProfile={() => resetToProfile(navigation)}
       />

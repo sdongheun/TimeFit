@@ -29,6 +29,14 @@ export function resetToMyCourses(navigation: NavigationProp<RootStackParamList>)
   }));
 }
 
+/** visible top-level destination; MyCourses remains a separate legacy saved-course route. */
+export function resetToNearbyBrowse(navigation: NavigationProp<RootStackParamList>) {
+  navigation.dispatch(CommonActions.reset({
+    index: 0,
+    routes: [{ name: 'NearbyBrowse' }],
+  }));
+}
+
 export function resetToBasket(
   navigation: NavigationProp<RootStackParamList>,
   params: RootStackParamList['LegacyResults'],

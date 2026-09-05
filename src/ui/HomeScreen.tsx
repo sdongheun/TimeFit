@@ -6,7 +6,7 @@ import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { useAppFlow } from './AppFlowContext';
 import { FloatingTabBar } from './FloatingTabBar';
-import { resetToActivityRecord, resetToMyCourses, resetToProfile } from './mainTabNavigation';
+import { resetToActivityRecord, resetToNearbyBrowse, resetToProfile } from './mainTabNavigation';
 import runtimeCatalog from '../data/busan_poi_catalog.json';
 import { homeActiveCourseProjection } from './activeVerifiedCourseModel';
 
@@ -27,7 +27,7 @@ export function HomeScreen({ navigation }: Props) {
         : active.kind === 'legacy' ? <Pressable accessibilityLabel={active.accessibilityLabel} style={s.active} onPress={() => navigation.navigate(active.target, active.params)}><Text style={s.activeEyebrow}>진행 중인 코스</Text><Text style={s.activeTitle} numberOfLines={1}>{active.title} ›</Text></Pressable>
           : <View style={s.placeholder}><Text style={s.placeholderText}>진행 중인 코스가 생기면 이곳에서 바로 이어갈 수 있습니다.</Text></View>}
     </ScrollView>
-    <FloatingTabBar active="main" onMain={() => undefined} onCourse={() => resetToMyCourses(navigation)} onRecord={() => resetToActivityRecord(navigation)} onProfile={() => resetToProfile(navigation)} />
+    <FloatingTabBar active="main" onMain={() => undefined} onCourse={() => resetToNearbyBrowse(navigation)} onRecord={() => resetToActivityRecord(navigation)} onProfile={() => resetToProfile(navigation)} />
   </View>;
 }
 

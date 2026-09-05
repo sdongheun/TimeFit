@@ -66,6 +66,7 @@ export type RootStackParamList = {
     editingCourseId?: string;
   };
   MyCourses: undefined;
+  NearbyBrowse: undefined;
   Execution: { course: Course; origin: LatLon; ctx: PlanCtx; courseId?: string };
   Feedback: { course: Course; ctx: PlanCtx };
   ActivityRecord: undefined;
