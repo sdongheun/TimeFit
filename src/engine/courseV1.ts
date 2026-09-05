@@ -6,6 +6,11 @@
  * 검증된 대안 식별자만 결정적으로 반환한다.
  */
 
+import {
+  deriveDwellPersonalizationV1,
+  type DwellPersonalizationSampleV1,
+} from './dwellPersonalization';
+
 export type CourseV1Point = { id: string; lat: number; lon: number };
 export type CourseV1Classification = 'representative_core' | 'representative_standard' | 'conditional_more' | 'hold';
 export type CourseV1DayType = 'weekday' | 'weekend';
@@ -20,6 +25,9 @@ export type StructuredAvailability = {
 
 export type CourseV1Candidate = CourseV1Point & {
   title: string;
+  /** 2-AB 복합 키. 누락 시 추정하지 않고 기본 체류를 쓴다. */
+  category?: string;
+  subCategory?: string;
   classification: CourseV1Classification;
   minStayMin: number;
   recommendedStayMin: number;
@@ -161,6 +169,8 @@ export type CourseV1Input = {
   arrivalBufferMin: number;
   candidates: readonly CourseV1Candidate[];
   routes: CourseV1RouteAdapter;
+  /** 로그인/DB 객체가 제거된 시간순 완료 표본 snapshot. */
+  dwellPersonalizationSamples?: readonly DwellPersonalizationSampleV1[];
 };
 
 export type CourseV1Leg = {
@@ -184,6 +194,12 @@ export type CourseV1Stop = {
   arrivalAt: string;
   /** 선택된 실제 체류 종료 시각(ISO 8601 UTC). */
   departureAt: string;
+  /** 미적용 결과에는 없어 byte-equivalent 기본 snapshot을 유지한다. */
+  dwellPersonalization?: Readonly<{
+    targetStayMin: number;
+    baselineStayMin: number;
+    baselineStayState: 'recommended' | 'short';
+  }>;
 };
 
 export type VerifiedCourseV1 = {
@@ -1642,10 +1658,13 @@ function hasValidStayRange(candidate: CourseV1Candidate): boolean {
 
 /** 최소 체류로 안전성을 확정한 뒤, 같은 exact legs 안에서 앞 순서부터 권장 체류를 올린다. */
 function selectStayPlan(
-  places: readonly CourseV1Candidate[], input: Pick<CourseV1Input, 'now' | 'remainingMin' | 'arrivalBufferMin'>, legs: readonly CourseV1Leg[],
+  places: readonly CourseV1Candidate[], input: Pick<CourseV1Input, 'now' | 'remainingMin' | 'arrivalBufferMin' | 'dwellPersonalizationSamples'>, legs: readonly CourseV1Leg[],
 ): { stops: CourseV1Stop[]; stayMin: number; totalMin: number } | null {
-  const stays = places.map((place) => place.minStayMin);
-  const build = (): { stops: CourseV1Stop[]; stayMin: number; totalMin: number } | null => {
+  const build = (
+    stays: readonly number[],
+    targets: readonly number[],
+    personalization?: readonly (CourseV1Stop['dwellPersonalization'] | undefined)[],
+  ): { stops: CourseV1Stop[]; stayMin: number; totalMin: number } | null => {
     let elapsedMin = 0;
     const stops: CourseV1Stop[] = [];
     for (const [index, place] of places.entries()) {
@@ -1654,20 +1673,73 @@ function selectStayPlan(
       const stayMin = stays[index]!;
       if (!isAvailable(place.availability, arrivalAt, stayMin)) return null;
       const departureAt = new Date(arrivalAt.getTime() + stayMin * 60_000);
-      stops.push({ placeId: place.id, stayMin, stayState: stayMin === place.recommendedStayMin ? 'recommended' : 'short', availabilityState: 'structured_verified', arrivalAt: arrivalAt.toISOString(), departureAt: departureAt.toISOString() });
+      stops.push({
+        placeId: place.id, stayMin,
+        stayState: stayMin === targets[index] ? 'recommended' : 'short',
+        availabilityState: 'structured_verified', arrivalAt: arrivalAt.toISOString(), departureAt: departureAt.toISOString(),
+        ...(personalization?.[index] ? { dwellPersonalization: personalization[index] } : {}),
+      });
       elapsedMin += stayMin;
     }
     const totalMin = elapsedMin + legs.at(-1)!.min + input.arrivalBufferMin;
     return totalMin <= input.remainingMin ? { stops, stayMin: stays.reduce((sum, value) => sum + value, 0), totalMin } : null;
   };
-  if (!build()) return null;
-  for (const [index, place] of places.entries()) {
-    if (place.recommendedStayMin === stays[index]) continue;
-    const minimum = stays[index]!;
-    stays[index] = place.recommendedStayMin;
-    if (!build()) stays[index] = minimum;
+
+  const defaultTargets = places.map((place) => place.recommendedStayMin);
+  const baselineStays = places.map((place) => place.minStayMin);
+  if (!build(baselineStays, defaultTargets)) return null;
+  for (const [index, target] of defaultTargets.entries()) {
+    if (target === baselineStays[index]) continue;
+    const minimum = baselineStays[index]!;
+    baselineStays[index] = target;
+    if (!build(baselineStays, defaultTargets)) baselineStays[index] = minimum;
   }
-  return build();
+  const baseline = build(baselineStays, defaultTargets);
+  if (!baseline || !input.dwellPersonalizationSamples?.length) return baseline;
+
+  const profiles = places.map((place) => {
+    if (place.maxStayMin === undefined) return null;
+    return deriveDwellPersonalizationV1({
+      category: place.category ?? '',
+      subCategory: place.subCategory,
+      minStayMin: place.minStayMin,
+      recommendedStayMin: place.recommendedStayMin,
+      maxStayMin: place.maxStayMin,
+      samples: input.dwellPersonalizationSamples!,
+    });
+  });
+  if (!profiles.some((profile) => profile?.state === 'applied')) return baseline;
+  const personalizedTargets = profiles.map((profile, index) => profile?.recommendedStayMin ?? defaultTargets[index]!);
+
+  const personalizedStays = [...baselineStays];
+  for (const [index, target] of personalizedTargets.entries()) {
+    const baselineStay = baselineStays[index]!;
+    if (target <= baselineStay) {
+      personalizedStays[index] = target;
+      if (!build(personalizedStays, personalizedTargets)) personalizedStays[index] = baselineStay;
+      continue;
+    }
+    let selected = baselineStay;
+    // route를 다시 호출하지 않고 같은 legs에서 예산·운영 가능한 최대 분으로 clamp한다.
+    for (let dwellMin = target; dwellMin > baselineStay; dwellMin -= 1) {
+      personalizedStays[index] = dwellMin;
+      if (build(personalizedStays, personalizedTargets)) {
+        selected = dwellMin;
+        break;
+      }
+    }
+    personalizedStays[index] = selected;
+  }
+  const personalization = profiles.map((profile, index): CourseV1Stop['dwellPersonalization'] | undefined => (
+    profile?.state === 'applied'
+      ? {
+          targetStayMin: profile.recommendedStayMin,
+          baselineStayMin: baselineStays[index]!,
+          baselineStayState: baselineStays[index] === defaultTargets[index] ? 'recommended' : 'short',
+        }
+      : undefined
+  ));
+  return build(personalizedStays, personalizedTargets, personalization) ?? baseline;
 }
 
 /**
@@ -1871,15 +1943,26 @@ export function selectRepresentativeCourseSetV1(courses: readonly VerifiedCourse
 }
 
 function compareRepresentativeCourses(left: VerifiedCourseV1, right: VerifiedCourseV1): number {
-  const leftMovementBurden = left.travelMin / Math.max(left.stayMin, 1);
-  const rightMovementBurden = right.travelMin / Math.max(right.stayMin, 1);
-  const leftRecommendedStopCount = left.stops.filter((stop) => stop.stayState === 'recommended').length;
-  const rightRecommendedStopCount = right.stops.filter((stop) => stop.stayState === 'recommended').length;
+  const baselineStayMin = (course: VerifiedCourseV1) => course.stops.reduce(
+    (sum, stop) => sum + (stop.dwellPersonalization?.baselineStayMin ?? stop.stayMin), 0,
+  );
+  const baselineRecommendedStopCount = (course: VerifiedCourseV1) => course.stops.filter(
+    (stop) => (stop.dwellPersonalization?.baselineStayState ?? stop.stayState) === 'recommended',
+  ).length;
+  const personalizedTargetCount = (course: VerifiedCourseV1) => course.stops.filter(
+    (stop) => stop.dwellPersonalization && stop.stayMin === stop.dwellPersonalization.targetStayMin,
+  ).length;
+  const leftMovementBurden = left.travelMin / Math.max(baselineStayMin(left), 1);
+  const rightMovementBurden = right.travelMin / Math.max(baselineStayMin(right), 1);
+  const leftRecommendedStopCount = baselineRecommendedStopCount(left);
+  const rightRecommendedStopCount = baselineRecommendedStopCount(right);
   return leftMovementBurden - rightMovementBurden
     || left.travelMin - right.travelMin
     // 이동 부담과 실제 이동 시간이 같을 때만, 이미 검증된 권장 체류를 더 많이
     // 확보한 코스를 우선한다. 남는 시간을 채우기 위한 점수로는 사용하지 않는다.
     || rightRecommendedStopCount - leftRecommendedStopCount
+    // 개인화는 위 기존 안전성·이동·기본 권장 품질이 같을 때만 보조 순위로 쓴다.
+    || personalizedTargetCount(right) - personalizedTargetCount(left)
     || left.placeIds.length - right.placeIds.length
     || left.id.localeCompare(right.id);
 }
@@ -2042,7 +2125,7 @@ export function isCourseV1CandidateAvailableInternal(
 
 export function selectCourseV1StayPlanInternal(
   places: readonly CourseV1Candidate[],
-  input: Pick<CourseV1Input, 'now' | 'remainingMin' | 'arrivalBufferMin'>,
+  input: Pick<CourseV1Input, 'now' | 'remainingMin' | 'arrivalBufferMin' | 'dwellPersonalizationSamples'>,
   legs: readonly CourseV1Leg[],
 ): { stops: CourseV1Stop[]; stayMin: number; totalMin: number } | null {
   return selectStayPlan(places, input, legs);

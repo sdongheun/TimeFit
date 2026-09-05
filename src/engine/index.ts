@@ -1,4 +1,5 @@
 export * from './types';
+export { deriveDwellPersonalizationV1, type DwellPersonalizationInputV1, type DwellPersonalizationResultV1, type DwellPersonalizationSampleV1 } from './dwellPersonalization';
 export { hasBalancedPaidVisit, isPaidFacilityLike, isQuickBrowseSpot, isTravelHeavyBrowse, minimumStayForCourse, minimumStayForSpot, safetyBufferMin } from './recommendationPolicy';
 export { planTimeFit, refineCourses, timeContext, timeContextManual, validateCourseOpening, type CourseOpeningValidation } from './planner';
 export { geocodeAddr, getActualRouteBaselines, getOdsayTransitUsage, getTmapRouteUsage, poiSearch, poiSearchMulti, reverseGeocode, travelGeo, travelMin, travelSrc, type Poi } from './travel';
