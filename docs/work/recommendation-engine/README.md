@@ -1,5 +1,9 @@
 # 추천 엔진 현재 작업
 
+## 2026-09-07 최신 작업
+
+[2-AB 출시 연결 검증](release-personalization-verification.md): **지금 실행 가능**. 기존 순수 구현 재사용·반례 확인·DB/UI 공개 타입 인계. 개인화 알고리즘 재작성 금지.
+
 ## 먼저 읽을 파일
 
 1. `AGENTS.md`, `docs/README.md`, `docs/작업조정_보드.md`

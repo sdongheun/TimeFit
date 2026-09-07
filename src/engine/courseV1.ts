@@ -1713,6 +1713,8 @@ function selectStayPlan(
 
   const personalizedStays = [...baselineStays];
   for (const [index, target] of personalizedTargets.entries()) {
+    // 다른 stop의 개인화가 이 stop의 기본 배분을 다시 늘려서는 안 된다.
+    if (profiles[index]?.state !== 'applied') continue;
     const baselineStay = baselineStays[index]!;
     if (target <= baselineStay) {
       personalizedStays[index] = target;

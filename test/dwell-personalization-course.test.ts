@@ -3,6 +3,8 @@ import test from 'node:test';
 import {
   beginReleaseTwoStopSelectionV1,
   buildReleaseOneStopRepresentativeCourseV1,
+  continueReleaseOneStopRepresentativeCourseV1,
+  continueReleaseTwoStopSelectionV1,
   type CourseV1Candidate,
   type CourseV1RouteReceiptAdapter,
   type VerifiedCourseV1,
@@ -185,4 +187,100 @@ test('2-AB: 프로필 없음·오염 profile은 비개인화 snapshot과 byte-eq
     { category: '상업지구', subCategory: '거리', dwellMin: 0 },
   ]));
   assert.deepEqual(polluted.representativeCourse, baseline.representativeCourse);
+});
+
+test('2-AB 출시: 다른 stop의 프로필은 미적용 stop의 기본 선택 체류를 재배분하지 않는다', async () => {
+  const run = (samples?: readonly DwellPersonalizationSampleV1[]) => beginReleaseTwoStopSelectionV1({
+    now, origin, destination, remainingMin: 80, arrivalBufferMin: 10,
+    provider: { listRepresentativeCandidates: () => [place('a', '문화', '전시'), place('b', '자연', '공원')] },
+    routes: { async getRoute() { throw new Error('legacy route forbidden'); } },
+    receiptRoutes: exactAdapter([]), firstCourse: firstCourse('a'),
+    ledger: { version: 1, initialOneStopAttempts: 8, automaticTwoStopAttempts: 0, sharedExpansionAttempts: 0, totalNewProviderAttempts: 8 },
+    requestId: 'release-isolation', dwellPersonalizationSamples: samples,
+  });
+  const baseline = await run();
+  assert.deepEqual(baseline.courses[0]?.stops.map((stop) => stop.stayMin), [30, 20]);
+  for (const target of [20, 30]) {
+    const result = await run(profile('문화', '전시', [target, target, target]));
+    assert.equal(result.courses[0]?.stops[1]?.stayMin, 20);
+    assert.deepEqual(result.courses[0]?.legs, baseline.courses[0]?.legs);
+    assert.deepEqual(result.ledger, baseline.ledger);
+  }
+});
+
+test('2-AB 출시: off/empty/invalid는 one-stop과 pair 전체 결과가 동일하다', async () => {
+  const variants = [undefined, [], profile('문화', '전시', [NaN, Infinity, 0, -1])];
+  const singleResults = [];
+  const pairResults = [];
+  for (const samples of variants) {
+    const calls: string[] = [];
+    singleResults.push(await buildReleaseOneStopRepresentativeCourseV1(oneStopInput(place('a', '문화', '전시'), calls, samples)));
+    pairResults.push(await beginReleaseTwoStopSelectionV1({
+      ...oneStopInput(place('a', '문화', '전시'), calls, samples), remainingMin: 100,
+      provider: { listRepresentativeCandidates: () => [place('a', '문화', '전시'), place('b', '자연', '공원')] },
+      firstCourse: firstCourse('a'), requestId: 'off',
+      ledger: { version: 1, initialOneStopAttempts: 8, automaticTwoStopAttempts: 0, sharedExpansionAttempts: 0, totalNewProviderAttempts: 8 },
+    }));
+  }
+  for (let i = 1; i < variants.length; i += 1) {
+    assert.equal(JSON.stringify(singleResults[i]), JSON.stringify(singleResults[0]));
+    assert.equal(JSON.stringify(pairResults[i]), JSON.stringify(pairResults[0]));
+  }
+});
+
+test('2-AB 출시: snapshot은 변화·동일값·기본 복귀·부분 clamp를 구분한다', async () => {
+  for (const scenario of [
+    { target: 40, budget: 80, baseline: 30, selected: 40 },
+    { target: 30, budget: 80, baseline: 30, selected: 30 },
+    { target: 40, budget: 50, baseline: 30, selected: 30 },
+    { target: 40, budget: 55, baseline: 30, selected: 35 },
+  ]) {
+    const result = await buildReleaseOneStopRepresentativeCourseV1({
+      ...oneStopInput(place('a', '문화', '전시'), [], profile('문화', '전시', Array(3).fill(scenario.target))),
+      remainingMin: scenario.budget,
+    });
+    const stop = result.representativeCourse!.stops[0]!;
+    assert.equal(stop.stayMin, scenario.selected);
+    assert.deepEqual(stop.dwellPersonalization, {
+      targetStayMin: scenario.target, baselineStayMin: scenario.baseline, baselineStayState: 'recommended',
+    });
+  }
+});
+
+test('2-AB 출시: frozen 표본으로 single/pair continue해도 후보·legs·호출·ledger·시간 안전성을 유지한다', async () => {
+  const candidates = Array.from({ length: 8 }, (_, i) => place(i === 0 ? 'a' : `b${i}`, '문화', '전시'));
+  const samples = Object.freeze(profile('문화', '전시', [40, 45, 50]).map((sample) => Object.freeze(sample)));
+  const run = async (snapshot?: readonly DwellPersonalizationSampleV1[]) => {
+    const calls: string[] = [];
+    const input = { ...oneStopInput(candidates[0]!, calls, snapshot), remainingMin: 120,
+      provider: { listRepresentativeCandidates: () => candidates } };
+    const single = await buildReleaseOneStopRepresentativeCourseV1(input);
+    assert.ok(single.continuation);
+    const singleNext = await continueReleaseOneStopRepresentativeCourseV1({ ...input, continuation: single.continuation });
+    const pairInput = { ...input, firstCourse: firstCourse('a'), requestId: 'frozen',
+      ledger: { version: 1 as const, initialOneStopAttempts: 8, automaticTwoStopAttempts: 0, sharedExpansionAttempts: 0, totalNewProviderAttempts: 8 } };
+    const pair = await beginReleaseTwoStopSelectionV1(pairInput);
+    const pairNext = await continueReleaseTwoStopSelectionV1({ ...pairInput, continuation: pair.continuation, ledger: pair.ledger });
+    assert.equal(singleNext.appendedCourses.length, 3);
+    assert.equal(pair.courses.length, 3);
+    assert.equal(pairNext.courses.length, 2); // shared 12회 안에서 검증 완료한 결과만 반환한다.
+    return { calls, courses: [single.representativeCourse!, ...single.alternativeCourses, ...singleNext.appendedCourses, ...pair.courses, ...pairNext.courses], ledger: pairNext.ledger };
+  };
+  const baseline = await run();
+  const personalized = await run(samples);
+  assert.deepEqual(personalized.calls, baseline.calls);
+  assert.deepEqual(personalized.ledger, baseline.ledger);
+  assert.deepEqual(personalized.courses.map((course) => [course.placeIds, course.legs]), baseline.courses.map((course) => [course.placeIds, course.legs]));
+  for (const course of personalized.courses) {
+    assert.ok(course.totalMin <= 120);
+    assert.equal(course.totalMin, course.travelMin + course.stayMin + course.arrivalBufferMin);
+    let elapsed = 0;
+    course.stops.forEach((stop, index) => {
+      elapsed += course.legs[index]!.min;
+      assert.equal(stop.arrivalAt, new Date(now.getTime() + elapsed * 60_000).toISOString());
+      elapsed += stop.stayMin;
+      assert.equal(stop.departureAt, new Date(now.getTime() + elapsed * 60_000).toISOString());
+      assert.ok(stop.stayMin >= 20 && stop.stayMin <= 60);
+    });
+  }
 });
