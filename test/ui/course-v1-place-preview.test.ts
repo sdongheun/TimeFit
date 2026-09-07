@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { approvedPhotoEvidence } from './fixtures/approvedPhoto.mjs';
 import { buildKakaoMapAppUrl, buildKakaoPlaceSearchUrl, buildKakaoPlaceUrl, getPlacePreviewKind, hasDetailedKakaoSearchAddress, openKakaoPlace, openKakaoPlaceWithAppFallback, openKakaoPlaceWithBrowserFallback, type CourseV1DisplayPlace } from '../../src/ui/recommendation/courseV1PlacePreviewModel';
 
 const withImage: CourseV1DisplayPlace = { title: '놀이마루', lat: 35.1564, lon: 129.0629, addr1: '부산광역시 부산진구 전포대로 208', imageUrl: 'https://tong.visitkorea.or.kr/image.jpg', imageSource: 'tourapi', mapVerification: { status: 'verified', placeId: '1567103628', placeUrl: 'https://place.map.kakao.com/1567103628' } };
 const withoutImage: CourseV1DisplayPlace = { title: '부산 자갈치시장', lat: 35.0967, lon: 129.0306, addr1: '부산광역시 중구 자갈치해안로 52' };
+withImage.imageEvidence = approvedPhotoEvidence;
 
 test('사진 유무와 로드 실패는 같은 장소 행동을 유지하고 표현만 바꾼다', () => {
   assert.deepEqual(getPlacePreviewKind(withImage, false), { kind: 'image', sourceLabel: 'TourAPI 제공 사진' });

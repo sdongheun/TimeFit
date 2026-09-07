@@ -20,6 +20,7 @@ import {
 import {
   buildExecutionSchedule,
   currentMinuteOfDay,
+  isKakaoRouteOpenSuccess,
   openKakaoRouteWithFallback,
 } from './execution/schedule';
 import { CourseProgress } from './execution/CourseProgress';
@@ -213,8 +214,9 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
       openApp: Linking.openURL,
       openWeb: Linking.openURL,
       openBrowser: WebBrowser.openBrowserAsync,
+      observeAppState: listener => { const subscription = AppState.addEventListener('change', listener); return () => subscription.remove(); },
     });
-    if (result === 'failed' || result === 'invalid_stage') {
+    if (!isKakaoRouteOpenSuccess(result)) {
       Alert.alert('카카오맵을 열 수 없어요', '잠시 후 다시 시도해 주세요.');
       return;
     }

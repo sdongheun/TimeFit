@@ -1,5 +1,6 @@
 import type { RouteMapMarker } from './KakaoRouteMap';
 import type { RecommendationSession } from './nav';
+import { approvedPlacePhoto, photoMarkerFields, type PlacePhotoInput } from './placePhotoModel';
 
 export type PlaceDetailSelectionKind = 'first' | 'pair';
 export type PlaceDetailRequestIdentity = Readonly<{
@@ -9,7 +10,7 @@ export type PlaceDetailRequestIdentity = Readonly<{
   placeId: string;
 }>;
 
-export type PlaceDetailCatalogPlace = Readonly<{
+export type PlaceDetailCatalogPlace = PlacePhotoInput & Readonly<{
   contentId: string;
   title: string;
   lat: number;
@@ -76,7 +77,7 @@ export const placeDetailSelectionHandoff = createPlaceDetailSelectionHandoff();
 export function buildPlaceDetailModel(place: PlaceDetailCatalogPlace, selectionKind: PlaceDetailSelectionKind): PlaceDetailModel {
   const categoryLabel = [place.category?.trim(), place.subCategory?.trim()].filter(Boolean).join(' · ') || '장소 정보';
   const hours = place.operatingHours?.map((value) => value.trim()).filter(Boolean) ?? [];
-  const imageUrl = place.imageUrl?.trim();
+  const imageUrl = approvedPlacePhoto(place)?.url;
   return {
     title: place.title,
     categoryLabel,
@@ -101,7 +102,7 @@ export function buildPlaceDetailMarkers(
   if (validPoint(session.deviceLocationSnapshot)) markers.push({ ...session.deviceLocationSnapshot!, label: '현재 위치', kind: 'current' });
   if (validPoint(session.origin)) markers.push({ lat: session.origin.lat, lon: session.origin.lon, label: '설정한 출발지', kind: 'origin' });
   if (selected && validPoint(selected)) markers.push({ lat: selected.lat, lon: selected.lon, label: `선택한 장소 · ${selected.title}`, kind: 'selected' });
-  if (validPoint(candidate)) markers.push({ lat: candidate.lat, lon: candidate.lon, label: `선택 후보 · ${candidate.title}`, kind: 'candidate', imageUrl: candidate.imageUrl ?? undefined });
+  if (validPoint(candidate)) markers.push({ lat: candidate.lat, lon: candidate.lon, label: `선택 후보 · ${candidate.title}`, kind: 'candidate', ...photoMarkerFields(candidate) });
   return normalizeCoLocatedMarkers(markers);
 }
 

@@ -50,7 +50,7 @@ function executeDocument(options = {}) {
   const mapNode = new Element('div');
   const document = { createElement: tag => new Element(tag), getElementById: id => id === 'map' ? mapNode : null };
   const window = { kakao, __nearbySdkFailed: Boolean(options.sdkLoadFailed), ReactNativeWebView: { postMessage(raw) { messages.push(JSON.parse(raw)); } } };
-  const context = vm.createContext({ window, kakao, document, Math, JSON, Number, String, Array, Object });
+  const context = vm.createContext({ window, kakao, document, Math, JSON, Number, String, Array, Object, setTimeout: () => 1, clearTimeout() {} });
   new vm.Script(inlineScript(productionDocument()), { filename: 'nearby-webview-inline.js' }).runInContext(context);
   return { window, context, messages, overlays, boundsCalls, get mapCount() { return mapCount; }, get imageRequests() { return imageRequests; } };
 }

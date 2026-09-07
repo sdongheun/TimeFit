@@ -3,6 +3,7 @@ import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { LatLon } from '../engine';
 import { C } from './theme';
+import { approvedPlacePhoto, type PlacePhotoInput } from './placePhotoModel';
 import {
   buildRouteMapSegments,
   type RouteMapSegment,
@@ -18,13 +19,12 @@ const KAKAO_JS_KEY =
   ?? process.env.Kakao_JAVASCRIPT_API_KEY
   ?? '';
 
-export type RouteMapMarker = {
+export type RouteMapMarker = PlacePhotoInput & {
   lat: number;
   lon: number;
   label: string;
   kind?: 'origin' | 'spot' | 'appointment' | 'current' | 'selected' | 'candidate';
   active?: boolean;
-  imageUrl?: string;
 };
 
 type Props = {
@@ -89,7 +89,7 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
   useEffect(() => {
     if (!ready) return;
     const route = JSON.stringify({
-      markers,
+      markers: (markers ?? []).map(marker => ({ ...marker, imageUrl: approvedPlacePhoto(marker)?.url ?? null })),
       segments: routeSegments,
       showMarkerLabels,
       usePhotoMarkers,
@@ -436,8 +436,10 @@ function setRoute(data){
       });
       overlays.push(photoOverlay);
       var photoProbe = new Image();
-      photoProbe.onload = function(){ fallbackMarker.setMap(null); };
-      photoProbe.onerror = function(){ photoOverlay.setMap(null); };
+      var photoDone = false;
+      var photoTimer = setTimeout(function(){ if (!photoDone) { photoDone = true; photoOverlay.setMap(null); } }, 12000);
+      photoProbe.onload = function(){ if (!photoDone) { photoDone = true; clearTimeout(photoTimer); } };
+      photoProbe.onerror = function(){ photoDone = true; clearTimeout(photoTimer); photoOverlay.setMap(null); };
       photoProbe.src = m.imageUrl;
       addMarkerLabel(m, point, i, data.showMarkerLabels, !!m.active);
       return;

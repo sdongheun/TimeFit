@@ -31,6 +31,7 @@ export function buildCompleteCourseInput(
   active: ActiveVerifiedCourse,
   resolveCatalogPlace: (contentId: string) => CompletionCatalogPlace | undefined,
   completedAt: number,
+  actualDwellByPlaceId: Readonly<Record<string, number>> = {},
 ): CompleteCourseProjection {
   const { course } = active;
   if (course.stops.length < 1 || course.stops.length > 2 || course.placeIds.length !== course.stops.length) return { status: 'invalid_snapshot' };
@@ -48,7 +49,8 @@ export function buildCompleteCourseInput(
       category: catalogPlace.category,
       subCategory: catalogPlace.subCategory ?? null,
       plannedStayMin: stop.stayMin,
-      actualDwellMin: null,
+      actualDwellMin: Number.isInteger(actualDwellByPlaceId[stop.placeId]) && actualDwellByPlaceId[stop.placeId] >= 0
+        ? Math.min(1440, actualDwellByPlaceId[stop.placeId]) : null,
     };
   });
   if (places.some((place) => place === null)) return { status: 'invalid_snapshot' };

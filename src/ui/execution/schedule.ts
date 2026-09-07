@@ -93,6 +93,10 @@ function hasValidRoutePoint(point: LatLon): boolean {
   return Number.isFinite(point.lat) && Number.isFinite(point.lon) && Math.abs(point.lat) <= 90 && Math.abs(point.lon) <= 180;
 }
 
+export function isValidKakaoRouteStage(stage: KakaoRouteStage): boolean {
+  return hasValidRoutePoint(stage.from.point) && hasValidRoutePoint(stage.to.point);
+}
+
 export function kakaoRouteUrl(from: LatLon, to: LatLon, mode: Mode): string {
   return `kakaomap://route?sp=${from.lat},${from.lon}&ep=${to.lat},${to.lon}&by=${kakaoRouteMode(mode)}`;
 }
@@ -108,7 +112,18 @@ export function kakaoWebFallback(stage: KakaoRouteStage, mode: Mode): string {
   return `https://map.kakao.com/link/by/${kakaoWebRouteMode(mode)}/${from}/${to}`;
 }
 
-export type KakaoRouteOpenResult = "app_opened" | "web_opened" | "browser_fallback_opened" | "invalid_stage" | "failed";
+export type KakaoRouteOpenResult = "app_opened" | "web_opened" | "browser_fallback_opened" | "browser_fallback_cancelled" | "invalid_stage" | "failed";
+export type KakaoRouteDiagnostic = Readonly<{
+  stage: 'route_invalid' | 'app_check_started' | 'app_unavailable' | 'app_open_accepted' | 'app_open_failed'
+    | 'web_open_accepted' | 'web_open_failed' | 'browser_open_started' | 'browser_background_observed'
+    | 'browser_dismissed' | 'browser_open_failed';
+  result: 'started' | 'succeeded' | 'rejected' | 'failed' | 'observed';
+  error: 'none' | 'invalid_stage' | 'app_unavailable' | 'app_open_failed' | 'web_open_failed' | 'browser_dismissed' | 'browser_open_failed';
+}>;
+
+export function isKakaoRouteOpenSuccess(result: KakaoRouteOpenResult): boolean {
+  return result === 'app_opened' || result === 'web_opened' || result === 'browser_fallback_opened';
+}
 
 /** 설치된 카카오맵만 scheme으로 열고, 그 외에는 기존 HTTPS 길찾기로 한 번 전환한다. */
 export async function openKakaoRouteWithFallback(
@@ -119,31 +134,58 @@ export async function openKakaoRouteWithFallback(
     openApp: (url: string) => Promise<unknown>;
     openWeb: (url: string) => Promise<unknown>;
     openBrowser: (url: string) => Promise<unknown>;
+    observeAppState?: (listener: (state: string) => void) => () => void;
+    onDiagnostic?: (event: KakaoRouteDiagnostic) => void;
   },
 ): Promise<KakaoRouteOpenResult> {
-  if (!hasValidRoutePoint(stage.from.point) || !hasValidRoutePoint(stage.to.point)) return 'invalid_stage';
+  const diagnose = (event: KakaoRouteDiagnostic) => { try { ports.onDiagnostic?.(event); } catch { /* 진단 실패는 handoff를 바꾸지 않는다. */ } };
+  if (!isValidKakaoRouteStage(stage)) {
+    diagnose({ stage: 'route_invalid', result: 'rejected', error: 'invalid_stage' });
+    return 'invalid_stage';
+  }
   const appUrl = kakaoRouteUrl(stage.from.point, stage.to.point, mode);
+  diagnose({ stage: 'app_check_started', result: 'started', error: 'none' });
   try {
     if (await ports.canOpenApp(appUrl)) {
       try {
         await ports.openApp(appUrl);
+        diagnose({ stage: 'app_open_accepted', result: 'succeeded', error: 'none' });
         return "app_opened";
-      } catch { /* HTTPS fallback below */ }
-    }
-  } catch { /* HTTPS fallback below */ }
+      } catch { diagnose({ stage: 'app_open_failed', result: 'failed', error: 'app_open_failed' }); }
+    } else diagnose({ stage: 'app_unavailable', result: 'rejected', error: 'app_unavailable' });
+  } catch { diagnose({ stage: 'app_unavailable', result: 'failed', error: 'app_unavailable' }); }
 
   const webUrl = kakaoWebFallback(stage, mode);
   try {
     await ports.openWeb(webUrl);
+    diagnose({ stage: 'web_open_accepted', result: 'succeeded', error: 'none' });
     return "web_opened";
   } catch {
-    try {
-      await ports.openBrowser(webUrl);
-      return 'browser_fallback_opened';
-    } catch {
-      return "failed";
-    }
+    diagnose({ stage: 'web_open_failed', result: 'failed', error: 'web_open_failed' });
   }
+  if (!ports.observeAppState) {
+    diagnose({ stage: 'browser_open_failed', result: 'failed', error: 'browser_open_failed' });
+    return 'failed';
+  }
+  diagnose({ stage: 'browser_open_started', result: 'started', error: 'none' });
+  return new Promise<KakaoRouteOpenResult>((resolve) => {
+    let settled = false;
+    let remove: () => void = () => undefined;
+    const finish = (result: KakaoRouteOpenResult, diagnostic: KakaoRouteDiagnostic) => {
+      if (settled) return;
+      settled = true;
+      remove();
+      diagnose(diagnostic);
+      resolve(result);
+    };
+    remove = ports.observeAppState!((state) => {
+      if (state === 'background') finish('browser_fallback_opened', { stage: 'browser_background_observed', result: 'observed', error: 'none' });
+    });
+    Promise.resolve().then(() => ports.openBrowser(webUrl)).then(
+      () => finish('browser_fallback_cancelled', { stage: 'browser_dismissed', result: 'rejected', error: 'browser_dismissed' }),
+      () => finish('failed', { stage: 'browser_open_failed', result: 'failed', error: 'browser_open_failed' }),
+    );
+  });
 }
 
 export function currentMinuteOfDay(now = new Date()): number {

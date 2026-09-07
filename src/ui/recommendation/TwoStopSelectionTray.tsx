@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import { C } from '../theme';
+import { PlacePhoto } from '../PlacePhoto';
+import type { PlacePhotoInput } from '../placePhotoModel';
 
-export type TwoStopTrayPlace = Readonly<{
+export type TwoStopTrayPlace = PlacePhotoInput & Readonly<{
   key: string;
   title: string;
   activityLabel: string;
@@ -21,11 +22,8 @@ export function TwoStopSelectionTray({ rows, announcement }: Readonly<{ rows: re
 }
 
 function TrayRow({ row }: Readonly<{ row: TwoStopTrayPlace }>) {
-  const [imageFailed, setImageFailed] = useState(false);
   return <View accessibilityLabel={`${row.title}, ${row.activityLabel}`} style={s.row}>
-    {row.imageUrl && !imageFailed
-      ? <Image accessible={false} source={{ uri: row.imageUrl }} style={s.thumb} onError={() => setImageFailed(true)} />
-      : <View accessible={false} style={s.placeholder}><Text style={s.placeholderText}>{row.activityLabel.slice(0, 1)}</Text></View>}
+    <PlacePhoto place={row} style={[s.thumb, {flex:0}]} fallback={<View accessible={false} style={s.placeholder}><Text style={s.placeholderText}>{row.activityLabel.slice(0, 1)}</Text></View>} />
     <View style={s.copy}><Text numberOfLines={1} ellipsizeMode="tail" style={s.title}>{row.title}</Text><Text numberOfLines={1} style={s.activity}>{row.activityLabel}</Text></View>
     <Pressable variant="icon" accessibilityRole="button" accessibilityLabel={row.removeAccessibilityLabel} hitSlop={4} style={s.remove} onPress={row.onRemove}><Text style={s.removeText}>×</Text></Pressable>
   </View>;

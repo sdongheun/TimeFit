@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import { C } from '../theme';
-import { getPlacePreviewKind } from './courseV1PlacePreviewModel';
+import { PlacePhoto, PlacePhotoCredit } from '../PlacePhoto';
 import {
   twoStopSelectionReasonMessage,
   twoStopCandidateDurationLabel,
@@ -38,13 +37,10 @@ export function TwoStopSelectionPanel({ state, pairEnabled, regionMode, candidat
 }
 
 function TwoStopCandidate({ candidate, selected, onPress }: { candidate: TwoStopCandidateCard; selected: boolean; onPress(): void }) {
-  const [imageFailed, setImageFailed] = useState(false);
-  const preview = getPlacePreviewKind(candidate.place, imageFailed);
   return <Pressable accessibilityRole="button" accessibilityLabel={`${candidate.accessibilityLabel}${selected ? ', 선택됨' : ''}`} accessibilityState={{ selected }} style={({ pressed }) => [s.card, selected && s.selected, pressed && s.pressed]} onPress={onPress}>
-    <View style={s.media}>{preview.kind === 'image'
-      ? <Image accessible={false} source={{ uri: candidate.place.imageUrl! }} style={s.image} onError={() => setImageFailed(true)} />
-      : <View accessible={false} style={s.placeholder}><Text style={s.placeholderText}>{candidate.activityLabel}</Text></View>}
+    <View style={s.media}><PlacePhoto place={candidate.place} fallback={<View accessible={false} style={s.placeholder}><Text style={s.placeholderText}>{candidate.activityLabel}</Text></View>} />
     </View>
+    <PlacePhotoCredit place={candidate.place} />
     <View style={s.content}><Text style={s.cardEyebrow}>{selected ? '✓ 선택됨' : '함께 둘러볼 장소'}</Text><Text style={s.cardTitle}>{candidate.title}</Text><Text style={s.activity}>{candidate.activityLabel}</Text><Text style={s.duration}>{twoStopCandidateDurationLabel(candidate)}</Text></View>
   </Pressable>;
 }

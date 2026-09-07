@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ActivityIndicator, Animated, FlatList, Image, Linking, PanResponder, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, Animated, FlatList, Linking, PanResponder, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import * as Location from 'expo-location';
 import * as WebBrowser from 'expo-web-browser';
 import { Feather } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import runtimeCatalog from '../data/busan_poi_catalog.json';
+import { PlacePhoto, PlacePhotoCredit } from './PlacePhoto';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { AnimatedPressable as Pressable } from './AnimatedPressable';
@@ -45,7 +46,6 @@ export function NearbyBrowseScreen({ navigation }: Props) {
   const [firstRowHeight, setFirstRowHeight] = useState(0);
   const [mapFailed, setMapFailed] = useState(false);
   const [mapRetryKey, setMapRetryKey] = useState(0);
-  const [imageFailures, setImageFailures] = useState<ReadonlySet<string>>(new Set());
   const locationLabel = useRef(createKakaoLocationLabelAdapter()).current;
   const locationGuard = useRef(createNearbyLocationGuard()).current;
   const editingSession = useRef(createLocationSearchDraft()).current;
@@ -248,7 +248,8 @@ export function NearbyBrowseScreen({ navigation }: Props) {
       <View testID="nearby-sheet-handle" onLayout={({ nativeEvent }) => setHandleHeight(nativeEvent.layout.height)} {...pan.panHandlers} style={s.handleArea}><View style={s.handle} /></View>
       {detail ? <ScrollView style={s.scroller} contentContainerStyle={[s.detail, { paddingBottom: sheetLayout.contentBottomPadding }]}>
         <View style={s.detailHead}><View style={{ flex: 1 }}><Text style={s.detailCategory}>{detail.categoryLabel} · 직선 {detail.displayDistance}</Text><Text style={s.detailTitle}>{detail.title}</Text></View><Pressable testID="nearby-detail-close" variant="icon" accessibilityLabel="장소 상세 닫기" style={s.close} onPress={() => setDetailId(null)}><Text style={s.closeText}>✕</Text></Pressable></View>
-        {detail.imageUrl && !imageFailures.has(detail.id) ? <Image testID="nearby-detail-image" source={{ uri: detail.imageUrl }} style={{ width: '100%', height: 168, borderRadius: 14, marginTop: 12, backgroundColor: C.bg }} onError={() => setImageFailures(current => new Set(current).add(detail.id))} /> : <View testID="nearby-detail-image-fallback" style={s.detailImageFallback}><Feather name="image" size={24} color={C.muted} /><Text style={s.fallbackText}>{detail.categoryLabel}</Text></View>}
+        <PlacePhoto testID="nearby-detail-image" place={detail.source} style={{ flex:0, width:'100%', height:168, borderRadius:14, marginTop:12 }} fallback={<View testID="nearby-detail-image-fallback" style={s.detailImageFallback}><Feather name="image" size={24} color={C.muted} /><Text style={s.fallbackText}>{detail.categoryLabel}</Text></View>} />
+        <PlacePhotoCredit place={detail.source} links />
         {detail.informationKind === 'conditional' ? <Text style={s.conditional}>정보 탐색 장소 · 방문 전 운영시간을 확인해 주세요.</Text> : null}
         <Text style={s.meta}>{detail.addressLabel}</Text><Text style={s.meta}>{detail.hoursLabel}</Text><Text style={s.description}>{detail.description}</Text>
         <Pressable testID="nearby-open-kakao" style={s.kakao} onPress={() => void openKakao(detail)}><Text style={s.kakaoText}>카카오맵에서 장소 확인</Text></Pressable>
@@ -258,7 +259,7 @@ export function NearbyBrowseScreen({ navigation }: Props) {
           {clusterIds ? <Pressable testID="nearby-show-all" style={s.allButton} onPress={() => setClusterIds(null)}><Text style={s.allButtonText}>3km 전체 목록 보기</Text></Pressable> : null}
         </View>
         {!center ? <Empty title="기준 위치를 선택해 주세요" action={() => setSearchVisible(true)} /> : rows.length === 0 ? <Empty title="3km 안에 등록된 장소가 없어요" action={() => setSearchVisible(true)} /> : <FlatList testID="nearby-list" style={s.scroller} data={listedRows} keyExtractor={row => row.id} contentContainerStyle={[s.list, { paddingBottom: sheetLayout.contentBottomPadding }]} initialNumToRender={8} windowSize={5} removeClippedSubviews renderItem={({ item: row, index }) => <Pressable testID={`nearby-row-${row.id}`} onLayout={index === 0 ? ({ nativeEvent }) => setFirstRowHeight(nativeEvent.layout.height) : undefined} accessibilityLabel={`${row.title}, 직선 ${row.displayDistance}`} style={[s.row, selectedId === row.id && s.rowSelected]} onPress={() => openDetail(row.id)}>
-          {row.imageUrl && !imageFailures.has(row.id) ? <Image source={{ uri: row.imageUrl }} style={{ width: 50, height: 50, borderRadius: 11, backgroundColor: C.bg }} onError={() => setImageFailures(current => new Set(current).add(row.id))} /> : <View style={s.thumbFallback}><Feather name="map-pin" size={18} color={C.accent} /></View>}
+          <PlacePhoto place={row.source} style={{flex:0,width:50,height:50,borderRadius:11}} fallback={<View style={s.thumbFallback}><Feather name="map-pin" size={18} color={C.accent} /></View>} />
           <View style={{ flex: 1 }}><Text style={s.rowTitle} numberOfLines={1}>{row.title}</Text><Text style={s.rowMeta} numberOfLines={1}>{row.categoryLabel} · {row.addressLabel}</Text></View><Text style={s.distance}>{row.displayDistance}</Text>
         </Pressable>} />}
       </>}

@@ -1,8 +1,10 @@
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Animated, Image, StyleSheet, Text, View } from "react-native";
+import { Animated, StyleSheet, Text, View } from "react-native";
 import { AnimatedPressable as Pressable } from "../AnimatedPressable";
 import type { Mode, Spot } from "../../engine";
 import { C } from "../theme";
+import { currentPlacePhoto } from '../currentPlacePhoto';
+import { PlacePhoto, PlacePhotoCredit } from '../PlacePhoto';
 import { TransportGlyph } from "./TransportGlyph";
 import { MODE_LABEL, type CandidateEval, type TransportScenario } from "./types";
 
@@ -69,15 +71,14 @@ export function CandidateDetail({
       {/* 2. 장소 사진 & 카카오맵 링크 */}
       <View style={s.mediaWrap}>
         <View style={s.media}>
-          {spot.imageUrl ? (
-            <Image source={{ uri: spot.imageUrl }} style={s.image} />
-          ) : (
+          <PlacePhoto place={currentPlacePhoto(spot.contentId)} fallback={
             <View style={s.fallback}>
               <MaterialCommunityIcons color={C.accent} name="map-marker" size={32} />
               <Text style={s.fallbackText}>{spot.category}</Text>
             </View>
-          )}
+          } />
         </View>
+        <PlacePhotoCredit place={currentPlacePhoto(spot.contentId)} links />
         <Pressable style={s.mapLink} onPress={() => onOpenKakaoPlace(spot)} accessibilityLabel={`${spot.title} 카카오맵에서 보기`}>
           <MaterialCommunityIcons color={C.accent} name="map-marker-outline" size={15} />
           <Text style={s.mapLinkText}>카카오맵에서 보기</Text>

@@ -1,13 +1,10 @@
-import { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import { C } from '../theme';
 import type { CourseV1CardSummary } from './courseV1CardDetailModel';
-import { getPlacePreviewKind } from './courseV1PlacePreviewModel';
+import { PlacePhoto, PlacePhotoCredit } from '../PlacePhoto';
 
 export function CourseV1SummaryCard({ summary, onPress }: { summary: CourseV1CardSummary; onPress: () => void }) {
-  const [imageFailed, setImageFailed] = useState(false);
-  const preview = getPlacePreviewKind(summary.place, imageFailed);
   return <Pressable
     testID={`verified-course-card-${summary.course.id}`}
     accessibilityRole="button"
@@ -16,13 +13,12 @@ export function CourseV1SummaryCard({ summary, onPress }: { summary: CourseV1Car
     onPress={onPress}
   >
     <View style={s.media}>
-      {preview.kind === 'image'
-        ? <Image accessible={false} source={{ uri: summary.place.imageUrl! }} style={s.image} onError={() => setImageFailed(true)} />
-        : <View accessible={false} style={s.placeholder}><Text style={s.placeholderText}>{summary.activityLabel}</Text></View>}
+      <PlacePhoto place={summary.place} fallback={<View accessible={false} style={s.placeholder}><Text style={s.placeholderText}>{summary.activityLabel}</Text></View>} />
     </View>
     <View style={s.content}>
       <Text style={s.eyebrow}>{summary.label}</Text>
       <Text style={s.title}>{summary.place.title}</Text>
+      <PlacePhotoCredit place={summary.place} />
       <View style={s.metaRow}>
         <Text style={s.activity}>{summary.activityLabel}{summary.short ? ' · 가볍게 둘러보기' : ''}</Text>
         <Text style={s.duration}>약 {summary.courseMin}분 코스</Text>

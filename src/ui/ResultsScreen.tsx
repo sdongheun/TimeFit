@@ -8,6 +8,7 @@ import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { InPlaceTransition } from './InPlaceTransition';
 import runtimeCatalog from '../data/busan_poi_catalog.json';
 import { C } from './theme';
+import { personalizationSession, isPersonalizationScopeCurrent } from './personalizationComposition';
 import { RootStackParamList } from './nav';
 import { CourseV1Journey } from './recommendation/CourseV1Journey';
 import { getPlaceDiscoveryContext } from './recommendation/courseV1DiscoveryContext';
@@ -43,6 +44,8 @@ type PendingDetailSelection = Readonly<{
 }>;
 
 export function ResultsScreen({ route, navigation }: Props) {
+  const [, setPersonalizationVersion] = useState(personalizationSession.version());
+  useEffect(() => personalizationSession.subscribe(() => setPersonalizationVersion(personalizationSession.version())), []);
   const { result: engineResult, session } = route.params;
   const result = releaseOneStopDisplayResult(engineResult);
   const initialMoreState = useMemo(() => initialReleaseOneStopMoreState(engineResult), [engineResult]);
@@ -221,6 +224,7 @@ export function ResultsScreen({ route, navigation }: Props) {
     navigation.navigate('CourseConfirm', { session, course: selected });
   };
   const header = <View style={s.header}><Pressable variant="icon" accessibilityLabel="시간 설정으로 돌아가기" style={s.icon} onPress={() => navigation.goBack()}><Text style={s.back}>‹</Text></Pressable><Text style={s.title}>시간의 추천</Text><View style={s.icon} /></View>;
+  if (!isPersonalizationScopeCurrent(session)) return <View style={[s.root, { paddingTop: insets.top + 14 }]}>{header}<View style={s.empty}><Text style={s.emptyTitle}>추천 설정이 바뀌었어요</Text><Text style={s.copy}>현재 계정과 동의 상태로 새 추천을 받아주세요. 진행 중인 코스는 그대로 유지됩니다.</Text><Pressable testID="personalization-recalculate" style={s.secondary} onPress={() => navigation.navigate('TimeSetup')}><Text style={s.secondaryText}>새 추천 받기</Text></Pressable></View></View>;
   if (!course) {
     if (moreState.pageState === 'more_available') {
       return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{header}<View style={s.empty}><Text style={s.emptyTitle}>아직 확인된 장소가 없어요</Text><Text style={s.copy}>남은 후보를 실제 경로로 더 확인할 수 있어요.</Text><VerifiedCourseMoreControl loading={moreLoading} onPress={showMoreVerifiedPlaces} /></View>{conditionalVisible ? <ConditionalVisitSection places={conditionalPlaces} nextCursor={conditionalCursor} displayPlace={displayPlace} onOpenKakao={openPlace} onMore={showMoreConditionalPlaces} manualStates={conditionalManual} onConfirm={confirmConditionalPlace} session={session} /> : null}{diagnosticsPanel}</ScrollView></View>;
@@ -251,6 +255,8 @@ export function ResultsScreen({ route, navigation }: Props) {
     title: firstSummary.place.title,
     activityLabel: firstSummary.activityLabel,
     imageUrl: firstSummary.place.imageUrl,
+    imageEvidence: firstSummary.place.imageEvidence,
+    imageSource: firstSummary.place.imageSource,
     removeAccessibilityLabel: `${firstSummary.place.title} 선택 취소`,
     onRemove: cancelTwoStopSelection,
   }] : [];
@@ -259,6 +265,8 @@ export function ResultsScreen({ route, navigation }: Props) {
     title: selectedCandidate.title,
     activityLabel: selectedCandidate.activityLabel,
     imageUrl: selectedCandidate.place.imageUrl,
+    imageEvidence: selectedCandidate.place.imageEvidence,
+    imageSource: selectedCandidate.place.imageSource,
     removeAccessibilityLabel: `${selectedCandidate.title}만 선택 취소`,
     onRemove: () => { inlineSelection.clearPair(); },
   });

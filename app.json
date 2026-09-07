@@ -11,8 +11,26 @@
     ],
     "icon": "./assets/icon.png",
     "plugins": [
+      [
+        "./plugins/withTimeFitLiveActivity.cjs",
+        {
+          "appGroupIdentifier": "group.com.dongheun.mobile.timefit",
+          "developmentTeam": "642X5R37S7",
+          "extensionBundleIdentifier": "com.dongheun.mobile.liveactivity"
+        }
+      ],
       "./plugins/withoutPushEntitlement.cjs",
       "expo-notifications",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "현위치의 도로명 주소와 주변 장소를 보여주기 위해 위치를 사용합니다.",
+          "locationAlwaysAndWhenInUsePermission": false,
+          "locationAlwaysPermission": false,
+          "motionUsagePermission": false,
+          "isIosBackgroundLocationEnabled": false
+        }
+      ],
       "expo-status-bar",
       "expo-font",
       "expo-web-browser"
@@ -20,7 +38,7 @@
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "deploymentTarget": "16.4",
+      "deploymentTarget": "17.0",
       "bundleIdentifier": "com.dongheun.mobile",
       "infoPlist": {
         "LSApplicationQueriesSchemes": [

@@ -1,5 +1,19 @@
 # UIUX 현재 작업
 
+## 현재 실행 — U-LIVE-LEARNING-EVIDENCE-01
+
+[앱·Live Activity 학습 증거 연결 명령](live-learning-evidence-integration.md)을 지금 수행한다. DB-LIVE-LEARNING-EVIDENCE-01 서비스 계약은 통합 수락됐으며 계약 대기는 해제됐다. 기존 B await starts/cold proof 잔여 연결도 이번 명령 A에 포함한다. 아래 조사 전용/인계 대기는 과거 이력이고 본 명령이 우선한다. UI/native를 별도 writer로 나누어 같은 파일을 동시에 수정하지 않는다.
+
+## 2026-09-07 최신 작업
+
+최신: B 주요 연결 구현 뒤 DB 공유 잠금/cold 조회 두 보완을 반환했다. 기다리는 동안 [Live Activity 학습 증거 조사](live-activity-learning-evidence.md)를 **병렬 조사**한다. 제품 코드 변경은 조사 계약 확인 뒤이며, DB 인계 후 기존 B 진단을 기대 성공 fixture로 교체하고 잔여 연결을 검증한다.
+
+**현행: DB 세 보완 통합 수락 완료, U-RELEASE-PERSONALIZATION-01 B 남은 연결 지금 실행.** [수락 기록](../integration-decision/release-personalization-wave.md#db-세-보완-통합-수락--2026-09-07). 아래 DB 인계/수락 대기는 해제됐으며 기존 부분 구현은 반복하지 않는다.
+
+최우선 후속: release-personalization-integration.md 맨 위 **“최신 B 이어서 실행 — DB 소유권 보완 뒤”**. 현재 B 부분 구현 유지, DB 보완 인계 후 신규 완료/guest import/sample submit/삭제를 연결한다. A/read 연결 재구현 금지.
+
+[U-RELEASE-PERSONALIZATION-01](release-personalization-integration.md): **A handoff 실패 복구 지금 실행 가능**, B 계정/기록/개인화 consumer는 DB·엔진·데이터 계약 수락 뒤. UI 단일 writer.
+
 ## 먼저 읽을 파일
 
 1. `AGENTS.md`, `docs/README.md`, `docs/작업조정_보드.md`
@@ -32,6 +46,10 @@
    - [장소 상세 선택·최적 코스 단일 화면](place-detail-and-optimized-course-flow.md)
 
 ## 현재 작업
+
+2026-09-06 최신 시작 작업은 [U-LIVE-ACTIVITY-01 로컬 A→B](live-activity-dwell-progress.md)다. 내정보 기본 UI 이후 서버 연결을 분리하고 기술 검증부터 진행한다. [실행 순서](../integration-decision/live-activity-local-first.md). 다른 App/nav/Profile/native writer와 동시 실행 금지.
+
+최신 실행: [U-PROFILE-SETTINGS-01](profile-settings.md). 내정보 세 영역·메인 프로필 진입·로그인 분리와 기존 계약 확인. 주변 지도/드래그는 사용자 확인으로 제한 수락됐으며 아래 과거 활성 문구보다 이 항목이 우선한다. 닉네임/삭제/동의 계약 부재는 별도 인계하며 Live Activity를 이번에 구현하지 않는다.
 
 다음 활성 구현은 [U-NEARBY-BROWSE-01](nearby-browse.md)이다. 약속 시간과 독립된 3km 정보 탐색, 사진 cluster 지도+거리순 하단 sheet를 구현하고 내 코스 최상위 탭을 교체한다. `U-LOCATION-SEARCH-01`은 사용자 수락(키보드 미세 지연 비차단 보류) 상태다. 과거 활성 표기보다 이 항목을 우선한다.
 

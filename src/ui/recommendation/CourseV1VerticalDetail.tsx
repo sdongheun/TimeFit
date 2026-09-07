@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import { C } from '../theme';
 import type { CourseV1DetailModel, CourseV1DetailStop } from './courseV1CardDetailModel';
-import { getPlacePreviewKind, type CourseV1DisplayPlace } from './courseV1PlacePreviewModel';
+import { type CourseV1DisplayPlace } from './courseV1PlacePreviewModel';
 import type { ActiveCourseStepRow } from '../courseConfirmActiveModel';
+import { PlacePhoto, PlacePhotoCredit } from '../PlacePhoto';
 
 export type CourseVerticalProgress = { rows: readonly ActiveCourseStepRow[]; actionStepIndex: number; action: React.ReactNode };
 export function CourseV1VerticalDetail({ model, mode, onOpenKakao, progress }: { model: CourseV1DetailModel; mode: 'review' | 'active'; onOpenKakao: (place: CourseV1DisplayPlace) => void; progress?: CourseVerticalProgress }) {
@@ -46,17 +46,14 @@ function TimelineMarker({ kind, first = false, last = false }: { kind: 'endpoint
 }
 
 function DetailStop({ stop, showPlannedStay, onOpenKakao, status }: { stop: CourseV1DetailStop; showPlannedStay: boolean; onOpenKakao: (place: CourseV1DisplayPlace) => void; status?: ActiveCourseStepRow['actionState'] }) {
-  const [imageFailed, setImageFailed] = useState(false);
-  const preview = getPlacePreviewKind(stop.place, imageFailed);
   return <View testID={`course-stop-${stop.placeId}`} style={s.stopRow}>
     <TimelineMarker kind="stop" />
     <View style={s.stopCard}>
-      <View style={s.media}>{preview.kind === 'image'
-        ? <Image source={{ uri: stop.place.imageUrl! }} style={s.image} onError={() => setImageFailed(true)} />
-        : <View accessibilityLabel={`${stop.activityLabel} 사진 대체 화면`} style={s.placeholder}><Text style={s.placeholderText}>{stop.activityLabel}</Text></View>}
+      <View style={s.media}><PlacePhoto place={stop.place} fallback={<View accessibilityLabel={`${stop.activityLabel} 사진 대체 화면`} style={s.placeholder}><Text style={s.placeholderText}>{stop.activityLabel}</Text></View>} />
       </View>
       <View style={s.stopContent}>
         <Text style={s.stopTitle}>{stop.place.title}</Text>
+        <PlacePhotoCredit place={stop.place} links />
         <Text style={s.activity}>{stop.activityLabel}</Text>
         {showPlannedStay ? <Text style={s.stay}>{stop.stayLabel}</Text> : stop.stayLabel.startsWith('가볍게') ? <Text style={s.stay}>가볍게 둘러보기</Text> : null}
         {status ? <Text style={status === 'complete' ? s.bufferText : s.summarySub}>{status === 'complete' ? '✓ 완료' : status === 'current' ? '지금 둘러보기' : '이후 방문'}</Text> : null}

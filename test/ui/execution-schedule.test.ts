@@ -79,19 +79,42 @@ test("DECKAKAOROUTE01: 카카오 길찾기는 app→HTTPS→browser를 각 한 �
   assert.match(opened[0], /^https:\/\/map\.kakao\.com\/link\/by\/walk\//);
 
   const fallbackAttempts: string[] = [];
-  const browserFallback = await openKakaoRouteWithFallback(stage, "walk", {
+  let emitBrowserState: ((state: string) => void) | null = null;
+  let dismissBrowser: ((value: unknown) => void) | null = null;
+  let browserStartedResolve: (() => void) | null = null;
+  const browserStarted = new Promise<void>(resolve => { browserStartedResolve = resolve; });
+  const browserFallbackPromise = openKakaoRouteWithFallback(stage, "walk", {
     canOpenApp: async () => true,
     openApp: async () => { fallbackAttempts.push('app'); throw new Error("scheme failed"); },
     openWeb: async () => { fallbackAttempts.push('web'); throw new Error("web failed"); },
-    openBrowser: async () => { fallbackAttempts.push('browser'); },
+    openBrowser: () => new Promise(resolve => { fallbackAttempts.push('browser'); dismissBrowser = resolve; browserStartedResolve?.(); }),
+    observeAppState: listener => { emitBrowserState = listener; return () => { emitBrowserState = null; }; },
   });
-  assert.equal(browserFallback, 'browser_fallback_opened');
+  let activityStarts = 0;
+  const activityStart = browserFallbackPromise.then(result => { if (result === 'browser_fallback_opened') activityStarts += 1; });
+  await browserStarted;
   assert.deepEqual(fallbackAttempts, ['app', 'web', 'browser']);
+  (emitBrowserState as ((state: string) => void) | null)?.('background');
+  const browserFallback = await browserFallbackPromise;
+  await activityStart;
+  assert.equal(browserFallback, 'browser_fallback_opened');
+  assert.equal(activityStarts, 1, 'Activity continuation is released before the browser dismissal promise');
+  (dismissBrowser as ((value: unknown) => void) | null)?.({ type: 'dismiss' });
+
+  const dismissed = await openKakaoRouteWithFallback(stage, "walk", {
+    canOpenApp: async () => false,
+    openApp: async () => undefined,
+    openWeb: async () => { throw new Error('web failed'); },
+    openBrowser: async () => ({ type: 'cancel' }),
+    observeAppState: () => () => undefined,
+  });
+  assert.equal(dismissed, 'browser_fallback_cancelled');
   const allFailed = await openKakaoRouteWithFallback(stage, "walk", {
     canOpenApp: async () => true,
     openApp: async () => { throw new Error("scheme failed"); },
     openWeb: async () => { throw new Error("web failed"); },
     openBrowser: async () => { throw new Error('browser failed'); },
+    observeAppState: () => () => undefined,
   });
   assert.equal(allFailed, "failed");
   assert.equal(await openKakaoRouteWithFallback({ ...stage, from: { name: '잘못됨', point: { lat: Number.NaN, lon: 129 } } }, 'walk', { canOpenApp: async () => { throw new Error('must not query'); }, openApp: async () => { throw new Error('must not open'); }, openWeb: async () => { throw new Error('must not open'); }, openBrowser: async () => { throw new Error('must not open'); } }), 'invalid_stage');

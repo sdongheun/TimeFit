@@ -1,7 +1,7 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { usePreventRemove } from '@react-navigation/native';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, AppState, Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import runtimeCatalog from '../data/busan_poi_catalog.json';
@@ -13,7 +13,9 @@ import { createActiveVerifiedCourseStartController, matchesActiveVerifiedCourse 
 import { buildActiveCourseStepRows } from './courseConfirmActiveModel';
 import { courseCompletionRepository } from './courseCompletionComposition';
 import { buildCompleteCourseInput, completionFailureMessage, createCourseCompletionFinishController, type CourseCompletionFinishState } from './courseCompletionUiModel';
-import { openKakaoRouteWithFallback } from './execution/schedule';
+import { ownedCourseLifecycle } from './ownedCourseLifecycle';
+import { personalizedCoursePlaceIds } from './personalizedCourseLabel';
+import { isKakaoRouteOpenSuccess, isValidKakaoRouteStage, openKakaoRouteWithFallback } from './execution/schedule';
 import { resetToActivityRecord, resetToMain, resetToMyCourses } from './mainTabNavigation';
 import type { RootStackParamList } from './nav';
 import { appPrivateWalkConnectorPort } from './privateWalkConnectorComposition';
@@ -23,6 +25,13 @@ import { buildCourseV1ConnectorRequests, buildCourseV1RouteGeometryModel, loadCo
 import { CourseV1VerticalDetail } from './recommendation/CourseV1VerticalDetail';
 import { advanceVerifiedCourseProgress, buildVerifiedCourseProgressSteps, createVerifiedCourseRouteOpenLock, markVerifiedCourseRouteOpened, nextVerifiedCourseTravel, requestNextVerifiedCourseRoute, verifiedCourseNextRouteLabel, type VerifiedCourseProgressStep } from './recommendation/verifiedCourseProgressModel';
 import { C } from './theme';
+import { liveCourseProgressRuntime } from './liveActivity/courseProgressComposition';
+import { prepareLiveCourseNotifications } from './liveActivity/courseProgressNotifications';
+import { buildLiveCoursePlan } from './liveActivity/courseProgressRuntimeModel';
+import { nativePendingNavigationPort } from './liveActivity/nativeLiveActivityPort';
+import { createPendingNavigationHandoffController } from './liveActivity/pendingNavigationHandoffModel';
+import { createDiagnosticAttemptId, recordLiveActivityAppDiagnostic } from './liveActivity/liveActivityDiagnostics';
+import { isPersonalizationScopeCurrent } from './personalizationComposition';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CourseConfirm'>;
 type RuntimePlace = (typeof runtimeCatalog.matched.data)[number] | (typeof runtimeCatalog.unmatched.data)[number];
@@ -30,6 +39,8 @@ const places = new Map<string, RuntimePlace>([...runtimeCatalog.matched.data, ..
 const EMPTY_CONNECTOR_STATE: Readonly<{ connectors: readonly CourseV1LoadedConnector[]; loading: boolean; failedCount: number }> = { connectors: [], loading: false, failedCount: 0 };
 const time = (iso: string | undefined) => iso ? `${new Date(iso).getHours()}:${String(new Date(iso).getMinutes()).padStart(2, '0')}` : null;
 const modeLabel = (mode: 'walk' | 'transit') => mode === 'walk' ? '도보' : '대중교통';
+let liveEventSequence = 0;
+const liveEventId = () => `app:${Date.now()}:${++liveEventSequence}`;
 
 /** 엔진의 exact snapshot 하나를 review와 active 상태에서 함께 표시한다. */
 export function CourseConfirmScreen({ route, navigation }: Props) {
@@ -38,6 +49,7 @@ export function CourseConfirmScreen({ route, navigation }: Props) {
   const { session, course } = route.params;
   const [activeId, setActiveId] = useState(route.params.activeId);
   const activeIdRef = useRef(route.params.activeId);
+  const activeRunIdRef = useRef<string | null>(null);
   const active = activeId && matchesActiveVerifiedCourse(flow.activeVerifiedCourse, activeId, session, course) ? flow.activeVerifiedCourse : null;
   const mode = activeId ? 'active' : 'review';
   const [exitTarget, setExitTarget] = useState<'home' | 'record' | 'courses' | null>(null);
@@ -51,9 +63,12 @@ export function CourseConfirmScreen({ route, navigation }: Props) {
   const [isOpeningRoute, setIsOpeningRoute] = useState(false);
   const [finishState, setFinishState] = useState<CourseCompletionFinishState>({ kind: 'idle' });
   const completionInput = useRef<CompleteCourseInput | null>(null);
+  const lastRouteAttemptRef = useRef<string | null>(null);
   const routeOpenLock = useRef(createVerifiedCourseRouteOpenLock()).current;
+  const routeWasBackgroundedRef = useRef(false);
+  const pendingNavigationController = useRef(createPendingNavigationHandoffController(nativePendingNavigationPort)).current;
   const startController = useRef(createActiveVerifiedCourseStartController({
-    start: (request) => flow.startActiveVerifiedCourse(request),
+    start: (request) => { if (!isPersonalizationScopeCurrent(request.session)) throw new Error('recommendation_scope_changed'); return flow.startActiveVerifiedCourse(request); },
     navigate: (next) => {
       if (next.session === session && next.course === course) {
         activeIdRef.current = next.identity;
@@ -68,12 +83,21 @@ export function CourseConfirmScreen({ route, navigation }: Props) {
     onError: () => setLinkError('코스를 시작하지 못했어요. 다시 시도해 주세요.'),
   })).current;
   const finishController = useRef(createCourseCompletionFinishController({
-    complete: (input) => courseCompletionRepository.complete(input),
+    complete: async (input) => {
+      const result = await courseCompletionRepository.complete(input);
+      if (result.status === 'created' || result.status === 'already_completed') {
+        await liveCourseProgressRuntime.finish({ courseRunId: input.courseRunId, terminal: 'completed', occurredAtMs: Date.now(), eventId: liveEventId() }).catch(() => undefined);
+      }
+      return result;
+    },
     onStateChange: setFinishState,
     onFinish: ({ recorded }) => {
       const identity = activeIdRef.current;
+      const courseRunId = activeRunIdRef.current;
+      if (!recorded && courseRunId) void liveCourseProgressRuntime.finish({ courseRunId, terminal: 'incomplete', occurredAtMs: Date.now(), eventId: liveEventId() });
       if (identity) flow.clearActiveVerifiedCourse(identity);
       setExitTarget(recorded ? 'record' : 'courses');
+      if (recorded && courseRunId) void ownedCourseLifecycle.sync(courseRunId);
     },
   })).current;
   const [connectorState, setConnectorState] = useState(EMPTY_CONNECTOR_STATE);
@@ -86,6 +110,8 @@ export function CourseConfirmScreen({ route, navigation }: Props) {
     const place = places.get(id);
     return place ? { id: place.contentId, label: place.title, lat: place.lat, lon: place.lon } : undefined;
   }), [course, session]);
+  const livePlan = useMemo(() => active && steps ? buildLiveCoursePlan(active, steps) : null, [active, steps]);
+  activeRunIdRef.current = active?.courseRunId ?? null;
 
   useEffect(() => {
     let mounted = true;
@@ -102,6 +128,16 @@ export function CourseConfirmScreen({ route, navigation }: Props) {
     return () => { mounted = false; };
   }, [Boolean(detail && mapMarkers), connectorRequests]);
   useEffect(() => navigation.addListener('focus', startController.reset), [navigation, startController]);
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', next => {
+      if (next === 'background') { routeWasBackgroundedRef.current = true; return; }
+      if (next !== 'active' || !routeWasBackgroundedRef.current) return;
+      routeWasBackgroundedRef.current = false;
+      routeOpenLock.resetForExternalReturn();
+      setIsOpeningRoute(false);
+    });
+    return () => subscription.remove();
+  }, [routeOpenLock]);
 
   const routeGeometry = useMemo(() => buildCourseV1RouteGeometryModel(course, connectorState.connectors), [course, connectorState.connectors]);
   const state = active?.progress;
@@ -113,40 +149,161 @@ export function CourseConfirmScreen({ route, navigation }: Props) {
     const status = await openKakaoPlaceWithAppFallback(place, { canOpenApp: Linking.canOpenURL, openApp: Linking.openURL, openExternal: Linking.openURL, openBrowser: WebBrowser.openBrowserAsync });
     setLinkError(status === 'app_opened' || status === 'external_opened' || status === 'browser_fallback_opened' ? '' : '카카오맵을 열지 못했어요. 잠시 후 다시 시도해 주세요.');
   };
-  const openTravel = async (travel: Extract<VerifiedCourseProgressStep, { kind: 'travel' }>) => {
-    if (!routeOpenLock.tryLock()) return false;
+  const openTravel = async (
+    travel: Extract<VerifiedCourseProgressStep, { kind: 'travel' }>,
+    prepareNotifications = true,
+    beforeExternalOpen?: () => Promise<void>,
+  ) => {
+    const releaseRouteLock = routeOpenLock.tryLock();
+    if (!releaseRouteLock) return false;
     setIsOpeningRoute(true);
     try {
-      const result = await openKakaoRouteWithFallback({ from: { name: travel.from.label, point: travel.from }, to: { name: travel.target.label, point: travel.target } }, travel.mode, { canOpenApp: Linking.canOpenURL, openApp: Linking.openURL, openWeb: Linking.openURL, openBrowser: WebBrowser.openBrowserAsync });
-      if (result === 'failed' || result === 'invalid_stage') { setLinkError('카카오맵을 열지 못했어요. 잠시 후 다시 시도해 주세요.'); return false; }
+      if (prepareNotifications) await prepareLiveCourseNotifications(() => new Promise(resolve => Alert.alert(
+        '도착·출발 알림을 받을까요?',
+        '코스 진행 중 필요한 시각을 이 기기에서만 알려드려요.',
+        [{ text: '알림 없이 계속', onPress: () => resolve(false) }, { text: '알림 허용하기', onPress: () => resolve(true) }],
+        { cancelable: false },
+      )));
+      const diagnosticAttemptId = createDiagnosticAttemptId();
+      lastRouteAttemptRef.current = diagnosticAttemptId;
+      await beforeExternalOpen?.();
+      const result = await openKakaoRouteWithFallback({ from: { name: travel.from.label, point: travel.from }, to: { name: travel.target.label, point: travel.target } }, travel.mode, {
+        canOpenApp: Linking.canOpenURL, openApp: Linking.openURL, openWeb: Linking.openURL, openBrowser: WebBrowser.openBrowserAsync,
+        observeAppState: listener => { const subscription = AppState.addEventListener('change', listener); return () => subscription.remove(); },
+        onDiagnostic: event => { void recordLiveActivityAppDiagnostic({ action: 'route', attemptId: diagnosticAttemptId, ...event }).catch(() => undefined); },
+      });
+      if (!isKakaoRouteOpenSuccess(result)) { setLinkError('카카오맵을 열지 못했어요. 잠시 후 다시 시도해 주세요.'); return false; }
       setLinkError(''); return true;
-    } finally { setIsOpeningRoute(false); routeOpenLock.release(); }
+    } finally { setIsOpeningRoute(false); releaseRouteLock(); }
+  };
+  const applyLiveHandoff = async (travelStepIndex: number) => {
+    if (livePlan?.status !== 'ready') return null;
+    const attemptId = lastRouteAttemptRef.current ?? createDiagnosticAttemptId();
+    const eventId = liveEventId();
+    void recordLiveActivityAppDiagnostic({ action: 'route', attemptId, stage: 'activity_request_started', result: 'started' }).catch(() => undefined);
+    try {
+      const outcome = await liveCourseProgressRuntime.afterHandoff({ opened: true, plan: livePlan.plan, travelStepIndex, occurredAtMs: Date.now(), eventId });
+      const status = outcome?.status;
+      void recordLiveActivityAppDiagnostic({
+        action: 'route', attemptId, stage: 'activity_request_result',
+        result: status === 'started' || status === 'updated' ? 'succeeded' : (status === 'started_without_activity' ? 'failed' : 'rejected'),
+        error: status === 'started_without_activity' ? 'activity_update_failed' : (status === 'started' || status === 'updated' ? 'none' : 'unknown'),
+      }).catch(() => undefined);
+      return { eventId, outcome };
+    } catch {
+      void recordLiveActivityAppDiagnostic({ action: 'route', attemptId, stage: 'activity_request_result', result: 'failed', error: 'activity_update_failed' }).catch(() => undefined);
+      return null;
+    }
   };
   const openCurrentRoute = async () => {
     if (!steps || !state || !current || current.kind !== 'travel' || !activeId) return;
-    if (await openTravel(current)) flow.updateActiveVerifiedCourse(activeId, (value) => value === state ? markVerifiedCourseRouteOpened(steps, value) : value);
+    const routeStage = { from: { name: current.from.label, point: current.from }, to: { name: current.target.label, point: current.target } };
+    if (!isValidKakaoRouteStage(routeStage)) {
+      setLinkError('카카오맵을 열지 못했어요. 잠시 후 다시 시도해 주세요.');
+      return;
+    }
+    const travelStepIndex = steps.indexOf(current);
+    const eventId = liveEventId();
+    let prepared = false;
+    let opened = false;
+    let staleAttempt = false;
+    try {
+      opened = await openTravel(current, true, async () => {
+        if (livePlan?.status !== 'ready') return;
+        const outcome = await liveCourseProgressRuntime.prepareHandoff({ plan: livePlan.plan, travelStepIndex, occurredAtMs: Date.now(), eventId }).catch(() => null);
+        prepared = outcome?.status === 'prepared' || outcome?.status === 'prepared_without_activity';
+      });
+    } catch { setLinkError('카카오맵을 열지 못했어요. 잠시 후 다시 시도해 주세요.'); }
+    if (prepared && livePlan?.status === 'ready') {
+      const settled = await liveCourseProgressRuntime.settleHandoff({ opened, plan: livePlan.plan, travelStepIndex, occurredAtMs: Date.now(), eventId }).catch(() => undefined);
+      staleAttempt = settled?.status === 'stale' || settled?.status === 'confirmation_preserved';
+    }
+    if (opened && !staleAttempt) {
+      flow.updateActiveVerifiedCourse(activeId, (value) => value === state ? markVerifiedCourseRouteOpened(steps, value) : value);
+    }
   };
   const openNextRoute = async () => {
     if (!steps || !state || !nextVerifiedCourseTravel(steps, state) || !activeId) return;
+    const pending = flow.pendingNavigationAction;
+    if (active && livePlan?.status === 'ready' && pending?.courseRunId === active.courseRunId
+      && (pending.state === 'failure' || pending.state === 'executing')) {
+      const local = await liveCourseProgressRuntime.readState().catch(() => null);
+      if (!local) { setLinkError('진행 상태를 복구하지 못했어요. 다시 열어 확인해 주세요.'); return; }
+      const diagnosticAttemptId = createDiagnosticAttemptId();
+      void recordLiveActivityAppDiagnostic({ action: 'pending', attemptId: diagnosticAttemptId, stage: 'pending_claim_requested', result: 'started', phase: local.phase, revision: local.revision }).catch(() => undefined);
+      const retried = await pendingNavigationController.consume({
+        action: pending, active, local, steps,
+        open: travel => openTravel(travel, false),
+        onOpened: async (_travel, travelStepIndex) => {
+          await applyLiveHandoff(travelStepIndex);
+          flow.updateActiveVerifiedCourse(activeId, value => ({ ...value, stepIndex: travelStepIndex, routeOpened: true, finished: false }));
+        },
+      }, 'retry');
+      void recordLiveActivityAppDiagnostic({ action: 'pending', attemptId: diagnosticAttemptId, stage: 'pending_consume_result', result: retried.status === 'opened' ? 'succeeded' : 'rejected', error: retried.status === 'opened' ? 'none' : 'pending_rejected', phase: local.phase, revision: local.revision }).catch(() => undefined);
+      setLinkError(retried.status === 'opened' ? '' : '카카오맵을 열지 못했어요. 다시 시도해 주세요.');
+      await flow.refreshPendingNavigationAction().catch(() => null);
+      return;
+    }
     const outcome = await requestNextVerifiedCourseRoute(steps, state, openTravel);
-    if (outcome.result === 'opened') flow.updateActiveVerifiedCourse(activeId, (value) => value === state ? outcome.state : value);
+    if (outcome.result === 'opened') {
+      const nextTravel = nextVerifiedCourseTravel(steps, state);
+      const travelStepIndex = nextTravel ? steps.indexOf(nextTravel) : -1;
+      if (travelStepIndex >= 0) await applyLiveHandoff(travelStepIndex);
+      flow.updateActiveVerifiedCourse(activeId, (value) => value === state ? outcome.state : value);
+    }
   };
-  const advance = () => { if (steps && activeId) flow.updateActiveVerifiedCourse(activeId, (value) => value === state ? advanceVerifiedCourseProgress(steps, value) : value); };
-  const finish = () => {
+  useEffect(() => {
+    const pending = flow.pendingNavigationAction;
+    if (!active || !activeId || !steps || livePlan?.status !== 'ready' || !pending
+      || pending.courseRunId !== active.courseRunId || pending.state !== 'pending') return;
+    let mounted = true;
+    void liveCourseProgressRuntime.readState().then(async local => {
+      if (!mounted || !local) return;
+      const diagnosticAttemptId = createDiagnosticAttemptId();
+      void recordLiveActivityAppDiagnostic({ action: 'pending', attemptId: diagnosticAttemptId, stage: 'pending_claim_requested', result: 'started', phase: local.phase, revision: local.revision }).catch(() => undefined);
+      const result = await pendingNavigationController.consume({
+        action: pending, active, local, steps,
+        open: travel => openTravel(travel, false),
+        onOpened: async (_travel, travelStepIndex) => {
+          await applyLiveHandoff(travelStepIndex);
+          flow.updateActiveVerifiedCourse(activeId, value => ({ ...value, stepIndex: travelStepIndex, routeOpened: true, finished: false }));
+        },
+      }, 'automatic');
+      void recordLiveActivityAppDiagnostic({ action: 'pending', attemptId: diagnosticAttemptId, stage: 'pending_consume_result', result: result.status === 'opened' ? 'succeeded' : 'rejected', error: result.status === 'opened' ? 'none' : 'pending_rejected', phase: local.phase, revision: local.revision }).catch(() => undefined);
+      if (!mounted) return;
+      if (result.status === 'failed') setLinkError('카카오맵을 열지 못했어요. 다시 시도해 주세요.');
+      else if (result.status === 'invalid') setLinkError('잠금화면 요청과 진행 코스를 확인하지 못했어요. 현재 코스를 다시 확인해 주세요.');
+      else if (result.status === 'opened') setLinkError('');
+      await flow.refreshPendingNavigationAction().catch(() => null);
+    }).catch(() => { if (mounted) setLinkError('진행 상태를 복구하지 못했어요. 다시 열어 확인해 주세요.'); });
+    return () => { mounted = false; };
+  }, [active?.courseRunId, activeId, flow.pendingNavigationAction?.actionId, flow.pendingNavigationAction?.state, livePlan, pendingNavigationController, steps]);
+  const confirmArrival = async () => {
+    if (!steps || !activeId || !active || !current || current.kind !== 'travel' || current.isFinal) return;
+    flow.updateActiveVerifiedCourse(activeId, value => value === state ? advanceVerifiedCourseProgress(steps, value) : value);
+    if (livePlan?.status === 'ready') {
+      const routePlan = livePlan.plan.routes.find(item => item.travelStepIndex === state?.stepIndex);
+      if (routePlan?.targetStopId) await liveCourseProgressRuntime.confirmArrival({ courseRunId: active.courseRunId, stopId: routePlan.targetStopId, occurredAtMs: Date.now(), eventId: liveEventId(), source: 'app_action' }).catch(() => undefined);
+    }
+  };
+  const finish = async () => {
     if (!active) return;
     if (!completionInput.current) {
-      const projected = buildCompleteCourseInput(active, (id) => places.get(id), Date.now());
-      if (projected.status !== 'ready') { finishController.failInvalidSnapshot(); return; }
-      completionInput.current = projected.input;
+      const actualDwell = await liveCourseProgressRuntime.readActualDwell(active.courseRunId);
+      if (!completionInput.current) {
+        const projected = buildCompleteCourseInput(active, (id) => places.get(id), Date.now(), actualDwell);
+        if (projected.status !== 'ready') { finishController.failInvalidSnapshot(); return; }
+        completionInput.current = projected.input;
+      }
     }
     void finishController.finish(completionInput.current);
   };
-  const finishFinalTravel = () => { if (steps && state && advanceVerifiedCourseProgress(steps, state).finished) finish(); };
+  const finishFinalTravel = () => { if (steps && state && advanceVerifiedCourseProgress(steps, state).finished) void finish(); };
   const cancelActive = () => {
     if (!activeId) return;
     Alert.alert('코스를 취소할까요?', '현재 진행 상태가 삭제됩니다.', [
       { text: '계속 진행', style: 'cancel' },
-      { text: '코스 취소', style: 'destructive', onPress: () => { flow.clearActiveVerifiedCourse(activeId); setExitTarget('home'); } },
+      { text: '코스 취소', style: 'destructive', onPress: () => { if (active) void liveCourseProgressRuntime.finish({ courseRunId: active.courseRunId, terminal: 'cancelled', occurredAtMs: Date.now(), eventId: liveEventId() }); flow.clearActiveVerifiedCourse(activeId); setExitTarget('home'); } },
     ]);
   };
 
@@ -155,13 +312,14 @@ export function CourseConfirmScreen({ route, navigation }: Props) {
 
   const nextTravel = state ? nextVerifiedCourseTravel(steps, state) : null;
   const primaryLabel = completionFailed ? '다시 시도' : state?.finished ? '코스 마치기' : current?.kind === 'travel'
-    ? state?.routeOpened ? (current.isFinal ? '도착 후 코스 마치기' : '이동을 마치고 다음으로') : '카카오맵에서 길찾기'
+    ? state?.routeOpened ? (current.isFinal ? '도착 후 코스 마치기' : '도착했어요') : '카카오맵에서 길찾기'
     : nextTravel ? verifiedCourseNextRouteLabel(nextTravel.isFinal, Boolean(session.destination)) : '다음 장소 길찾기';
   const primaryAction = completionFailed ? finish : state?.finished ? finish : current?.kind === 'travel' && !state?.routeOpened
-    ? () => void openCurrentRoute() : current?.kind === 'travel' && current.isFinal ? finishFinalTravel : current?.kind === 'stay' ? () => void openNextRoute() : advance;
+    ? () => void openCurrentRoute() : current?.kind === 'travel' && current.isFinal ? finishFinalTravel : current?.kind === 'travel' ? () => void confirmArrival() : current?.kind === 'stay' ? () => void openNextRoute() : () => undefined;
 
   return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{header}
-    {mapMarkers ? <View style={s.mapFrame}><KakaoRouteMap points={mapMarkers.map(({ lat, lon }) => ({ lat, lon }))} line={[]} segments={routeGeometry.segments} markers={mapMarkers} showMarkerLabels showRouteLegend={false} safeErrorPresentation boundsPadding={{ top: 48, right: 38, bottom: 64, left: 38 }} style={s.map} />{routeGeometry.legend.length ? <View accessible accessibilityLabel={routeGeometry.accessibilityLabel} pointerEvents="none" style={s.routeLegend}>{routeGeometry.legend.map((item) => <View key={item.mode} style={s.routeLegendRow}><View style={[s.routeLegendLine, item.mode === 'transit' && s.routeLegendTransit]} /><Text style={s.routeLegendText}>{item.label}</Text></View>)}</View> : null}<View pointerEvents="none" style={s.routeStatus}>{connectorState.loading ? <Text accessibilityLiveRegion="polite" style={s.routeStatusText}>도보 연결을 확인하는 중이에요</Text> : null}{connectorState.failedCount > 0 ? <Text accessibilityRole="alert" style={s.routeStatusText}>일부 도보 경로선을 표시하지 못했어요</Text> : null}{routeGeometry.missingMessage ? <Text accessibilityRole="alert" style={s.routeStatusText}>{routeGeometry.missingMessage}</Text> : null}</View></View> : <View accessibilityLabel="코스 지도 위치를 표시할 수 없음" style={s.mapFallback}><Text style={s.mapFallbackTitle}>지도 위치를 표시할 수 없어요</Text><Text style={s.copy}>아래 검증 코스는 계속 확인할 수 있어요.</Text></View>}
+    {mode === 'review' && isPersonalizationScopeCurrent(session) && personalizedCoursePlaceIds(course).length ? <Text testID="verified-personalization-applied" style={s.copy}>내 체류 기록 반영: {personalizedCoursePlaceIds(course).map(id => places.get(id)?.title ?? '선택한 장소').join(', ')}</Text> : null}
+    {mapMarkers ? <View style={s.mapFrame}><KakaoRouteMap points={mapMarkers.map(({ lat, lon }) => ({ lat, lon }))} line={[]} segments={routeGeometry.segments} markers={mapMarkers} showMarkerLabels usePhotoMarkers showRouteLegend={false} safeErrorPresentation boundsPadding={{ top: 48, right: 38, bottom: 64, left: 38 }} style={s.map} />{routeGeometry.legend.length ? <View accessible accessibilityLabel={routeGeometry.accessibilityLabel} pointerEvents="none" style={s.routeLegend}>{routeGeometry.legend.map((item) => <View key={item.mode} style={s.routeLegendRow}><View style={[s.routeLegendLine, item.mode === 'transit' && s.routeLegendTransit]} /><Text style={s.routeLegendText}>{item.label}</Text></View>)}</View> : null}<View pointerEvents="none" style={s.routeStatus}>{connectorState.loading ? <Text accessibilityLiveRegion="polite" style={s.routeStatusText}>도보 연결을 확인하는 중이에요</Text> : null}{connectorState.failedCount > 0 ? <Text accessibilityRole="alert" style={s.routeStatusText}>일부 도보 경로선을 표시하지 못했어요</Text> : null}{routeGeometry.missingMessage ? <Text accessibilityRole="alert" style={s.routeStatusText}>{routeGeometry.missingMessage}</Text> : null}</View></View> : <View accessibilityLabel="코스 지도 위치를 표시할 수 없음" style={s.mapFallback}><Text style={s.mapFallbackTitle}>지도 위치를 표시할 수 없어요</Text><Text style={s.copy}>아래 검증 코스는 계속 확인할 수 있어요.</Text></View>}
     <CourseV1VerticalDetail model={detail} mode={mode} onOpenKakao={openPlace} progress={state && current ? {
       rows: stepRows,
       actionStepIndex: current.kind === 'stay' ? state.stepIndex + 1 : state.stepIndex,

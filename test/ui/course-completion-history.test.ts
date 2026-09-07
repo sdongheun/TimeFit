@@ -284,7 +284,7 @@ test('UCOMPLETIONHISTORY01: 화면 source는 성공→기록 탭, 실패 retry/�
   assert.match(progress, /resetToActivityRecord/);
   assert.match(progress, /다시 시도/);
   assert.match(progress, /기록 없이 마치기/);
-  assert.match(activity, /courseCompletionRepository\.read/);
+  assert.match(activity, /readOwnedDeviceCourseCompletions/);
   assert.match(activity, /이 기기의/);
   assert.match(activity, /체류시간 미측정/);
   assert.match(profile, /기기에만 저장/);

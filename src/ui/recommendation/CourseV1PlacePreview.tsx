@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import { C } from '../theme';
-import { getPlacePreviewKind, type CourseV1DisplayPlace } from './courseV1PlacePreviewModel';
+import { type CourseV1DisplayPlace } from './courseV1PlacePreviewModel';
+import { PlacePhoto, PlacePhotoCredit } from '../PlacePhoto';
 
 type Props = {
   place: CourseV1DisplayPlace;
@@ -12,11 +12,9 @@ type Props = {
 
 /** 사진 실패 여부와 무관하게 제목·맥락·카카오 행동을 동일하게 보이는 stop 미리보기다. */
 export function CourseV1PlacePreview({ place, context, onOpenKakao }: Props) {
-  const [imageFailed, setImageFailed] = useState(false);
-  const preview = getPlacePreviewKind(place, imageFailed);
   return <View style={s.root}>
-    <View style={s.media}>{preview.kind === 'image' ? <Image accessibilityLabel={`${place.title} ${preview.sourceLabel}`} source={{ uri: place.imageUrl! }} style={s.image} onError={() => setImageFailed(true)} /> : <View accessibilityLabel={`${place.title} 사진 없음`} style={s.placeholder}><Text style={s.placeholderText}>{context ?? '장소 미리보기'}</Text></View>}</View>
-    <View style={s.content}><Text style={s.title}>{place.title}</Text>{context ? <Text style={s.context}>{context}</Text> : null}{preview.kind === 'image' ? <Text style={s.source}>{preview.sourceLabel}</Text> : null}<Pressable style={s.link} accessibilityLabel={`${place.title} 카카오맵에서 장소 보기`} onPress={() => onOpenKakao(place)}><Text style={s.linkText}>카카오맵에서 장소 보기</Text></Pressable></View>
+    <View style={s.media}><PlacePhoto place={place} fallback={<View accessibilityLabel={`${place.title} 사진 없음`} style={s.placeholder}><Text style={s.placeholderText}>{context ?? '장소 미리보기'}</Text></View>} /></View>
+    <View style={s.content}><Text style={s.title}>{place.title}</Text>{context ? <Text style={s.context}>{context}</Text> : null}<PlacePhotoCredit place={place} links /><Pressable style={s.link} accessibilityLabel={`${place.title} 카카오맵에서 장소 보기`} onPress={() => onOpenKakao(place)}><Text style={s.linkText}>카카오맵에서 장소 보기</Text></Pressable></View>
   </View>;
 }
 

@@ -16,13 +16,23 @@ function fixture(options = {}) {
   class Clock extends Date { constructor(...args) { super(...(args.length ? args : [now.getTime()])); } static now() { return now.getTime(); } }
   const auth = { session: options.auth ?? null, isLoading: options.authLoading ?? false };
   const overrides = {
-    __Date: Clock, __DEV__: options.internal ?? false, __process: { env: { EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS: options.internal ? 'true' : undefined, EXPO_PUBLIC_ROUTE_PROXY_ENABLED: options.proxy ? 'true' : 'false', EXPO_PUBLIC_CAPTCHA_CHALLENGE_URL: 'https://example.test/' } },
+    __Date: Clock, __DEV__: options.internal ?? false, __process: { env: { EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS: (options.diagnostics ?? options.internal) ? 'true' : undefined, EXPO_PUBLIC_ROUTE_PROXY_ENABLED: options.proxy ? 'true' : 'false', EXPO_PUBLIC_CAPTCHA_CHALLENGE_URL: 'https://example.test/' } },
     '../data/busan_poi_catalog.json': { matched: { data: [] }, unmatched: { data: [] } },
     './AppFlowContext': { useAppFlow: () => ({ setLatestResults: v => calls.push(['latest', v]) }) },
     './AuthContext': { useAuth: () => auth },
     'expo-location': { Accuracy: { Balanced: 1 }, async getForegroundPermissionsAsync() { calls.push(['permission-read']); return { status: options.permission ?? 'denied' }; }, async getCurrentPositionAsync() { calls.push(['gps']); return options.gps ? options.gps() : { coords: { latitude: 35.1, longitude: 129.1 } }; }, async requestForegroundPermissionsAsync() { calls.push(['permission-prompt']); throw Error('unexpected'); } },
     '../services/kakaoLocationLabelAdapter': { createKakaoLocationLabelAdapter: () => ({ async resolve(point, reason) { calls.push(['label', reason]); return options.label ? options.label() : { source: 'address', address: '현재 위치 주소' }; } }) },
     './expoSelectionHaptic': { async requestExpoSelectionHaptic() { calls.push(['haptic']); return { status: 'requested' }; } },
+    './liveActivity/a3VerificationComposition': {
+      createAppLiveActivityA3Controller: () => ({ async run(value) { calls.push(['live-activity-a3', value]); return options.a3Result ?? { kind: 'started', activityId: 'fixture-a3', applicationState: 'inactive', routeResult: 'app_opened' }; } }),
+      createAppLiveActivityA3CleanupController: () => ({ async cleanupTestFixtures() { calls.push(['live-activity-a3-cleanup']); return options.a3CleanupResult ?? { status: 'ended', endedActivityIds: ['fixture-a3'], failedActivityIds: [] }; } }),
+    },
+    './liveActivity/liveActivityDiagnostics': {
+      liveActivityDiagnosticsEnabled: (_dev, flag) => flag === 'true',
+      readLiveActivityDiagnosticReport: async () => { calls.push(['live-diagnostic-read']); return options.diagnosticReport ?? { status: 'empty', lines: [] }; },
+      copyLiveActivityDiagnosticReport: async () => { calls.push(['live-diagnostic-copy']); return options.diagnosticCopy ?? { status: 'copied', entryCount: 2 }; },
+      clearLiveActivityDiagnosticReport: async () => { calls.push(['live-diagnostic-clear']); },
+    },
     './recommendation/v1Session': { async runRecommendationSession(session, input) { calls.push(['recommend', session, input]); if (result) return result(session, input); return { representativeCourse: null, alternativeCourses: [], resultState: 'no_verified_course_within_limit' }; } },
     './MapPlacePicker': { MapPlacePicker: 'MapPlacePicker' }, './PlacePicker': { PlacePicker: 'PlacePicker' }, './CaptchaVerificationSheet': { CaptchaVerificationSheet: 'CaptchaVerificationSheet' }, './recommendation/RecommendationLoadingProgress': { RecommendationLoadingProgress: 'RecommendationLoadingProgress' },
     '@react-native-community/slider': { __esModule: true, default: 'Slider' },
@@ -285,7 +295,7 @@ test('USETUP actual CAPTCHA WebView failure blocks late bridge, retry succeeds o
 });
 
 test('USETUP production hides dev tools, internal test-clock restore is silent and all 8 launcher entries remain actionable', async () => {
-  const prod = fixture(); await tick(); assert.equal(prod.screen.nodes(n => ['dev-test-clock', 'qa-release-one-stop-launcher'].includes(n.props.testID)).length, 0);
+  const prod = fixture(); await tick(); assert.equal(prod.screen.nodes(n => ['dev-test-clock', 'qa-release-one-stop-launcher', 'live-activity-a3-launcher', 'live-activity-a3-cleanup'].includes(n.props.testID)).length, 0);
   const f = fixture({ internal: true }); await tick(); f.choose('origin', O);
   f.screen.press('dev-test-clock');
   const apply = f.screen.nodes(n => n.type === 'Pressable' && JSON.stringify(n.props.children).includes('테스트 시각 적용'))[0]; apply.props.onPress();
@@ -298,6 +308,37 @@ test('USETUP production hides dev tools, internal test-clock restore is silent a
   assert.equal(scenarios.length, 8);
   for (const id of scenarios) { f.screen.press(id); await tick(); }
   assert.equal(count(f, 'recommend'), 8);
+});
+
+test('ULA button diagnostics failure-first: internal Release에서 조회·복사하고 일반 Release에는 노출하지 않는다', async () => {
+  const release = fixture(); await tick();
+  assert.equal(release.screen.nodes(n => n.props.testID === 'live-activity-diagnostics-launcher').length, 0);
+  // __DEV__=false여도 기존 exact diagnostics build flag로 internal Release 조회를 연다.
+  const flagged = fixture({ internal: false, diagnostics: true, diagnosticReport: { status: 'ready', lines: ['build=1.0.0(1)', 'intent arrival intent_entered success', 'app boot app_reconcile_completed success'] } });
+  await tick();
+  flagged.screen.press('live-activity-diagnostics-launcher'); await tick();
+  assert.ok(flagged.screen.get('live-activity-diagnostics-report'));
+  assert.match(JSON.stringify(flagged.screen.get('live-activity-diagnostics-report')), /intent_entered/);
+  flagged.screen.press('live-activity-diagnostics-copy'); await tick();
+  assert.equal(count(flagged, 'live-diagnostic-copy'), 1);
+  flagged.screen.press('live-activity-diagnostics-clear'); await tick();
+  assert.equal(count(flagged, 'live-diagnostic-clear'), 1);
+});
+
+test('ULA A3 internal launcher executes the fixed fixture once and exposes native transition state', async () => {
+  const f = fixture({ internal: true }); await tick();
+  f.screen.press('live-activity-a3-launcher'); await tick();
+  assert.equal(count(f, 'live-activity-a3'), 1);
+  const payload = f.calls.find(c => c[0] === 'live-activity-a3')[1];
+  assert.equal(payload.purpose, 'test_fixture');
+  assert.equal(payload.schemaVersion, 1);
+  assert.equal(payload.courseRunId, 'timefit-a3-fixture-v1');
+  assert.equal(payload.stopId, 'stop:a3-busan-citizens-park');
+  assert.equal(payload.targetTitle, '부산시민공원');
+  assert.match(JSON.stringify(f.screen.get('live-activity-a3-status')), /시작됨.*inactive/);
+  f.screen.press('live-activity-a3-cleanup'); await tick();
+  assert.equal(count(f, 'live-activity-a3-cleanup'), 1);
+  assert.match(JSON.stringify(f.screen.get('live-activity-a3-status')), /종료했어요/);
 });
 
 const flattenStyle = style => Object.assign({}, ...[style].flat(Infinity).filter(Boolean));

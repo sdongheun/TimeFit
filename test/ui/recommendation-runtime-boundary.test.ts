@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { createPersonalizationSessionController } from '../../src/ui/personalizationSessionModel';
+import { continueReleaseRecommendationSession } from '../../src/ui/recommendation/v1Session';
 import type { CourseV1LimitedResult, CourseV1ReleaseOneStopResult, CourseV1RouteAdapter, CourseV1RouteReceiptAdapter } from '../../src/engine';
 import { RouteProxyUnavailableError } from '../../src/services/routeProxyActivatedCourseAdapter';
 import { buildRecommendationLimitedInput, recommendationBuilderForEnvironment, recommendationPortsFor, recommendationRoutesFor, runRecommendationSession } from '../../src/ui/recommendation/v1Session';
@@ -7,6 +9,29 @@ import { recommendationInternalPolicyForEnvironment, recommendationInternalPolic
 
 const legacy = { async getRoute() { return null; } } as CourseV1RouteAdapter;
 const proxy = { async getRoute() { return null; }, async getRouteReceipt() { return { result: 'unavailable' as const, newProviderAttemptCount: 0 as const, reused: false }; } } as CourseV1RouteAdapter & CourseV1RouteReceiptAdapter;
+
+test('B public runtime freezes samples across first/continue and blocks old-account continuation', async () => {
+  const controller = createPersonalizationSessionController({ read: async () => ({ enabled: true, samples: [{ category: 'cafe', subCategory: 'coffee', dwellMin: 35 }] }) });
+  controller.setAccount('fixture-account-A');
+  const session = { nowIso: '2026-08-30T06:00:00.000Z', origin: { id: 'origin', label: '출발', lat: 35.1, lon: 129.0 }, destination: { id: 'destination', label: '도착', lat: 35.2, lon: 129.1 }, remainingMin: 60, arrivalBufferMin: 5 };
+  let samples: unknown, continued = 0;
+  const diagnostics = { providerCandidateCount: 0, preselectionCandidateCount: 0, candidatePoolCount: 0, generatedOrderedCourseCount: 0, preselectedCourseIds: [], exactCourseAttemptCount: 0, routeRejected: 0, openingRejected: 0, budgetRejected: 0, relationshipRejected: 0, classificationExcluded: 0, newProviderAttemptCount: 0 };
+  await runRecommendationSession(session, { routeProxyEnabled: false }, {
+    createLegacyRoutes: () => legacy,
+    getPublicRecommendationEnvironment: () => ({}),
+    readPersonalizationSnapshot: () => controller.snapshot(),
+    buildRelease: async input => { samples = input.dwellPersonalizationSamples; return { representativeCourse: null, alternativeCourses: [], resultState: 'no_representative_candidates', alternativeState: 'no_candidates', diagnostics } as CourseV1ReleaseOneStopResult; },
+  });
+  const continuation = {} as Parameters<typeof continueReleaseRecommendationSession>[1];
+  const deps = { continueRelease: (async input => { continued++; assert.equal(input.dwellPersonalizationSamples, samples); return { appendedCourses: [], continuation, pageState: 'exhausted', outcomeReasons: [], diagnostics }; }) as NonNullable<Parameters<typeof continueReleaseRecommendationSession>[2]>['continueRelease'] };
+  await continueReleaseRecommendationSession(session, continuation, deps);
+  assert.equal(continued, 1);
+  assert.equal(Object.isFrozen(samples), true);
+  assert.doesNotMatch(JSON.stringify(session), /fixture-account|dwellPersonalization|dwellMin/);
+  controller.setAccount('fixture-account-B');
+  assert.equal(await continueReleaseRecommendationSession(session, continuation, deps), null);
+  assert.equal(continued, 1);
+});
 
 test('UCAP03-01/02: false는 legacy만, true는 activated proxy factory만 사용한다', async () => {
   let legacyCalls = 0; let proxyCalls = 0;

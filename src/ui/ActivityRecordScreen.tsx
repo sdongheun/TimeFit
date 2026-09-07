@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -12,6 +12,12 @@ import { FloatingTabBar } from './FloatingTabBar';
 import { resetToMain, resetToNearbyBrowse, resetToProfile } from './mainTabNavigation';
 import { RootStackParamList } from './nav';
 import { C } from './theme';
+import { personalizationSession } from './personalizationComposition';
+import { AccountRecordsPanel } from './AccountRecordsPanel';
+import { loadOwnedCoursePorts } from './ownedCourseLifecycle';
+import { LegacyCompletionPanel } from './LegacyCompletionPanel';
+import { CompletedPlacesMapButton } from './CompletedPlacesMapButton';
+import { monthCompletionPlaces, type CompletedMapPlace } from './activity/completedPlaceMapModel';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ActivityRecord'>;
 
@@ -25,8 +31,12 @@ function formatDuration(minutes: number) {
 }
 
 export function ActivityRecordScreen({ navigation }: Props) {
+  const [accountVersion, setAccountVersion] = useState(personalizationSession.version());
+  useEffect(() => personalizationSession.subscribe(() => setAccountVersion(personalizationSession.version())), []);
+  const subject = personalizationSession.subject();
   const insets = useSafeAreaInsets();
   const [summary, setSummary] = useState<ActivitySummary>(EMPTY);
+  const [completedPlaces, setCompletedPlaces] = useState<CompletedMapPlace[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<'storage_unavailable' | 'storage_corrupt' | null>(null);
   const [reloadSequence, setReloadSequence] = useState(0);
@@ -34,10 +44,23 @@ export function ActivityRecordScreen({ navigation }: Props) {
   useFocusEffect(useCallback(() => {
     let active = true;
     setIsLoading(true);
+    setCompletedPlaces([]);
     setLoadError(null);
+    if (subject) { setSummary(EMPTY); setIsLoading(false); return () => { active = false; }; }
     void loadCompletionHistory({
-      readCompletions: () => courseCompletionRepository.read(),
-      readLegacyFeedback: readPlaceFeedback,
+      readCompletions: async () => {
+        const ports = await loadOwnedCoursePorts();
+        const identity = await ports.supabaseAccountIdentityResolver.resolve();
+        if (identity.status !== 'account_required') return { status: 'storage_unavailable' as const, records: [] };
+        const result = await ports.readOwnedDeviceCourseCompletions();
+        if (result.status === 'ok' || result.status === 'empty') {
+          if (active) setCompletedPlaces(monthCompletionPlaces(result.records));
+          return result;
+        }
+        if (result.status === 'storage_corrupt') return { status: 'storage_corrupt' as const, records: [] };
+        return { status: 'storage_unavailable' as const, records: [] };
+      },
+      readLegacyFeedback: async () => [],
     })
       .then((result) => {
         if (!active) return;
@@ -46,7 +69,7 @@ export function ActivityRecordScreen({ navigation }: Props) {
       })
       .finally(() => { if (active) setIsLoading(false); });
     return () => { active = false; };
-  }, [reloadSequence]));
+  }, [reloadSequence, subject, accountVersion]));
 
   const hasRecords = summary.completedPlaceCount > 0;
   const topCategory = summary.categories[0];
@@ -54,8 +77,8 @@ export function ActivityRecordScreen({ navigation }: Props) {
     <View style={s.root}>
       <ScrollView contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]}>
         <Text style={s.h1}>나의 자투리 기록</Text>
-        <Text style={s.sub}>이 기기의 이번 달 완료 기록입니다.</Text>
-        {isLoading ? <View style={s.loading}><ActivityIndicator color={C.accent} /></View> : loadError ? <View style={s.empty}>
+        <Text style={s.sub}>{subject ? '로그인한 계정의 기록입니다. 기기의 이전 기록은 자동으로 합치지 않아요.' : '이 기기의 이번 달 완료 기록입니다.'}</Text>
+        {subject ? <AccountRecordsPanel key={subject} subject={subject} /> : isLoading ? <View style={s.loading}><ActivityIndicator color={C.accent} /></View> : loadError ? <View style={s.empty}>
           <Text style={s.emptyTitle}>기기 기록을 불러오지 못했어요</Text>
           <Text style={s.emptyCopy}>{loadError === 'storage_corrupt' ? '기존 기록을 덮어쓰지 않았어요. 다시 시도해 주세요.' : '잠시 후 다시 시도해 주세요.'}</Text>
           <Pressable testID="completion-history-retry" style={s.retry} onPress={() => setReloadSequence((value) => value + 1)}><Text style={s.retryText}>다시 시도</Text></Pressable>
@@ -75,14 +98,15 @@ export function ActivityRecordScreen({ navigation }: Props) {
             </View>
           </View>
           <View style={s.statsRow}>
-            <View style={s.stat}><Text style={s.statValue}>{summary.completedPlaceCount}곳</Text><Text style={s.statLabel}>완료한 장소</Text></View>
+            <CompletedPlacesMapButton key={`guest:${accountVersion}`} places={completedPlaces} style={s.stat}><Text style={s.statValue}>{summary.completedPlaceCount}곳</Text><Text style={s.statLabel}>완료한 장소</Text></CompletedPlacesMapButton>
             <View style={s.stat}><Text style={s.statValue}>{summary.categories.length}가지</Text><Text style={s.statLabel}>활동 유형</Text></View>
           </View>
-          <View style={s.note}><Text style={s.noteText}>코스 마치기로 남긴 기기 기록과 기존 후기를 함께 보여 줍니다. 실제로 측정하지 않은 체류시간은 합산하지 않습니다.</Text></View>
+          <View style={s.note}><Text style={s.noteText}>비로그인 상태에서 코스 마치기로 남긴 기록입니다. 이전 방식의 기록은 계정으로 직접 가져올 때 구분해 확인할 수 있어요. 측정하지 않은 체류시간은 합산하지 않습니다.</Text></View>
         </> : <View style={s.empty}>
           <Text style={s.emptyTitle}>아직 완료한 활동이 없어요</Text>
           <Text style={s.emptyCopy}>코스를 마치면 후기 없이도 이 기기에 자투리 기록이 쌓입니다.</Text>
         </View>}
+        {!subject && !isLoading && !loadError ? <LegacyCompletionPanel /> : null}
         <View style={{ height: 112 }} />
       </ScrollView>
       <FloatingTabBar

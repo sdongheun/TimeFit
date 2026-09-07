@@ -3,6 +3,7 @@ import type { RecommendationSession } from '../nav';
 import type { RouteMapMarker } from '../KakaoRouteMap';
 import { getPlaceActivityLabel } from './courseV1DiscoveryContext';
 import type { CourseV1DisplayPlace } from './courseV1PlacePreviewModel';
+import { photoMarkerFields } from '../placePhotoModel';
 
 export type CourseV1CatalogDisplayPlace = CourseV1DisplayPlace & {
   category?: string | null;
@@ -133,7 +134,7 @@ export function buildCourseV1DetailMarkers(
     label: model.returnsToOrigin ? '출발·복귀' : session.origin.label,
     kind: 'origin',
   }];
-  model.stops.forEach(({ place }, index) => markers.push({ lat: place.lat, lon: place.lon, label: place.title, kind: 'spot', active: index === 0 }));
+  model.stops.forEach(({ place }, index) => markers.push({ lat: place.lat, lon: place.lon, label: place.title, kind: 'spot', active: index === 0, ...photoMarkerFields(place) }));
   if (session.destination) markers.push({ lat: session.destination.lat, lon: session.destination.lon, label: session.destination.label, kind: 'appointment' });
   return markers;
 }

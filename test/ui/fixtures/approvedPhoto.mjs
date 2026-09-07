@@ -1,0 +1,1 @@
+export const approvedPhotoEvidence = { usagePermission: {status:'verified',rightsHolder:'fixture 제공기관',sourcePageUrl:'https://example.test/source',licenseName:'fixture 변경 허용',licenseUrl:'https://example.test/license',attribution:'TourAPI 제공 사진',commercialUseAllowed:true,modificationAllowed:true,verifiedAt:'2026-09-07'} };

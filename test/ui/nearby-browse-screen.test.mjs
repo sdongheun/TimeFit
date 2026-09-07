@@ -2,12 +2,14 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import 'tsx/cjs';
 import { screenRuntime } from './support/screenRuntime.mjs';
+import { approvedPhotoEvidence } from './fixtures/approvedPhoto.mjs';
 
 const tick = async () => { for (let i = 0; i < 30; i++) await Promise.resolve(); };
 const catalog = { matched: { data: [
   { contentId: 'near', title: '가까운 곳', lat: 35.0001, lon: 129, classification: 'representative_core', category: '문화시설', addr1: '부산 중구 가까운길', operatingHours: ['10:00~18:00'], imageUrl: 'https://example.com/near.jpg', detailDescription: '검증된 설명' },
   { contentId: 'far', title: '먼 곳', lat: 35.001, lon: 129, classification: 'conditional_more', category: '시장', addr1: '부산 중구 먼길', operatingHours: [] },
 ] }, unmatched: { data: [] } };
+catalog.matched.data[0].imageEvidence = approvedPhotoEvidence;
 
 function fixture(options = {}) {
   const calls = [];
@@ -74,6 +76,23 @@ function fixture(options = {}) {
   const screen = runtime.mount(runtime.load('src/ui/NearbyBrowseScreen.tsx').NearbyBrowseScreen, { navigation });
   return { screen, calls, animatedValues, animationEvents, finishAnimation() { pendingAnimation?.(); pendingAnimation = undefined; }, finishAnimationAt(index) { animationFinishes[index]?.(); }, finishStopAnimation() { pendingStop?.(); pendingStop = undefined; }, resolveGps(value = { coords: { latitude: 35.2, longitude: 129.2 } }) { gpsResolve(value); } };
 }
+
+test('photo integration: nearby row/detail share approved URL, visible credit and load failure fallback', async () => {
+  const f = fixture(); await tick();
+  try {
+    const images = () => f.screen.nodes(n => n.type === 'Image');
+    assert.equal(images()[0].props.source.uri, catalog.matched.data[0].imageUrl);
+    images()[0].props.onLoad();
+    f.screen.press('nearby-row-near');
+    assert.ok(f.screen.get('place-photo-credit'));
+    assert.equal(images()[0].props.source.uri,catalog.matched.data[0].imageUrl);
+    images()[0].props.onError();
+    f.screen.get('nearby-detail-image-fallback');
+    assert.equal(images().length,0);
+    f.screen.press('nearby-detail-close');
+    assert.ok(f.screen.get('nearby-row-far'));
+  } finally {f.screen.unmount();}
+});
 
 test('UNEAR production screen uses one dataset for map/list and marker/list open the same detail without side effects', async () => {
   const f = fixture(); await tick();

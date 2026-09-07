@@ -90,9 +90,22 @@ export async function requestNextVerifiedCourseRoute(
 
 /** React state 반영 전 중복 tap도 막는 화면 메모리 lock이다. */
 export function createVerifiedCourseRouteOpenLock() {
-  let locked = false;
+  let owner: number | null = null;
+  let nextOwner = 0;
   return {
-    tryLock: () => { if (locked) return false; locked = true; return true; },
-    release: () => { locked = false; },
+    tryLock() {
+      if (owner !== null) return null;
+      const token = ++nextOwner;
+      owner = token;
+      let released = false;
+      return () => {
+        if (released) return;
+        released = true;
+        if (owner === token) owner = null;
+      };
+    },
+    // 외부 앱에서 복귀하면 이전 JS continuation의 lock 소유권만 폐기한다.
+    // 이전 finally가 늦게 실행돼도 새 시도의 token은 해제할 수 없다.
+    resetForExternalReturn() { owner = null; },
   };
 }

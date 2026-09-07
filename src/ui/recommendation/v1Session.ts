@@ -9,6 +9,8 @@ import { releaseOneStopDisplayResult, type RecommendationResult } from './releas
 import { createTwoStopSelectionEnginePort } from './twoStopSelectionEnginePort';
 import type { TwoStopSelectionPort } from './twoStopSelectionModel';
 import type { RecommendationProgressStage } from './recommendationLoadingModel';
+import { personalizationSession, recommendationPersonalizationSnapshots as personalizationSnapshots, isPersonalizationScopeCurrent } from '../personalizationComposition';
+import type { PersonalizationSessionSnapshot } from '../personalizationSessionModel';
 
 export type RecommendationRuntimeOptions = {
   routeProxyEnabled: boolean;
@@ -19,6 +21,7 @@ export type RecommendationRuntimeOptions = {
 };
 
 export type RecommendationRuntimeDependencies = {
+  readPersonalizationSnapshot?: () => Promise<PersonalizationSessionSnapshot>;
   createLegacyRoutes: () => CourseV1RouteAdapter;
   /** API-4-A-ACT-04-B-R supplies this factory; UI owns only the boolean/token call boundary. */
   createActivatedProxyRoutes?: (input: { captchaToken?: string }) => Promise<CourseV1RouteAdapter & CourseV1RouteReceiptAdapter>;
@@ -45,6 +48,7 @@ const productionRecommendationRuntimeDependencies: RecommendationRuntimeDependen
 // navigation payload에는 provider·route port를 넣지 않는다. 같은 화면 메모리에서만 이어보기를 재조립한다.
 type PairSelectionIntent = Readonly<{ course: VerifiedCourseV1 }>;
 type RecommendationSessionRuntime = {
+  isCurrent: () => boolean;
   input: CourseV1LimitedInput;
   ledger: ReleaseTwoStopAttemptLedger;
   twoStopPort: TwoStopSelectionPort | null;
@@ -58,6 +62,7 @@ type RecommendationSessionRuntime = {
 
 const continuationInputs = new WeakMap<RecommendationSession, CourseV1LimitedInput>();
 const sessionRuntimes = new WeakMap<RecommendationSession, RecommendationSessionRuntime>();
+export const isRecommendationSessionCurrent = isPersonalizationScopeCurrent;
 
 export type ReleaseOneStopUiContinuationResult = CourseV1ReleaseOneStopContinuationResult | Readonly<{
   appendedCourses: readonly VerifiedCourseV1[];
@@ -87,7 +92,8 @@ function commitLedger(runtime: RecommendationSessionRuntime, next: ReleaseTwoSto
 
 function runSessionOperation<T>(runtime: RecommendationSessionRuntime, operation: () => Promise<T>): Promise<T> {
   runtime.operationCount += 1;
-  const task = runtime.operationTail.then(operation, operation);
+  const guarded = async () => { if (!runtime.isCurrent()) throw new Error('recommendation_scope_changed'); const result = await operation(); if (!runtime.isCurrent()) throw new Error('recommendation_scope_changed'); return result; };
+  const task = runtime.operationTail.then(guarded, guarded);
   runtime.operationTail = task.then(() => undefined, () => undefined);
   return task.finally(() => { runtime.operationCount = Math.max(0, runtime.operationCount - 1); });
 }
@@ -148,6 +154,7 @@ function createSessionRuntime(input: CourseV1LimitedInput, result: Recommendatio
   const initialOneStopAttempts = initialAttemptCount(result);
   const displayed = releaseOneStopDisplayResult(result);
   const runtime: RecommendationSessionRuntime = {
+    isCurrent: () => true,
     input,
     ledger: { version: 1, initialOneStopAttempts, automaticTwoStopAttempts: 0, sharedExpansionAttempts: 0, totalNewProviderAttempts: initialOneStopAttempts },
     twoStopPort: null,
@@ -197,6 +204,7 @@ function registerDisplayedOneStopPage(runtime: RecommendationSessionRuntime, cou
 }
 
 export function getTwoStopSelectionPort(session: RecommendationSession): TwoStopSelectionPort | null {
+  if (!isRecommendationSessionCurrent(session)) return null;
   return sessionRuntimes.get(session)?.twoStopPort ?? null;
 }
 
@@ -210,6 +218,7 @@ export function isRecommendationSessionOperationInFlight(session: Recommendation
 
 /** Secondary 렌더와 intent 기록이 동일한 exact Results snapshot 경계를 사용한다. */
 export function canRecordTwoStopSelectionIntent(session: RecommendationSession, course: VerifiedCourseV1): boolean {
+  if (!isRecommendationSessionCurrent(session)) return false;
   const runtime = sessionRuntimes.get(session);
   if (!runtime?.twoStopPort) return false;
   return runtime.operationCount === 0 && runtime.eligibleOneStopCourses.get(course.id) === course;
@@ -264,7 +273,9 @@ export async function buildRecommendationLimitedInput(
   options: RecommendationRuntimeOptions,
   dependencies: RecommendationRuntimeDependencies,
 ): Promise<CourseV1LimitedInput> {
-  return { ...buildRecommendationEngineInput(session), provider: createCourseV1CandidateProvider(), ...await recommendationPortsFor(options, dependencies) };
+  const snapshot = await (dependencies.readPersonalizationSnapshot ?? (() => personalizationSession.snapshot()))();
+  personalizationSnapshots.set(session, snapshot);
+  return { ...buildRecommendationEngineInput(session), ...(snapshot.samples.length ? { dwellPersonalizationSamples: snapshot.samples } : {}), provider: createCourseV1CandidateProvider(), ...await recommendationPortsFor(options, dependencies) };
 }
 
 /** Local exploration paging shares a recommendation snapshot but deliberately has no route port. */
@@ -358,8 +369,11 @@ export async function runRecommendationSession(
   emitProgress('route_port_ready');
   emitProgress('verifying');
   const result = await builder(input);
+  if (!isRecommendationSessionCurrent(session)) throw new Error('recommendation_scope_changed');
   continuationInputs.set(session, input);
-  sessionRuntimes.set(session, createSessionRuntime(input, result, internalPolicy !== 'B12'));
+  const runtime = createSessionRuntime(input, result, internalPolicy !== 'B12');
+  runtime.isCurrent = () => isRecommendationSessionCurrent(session);
+  sessionRuntimes.set(session, runtime);
   emitProgress('complete');
   return result;
 }
@@ -369,6 +383,7 @@ export async function continueRecommendationSession(
   session: RecommendationSession,
   continuation: CourseV1Continuation,
 ): Promise<CourseV1ContinuationResult | null> {
+  if (!isRecommendationSessionCurrent(session)) return null;
   const originalInput = continuationInputs.get(session);
   if (!originalInput) return null;
   return continueLimitedRepresentativeCourseV1({ ...originalInput, continuation });
@@ -380,6 +395,7 @@ export async function continueReleaseRecommendationSession(
   continuation: CourseV1ReleaseOneStopContinuation,
   dependencies: Pick<RecommendationRuntimeDependencies, 'continueRelease'> = {},
 ): Promise<ReleaseOneStopUiContinuationResult | null> {
+  if (!isRecommendationSessionCurrent(session)) return null;
   const runtime = sessionRuntimes.get(session);
   const originalInput = runtime?.input ?? continuationInputs.get(session);
   if (!originalInput) return null;
@@ -411,6 +427,7 @@ export async function requestConditionalManualCourse(
   confirmedAt: Date,
   dependencies: Pick<RecommendationRuntimeDependencies, 'buildConditionalManual'> = {},
 ): Promise<ConditionalManualUiResult> {
+  if (!isRecommendationSessionCurrent(session)) return { state: 'unavailable', receipt: { adapterCallCount: 0, newProviderAttemptCount: 0, cacheOrSessionReuseCount: 0 } };
   const originalInput = continuationInputs.get(session);
   if (!originalInput?.receiptRoutes) return { state: 'unavailable', receipt: { adapterCallCount: 0, newProviderAttemptCount: 0, cacheOrSessionReuseCount: 0 } };
   const elapsedMin = Math.max(0, Math.ceil((confirmedAt.getTime() - parseRecommendationNowIso(session.nowIso).getTime()) / 60_000));

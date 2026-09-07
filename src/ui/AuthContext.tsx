@@ -1,14 +1,14 @@
-import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Session } from '@supabase/supabase-js';
 import { Linking } from 'react-native';
 import { supabase } from '../services/supabase';
 import { accountSessionFor, authKindFor, type AuthKind } from './authStateModel';
+import { personalizationSession } from './personalizationComposition';
+import { liveLearningEvidence } from './liveActivity/learningEvidenceComposition';
+import type { SignUpAccountInputV1 } from '../services/accountRegistrationRepository';
+import { signInWithFreshCaptcha } from './passwordLoginModel';
 
-type SignUpInput = {
-  email: string;
-  password: string;
-  birthYear: number;
-};
+type SignUpInput = SignUpAccountInputV1;
 
 type AuthContextValue = {
   /** Route Proxy를 포함한 transport 소비자가 그대로 재사용하는 Supabase raw session. */
@@ -17,31 +17,23 @@ type AuthContextValue = {
   accountSession: Session | null;
   authKind: AuthKind;
   isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string, captchaToken?: string) => Promise<void>;
   signUp: (input: SignUpInput) => Promise<boolean>;
   signOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 const EMAIL_CONFIRM_REDIRECT_URL = 'timefit://auth/callback';
-// Development defaults to no email confirmation. Set this to true in the release environment.
-const emailConfirmationEnabled = process.env.EXPO_PUBLIC_EMAIL_CONFIRMATION_ENABLED === 'true';
-
-function ageBandFor(birthYear: number) {
-  const age = new Date().getFullYear() - birthYear;
-  if (age < 20) return 'under_20';
-  if (age < 30) return '20s';
-  if (age < 40) return '30s';
-  if (age < 50) return '40s';
-  return '50_plus';
-}
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const authVersion = useRef(0);
+  const currentSession = useRef<Session | null>(null);
 
   useEffect(() => {
     let mounted = true;
+    const initialVersion = authVersion.current;
     const applyAuthLink = async (url: string | null) => {
       if (!url?.startsWith(EMAIL_CONFIRM_REDIRECT_URL)) return;
 
@@ -59,30 +51,40 @@ export function AuthProvider({ children }: PropsWithChildren) {
           : accessToken && refreshToken
             ? await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken })
             : { error: new Error('인증 정보가 없는 링크입니다.') };
-      if (error) console.warn('[인증] 이메일 링크 처리 실패', error.message);
+      if (error) console.warn('[인증] 이메일 링크 처리 실패');
     };
 
     supabase.auth.getSession()
       .then(({ data, error }) => {
-        if (error) console.warn('[인증] 세션 조회 실패', error.message);
-        if (mounted) {
+        if (error) console.warn('[인증] 세션 조회 실패');
+        if (mounted && initialVersion === authVersion.current) {
+          currentSession.current = data.session;
+          personalizationSession.setAccount(accountSessionFor(data.session, false)?.user.id ?? null);
           setSession(data.session);
           setIsLoading(false);
         }
       })
       .catch((error) => {
-        console.warn('[인증] 세션 조회 실패', error);
+        console.warn('[인증] 세션 조회 실패');
         if (mounted) setIsLoading(false);
       });
 
     Linking.getInitialURL().then(applyAuthLink).catch((error) => {
-      console.warn('[인증] 초기 딥링크 처리 실패', error);
+      console.warn('[인증] 초기 딥링크 처리 실패');
     });
     const linkingSubscription = Linking.addEventListener('url', ({ url }) => {
-      applyAuthLink(url).catch((error) => console.warn('[인증] 딥링크 처리 실패', error));
+      applyAuthLink(url).catch(() => console.warn('[인증] 딥링크 처리 실패'));
     });
 
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      const previousOwner = accountSessionFor(currentSession.current, false)?.user.id ?? null;
+      const nextOwner = accountSessionFor(nextSession, false)?.user.id ?? null;
+      if (_event !== 'INITIAL_SESSION' && (previousOwner !== nextOwner || _event === 'SIGNED_OUT' || _event === 'PASSWORD_RECOVERY')) {
+        void liveLearningEvidence.clearInvalidatedNative().catch(() => undefined);
+      }
+      authVersion.current++;
+      currentSession.current = nextSession;
+      personalizationSession.setAccount(accountSessionFor(nextSession, false)?.user.id ?? null);
       setSession(nextSession);
       setIsLoading(false);
     });
@@ -94,33 +96,22 @@ export function AuthProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
-  const signIn = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-    if (error) throw error;
+  const signIn = useCallback(async (email: string, password: string, captchaToken?: string) => {
+    await signInWithFreshCaptcha(input => supabase.auth.signInWithPassword(input), email, password, captchaToken);
   }, []);
 
-  const signUp = useCallback(async ({ email, password, birthYear }: SignUpInput) => {
-    const now = new Date().toISOString();
-    const { data, error } = await supabase.auth.signUp({
-      email: email.trim(),
-      password,
-      options: {
-        ...(emailConfirmationEnabled ? { emailRedirectTo: EMAIL_CONFIRM_REDIRECT_URL } : {}),
-        data: {
-          birth_year: String(birthYear),
-          age_band: ageBandFor(birthYear),
-          terms_agreed_at: now,
-          privacy_agreed_at: now,
-        },
-      },
-    });
-    if (error) throw error;
-    return Boolean(data.session);
+  const signUp = useCallback(async (input: SignUpInput) => {
+    const { supabaseAccountRegistrationRepository } = await import('../services/releaseIdentitySupabase');
+    const result = await supabaseAccountRegistrationRepository.signUpAccount(input);
+    if (result.status === 'account_session_ready') return true;
+    if (result.status === 'email_confirmation_pending') return false;
+    throw new Error('가입 정보를 확인할 수 없어요. 잠시 후 다시 시도해주세요.');
   }, []);
 
   const signOut = useCallback(async () => {
+    personalizationSession.setAccount(null);
     const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    if (error) { personalizationSession.setAccount(accountSessionFor(currentSession.current, false)?.user.id ?? null); throw new Error('로그아웃하지 못했어요. 다시 시도해주세요.'); }
   }, []);
 
   const authKind = authKindFor(session, isLoading);

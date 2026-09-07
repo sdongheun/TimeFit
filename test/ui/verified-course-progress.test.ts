@@ -57,10 +57,23 @@ test('UPROGRESS01-R: app/web 길찾기 실패는 체류 단계와 재시도 가�
 
 test('UPROGRESS01-R: same-tick 다음 길찾기는 화면 lock으로 한 번만 시작한다', () => {
   const lock = createVerifiedCourseRouteOpenLock();
-  assert.equal(lock.tryLock(), true);
-  assert.equal(lock.tryLock(), false);
-  lock.release();
-  assert.equal(lock.tryLock(), true);
+  const firstRelease = lock.tryLock();
+  assert.equal(typeof firstRelease, 'function');
+  assert.equal(lock.tryLock(), null);
+  firstRelease?.();
+  assert.equal(typeof lock.tryLock(), 'function');
+});
+
+test('ULA departure regression: external return invalidates only the old lock owner', () => {
+  const lock = createVerifiedCourseRouteOpenLock();
+  const staleRelease = lock.tryLock();
+  lock.resetForExternalReturn();
+  const currentRelease = lock.tryLock();
+  assert.equal(typeof currentRelease, 'function');
+  staleRelease?.();
+  assert.equal(lock.tryLock(), null, 'a late finally from the first Kakao handoff must not unlock departure routing');
+  currentRelease?.();
+  assert.equal(typeof lock.tryLock(), 'function');
 });
 
 test('URELEASEONESTOP01: 1곳 체류 뒤 최종 이동 CTA는 왕복과 도착지를 구분한다', () => {

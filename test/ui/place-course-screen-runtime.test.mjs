@@ -4,13 +4,17 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import 'tsx/cjs';
 import { screenRuntime } from './support/screenRuntime.mjs';
+import { approvedPhotoEvidence } from './fixtures/approvedPhoto.mjs';
 const require = createRequire(import.meta.url);
 const { homeActiveCourseProjection, startActiveVerifiedCourse, updateActiveVerifiedCourse } = require('../../src/ui/activeVerifiedCourseModel.ts');
 // Match the module instance required by the production TSX hook host.
 const { placeDetailSelectionHandoff } = require('../../src/ui/placeDetailModel.ts');
 const { createPrivateWalkConnectorPort } = require('../../src/services/privateWalkConnector.ts');
 const { placeDetailLayout } = require('../../src/ui/placeDetailLayout.ts');
-const { openKakaoRouteWithFallback } = require('../../src/ui/execution/schedule.ts');
+const { openKakaoRouteWithFallback, isKakaoRouteOpenSuccess, isValidKakaoRouteStage } = require('../../src/ui/execution/schedule.ts');
+const { createLiveCourseProgressController, projectVerifiedProgressFromLocal } = require('../../src/ui/liveActivity/courseProgressRuntimeModel.ts');
+const { ownedCourseFixture } = require('./fixtures/ownedCoursePorts.ts');
+const { createOwnedCourseLifecycle } = require('../../src/ui/ownedCourseLifecycle.ts');
 let networkAttempts = 0;
 beforeEach((context) => {
   networkAttempts = 0;
@@ -19,24 +23,51 @@ beforeEach((context) => {
 afterEach(() => assert.equal(networkAttempts, 0));
 
 const session = { nowIso: '2026-09-05T06:00:00.000Z', origin: { id: 'origin', label: '출발', lat: 35.1, lon: 129.1 }, destination: { id: 'destination', label: '도착', lat: 35.2, lon: 129.2 }, remainingMin: 120, arrivalBufferMin: 10 };
-const places = ['A', 'B'].map((id, i) => ({ contentId: id, title: `긴 장소 이름 ${id}`, category: '문화시설', subCategory: '전시', imageUrl: `https://example.test/${id}.jpg`, lat: 35.13 + i * .01, lon: 129.13 + i * .01, addr1: '부산 긴 주소 '.repeat(8), detailDescription: '설명'.repeat(120), operatingHours: ['평일 10~18', '주말 10~19'] }));
+const places = ['A', 'B'].map((id, i) => ({ contentId: id, title: `긴 장소 이름 ${id}`, category: '문화시설', subCategory: '전시', imageUrl: `https://example.test/${id}.jpg`, imageEvidence: approvedPhotoEvidence, lat: 35.13 + i * .01, lon: 129.13 + i * .01, addr1: '부산 긴 주소 '.repeat(8), detailDescription: '설명'.repeat(120), operatingHours: ['평일 10~18', '주말 10~19'] }));
 function course(ids = ['B', 'A']) { return { id: ids.join('-'), placeIds: ids, stops: ids.map(placeId => ({ placeId, stayMin: 20, stayState: 'short', availabilityState: 'structured_verified', arrivalAt: '2026-09-05T06:10:00Z', departureAt: '2026-09-05T06:30:00Z' })), legs: Array.from({ length: ids.length + 1 }, (_, i) => ({ fromId: i ? ids[i - 1] : 'origin', toId: ids[i] ?? 'destination', mode: 'walk', min: 5 })), travelMin: (ids.length + 1) * 5, stayMin: ids.length * 20, totalMin: (ids.length + 1) * 5 + ids.length * 20 + 10, arrivalBufferMin: 10, remainingAfterCourseMin: 20, remainingAfterArrivalBufferMin: 10 }; }
 const catalog = { matched: { data: places }, unmatched: { data: [] } };
 const settle = async () => { for (let i = 0; i < 12; i++) await Promise.resolve(); };
+
+for (const ids of [['A'], ['B', 'A']]) test(`B actual CourseConfirm ${ids.join('→')} writes through production owner service and clears before remote sync`, async () => {
+  const factory = ownedCourseFixture(), ports = factory.make();
+  const lifecycle = createOwnedCourseLifecycle(async () => ports);
+  const f = confirmFixture(course(ids), {
+    './courseCompletionComposition': { courseCompletionRepository: { complete: lifecycle.complete } },
+    './ownedCourseLifecycle': { ownedCourseLifecycle: { async sync(id) { assert.equal(f.flow.activeVerifiedCourse, null); return lifecycle.sync(id); } } },
+  });
+  f.screen.press('verified-course-start');
+  const run = f.flow.activeVerifiedCourse.courseRunId;
+  await lifecycle.begin(run);
+  f.setRoute('app_opened');
+  for (let i = 0; i < ids.length * 2 + 1; i++) { f.screen.press('verified-progress-primary'); for (let n = 0; n < 6; n++) await settle(); }
+  f.screen.press('verified-progress-primary');
+  for (let n = 0; n < 20; n++) await settle();
+  assert.equal(f.flow.activeVerifiedCourse, null);
+  assert.equal((await ports.readOwnedDeviceCourseCompletions()).records[0].places.length, ids.length);
+  assert.equal(factory.samples.length, 0, 'unconfirmed dwell cannot become a sample');
+});
 function confirmFixture(value = course(), overrides = {}) {
-  const calls = [], listeners = new Map();
+  overrides = { './ownedCourseLifecycle': { ownedCourseLifecycle: { async sync() {} } }, ...overrides };
+  overrides = { ...overrides, './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: {
+    async prepareHandoff() { return { status: 'prepared' }; }, async settleHandoff() {},
+    async afterHandoff() {}, async confirmArrival() {}, async readState() { return null; }, async readActualDwell() { return {}; }, async finish() {},
+    ...overrides['./liveActivity/courseProgressComposition']?.liveCourseProgressRuntime,
+  } } };
+  const calls = [], listeners = new Map(), appStateListeners = new Set();
   let routeResult = 'failed', resolveRoute;
-  const flow = { activeVerifiedCourse: null, startActiveVerifiedCourse({ session, course }) { calls.push('start'); return this.activeVerifiedCourse = startActiveVerifiedCourse(session, course, () => 'active', undefined, () => 'run'); }, updateActiveVerifiedCourse(id, fn) { this.activeVerifiedCourse = updateActiveVerifiedCourse(this.activeVerifiedCourse, id, fn); }, clearActiveVerifiedCourse() { calls.push('clear'); this.activeVerifiedCourse = null; } };
+  const flow = { activeVerifiedCourse: null, pendingNavigationAction: null, startActiveVerifiedCourse({ session, course }) { calls.push('start'); return this.activeVerifiedCourse = startActiveVerifiedCourse(session, course, () => 'active', undefined, () => 'run'); }, updateActiveVerifiedCourse(id, fn) { this.activeVerifiedCourse = updateActiveVerifiedCourse(this.activeVerifiedCourse, id, fn); }, clearActiveVerifiedCourse() { calls.push('clear'); this.activeVerifiedCourse = null; }, async refreshPendingNavigationAction() { return this.pendingNavigationAction; } };
   const navigation = { addListener(name, fn) { listeners.set(name, fn); return () => listeners.delete(name); }, replace(...args) { calls.push(['replace', ...args]); }, goBack() { calls.push('back'); } };
-  const runtime = screenRuntime({ '@react-navigation/native': { usePreventRemove(prevent, callback) { listeners.set('beforeRemove', event => { if (prevent) { event.preventDefault(); callback({ data: {} }); } }); } }, '../data/busan_poi_catalog.json': catalog, './AppFlowContext': { useActiveVerifiedCourseFlow: () => flow }, './privateWalkConnectorComposition': { appPrivateWalkConnectorPort: null }, './courseCompletionComposition': { courseCompletionRepository: { async complete(input) { calls.push(['complete', input]); return { status: 'created' }; } } }, './execution/schedule': { async openKakaoRouteWithFallback(input) { calls.push(['route', input]); return routeResult === 'pending' ? new Promise(r => { resolveRoute = r; }) : routeResult; } }, './mainTabNavigation': { resetToMain() { calls.push('home'); }, resetToActivityRecord() { calls.push('record'); }, resetToMyCourses() { calls.push('courses'); } }, ...overrides });
+  const runtime = screenRuntime({ '@react-navigation/native': { usePreventRemove(prevent, callback) { listeners.set('beforeRemove', event => { if (prevent) { event.preventDefault(); callback({ data: {} }); } }); } }, '../data/busan_poi_catalog.json': catalog, './AppFlowContext': { useActiveVerifiedCourseFlow: () => flow }, './privateWalkConnectorComposition': { appPrivateWalkConnectorPort: null }, './courseCompletionComposition': { courseCompletionRepository: { async complete(input) { calls.push(['complete', input]); return { status: 'created' }; } } }, './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: { async afterHandoff() {}, async confirmArrival() {}, async readState() { return null; }, async readActualDwell() { return {}; }, async finish() {} } }, './liveActivity/courseProgressNotifications': { async prepareLiveCourseNotifications() {} }, './liveActivity/liveActivityDiagnostics': { createDiagnosticAttemptId: () => 'fixture-attempt', async recordLiveActivityAppDiagnostic(value) { calls.push(['diagnostic', value]); } }, './liveActivity/nativeLiveActivityPort': { nativePendingNavigationPort: { async read() { return null; }, async transition() { return false; }, async clear() {} } }, './execution/schedule': { isKakaoRouteOpenSuccess, isValidKakaoRouteStage, async openKakaoRouteWithFallback(input) { calls.push(['route', input]); return routeResult === 'pending' ? new Promise(r => { resolveRoute = r; }) : routeResult; } }, './mainTabNavigation': { resetToMain() { calls.push('home'); }, resetToActivityRecord() { calls.push('record'); }, resetToMyCourses() { calls.push('courses'); } }, ...overrides });
+  runtime.native.AppState = { addEventListener(_name, listener) { appStateListeners.add(listener); return { remove() { appStateListeners.delete(listener); } }; } };
   const { CourseConfirmScreen } = runtime.load('src/ui/CourseConfirmScreen.tsx');
   const screen = runtime.mount(CourseConfirmScreen, { route: { params: { session, course: value } }, navigation });
-  return { screen, flow, calls, listeners, resume() { const projection = homeActiveCourseProjection(flow.activeVerifiedCourse, null, id => id); screen.unmount(); return runtime.mount(CourseConfirmScreen, { route: { params: projection.params }, navigation }); }, setRoute: v => { routeResult = v; }, resolve: v => resolveRoute(v) };
+  return { screen, flow, calls, listeners, emitAppState: state => appStateListeners.forEach(listener => listener(state)), resume() { const projection = homeActiveCourseProjection(flow.activeVerifiedCourse, null, id => id); screen.unmount(); return runtime.mount(CourseConfirmScreen, { route: { params: projection.params }, navigation }); }, setRoute: v => { routeResult = v; }, resolve: v => resolveRoute(v) };
 }
 
 test('PF remediation failure-first: actual CourseConfirm keeps identical vertical cards/map through start and external handoff', async () => {
   const f = confirmFixture();
-  const cards = () => f.screen.nodes(n => n.props.accessibilityRole === 'link').map(n => n.props.accessibilityLabel);
+  const cards = () => f.screen.nodes(n => n.props.accessibilityRole === 'link' && n.props.accessibilityLabel?.includes('카카오맵에서 장소 보기')).map(n => n.props.accessibilityLabel);
+  assert.equal(f.screen.nodes(n => n.props.testID === 'place-photo-credit').length, 2);
   const expected = ['긴 장소 이름 B 카카오맵에서 장소 보기', '긴 장소 이름 A 카카오맵에서 장소 보기'];
   assert.deepEqual(cards(), expected);
   const photos = f.screen.nodes(n => n.type === 'Image').map(n => n.props.source.uri);
@@ -53,6 +84,7 @@ test('PF remediation failure-first: actual CourseConfirm keeps identical vertica
   assert.equal(f.flow.activeVerifiedCourse.progress.routeOpened, false);
   f.setRoute('pending');
   f.screen.press('verified-progress-primary'); f.screen.press('verified-progress-primary');
+  await settle();
   f.resolve('app_opened'); await settle();
   assert.equal(f.calls.filter(c => c[0] === 'route').length, 2);
   assert.equal(f.flow.activeVerifiedCourse.progress.stepIndex, 0);
@@ -60,6 +92,168 @@ test('PF remediation failure-first: actual CourseConfirm keeps identical vertica
   f.screen.press('verified-progress-primary');
   assert.equal(f.flow.activeVerifiedCourse.progress.stepIndex, 1);
   assert.deepEqual(cards(), expected);
+});
+
+test('ULA regression failure-first: first route prepares Live Activity before iOS external handoff and rolls it back on route failure', async () => {
+  const order = [];
+  const f = confirmFixture(course(['A']), {
+    './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: {
+      async prepareHandoff() { order.push('activity'); return { status: 'prepared' }; },
+      async settleHandoff(input) { assert.equal(input.opened, false); order.push('rollback'); },
+      async confirmArrival() {}, async readState() { return null; }, async readActualDwell() { return {}; },
+      async finish() { throw Error('preparation is not course cancellation'); },
+    } },
+    './execution/schedule': { isKakaoRouteOpenSuccess, isValidKakaoRouteStage, async openKakaoRouteWithFallback() { order.push('route'); return 'failed'; } },
+  });
+  f.screen.press('verified-course-start');
+  f.screen.press('verified-progress-primary');
+  await settle();
+  assert.deepEqual(order, ['activity', 'route', 'rollback']);
+  assert.equal(f.flow.activeVerifiedCourse.progress.routeOpened, false);
+});
+
+for (const ids of [['A'], ['B', 'A']]) for (const result of ['app_opened', 'failed', 'throw']) {
+  test(`release A real screen/runtime: ${ids.join('-')} ${result}, preparation/background/duplicate/settlement`, async () => {
+    let raw = null, resolve, reject;
+    const calls = [];
+    const dependencies = {
+      storage: { async read() { return raw; }, async write(value) { raw = value; }, async clear() { raw = null; }, async listReceipts() { return []; }, async acknowledgeReceipt() {} },
+      activity: { async start(state) { calls.push('activity-prepare'); assert.equal(state.route, null); }, async update() { calls.push('activity-update'); }, async end() { calls.push('activity-end'); } },
+      notification: { async sync() { calls.push('notification'); }, async cancelOwned() {} },
+    };
+    const controller = createLiveCourseProgressController(dependencies);
+    const f = confirmFixture(course(ids), {
+      './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: controller },
+      './execution/schedule': { isKakaoRouteOpenSuccess, isValidKakaoRouteStage, async openKakaoRouteWithFallback() { calls.push('external'); return new Promise((yes, no) => { resolve = yes; reject = no; }); } },
+    });
+    f.screen.press('verified-course-start');
+    f.screen.press('verified-progress-primary');
+    for (let i = 0; i < 100; i++) await Promise.resolve();
+    f.screen.press('verified-progress-primary');
+    f.emitAppState('background');
+    const cold = await createLiveCourseProgressController(dependencies).readState();
+    assert.deepEqual(calls, ['activity-prepare', 'external']);
+    assert.equal(cold.route, null);
+    assert.deepEqual(cold.processedEventIds, []);
+    assert.equal(projectVerifiedProgressFromLocal(cold).routeOpened, false);
+    if (result === 'throw') reject(Error('external failure')); else resolve(result);
+    for (let i = 0; i < 100; i++) await Promise.resolve();
+    f.screen.render();
+    const state = await controller.readState();
+    assert.equal(calls.filter(call => call === 'external').length, 1);
+    assert.equal(f.flow.activeVerifiedCourse.progress.routeOpened, result === 'app_opened');
+    assert.equal(calls.includes('notification'), result === 'app_opened');
+    assert.equal(state.route !== null, result === 'app_opened');
+    if (result !== 'app_opened') {
+      assert.equal(state.handoffPreparation.status, 'failed');
+      assert.ok(calls.includes('activity-end'));
+    }
+  });
+}
+
+test('ULA lock handoff actual screen: native departure 복구 뒤 추가 CTA 없이 snapshot 다음 구간을 한 번 연다', async () => {
+  let pendingStore = null; let localState = null; const nativeCalls = [];
+  const overrides = {
+    './liveActivity/nativeLiveActivityPort': { nativePendingNavigationPort: {
+      async read() { return pendingStore; },
+      async transition(action, from, to) {
+        nativeCalls.push(`transition:${from}:${to}`);
+        if (!pendingStore || pendingStore.actionId !== action.actionId || pendingStore.state !== from) return false;
+        pendingStore = { ...pendingStore, state: to }; return true;
+      },
+      async clear() { nativeCalls.push('clear'); pendingStore = null; },
+    } },
+    './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: {
+      async afterHandoff() { nativeCalls.push('progress'); }, async confirmArrival() {}, async readState() { return localState; }, async readActualDwell() { return {}; }, async finish() {},
+    } },
+  };
+  const f = confirmFixture(course(), overrides);
+  f.screen.press('verified-course-start');
+  f.flow.activeVerifiedCourse.progress = { stepIndex: 1, routeOpened: false, finished: false };
+  pendingStore = f.flow.pendingNavigationAction = { schemaVersion: 1, purpose: 'course_progress_navigation', actionId: 'native-departure', courseRunId: 'run', stopId: 'stop:0:B', baseRevision: 2, state: 'pending' };
+  localState = { schemaVersion: 1, courseRunId: 'run', revision: 3, phase: 'traveling', finalArrivalAtMs: 1, arrivalBufferMin: 10, activeStopId: 'stop:0:B', route: null, processedEventIds: ['native-departure'], updatedAtMs: 2, terminalAtMs: null,
+    stops: [{ stopId: 'stop:0:B', placeId: 'B', title: 'B', plannedStayMin: 20, snoozeUsed: false, arrivedAtMs: 1, departedAtMs: 2 }, { stopId: 'stop:1:A', placeId: 'A', title: 'A', plannedStayMin: 20, snoozeUsed: false, arrivedAtMs: null, departedAtMs: null }] };
+  f.setRoute('app_opened');
+  f.screen.render(); await settle(); f.screen.render(); await settle();
+  assert.equal(f.calls.filter(value => value[0] === 'route').length, 1);
+  assert.equal(f.calls.find(value => value[0] === 'route')[1].to.name, '긴 장소 이름 A');
+  assert.deepEqual(f.flow.activeVerifiedCourse.progress, { stepIndex: 2, routeOpened: true, finished: false });
+  assert.deepEqual(nativeCalls, ['transition:pending:executing', 'progress', 'transition:executing:success', 'clear']);
+});
+
+test('ULA departure regression failure-first: suspended first Kakao handoff lock cannot block Live Activity departure auto-route', async () => {
+  let pendingStore = null; let localState = null; let routeAttempt = 0; const opened = [];
+  const f = confirmFixture(course(), {
+    './liveActivity/nativeLiveActivityPort': { nativePendingNavigationPort: {
+      async read() { return pendingStore; },
+      async transition(action, from, to) {
+        if (!pendingStore || pendingStore.actionId !== action.actionId || pendingStore.state !== from) return false;
+        pendingStore = { ...pendingStore, state: to }; return true;
+      },
+      async clear() { pendingStore = null; },
+    } },
+    './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: {
+      async afterHandoff() { return { status: routeAttempt === 0 ? 'started' : 'updated' }; },
+      async confirmArrival() {}, async readState() { return localState; }, async readActualDwell() { return {}; }, async finish() {},
+    } },
+    './execution/schedule': { isKakaoRouteOpenSuccess, isValidKakaoRouteStage, async openKakaoRouteWithFallback(input) {
+      routeAttempt += 1; opened.push(input.to.name);
+      if (routeAttempt === 1) return new Promise(() => undefined);
+      return 'app_opened';
+    } },
+  });
+  f.screen.press('verified-course-start');
+  f.screen.press('verified-progress-primary');
+  await settle();
+  assert.deepEqual(opened, ['긴 장소 이름 B']);
+
+  f.flow.activeVerifiedCourse.progress = { stepIndex: 1, routeOpened: false, finished: false };
+  pendingStore = f.flow.pendingNavigationAction = { schemaVersion: 1, purpose: 'course_progress_navigation', actionId: 'depart-while-first-suspended', courseRunId: 'run', stopId: 'stop:0:B', baseRevision: 2, state: 'pending' };
+  localState = { schemaVersion: 1, courseRunId: 'run', revision: 3, phase: 'traveling', finalArrivalAtMs: 1, arrivalBufferMin: 10, activeStopId: 'stop:0:B', route: null, processedEventIds: ['depart-while-first-suspended'], updatedAtMs: 2, terminalAtMs: null,
+    stops: [{ stopId: 'stop:0:B', placeId: 'B', title: 'B', plannedStayMin: 20, snoozeUsed: false, arrivedAtMs: 1, departedAtMs: 2 }, { stopId: 'stop:1:A', placeId: 'A', title: 'A', plannedStayMin: 20, snoozeUsed: false, arrivedAtMs: null, departedAtMs: null }] };
+  f.emitAppState('background');
+  f.emitAppState('active');
+  f.screen.render(); await settle(); f.screen.render(); await settle();
+
+  assert.deepEqual(opened, ['긴 장소 이름 B', '긴 장소 이름 A']);
+  assert.equal(pendingStore, null);
+  assert.deepEqual(f.flow.activeVerifiedCourse.progress, { stepIndex: 2, routeOpened: true, finished: false });
+});
+
+test('ULA departure regression: one-stop final destination also auto-routes after TimeFit activation', async () => {
+  let pendingStore = null; let localState = null; let routeAttempt = 0; const opened = [];
+  const f = confirmFixture(course(['A']), {
+    './liveActivity/nativeLiveActivityPort': { nativePendingNavigationPort: {
+      async read() { return pendingStore; },
+      async transition(action, from, to) {
+        if (!pendingStore || pendingStore.actionId !== action.actionId || pendingStore.state !== from) return false;
+        pendingStore = { ...pendingStore, state: to }; return true;
+      },
+      async clear() { pendingStore = null; },
+    } },
+    './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: {
+      async afterHandoff() { return { status: routeAttempt === 0 ? 'started' : 'updated' }; },
+      async confirmArrival() {}, async readState() { return localState; }, async readActualDwell() { return {}; }, async finish() {},
+    } },
+    './execution/schedule': { isKakaoRouteOpenSuccess, isValidKakaoRouteStage, async openKakaoRouteWithFallback(input) {
+      routeAttempt += 1; opened.push(input.to.name);
+      if (routeAttempt === 1) return new Promise(() => undefined);
+      return 'app_opened';
+    } },
+  });
+  f.screen.press('verified-course-start');
+  f.screen.press('verified-progress-primary');
+  await settle();
+  f.flow.activeVerifiedCourse.progress = { stepIndex: 1, routeOpened: false, finished: false };
+  pendingStore = f.flow.pendingNavigationAction = { schemaVersion: 1, purpose: 'course_progress_navigation', actionId: 'depart-one-stop', courseRunId: 'run', stopId: 'stop:0:A', baseRevision: 2, state: 'pending' };
+  localState = { schemaVersion: 1, courseRunId: 'run', revision: 3, phase: 'traveling', finalArrivalAtMs: 1, arrivalBufferMin: 10, activeStopId: 'stop:0:A', route: null, processedEventIds: ['depart-one-stop'], updatedAtMs: 2, terminalAtMs: null,
+    stops: [{ stopId: 'stop:0:A', placeId: 'A', title: 'A', plannedStayMin: 20, snoozeUsed: false, arrivedAtMs: 1, departedAtMs: 2 }] };
+  f.emitAppState('background');
+  f.emitAppState('active');
+  f.screen.render(); await settle(); f.screen.render(); await settle();
+  assert.deepEqual(opened, ['긴 장소 이름 A', '도착']);
+  assert.equal(pendingStore, null);
+  assert.deepEqual(f.flow.activeVerifiedCourse.progress, { stepIndex: 2, routeOpened: true, finished: false });
 });
 
 test('PF remediation failure-first: actual PlaceDetail measured panel pads map, caps small screen and keeps CTA outside information scroll', () => {
@@ -91,7 +285,7 @@ test('PF actual Results + PlaceDetail: open/close/back/stale, explicit A focus-o
     'expo-location': { requestForegroundPermissionsAsync: forbidden('permission'), getCurrentPositionAsync: forbidden('gps') },
     './privateWalkConnectorComposition': { appPrivateWalkConnectorPort: { getConnector: forbidden('connector') } },
     './courseCompletionComposition': { courseCompletionRepository: { complete: forbidden('completion') } },
-    './execution/schedule': { openKakaoRouteWithFallback: forbidden('route') },
+    './execution/schedule': { isKakaoRouteOpenSuccess, isValidKakaoRouteStage, openKakaoRouteWithFallback: forbidden('route') },
     './InPlaceTransition': { InPlaceTransition: 'InPlaceTransition' },
     './recommendation/CourseV1SummaryCard': { CourseV1SummaryCard: 'CourseV1SummaryCard' },
     './recommendation/TwoStopSelectionPanel': { TwoStopSelectionPanel: 'TwoStopSelectionPanel' },
@@ -312,6 +506,7 @@ test('PF layout matrix: 320×568 / 375×667 / 390×844, fonts 1/1.6/2, content/f
 test('PF failure-first: active native back returns Home without clearing run; pending external result cannot overwrite a newer confirmed step', async () => {
   const f = confirmFixture(); f.screen.press('verified-course-start');
   f.setRoute('pending'); f.screen.press('verified-progress-primary');
+  await settle();
   const original = f.flow.activeVerifiedCourse;
   f.flow.updateActiveVerifiedCourse(original.identity, () => ({ stepIndex: 1, routeOpened: false, finished: false }));
   f.resolve('app_opened'); await settle();
@@ -333,6 +528,21 @@ test('PF actual completion failure: explicit without-record clears once without 
   const without = f.screen.get('finish-without-record').props.onPress; without(); without(); f.screen.render();
   assert.equal(attempts, 1); assert.equal(f.flow.activeVerifiedCourse, null);
   assert.equal(f.calls.filter(c => c === 'clear').length, 1); assert.equal(f.calls.filter(c => c === 'courses').length, 1);
+});
+
+test('B-remediation actual screen: floor 체류값을 기존 완료 input에 그대로 한 번 전달한다', async () => {
+  const writes = [];
+  const f = confirmFixture(course(['A']), {
+    './courseCompletionComposition': { courseCompletionRepository: { async complete(input) { writes.push(input); return { status: 'created' }; } } },
+    './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: {
+      async afterHandoff() {}, async confirmArrival() {}, async readActualDwell() { return { A: 1 }; }, async finish() {},
+    } },
+  });
+  f.screen.press('verified-course-start');
+  f.flow.updateActiveVerifiedCourse('active', () => ({ stepIndex: 2, routeOpened: true, finished: false }));
+  f.screen.press('verified-progress-primary'); await settle();
+  assert.equal(writes.length, 1);
+  assert.equal(writes[0].places[0].actualDwellMin, 1);
 });
 
 test('PF actual KakaoRouteMap document/bridge: ordinary render preserves pan; only changed geometry or measured padding refits', () => {
@@ -366,11 +576,11 @@ test('PF actual invalid route and app/HTTPS/browser failures never advance or re
     const opened = [];
     const f = confirmFixture(course(['A']), {
       '../data/busan_poi_catalog.json': invalid ? { matched: { data: [{ ...places[0], lat: NaN }] }, unmatched: { data: [] } } : catalog,
-      './execution/schedule': { openKakaoRouteWithFallback: (input, mode) => openKakaoRouteWithFallback(input, mode, { async canOpenApp() { return true; }, async openApp() { opened.push('app'); throw Error('fixture'); }, async openWeb() { opened.push('https'); throw Error('fixture'); }, async openBrowser() { opened.push('browser'); throw Error('fixture'); } }) },
+      './execution/schedule': { isKakaoRouteOpenSuccess, isValidKakaoRouteStage, openKakaoRouteWithFallback: (input, mode) => openKakaoRouteWithFallback(input, mode, { async canOpenApp() { return true; }, async openApp() { opened.push('app'); throw Error('fixture'); }, async openWeb() { opened.push('https'); throw Error('fixture'); }, async openBrowser() { opened.push('browser'); throw Error('fixture'); }, observeAppState() { return () => undefined; } }) },
     });
     f.screen.press('verified-course-start'); f.screen.press('verified-progress-primary'); await settle();
     assert.deepEqual(opened, invalid ? [] : ['app', 'https', 'browser']);
     assert.deepEqual(f.flow.activeVerifiedCourse.progress, { stepIndex: 0, routeOpened: false, finished: false });
-    assert.deepEqual(f.calls, ['start']);
+    assert.deepEqual(f.calls.filter(value => !Array.isArray(value) || value[0] !== 'diagnostic'), ['start']);
   }
 });

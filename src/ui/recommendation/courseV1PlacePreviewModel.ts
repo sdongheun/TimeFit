@@ -1,4 +1,5 @@
-export type CourseV1DisplayPlace = {
+import { approvedPlacePhoto, type PlacePhotoInput } from '../placePhotoModel';
+export type CourseV1DisplayPlace = PlacePhotoInput & {
   title: string;
   lat: number;
   lon: number;
@@ -22,8 +23,9 @@ function isVerifiedKakaoPlaceUrl(place: CourseV1DisplayPlace): boolean {
 }
 
 export function getPlacePreviewKind(place: CourseV1DisplayPlace, imageFailed: boolean): PlacePreviewKind {
-  if (!imageFailed && isHttpsUrl(place.imageUrl)) {
-    return { kind: 'image', sourceLabel: place.imageSource === 'tourapi' ? 'TourAPI 제공 사진' : '부산시 공식 사진' };
+  const photo = approvedPlacePhoto(place);
+  if (!imageFailed && photo) {
+    return { kind: 'image', sourceLabel: photo.attribution };
   }
   return { kind: 'placeholder' };
 }

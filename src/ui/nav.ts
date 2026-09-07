@@ -71,6 +71,7 @@ export type RootStackParamList = {
   Feedback: { course: Course; ctx: PlanCtx };
   ActivityRecord: undefined;
   Profile: undefined;
+  Login: undefined;
 };
 
 // 분(자정 기준) → "13:00"

@@ -34,12 +34,16 @@ import { useAuth } from './AuthContext';
 import { resolveCaptchaChallengeUrl } from './captchaVerificationModel';
 import { recommendationFailureDisplay, recommendationGateDecision } from './captchaRecommendationGateModel';
 import { QA_RELEASE_ONE_STOP_SCENARIOS, buildQaReleaseOneStopReceipt, buildQaReleaseOneStopSession, createQaReleaseOneStopRunController, nextQaReleaseOneStopScenarioId, qaReleaseOneStopLauncherEnabled, qaReleaseOneStopReceiptLine, type QaReleaseOneStopRunToken, type QaReleaseOneStopScenarioId } from './qaReleaseOneStopLauncherModel';
+import { createAppLiveActivityA3CleanupController, createAppLiveActivityA3Controller } from './liveActivity/a3VerificationComposition';
+import type { LiveActivityA3Result } from './liveActivity/a3VerificationModel';
+import { buildA3FixturePayload } from './liveActivity/lifecyclePolicy';
+import { clearLiveActivityDiagnosticReport, copyLiveActivityDiagnosticReport, liveActivityDiagnosticsEnabled, readLiveActivityDiagnosticReport } from './liveActivity/liveActivityDiagnostics';
 
 const SEOMYEON = { lat: 35.1578, lon: 129.0594 };
 const MERIDIEMS = ['오전', '오후'] as const;
 const HOURS_12 = Array.from({ length: 12 }, (_, index) => String(index + 1));
 const MINUTES = Array.from({ length: 60 }, (_, minute) => String(minute).padStart(2, '0'));
-type Page = 'setup' | 'test-clock' | 'qa-launcher' | 'loading';
+type Page = 'setup' | 'test-clock' | 'qa-launcher' | 'live-diagnostics' | 'loading';
 type PickTarget = 'origin' | 'destination' | null;
 type Props = NativeStackScreenProps<RootStackParamList, 'TimeSetup'>;
 type QaCaptchaRequest = Readonly<{ runToken: QaReleaseOneStopRunToken; session: RecommendationSession }>;
@@ -88,7 +92,14 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const [qaCaptchaRequest, setQaCaptchaRequest] = useState<QaCaptchaRequest | null>(null);
   const [qaRunLocked, setQaRunLocked] = useState(false);
   const [qaLastFinishedId, setQaLastFinishedId] = useState<QaReleaseOneStopScenarioId | null>(null);
+  const [a3Running, setA3Running] = useState(false);
+  const [a3Status, setA3Status] = useState('');
+  const [liveDiagnosticLines, setLiveDiagnosticLines] = useState<readonly string[]>([]);
+  const [liveDiagnosticStatus, setLiveDiagnosticStatus] = useState<'idle' | 'loading' | 'unavailable' | 'empty' | 'ready' | 'failed'>('idle');
+  const [liveDiagnosticCopyStatus, setLiveDiagnosticCopyStatus] = useState('');
   const qaRunController = useRef(createQaReleaseOneStopRunController()).current;
+  const a3Controller = useRef(createAppLiveActivityA3Controller()).current;
+  const a3CleanupController = useRef(createAppLiveActivityA3CleanupController()).current;
   const locationLabel = useRef(createKakaoLocationLabelAdapter()).current;
   const gpsInitialization = useRef(createSetupGpsInitialization()).current;
   const runGuard = useRef(createSetupRunGuard()).current;
@@ -99,7 +110,9 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const routeProxyEnabled = process.env.EXPO_PUBLIC_ROUTE_PROXY_ENABLED === 'true';
   const captchaDiagnosticsEnabled = process.env.EXPO_PUBLIC_CAPTCHA_DIAGNOSTICS === 'true';
   const recommendationDiagnostics = process.env.EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS;
+  const liveDiagnosticsEnabled = liveActivityDiagnosticsEnabled(SHOW_TEST_CLOCK, recommendationDiagnostics);
   const qaLauncherEnabled = qaReleaseOneStopLauncherEnabled(SHOW_TEST_CLOCK, recommendationDiagnostics);
+  const a3LauncherEnabled = qaLauncherEnabled;
   const qaPlaceNames = useMemo(() => qaLauncherEnabled ? new Map([...runtimeCatalog.matched.data, ...runtimeCatalog.unmatched.data].map((place) => [place.contentId, place.title])) : null, [qaLauncherEnabled]);
   const applyArrivalBufferDecision = (decision: ArrivalBufferDecision) => {
     setArrivalBufferMin(decision.value);
@@ -233,6 +246,50 @@ export function TimeSetupScreen({ navigation, route }: Props) {
     if (!qaRunController.beginRecommendation(runToken)) return;
     void executeRecommendation(session, { proxyEnabled: decision.kind === 'start_proxy', qaRunToken: runToken });
   };
+  const describeA3Result = (result: LiveActivityA3Result): string => {
+    if (result.kind === 'started') return `Live Activity 시작됨 · 전환 시 앱 ${result.applicationState ?? 'unknown'}`;
+    if (result.kind === 'already_active') return `기존 Live Activity 유지 · 앱 ${result.applicationState ?? 'unknown'}`;
+    if (result.kind === 'activity_disabled') return '설정에서 Live Activities를 켜 주세요.';
+    if (result.kind === 'cleanup_required') return '기존 테스트 Activity를 먼저 종료해 주세요.';
+    if (result.kind === 'unsupported') return '이 기기 또는 빌드에서는 Live Activity를 사용할 수 없어요.';
+    if (result.kind === 'handoff_failed') return '카카오맵 전환 실패 · Live Activity를 시작하지 않았어요.';
+    if (result.kind === 'opened_without_activity') return '카카오맵 전환 성공 · Live Activity 시작은 실패했어요.';
+    return '이미 확인을 실행 중이에요.';
+  };
+  const runLiveActivityA3 = async () => {
+    if (!a3LauncherEnabled || a3Running) return;
+    setA3Running(true);
+    setA3Status('카카오맵 전환 확인 중…');
+    const result = await a3Controller.run(buildA3FixturePayload(Date.now()));
+    setA3Status(describeA3Result(result));
+    setA3Running(false);
+  };
+  const cleanupLiveActivityA3 = async () => {
+    if (!a3LauncherEnabled || a3Running) return;
+    setA3Running(true);
+    setA3Status('테스트 Activity 종료 확인 중…');
+    try {
+      const result = await a3CleanupController.cleanupTestFixtures();
+      if (result.status === 'ended') setA3Status('테스트 Live Activity를 종료했어요.');
+      else if (result.status === 'already_ended') setA3Status('종료할 테스트 Live Activity가 없어요.');
+      else setA3Status(`일부 테스트 Activity 종료 실패 · ${result.failedActivityIds.length}개 재시도 필요`);
+    } catch { setA3Status('테스트 Activity 종료 실패 · 다시 시도해 주세요.'); }
+    setA3Running(false);
+  };
+  const readLiveDiagnostics = async () => {
+    if (!liveDiagnosticsEnabled) return;
+    setLiveDiagnosticStatus('loading'); setLiveDiagnosticCopyStatus('');
+    const report = await readLiveActivityDiagnosticReport();
+    setLiveDiagnosticLines(report.lines); setLiveDiagnosticStatus(report.status);
+  };
+  const copyLiveDiagnostics = async () => {
+    const result = await copyLiveActivityDiagnosticReport();
+    setLiveDiagnosticCopyStatus(result.status === 'copied' ? `진단 ${result.entryCount}건을 복사했어요.` : '진단을 복사하지 못했어요.');
+  };
+  const clearLiveDiagnostics = async () => {
+    try { await clearLiveActivityDiagnosticReport(); setLiveDiagnosticLines([]); setLiveDiagnosticStatus('empty'); setLiveDiagnosticCopyStatus('진단 기록만 비웠어요.'); }
+    catch { setLiveDiagnosticCopyStatus('진단 기록을 비우지 못했어요.'); }
+  };
   const back = () => {
     gpsInitialization.invalidate();
     if (page === 'setup') navigation.goBack();
@@ -254,7 +311,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
     if (!qaRunController.beginRecommendation(request.runToken)) return;
     void executeRecommendation(request.session, { captchaToken, proxyEnabled: true, qaRunToken: request.runToken });
   };
-  usePreventRemove(Boolean(searchTarget || mapTarget || captchaVisible || page === 'test-clock' || page === 'qa-launcher'), () => {
+  usePreventRemove(Boolean(searchTarget || mapTarget || captchaVisible || page === 'test-clock' || page === 'qa-launcher' || page === 'live-diagnostics'), () => {
     if (captchaVisible) closeCaptcha();
     else if (mapTarget) { pickerRequest.current++; locationEditingSession.resume(); setSearchTarget(mapTarget); setMapTarget(null); }
     else if (searchTarget) { pickerRequest.current++; locationEditingSession.end(); setSearchTarget(null); }
@@ -268,6 +325,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
     const nextScenarioId = nextQaReleaseOneStopScenarioId(qaLastFinishedId);
     return <View style={s.root}><ScrollView contentContainerStyle={[s.screen, { paddingTop: insets.top + 14 }]}><Header title="출시 추천 QA" /><Text style={s.smallCopy}>같은 날짜 15:00 · 도착 전 여유 10분으로 실제 인증과 출시 추천 경로를 한 건씩 실행합니다.</Text>{nextScenarioId ? <Text testID="qa-next-scenario" style={s.qaNext}>다음 시나리오: {nextScenarioId}</Text> : <Text testID="qa-next-scenario" style={s.qaNext}>8개 시나리오를 모두 실행했어요</Text>}{QA_RELEASE_ONE_STOP_SCENARIOS.map((scenario) => <Pressable key={scenario.id} testID={`qa-scenario-${scenario.id}`} accessibilityLabel={`${scenario.id} ${scenario.origin.label}에서 ${scenario.destination?.label ?? '출발지 복귀'} ${scenario.remainingMin}분 실행`} disabled={qaRunLocked} style={[s.qaScenario, qaRunLocked && s.primaryOff]} onPress={() => runQaScenario(scenario.id)}><View><Text style={s.rowTitle}>{scenario.id}</Text><Text style={s.rowValue}>{scenario.origin.label} → {scenario.destination?.label ?? '출발지 복귀'}</Text></View><Text style={s.qaMinutes}>{scenario.remainingMin}분</Text></Pressable>)}{error ? <Text accessibilityRole="alert" style={s.error}>{error}</Text> : null}{captchaDiagnostic ? <Text testID="route-proxy-diagnostic" style={s.diagnostic}>CAPTCHA 진단: {captchaDiagnostic}</Text> : null}</ScrollView>{captchaSheet}</View>;
   }
+  if (page === 'live-diagnostics' && liveDiagnosticsEnabled) return <View style={s.root}><ScrollView contentContainerStyle={[s.screen, { paddingTop: insets.top + 14 }]}><Header title="Live Activity 버튼 진단" /><Text style={s.smallCopy}>이 기기에만 저장된 최근 버튼·앱 반영 단계입니다. 코스나 기록은 지우지 않습니다.</Text><Pressable testID="live-activity-diagnostics-refresh" style={s.devRow} onPress={() => void readLiveDiagnostics()}><Text style={s.devText}>진단 조회</Text><Text style={s.devText}>{liveDiagnosticStatus === 'loading' ? '읽는 중…' : '새로고침 ›'}</Text></Pressable>{liveDiagnosticStatus === 'unavailable' ? <Text accessibilityRole="alert" style={s.devStatus}>이 빌드에서는 진단을 조회할 수 없어요.</Text> : null}{liveDiagnosticStatus === 'failed' ? <Text accessibilityRole="alert" style={s.devStatus}>진단 조회에 실패했어요.</Text> : null}{liveDiagnosticStatus === 'empty' ? <Text style={s.devStatus}>현재 빌드 정보만 있으며 버튼 기록은 없어요.</Text> : null}{liveDiagnosticLines.length ? <View testID="live-activity-diagnostics-report" style={s.diagnosticPanel}>{liveDiagnosticLines.map((line, index) => <Text key={`${index}:${line}`} selectable style={s.diagnosticLine}>{line}</Text>)}</View> : null}<Pressable testID="live-activity-diagnostics-copy" style={s.devRow} onPress={() => void copyLiveDiagnostics()}><Text style={s.devText}>진단 복사</Text><Text style={s.devText}>허용 필드만 ›</Text></Pressable><Pressable testID="live-activity-diagnostics-clear" style={s.devRow} onPress={() => void clearLiveDiagnostics()}><Text style={s.devText}>새 관찰 시작</Text><Text style={s.devText}>진단만 비우기 ›</Text></Pressable>{liveDiagnosticCopyStatus ? <Text accessibilityRole="alert" style={s.devStatus}>{liveDiagnosticCopyStatus}</Text> : null}</ScrollView></View>;
   const openPicker = (target: Exclude<PickTarget, null>) => {
     if (runGuard.busy()) return;
     gpsInitialization.invalidate(); pickerRequest.current++; locationEditingSession.start(target); setMapTarget(null); setError(''); setSearchTarget(target);
@@ -283,7 +341,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
           onOrigin={() => openPicker('origin')} onDestination={() => openPicker('destination')} onReturn={() => { setAppointment(null); setError(''); }}
           wheel={<View style={[s.wheelPanel, { minHeight: layout.wheelRowHeight * 4 }]}><View style={s.meridiem}><TimeWheel rowHeight={layout.wheelRowHeight} accessibilityLabel="도착 시각 오전 오후" values={MERIDIEMS} index={pm ? 1 : 0} onChange={(index) => { setError(''); setPm(index === 1); }} /></View><View style={s.wheelCol}><TimeWheel rowHeight={layout.wheelRowHeight} accessibilityLabel="도착 시각 시" values={HOURS_12} index={hour12 - 1} onChange={(index) => { setError(''); setHour12(index + 1); }} /></View><View style={s.wheelCol}><TimeWheel rowHeight={layout.wheelRowHeight} accessibilityLabel="도착 시각 분" values={MINUTES} index={minute} onChange={(value) => { setError(''); setMinute(value); }} /></View></View>}
           slider={<View style={{ gap: 4 }}><View style={s.sliderHead}><Text style={s.rowTitle}>도착 전 남길 시간</Text><Text style={s.bufferValue}>{arrivalBufferMin}분</Text></View><Slider style={{ height: 44 }} minimumValue={5} maximumValue={30} step={5} value={arrivalBufferMin} accessibilityLabel="도착 전 남길 시간" accessibilityValue={{ text: `${arrivalBufferMin}분, 5분 단위` }} minimumTrackTintColor={C.accent} maximumTrackTintColor={C.line} thumbTintColor={C.accent} onSlidingStart={() => applyArrivalBufferDecision(arrivalBufferInteraction.begin(arrivalBufferMin))} onValueChange={(value) => applyArrivalBufferDecision(arrivalBufferInteraction.change(value))} onSlidingComplete={(value) => applyArrivalBufferDecision(arrivalBufferInteraction.complete(value))} /><View style={s.rangeEnds}><Text style={{ color: C.muted }}>빠듯하게</Text><Text style={{ color: C.muted }}>여유롭게</Text></View></View>} error={error || validation} />
-        {SHOW_TEST_CLOCK || qaLauncherEnabled ? <View testID="setup-development-tools" style={{ paddingHorizontal: 22, paddingBottom: 8 }}>{SHOW_TEST_CLOCK ? <Pressable testID="dev-test-clock" style={s.devRow} onPress={() => setPage('test-clock')}><Text style={s.devText}>개발 테스트 시각</Text><Text style={s.devText}>{fmtHM(now.nowMin)} ›</Text></Pressable> : null}{qaLauncherEnabled ? <Pressable testID="qa-release-one-stop-launcher" style={s.devRow} onPress={() => { setError(''); setPage('qa-launcher'); }}><Text style={s.devText}>출시 추천 QA</Text><Text style={s.devText}>8개 시나리오 ›</Text></Pressable> : null}</View> : null}
+        {SHOW_TEST_CLOCK || qaLauncherEnabled || liveDiagnosticsEnabled ? <View testID="setup-development-tools" style={{ paddingHorizontal: 22, paddingBottom: 8 }}>{SHOW_TEST_CLOCK ? <Pressable testID="dev-test-clock" style={s.devRow} onPress={() => setPage('test-clock')}><Text style={s.devText}>개발 테스트 시각</Text><Text style={s.devText}>{fmtHM(now.nowMin)} ›</Text></Pressable> : null}{qaLauncherEnabled ? <Pressable testID="qa-release-one-stop-launcher" style={s.devRow} onPress={() => { setError(''); setPage('qa-launcher'); }}><Text style={s.devText}>출시 추천 QA</Text><Text style={s.devText}>8개 시나리오 ›</Text></Pressable> : null}{a3LauncherEnabled ? <><Pressable testID="live-activity-a3-launcher" style={[s.devRow, a3Running && s.primaryOff]} disabled={a3Running} onPress={() => void runLiveActivityA3()}><Text style={s.devText}>Live Activity A3</Text><Text style={s.devText}>{a3Running ? '확인 중…' : '카카오맵 전환 ›'}</Text></Pressable><Pressable testID="live-activity-a3-cleanup" style={[s.devRow, a3Running && s.primaryOff]} disabled={a3Running} onPress={() => void cleanupLiveActivityA3()}><Text style={s.devText}>테스트 Live Activity 종료</Text><Text style={s.devText}>정확한 대상만 ›</Text></Pressable>{a3Status ? <Text testID="live-activity-a3-status" accessibilityRole="alert" style={s.devStatus}>{a3Status}</Text> : null}</> : null}{liveDiagnosticsEnabled ? <Pressable testID="live-activity-diagnostics-launcher" style={s.devRow} onPress={() => { setPage('live-diagnostics'); void readLiveDiagnostics(); }}><Text style={s.devText}>Live Activity 버튼 진단</Text><Text style={s.devText}>조회·복사 ›</Text></Pressable> : null}</View> : null}
         {captchaDiagnostic ? <Text testID="route-proxy-diagnostic" style={s.diagnostic}>CAPTCHA 진단: {captchaDiagnostic}</Text> : null}
       </View>
     </ScrollView>
@@ -315,8 +373,9 @@ export function TimeSetupScreen({ navigation, route }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg }, screen: { paddingHorizontal: 22, paddingBottom: 42 }, header: { height: 52, marginBottom: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, back: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: C.panel2, borderWidth: 1, borderColor: C.line }, headerSpacer: { width: 42, height: 42 }, backText: { color: C.txt, fontSize: 32, lineHeight: 34 }, headerTitle: { color: C.txt, fontSize: 17, fontWeight: '800' }, smallCopy: { color: C.muted, fontSize: 13, lineHeight: 20, marginBottom: 22 },
-  rowTitle: { color: C.txt, fontSize: 15, fontWeight: '800' }, rowValue: { maxWidth: 270, color: C.muted, fontSize: 13, marginTop: 5 }, devRow: { minHeight: 44, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, borderColor: '#4b85cf', backgroundColor: '#1d3045', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }, devText: { color: '#83baff', fontSize: 13, fontWeight: '800' }, sliderHead: { flexDirection: 'row', justifyContent: 'space-between' }, bufferValue: { color: '#70adff', fontSize: 20, fontWeight: '800' }, rangeEnds: { flexDirection: 'row', justifyContent: 'space-between' },
+  rowTitle: { color: C.txt, fontSize: 15, fontWeight: '800' }, rowValue: { maxWidth: 270, color: C.muted, fontSize: 13, marginTop: 5 }, devRow: { minHeight: 44, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, borderColor: '#4b85cf', backgroundColor: '#1d3045', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }, devText: { color: '#83baff', fontSize: 13, fontWeight: '800' }, devStatus: { color: C.muted, fontSize: 12, lineHeight: 18, paddingHorizontal: 12, marginTop: 6 }, sliderHead: { flexDirection: 'row', justifyContent: 'space-between' }, bufferValue: { color: '#70adff', fontSize: 20, fontWeight: '800' }, rangeEnds: { flexDirection: 'row', justifyContent: 'space-between' },
   qaNext: { color: '#83baff', fontSize: 14, fontWeight: '800', marginBottom: 10 }, qaScenario: { minHeight: 66, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderTopWidth: 1, borderColor: C.line, backgroundColor: C.panel }, qaMinutes: { color: C.green, fontSize: 14, fontWeight: '800' },
+  diagnosticPanel: { marginTop: 12, padding: 12, borderRadius: 10, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel }, diagnosticLine: { color: C.muted, fontSize: 11, lineHeight: 17, marginBottom: 5 },
   primary: { minHeight: 52, marginTop: 12, borderRadius: 12, backgroundColor: C.accent, alignItems: 'center', justifyContent: 'center' }, primaryOff: { backgroundColor: C.panel2 }, primaryText: { color: C.onAccent, fontSize: 16, fontWeight: '800' }, secondary: { minHeight: 52, marginTop: 12, borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' }, secondaryText: { color: C.txt, fontSize: 16, fontWeight: '800' }, error: { color: C.red, fontSize: 13, lineHeight: 19, marginTop: 10 }, diagnostic: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 4 },
   wheelPanel: { minHeight: 210, flexDirection: 'row', alignItems: 'center', borderRadius: 16, backgroundColor: '#171a20', overflow: 'hidden' }, meridiem: { width: 84 }, wheelCol: { flex: 1 },
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 34 }, loadingEyebrow: { color: '#6eacff', fontSize: 13, fontWeight: '800' }, loadingTitle: { color: C.txt, fontSize: 27, lineHeight: 35, fontWeight: '800', textAlign: 'center', marginTop: 12, marginBottom: 34 },

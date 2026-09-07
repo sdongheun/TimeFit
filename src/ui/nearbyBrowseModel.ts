@@ -1,7 +1,8 @@
+import { approvedPlacePhoto, type PlacePhotoInput } from './placePhotoModel';
 export const NEARBY_RADIUS_M = 3000;
 
 export type NearbyPoint = Readonly<{ lat: number; lon: number }>;
-export type NearbyCatalogPlace = Readonly<{
+export type NearbyCatalogPlace = PlacePhotoInput & Readonly<{
   contentId: string;
   title: string;
   lat: number;
@@ -45,11 +46,6 @@ function validPoint(point: NearbyPoint): boolean {
   return Number.isFinite(point.lat) && Number.isFinite(point.lon) && Math.abs(point.lat) <= 90 && Math.abs(point.lon) <= 180;
 }
 
-function httpsImage(value: string | null | undefined): string | null {
-  if (!value) return null;
-  try { return new URL(value).protocol === 'https:' ? value : null; } catch { return null; }
-}
-
 export function formatNearbyDistance(distanceM: number): string {
   return distanceM < 1000 ? `${Math.round(distanceM / 10) * 10}m` : `${(distanceM / 1000).toFixed(1)}km`;
 }
@@ -83,7 +79,7 @@ export function buildNearbyBrowseDataset(
       distanceM,
       displayDistance: formatNearbyDistance(distanceM),
       informationKind: place.classification === 'conditional_more' ? 'conditional' : 'verified',
-      imageUrl: httpsImage(place.imageUrl),
+      imageUrl: approvedPlacePhoto(place)?.url ?? null,
       source: place,
     });
   }

@@ -1,6 +1,6 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useRef, useState } from 'react';
-import { Image, Linking, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Linking, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import runtimeCatalog from '../data/busan_poi_catalog.json';
@@ -17,6 +17,7 @@ import {
 import { openKakaoPlaceWithAppFallback } from './recommendation/courseV1PlacePreviewModel';
 import { C } from './theme';
 import { placeDetailLayout } from './placeDetailLayout';
+import { PlacePhoto, PlacePhotoCredit } from './PlacePhoto';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PlaceDetail'>;
 type RuntimePlace = PlaceDetailCatalogPlace;
@@ -39,7 +40,6 @@ export function PlaceDetailScreen({ route, navigation }: Props) {
   const markers = candidate ? buildPlaceDetailMarkers(session, candidate, selected) : [];
   const selectLock = useRef(false);
   const [linkError, setLinkError] = useState('');
-  const [imageFailed, setImageFailed] = useState(false);
 
   const close = () => {
     placeDetailSelectionHandoff.cancel(request);
@@ -80,12 +80,11 @@ export function PlaceDetailScreen({ route, navigation }: Props) {
     <View testID="place-detail-sheet" onLayout={(event) => setSheetHeight(event.nativeEvent.layout.height)} style={[s.sheet, { maxHeight: layout.maxHeight, paddingBottom: layout.paddingBottom }]}>
       <ScrollView testID="place-detail-information" style={s.information} contentContainerStyle={s.informationContent} showsVerticalScrollIndicator>
       <View style={s.sheetHeader}>
-        {model.image.kind === 'remote' && !imageFailed
-          ? <Image accessible={false} source={{ uri: model.image.url }} style={s.image} onError={() => setImageFailed(true)} />
-          : <View accessibilityLabel={`${model.categoryLabel} 사진 대체 화면`} style={s.imageFallback}><Text style={s.imageFallbackText}>{model.categoryLabel}</Text></View>}
+        <PlacePhoto place={candidate} style={[s.image, {flex:0}]} fallback={<View accessibilityLabel={`${model.categoryLabel} 사진 대체 화면`} style={s.imageFallback}><Text style={s.imageFallbackText}>{model.categoryLabel}</Text></View>} />
         <View style={s.heading}><Text style={s.category}>{model.categoryLabel}</Text><Text style={s.title}>{model.title}</Text></View>
       </View>
       <Text style={s.description}>{model.description}</Text>
+      <PlacePhotoCredit place={candidate} links />
       <Text style={s.meta}>{model.operatingHoursLabel}</Text>
       <Text style={s.address}>{model.addressLabel}</Text>
       {!session.deviceLocationSnapshot ? <Text accessibilityLiveRegion="polite" style={s.locationFallback}>현재 위치를 확인하지 못했어요. 설정한 출발지를 기준으로 보여 드려요.</Text> : null}

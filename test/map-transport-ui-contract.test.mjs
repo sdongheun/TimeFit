@@ -202,7 +202,9 @@ test('UKAKAO-DEEPLINK01: 활성·레거시 장소와 길찾기는 canOpenURL 확
   assert.match(execution, /openBrowser: WebBrowser\.openBrowserAsync/);
   assert.match(executionSchedule, /sp=\$\{from\.lat\},\$\{from\.lon\}/);
   assert.match(executionSchedule, /link\/by\/\$\{kakaoWebRouteMode\(mode\)\}/);
-  assert.match(executionSchedule, /await ports\.openBrowser\(webUrl\)/);
+  assert.match(executionSchedule, /ports\.openBrowser\(webUrl\)/);
+  assert.match(executionSchedule, /browser_background_observed/);
+  assert.match(executionSchedule, /browser_fallback_cancelled/);
 });
 
 test('URELEASEONESTOP01: 새 V1 흐름은 체류 분을 숨기고 short 의미만 숫자 없이 표시한다', () => {
