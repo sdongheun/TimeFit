@@ -49,11 +49,11 @@ export function createRouteBaselineService(options: {
   async function get(origin: LatLon, destination: LatLon): Promise<RouteBaselineResult> {
     const key = routeBaselineKey(namespace, origin, destination);
     const current = inFlight.get(key);
-    if (current) return current;
+    if (current) return cloneResult(await current);
 
     const request = loadAndFetch(key, origin, destination).finally(() => inFlight.delete(key));
     inFlight.set(key, request);
-    return request;
+    return cloneResult(await request);
   }
 
   async function loadAndFetch(key: string, origin: LatLon, destination: LatLon): Promise<RouteBaselineResult> {
@@ -81,7 +81,7 @@ export function createRouteBaselineService(options: {
       let wrote = false;
       for (const item of fetched) {
         if (!item || !routes) continue;
-        routes[item.mode] = { mode: item.mode, geometry: [...item.route.geometry], fetchedAt: nowMs };
+        routes[item.mode] = { mode: item.mode, geometry: item.route.geometry.map((point) => ({ ...point })), fetchedAt: nowMs };
         wrote = true;
       }
       if (wrote && routes) await savePersistent(key, routes);
@@ -136,6 +136,11 @@ export function createRouteBaselineService(options: {
 export function routeBaselineKey(namespace: string, origin: LatLon, destination: LatLon): string {
   const point = (value: LatLon) => `${value.lat.toFixed(5)},${value.lon.toFixed(5)}`;
   return `${namespace}:${point(origin)}:${point(destination)}`;
+}
+
+// Each consumer, including in-flight joiners, owns its returned geometry.
+function cloneResult(result: RouteBaselineResult): RouteBaselineResult {
+  return { ...result, baselines: result.baselines.map((route) => ({ ...route, geometry: route.geometry.map((point) => ({ ...point })) })) };
 }
 
 function isFresh(route: StoredBaseline | undefined, nowMs: number): route is StoredBaseline {

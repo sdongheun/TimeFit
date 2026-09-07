@@ -186,18 +186,15 @@ async function odsayUsagePersistent(): Promise<OdsayTransitUsageStats> {
   return loadOdsayUsage();
 }
 
-const coordLabel = (p: LatLon) => `${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
 const modeLabel = (mode: RoadMode) => (mode === 'walk' ? '도보' : '자동차');
 
-async function markRouteCall(mode: RoadMode, a: LatLon, b: LatLon): Promise<number> {
+async function markRouteCall(mode: RoadMode): Promise<number> {
   const usage = await routeUsagePersistent();
   usage.total += 1;
   usage.byMode[mode] += 1;
   await saveRouteUsage(usage);
   console.log(
-    `[TMAP 경로 API] 요청 #${usage.total} · 오늘 ${usage.date} 총 ${usage.total}건 `
-    + `(도보 ${usage.byMode.walk}, 자동차 ${usage.byMode.car}) · ${modeLabel(mode)} `
-    + `${coordLabel(a)} -> ${coordLabel(b)}`,
+    `[route_request] provider=tmap mode=${mode} count=${usage.total}`,
   );
   return usage.total;
 }
@@ -219,13 +216,12 @@ export async function getTmapRouteUsage(): Promise<RouteUsageStats> {
   return { ...usage, byMode: { ...usage.byMode } };
 }
 
-async function markOdsayCall(a: LatLon, b: LatLon): Promise<number> {
+async function markOdsayCall(): Promise<number> {
   const usage = await odsayUsagePersistent();
   usage.total += 1;
   await saveOdsayUsage(usage);
   console.log(
-    `[ODsay 대중교통 API] 요청 #${usage.total} · 오늘 ${usage.date} 총 ${usage.total}건 `
-    + `${coordLabel(a)} -> ${coordLabel(b)}`,
+    `[route_request] provider=odsay mode=transit count=${usage.total}`,
   );
   return usage.total;
 }
@@ -277,7 +273,7 @@ async function tmapTravel(
 ): Promise<{ min: number; geo: LatLon[] } | null> {
   if (!TMAP_KEY) return null;
   return (await attemptLegacyRouteHttp('tmap', observer, async () => {
-    const callNo = await markRouteCall(mode, a, b);
+    const callNo = await markRouteCall(mode);
     const ped = mode === 'walk';
     const url = ped
       ? 'https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=json'
@@ -336,7 +332,7 @@ async function tmapTravel(
   })) ?? null;
 }
 
-// 캐시: 약관상 취득 데이터 24시간 이상 보관 금지 → TTL 24h
+// 기존 성능 cache의 재사용 TTL. provider 약관상 허용/물리 삭제 기한의 증명이 아니다.
 const TTL_MS = 24 * 60 * 60 * 1000;
 type CacheEntry = { min: number; src: string; geo?: LatLon[]; ts: number };
 const cache = new Map<string, CacheEntry>();
@@ -484,7 +480,7 @@ async function odsayTransit(
 ): Promise<{ min: number; meta: TransitMeta } | null> {
   if (!ODSAY_KEY) return null;
   return (await attemptLegacyRouteHttp('odsay', observer, async () => {
-    const callNo = await markOdsayCall(a, b);
+    const callNo = await markOdsayCall();
     const qs = new URLSearchParams({
       SX: String(a.lon),
       SY: String(a.lat),

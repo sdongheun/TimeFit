@@ -1,5 +1,9 @@
 # 외부 API 현재 작업
 
+## 2026-09-07 최신 작업
+
+[API-RELEASE-SAFETY-01](release-safety-remediation.md): **지금 실행 가능**. 안전 로그/위치 cache/adapter 실패 경계 및 원격 확인 인계. 원격 배포는 별도 승인.
+
 `API-4-F`, [API-PAGE-01 — 검증 코스 페이지 호출·cache 계약](verified-course-page-budget.md), [API-SNAPSHOT-SYNC-01 — 대표 카탈로그 Route Proxy 배포 동기화](representative-snapshot-deployment-sync.md)는 수락됐다. API-SNAPSHOT-SYNC-01은 DATA-SUPPLY-01의 대표 190→191 변경 뒤 mobile public scope와 Edge snapshot을 동기화했고, stale version을 generic transport로 평탄화하지 않게 고정했다. 다음 runtime 확인은 QA-SUPPLY-01의 SUP-01 한 번이다. 새 작업 전에는 `AGENTS.md`, `docs/README.md`, `docs/작업조정_보드.md`와 작업 목적에 맞는 현재 묶음만 읽는다.
 
 - [장소 검색·위치](place-search-location.md)

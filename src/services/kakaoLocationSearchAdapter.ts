@@ -95,9 +95,9 @@ export function createKakaoLocationSearchAdapter(options: KakaoLocationSearchAda
   };
 
   const withDiagnostics = (value: InternalResult, cacheState: LocationSearchCacheState): KakaoLocationSearchResult => ({
-    suggestions: value.suggestions,
-    attempts: value.attempts,
-    diagnostics: { providerRequests: value.providerRequests, fallbackCount: value.fallbackCount, cache: cacheState },
+    suggestions: value.suggestions.map((suggestion) => ({ ...suggestion, ...(suggestion.providerLineLabels ? { providerLineLabels: [...suggestion.providerLineLabels] } : {}) })),
+    attempts: value.attempts.map((attempt) => ({ ...attempt })),
+    diagnostics: { providerRequests: { kakao: { ...value.providerRequests.kakao }, tmap: 0 }, fallbackCount: value.fallbackCount, cache: cacheState },
   });
 
   async function perform(query: string, firstKind: LocationSearchKind): Promise<InternalResult> {
