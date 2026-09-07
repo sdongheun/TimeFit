@@ -4,6 +4,10 @@
 
 ## 1. 현재 기준 문서
 
+출시 마감 병렬 명령: 새 **출시 문서 전담 세션**은 [RELEASE-DOCS-01](05_release/release-document-session.md), 기존 DB 세션은 [DB-PERSONALIZATION-FINALIZE-01](work/db-personalization/personalization-finalization.md). 문서 세션은 공개 초안/스토어 준비, DB는 백업·적용·실제학습 마감만 담당한다. 개인화 제외는 미확정이며 게시/스토어 제출은 별도 승인이다.
+
+2026-09-07 최신 출시 범위: [출시 개인화·계정 기록 결정](work/integration-decision/release-personalization-account.md). 제한적 체류 개인화를 출시 전 범위로 변경했으며 **구현/검증 전**이다. 회원 기록 격리·승인 기반 guest 방문 기록 가져오기·과거 guest 체류 학습 제외를 따른다. 기존 보류 기록은 이력으로만 해석한다.
+
 | 목적 | 문서 | 상태 |
 | --- | --- | --- |
 | 추천 정책 단일 기준 | [03_product/추천로직.md](03_product/추천로직.md) | 현행 정책, 구현 전환 필요 |

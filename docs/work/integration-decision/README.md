@@ -1,5 +1,9 @@
 # 통합·결정 현재 작업
 
+## 2026-09-07 최신 작업
+
+[출시 개인화 Wave](release-personalization-wave.md): 2026-09-07 회원 혜택 구분 확정. DB A/UI A/API/데이터/2-AB 검증 병렬 → DB 저장 → UI 통합 → QA. 현재 상세 명령은 각 역할 README의 최신 링크를 따른다.
+
 ## 현재 역할
 
 - 단일 작성자: `docs/작업조정_보드.md`
@@ -7,6 +11,8 @@
 - 제품 코드·원본 데이터·역할 소유 구현 파일은 수정하지 않는다.
 
 ## 현재 게이트
+
+- [DEC-RELEASE-PERSONALIZATION-01](release-personalization-account.md)(2026-09-07, 사용자 확정·구현 전): 출시 전 제한적 체류 개인화, 계정 기록 격리, 승인 기반 guest 방문 기록 가져오기와 과거 guest 체류 학습 제외. 나이 수집 제거·권리 미확인 사진 대체. 기존 출시 후 보류보다 우선한다.
 
 - [출시 UIUX 통합 체크리스트](release-uiux-checklist.md)(2026-09-05, 현행): 사용자가 확정하거나 검토를 요청한 전체 UIUX를 시간 흐름대로 관리한다. 구현 세션은 직접 체크하지 않고 통합 세션이 코드·자동 회귀·필요한 수동 관찰을 검토한 뒤에만 완료 표시한다.
 
@@ -58,6 +64,8 @@
 - U-EXPLORE-01 browser fallback과 QA-EXPLORE-01을 수락했다. 설치된 카카오맵 앱에서 HTTPS→앱 확인 단계를 줄이기 위해 새 U-KAKAO-DEEPLINK-01을 시작한다. 공식 `kakaomap://place`/`look` scheme과 iOS query whitelist만 쓰고, 미설치 기기는 현행 웹 fallback을 유지한다. 이는 추천 계약이 아니라 외부 지도 전환 UX 개선이며 새 internal build가 필요하다.
 
 ## 기준·이력
+
+- [내정보 구성 확정](profile-settings.md): DEC-PROFILE-SETTINGS-01, 세 영역·계정 진입·기록 탭 분리. 사용자 확정·구현 전.
 
 - 기준: `docs/03_product/추천로직.md`, `docs/테스트.md`, `docs/03_product/UIUX_공통규칙.md`
 - 현재 상태: `docs/작업조정_보드.md`
