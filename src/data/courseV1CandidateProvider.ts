@@ -75,6 +75,8 @@ function candidateFor(place: RuntimePlace): CourseV1CatalogCandidate {
   return {
     id: place.contentId,
     title: place.title,
+    category: place.category,
+    ...(place.subCategory ? { subCategory: place.subCategory } : {}),
     lat: place.lat,
     lon: place.lon,
     classification: classificationFor(place.classification),

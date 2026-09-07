@@ -1,0 +1,1412 @@
+{
+  "meta": {
+    "taskId": "DATA-RELEASE-PERSONALIZATION-01-cafe-culture-followup",
+    "generatedAt": "2026-09-07",
+    "sources": [
+      "data/processed/review/부산_장소_근거프로필_재분류.json",
+      "data/processed/부산시_맛집정보.json",
+      "data/processed/부산시_명소정보.json"
+    ],
+    "policy": "exact official structured subtype only; no title/menu/description inference"
+  },
+  "summary": {
+    "total": 98,
+    "changed": 5,
+    "byCategory": {
+      "카페": {
+        "total": 31,
+        "previousApplicable": 0,
+        "finalApplicable": 5,
+        "remainingMissing": 26,
+        "changed": 5
+      },
+      "문화시설": {
+        "total": 67,
+        "previousApplicable": 2,
+        "finalApplicable": 2,
+        "remainingMissing": 65,
+        "changed": 0
+      }
+    },
+    "assignedValues": {
+      "디저트카페": 1,
+      "베이커리": 2,
+      "커피전문점": 2
+    }
+  },
+  "data": [
+    {
+      "contentId": "poi_1",
+      "title": "해운대 관광특구",
+      "category": "문화시설",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_1047",
+      "title": "웨이브온커피",
+      "category": "카페",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "174"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1049",
+      "title": "피아크 카페&베이커리",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1445"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1051",
+      "title": "커피스가모 인 서면",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1447"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1052",
+      "title": "이흥용과자점 부산대직영점",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1452"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1057",
+      "title": "보리종파티세리 본점",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1466"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1059",
+      "title": "토북베이커리",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1802"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1060",
+      "title": "카페호밀",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1803"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1065",
+      "title": "그리다부부",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1838"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1068",
+      "title": "보느파티쓰리",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "2354"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1070",
+      "title": "연화제과",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "2371"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1071",
+      "title": "히떼로스터리 전포점",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "2386"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1141",
+      "title": "백구당",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": "베이커리",
+      "decision": "assign_exact_official_subtitle",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1611",
+          "field": "SUBTITLE",
+          "sourceText": "베이커리"
+        }
+      ],
+      "decisionReason": "정확히 연결된 부산시 맛집정보의 구조화 SUBTITLE이 허용된 장소 유형 어휘와 일치한다."
+    },
+    {
+      "contentId": "poi_1152",
+      "title": "머그디저트랩",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": "디저트카페",
+      "decision": "assign_exact_official_subtitle",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1628",
+          "field": "SUBTITLE",
+          "sourceText": "디저트카페"
+        }
+      ],
+      "decisionReason": "정확히 연결된 부산시 맛집정보의 구조화 SUBTITLE이 허용된 장소 유형 어휘와 일치한다."
+    },
+    {
+      "contentId": "poi_1153",
+      "title": "보느파티쓰 리",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1630"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_1154",
+      "title": "브레드365",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": "베이커리",
+      "decision": "assign_exact_official_subtitle",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1631",
+          "field": "SUBTITLE",
+          "sourceText": "베이커리"
+        }
+      ],
+      "decisionReason": "정확히 연결된 부산시 맛집정보의 구조화 SUBTITLE이 허용된 장소 유형 어휘와 일치한다."
+    },
+    {
+      "contentId": "poi_1158",
+      "title": "히떼로스터리",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": "커피전문점",
+      "decision": "assign_exact_official_subtitle",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1637",
+          "field": "SUBTITLE",
+          "sourceText": "커피전문점"
+        }
+      ],
+      "decisionReason": "정확히 연결된 부산시 맛집정보의 구조화 SUBTITLE이 허용된 장소 유형 어휘와 일치한다."
+    },
+    {
+      "contentId": "poi_23",
+      "title": "갤러리이알디 부산",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_243",
+      "title": "금정문화원",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_244",
+      "title": "기장문화원",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_245",
+      "title": "누리마루 APEC하우스",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2121"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_246",
+      "title": "동래문화원",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_247",
+      "title": "동래읍성 임진왜란 역사관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_25",
+      "title": "부산시립미술관",
+      "category": "문화시설",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "289"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_251",
+      "title": "반여도서관",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_252",
+      "title": "부산 강서문화원",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_253",
+      "title": "부산 동구도서관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_254",
+      "title": "부산광역시 기장도서관",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_255",
+      "title": "부산광역시 영도도서관",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_256",
+      "title": "부산광역시립 명장도서관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_257",
+      "title": "부산광역시립 시민도서관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_258",
+      "title": "부산광역시립 연산도서관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_259",
+      "title": "부산광역시립 중앙도서관",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_260",
+      "title": "부산대학교 박물관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_261",
+      "title": "부산문화회관",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_264",
+      "title": "부산점자도서관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_265",
+      "title": "북구문화예술회관 공연장",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_266",
+      "title": "사상문화원",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_267",
+      "title": "을숙도문화회관",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_270",
+      "title": "정관박물관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_272",
+      "title": "책방봄봄",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_273",
+      "title": "책방오월",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_274",
+      "title": "한국기독교선교박물관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_276",
+      "title": "해성아트베이",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_277",
+      "title": "해운대문화회관",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_378",
+      "title": "디원카페",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_403",
+      "title": "모모스커피 본점",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": "커피전문점",
+      "decision": "assign_exact_official_subtitle",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1634",
+          "field": "SUBTITLE",
+          "sourceText": "커피전문점"
+        }
+      ],
+      "decisionReason": "정확히 연결된 부산시 맛집정보의 구조화 SUBTITLE이 허용된 장소 유형 어휘와 일치한다."
+    },
+    {
+      "contentId": "poi_41",
+      "title": "놀이마루",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_421",
+      "title": "부산 카페 라운지",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_427",
+      "title": "브레이크인커피",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_food",
+          "sourceId": "1464"
+        }
+      ],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_450",
+      "title": "수안커피컴퍼니 커피하우스",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_473",
+      "title": "어라우즈로스터리",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_488",
+      "title": "오구카페",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_520",
+      "title": "일광 카페 숲",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_551",
+      "title": "카페 385",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_552",
+      "title": "카페 도토리 로스터스",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_553",
+      "title": "카페 만디",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_554",
+      "title": "카페공지",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_555",
+      "title": "카페썬번",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_570",
+      "title": "팜카페",
+      "category": "카페",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_608",
+      "title": "국립해양박물관",
+      "category": "문화시설",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "257"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_614",
+      "title": "백산기념관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "267"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_615",
+      "title": "한성1918 부산생활문화센터",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "268"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_616",
+      "title": "조선통신사역사관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "269"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_617",
+      "title": "부산해양자연사박물관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "270"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_619",
+      "title": "임시수도기념관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "273"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_620",
+      "title": "동아대학교 석당박물관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "274"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_621",
+      "title": "국립일제강제동원역사관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "275"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_622",
+      "title": "부산박물관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "276"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_636",
+      "title": "우장춘 기념관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "297"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_641",
+      "title": "을숙도",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "304"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_650",
+      "title": "국립부산과학관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "340"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_661",
+      "title": "40계단",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "364"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_667",
+      "title": "F1963",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "372"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_674",
+      "title": "이중섭문화거리",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": "거리·골목",
+      "newSubCategory": "거리·골목",
+      "decision": "preserve_existing",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "418"
+        }
+      ],
+      "decisionReason": "기존 유효 subCategory를 변경하지 않는다."
+    },
+    {
+      "contentId": "poi_689",
+      "title": "부산커피박물관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "508"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_690",
+      "title": "사상생활사박물관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "511"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_70",
+      "title": "벡스코(BEXCO)",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "420"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_703",
+      "title": "KT&G상상마당 부산",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1185"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_705",
+      "title": "현대 모터스튜디오 부산",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1322"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_709",
+      "title": "부산근현대역사관",
+      "category": "문화시설",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1444"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_711",
+      "title": "서면미술관",
+      "category": "문화시설",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1653"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_712",
+      "title": "부산현대미술관",
+      "category": "문화시설",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1671"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_723",
+      "title": "부산 인도문화원",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1857"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_724",
+      "title": "KF아세안문화원",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1862"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_735",
+      "title": "부산 수학문화관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2077"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_740",
+      "title": "문화예술플랫폼",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2085"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_744",
+      "title": "닥밭골 벽화마을",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": "문화마을",
+      "newSubCategory": "문화마을",
+      "decision": "preserve_existing",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2104"
+        }
+      ],
+      "decisionReason": "기존 유효 subCategory를 변경하지 않는다."
+    },
+    {
+      "contentId": "poi_759",
+      "title": "유엔평화기념관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2188"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_761",
+      "title": "포디움다이브엠",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2191"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_764",
+      "title": "디오티 미술관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2204"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_77",
+      "title": "희와제과",
+      "category": "카페",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [],
+      "decisionReason": "허용된 구조화 장소 유형이 없다. 장소명·메뉴·설명으로 세부분류를 추정하지 않는다."
+    },
+    {
+      "contentId": "poi_783",
+      "title": "고려제강기념관",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2598"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_785",
+      "title": "리틀 프린스 하우스",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "2678"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_89",
+      "title": "범어사 성보박물관",
+      "category": "문화시설",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "402"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_90",
+      "title": "부산 영화의 전당",
+      "category": "문화시설",
+      "classification": "conditional_more",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "421"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_92",
+      "title": "부산근현대역사관 본관",
+      "category": "문화시설",
+      "classification": "representative_core",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "1881"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    },
+    {
+      "contentId": "poi_94",
+      "title": "부산타워",
+      "category": "문화시설",
+      "classification": "representative_standard",
+      "previousSubCategory": null,
+      "newSubCategory": null,
+      "decision": "hold_missing_existing_taxonomy_evidence",
+      "officialEvidence": [
+        {
+          "source": "busan_attraction",
+          "sourceId": "550"
+        }
+      ],
+      "decisionReason": "현행 부산시 명소/TourAPI 연결에는 재사용 가능한 구조화 문화시설 세부유형 필드가 없다. 이름·서술문으로 새 taxonomy를 만들지 않는다."
+    }
+  ]
+}

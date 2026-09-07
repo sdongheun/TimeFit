@@ -3,6 +3,7 @@
 // 원본 검토 카탈로그는 data/processed/review에 보존하고, 앱은 이 출력만 읽는다.
 import fs from 'node:fs';
 import { buildOfficialDetailDescriptionPlan } from './build_place_detail_description.mjs';
+import { projectRuntimeImageWithPermission } from './runtime_image_permission.mjs';
 
 const SHORT_STAY_CATALOG = 'data/processed/review/부산_장소_근거프로필_재분류.json';
 const LEGACY = 'src/data/busan_poi_catalog.legacy.json';
@@ -12,6 +13,8 @@ const TOURAPI_IMAGE_HTTPS_VALIDATION = 'data/processed/review/현재사용_TourA
 const TOURAPI_REPRESENTATIVE_IMAGE_HTTPS_VALIDATION = 'data/processed/review/현재사용_대표후보_TourAPI_HTTPS검증결과.json';
 const AREA_DISCOVERY_AUDIT = 'data/processed/review/권역형_발견후보_감사.json';
 const CONDITIONAL_MARKET_AUDIT = 'data/processed/review/조건부_시장거리_발견후보_감사.json';
+const IMAGE_PERMISSION_ALLOWLIST = 'data/processed/review/사진_이용허락_허용목록.json';
+const CAFE_CULTURE_SUBCATEGORY_AUDIT = 'data/processed/review/카페문화시설_세부분류_감사.json';
 const OFFICIAL_SOURCES = {
   busan_attraction: 'data/processed/부산시_명소정보.json',
   busan_shopping: 'data/processed/부산시_쇼핑정보.json',
@@ -36,6 +39,9 @@ const areaDiscoveryByContentId = fs.existsSync(AREA_DISCOVERY_AUDIT)
   ? new Map(read(AREA_DISCOVERY_AUDIT).data.map((item) => [item.contentId, item])) : new Map();
 const conditionalMarketByContentId = fs.existsSync(CONDITIONAL_MARKET_AUDIT)
   ? new Map(read(CONDITIONAL_MARKET_AUDIT).data.map((item) => [item.contentId, item])) : new Map();
+const imagePermissions = read(IMAGE_PERMISSION_ALLOWLIST).data ?? [];
+const cafeCultureSubCategoryByContentId = new Map(read(CAFE_CULTURE_SUBCATEGORY_AUDIT).data
+  .map((row) => [row.contentId, row]));
 const categoryDwell = legacy.categoryDwell;
 const tourapiImageAuditByContentId = fs.existsSync(TOURAPI_IMAGE_AUDIT)
   ? new Map(read(TOURAPI_IMAGE_AUDIT).samples.map((item) => [item.contentId, item])) : new Map();
@@ -74,7 +80,11 @@ function officialImage(place) {
     const row = source?.get(String(evidence.sourceId));
     const url = row?.MAIN_IMG_THUMB ?? row?.MAIN_IMG_NORMAL;
     if (typeof url === 'string' && url.startsWith('https://')) {
-      return { imageUrl: url, imageSource: 'busan_official' };
+      return {
+        imageUrl: url,
+        imageSource: 'busan_official',
+        imageEvidence: { source: evidence.source, sourceId: String(evidence.sourceId) },
+      };
     }
   }
   return null;
@@ -159,16 +169,29 @@ function conditionalVisitFor(place) {
   return value;
 }
 
+function subCategoryFor(place, legacyPlace) {
+  const existingValue = place.scope?.kind ?? legacyPlace?.subCategory;
+  if (typeof existingValue === 'string' && existingValue.trim()) return existingValue.trim();
+  const reviewed = cafeCultureSubCategoryByContentId.get(place.id);
+  if (!reviewed || reviewed.previousSubCategory !== null
+    || reviewed.decision !== 'assign_exact_official_subtitle'
+    || reviewed.category !== place.category
+    || !['카페', '문화시설'].includes(place.category)
+    || !['베이커리', '디저트카페', '커피전문점'].includes(reviewed.newSubCategory)) return undefined;
+  const exactEvidence = (place.sourceEvidence ?? []).some((evidence) => reviewed.officialEvidence?.some((official) => (
+    evidence.source === official.source && String(evidence.sourceId) === String(official.sourceId)
+  )));
+  return exactEvidence ? reviewed.newSubCategory : undefined;
+}
+
 function toRuntime(place) {
   const tourapiContentId = sourceTourApiId(place);
   const legacyPlace = tourapiContentId ? legacyByContentId.get(String(tourapiContentId)) : null;
   const existingPlace = existingByContentId.get(String(place.id));
   const availabilityProfile = availabilityProfileFor(place);
   const matchScope = matchScopeFor(place);
-  const image = officialImage(place) ?? tourapiImage(place, tourapiContentId) ?? (existingPlace?.imageUrl ? {
-    imageUrl: existingPlace.imageUrl,
-    imageSource: existingPlace.imageSource,
-  } : null);
+  const imageCandidate = officialImage(place) ?? tourapiImage(place, tourapiContentId);
+  const image = projectRuntimeImageWithPermission(place.id, imageCandidate, imagePermissions);
 
   return {
     contentId: place.id,
@@ -176,7 +199,7 @@ function toRuntime(place) {
     contentTypeId: legacyPlace?.contentTypeId ?? contentTypeForCategory[place.category] ?? 'local',
     contentTypeName: legacyPlace?.contentTypeName ?? '부산 자투리 활동 데이터',
     category: place.category,
-    subCategory: place.scope?.kind ?? legacyPlace?.subCategory,
+    subCategory: subCategoryFor(place, legacyPlace),
     availabilityProfile,
     addr1: place.address ?? '',
     lat: place.lat,
@@ -283,4 +306,4 @@ const catalog = {
 };
 
 write(OUTPUT, catalog);
-console.log(`자투리 런타임 카탈로그 생성: 매칭 ${matched.length} / 미매칭 ${unmatched.length} / 합계 ${all.length} / 공식 설명 ${officialDetailDescriptions.size}`);
+console.log(`자투리 런타임 카탈로그 생성: 매칭 ${matched.length} / 미매칭 ${unmatched.length} / 합계 ${all.length} / 공식 설명 ${officialDetailDescriptions.size} / 이용허락 확인 사진 ${all.filter((place) => place.imageUrl).length}`);

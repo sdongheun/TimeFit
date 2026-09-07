@@ -1,0 +1,345 @@
+{
+  "meta": {
+    "taskId": "DATA-RELEASE-PERSONALIZATION-01",
+    "asOf": "2026-09-07",
+    "networkCalls": 0
+  },
+  "imageSafety": {
+    "taskStartUniqueRuntimeImages": 203,
+    "taskStartBySource": {
+      "busan_official": 130,
+      "tourapi": 73
+    },
+    "verifiedApiServices": 2,
+    "exactApiPermissionPhotoLinks": 101,
+    "exposedRuntimeImages": 101,
+    "exposedBySource": {
+      "busan_attraction": 85,
+      "busan_food": 16
+    },
+    "heldUnconfirmedBySource": {
+      "busan_shopping": 29,
+      "tourapi": 73
+    },
+    "defaultImageFallbackPlaces": 268,
+    "representativeExposedImages": 84,
+    "representativeFallbackPlaces": 107
+  },
+  "personalizationCoverage": {
+    "beforeFollowup": {
+      "runtimeApplicable": 231,
+      "runtimeMissingSubCategory": 138,
+      "representativeApplicable": 74,
+      "representativeMissingSubCategory": 117
+    },
+    "runtime": {
+      "total": 369,
+      "applicable": 236,
+      "missingSubCategory": 133,
+      "applicableRatePercent": 64,
+      "byCategory": [
+        {
+          "category": "레저/스포츠",
+          "total": 3,
+          "applicable": 3,
+          "missingSubCategory": 0,
+          "applicableRatePercent": 100
+        },
+        {
+          "category": "문화시설",
+          "total": 67,
+          "applicable": 2,
+          "missingSubCategory": 65,
+          "applicableRatePercent": 3
+        },
+        {
+          "category": "상업지구",
+          "total": 188,
+          "applicable": 178,
+          "missingSubCategory": 10,
+          "applicableRatePercent": 94.7
+        },
+        {
+          "category": "자연관광지",
+          "total": 80,
+          "applicable": 48,
+          "missingSubCategory": 32,
+          "applicableRatePercent": 60
+        },
+        {
+          "category": "카페",
+          "total": 31,
+          "applicable": 5,
+          "missingSubCategory": 26,
+          "applicableRatePercent": 16.1
+        }
+      ]
+    },
+    "representativeProvider": {
+      "total": 191,
+      "applicable": 79,
+      "missingSubCategory": 112,
+      "applicableRatePercent": 41.4,
+      "byCategory": [
+        {
+          "category": "문화시설",
+          "total": 52,
+          "applicable": 2,
+          "missingSubCategory": 50,
+          "applicableRatePercent": 3.8
+        },
+        {
+          "category": "상업지구",
+          "total": 37,
+          "applicable": 29,
+          "missingSubCategory": 8,
+          "applicableRatePercent": 78.4
+        },
+        {
+          "category": "자연관광지",
+          "total": 71,
+          "applicable": 43,
+          "missingSubCategory": 28,
+          "applicableRatePercent": 60.6
+        },
+        {
+          "category": "카페",
+          "total": 31,
+          "applicable": 5,
+          "missingSubCategory": 26,
+          "applicableRatePercent": 16.1
+        }
+      ]
+    },
+    "discoveryProvider": {
+      "total": 369,
+      "applicable": 236,
+      "missingSubCategory": 133,
+      "applicableRatePercent": 64
+    },
+    "conditionalVisitProvider": {
+      "total": 142,
+      "applicable": 142,
+      "missingSubCategory": 0,
+      "applicableRatePercent": 100
+    },
+    "repeatedSubCategoryAcrossCategories": [
+      {
+        "subCategory": "거리·골목",
+        "categories": [
+          "레저/스포츠",
+          "문화시설",
+          "상업지구",
+          "자연관광지"
+        ]
+      },
+      {
+        "subCategory": "문화마을",
+        "categories": [
+          "문화시설",
+          "자연관광지"
+        ]
+      },
+      {
+        "subCategory": "시장",
+        "categories": [
+          "상업지구",
+          "자연관광지"
+        ]
+      },
+      {
+        "subCategory": "해변·해안",
+        "categories": [
+          "레저/스포츠",
+          "자연관광지"
+        ]
+      }
+    ]
+  },
+  "dbClassificationContract": {
+    "version": "runtime-category-subcategory-3bb74d97ebcd",
+    "sha256": "3bb74d97ebcd779e9a239ae2dc052ec8f3e752c47756b486cd020f27177f6902",
+    "identityKey": "contentId",
+    "valueFields": [
+      "category",
+      "subCategory"
+    ],
+    "nullSubCategoryMeans": "not_applied",
+    "catalogPlaceCount": 369,
+    "applicablePlaceCount": 236,
+    "missingSubCategoryCount": 133,
+    "distinctApplicableKeyCount": 17,
+    "applicableKeyCounts": [
+      {
+        "category": "레저/스포츠",
+        "subCategory": "거리·골목",
+        "count": 1
+      },
+      {
+        "category": "레저/스포츠",
+        "subCategory": "해변·해안",
+        "count": 2
+      },
+      {
+        "category": "문화시설",
+        "subCategory": "거리·골목",
+        "count": 1
+      },
+      {
+        "category": "문화시설",
+        "subCategory": "문화마을",
+        "count": 1
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "개별상점",
+        "count": 1
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "거리·골목",
+        "count": 11
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "관광특구",
+        "count": 1
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "쇼핑복합공간",
+        "count": 9
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "시장",
+        "count": 156
+      },
+      {
+        "category": "자연관광지",
+        "subCategory": "거리·골목",
+        "count": 7
+      },
+      {
+        "category": "자연관광지",
+        "subCategory": "공원·정원",
+        "count": 31
+      },
+      {
+        "category": "자연관광지",
+        "subCategory": "문화마을",
+        "count": 2
+      },
+      {
+        "category": "자연관광지",
+        "subCategory": "시장",
+        "count": 1
+      },
+      {
+        "category": "자연관광지",
+        "subCategory": "해변·해안",
+        "count": 7
+      },
+      {
+        "category": "카페",
+        "subCategory": "디저트카페",
+        "count": 1
+      },
+      {
+        "category": "카페",
+        "subCategory": "베이커리",
+        "count": 2
+      },
+      {
+        "category": "카페",
+        "subCategory": "커피전문점",
+        "count": 2
+      }
+    ],
+    "representativeApplicableKeyCounts": [
+      {
+        "category": "문화시설",
+        "subCategory": "거리·골목",
+        "count": 1
+      },
+      {
+        "category": "문화시설",
+        "subCategory": "문화마을",
+        "count": 1
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "개별상점",
+        "count": 1
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "거리·골목",
+        "count": 3
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "관광특구",
+        "count": 1
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "쇼핑복합공간",
+        "count": 9
+      },
+      {
+        "category": "상업지구",
+        "subCategory": "시장",
+        "count": 15
+      },
+      {
+        "category": "자연관광지",
+        "subCategory": "거리·골목",
+        "count": 6
+      },
+      {
+        "category": "자연관광지",
+        "subCategory": "공원·정원",
+        "count": 30
+      },
+      {
+        "category": "자연관광지",
+        "subCategory": "문화마을",
+        "count": 2
+      },
+      {
+        "category": "자연관광지",
+        "subCategory": "해변·해안",
+        "count": 5
+      },
+      {
+        "category": "카페",
+        "subCategory": "디저트카페",
+        "count": 1
+      },
+      {
+        "category": "카페",
+        "subCategory": "베이커리",
+        "count": 2
+      },
+      {
+        "category": "카페",
+        "subCategory": "커피전문점",
+        "count": 2
+      }
+    ]
+  },
+  "invariants": {
+    "runtimeTotal": 369,
+    "representativeTotal": 191,
+    "conditionalTotal": 178,
+    "discoveryProviderTotal": 369,
+    "conditionalVisitProviderTotal": 142,
+    "authorizedCafeCultureSubCategoryChanges": 5,
+    "protectedSemanticHash": "9944c5a86051d7d63c8b29d10da069690ff613e211e2ce623731bdb390b79820",
+    "expectedProtectedSemanticHash": "9944c5a86051d7d63c8b29d10da069690ff613e211e2ce623731bdb390b79820",
+    "protectedSemanticHashMatches": true,
+    "routeSnapshotResyncRequired": false,
+    "routeSnapshotReason": "route snapshot version uses representative IDs and coordinates only; both are unchanged"
+  }
+}

@@ -51,6 +51,45 @@ test('DATA-DWELL-01: 대표 후보의 최소·권장·최대 체류 범위를 �
   assert.equal(candidateById.get('poi_25')?.maxStayMin, 120);
 });
 
+test('DATA-RELEASE-PERSONALIZATION-01: provider는 정제 category/subCategory 복합 키를 추정 없이 전달한다', () => {
+  const provider = createCourseV1CandidateProvider();
+  const now = new Date('2026-09-07T10:00:00+09:00');
+  const candidates = provider.listRepresentativeCandidates(now);
+  const candidateById = new Map(candidates.map((candidate) => [candidate.id, candidate]));
+  const runtimePlaces = [...runtimeCatalog.matched.data, ...runtimeCatalog.unmatched.data];
+  const runtimeById = new Map(runtimePlaces.map((place) => [place.contentId, place]));
+  const representativePlaces = runtimePlaces
+    .filter((place) => place.classification === 'representative_core' || place.classification === 'representative_standard');
+
+  assert.equal(candidateById.size, representativePlaces.length);
+  for (const place of representativePlaces) {
+    const candidate = candidateById.get(place.contentId);
+    assert.ok(candidate, `${place.contentId}: representative candidate missing`);
+    assert.equal(candidate.category, place.category, `${place.contentId}: category projection changed`);
+    assert.equal(candidate.subCategory, place.subCategory ?? undefined, `${place.contentId}: subCategory projection changed`);
+  }
+
+  assert.deepEqual(
+    [candidateById.get('poi_69')?.category, candidateById.get('poi_69')?.subCategory],
+    ['상업지구', '거리·골목'],
+  );
+  assert.deepEqual(
+    [candidateById.get('poi_79')?.category, candidateById.get('poi_79')?.subCategory],
+    ['자연관광지', '거리·골목'],
+  );
+  assert.equal(candidateById.get('poi_1047')?.subCategory, undefined);
+
+  for (const candidate of [
+    ...provider.listDiscoveryCandidates(now),
+    ...provider.listConditionalVisitCandidates(now),
+  ]) {
+    const place = runtimeById.get(candidate.id);
+    assert.ok(place, `${candidate.id}: public provider place missing`);
+    assert.equal(candidate.category, place.category, `${candidate.id}: public provider category projection changed`);
+    assert.equal(candidate.subCategory, place.subCategory ?? undefined, `${candidate.id}: public provider subCategory projection changed`);
+  }
+});
+
 test('DATA-2D-1: 조건부·내부 장소와 근거 만료 대표 후보는 provider 결과에 들어오지 않는다', () => {
   const provider = createCourseV1CandidateProvider();
   const fresh = provider.listRepresentativeCandidates(new Date('2026-09-01T10:00:00+09:00'));

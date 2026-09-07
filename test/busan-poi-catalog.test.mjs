@@ -55,18 +55,23 @@ test('카카오 확인 링크와 운영시간 신뢰도는 장소별로 추적�
   }
 });
 
-test('TourAPI HTTPS 검증 이미지는 동일 content ID에만 보완 원천으로 붙고 부산시 공식 이미지를 덮어쓰지 않는다', () => {
-  const tourapiImages = rows.filter((place) => place.imageSource === 'tourapi');
-  const representative = tourapiImages.filter((place) => ['representative_core', 'representative_standard'].includes(place.classification));
-  assert.equal(representative.length, 72);
-  assert.ok(tourapiImages.some((place) => place.contentId === 'poi_41'), 'previously validated conditional image is retained');
-  for (const place of tourapiImages) {
-    assert.equal(place.tourapiContentId, place.imageEvidence.sourceId);
-    assert.match(place.imageUrl, /^https:\/\//);
-    assert.match(place.imageEvidence.auditedAt, /^\d{4}-\d{2}-\d{2}T/);
-    assert.match(place.imageEvidence.httpsValidatedAt, /^\d{4}-\d{2}-\d{2}T/);
+test('공식 API 단위 이용허락과 원천 ID·URL이 정확히 연결된 부산 명소·맛집 사진만 투영한다', () => {
+  const photos = rows.filter((place) => place.imageUrl);
+  assert.equal(photos.length, 101);
+  assert.deepEqual(
+    Object.fromEntries([...new Set(photos.map((place) => place.imageEvidence.source))].sort().map((sourceName) => [sourceName, photos.filter((place) => place.imageEvidence.source === sourceName).length])),
+    { busan_attraction: 85, busan_food: 16 },
+  );
+  assert.equal(photos.filter((place) => place.imageEvidence.source === 'busan_shopping').length, 0);
+  assert.equal(photos.filter((place) => place.imageSource === 'tourapi').length, 0);
+  for (const place of photos) {
+    assert.equal(place.imageSource, 'busan_official');
+    assert.equal(place.imageEvidence.usagePermission.basis, 'api_service');
+    assert.equal(place.imageEvidence.usagePermission.licenseName, '이용허락범위 제한 없음');
+    assert.equal(place.imageEvidence.usagePermission.attributionRequired, false);
+    assert.equal(place.imageEvidence.usagePermission.commercialUseAllowed, true);
+    assert.equal(place.imageEvidence.usagePermission.modificationAllowed, true);
   }
-  for (const place of rows.filter((item) => item.imageSource === 'busan_official')) assert.notEqual(place.imageSource, 'tourapi');
 });
 
 test('일반 식당과 숙박·교통·의료·주차 시설은 런타임 자투리 활동 카탈로그에 없다', () => {
