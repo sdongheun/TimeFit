@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "identities": {
+    "accountA": {
+      "subject": "11111111-1111-4111-8111-111111111111",
+      "isAnonymous": false,
+      "tokenState": "valid"
+    },
+    "accountB": {
+      "subject": "22222222-2222-4222-8222-222222222222",
+      "isAnonymous": false,
+      "tokenState": "valid"
+    },
+    "anonymous": {
+      "subject": "33333333-3333-4333-8333-333333333333",
+      "isAnonymous": true,
+      "tokenState": "valid"
+    },
+    "expired": {
+      "subject": "44444444-4444-4444-8444-444444444444",
+      "isAnonymous": false,
+      "tokenState": "expired"
+    }
+  },
+  "rlsCases": [
+    {
+      "id": "account-a-own-graph",
+      "actor": "accountA",
+      "owner": "accountA",
+      "operation": "read_write_update_delete",
+      "expected": "allowed"
+    },
+    {
+      "id": "account-b-cannot-read-a",
+      "actor": "accountB",
+      "owner": "accountA",
+      "operation": "read",
+      "expectedRowCount": 0
+    },
+    {
+      "id": "account-b-cannot-write-a-stop",
+      "actor": "accountB",
+      "owner": "accountA",
+      "operation": "insert_stop",
+      "expected": "forbidden"
+    },
+    {
+      "id": "anonymous-cannot-write-account-table",
+      "actor": "anonymous",
+      "owner": "anonymous",
+      "operation": "insert_course",
+      "expected": "forbidden"
+    },
+    {
+      "id": "anonymous-cannot-call-account-rpc",
+      "actor": "anonymous",
+      "owner": "anonymous",
+      "operation": "replace_course_plan",
+      "expected": "forbidden"
+    },
+    {
+      "id": "expired-does-not-call-db",
+      "actor": "expired",
+      "owner": "expired",
+      "operation": "insert_course",
+      "expectedDbCalls": 0
+    },
+    {
+      "id": "forged-user-id-does-not-select-target",
+      "actor": "accountB",
+      "owner": "accountA",
+      "operation": "write_with_forged_user_id",
+      "expected": "rejected"
+    }
+  ],
+  "courseGraphCases": [
+    {
+      "id": "stop-insert-failure-rolls-back-parent",
+      "actor": "accountA",
+      "courseRunId": "run-stop-failure",
+      "failureAt": "stops",
+      "expectedStatus": "write_failed",
+      "expectedActorRows": {
+        "courses": 0,
+        "stops": 0,
+        "legs": 0
+      },
+      "expectedOtherOwnerChange": 0
+    },
+    {
+      "id": "leg-insert-failure-rolls-back-parent-and-stops",
+      "actor": "accountA",
+      "courseRunId": "run-leg-failure",
+      "failureAt": "legs",
+      "expectedStatus": "write_failed",
+      "expectedActorRows": {
+        "courses": 0,
+        "stops": 0,
+        "legs": 0
+      },
+      "expectedOtherOwnerChange": 0
+    },
+    {
+      "id": "response-loss-retry-is-idempotent",
+      "actor": "accountA",
+      "courseRunId": "run-response-loss",
+      "failureAt": "response_after_commit",
+      "retryWithSameCourseRunId": true,
+      "expectedStatus": "already_written",
+      "expectedActorRows": {
+        "courses": 1,
+        "stops": 1,
+        "legs": 1
+      },
+      "expectedOtherOwnerChange": 0
+    }
+  ]
+}

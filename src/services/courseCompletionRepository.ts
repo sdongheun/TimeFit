@@ -44,6 +44,10 @@ export type ClearCourseCompletionsResult =
   | { status: 'cleared' }
   | { status: 'storage_unavailable' };
 
+export type RemoveCourseCompletionsResult =
+  | { status: 'removed'; removedCompletionIds: readonly string[] }
+  | { status: 'storage_unavailable' | 'storage_corrupt'; removedCompletionIds: readonly [] };
+
 export interface CourseCompletionStorage {
   getItem(key: string): Promise<string | null>;
   setItem(key: string, value: string): Promise<void>;
@@ -54,6 +58,7 @@ export type CourseCompletionRepository = Readonly<{
   complete(input: CompleteCourseInput): Promise<CompleteCourseResult>;
   read(): Promise<ReadCourseCompletionsResult>;
   clear(): Promise<ClearCourseCompletionsResult>;
+  removeByCompletionIds(completionIds: readonly string[]): Promise<RemoveCourseCompletionsResult>;
 }>;
 
 type EnvelopeV1 = Readonly<{
@@ -266,6 +271,25 @@ export function createCourseCompletionRepository(
         } catch {
           return { status: 'storage_unavailable' };
         }
+      });
+    },
+
+    async removeByCompletionIds(completionIds) {
+      const requested = new Set(completionIds.filter((item) => isBoundedString(item, 200)));
+      if (!requested.size) return { status: 'removed', removedCompletionIds: [] };
+      return runSerialized(storage, async () => {
+        let raw: string | null;
+        try { raw = await storage.getItem(COURSE_COMPLETION_STORAGE_KEY); }
+        catch { return { status: 'storage_unavailable', removedCompletionIds: [] as const }; }
+        if (raw === null) return { status: 'removed', removedCompletionIds: [] };
+        const envelope = parseEnvelope(raw);
+        if (!envelope) return { status: 'storage_corrupt', removedCompletionIds: [] as const };
+        const removedCompletionIds = envelope.records.filter((record) => requested.has(record.completionId)).map((record) => record.completionId);
+        if (!removedCompletionIds.length) return { status: 'removed', removedCompletionIds };
+        try {
+          await storage.setItem(COURSE_COMPLETION_STORAGE_KEY, JSON.stringify({ schemaVersion: SCHEMA_VERSION, records: envelope.records.filter((record) => !requested.has(record.completionId)) }));
+        } catch { return { status: 'storage_unavailable', removedCompletionIds: [] as const }; }
+        return { status: 'removed', removedCompletionIds };
       });
     },
   };

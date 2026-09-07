@@ -140,7 +140,7 @@ function coursePlanRows(courseId: string, params: ExecutionParams) {
 async function currentUserId(): Promise<string | null> {
   try {
     const { data, error } = await supabase.auth.getUser();
-    if (error || !data?.user) return null;
+    if (error || !data?.user || data.user.is_anonymous === true) return null;
     return data.user.id;
   } catch {
     return null;
@@ -168,29 +168,8 @@ export async function saveCourseToRepository(params: ExecutionParams): Promise<S
     const startsAt = dateAtMinute(ctx.startMin);
     const endsAt = new Date(startsAt.getTime() + ctx.remainingMin * 60_000);
     const plan = coursePlanRows('', params);
-
-    const { data: created, error: courseError } = await supabase
-      .from('courses')
-      .insert({
-        user_id: userId,
-        status: 'saved',
-        origin_label: ctx.originLabel ?? '선택한 출발지',
-        origin_lat: origin.lat,
-        origin_lon: origin.lon,
-        destination_label: ctx.appointment?.label ?? null,
-        destination_lat: ctx.appointment?.lat ?? null,
-        destination_lon: ctx.appointment?.lon ?? null,
-        starts_at: startsAt.toISOString(),
-        ends_at: endsAt.toISOString(),
-        mode: ctx.mode,
-        total_move_min: plan.totalMoveMin,
-        total_dwell_min: plan.totalDwellMin,
-        buffer_min: Math.max(0, Math.round(course.bufferLeftMin)),
-        recommendation_snapshot: { course: courseSnapshot(course), ctx },
-      })
-      .select('id, created_at')
-      .single();
-    if (courseError || !created) {
+    const requestId = globalThis.crypto?.randomUUID?.();
+    if (!requestId) {
       return {
         ...params,
         courseId: localId,
@@ -199,12 +178,21 @@ export async function saveCourseToRepository(params: ExecutionParams): Promise<S
         createdAt: now,
       };
     }
-
-    const planRows = coursePlanRows(created.id, params);
-    await Promise.all([
-      planRows.stops.length ? supabase.from('course_stops').insert(planRows.stops) : Promise.resolve({ error: null }),
-      planRows.legs.length ? supabase.from('course_legs').insert(planRows.legs) : Promise.resolve({ error: null }),
-    ]);
+    const args = {
+      p_request_id: requestId,
+      p_origin_label: ctx.originLabel ?? '선택한 출발지', p_origin_lat: origin.lat, p_origin_lon: origin.lon,
+      p_destination_label: ctx.appointment?.label ?? null, p_destination_lat: ctx.appointment?.lat ?? null, p_destination_lon: ctx.appointment?.lon ?? null,
+      p_starts_at: startsAt.toISOString(), p_ends_at: endsAt.toISOString(), p_mode: ctx.mode,
+      p_total_move_min: plan.totalMoveMin, p_total_dwell_min: plan.totalDwellMin,
+      p_buffer_min: Math.max(0, Math.round(course.bufferLeftMin)), p_recommendation_snapshot: { course: courseSnapshot(course), ctx },
+      p_stops: plan.stops.map(({ course_id: _courseId, ...stop }) => stop),
+      p_legs: plan.legs.map(({ course_id: _courseId, ...leg }) => leg),
+    };
+    let reply = await supabase.rpc('create_course_plan', args);
+    // A lost response may follow a committed transaction. Retry once with the same request ID.
+    if (reply.error || !reply.data?.[0]) reply = await supabase.rpc('create_course_plan', args);
+    const created = reply.data?.[0];
+    if (reply.error || !created) return { ...params, courseId: localId, id: localId, title: savedTitle(course), createdAt: now };
 
     return {
       ...params,

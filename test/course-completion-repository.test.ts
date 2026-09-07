@@ -199,6 +199,15 @@ test('DBCOMPLETION01-12: legacy 후기는 그대로 두고 rating·합성 체류
   assert.equal(storage.values.get(legacyKey), legacyRaw);
 });
 
+test('DBCOMPLETION01-12B: import acknowledgement의 completionId만 제거하고 나머지 source를 보존한다', async () => {
+  const { repository } = fixture();
+  const first = await repository.complete(input('guest-1', 100));
+  const second = await repository.complete(input('guest-2', 200));
+  if (first.status !== 'created' || second.status !== 'created') return;
+  assert.deepEqual(await repository.removeByCompletionIds([first.record.completionId]), { status: 'removed', removedCompletionIds: [first.record.completionId] });
+  assert.deepEqual((await repository.read()).records.map((item) => item.courseRunId), ['guest-2']);
+});
+
 test('DBCOMPLETION01-13: repository와 projection은 Supabase·fetch·외부 API에 의존하지 않는다', () => {
   const source = fs.readFileSync('src/services/courseCompletionRepository.ts', 'utf8');
   assert.doesNotMatch(source, /supabase|\bfetch\b|https?:\/\//i);
