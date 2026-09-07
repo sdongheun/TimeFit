@@ -1,5 +1,13 @@
 # QA·출시 현재 작업
 
+## 최우선 실행 — QA-LIVE-LEARNING-EVIDENCE-01
+
+[앱·Live Activity 학습 연결 검증](live-learning-evidence-validation.md)의 A 자동 게이트를 지금 실행한다. U-LIVE-LEARNING-EVIDENCE-01 통합 코드 검토 완료로 구현 인계 대기는 해제됐다. B는 새 internal build 최소 사용자 실기기, C는 별도 검증 환경·권한을 확인한 실제 서버 게이트다. 아래 전체 개인화/출시 대기와 구분하며 Simulator 반복 클릭·운영 쓰기 없이 진행한다.
+
+## 2026-09-07 최신 작업
+
+[QA-RELEASE-PERSONALIZATION-01](release-personalization-validation.md): fixture 준비 가능, **최종 실행은 각 구현 인계 뒤**. 실제 개인화 결과와 계정 격리/guest 학습0/기존 preflight 결함 확인.
+
 [QA-RELEASE-ONESTOP-01 — 출시 1곳 추천 빠른 Simulator 검증](release-one-stop-simulator-validation.md)은 조건부 수락됐고, [QA-ONE-MORE-01](release-one-stop-more-results-validation.md)은 고정 fixture 자동검증으로 통합 수락됐다. 요청형 이어보기 때문에 과거 8개 입력이나 Simulator 조작을 다시 수행하지 않는다. 미회수 receipt, CourseConfirm 복원, 더보기 표시·누적은 UIUX 정리 이후 출시 후보의 사용자 수동 smoke 1회에 합쳐 확인한다.
 
 ## 먼저 읽을 파일

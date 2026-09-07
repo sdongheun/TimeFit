@@ -1,5 +1,7 @@
 # QA-LIVE-ACTIVITY-01 — Live Activity 체류 측정·개인화 출시 게이트
 
+2026-09-06 실행 순서 변경: 이 문서는 서버 개인화 연결 후 전체 게이트로 유지한다. 먼저 기기 단계는 [QA-LIVE-LOCAL-01](live-activity-local-validation.md)을 사용하며 DB migration/일반 로그인을 그 단계의 전제로 요구하지 않는다.
+
 > 상태: **대기 — U-COMPLETION-HISTORY-01, DB-DWELL-01, 2-AB, U-LIVE-ACTIVITY-01 수락 및 QA 대상 Supabase migration 적용 뒤 실행**
 > 상위 결정: [DEC-LIVE-DWELL-01](../integration-decision/live-activity-dwell-personalization.md)
 
