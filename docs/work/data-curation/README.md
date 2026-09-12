@@ -1,5 +1,13 @@
 # 데이터 정제 현재 작업
 
+## 최우선 — DATA-RELEASE-ASSETS-01
+
+[출시 실행 명령](../integration-decision/release-execution-wave.md)의 해당 절 실행. 현행 사진 근거·표시·fallback 감사만 수행. 미확인 사진 전량 확보와 카탈로그 재설계를 출시 선행조건으로 만들지 않는다.
+
+## 최신 실행 — DATA-PLACE-PHOTO-RECHECK-01
+
+[보류 사진 권리 재조사](place-photo-recheck.md). 약70여개라는 과거 수를 현재 대상으로 재집계하고 카드/원형 지도 마커별 조건을 공식 근거로 확인한다. 안전하게 표현 가능한 허용 사진만 기존 빌드로 반영한다. UI 최종 다듬기와 병렬 가능, 미확인 허용 금지.
+
 ## 2026-09-07 최신 작업
 
 최신 후속: [카페·문화시설 세부분류](release-personalization-data.md)의 후속 실행 절은 **DB B와 병렬 실행 가능**. 기존 사진/키 전달 완료 재사용, 근거 있는 missing 보완만 시행한다.
