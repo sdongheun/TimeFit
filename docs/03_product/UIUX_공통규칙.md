@@ -1,5 +1,26 @@
 # TimeFit UIUX 공통 규칙
 
+## 현행 화면 계약 정정 — DOCS-CURRENT-STRUCTURE-01 (2026-09-12)
+
+[현재 코드 연결](현재기능과구조.md)을 근거로 당시 ‘구현 전’과 실제 연결 상태를 구분한다. 새 정책 변경은 없다.
+
+| 현재 기준 | 코드 근거 | 이전 방식 → 관찰 → 교체·상태 |
+| --- | --- | --- |
+| 메인/주변/기록/내정보, 메인 내부 stack | `App.tsx`, `mainTabNavigation` | 내 코스 탭·화면 reset 혼재 → 현재 탭 불일치 → 주 흐름 정정 |
+| 180분 통합 설정·수동 검색/지도 | `TimeSetupScreen`, `UnifiedSetupInputs` | 120분·GPS·별도 시간 페이지 → 교체 후 원문 잔존 → 현행 연결 확인 |
+| 전체 지도 상세 선택 후 동일 Results 갱신 | `PlaceDetailScreen`, `ResultsScreen` | 별도 장바구니로 오해 → navigation 확인 → A/B/동일 A 갱신 유지 |
+| CourseConfirm review/active, 하단 주요 행동·공유 진행 | `CourseConfirmScreen`, `liveActivity/courseProgressComposition` | Execution을 신규 흐름으로 설명 → entry 불일치 → 신규/호환 분리 |
+| 주변 수동 기준·스와이프 시트·플로팅 탭·독립 길찾기 | `NearbyBrowseScreen`, `nearbyDirections` | 현재위치·추천 학습 혼재 → 코드 불일치 → 수동 탐색/무학습 유지 |
+| 기록 통계·필터·⋯/long press/swipe 삭제 | `ActivityRecordScreen`, `HistorySwipeRow`, `AccountRecordsPanel` | 단순 목록·4박스 → 교체 구현 존재 → 연결 확인 |
+| 별도 프로필 관리·인증 폼 분리·14세 자기확인·명시 동의 | `ProfileManagementScreen`, `LoginScreen` | inline 인증·출생연도·일괄 동의 → 현재와 충돌 → 옛 UI 철회 |
+| 수동 코스 복원·과거 snapshot 재선택 게이트 | `manualLocationRestoreModel`, `AppFlowContext` | GPS 제거를 복원 삭제로 오인 → 입력 증거와 구별 → 신규 복원 유지 |
+
+UX-COLOR-01의 흰색 계열 행동 텍스트 규칙은 유지한다. `ResultsScreen.moreButtonText=#9dcbff`는 **구현 편차**로 남기며 파란 글씨 허용으로 문서를 바꾸지 않는다. 전체 색상 준수·실기기 품질을 정적 조사만으로 완료 판정하지 않는다.
+
+## 과거 결정·세부 근거 원문
+
+이하 `구현 전`, `미검증`은 기록일의 상태다. 위 표와 충돌하는 흐름은 재실행하지 않는다. 상세 접근성·예외 규칙은 충돌하지 않는 범위에서 유지한다.
+
 ## 2026-09-09 최우선 — DEC-RELEASE-MANUAL-LOCATION-01 (승인·구현 전)
 
 GPS 자동 현재위치/지도 내 위치/주변 조회 → 자동 측위 없는 출시 필요 → 수동 검색·지도 선택으로 교체한다. 현재위치 버튼·위치 권한 항목은 제거하고 기존 지도 선택을 재사용한다. 지도 초기 중심은 선택 장소 또는 부산 기본 보기이며 자동 확정하지 않는다. 장소 미선택은 선택 안내, 주변은 선택 장소 기준 거리순이다. 기존 사용하지 않는 GPS 재추천을 새로 노출하지 않는다. 과거 GPS 요구는 철회 이력, 다크/흰 텍스트/파란 강조와 나머지 화면 흐름·버튼 진행은 유지한다. [명령과 예외](../work/integration-decision/release-manual-location.md).
