@@ -343,6 +343,7 @@ export function createReleaseIdentityPersonalizationRuntime(deps: ReleaseIdentit
   };
   const outbox = createDwellOutbox(dwellStorage, { now, beforeEvict: (ids) => setLearningStates(ids, 'evicted') });
   const pendingStore: GuestImportStore = {
+    serializationKey: deps.storage,
     async read() {
       const raw = await deps.storage.getItem(RELEASE_GUEST_IMPORT_PENDING_KEY);
       if (!raw) return null;

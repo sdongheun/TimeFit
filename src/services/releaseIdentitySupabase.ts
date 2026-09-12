@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { uuid } from 'expo-modules-core';
+import { FunctionsHttpError } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 import { createAccountIdentityResolver, createSupabaseAccountAuthPort } from './accountIdentity';
-import { createAccountRegistrationRepository, type RequiredConsentDocumentId } from './accountRegistrationRepository';
+import { createAccountRegistrationRepository, sanitizeSignupFailure, type RequiredConsentDocumentId } from './accountRegistrationRepository';
 import { createAccountProfileRepository } from './accountProfileRepository';
-import { createAccountDeletionRepository } from './accountDeletionRepository';
+import { createAccountDeletionRepository, type DeleteAccountResultV1 } from './accountDeletionRepository';
 import { createAccountCourseCompletionRepository, type AccountCompletionOwnerSnapshotStore, type AccountCourseCompletionRemote, type AccountCourseCompletionV1 } from './accountCourseCompletionRepository';
 import { createGuestCompletionImportRepository, type GuestImportStore, type PendingGuestCompletionImportV1 } from './guestCompletionImportRepository';
 import { courseCompletionRepository } from './courseCompletionAsyncStorage';
@@ -29,14 +30,19 @@ export const supabaseAccountIdentityResolver = createAccountIdentityResolver(cre
 
 export const supabaseAccountRegistrationRepository = createAccountRegistrationRepository({
   async readDocuments() {
-    const { data, error } = await supabase.rpc('get_signup_consent_documents');
-    if (error) throw new Error('signup_registry_unavailable');
-    return (data ?? []).map((row: Record<string, unknown>) => ({ documentId: row.document_id as RequiredConsentDocumentId, documentVersion: String(row.document_version), url: String(row.document_url) }));
+    try {
+      const { data, error, status } = await supabase.rpc('get_signup_consent_documents');
+      // PostgREST carries HTTP status on the response, not on its error body.
+      if (error) throw sanitizeSignupFailure({ code: error.code, status }, 'registry');
+      return (data ?? []).map((row: Record<string, unknown>) => ({ documentId: row.document_id as RequiredConsentDocumentId, documentVersion: String(row.document_version), url: String(row.document_url) }));
+    } catch (error) { throw sanitizeSignupFailure(error, 'registry'); }
   },
   async signUp(input) {
-    const { data, error } = await supabase.auth.signUp({ email: input.email, password: input.password, options: { data: input.metadata } });
-    if (error) throw new Error('signup_unavailable');
-    return { sessionReady: Boolean(data.session) };
+    try {
+      const { data, error } = await supabase.auth.signUp({ email: input.email, password: input.password, options: { data: input.metadata, captchaToken: input.captchaToken } });
+      if (error) throw sanitizeSignupFailure(error, 'auth');
+      return { sessionReady: Boolean(data.session) };
+    } catch (error) { throw sanitizeSignupFailure(error, 'auth'); }
   },
 });
 export const readSignupConsentDocuments = supabaseAccountRegistrationRepository.readSignupConsentDocuments;
@@ -77,6 +83,7 @@ export const supabaseAccountCourseCompletionRepository = createAccountCourseComp
 });
 
 const importStore: GuestImportStore = {
+  serializationKey: releaseDeviceStorage,
   async read() { const raw = await AsyncStorage.getItem(IMPORT_KEY); return raw ? JSON.parse(raw) as PendingGuestCompletionImportV1 : null; },
   async write(value) { await AsyncStorage.setItem(IMPORT_KEY, JSON.stringify(value)); },
   async clear() { await AsyncStorage.removeItem(IMPORT_KEY); },
@@ -85,16 +92,51 @@ const importStore: GuestImportStore = {
 const guestImportRemote = { async import(input) { const { data, error } = await supabase.rpc('import_guest_course_completions', { p_import_id: input.importId, p_items: input.items }); const row = data?.[0]; if (error || !row) throw new Error('import_unavailable'); return { status: row.status, importId: input.importId, acceptedSourceIds: row.accepted_source_ids ?? [], rejectedSourceIds: row.rejected_source_ids ?? [] }; } } satisfies Parameters<typeof createGuestCompletionImportRepository>[0]['remote'];
 
 export const supabaseGuestCompletionImportRepository = createGuestCompletionImportRepository({
+  createImportId: () => uuid.v4(),
   identity: supabaseAccountIdentityResolver, pending: importStore,
   source: { async removeByIds(ids) { const result = await courseCompletionRepository.removeByCompletionIds(ids); if (result.status !== 'removed') throw new Error('source_cleanup_failed'); } },
   remote: guestImportRemote,
 });
 
+// Only this endpoint's documented combinations cross into the UI/runtime. Never
+// forward an SDK Error, arbitrary response fields, or infer deletion from HTTP 2xx.
+function accountDeletionResponse(body: unknown, httpStatus: number, requestId: string): DeleteAccountResultV1 {
+  const fallback: DeleteAccountResultV1 = { status: 'retryable_failure', stage: 'database' };
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return fallback;
+  const value = body as Record<string, unknown>;
+  if (httpStatus === 200 && value.status === 'deleted' && value.requestId === requestId && value.localCleanupRequired === true)
+    return { status: 'deleted', requestId, localCleanupRequired: true };
+  if (httpStatus === 403 && value.status === 'reauth_required' && value.method === 'password_sign_in')
+    return { status: 'reauth_required', method: 'password_sign_in' };
+  if (value.status === 'rejected') {
+    if (httpStatus === 401 && value.reason === 'account_required') return { status: 'rejected', reason: 'account_required' };
+    if ((httpStatus === 400 || httpStatus === 405) && value.reason === 'invalid_request') return { status: 'rejected', reason: 'invalid_request' };
+  }
+  if (value.status === 'retryable_failure') {
+    if (httpStatus === 409 && value.stage === 'database') return fallback;
+    if (httpStatus === 503 && (value.stage === 'storage' || value.stage === 'auth' || value.stage === 'verification' || value.stage === 'database'))
+      return { status: 'retryable_failure', stage: value.stage };
+  }
+  return fallback;
+}
+
 export const supabaseAccountDeletionRepository = createAccountDeletionRepository({
   identity: supabaseAccountIdentityResolver,
   async invoke(accessToken, requestId) {
     const { data, error } = await supabase.functions.invoke('delete-account', { body: { requestId }, headers: { Authorization: `Bearer ${accessToken}` } });
-    if (error || !data?.status) throw new Error('delete_unavailable'); return data;
+    if (!error) return accountDeletionResponse(data, 200, requestId);
+    if (error instanceof FunctionsHttpError) {
+      // SDK context is the non-2xx Response. Clone to leave it unconsumed for
+      // SDK ownership; no raw body/error is logged or returned. RN supports text().
+      const response = error.context;
+      if (response && typeof response.clone === 'function' && [400, 401, 403, 405, 409, 503].includes(response.status)) {
+        try {
+          const text = await response.clone().text();
+          if (text.length <= 4096) return accountDeletionResponse(JSON.parse(text), response.status, requestId);
+        } catch { /* malformed/unreadable response uses the existing safe failure */ }
+      }
+    }
+    return { status: 'retryable_failure', stage: 'database' };
   },
 });
 
@@ -130,6 +172,7 @@ export const supabaseReleaseIdentityPersonalizationRuntime = createReleaseIdenti
   accountRemote: accountCompletionRemote,
   dwellRemote: dwellPersonalizationRemote,
   guestRemote: guestImportRemote,
+  createImportId: () => uuid.v4(),
   accountDeletion: supabaseAccountDeletionRepository,
   createEvidenceToken: () => uuid.v4(),
   isEvidenceAuthReady: () => evidenceAuthReady,

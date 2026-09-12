@@ -35,10 +35,85 @@ type StoredStopRow = {
 type ExecutionParams = RootStackParamList['Execution'];
 type SavedCourse = ExecutionParams & { id: string; title: string; createdAt: number };
 
-function dateAtMinute(minute: number): Date {
-  const date = new Date();
-  date.setHours(Math.floor(minute / 60), minute % 60, 0, 0);
-  return date;
+export type CourseDateErrorCode = 'course_date_missing' | 'course_date_invalid' | 'course_date_conflict' | 'course_date_unavailable';
+export class CourseDateError extends Error {
+  constructor(public readonly code: CourseDateErrorCode) { super(code); this.name = 'CourseDateError'; }
+}
+export function isCourseDateError(error: unknown): error is CourseDateError {
+  return error instanceof CourseDateError;
+}
+
+/** Require a real calendar date and an explicit timezone; Date.parse alone normalizes February 30. */
+function startInstant(value: unknown): number {
+  if (value === undefined || value === null) throw new CourseDateError('course_date_missing');
+  const parts = typeof value === 'string' && /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,6})?(Z|[+-]\d{2}:\d{2})$/.exec(value);
+  if (!parts) throw new CourseDateError('course_date_invalid');
+  const [year, month, day, hour, minute, second] = parts.slice(1, 7).map(Number);
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const zone = parts[7];
+  if (month < 1 || month > 12 || day < 1 || day > days[month - 1] || hour > 23 || minute > 59 || second > 59
+    || (zone !== 'Z' && (Number(zone.slice(1, 3)) > 23 || Number(zone.slice(4)) > 59))) throw new CourseDateError('course_date_invalid');
+  const at = Date.parse(value as string);
+  if (!Number.isFinite(at)) throw new CourseDateError('course_date_invalid');
+  return at;
+}
+
+function checkDateIssue(ctx: PlanCtx) {
+  if (ctx.courseDateIssue !== undefined) {
+    const code = ctx.courseDateIssue === 'missing' ? 'course_date_missing'
+      : ctx.courseDateIssue === 'conflict' ? 'course_date_conflict' : 'course_date_invalid';
+    throw new CourseDateError(code);
+  }
+}
+function datedContext(ctx: PlanCtx, original?: StoredCourseRow, preserveLocalEnd = false): PlanCtx {
+  checkDateIssue(ctx);
+  let at: number;
+  let end: number;
+  const checkEnd = (value: unknown) => {
+    const candidate = startInstant(value);
+    if (candidate <= at) throw new CourseDateError('course_date_invalid');
+    if (candidate !== end) throw new CourseDateError('course_date_conflict');
+  };
+  if (original) {
+    at = startInstant(original.starts_at);
+    end = startInstant(original.ends_at);
+    if (end <= at) throw new CourseDateError('course_date_invalid');
+    const snapshot = original.recommendation_snapshot as { ctx?: PlanCtx } | null;
+    if (snapshot?.ctx) {
+      checkDateIssue(snapshot.ctx);
+      if (snapshot.ctx.startedAtIso !== undefined && startInstant(snapshot.ctx.startedAtIso) !== at) throw new CourseDateError('course_date_conflict');
+      if (snapshot.ctx.endsAtIso !== undefined) checkEnd(snapshot.ctx.endsAtIso);
+    }
+    if (ctx.startedAtIso !== undefined && startInstant(ctx.startedAtIso) !== at) throw new CourseDateError('course_date_conflict');
+    if (ctx.endsAtIso !== undefined) checkEnd(ctx.endsAtIso);
+  } else {
+    at = startInstant(ctx.startedAtIso);
+    // Only a first creation may derive its deadline. Existing local plans must carry their original end.
+    end = preserveLocalEnd ? startInstant(ctx.endsAtIso) : at + ctx.remainingMin * 60_000;
+    if (!Number.isFinite(new Date(end).getTime()) || end <= at) throw new CourseDateError('course_date_invalid');
+    if (ctx.endsAtIso !== undefined) checkEnd(ctx.endsAtIso);
+  }
+  if (!Number.isSafeInteger(ctx.remainingMin) || ctx.remainingMin <= 0 || !Number.isFinite(new Date(at + ctx.remainingMin * 60_000).getTime())) throw new CourseDateError('course_date_invalid');
+  return { ...ctx, startedAtIso: new Date(at).toISOString(), endsAtIso: new Date(end).toISOString() };
+}
+
+async function originalCourse(courseId: string): Promise<StoredCourseRow> {
+  try {
+    const { data, error } = await supabase.from('courses')
+      .select('id, starts_at, ends_at, recommendation_snapshot').eq('id', courseId).maybeSingle();
+    if (error || !data) throw new CourseDateError('course_date_unavailable');
+    return data as StoredCourseRow;
+  } catch { throw new CourseDateError('course_date_unavailable'); }
+}
+
+async function contextForWrite(params: ExecutionParams, userId: string | null, sourceId = params.courseId): Promise<PlanCtx> {
+  checkDateIssue(params.ctx);
+  if (sourceId && !sourceId.startsWith('local-')) {
+    if (!userId) throw new CourseDateError('course_date_unavailable');
+    return datedContext(params.ctx, await originalCourse(sourceId));
+  }
+  return datedContext(params.ctx, undefined, !!sourceId);
 }
 
 function savedTitle(course: Course) {
@@ -86,6 +161,14 @@ function paramsFromRows(course: StoredCourseRow, stops: StoredStopRow[]): SavedC
     };
   });
   const savedCourse: Course = { ...snapshot.course, spots: selected };
+  let restoredCtx: PlanCtx;
+  try { restoredCtx = datedContext(snapshot.ctx, course); }
+  catch (error) {
+    if (!isCourseDateError(error)) throw error;
+    // Keep the row visible and unchanged on the server; carry the blocking issue through navigation.
+    const issue = error.code === 'course_date_missing' ? 'missing' : error.code === 'course_date_conflict' ? 'conflict' : 'invalid';
+    restoredCtx = { ...snapshot.ctx, courseDateIssue: issue };
+  }
   return {
     id: course.id,
     courseId: course.id,
@@ -94,7 +177,7 @@ function paramsFromRows(course: StoredCourseRow, stops: StoredStopRow[]): SavedC
     course: savedCourse,
     origin: { lat: Number(course.origin_lat), lon: Number(course.origin_lon) },
     ctx: {
-      ...snapshot.ctx,
+      ...restoredCtx,
       mode: course.mode,
       appointment: course.destination_label && num(course.destination_lat) != null && num(course.destination_lon) != null
         ? { label: course.destination_label, lat: Number(course.destination_lat), lon: Number(course.destination_lon) }
@@ -149,6 +232,7 @@ async function currentUserId(): Promise<string | null> {
 
 export async function saveCourseToRepository(params: ExecutionParams): Promise<SavedCourse> {
   const userId = await currentUserId();
+  params = { ...params, ctx: await contextForWrite(params, userId) };
   const { course, origin, ctx } = params;
   const localId = `local-${Date.now()}`;
   const now = Date.now();
@@ -165,8 +249,8 @@ export async function saveCourseToRepository(params: ExecutionParams): Promise<S
   }
 
   try {
-    const startsAt = dateAtMinute(ctx.startMin);
-    const endsAt = new Date(startsAt.getTime() + ctx.remainingMin * 60_000);
+    const startsAt = new Date(ctx.startedAtIso!);
+    const endsAt = new Date(ctx.endsAtIso!);
     const plan = coursePlanRows('', params);
     const requestId = globalThis.crypto?.randomUUID?.();
     if (!requestId) {
@@ -201,7 +285,8 @@ export async function saveCourseToRepository(params: ExecutionParams): Promise<S
       title: savedTitle(course),
       createdAt: new Date(created.created_at).getTime(),
     };
-  } catch {
+  } catch (error) {
+    if (isCourseDateError(error)) throw error;
     return {
       ...params,
       courseId: localId,
@@ -214,6 +299,7 @@ export async function saveCourseToRepository(params: ExecutionParams): Promise<S
 
 export async function replaceCoursePlanInRepository(courseId: string, params: ExecutionParams): Promise<ExecutionParams> {
   const userId = await currentUserId();
+  params = { ...params, ctx: await contextForWrite(params, userId, courseId) };
   if (!userId || courseId.startsWith('local-')) {
     return { ...params, courseId };
   }
@@ -231,7 +317,7 @@ export async function replaceCoursePlanInRepository(courseId: string, params: Ex
       p_stops: plan.stops.map(({ course_id: _courseId, ...stop }) => stop),
       p_legs: plan.legs.map(({ course_id: _courseId, ...leg }) => leg),
     });
-  } catch {}
+  } catch (error) { if (isCourseDateError(error)) throw error; }
   return { ...params, courseId };
 }
 

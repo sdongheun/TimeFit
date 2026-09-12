@@ -56,3 +56,27 @@ test('DB-RELEASE-IDENTITY B: 삭제 뒤 연결행이 남으면 deleted 성공을
   assert.equal(response.status, 503);
   assert.deepEqual(await response.json(), { status: 'retryable_failure', stage: 'verification' });
 });
+
+test('DELETE-FIX-04: exactly 600 seconds is accepted without changing password AMR policy', async () => {
+  const h = harness([{ method: 'password', timestamp: 1_000_000 - 600 }]);
+  assert.equal((await h.handler(request({ requestId: '11111111-1111-4111-8111-111111111111' }))).status, 200);
+});
+
+test('DELETE-FIX-04: claim conflict and storage/auth partial failures never run later deletion stages', async () => {
+  for (const failure of ['conflict', 'storage', 'auth', 'database'] as const) {
+    const calls: string[] = [];
+    const handler = createDeleteAccountHandler({
+      now: () => 1_000_000,
+      async authenticate() { return { id: 'fixture-owner', isAnonymous: false }; },
+      async verifiedClaims() { return { sub: 'fixture-owner', is_anonymous: false, amr: [{ method: 'password', timestamp: 1_000_000 }] }; },
+      async claim() { calls.push('claim'); if (failure === 'database') throw new Error('SYNTHETIC_PRIVATE'); return failure === 'conflict' ? 'conflict' : 'same_request'; },
+      async deleteStorage() { calls.push('storage'); return failure !== 'storage'; },
+      async deleteAuthUser() { calls.push('auth'); return failure !== 'auth'; },
+      async countUserRows() { calls.push('verify'); return 0; },
+    });
+    const response = await handler(request({ requestId: '11111111-1111-4111-8111-111111111111' }));
+    assert.equal(response.status, failure === 'conflict' ? 409 : 503);
+    assert.deepEqual(await response.json(), { status: 'retryable_failure', stage: failure === 'conflict' ? 'database' : failure });
+    assert.deepEqual(calls, failure === 'auth' ? ['claim', 'storage', 'auth'] : failure === 'storage' ? ['claim', 'storage'] : ['claim']);
+  }
+});

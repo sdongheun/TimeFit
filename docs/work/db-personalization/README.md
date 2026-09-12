@@ -1,5 +1,47 @@
 # DB·개인화 현재 작업
 
+2026-09-09 [DB-SIGNUP-FAILURE-01 repository 완료·API/UI 인계](signup-failure.md): transient captchaToken 전달/누락 Auth0 및 allowlist code·HTTP·registry/auth stage 계약. 집중20/typecheck/UI777(기존skip1)/core465 PASS. 실제 가입·메일·운영변경0. API의 Auth options/오류 정제 및 UI fresh CAPTCHA/failure 소비는 후속이며 end-to-end 완료 아님.
+
+2026-09-09 **DEPLOY-05 운영 배포 승인 완료**: 통합 대화의 사용자 “승인한다”를 [명령의 승인 경계](../integration-decision/release-delete-links-final.md)에 기록했다. 함수1개·사후 검증·조건부 제거만 승인. 동일 승인 재질문 없이 원격 사전 조건 확인부터 재개하며 실제 계정 삭제 테스트는 제외한다. 배포 결과는 아직 미확인이다.
+
+## 현행 후속 — DB-RELEASE-DELETE-DEPLOY-05
+
+2026-09-09 [DEPLOY-05 운영 배포·사후 검증 완료](release-facts-final.md#12-db-release-delete-deploy-05--운영-배포사후-검증-완료-2026-09-09): 승인된 함수1개 배포1회, ACTIVE/v1/verify_jwt=true, 소스·실제 dependency 대조 및 무인증401 PASS. 실제 계정 탈퇴 테스트 미실행·별도 승인. CLI lock 비업로드 한계는 상세12절C 참고.
+
+[함수1개 배포 명령](../integration-decision/release-delete-links-final.md)의 DEPLOY-05를 따른다. FIX-04 로컬 보완은 통합 수락. 명시 승인 후 delete-account만 배포·무인증 거절 확인, 실제 계정 삭제/개인화 C는 제외한다. 아래 FIX-04는 완료 이력이며 재실행하지 않는다.
+
+## 현행 후속 — DB-RELEASE-DELETE-FIX-04
+
+2026-09-09 [FIX-04 로컬 완료·최신 배포 hash](release-facts-final.md#10-db-release-delete-fix-04--sdk시작실패-전달-보완-완료-2026-09-09): SDK2.109.0 exact/frozen lock·Deno 실제 entry 시작1 PASS·실패 전달 focused35 PASS·typecheck/UI/core PASS. 운영 미배포, 함수1개 배포와 전용 탈퇴1회는 별도 승인. §9의 과거 소스 hash 대신 §10 사용.
+
+[탈퇴 최소 보완 명령](../integration-decision/release-delete-links-final.md)의 DB 절을 진행한다. DELETE-PREP-03 완료 조사에 따라 함수 SDK 고정/시작 검증과 탈퇴 실패 전달만 보완. 운영 배포/계정 삭제/C 반복 금지.
+
+## 최신 — DB-RELEASE-DELETE-PREP-03
+
+[배포 준비 명령](../integration-decision/release-deploy-preparation.md)의 해당 절 진행. OPS-02에서 확인한 delete-account 미배포의 함수1개 배포 승인 묶음 준비. 운영 배포·계정 삭제·C 재실행 금지.
+
+## 최신 — DB-RELEASE-OPS-02
+
+[최소 보완 명령](../integration-decision/release-minimal-followup.md)의 해당 절 진행. 읽기 전용 운영 메타데이터 및 전용 계정 탈퇴1회 승인 계획. 실제 삭제/쓰기/C 재실행 금지.
+
+## 최우선 — DB-RELEASE-FACTS-01
+
+[출시 실행 명령](../integration-decision/release-execution-wave.md)의 해당 절 실행. 저장/삭제/region·보관/registry 사실 확인, 운영 변경0. 개인화 C 재실행 금지. LINKS-01 원격 쓰기는 별도 승인 후.
+
+2026-09-08 [최종 DB 사실 확인 인수인계](release-facts-final.md): fixture42 PASS, 현재 linked region ap-northeast-2 확인. 저장/삭제·180일 유효성 대 물리 purge·가입 registry 적용/롤백 준비 기록. plan/로그·백업 retention·scheduler/삭제 Edge 실제 운용 및 registry 현행값은 미확인으로 분리. 운영 변경/C 재실행0.
+
+## 2026-09-08 진행 — DB-COURSE-DATE-01
+
+[날짜 포함 시작시각 보존 계약](course-date-preservation.md): UIUX 타입 인계 후 **repository 구현 완료**, 신규6개 회귀·typecheck PASS. CourseDateError export 연결 및 QA 날짜 없는 기존 성공 fixture 보완 대기(전체 UI2건/기본 wrapper 포함3건 FAIL). 전체 완료와 구분한다. 날짜 추정·기존 기록 삭제·migration·운영 쓰기0.
+
+## 2026-09-08 완료 — DB-RELEASE-180-CHECK
+
+[최대180분·2곳 저장 계약 영향 확인](release-three-hour-impact.md): DB 읽기 전용 감사 완료. 저장/RPC의180분·익일 차단 제약 없음, 제품·migration 변경0. 기존43개 회귀 PASS 근거와 legacy 코스 저장의 날짜 전달 위험을 기록했다. UI 신규 snapshot180분 검증과 전체 QA 수락은 구분한다.
+
+## 2026-09-08 최우선 — DB-GUEST-IMPORT-01
+
+[로그인 후 비로그인 기록 가져오기 실패](guest-import-release-fix.md)를 진단하고 DB 소유 경계에서 확인된 최소 수정만 진행한다. 017 운영 적용·개인화 C 저장/조회/추천/제한 정리는 완료됐다. 아래 백업·적용·C 대기 문구는 과거 이력이며 재실행하지 않는다. UI 원인은 계약과 재현 근거를 통합에 반환한다.
+
 최신 승인: 사용자가 macOS 숨김 로컬 비밀번호 입력 방식을 승인했다. `personalization-finalization.md`의 A 백업을 이어가며 동일 동의 재질문0. 실제 로컬 입력/OS 권한은 필요하며 백업 완료·원격 적용 승인으로 혼동하지 않는다.
 
 ## 마감 우선 — DB-PERSONALIZATION-FINALIZE-01

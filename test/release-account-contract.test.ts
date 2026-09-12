@@ -44,6 +44,7 @@ test('DB-RELEASE-IDENTITY B: 가입은 exact registry·명시 동의만 받고 �
   });
   assert.deepEqual(await repository.signUpAccount({
     requestId: '11111111-1111-4111-8111-111111111111', email: 'new@example.invalid', password: 'fixture-password',
+    captchaToken: 'fixture-signup-captcha',
     requiredConsents: { terms: consent('terms-of-service'), privacy: consent('privacy-policy') },
   }), { status: 'email_confirmation_pending' });
   assert.equal(calls.length, 1);
