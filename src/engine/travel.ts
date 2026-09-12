@@ -7,9 +7,7 @@ import type { PlaceSearchObserver, PlaceSearchResult } from './kakao';
 import { lineLabelsFromProviderCategoryFields, matchPlaceNameQuery } from '../services/placeNameSemanticMatch';
 
 const TMAP_KEY = process.env.EXPO_PUBLIC_TMAP_APP_KEY;
-const ODSAY_KEY = process.env.EXPO_PUBLIC_ODSAY_API_KEY ?? process.env.ODSAY_API_KEY;
 const ROUTE_USAGE_KEY = 'timefit:tmap-route-usage:v1';
-const ODSAY_USAGE_KEY = 'timefit:odsay-transit-usage:v1';
 
 /** legacy route transport가 실제 HTTP 직전에만 사용하는 호출 관찰·취소 경계다. */
 export type LegacyRouteTransportObserver = {
@@ -21,6 +19,7 @@ export async function attemptLegacyRouteHttp<T>(
   observer: LegacyRouteTransportObserver | undefined,
   request: () => Promise<T>,
 ): Promise<T | undefined> {
+  if (provider === 'odsay') return undefined; // deprecated transport: never invoke a request
   if (observer && !observer.recordProviderHttpAttempt(provider)) return undefined;
   return request();
 }
@@ -44,8 +43,6 @@ declare global {
   // AsyncStorage에도 저장해 앱/Metro 재시작 후 같은 날짜 기준으로 유지한다.
   // eslint-disable-next-line no-var
   var __TIMEFIT_TMAP_ROUTE_USAGE__: RouteUsageStats | undefined;
-  // eslint-disable-next-line no-var
-  var __TIMEFIT_ODSAY_TRANSIT_USAGE__: OdsayTransitUsageStats | undefined;
 }
 
 const todayKey = () => {
@@ -129,63 +126,6 @@ async function routeUsagePersistent(): Promise<RouteUsageStats> {
   return loadRouteUsage();
 }
 
-function odsayUsage(): OdsayTransitUsageStats {
-  const today = todayKey();
-  const current = globalThis.__TIMEFIT_ODSAY_TRANSIT_USAGE__;
-  if (!current || current.date !== today) {
-    const fresh: OdsayTransitUsageStats = { date: today, total: 0, ok: 0, fail: 0 };
-    globalThis.__TIMEFIT_ODSAY_TRANSIT_USAGE__ = fresh;
-    return fresh;
-  }
-  return current;
-}
-
-async function loadOdsayUsage(): Promise<OdsayTransitUsageStats> {
-  const today = todayKey();
-  try {
-    const raw = await AsyncStorage.getItem(ODSAY_USAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw) as Partial<OdsayTransitUsageStats>;
-      if (
-        parsed.date === today
-        && Number.isFinite(parsed.total)
-        && Number.isFinite(parsed.ok)
-        && Number.isFinite(parsed.fail)
-      ) {
-        const usage: OdsayTransitUsageStats = {
-          date: today,
-          total: parsed.total ?? 0,
-          ok: parsed.ok ?? 0,
-          fail: parsed.fail ?? 0,
-        };
-        globalThis.__TIMEFIT_ODSAY_TRANSIT_USAGE__ = usage;
-        return usage;
-      }
-    }
-  } catch {
-    return odsayUsage();
-  }
-
-  const usage: OdsayTransitUsageStats = { date: today, total: 0, ok: 0, fail: 0 };
-  globalThis.__TIMEFIT_ODSAY_TRANSIT_USAGE__ = usage;
-  await saveOdsayUsage(usage);
-  return usage;
-}
-
-async function saveOdsayUsage(usage: OdsayTransitUsageStats) {
-  try {
-    await AsyncStorage.setItem(ODSAY_USAGE_KEY, JSON.stringify(usage));
-  } catch {
-    // 저장소 접근이 불가능한 환경에서는 메모리 카운터만 유지한다.
-  }
-}
-
-async function odsayUsagePersistent(): Promise<OdsayTransitUsageStats> {
-  const current = globalThis.__TIMEFIT_ODSAY_TRANSIT_USAGE__;
-  if (current?.date === todayKey()) return current;
-  return loadOdsayUsage();
-}
-
 const modeLabel = (mode: RoadMode) => (mode === 'walk' ? '도보' : '자동차');
 
 async function markRouteCall(mode: RoadMode): Promise<number> {
@@ -216,30 +156,9 @@ export async function getTmapRouteUsage(): Promise<RouteUsageStats> {
   return { ...usage, byMode: { ...usage.byMode } };
 }
 
-async function markOdsayCall(): Promise<number> {
-  const usage = await odsayUsagePersistent();
-  usage.total += 1;
-  await saveOdsayUsage(usage);
-  console.log(
-    `[route_request] provider=odsay mode=transit count=${usage.total}`,
-  );
-  return usage.total;
-}
-
-async function markOdsayResult(callNo: number, ok: boolean, min?: number) {
-  const usage = await odsayUsagePersistent();
-  if (ok) usage.ok += 1;
-  else usage.fail += 1;
-  await saveOdsayUsage(usage);
-  console.log(
-    `[ODsay 대중교통 API] 응답 #${callNo} · ${ok ? '성공' : '실패'}`
-    + `${ok && Number.isFinite(min) ? ` ${min}분` : ''} · 오늘 누적 성공 ${usage.ok}, 실패 ${usage.fail}, 총 ${usage.total}건`,
-  );
-}
-
+/** @deprecated ODsay 신규 요청 제거. 기존 진단 호출자용 zero-only 호환이다. */
 export async function getOdsayTransitUsage(): Promise<OdsayTransitUsageStats> {
-  const usage = await odsayUsagePersistent();
-  return { ...usage };
+  return { date: todayKey(), total: 0, ok: 0, fail: 0 };
 }
 
 export function haversineKm(a: LatLon, b: LatLon): number {
@@ -385,214 +304,34 @@ type TransitMeta = {
   summary: string;
   geo?: LatLon[];
 };
-type TransitCacheEntry = { min: number; src: string; ts: number; meta?: TransitMeta };
-const transitCache = new Map<string, TransitCacheEntry>();
-const transitKey = (a: LatLon, b: LatLon) => `transit|${a.lat.toFixed(5)},${a.lon.toFixed(5)}|${b.lat.toFixed(5)},${b.lon.toFixed(5)}`;
-
-function getTransitCache(k: string): TransitCacheEntry | undefined {
-  const e = transitCache.get(k);
-  if (e && Date.now() - e.ts > TTL_MS) { transitCache.delete(k); return undefined; }
-  return e;
-}
-
-function transitFallbackMin(a: LatLon, b: LatLon): number {
-  return haversineMin(a, b, 'transit');
-}
-
-function shouldUseWalkForShortTransit(a: LatLon, b: LatLon): boolean {
-  return haversineKm(a, b) <= 0.75 || haversineMin(a, b, 'walk') <= 10;
-}
-
-function transitScore(path: any): number {
-  const info = path?.info ?? {};
-  const time = Number(info.totalTime ?? 9999);
-  const transfers = Number(info.busTransitCount ?? 0) + Number(info.subwayTransitCount ?? 0);
-  const walk = Number(info.totalWalk ?? 0);
-  const pathType = Number(path?.pathType ?? 0);
-  const subwayBonus = pathType === 1 ? 8 : pathType === 3 ? 4 : 0;
-  return time + transfers * 4 + Math.round(walk / 250) - subwayBonus;
-}
-
-function transitSummary(path: any): string {
-  const sub = Array.isArray(path?.subPath) ? path.subPath : [];
-  const labels = sub
-    .filter((s: any) => s.trafficType === 1 || s.trafficType === 2)
-    .map((s: any) => {
-      const lane = Array.isArray(s.lane) ? s.lane[0] : null;
-      const laneName = lane?.name ?? lane?.busNo ?? (s.trafficType === 1 ? '지하철' : '버스');
-      return `${laneName} ${s.startName ?? ''}->${s.endName ?? ''}`.trim();
-    });
-  return labels.slice(0, 3).join(' · ');
-}
-
-function finiteCoord(lat: number, lon: number): LatLon | null {
-  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
-  if (lat < 32 || lat > 39 || lon < 124 || lon > 132) return null;
-  return { lat, lon };
-}
-
-function readOdsayPoint(obj: any, xKey = 'X', yKey = 'Y'): LatLon | null {
-  if (!obj) return null;
-  const lon = Number(obj[xKey]);
-  const lat = Number(obj[yKey]);
-  return finiteCoord(lat, lon);
-}
-
-function pushPoint(points: LatLon[], p: LatLon | null) {
-  if (!p) return;
-  const last = points[points.length - 1];
-  if (last && Math.abs(last.lat - p.lat) < 0.00001 && Math.abs(last.lon - p.lon) < 0.00001) return;
-  points.push(p);
-}
-
-function collectPassStopPoints(subPath: any): LatLon[] {
-  const raw =
-    subPath?.passStopList?.stations
-    ?? subPath?.passStopList?.stationList
-    ?? subPath?.passStopList?.station
-    ?? subPath?.stations
-    ?? [];
-  const list = Array.isArray(raw) ? raw : [raw];
-  const points: LatLon[] = [];
-  for (const station of list) {
-    pushPoint(points, readOdsayPoint(station, 'x', 'y') ?? readOdsayPoint(station, 'X', 'Y'));
-  }
-  return points;
-}
-
-function transitGeo(path: any, origin: LatLon, destination: LatLon): LatLon[] | undefined {
-  const sub = Array.isArray(path?.subPath) ? path.subPath : [];
-  const points: LatLon[] = [];
-  pushPoint(points, origin);
-  for (const part of sub) {
-    pushPoint(points, readOdsayPoint(part, 'startX', 'startY'));
-    for (const stop of collectPassStopPoints(part)) pushPoint(points, stop);
-    pushPoint(points, readOdsayPoint(part, 'endX', 'endY'));
-  }
-  pushPoint(points, destination);
-  return points.length > 2 ? points : undefined;
-}
-
-async function odsayTransit(
-  a: LatLon,
-  b: LatLon,
-  observer?: LegacyRouteTransportObserver,
-): Promise<{ min: number; meta: TransitMeta } | null> {
-  if (!ODSAY_KEY) return null;
-  return (await attemptLegacyRouteHttp('odsay', observer, async () => {
-    const callNo = await markOdsayCall();
-    const qs = new URLSearchParams({
-      SX: String(a.lon),
-      SY: String(a.lat),
-      EX: String(b.lon),
-      EY: String(b.lat),
-      SearchType: '0',
-      apiKey: ODSAY_KEY,
-    });
-    try {
-    const res = await fetch(`https://api.odsay.com/v1/api/searchPubTransPathT?${qs}`);
-    if (!res.ok) {
-      await markOdsayResult(callNo, false);
-      return null;
-    }
-    const j = await res.json();
-    const paths = j?.result?.path;
-    if (!Array.isArray(paths) || paths.length === 0) {
-      await markOdsayResult(callNo, false);
-      return null;
-    }
-    const best = [...paths].sort((aPath, bPath) => transitScore(aPath) - transitScore(bPath))[0];
-    const info = best.info ?? {};
-    const totalTime = Number(info.totalTime);
-    if (!Number.isFinite(totalTime)) {
-      await markOdsayResult(callNo, false);
-      return null;
-    }
-    const min = Math.round(totalTime);
-    await markOdsayResult(callNo, true, min);
-    return {
-      min,
-      meta: {
-        pathType: Number(best.pathType ?? 0),
-        totalTime: min,
-        payment: Number(info.payment ?? 0),
-        busTransitCount: Number(info.busTransitCount ?? 0),
-        subwayTransitCount: Number(info.subwayTransitCount ?? 0),
-        totalWalk: Number(info.totalWalk ?? 0),
-        firstStartStation: info.firstStartStation ?? '',
-        lastEndStation: info.lastEndStation ?? '',
-        summary: transitSummary(best),
-        geo: transitGeo(best, a, b),
-      },
-    };
-    } catch {
-      await markOdsayResult(callNo, false);
-      return null;
-    }
-  })) ?? null;
-}
-
+/** @deprecated 신규 transit 공급자는 서비스의 Kakao proxy를 사용한다. 네트워크·근사 성공 없음. */
 export async function precomputeTransit(
   pairs: [LatLon, LatLon][],
-  options: { retryFallback?: boolean; transportObserver?: LegacyRouteTransportObserver } = {},
+  _options: { retryFallback?: boolean; transportObserver?: LegacyRouteTransportObserver } = {},
 ): Promise<PrecomputeStat> {
-  let ok = 0, fail = 0;
-  let cacheHit = 0;
-  let skipped = 0;
-  for (const [a, b] of pairs) {
-    const k = transitKey(a, b);
-    const cached = getTransitCache(k);
-    if (cached && !(options.retryFallback && cached.src === 'transit_fallback')) { cacheHit++; continue; }
-    if (shouldUseWalkForShortTransit(a, b)) {
-      transitCache.set(k, { min: haversineMin(a, b, 'walk'), src: 'walk_short', ts: Date.now() });
-      skipped++;
-      continue;
-    }
-    const t = await odsayTransit(a, b, options.transportObserver);
-    if (t) { transitCache.set(k, { min: t.min, src: 'ODsay', meta: t.meta, ts: Date.now() }); ok++; }
-    else { transitCache.set(k, { min: transitFallbackMin(a, b), src: 'transit_fallback', ts: Date.now() }); fail++; }
-  }
-  if (ok + fail > 0 || cacheHit > 0 || skipped > 0) {
-    const usage = odsayUsage();
-    console.log(
-      `[ODsay 대중교통 API] 배치 완료 · 신규 ${ok + fail}건, 짧은구간 ${skipped}건, 캐시 ${cacheHit}건 `
-      + `· 오늘 총 ${usage.total}건`,
-    );
-  }
-  return { ok, fail, skipped };
+  return { ok: 0, fail: pairs.length, skipped: 0 };
 }
 
 export function travelMin(a: LatLon, b: LatLon, mode: Mode): number {
-  if (mode === 'transit') return getTransitCache(transitKey(a, b))?.min ?? transitFallbackMin(a, b);
+  if (mode === 'transit') return Infinity;
   return getCache(ckey(a, b, mode))?.min ?? haversineMin(a, b, mode);
 }
 export function travelSrc(a: LatLon, b: LatLon, mode: Mode): string {
-  if (mode === 'transit') return getTransitCache(transitKey(a, b))?.src ?? 'transit_fallback';
+  if (mode === 'transit') return 'transit_fallback';
   return getCache(ckey(a, b, mode))?.src ?? 'haversine';
 }
 export function travelGeo(a: LatLon, b: LatLon, mode: Mode): LatLon[] | undefined {
-  if (mode === 'transit') {
-    const entry = getTransitCache(transitKey(a, b));
-    if (entry?.meta?.geo && entry.meta.geo.length > 1) return entry.meta.geo;
-    if (entry?.src === 'walk_short' || entry?.src === 'transit_fallback') return [a, b];
-    return undefined;
-  }
+  if (mode === 'transit') return undefined;
   return getCache(ckey(a, b, mode))?.geo;
 }
-export function transitMeta(a: LatLon, b: LatLon): TransitMeta | undefined {
-  return getTransitCache(transitKey(a, b))?.meta;
+export function transitMeta(_a: LatLon, _b: LatLon): TransitMeta | undefined {
+  return undefined;
 }
 
 // 추천 후보 범위용 기준 경로. 실패한 근사 경로는 반환하지 않는다.
-// 실제 호출·캐시 정책은 routeBaselineService에 있고, 이 함수는 현재 TMAP/ODsay 캐시를 어댑터로 연결한다.
+// 실제 호출·캐시 정책은 routeBaselineService에 있고, 이 함수는 TMAP 캐시만 어댑터로 연결한다.
 async function fetchRouteBaseline(origin: LatLon, destination: LatLon, mode: Mode): Promise<RouteBaseline | null> {
-  if (mode === 'transit') {
-    await precomputeTransit([[origin, destination]], { retryFallback: true });
-    const geometry = travelGeo(origin, destination, mode);
-    return travelSrc(origin, destination, mode) === 'ODsay' && geometry && geometry.length >= 2
-      ? { mode, geometry }
-      : null;
-  }
+  if (mode === 'transit') return null;
 
   await precompute([[origin, destination]], mode, { retryFallback: true });
   const geometry = travelGeo(origin, destination, mode);

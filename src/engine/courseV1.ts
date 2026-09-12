@@ -2092,7 +2092,19 @@ function isAvailable(availability: StructuredAvailability, arrival: Date, dwellM
   if (availability.status !== 'structured') return false;
   const dayType: CourseV1DayType = arrival.getDay() === 0 || arrival.getDay() === 6 ? 'weekend' : 'weekday';
   if (!availability.dayTypes.includes(dayType)) return false;
-  if (availability.alwaysAccessible) return true;
+  if (availability.alwaysAccessible) {
+    // 방문 구간 [arrival, departure)에 포함되는 모든 날짜의 이용 가능성을 확인한다.
+    // 정확히 자정에 나가는 방문은 다음 날에 체류한 것으로 보지 않는다.
+    const departureMs = arrival.getTime() + dwellMin * 60_000;
+    const nextDay = new Date(arrival);
+    nextDay.setHours(24, 0, 0, 0);
+    while (nextDay.getTime() < departureMs) {
+      const nextDayType: CourseV1DayType = nextDay.getDay() === 0 || nextDay.getDay() === 6 ? 'weekend' : 'weekday';
+      if (!availability.dayTypes.includes(nextDayType)) return false;
+      nextDay.setDate(nextDay.getDate() + 1);
+    }
+    return true;
+  }
   const startMin = arrival.getHours() * 60 + arrival.getMinutes();
   return availability.windows.some((window) => startMin >= window.startMin && startMin + dwellMin <= window.endMin);
 }
