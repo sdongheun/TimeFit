@@ -222,10 +222,6 @@ export function AppFlowProvider({ children }: PropsWithChildren) {
     }
   }, [accountSession]);
 
-  useEffect(() => {
-    void refreshSavedCourses();
-  }, [refreshSavedCourses]);
-
   const saveCourse = useCallback(async (params: ExecutionParams) => {
     requireAccountSession(accountSession, false);
     const saved = await saveCourseToRepository(params);
