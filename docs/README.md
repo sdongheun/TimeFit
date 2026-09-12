@@ -1,8 +1,66 @@
 # TimeFit 문서 안내
 
+2026-09-12 최신: **사용자 App Store 배포 완료 보고**. [출시 후 역할별 커밋 인계](work/integration-decision/post-release-role-commits.md)를 기준으로 현재 작업트리를 보존한다. 아래 출시 준비·심사 대기 기록은 당시 이력이며 재실행 지시가 아니다. 다음 순서는 기능별 문서 재정리 → 테스트 현황·누락 조사 → 필요한 테스트 보강이며, 이번 커밋 정리에 리팩터링·UI 변경은 포함하지 않는다.
+
+2026-09-10 최신: 사용자 **기기 ID 제외·App Privacy 게시 완료** 보고. [통합 후속](work/integration-decision/release-connect-final-parallel.md)의 DOCS-CAPTCHA-NOTICE-FINAL-01로 가입 CAPTCHA 고지 누락 3곳만 보완한다. 게시 보고는 공급자 미수집 검증이나 심사 제출 완료가 아니다. 아래 게시 전 기록은 이력이다.
+
+2026-09-10 최신 App Privacy 상태: [사용자 설정 인계](work/integration-decision/release-connect-final-parallel.md#0910-사용자-app-privacy-설정-인계--게시-전). 1.0.0(1) 대상 7유형 세부 설정 완료 보고, 고객 지원·검색 기록·실적 데이터는 제거 예정, **게시 미실행**. 기기 ID의 사용자 연결 ‘아니요’는 현재 입력값으로 기록하되 분류 검토 사항을 남겼다. 아래 과거 8/10유형 일괄 입력안은 재실행 기준이 아니다.
+
+2026-09-10 최신 수락: [TestFlight 내부 검증](work/integration-decision/release-connect-final-parallel.md). 사용자 보고로 **1.0.0(1) 내부 체크리스트 전부 통과**: 수동 위치·길찾기 E2E·Live Activity 공유 진행·기록 재실행 보존 포함. 아래 실기기 대기는 이 범위에서 해제한다. App Privacy 게시·심사 버전 빌드 선택/수출 규정 확인·심사 제출 완료를 의미하지 않는다.
+
+2026-09-10 최우선 출시 후속: [RELEASE-CONNECT-FINAL-PARALLEL-01](work/integration-decision/release-connect-final-parallel.md). 사용자 가입·재로그인 확인, **자동 출시 재확정**. 가입 수정본 public Archive/IPA 검증 및 **1.0.0(1) 업로드 성공**. App Privacy 입력안은 정리했고 검색 기록·기기 ID 판정은 남아 있다. 아래 수동 출시·가입 연결 전 산출물 지시는 과거 이력이다. Connect 처리 완료·TestFlight 확인·개인정보 게시·심사 제출은 아직 아니다.
+
+2026-09-09 최우선 결정: [DEC-RELEASE-MANUAL-LOCATION-01](work/integration-decision/release-manual-location.md). 출시 GPS 사용을 수동 검색·지도 선택으로 교체(승인·구현 전). UI/API/DB 확인 병렬 → 인계 반영·문서 마감 → QA. 기존 기록·버튼 체류 개인화·Live Activity·180분/2곳 유지. 과거 GPS 조회/권한/자동 초기화 지시는 철회 이력이다. 신고 제외·공개 승인 확정은 아니다.
+
+2026-09-09 최신 수락: [DOCS-KAKAO-ROUTE-START-02](work/integration-decision/kakao-route-start-decision.md). 코스 길찾기 클릭의 공유 이동 시작·웹 복귀 유지 규칙과 사용자 ‘1번 확인 완료’를 중앙 문서에 반영했다. 아래 과거 handoff 성공 전 이동 미확정 조건은 철회 이력이다. 추천/학습/주변 경계는 불변, 전체 출시 완료나 업로드 승인은 아니다.
+
+2026-09-09 최우선 출시 방식: [DEC-RELEASE-MANUAL-02](work/integration-decision/release-user-decisions.md) **수동 출시로 변경 확정**, 실제 Connect 저장 확인 대기. 위치 면제/유예는 미확정. U-CAPTURE 후속 로컬 빌드·암호화 반영 완료, 앱 화면6장 촬영은 남음. 기존 DOCS-08 후속과 사용자 촬영을 마감하며 과거 자동 출시를 복원하지 않는다.
+
+2026-09-09 최신 후속: [위치 문의 대기 중 독립 산출물 마감](work/integration-decision/release-parallel-verification.md). 앞선 QA/API/촬영 준비 완료 재사용. API-RELEASE-ENCRYPTION-01, U-RELEASE-CAPTURE-PREP-01 후속 로컬 빌드·촬영, RELEASE-DOCS-08 후속 입력자료를 병렬 진행한다. 연령등급 사용자 완료 보고. 신고 답변 영향 부분만 후속 갱신하며 공개 게시·운영 쓰기·업로드·제출은 포함하지 않는다.
+
+2026-09-09 현행: [RELEASE-PARALLEL-VERIFY-01](work/integration-decision/release-parallel-verification.md). DOCS-08 준비 완료 확인. QA 자동 게이트/최종 시나리오, API Kakao 플랫폼 필요성, UIUX 캡처 준비를 병렬 진행한다. 전체 테스트 단일 실행자는 QA. 제품/운영 변경·게시·업로드는 없음. 공급자 문의는 아직 미발송.
+
+2026-09-09 현행: [RELEASE-DOCS-08](work/integration-decision/release-publication-handoff.md). DOCS-07 완료, 사용자 Connect 가격/국가/소개 본문 저장 보고와 영문 저작권 `2026 Dongheun Shin` 반영. 기존 고지 질문을 실제 문의문·게시 인계로 마감한다. 반복 조사 없음, 실제 게시·DB/UI 연결은 답변 반영/승인 뒤.
+
+2026-09-09 현행 병렬: [RELEASE-DOCS-CONNECT-PARALLEL-01](work/integration-decision/release-docs-connect-parallel.md). DOCS-06 A/B 완료 재사용 → DOCS-07 로컬 문서 마감과 사용자 Connect 확정 metadata 입력 병렬. 앱 생성 완료는 사용자 보고(SKU jjaturi-ios), 공개 게시/DB·UI 링크/업로드는 아직 별도.
+
+2026-09-09 현행: [RELEASE-NOTICE-CLOSEOUT-01](work/integration-decision/release-notice-closeout.md). DOCS-05-R1·ICON-01 로컬 완료 확인. DB/API 공급자 근거 확인과 DOCS-06 A 병렬 → 인계 후 문서 B 통합. 위치 답변은 최종 문안·게시 전 반영하며 답변 전 가능한 준비를 모두 진행한다. 외부 게시/운영 쓰기/스토어 업로드는 포함하지 않는다.
+
+2026-09-09 최신 후속: [RELEASE-DOCS-ICON-CLOSEOUT-01](work/integration-decision/release-docs-icon-closeout.md). DOCS-05-R1은 미확정 아동 비로그인 허용 문구 제거·필수 고지 공백만 마감, U-RELEASE-ICON-01은 승인된 파란 시계 시안 적용. 두 작업 병렬, 게시/registry/업로드는 아직 별도.
+
+2026-09-09 현행 실행: [RELEASE-STAGE-02](work/integration-decision/release-stage-two.md). DOCS-05와 U-RELEASE-AGE-01 병렬 → 게시 승인/실제 URL → 기존 LINKS-01 DB→UI. 1단계 확정값 재질문 없음, 실제 계정 삭제/스토어 제출 별도.
+
+2026-09-09 최신: [RELEASE-USER-DECISIONS-01](work/integration-decision/release-user-decisions.md) **1단계 사용자 결정 완료**. 다음2단계 공개 문서 완성·게시·DB/UI 연결. Cloudflare Pages·여행/보조 생략·무료·책임자/문의·시행일/버전·심사 계정 준비 확정. 실제 게시/설정/가입 확인·아이콘 구현 완료와 구분한다.
+
+2026-09-09 사용자 결정 갱신: [자동 출시·파란 시계 아이콘](work/integration-decision/release-user-decisions.md) 방향 확정. 공개 차단 발생 시 자동 공개 전 수동 전환·실제 설정 확인. Connect 변경/제출은 미실행, 원본 보존한 아이콘 시안 생성이며 제품 아이콘 적용 전.
+
+2026-09-09 현재: DEPLOY-05 운영 배포 완료 수락(실제 탈퇴 E2E는 별도). [RELEASE-USER-DECISIONS-01](work/integration-decision/release-user-decisions.md) 진행: 만14세 이상 가입 자기확인 확정·구현 전, 나머지 공개/스토어 사용자 결정 대기. 아래 미배포/배포 승인 대기 표시는 과거 이력이다.
+
+2026-09-09 승인 갱신: **DB-RELEASE-DELETE-DEPLOY-05 운영 배포 승인 완료**, [정확한 범위](work/integration-decision/release-delete-links-final.md) 참조. DB 세션은 사전 조건 확인 후 함수1개 배포·검증 재개. 아래 승인 대기는 과거 상태이며 실제 계정 삭제/문서 게시/스토어 제출 승인은 포함하지 않는다.
+
+2026-09-09 최신: FIX-04·DOCS-04 완료 검토. 다음은 [DB-RELEASE-DELETE-DEPLOY-05](work/integration-decision/release-delete-links-final.md), 명시 승인 후 탈퇴 함수1개 운영 배포. 공개 문서 결정은 병렬, 실제 계정 삭제/게시/registry/업로드는 별도 승인.
+
+[RELEASE-DELETE-LINKS-FINAL-01](work/integration-decision/release-delete-links-final.md) — 2026-09-09 현행 후속: DB-RELEASE-DELETE-FIX-04와 RELEASE-DOCS-04 병렬. 앞선 EXIT-03 구현 및 서명 절차 준비 완료를 재사용한다. 실제 게시/registry/함수 배포는 승인 후, 개인화 C 반복 없음.
+
+[RELEASE-DEPLOY-PREP-01](work/integration-decision/release-deploy-preparation.md) — 2026-09-09 최신: NATIVE-02 로컬 완료, delete-account 미배포 확인. DB 배포 준비와 UI 종료 경로 보완→서명 준비를 병렬 진행. 실제 배포/계정 삭제/서명 자격 생성은 별도 승인.
+
+## 최신 후속 — RELEASE-MINIMAL-FOLLOWUP-01
+
+[최소 보완 명령](work/integration-decision/release-minimal-followup.md): 5개 준비 작업 인계 검토 후 NATIVE-02/DB-OPS-02/API-OPS-02 병렬. UI 다듬기·개인화 C 반복 없음. 실제 계정 삭제·배포·게시·제출은 별도 승인.
+
+## 최우선 현행 — 출시 준비 실행
+
+[RELEASE-EXECUTION-WAVE-01](work/integration-decision/release-execution-wave.md): 2026-09-08 UI 다듬기 종료. BUILD/DB/API/DATA/DOCS 준비 병렬 → 승인된 URL·가입 연결 → 최종 후보 QA. 위치 신고 문의 답변 대기. 아래 과거 ‘최신 실행’은 재실행 지시가 아니다. 원격 변경·게시·업로드·제출·공개는 별도 승인.
+
+## 최우선 출시 마감 — 2026-09-08
+
+[RELEASE-SUBMISSION-FINAL-01](work/integration-decision/release-submission-final.md): 기능 확장 마감 후 제출 감사·문서 사실 정리 착수. 현행은 최대180분/2곳·동의 기반 제한적 개인화·앱/LA 공유 진행과 완료다. U-LIVE-ACTIVITY-FINAL-02 사용자 실기기 확인 보고 접수. 아래 과거120분/개인화 보류/구현 전 표기는 최신 작업별 근거와 대조할 이력이며 현재 실행 지시가 아니다. 미확인 사항을 자동 완료로 바꾸지 않는다. QA-RELEASE-CANDIDATE-AUDIT-01과 RELEASE-DOCS-02는 병렬 가능. 게시/업로드/제출은 별도 승인.
+
 > 이 파일은 새 세션·새 작업자가 가장 먼저 읽는 문서 색인이다. 과거 문서를 현행 사양으로 해석하지 않는다.
 
 ## 1. 현재 기준 문서
+
+2026-09-08 최우선 시간 결정: [DEC-RELEASE-180-01](work/integration-decision/release-three-hour-two-stop.md). **최대3시간·최대2곳 확정, 구현/검증 전**. 아래 과거2시간 출시 상한은 교체 이력이다. 엔진/UI 전환과 API/DB 영향 확인 뒤 QA하며 기존 체류/호출 예산은 늘리지 않는다.
 
 출시 마감 병렬 명령: 새 **출시 문서 전담 세션**은 [RELEASE-DOCS-01](05_release/release-document-session.md), 기존 DB 세션은 [DB-PERSONALIZATION-FINALIZE-01](work/db-personalization/personalization-finalization.md). 문서 세션은 공개 초안/스토어 준비, DB는 백업·적용·실제학습 마감만 담당한다. 개인화 제외는 미확정이며 게시/스토어 제출은 별도 승인이다.
 

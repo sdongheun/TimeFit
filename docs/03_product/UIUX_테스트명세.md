@@ -1,5 +1,31 @@
 # TimeFit UIUX 테스트 명세
 
+## 2026-09-09 — DEC-RELEASE-MANUAL-LOCATION-01 (미검증)
+
+GPS 허용/거절 기반 UI → 수동 장소 전용 출시 전환 → 기존 GPS 기대를 호출0/요청0으로 교체. 신규 설치·기존 권한·guest/회원·legacy/복원 fixture를 포함한다. 검색/지도 확정·취소·필드 분리, 기준 장소 미선택 안내, 선택 장소 중심 주변 정렬, 1/2곳 코스와 앱/웹·Live Activity 공유 진행을 확인한다. 과거 GPS 좌표 재전송과 일반 기록 삭제는 모두 금지하며 출처 불명 복원 정책은 통합 결정 뒤 검증한다. 최종 native 설정과 실기기 확인을 별도로 기록한다. [QA 명령·유지 경계](../work/integration-decision/release-manual-location.md).
+
+## 2026-09-09 현행 검증 — DEC-KAKAO-ROUTE-START-02
+
+UXV-43/51의 시작 조건을 교체한다. 1·2곳 및 최종 구간에서 클릭 직후 공유 이동 상태, 앱/웹 열기·팝업 취소·웹 종료 후 유지, 전부 실패 시 신규 의사 복구, 연속 탭·재열기의 중복 부작용0, 도착/완료/다른 run 뒤 늦은 실패의 상태 보존을 검증한다. 앱과 Live Activity 도착/출발 공유 및 최종 완료, 주변 길찾기에서 진행·기록 생성0을 포함한다.
+
+이전 handoff 성공 대기 → 웹 복귀 후 다음 버튼 없음 → 클릭을 이동 의사로 처리. 상태: 기존 자동 검증 통과 및 사용자 ‘1번 확인 완료’ 보고 수락. 실행 기기별 상세·빌드 식별·캡처는 미제공이며 에이전트 실기기 검증으로 바꾸지 않는다. 별도 이동 시작 확인·닫기를 외부 성공으로 합성하는 방식은 사용하지 않는다. 아래 상충하는 시작 조건은 철회 이력; 기존 체류 학습 증거 요건은 유지. [근거와 한계](../work/integration-decision/kakao-route-start-decision.md).
+
+2026-09-08 UX-MAIN-COURSE-POLISH-01(구현 전): 메인→설정→추천→선택→압축 코스 확인→진행 고정 행동→취소 확인/유지 흐름을 fixture로 검증한다. 작은 화면·큰 글씨·사진 없음·1/2곳·Reduce Motion·Live Activity 상태 변경·중복 탭에서 가림/겹침/상태 지연/중복 부작용이 없어야 한다. 범위와 최소 실기기 인계는 docs/work/uiux/main-course-final-polish.md. 과거 큰 카드 배치 기대는 교체하되 날짜/시간/진행 회귀는 유지한다.
+
+DEC-RELEASE-180-01(2026-09-08, 미검증): 휠180 허용/181 차단, 실제·개발 시계, 날짜 넘김 표시,120분 기존 진행 복원·180분 snapshot 알림/Live Activity를 검증한다. 기존2시간 상한 테스트는 교체 이력,120분 정상입력 fixture는 유지. docs/work/integration-decision/release-three-hour-two-stop.md 참조.
+
+UX-PROFILE-AUTH-POLISH-02(2026-09-08, 미검증): 별도 관리 화면/뒤로가기/로그아웃 성공·실패·계정 변경, 닉네임 미설정·저장·조회 실패·late 응답·미동의 회원, 로그인/가입 입력 교차0·비밀번호 이탈 정리·오류/CAPTCHA/요청 격리 및 기존 탈퇴 회귀. docs/work/uiux/profile-management-auth-polish.md의 fixture·실기기 최소 확인을 따른다.
+
+UX-HISTORY-FINAL-03(2026-09-08, 미검증): 최신 Animated 기준 drag 재현/정착 중 재잡기/세로 경쟁을 먼저 마감하고 날짜·⋯·long press 메뉴가 responder를 깨지 않는 결합 회귀를 추가한다. 상단은 반복 방문 포함 places 합계·좌표 누락/지도 실패·계정/guest 기존 범위·카테고리 집계로 검증한다. 설명문 제거, 메뉴/휴지통/접근성 동일 삭제 확인과 전체 삭제 범위 보존을 확인한다. docs/work/uiux/history-motion-summary-menu.md 참조.
+
+UX-HISTORY-POLISH-02(2026-09-08, 미검증): 카드/휴지통14pt radius·제목 우측 전체 삭제·필터 선택과 복합2곳 기록 단위·필터 중 전체 삭제 확인을 검증한다. gesture는 중간 animated 위치/stop callback 지연/재잡기/방향 반전/행 교체/세로 스크롤/필터 전환을 재현하고 즉시 완료 mock만으로 체감 통과를 선언하지 않는다. 실제 사용자 삭제 없이 확인 취소로 실기기 조작성 검증 가능하게 인계한다. 상세 docs/work/uiux/history-card-filter-gesture.md.
+
+2026-09-08 UX-NEARBY-HANDOFF-02 / UX-HISTORY-SWIPE-01(미검증): 작은 화면/긴 위치명의 텍스트 검색 헤더, 외부 수락·취소·예외·늦은 반환의 오표시0, 계정 기록 스와이프/휴지통/확인 취소·삭제 성공·실패·정리 대기·계정 변경·빈 목록 갱신을 fixture로 확인한다. 실기기는 길찾기 실제 목적지/복귀 오류와 스와이프 체감을 분리 확인한다. 기존 중복 삭제 목록은 행 행동으로 대체하며 서비스·개인화 정책은 유지한다. 상세는 docs/work/uiux/nearby-handoff-and-history-polish.md.
+
+## UX-COLOR-01 검증 — 확정·미검증 (2026-09-08)
+
+주변 둘러보기의 현위치/상세 길찾기/보조 링크/탭을 시작으로 전체 화면의 활성 텍스트가 흰색 계열인지 점검한다. 파란색은 아이콘·배경·선택 표시로 유지한다. 기본/누름/선택/비활성/실패 fixture에서 가독성과 상태 구분, 지도 경로색 불변을 확인한다. 보조 회색과 오류 등 의미색을 흰색으로 일괄 치환하지 않는다. 자동 색상 역할 검증과 실제 화면 확인을 분리하고 화면별 결과·잔여를 기록한다. 이전 파란 행동 텍스트 방식의 교체 이력은 공통 규칙 UX-COLOR-01을 따른다.
+
 DEC-LIVE-LEARNING-EVIDENCE-01 검증 추가(정책 확정·미검증): 회원+동의의 앱/native 혼합 및 native 독립3회 완료→다음 추천 보정, guest/import0, 일반 알림/구형/증거 불명확0, 중복1회, 계정전환/off/reset/delete late 재생0. 증거 저장 장애 중 진행·필수 완료·자동 다음 길찾기 유지와 도착 재탭 요구0을 확인한다. 최소 표본 저장 후 활성 증거 정리 및 기존 대기32건7일/서버180일을 구분한다. 이전 native 제외는 증거 기반 소비 구현 후 교체하며 실제 정책 이력은 release-personalization-account.md 최신 결정 참조.
 
 2026-09-07 계정 후속 확정(구현 전): 닉네임은 선택·중복 허용·trim 후1~20자·줄바꿈/제어문자 금지. 회원 탈퇴는 최근10분 내 비밀번호 재인증을 서버 검증하며 일반 로그인/로그아웃에 추가 강제하지 않는다. 추가 제안 미확정→사용자 동의→확정의 이력과 기술/배포 게이트는 release-personalization-account.md 및 DB-RELEASE-IDENTITY-01 B 최신 절을 따른다. 닉네임 경계/재인증 만료·위조·token refresh 비대체 fixture를 포함한다.
