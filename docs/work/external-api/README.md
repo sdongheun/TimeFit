@@ -1,5 +1,13 @@
 # 외부 API 현재 작업
 
+## 최신 — API-RELEASE-OPS-02
+
+[최소 보완 명령](../integration-decision/release-minimal-followup.md)의 해당 절 진행. 운영 endpoint/provider·공급자 사실 확인만, 원격 배포/실제 경로 반복 호출 금지. DB 공통 메타데이터 재사용.
+
+## 최우선 — API-RELEASE-FACTS-01
+
+[출시 실행 명령](../integration-decision/release-execution-wave.md)의 해당 절 실행. 실제 위치 전송/provider/cache/log·제출 설정 계약 점검. 정책 변경·원격 배포·반복 운영 호출 금지.
+
 ## 2026-09-07 최신 작업
 
 [API-RELEASE-SAFETY-01](release-safety-remediation.md): **지금 실행 가능**. 안전 로그/위치 cache/adapter 실패 경계 및 원격 확인 인계. 원격 배포는 별도 승인.

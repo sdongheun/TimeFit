@@ -1,5 +1,5 @@
 import type { CourseV1Point, CourseV1RouteAdapter, CourseV1TravelMode, ExactRoute } from '../engine/courseV1';
-import { precompute, precomputeTransit, travelMin, travelSrc } from '../engine/travel';
+import { precompute, travelMin, travelSrc } from '../engine/travel';
 
 /** 기존 경로 모듈의 API/캐시 결과를 읽기 위한 좁은 경계다. */
 export type CourseV1RouteFetcher = {
@@ -13,14 +13,15 @@ export type CourseV1RouteFetcher = {
   ): Promise<{ min: number; source: string } | null>;
 };
 
-export type CourseV1RouteProvider = 'tmap' | 'odsay';
+export type CourseV1RouteProvider = 'tmap';
 
 /**
  * legacy transport가 실제 HTTP 요청 직전에 호출하는 좁은 관찰·예산 경계다.
  * 기존 direct fetcher는 이 hook을 사용하지 않으므로 HTTP attempt 수를 추정하지 않는다.
  */
 export type CourseV1RouteTransportObserver = {
-  recordProviderHttpAttempt(provider: CourseV1RouteProvider): boolean;
+  /** Retired provider input is accepted only to deny old callers, never as a live budget. */
+  recordProviderHttpAttempt(provider: CourseV1RouteProvider | 'odsay'): boolean;
 };
 
 /** 한 추천 요청에만 적용하는 선택적 호출 상한이다. 값이 없으면 그 종류의 상한도 없다. */
@@ -80,15 +81,15 @@ export type CourseV1RouteRequestScopeOptions = CourseV1RouteAdapterOptions & {
 };
 
 /**
- * Course v1은 TMAP 보행과 ODsay 대중교통의 실제 응답만 쓴다.
+ * Legacy adapter는 TMAP 보행만 쓴다. 출시 대중교통은 별도 Kakao proxy 소유다.
  * travel.ts가 보관하는 haversine/transit_fallback/walk_short 값은 이 경계에서 null이다.
  */
 export const defaultCourseV1RouteFetcher: CourseV1RouteFetcher = {
   providerHttpAttemptsObserved: true,
   async fetch(from, to, mode, transport) {
+    if (mode !== 'walk') return null;
     const pair: [{ lat: number; lon: number }, { lat: number; lon: number }] = [from, to];
-    if (mode === 'walk') await precompute([pair], 'walk', { retryFallback: true, transportObserver: transport });
-    else await precomputeTransit([pair], { retryFallback: true, transportObserver: transport });
+    await precompute([pair], 'walk', { retryFallback: true, transportObserver: transport });
     return { min: travelMin(from, to, mode), source: travelSrc(from, to, mode) };
   },
 };
@@ -115,7 +116,7 @@ export function createCourseV1RouteCacheOwner(
     failures: 0,
     logicalSegments: 0,
     adapterFetches: { walk: 0, transit: 0 },
-    providerHttpAttempts: { tmap: 0, odsay: 0 },
+    providerHttpAttempts: { tmap: 0 },
     providerHttpAttemptsObserved: false,
     limited: { logicalSegments: 0, walkFetches: 0, transitFetches: 0, providerHttpAttempts: 0 },
   };
@@ -129,7 +130,8 @@ export function createCourseV1RouteCacheOwner(
     };
   }
 
-  function recordProviderHttpAttempt(provider: CourseV1RouteProvider): boolean {
+  function recordProviderHttpAttempt(provider: CourseV1RouteProvider | 'odsay'): boolean {
+    if (provider !== 'tmap') return false;
     counters.providerHttpAttemptsObserved = true;
     const limit = budget?.providerHttpAttempts?.[provider];
     if (limit !== undefined && counters.providerHttpAttempts[provider] >= limit) {
@@ -207,9 +209,9 @@ export function createCourseV1RouteCacheOwner(
         if (walk.limited) return null;
         if (walk.value && walk.value.min <= autoWalkLimitMin) return walk.value;
 
-        // 먼 구간 또는 도보 실패는 실제 ODsay 결과가 있어야만 대중교통으로 전환한다.
-        const transit = await getExactRoute(from, to, 'transit');
-        return transit.limited ? null : transit.value;
+        // 과거 source snapshot을 신규 exact 성공/cache로 수입하지 않는다.
+        // 이 legacy 경계에는 transit provider가 없으며 근사 성공도 만들지 않는다.
+        return null;
       },
       diagnostics,
     };
@@ -221,7 +223,7 @@ export function createCourseV1RouteCacheOwner(
 type RouteLookup = { value: ExactRoute | null; limited: boolean };
 
 function hasProviderHttpBudget(budget: RouteRequestBudget | undefined): boolean {
-  return budget?.providerHttpAttempts?.tmap !== undefined || budget?.providerHttpAttempts?.odsay !== undefined;
+  return budget?.providerHttpAttempts?.tmap !== undefined;
 }
 
 /**
@@ -260,5 +262,5 @@ function isExactResponse(
   response: { min: number; source: string } | null,
 ): response is { min: number; source: string } {
   if (!response || !Number.isInteger(response.min) || response.min <= 0) return false;
-  return mode === 'walk' ? response.source === 'TMAP' : response.source === 'ODsay';
+  return mode === 'walk' && response.source === 'TMAP';
 }

@@ -43,7 +43,7 @@ test('SAFETY-01: actual legacy success/failure/cancel logs contain no coordinate
   }
   const transit = transport(true);
   await transit.api.precomputeTransit([[a, b]]);
-  assert.equal(transit.calls(), 1);
+  assert.equal(transit.calls(), 0); // ODsay removal: no legacy transit HTTP
   assert.equal(JSON.stringify(transit.logs).includes(String(a.lat)), false);
 });
 

@@ -23,7 +23,7 @@ test('성공 fixture: 실제 TMAP 보행 14분 이하는 도보 정확 경로만
   assert.deepEqual(fixture.calls, [fixtureRouteKey('walk', origin, nearby)]);
 });
 
-test('한 구간 실패 fixture: 먼 실제 보행 뒤 ODsay가 실패하면 근사 폴백 대신 null을 반환한다', async () => {
+test('한 구간 실패 fixture: 먼 실제 보행 뒤 transit 호출 없이 null을 반환한다', async () => {
   const fixture = routeFetcherFixture({
     [fixtureRouteKey('walk', origin, distant)]: { min: 18, source: 'TMAP' },
     [fixtureRouteKey('transit', origin, distant)]: { min: 12, source: 'transit_fallback' },
@@ -33,7 +33,6 @@ test('한 구간 실패 fixture: 먼 실제 보행 뒤 ODsay가 실패하면 근
   assert.equal(await adapter.getRoute(origin, distant), null);
   assert.deepEqual(fixture.calls, [
     fixtureRouteKey('walk', origin, distant),
-    fixtureRouteKey('transit', origin, distant),
   ]);
 });
 
@@ -44,7 +43,6 @@ test('전체 실패 fixture: 도보·대중교통 모두 실제 응답이 없으
   assert.equal(await adapter.getRoute(origin, distant), null);
   assert.deepEqual(fixture.calls, [
     fixtureRouteKey('walk', origin, distant),
-    fixtureRouteKey('transit', origin, distant),
   ]);
 });
 
@@ -69,10 +67,10 @@ test('캐시 적중 fixture: 좌표쌍·수단 키는 5자리 좌표를 포함�
   const failedAdapter = createCourseV1RouteAdapter({ fetcher: failed.fetcher, now: () => now });
   await failedAdapter.getRoute(origin, distant);
   await failedAdapter.getRoute(origin, distant);
-  assert.equal(failed.calls.length, 2);
+  assert.equal(failed.calls.length, 1);
   now += COURSE_V1_ROUTE_FAILURE_TTL_MS;
   await failedAdapter.getRoute(origin, distant);
-  assert.equal(failed.calls.length, 4);
+  assert.equal(failed.calls.length, 2);
 });
 
 test('앱 세션 cache owner: 새 추천이 이미 검증된 대안을 교체하면 네트워크를 다시 호출하지 않는다', async () => {
@@ -94,7 +92,7 @@ test('앱 세션 cache owner: 새 추천이 이미 검증된 대안을 교체하
     failures: 0,
     logicalSegments: 2,
     adapterFetches: { walk: 1, transit: 0 },
-    providerHttpAttempts: { tmap: 0, odsay: 0 },
+    providerHttpAttempts: { tmap: 0 },
     providerHttpAttemptsObserved: false,
     limited: { logicalSegments: 0, walkFetches: 0, transitFetches: 0, providerHttpAttempts: 0 },
   });
@@ -129,7 +127,7 @@ test('앱 세션 cache owner: 동시에 들어온 같은 구간은 하나의 fet
     failures: 0,
     logicalSegments: 2,
     adapterFetches: { walk: 1, transit: 0 },
-    providerHttpAttempts: { tmap: 0, odsay: 0 },
+    providerHttpAttempts: { tmap: 0 },
     providerHttpAttemptsObserved: false,
     limited: { logicalSegments: 0, walkFetches: 0, transitFetches: 0, providerHttpAttempts: 0 },
   });
@@ -154,7 +152,7 @@ test('cache key은 수단·방향·좌표쌍을 분리해 서로 다른 실제 �
   assert.notEqual(courseV1RouteCacheKey('walk', origin, nearby), courseV1RouteCacheKey('walk', origin, distant));
 });
 
-test('요청 scope fixture: 공유하지 않는 11개 논리 구간은 walk 11회와 transit 11회 adapter fetch로 분리된다', async () => {
+test('요청 scope fixture: 11개 논리 구간 상한 유지, transit fetch는 0회다', async () => {
   const points = Array.from({ length: 12 }, (_unused, index) => ({
     id: `point-${index}`,
     lat: 35.1 + index / 1_000,
@@ -171,10 +169,10 @@ test('요청 scope fixture: 공유하지 않는 11개 논리 구간은 walk 11�
   const adapter = scope.createAdapter();
 
   for (let index = 0; index < 11; index += 1) {
-    assert.deepEqual(await adapter.getRoute(points[index], points[index + 1]), { mode: 'transit', min: 11, exact: true });
+    assert.equal(await adapter.getRoute(points[index], points[index + 1]), null);
   }
   assert.equal(await adapter.getRoute(points[11], points[0]), null);
-  assert.deepEqual(scope.diagnostics().adapterFetches, { walk: 11, transit: 11 });
+  assert.deepEqual(scope.diagnostics().adapterFetches, { walk: 11, transit: 0 });
   assert.equal(scope.diagnostics().logicalSegments, 12);
   assert.deepEqual(scope.diagnostics().limited, { logicalSegments: 1, walkFetches: 0, transitFetches: 0, providerHttpAttempts: 0 });
 });
@@ -195,13 +193,13 @@ test('transport fixture: timeout 뒤 retry 한 번은 adapter fetch 1회와 prov
 
   assert.deepEqual(await scope.createAdapter().getRoute(origin, nearby), { mode: 'walk', min: 8, exact: true });
   assert.deepEqual(scope.diagnostics().adapterFetches, { walk: 1, transit: 0 });
-  assert.deepEqual(scope.diagnostics().providerHttpAttempts, { tmap: 2, odsay: 0 });
+  assert.deepEqual(scope.diagnostics().providerHttpAttempts, { tmap: 2 });
   assert.equal(scope.diagnostics().providerHttpAttemptsObserved, true);
 });
 
-test('transport fixture: 장거리 walk 성공 뒤 transit timeout/retry도 provider별 HTTP attempt로 별도 집계한다', async () => {
+test('transport fixture: 장거리 walk 성공 뒤 retired transit fetch/retry는 실행하지 않는다', async () => {
   const scope = createCourseV1RouteRequestScope({
-    budget: { providerHttpAttempts: { tmap: 1, odsay: 2 } },
+    budget: { providerHttpAttempts: { tmap: 1 } },
     fetcher: {
       providerHttpAttemptsObserved: true,
       async fetch(_from, _to, mode, transport) {
@@ -209,16 +207,14 @@ test('transport fixture: 장거리 walk 성공 뒤 transit timeout/retry도 prov
           assert.equal(transport.recordProviderHttpAttempt('tmap'), true);
           return { min: 15, source: 'TMAP' };
         }
-        assert.equal(transport.recordProviderHttpAttempt('odsay'), true); // timeout
-        assert.equal(transport.recordProviderHttpAttempt('odsay'), true); // retry success
-        return { min: 9, source: 'ODsay' };
+        assert.fail('retired transit fetch must not run');
       },
     },
   });
 
-  assert.deepEqual(await scope.createAdapter().getRoute(origin, distant), { mode: 'transit', min: 9, exact: true });
-  assert.deepEqual(scope.diagnostics().adapterFetches, { walk: 1, transit: 1 });
-  assert.deepEqual(scope.diagnostics().providerHttpAttempts, { tmap: 1, odsay: 2 });
+  assert.equal(await scope.createAdapter().getRoute(origin, distant), null);
+  assert.deepEqual(scope.diagnostics().adapterFetches, { walk: 1, transit: 0 });
+  assert.deepEqual(scope.diagnostics().providerHttpAttempts, { tmap: 1 });
 });
 
 test('낮은 HTTP attempt 예산 fixture: 제한된 walk는 transit 성공으로 우회하지 않고 cache/shared in-flight exact만 재사용한다', async () => {
@@ -247,7 +243,7 @@ test('낮은 HTTP attempt 예산 fixture: 제한된 walk는 transit 성공으로
   const limited = await adapter.getRoute(nearby, origin);
   assert.equal(limited, null);
   assert.deepEqual(scope.diagnostics().adapterFetches, { walk: 2, transit: 0 });
-  assert.deepEqual(scope.diagnostics().providerHttpAttempts, { tmap: 1, odsay: 0 });
+  assert.deepEqual(scope.diagnostics().providerHttpAttempts, { tmap: 1 });
   assert.equal(scope.diagnostics().limited.providerHttpAttempts, 1);
   assert.equal(scope.diagnostics().cacheHits, 1);
   assert.equal(scope.diagnostics().sharedInFlightWaits, 1);
@@ -272,7 +268,7 @@ test('provider budget이 있는 미관찰 fetcher는 외부 fetch 전에 fail-cl
   assert.equal(scope.diagnostics().limited.providerHttpAttempts, 1);
 });
 
-test('실제 legacy HTTP 경계는 TMAP/ODsay 요청 직전 observer를 호출하고 거절된 request는 실행하지 않는다', async () => {
+test('실제 legacy HTTP 경계는 TMAP만 관찰하고 ODsay는 observer/request 전에 차단한다', async () => {
   let requests = 0;
   const providers: string[] = [];
   const tmap = await attemptLegacyRouteHttp('tmap', {
@@ -296,6 +292,6 @@ test('실제 legacy HTTP 경계는 TMAP/ODsay 요청 직전 observer를 호출�
 
   assert.equal(tmap, 'tmap-requested');
   assert.equal(odsay, undefined);
-  assert.deepEqual(providers, ['tmap', 'odsay']);
+  assert.deepEqual(providers, ['tmap']); // removed ODsay never reaches provider accounting
   assert.equal(requests, 1);
 });
