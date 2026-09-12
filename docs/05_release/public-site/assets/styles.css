@@ -1,0 +1,41 @@
+:root {
+  color-scheme: light;
+  --ink: #202124;
+  --muted: #62666d;
+  --line: #e7e9ee;
+  --blue: #0066ff;
+  --soft: #f4f7fb;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html { font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; background: var(--soft); color: var(--ink); }
+body { margin: 0; line-height: 1.68; }
+a { color: var(--blue); text-underline-offset: 3px; }
+.shell { width: min(100% - 32px, 820px); margin: 0 auto; }
+header { background: var(--white); border-bottom: 1px solid var(--line); }
+.top { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.brand { color: var(--ink); font-size: 19px; font-weight: 800; text-decoration: none; letter-spacing: -0.02em; }
+nav { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; }
+main { background: var(--white); margin: 24px auto 48px; padding: clamp(24px, 5vw, 52px); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 12px 32px rgba(24, 34, 51, .05); }
+h1 { margin: 0 0 8px; font-size: clamp(28px, 7vw, 42px); line-height: 1.2; letter-spacing: -0.035em; }
+h2 { margin: 42px 0 12px; padding-top: 8px; font-size: 22px; line-height: 1.35; letter-spacing: -0.02em; }
+h3 { margin: 28px 0 8px; font-size: 18px; }
+p, li { font-size: 16px; }
+.meta { color: var(--muted); margin: 0 0 30px; font-size: 14px; }
+.notice { margin: 22px 0; padding: 16px 18px; border-left: 4px solid var(--blue); border-radius: 10px; background: #f2f7ff; }
+.table-wrap { overflow-x: auto; margin: 16px 0; }
+table { width: 100%; border-collapse: collapse; min-width: 620px; font-size: 14px; }
+th, td { padding: 12px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { background: var(--soft); }
+ul, ol { padding-left: 22px; }
+footer { color: var(--muted); padding: 0 0 36px; font-size: 13px; text-align: center; }
+.mail { display: inline-flex; padding: 10px 14px; border-radius: 999px; background: var(--blue); color: white; font-weight: 700; text-decoration: none; }
+
+@media (max-width: 620px) {
+  .top { align-items: flex-start; flex-direction: column; padding: 16px 0; }
+  main { width: 100%; margin-top: 0; border-left: 0; border-right: 0; border-radius: 0; }
+  .shell { width: min(100% - 24px, 820px); }
+  header .shell { width: min(100% - 32px, 820px); }
+}

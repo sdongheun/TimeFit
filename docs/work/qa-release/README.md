@@ -1,5 +1,9 @@
 # QA·출시 현재 작업
 
+## 최우선 — QA-RELEASE-FINAL-01 (최종 후보 대기)
+
+[출시 실행 명령](../integration-decision/release-execution-wave.md). 지금은 목록 준비만 가능, BUILD/문서·링크 연결 후 고정 후보에서 실행. 과거 개인화 C/전체 실기기 조작 반복 금지. 기술 PASS·심사 제출·공개 판정을 분리한다.
+
 ## 최우선 실행 — QA-LIVE-LEARNING-EVIDENCE-01
 
 [앱·Live Activity 학습 연결 검증](live-learning-evidence-validation.md)의 A 자동 게이트를 지금 실행한다. U-LIVE-LEARNING-EVIDENCE-01 통합 코드 검토 완료로 구현 인계 대기는 해제됐다. B는 새 internal build 최소 사용자 실기기, C는 별도 검증 환경·권한을 확인한 실제 서버 게이트다. 아래 전체 개인화/출시 대기와 구분하며 Simulator 반복 클릭·운영 쓰기 없이 진행한다.

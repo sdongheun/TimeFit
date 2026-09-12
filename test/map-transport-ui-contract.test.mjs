@@ -21,9 +21,9 @@ const verifiedProgress = courseConfirm;
 const courseConfirmV1 = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8');
 
 test('메인은 한 가지 시작 행동과 진행 중 코스 진입점만 둔다', () => {
-  assert.match(home, /지금 남는 시간을\{`\\n`\}정해볼까요\?/);
+  assert.match(home, /약속 전 남는 시간,\{`\\n`\}어디 들러볼까요\?/);
   assert.match(home, /자투리 시간 설정하기/);
-  assert.match(home, /도착 시간에 늦지 않도록/);
+  assert.doesNotMatch(home, /TIMEFIT|도착 시간에 늦지 않도록/); // U-MAIN-COURSE-POLISH-01: redundant copy retired.
   assert.match(home, /진행 중인 코스/);
 });
 
@@ -40,20 +40,20 @@ test('시간 설정은 통합 필드와 상시 분 단위 휠·여유를 입력�
   assert.match(setup, /TimeWheel[^>]*values=\{HOURS_12\}/);
   assert.match(setup, /TimeWheel[^>]*values=\{MINUTES\}/);
   assert.match(setup, /releaseTimeSetupValidation/);
-  assert.match(setup, /최대 2시간/);
+  assert.match(setup, /최대 3시간/);
   assert.match(setup, /const SHOW_TEST_CLOCK = typeof __DEV__ !== 'undefined' && __DEV__/);
   assert.match(setup, /testID="dev-test-clock"/);
   assert.match(setup, /테스트 현재 시각/);
 });
 
-test('통합 출발·도착 필드는 picker를 직접 열고 권한은 명시 GPS 행동에서만 요청한다', () => {
+test('수동 출발·도착 필드는 picker를 직접 열고 위치 권한·GPS를 요청하지 않는다', () => {
   const inputs = fs.readFileSync('src/ui/timeSetup/UnifiedSetupInputs.tsx', 'utf8');
   assert.match(inputs, /testID="route-origin-field"/);
   assert.match(inputs, /testID="route-destination-field"/);
   assert.match(inputs, /testID="route-return-origin"/);
   assert.match(setup, /testID="setup-footer"/);
-  assert.match(setup, /Location\.getForegroundPermissionsAsync\(\)/);
-  assert.doesNotMatch(setup, /origin-choice|location-permission|destination-choice|requestForegroundPermissionsAsync/);
+  assert.doesNotMatch(setup, /expo-location|Location\.|getForegroundPermissionsAsync|requestForegroundPermissionsAsync|getCurrentPositionAsync|watchPositionAsync|navigator\.geolocation/);
+  assert.doesNotMatch(setup, /origin-choice|location-permission|destination-choice/);
   assert.match(setup, /<MapPlacePicker/);
   assert.match(mapPicker, /onMapCenterChange=\{updateCenter\}/);
   assert.match(mapPicker, /labelAdapter: ReturnType<typeof createKakaoLocationLabelAdapter>/);
@@ -153,16 +153,17 @@ test('URECDIAG01: 추천량 진단은 exact internal flag일 때만 Results 최�
 });
 
 test('결과 진입점은 V1 대표 코스와 읽기 전용 확인 화면을 사용한다', () => {
-  assert.match(resultEntry, /CourseV1Journey/);
+  assert.doesNotMatch(resultEntry, /ConditionalVisitSection/); // U-RELEASE-UI-CLEANUP-01 retires Results entry only.
+  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /CourseV1Journey/);
   assert.match(resultEntry, /CourseConfirm/);
   assert.doesNotMatch(resultEntry, /OneStopResultsScreen|BasketPanel|candidateRadiusKm/);
 });
 
-test('URELEASEONESTOP01/UONEMORE01: 결과는 single 대표·누적 대안과 조건부 정보 확인 영역만 분리한다', () => {
+test('URELEASEONESTOP01/UONEMORE01: 결과는 single 대표·누적 대안을 유지하고 폐기된 조건부 진입은 제거한다', () => {
   assert.match(results, /moreState\.representativeCourse/);
   assert.match(results, /no_representative_candidates/);
-  assert.match(results, /no_verified_course_within_limit/);
-  assert.match(results, /CourseV1PlacePreview/);
+  assert.match(results, /courseV1OutcomeMessage\(result.primaryOutcomeReason\)/); // MAP02: empty resultState alone no longer asserts a cause.
+  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /CourseV1PlacePreview/);
   assert.match(results, /이 시간에 가능한 다른 장소/);
   assert.match(results, /releaseOneStopDisplayResult/);
   assert.match(results, /testID="verified-course-more"/);
@@ -170,23 +171,23 @@ test('URELEASEONESTOP01/UONEMORE01: 결과는 single 대표·누적 대안과 �
   assert.match(results, /continueReleaseRecommendationSession/);
   assert.match(recommendationSession, /continueReleaseOneStopRepresentativeCourseV1/);
   assert.doesNotMatch(results, /continueRecommendationSession|continueLimitedRepresentativeCourseV1|다른 검증 코스 더 보기|검증 대안/);
-  assert.match(results, /운영시간 확인 후 들러볼 곳/);
-  assert.match(results, /운영시간을 카카오맵에서 확인해 주세요/);
-  assert.match(results, /conditionalVisitPage/);
-  assert.match(results, /AppState\.addEventListener/);
-  assert.match(results, /millisecondsUntilConditionalVisibilityBoundary/);
-  assert.match(results, /conditionalVisible \? <ConditionalVisitSection/);
-  assert.match(results, /openKakaoPlace/);
-  assert.match(results, /Linking\.canOpenURL/);
-  assert.match(results, /WebBrowser\.openBrowserAsync/);
+  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /운영시간 확인 후 들러볼 곳/);
+  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /운영시간을 카카오맵에서 확인해 주세요/);
+  assert.doesNotMatch(results, /conditionalVisitPage/);
+  assert.doesNotMatch(results, /AppState\.addEventListener/);
+  assert.doesNotMatch(results, /millisecondsUntilConditionalVisibilityBoundary/);
+  assert.doesNotMatch(results, /conditionalVisible \? <ConditionalVisitSection/);
+  assert.doesNotMatch(results, /openKakaoPlace/);
+  assert.doesNotMatch(results, /Linking\.canOpenURL/);
+  assert.doesNotMatch(results, /WebBrowser\.openBrowserAsync/);
   assert.match(courseConfirm, /WebBrowser\.openBrowserAsync/);
   assert.match(courseConfirm, /Linking\.canOpenURL/);
-  assert.match(results, /createCourseV1CandidateProvider\(\)\.listConditionalVisitCandidates/);
-  assert.match(results, /runConditionalManualAction/);
-  assert.match(results, /확인했어요, 이 장소로 코스 계산/);
-  assert.match(results, /운영시간 확인 필요\(사용자 확인\)/);
-  assert.match(results, /conditionalManualLocks\.tryLock/);
-  assert.match(results, /testID="conditional-visit-more"/);
+  assert.doesNotMatch(results, /createCourseV1CandidateProvider\(\)\.listConditionalVisitCandidates/);
+  assert.doesNotMatch(results, /runConditionalManualAction/);
+  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /확인했어요, 이 장소로 코스 계산/);
+  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /운영시간 확인 필요\(사용자 확인\)/);
+  assert.doesNotMatch(results, /conditionalManualLocks\.tryLock/);
+  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /testID="conditional-visit-more"/);
   assert.doesNotMatch(results, /buildRecommendationExplorationPage|verifyRecommendationExplorationPlace|ExplorationPlaceCard/);
   assert.doesNotMatch(results, /지도에서 더 보기/);
   assert.doesNotMatch(results, /길찾기 시작|장바구니|buildBasketCourse/);
@@ -236,6 +237,7 @@ test('UPROGRESS01: V1 진행은 검증 snapshot과 명시 단계 전환만 사�
   assert.match(verifiedProgress, /routeOpenLock\.tryLock/);
   assert.match(courseConfirmV1, /코스 시작하기/);
   assert.doesNotMatch(courseConfirmV1, /코스 시작 · 첫 장소 길찾기/);
-  assert.match(verifiedProgress, /resetToMyCourses/);
+  assert.match(verifiedProgress, /resetToMain/);
+  assert.doesNotMatch(verifiedProgress, /resetToMyCourses/);
   assert.doesNotMatch(verifiedProgress, /expo-location|Location\.|useAppFlow|scheduleCourseNotifications|planTimeFit|Route Proxy|Live Activity|AsyncStorage|supabase/);
 });

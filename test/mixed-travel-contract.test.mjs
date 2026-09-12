@@ -22,7 +22,7 @@ test('짧은 구간 근사에서 차량 시간을 도보 시간으로 재사용�
 });
 
 test('단일 장소 확정은 자동 선택한 이동수단으로 경로·운영시간을 다시 검증한다', () => {
-  assert.match(results, /buildBasketCourse\(\[spot\], origin, target, ctx, \{ \[spot\.contentId\]: active\.mode \}\)/);
+  assert.match(results, /buildBasketCourse\(\[spot\], origin, target, ctx, \{ \[spot\.contentId\]: active\.mode \}, \{ finalMode: active\.mode \}\)/);
   assert.match(results, /validateCourseOpening\(\[spot\], origin, target, \[active\.mode, active\.mode\]/);
   assert.match(basketPlanner, /mode: travel\.mode/);
   assert.match(basketPlanner, /automaticTravelLegs\(selected, origin, target, arrivalModes\)/);

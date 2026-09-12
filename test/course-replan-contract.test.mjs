@@ -21,8 +21,9 @@ test('코스 변경은 같은 코스 ID의 장소·구간을 원자적으로 교
   assert.match(repository, /supabase\.rpc\('replace_course_plan'/);
 });
 
-test('진행 화면의 코스 변경은 현재 GPS·현재 시각 기준으로 다시 추천한다', () => {
-  assert.match(execution, /Location\.getCurrentPositionAsync/);
-  assert.match(execution, /remainingMin = endMin - nowMin/);
-  assert.match(execution, /editingCourseId: courseId/);
+test('수동 위치 출시: legacy GPS 재추천 entry는 실행하지 않고 수동 입력을 안내한다', () => {
+  assert.doesNotMatch(execution, /expo-location|Location\.getCurrentPositionAsync|planTimeFit|getActualRouteBaselines/);
+  assert.match(execution, /장소를 직접 선택해 주세요/);
+  assert.match(execution, /이 코스는 그대로 유지됩니다/);
+  assert.doesNotMatch(execution, /navigate\('LegacyResults'/);
 });

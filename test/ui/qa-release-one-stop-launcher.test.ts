@@ -128,7 +128,7 @@ test('UQAHARNESS01: verified·empty·failed receipt는 집계만 한 줄로 남�
   assert.doesNotMatch(JSON.stringify(failed), /secret|https?:|35\.1|"(?:token|jwt|url|lat|lon|userId)":/);
 });
 
-test('UQAHARNESS01: TimeSetup은 기존 gate·runner를 공유하고 QA만 navigate로 launcher 복귀 경로를 남긴다', () => {
+test('UQAHARNESS01: TimeSetup은 기존 gate·runner를 공유하고 일반 입력과 QA launcher 복귀 경로를 남긴다', () => {
   const source = fs.readFileSync('src/ui/TimeSetupScreen.tsx', 'utf-8');
   const nav = fs.readFileSync('src/ui/nav.ts', 'utf-8');
   assert.match(source, /qaLauncherEnabled \? <Pressable testID="qa-release-one-stop-launcher"/);
@@ -137,7 +137,7 @@ test('UQAHARNESS01: TimeSetup은 기존 gate·runner를 공유하고 QA만 navig
   assert.match(source, /const executeRecommendation = async/);
   assert.equal(source.match(/runRecommendationSession\(/g)?.length, 1);
   assert.match(source, /navigation\.navigate\('Results', params\)/);
-  assert.match(source, /navigation\.replace\('Results', params\)/);
+  assert.doesNotMatch(source, /navigation\.replace\('Results', params\)/);
   assert.match(source, /if \(line\) console\.info\(line\)/);
   assert.doesNotMatch(nav, /QaRelease|QA_RELEASE|qa-launcher/);
 });
