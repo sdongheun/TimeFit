@@ -5,8 +5,10 @@ import { supabase } from '../services/supabase';
 import { accountSessionFor, authKindFor, type AuthKind } from './authStateModel';
 import { personalizationSession } from './personalizationComposition';
 import { liveLearningEvidence } from './liveActivity/learningEvidenceComposition';
+import { invalidatePendingCompletion } from './liveActivity/completionAuthorization';
 import type { SignUpAccountInputV1 } from '../services/accountRegistrationRepository';
 import { signInWithFreshCaptcha } from './passwordLoginModel';
+import { safeSignupFailure } from './signupFailureModel';
 
 type SignUpInput = SignUpAccountInputV1;
 
@@ -81,6 +83,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       const nextOwner = accountSessionFor(nextSession, false)?.user.id ?? null;
       if (_event !== 'INITIAL_SESSION' && (previousOwner !== nextOwner || _event === 'SIGNED_OUT' || _event === 'PASSWORD_RECOVERY')) {
         void liveLearningEvidence.clearInvalidatedNative().catch(() => undefined);
+        void invalidatePendingCompletion().catch(() => undefined);
       }
       authVersion.current++;
       currentSession.current = nextSession;
@@ -105,7 +108,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const result = await supabaseAccountRegistrationRepository.signUpAccount(input);
     if (result.status === 'account_session_ready') return true;
     if (result.status === 'email_confirmation_pending') return false;
-    throw new Error('가입 정보를 확인할 수 없어요. 잠시 후 다시 시도해주세요.');
+    throw safeSignupFailure(result);
   }, []);
 
   const signOut = useCallback(async () => {

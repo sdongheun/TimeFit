@@ -92,14 +92,13 @@ export function buildPlaceDetailModel(place: PlaceDetailCatalogPlace, selectionK
 const validPoint = (point: { lat: number; lon: number } | null | undefined) => Boolean(point
   && Number.isFinite(point.lat) && Number.isFinite(point.lon) && Math.abs(point.lat) <= 90 && Math.abs(point.lon) <= 180);
 
-/** 방문 순서나 근사선을 만들지 않고 허용된 위치 snapshot과 선택 맥락만 표시한다. */
+/** 수동 선택 맥락만 표시한다. 과거 device snapshot은 보존하되 지도에 다시 전달하지 않는다. */
 export function buildPlaceDetailMarkers(
   session: RecommendationSession,
   candidate: PlaceDetailCatalogPlace,
   selected?: PlaceDetailCatalogPlace,
 ): RouteMapMarker[] {
   const markers: RouteMapMarker[] = [];
-  if (validPoint(session.deviceLocationSnapshot)) markers.push({ ...session.deviceLocationSnapshot!, label: '현재 위치', kind: 'current' });
   if (validPoint(session.origin)) markers.push({ lat: session.origin.lat, lon: session.origin.lon, label: '설정한 출발지', kind: 'origin' });
   if (selected && validPoint(selected)) markers.push({ lat: selected.lat, lon: selected.lon, label: `선택한 장소 · ${selected.title}`, kind: 'selected' });
   if (validPoint(candidate)) markers.push({ lat: candidate.lat, lon: candidate.lon, label: `선택 후보 · ${candidate.title}`, kind: 'candidate', ...photoMarkerFields(candidate) });

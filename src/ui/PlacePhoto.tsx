@@ -26,14 +26,14 @@ function PhotoRequest({ photo, fallback }: {photo: ApprovedPlacePhoto; fallback:
   </>;
 }
 /** 사용자가 볼 수 있는 출처·이용조건. 접근성 label만으로 대체하지 않는다. */
-export function PlacePhotoCredit({ place, links = false }: {place: PlacePhotoInput; links?: boolean}) {
+export function PlacePhotoCredit({ place, links = false, linkTextColor }: {place: PlacePhotoInput; links?: boolean; linkTextColor?: string}) {
   const photo = approvedPlacePhoto(place);
   const [error, setError] = useState(false);
   if (!photo) return null;
   const open = async (url: string) => { try { await Linking.openURL(url); setError(false); } catch { setError(true); } };
   return <View testID="place-photo-credit">
     <Text style={s.credit}>{photo.attribution} · {photo.licenseName}</Text>
-    {links ? <View style={s.links}><Pressable accessibilityRole="link" accessibilityLabel="사진 출처 보기" onPress={() => void open(photo.sourcePageUrl)} style={s.link}><Text style={s.linkText}>사진 출처</Text></Pressable><Pressable accessibilityRole="link" accessibilityLabel="사진 이용조건 보기" onPress={() => void open(photo.licenseUrl)} style={s.link}><Text style={s.linkText}>이용조건</Text></Pressable></View> : null}
+    {links ? <View style={s.links}><Pressable accessibilityRole="link" accessibilityLabel="사진 출처 보기" onPress={() => void open(photo.sourcePageUrl)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>사진 출처</Text></Pressable><Pressable accessibilityRole="link" accessibilityLabel="사진 이용조건 보기" onPress={() => void open(photo.licenseUrl)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>이용조건</Text></Pressable></View> : null}
     {error ? <Text accessibilityRole="alert" style={s.credit}>링크를 열지 못했어요. 잠시 후 다시 시도해 주세요.</Text> : null}
   </View>;
 }

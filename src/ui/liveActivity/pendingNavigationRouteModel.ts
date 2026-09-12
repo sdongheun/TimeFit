@@ -7,7 +7,7 @@ export function pendingNavigationRouteTarget(
   pending: PendingNavigationAction | null,
   current: Readonly<{ name: string; params?: unknown }> | undefined,
 ): RootStackParamList['CourseConfirm'] | null {
-  if (!active || !pending || pending.state !== 'pending' || pending.courseRunId !== active.courseRunId) return null;
+  if (!active || !pending || (pending.state !== 'pending' && !(pending.purpose === 'course_progress_completion' && pending.state === 'executing')) || pending.courseRunId !== active.courseRunId) return null;
   const currentActiveId = current?.name === 'CourseConfirm' && current.params && typeof current.params === 'object'
     ? (current.params as { activeId?: unknown }).activeId : undefined;
   if (currentActiveId === active.identity) return null;

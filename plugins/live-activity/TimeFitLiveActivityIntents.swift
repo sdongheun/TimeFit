@@ -154,6 +154,32 @@ private enum TimeFitProgressIntentFailure: Error { case rejected }
   }
 }
 
+struct TimeFitCompletionIntent: LiveActivityIntent {
+  static var title: LocalizedStringResource = "도착 후 코스 마치기"
+  static var openAppWhenRun: Bool { true }
+  @Parameter(title: "Course Run") var courseRunId: String
+  @Parameter(title: "Revision") var revision: Int
+  init() {}
+  init(courseRunId: String, revision: Int) { self.courseRunId = courseRunId; self.revision = revision }
+  @MainActor func perform() async throws -> some IntentResult {
+    guard !TimeFitPendingNavigationActionStore.completionRevoked(courseRunId),
+      case let .found(activity) = TimeFitLiveActivityTargetStore.courseTarget(courseRunId: courseRunId, stopId: "final-destination", revision: revision),
+      TimeFitNativeIntentPolicy.permitsCompletion(purpose: TimeFitActivityIdentityPolicy.purpose(activity.attributes), phase: activity.content.state.phase, activeStopId: activity.content.state.activeStopId, eligible: activity.content.state.completionEligible)
+    else { throw TimeFitProgressIntentFailure.rejected }
+    if let existing = TimeFitPendingNavigationActionStore.read(), existing.courseRunId == courseRunId,
+      existing.purpose == "course_progress_completion", existing.baseRevision == revision {
+      TimeFitPendingNavigationSignal.post()
+      return .result()
+    }
+    let pending = TimeFitPendingNavigationAction(schemaVersion: 1, purpose: "course_progress_completion", actionId: UUID().uuidString.lowercased(), courseRunId: courseRunId, stopId: "final-destination", baseRevision: revision, state: "pending")
+    let activeRuns = Set(Activity<TimeFitActivityAttributes>.activities.map { $0.attributes.courseRunId })
+    _ = try TimeFitPendingNavigationActionStore.create(pending, activeCourseRunIds: activeRuns)
+    // Intent receipt is not completion success: only the app's existing writer finishes.
+    TimeFitPendingNavigationSignal.post()
+    return .result()
+  }
+}
+
 struct TimeFitArrivalIntent: LiveActivityIntent {
   static var title: LocalizedStringResource = "도착 확인"
   @Parameter(title: "Course Run") var courseRunId: String

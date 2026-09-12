@@ -1,6 +1,7 @@
 #import <React/RCTEventEmitter.h>
 
 @interface RCT_EXTERN_MODULE(TimeFitLiveActivityModule, RCTEventEmitter)
+RCT_EXTERN_METHOD(revokeCompletionActions:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(setLearningEvidenceRun:(NSString *)run)
 RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(readLearningEvidence:(NSString *)run)

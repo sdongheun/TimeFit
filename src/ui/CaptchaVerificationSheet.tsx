@@ -11,7 +11,7 @@ type Props = {
   challengeUrl: string | null;
   onVerified: (token: string) => void;
   onClose: () => void;
-  purpose?: 'recommendation' | 'login';
+  purpose?: 'recommendation' | 'login' | 'signup';
 };
 
 /** Token은 성공 callback으로 한 번만 넘기며 React state·로그·알림에 보관하지 않는다. */
@@ -63,7 +63,7 @@ export function CaptchaVerificationSheet({ visible, challengeUrl, onVerified, on
     <View style={s.scrim}><View style={[s.sheet, { paddingBottom: Math.max(insets.bottom, 20) }]} accessibilityViewIsModal>
       <View style={s.handle} />
       <Text accessibilityRole="header" style={s.title}>안전 확인 중</Text>
-      <Text style={s.copy}>{purpose === 'login' ? '로그인을 위해 안전 확인을 완료해 주세요.' : '추천을 시작하기 전에 안전 확인이 필요할 수 있어요.'}</Text>
+      <Text style={s.copy}>{purpose === 'signup' ? '회원가입을 위해 안전 확인을 완료해 주세요.' : purpose === 'login' ? '로그인을 위해 안전 확인을 완료해 주세요.' : '추천을 시작하기 전에 안전 확인이 필요할 수 있어요.'}</Text>
       {state === 'loading' && validChallengeUrl ? <View testID="captcha-webview-wrap" style={s.webWrap}>
         <WebView
           key={webViewKey}

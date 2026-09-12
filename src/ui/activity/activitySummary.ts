@@ -79,12 +79,17 @@ export function buildCompletionHistorySummary(
   const now = new Date(nowMs);
   const activities = buildCourseCompletionActivityReadModel(completionRecords, legacyFeedback).activities
     .filter((activity) => isSameMonth(activity.completedAt, now));
+  return summarizeActivityVisits(activities);
+}
+
+/** Counts completed visits, not unique map markers. Caller owns the period/owner filter. */
+export function summarizeActivityVisits(activities:readonly {category:string;actualDwellMin:number|null}[]):ActivitySummary {
   const grouped = new Map<string, { count: number; dwellMin: number }>();
   let completedDwellMin = 0;
   let measuredCount = 0;
   for (const activity of activities) {
     const measured = activity.actualDwellMin !== null;
-    const dwellMin = measured ? activity.actualDwellMin : 0;
+    const dwellMin = activity.actualDwellMin ?? 0;
     if (measured) {
       measuredCount += 1;
       completedDwellMin += dwellMin;

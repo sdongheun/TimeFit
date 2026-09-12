@@ -22,13 +22,8 @@ test('A2 failure-first: iOS 17과 실제 App Group을 로컬 config plugin 한 �
       extensionBundleIdentifier: 'com.dongheun.mobile.liveactivity',
     },
   ]);
-  assert.deepEqual(app.expo.plugins.find(([name]) => name === 'expo-location')?.[1], {
-    locationWhenInUsePermission: '현위치의 도로명 주소와 주변 장소를 보여주기 위해 위치를 사용합니다.',
-    locationAlwaysAndWhenInUsePermission: false,
-    locationAlwaysPermission: false,
-    motionUsagePermission: false,
-    isIosBackgroundLocationEnabled: false,
-  });
+  assert.equal(app.expo.plugins.some(p => (Array.isArray(p) ? p[0] : p) === 'expo-location'), false);
+  assert.ok(app.expo.plugins.includes('./plugins/withoutLocationPermissions.cjs'));
   assert.match(plugin, /withEntitlementsPlist/);
   assert.match(plugin, /NSSupportsLiveActivities/);
   assert.match(plugin, /TimeFitLiveActivityExtension/);

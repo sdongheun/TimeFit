@@ -2,10 +2,10 @@ import type { LatLon } from '../engine';
 
 export type PickerTarget = 'origin' | 'destination';
 
-/** 출발지는 확정 출발지를, 도착지는 실제 기기 위치를 우선해 지도를 연다. */
-export function pickerInitialCenter(target: PickerTarget, origin: LatLon | null, device: LatLon | null, fallback: LatLon): LatLon {
-  if (target === 'destination') return device ?? origin ?? fallback;
-  return origin ?? device ?? fallback;
+/** Existing selected field first; a default camera view never confirms a selection. */
+export function pickerInitialCenter(target: PickerTarget, origin: LatLon | null, destination: LatLon | null, fallback: LatLon): LatLon {
+  if (target === 'destination') return destination ?? origin ?? fallback;
+  return origin ?? fallback;
 }
 
 export type MapPickerStatus = 'loading' | 'ready' | 'failed';

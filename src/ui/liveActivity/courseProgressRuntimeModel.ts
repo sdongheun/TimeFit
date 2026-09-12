@@ -245,6 +245,55 @@ export function createLiveCourseProgressController(dependencies: LiveCourseProgr
   };
 
   return {
+    /** Explicit route CTA is movement intent, not proof of arrival or of an external handoff. */
+    beginRouteIntent(input: Readonly<{ plan: LiveCoursePlan; travelStepIndex: number; occurredAtMs: number; eventId: string }>) {
+      return serial(async () => {
+        const route = input.plan.routes.find(item => item.travelStepIndex === input.travelStepIndex);
+        if (!route || !validText(input.eventId)) return { status: 'invalid' as const };
+        let previous: LocalProgressState | null;
+        try { previous = await read(); if (previous) previous = await receive(previous); }
+        catch { return { status: 'storage_unreadable' as const }; }
+        if (previous && (previous.courseRunId !== input.plan.courseRunId || previous.terminalAtMs !== null)) return { status: 'conflict' as const };
+        if (previous?.route && ['traveling', 'arrival_pending'].includes(previous.phase)
+          && previous.route.targetKind === route.targetKind && previous.route.targetStopId === route.targetStopId) {
+          return { status: 'reused' as const, state: previous };
+        }
+        const projected = previous ? projectVerifiedProgressFromLocal(previous, input.plan) : null;
+        const expected = projected ? projected.stepIndex + (projected.stepIndex % 2) : 0;
+        if (input.travelStepIndex !== expected) return { status: 'conflict' as const };
+        const event: HandoffSucceededEvent = { ...route, type: 'handoff_succeeded', source: 'app_handoff',
+          courseRunId: input.plan.courseRunId, eventId: input.eventId, baseRevision: previous?.revision ?? 0,
+          occurredAtMs: input.occurredAtMs,
+          departingStopId: previous && ['dwelling', 'departure_due'].includes(previous.phase) ? previous.activeStopId : null };
+        const reduced = previous ? reduceLocalProgressEvent(previous, event) : { applied: true, state: buildLocalProgressState(input.plan.snapshot, event) };
+        if (!reduced.applied) return { status: 'conflict' as const };
+        const { handoffPreparation: _old, ...state } = reduced.state;
+        await persistUpdate(state, !previous || (!previous.route && previous.stops.every(stop => stop.arrivedAtMs === null)));
+        return { status: 'started' as const, previous, state };
+      });
+    },
+    /** Attempt-owned compare-and-restore. A cold restart keeps the saved user intent. */
+    rollbackRouteIntent(attempt: Readonly<{ state: LocalProgressState; previous: LocalProgressState | null }>) {
+      return serial(async () => {
+        let current = await read();
+        if (!current || current.courseRunId !== attempt.state.courseRunId) return { status: 'preserved' as const };
+        current = await receive(current);
+        if (current.revision !== attempt.state.revision || current.terminalAtMs !== null
+          || current.phase !== attempt.state.phase || current.route?.routeOpenedAtMs !== attempt.state.route?.routeOpenedAtMs
+          || current.processedEventIds.at(-1) !== attempt.state.processedEventIds.at(-1)) return { status: 'preserved' as const };
+        // Never recycle revisions: delayed Intent receipts from the failed attempt must not
+        // match a later retry. Preserve a base to reconcile receipts arriving after this read.
+        const restored: LocalProgressState = { ...(attempt.previous ?? current), revision: current.revision + 1,
+          ...(attempt.previous ? {} : { route: null, processedEventIds: [] }) };
+        if (attempt.previous?.route || attempt.previous?.stops.some(stop => stop.arrivedAtMs !== null)) await persistUpdate(restored, false);
+        else {
+          await dependencies.storage.write(JSON.stringify(restored));
+          try { await dependencies.notification.cancelOwned(restored.courseRunId); } catch { /* retryable cleanup */ }
+          try { await dependencies.activity.end(restored); } catch { /* progress restoration stays durable */ }
+        }
+        return { status: 'rolled_back' as const, state: restored };
+      });
+    },
     prepareHandoff(input: Readonly<{ plan: LiveCoursePlan; travelStepIndex: number; occurredAtMs: number; eventId: string }>) {
       return serial(async () => {
         const route = input.plan.routes.find(item => item.travelStepIndex === input.travelStepIndex);

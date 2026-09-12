@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Modal, StyleSheet, Text, View } from 'react-native';
 import type { StyleProp, ViewStyle } from 'react-native';
@@ -8,18 +8,20 @@ import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { KakaoRouteMap } from './KakaoRouteMap';
 import { completedPlaceMarkers, type CompletedMapPlace } from './activity/completedPlaceMapModel';
 import { C } from './theme';
+const NO_ROUTE: { lat: number; lon: number }[] = [];
 
-export function CompletedPlacesMapButton({ places, children, style }: { places: readonly CompletedMapPlace[]; children?: ReactNode; style?: StyleProp<ViewStyle> }) {
+export function CompletedPlacesMapButton({ places, children, style, preview = false }: { places: readonly CompletedMapPlace[]; children?: ReactNode; style?: StyleProp<ViewStyle>; preview?: boolean }) {
   const [visible, setVisible] = useState(false);
   const insets = useSafeAreaInsets();
-  const markers = completedPlaceMarkers(places, [...catalog.matched.data, ...catalog.unmatched.data]);
+  const markers = useMemo(() => completedPlaceMarkers(places, [...catalog.matched.data, ...catalog.unmatched.data]), [places]);
+  const points = useMemo(() => markers.map(({ lat, lon }) => ({ lat, lon })), [markers]);
   const missing = new Set(places.map(place => place.contentId)).size - markers.length;
   return <>
-    <Pressable testID="completed-places-map-open" accessibilityRole="button" accessibilityLabel="완료한 장소 지도에서 보기" style={style} onPress={() => setVisible(true)}>{children ?? <Text style={s.link}>완료한 장소 지도에서 보기</Text>}</Pressable>
+    <Pressable testID="completed-places-map-open" accessibilityRole="button" accessibilityLabel="완료한 장소 지도에서 보기" style={style} onPress={() => setVisible(true)}>{preview ? <View pointerEvents="none" style={{ flex: 1 }}>{markers.length ? <KakaoRouteMap cameraControl={false} points={points} line={NO_ROUTE} markers={markers} showRouteLegend={false} safeErrorPresentation style={{ flex: 1 }} /> : <Text style={s.copy}>표시할 장소 위치 정보가 없어요.</Text>}</View> : children ?? <Text style={s.link}>완료한 장소 지도에서 보기</Text>}</Pressable>
     {visible ? <Modal visible animationType="slide" onRequestClose={() => setVisible(false)}>
       <View style={[s.root, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <View style={s.header}><Text style={s.title}>다녀간 장소</Text><Pressable testID="completed-places-map-close" accessibilityRole="button" accessibilityLabel="방문 지도 닫기" onPress={() => setVisible(false)} style={s.close}><Text style={s.link}>닫기</Text></Pressable></View>
-        {markers.length ? <KakaoRouteMap points={markers.map(({ lat, lon }) => ({ lat, lon }))} line={[]} markers={markers} showMarkerLabels showRouteLegend={false} safeErrorPresentation style={{ flex: 1 }} /> : <View style={s.empty}><Text style={s.copy}>표시할 장소 위치 정보가 없어요.</Text></View>}
+        {markers.length ? <KakaoRouteMap points={points} line={NO_ROUTE} markers={markers} showMarkerLabels showRouteLegend={false} safeErrorPresentation style={{ flex: 1 }} /> : <View style={s.empty}><Text style={s.copy}>표시할 장소 위치 정보가 없어요.</Text></View>}
         {missing > 0 ? <Text style={s.copy}>위치 정보를 확인할 수 없는 {missing}곳은 지도에서 제외했어요. 방문 기록은 유지됩니다.</Text> : null}
       </View>
     </Modal> : null}

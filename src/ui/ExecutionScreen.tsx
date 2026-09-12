@@ -1,11 +1,10 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, AppState, AppStateStatus, Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import * as WebBrowser from 'expo-web-browser';
-import * as Location from 'expo-location';
-import { getActualRouteBaselines, LatLon, Mode, planTimeFit, timeContext, travelGeo } from '../engine';
-import { RootStackParamList, fmtHM } from './nav';
+import { LatLon, Mode, timeContext, travelGeo } from '../engine';
+import { RootStackParamList } from './nav';
 import { C } from './theme';
 import { buildRouteMapSegments, KakaoRouteMap } from './KakaoRouteMap';
 import { useAppFlow } from './AppFlowContext';
@@ -24,12 +23,14 @@ import {
   openKakaoRouteWithFallback,
 } from './execution/schedule';
 import { CourseProgress } from './execution/CourseProgress';
+import { ManualLocationRestoreGate } from './ManualLocationRestoreGate';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Execution'>;
 type ExecutionParams = RootStackParamList['Execution'];
 
 export function ExecutionScreen({ route, navigation }: Props) {
   const { activeCourse } = useAppFlow();
+  const [confirmedParams, setConfirmedParams] = useState<ExecutionParams | null>(null);
   // Fast Refresh·이전 저장 코스처럼 라우트 파라미터가 불완전한 경우에는 최근 활성 코스를 우선 복구한다.
   const params = route.params?.ctx && route.params?.course && route.params?.origin
     ? route.params
@@ -45,6 +46,7 @@ export function ExecutionScreen({ route, navigation }: Props) {
       </View>
     );
   }
+  if (confirmedParams !== params) return <ManualLocationRestoreGate key={params.courseId ?? params.ctx.startedAtIso ?? 'legacy'} origin={params.origin} destination={params.ctx.appointment ?? null} endsAtMs={params.ctx.endsAtIso ? Date.parse(params.ctx.endsAtIso) : NaN} titles={params.course.spots.map(p=>p.title)} onCancel={()=>navigation.goBack()} onConfirm={()=>{setConfirmedParams(params);return true;}}/>;
   return <ExecutionContent params={params} navigation={navigation} />;
 }
 
@@ -54,6 +56,11 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
   const { setActiveCourse } = flow;
   const [step, setStep] = useState(0); // 현재 위치한 지점 인덱스
   const [routeOpened, setRouteOpened] = useState(false);
+  const routeOpening = useRef(false);
+  const routeGeneration = useRef(0);
+  const routePosition = useRef({ step, courseId, routeOpened });
+  routePosition.current = { step, courseId, routeOpened };
+  useEffect(() => () => { routeGeneration.current++; }, []);
   const [transitionMsg, setTransitionMsg] = useState('');
   const [actualDepartMinByStep, setActualDepartMinByStep] = useState<Record<number, number>>({});
   const [actualArriveMinByStep, setActualArriveMinByStep] = useState<Record<number, number>>({});
@@ -108,8 +115,8 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
         });
 
         setHydratedTravelLegs(updatedLegs);
-      } catch (err) {
-        console.warn('[실경로 하이드레이션] 복구 실패', err);
+      } catch {
+        console.warn('execution_hydration_failed');
       }
     }
 
@@ -192,23 +199,30 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
       .then((result) => {
         if (alive) setNotificationResult(result);
       })
-      .catch((error) => {
-        console.warn('[알림] 코스 알림 예약 실패', error);
+      .catch(() => {
+        console.warn('execution_notifications_failed');
         if (alive) setNotificationError(true);
       });
     return () => { alive = false; };
   }, [alerts]);
 
   async function finishCourse() {
+    routeGeneration.current++;
     await cancelCourseNotifications();
     setActiveCourse(null);
     navigation.navigate('Feedback', { course, ctx });
   }
 
   async function openCurrentRoute() {
-    if (!next) return;
+    if (!next || routeOpening.current || routePosition.current.step !== step || routePosition.current.courseId !== courseId) return;
+    routeOpening.current = true;
+    const generation = routeGeneration.current;
+    const openedBefore = routePosition.current.routeOpened;
     const now = currentMinuteOfDay();
     setTransitionMsg('');
+    setRouteOpened(true);
+    if (!openedBefore) setActualDepartMinByStep(prev => ({ ...prev, [step]: now }));
+    try {
     const result = await openKakaoRouteWithFallback({ from: { name: current.name, point: current.point }, to: { name: next.name, point: next.point } }, next.incomingMode ?? ctx.mode, {
       canOpenApp: Linking.canOpenURL,
       openApp: Linking.openURL,
@@ -216,16 +230,21 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
       openBrowser: WebBrowser.openBrowserAsync,
       observeAppState: listener => { const subscription = AppState.addEventListener('change', listener); return () => subscription.remove(); },
     });
-    if (!isKakaoRouteOpenSuccess(result)) {
+    if (result === 'browser_fallback_cancelled' || isKakaoRouteOpenSuccess(result)) return;
+    throw Error('route_open_failed');
+    } catch {
+      if (routeGeneration.current !== generation || routePosition.current.step !== step || routePosition.current.courseId !== courseId) return;
+      if (!openedBefore) {
+        setRouteOpened(false);
+        setActualDepartMinByStep(prev => { const restored = { ...prev }; delete restored[step]; return restored; });
+      }
       Alert.alert('카카오맵을 열 수 없어요', '잠시 후 다시 시도해 주세요.');
-      return;
-    }
-    setRouteOpened(true);
-    setActualDepartMinByStep((prev) => ({ ...prev, [step]: now }));
+    } finally { routeOpening.current = false; }
   }
 
   function continueToNextStep() {
     if (!next) return;
+    routeGeneration.current++;
     const nextStep = Math.min(step + 1, stops.length - 1);
     const now = currentMinuteOfDay();
     setActualArriveMinByStep((prev) => ({ ...prev, [nextStep]: now }));
@@ -235,68 +254,7 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
   }
 
   async function changeCourseFromNow() {
-    if (isDone || isChangingCourse) return;
-    if (!courseId) {
-      Alert.alert('코스를 변경할 수 없어요', '저장된 코스에서 다시 시작해 주세요.');
-      return;
-    }
-    setIsChangingCourse(true);
-    try {
-      const permission = await Location.requestForegroundPermissionsAsync();
-      if (permission.status !== 'granted') {
-        Alert.alert('현재 위치가 필요해요', '코스를 변경하려면 현재 위치 권한을 허용해 주세요.');
-        return;
-      }
-      const position = await Location.getCurrentPositionAsync({});
-      const now = new Date();
-      const nowMin = currentMinuteOfDay();
-      const remainingMin = endMin - nowMin;
-      if (remainingMin <= 0) {
-        Alert.alert('약속 시간이 지났어요', '새 코스를 만들기보다 약속 장소로 바로 이동해 주세요.');
-        return;
-      }
-      const time = timeContext(now);
-      const currentOrigin = { lat: position.coords.latitude, lon: position.coords.longitude };
-      const destination = ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : null;
-      const baseline = destination ? await getActualRouteBaselines(currentOrigin, destination) : null;
-      const result = await planTimeFit({
-        origin: currentOrigin,
-        destination,
-        remainingMin,
-        nowMin,
-        dayType: time.dayType,
-        hourBucket: time.hourBucket,
-        mode: ctx.mode,
-        candidateModes: ['walk', 'transit', 'car'],
-        radiusM: 8000,
-        routeBaselines: baseline?.baselines,
-        mapExploration: true,
-      });
-      if (!result.spatialCandidates.length) {
-        Alert.alert('변경 가능한 장소가 없어요', '남은 시간에는 약속 장소로 바로 이동하는 것이 안전해요.');
-        return;
-      }
-      navigation.replace('LegacyResults', {
-        result,
-        usedTimeLabel: `현재 기준 ${fmtHM(nowMin)}·${time.hourBucket}`,
-        origin: currentOrigin,
-        ctx: {
-          ...ctx,
-          startMin: nowMin,
-          remainingMin,
-          dayType: time.dayType,
-          hourBucket: time.hourBucket,
-          originLabel: '현재 위치',
-          isManualTime: false,
-        },
-        editingCourseId: courseId,
-      });
-    } catch (error) {
-      console.warn('[코스 변경] 현재 위치 추천 실패', error);
-      Alert.alert('코스를 변경하지 못했어요', error instanceof Error ? error.message : '잠시 후 다시 시도해 주세요.');
-    } finally {
-      setIsChangingCourse(false);
-    }
+    Alert.alert('장소를 직접 선택해 주세요', '이 코스는 그대로 유지됩니다. 메인의 시간 설정에서 출발지와 도착지를 직접 선택해 새 코스를 만들 수 있어요.');
   }
 
   return (
@@ -345,6 +303,7 @@ function ExecutionContent({ params, navigation }: { params: ExecutionParams; nav
           onPrimaryAction={isDone ? finishCourse : routeOpened ? continueToNextStep : openCurrentRoute}
           onSelectStep={setStep}
         />
+        {routeOpened && !isDone ? <Pressable testID="execution-route-reopen" accessibilityLabel="길찾기 다시 보기" style={s.missingButton} onPress={() => void openCurrentRoute()}><Text style={s.missingButtonText}>길찾기 다시 보기</Text></Pressable> : null}
         <View style={{ height: 120 }} />
       </ScrollView>
       <FloatingTabBar

@@ -12,6 +12,7 @@ const KAKAO_KEY = process.env.EXPO_PUBLIC_KAKAO_JAVASCRIPT_API_KEY
   ?? '';
 
 type Props = {
+  cameraPoint?: NearbyPoint | null;
   center: NearbyPoint;
   places: readonly NearbyBrowsePlace[];
   selectedId: string | null;
@@ -24,7 +25,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export function NearbyBrowseMap({ center, places, selectedId, bottomInset, retryKey, onSelect, onCluster, onReady, onError, style }: Props) {
+export function NearbyBrowseMap({ cameraPoint, center, places, selectedId, bottomInset, retryKey, onSelect, onCluster, onReady, onError, style }: Props) {
   const ref = useRef<WebView>(null);
   const [ready, setReady] = useState(false);
   const ids = useMemo(() => new Set(places.map(place => place.id)), [places]);
@@ -51,6 +52,10 @@ export function NearbyBrowseMap({ center, places, selectedId, bottomInset, retry
     });
     ref.current?.injectJavaScript(`window.renderNearby(${payload});true;`);
   }, [ready, places, selectedId, bottomInset, center]);
+
+  useEffect(() => {
+    if (ready && cameraPoint) ref.current?.injectJavaScript(`window.focusNearbyCamera(${JSON.stringify(cameraPoint)});true;`);
+  }, [ready, cameraPoint]);
 
   if (!KAKAO_KEY) return <View style={[s.fallback, style]}><Text style={s.title}>지도를 표시할 수 없어요</Text><Text style={s.copy}>아래 거리순 목록은 계속 확인할 수 있어요.</Text></View>;
   return <View style={[s.root, style]}>
@@ -200,6 +205,7 @@ function draw() {
   }
 }
 
+window.focusNearbyCamera = function (point) { if (map && point) map.panTo(new kakao.maps.LatLng(point.lat, point.lon)); };
 window.renderNearby = function (next) {
   if (!map) return;
   try {

@@ -14,7 +14,7 @@ export function resolveTimeSetupClock(real: TimeSetupClock, testNowMin: number |
 }
 
 export function suggestedEndForTestClock(nowMin: number): number {
-  return Math.min(23 * 60 + 59, nowMin + RELEASE_MAX_MINUTES);
+  return nowMin + RELEASE_MAX_MINUTES;
 }
 
 export function hourBucketForMinute(minuteOfDay: number): PlanInput['hourBucket'] {

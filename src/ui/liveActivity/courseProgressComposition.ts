@@ -12,6 +12,7 @@ const lifecycle = createLiveActivityLifecycleController(nativeLiveActivityLifecy
 const payload = (state: LocalProgressState): CourseProgressPayload => ({
   purpose: 'course_progress', schemaVersion: 1, courseRunId: state.courseRunId,
   stopId: state.activeStopId ?? 'final-destination', revision: state.revision,
+  completionEligible: state.phase === 'traveling' && state.route?.targetKind === 'final_destination' && !state.handoffPreparation && state.terminalAtMs === null,
   phase: state.phase === 'arrival_pending' || state.phase === 'dwelling' || state.phase === 'departure_due' ? state.phase : 'traveling',
   targetTitle: state.route?.targetTitle ?? state.stops.find(stop => stop.stopId === state.activeStopId)?.title ?? '코스 진행',
   arrivalPromptAtMs: state.route?.arrivalPromptAtMs ?? null,

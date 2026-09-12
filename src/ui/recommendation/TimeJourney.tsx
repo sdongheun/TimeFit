@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { fmtHM } from '../nav';
+import { datedMinuteLabel as fmtHM } from '../timeSetup/datedSetupTime';
 import { C } from '../theme';
 
 type Props = {

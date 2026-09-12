@@ -78,17 +78,16 @@ test('UPLACECOURSEFLOW01: navigation params는 JSON-safe다 (호출 검증은 pr
   assert.equal(handoff.select(request), false);
 });
 
-test('UPLACECOURSEFLOW01 failure-first: current/origin/candidate/A marker를 구분하고 같은 좌표는 의미 label을 합친다', () => {
+test('UMANUAL: origin/candidate/A marker만 전달하고 과거 device 좌표는 제외한다', () => {
   const markers = buildPlaceDetailMarkers(session, place('B'), place('A'));
   assert.deepEqual(markers.map(({ kind, label }) => ({ kind, label })), [
-    { kind: 'current', label: '현재 위치' },
     { kind: 'origin', label: '설정한 출발지' },
     { kind: 'selected', label: '선택한 장소 · 장소 A' },
     { kind: 'candidate', label: '선택 후보 · 장소 B' },
   ]);
   const same = buildPlaceDetailMarkers({ ...session, deviceLocationSnapshot: { lat: session.origin.lat, lon: session.origin.lon } }, place('B'));
   assert.equal(same.length, 2);
-  assert.match(same[0].label, /현재 위치/);
+  assert.doesNotMatch(same[0].label, /현재 위치/);
   assert.match(same[0].label, /설정한 출발지/);
   const fallback = buildPlaceDetailMarkers({ ...session, deviceLocationSnapshot: undefined }, place('B'));
   assert.equal(fallback.some((marker) => marker.kind === 'current'), false);

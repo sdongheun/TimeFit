@@ -1,11 +1,12 @@
 import type { ActiveVerifiedCourse } from '../activeVerifiedCourseModel';
 import type { VerifiedCourseProgressStep } from '../recommendation/verifiedCourseProgressModel';
 import type { LocalProgressState } from './localProgressModel';
+import { hasManualLocationProof } from '../manualLocationRestoreModel';
 
 export type PendingNavigationState = 'pending' | 'executing' | 'success' | 'failure';
 export type PendingNavigationAction = Readonly<{
   schemaVersion: 1;
-  purpose: 'course_progress_navigation';
+  purpose: 'course_progress_navigation' | 'course_progress_completion';
   actionId: string;
   courseRunId: string;
   stopId: string;
@@ -20,7 +21,7 @@ export function decodePendingNavigationAction(value: unknown): PendingNavigation
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
   const item = value as Record<string, unknown>;
   const exactKeys = ['actionId', 'baseRevision', 'courseRunId', 'purpose', 'schemaVersion', 'state', 'stopId'];
-  if (Object.keys(item).sort().join('|') !== exactKeys.sort().join('|') || item.schemaVersion !== 1 || item.purpose !== 'course_progress_navigation'
+  if (Object.keys(item).sort().join('|') !== exactKeys.sort().join('|') || item.schemaVersion !== 1 || !['course_progress_navigation', 'course_progress_completion'].includes(String(item.purpose))
     || !text(item.actionId) || !text(item.courseRunId) || !text(item.stopId) || !Number.isInteger(item.baseRevision) || (item.baseRevision as number) < 1
     || !['pending', 'executing', 'success', 'failure'].includes(String(item.state))) return null;
   return item as PendingNavigationAction;
@@ -42,7 +43,7 @@ type ConsumeInput = Readonly<{
 
 function verifiedNextTravel(input: ConsumeInput) {
   const { action, active, local, steps } = input;
-  if (active.courseRunId !== action.courseRunId || local.courseRunId !== action.courseRunId || local.terminalAtMs !== null
+  if (action.purpose !== 'course_progress_navigation' || active.courseRunId !== action.courseRunId || local.courseRunId !== action.courseRunId || local.terminalAtMs !== null
     || local.phase !== 'traveling' || local.revision < action.baseRevision + 1 || !local.processedEventIds.includes(action.actionId)) return null;
   const stopIndex = local.stops.findIndex(stop => stop.stopId === action.stopId && stop.departedAtMs !== null);
   if (stopIndex < 0 || local.activeStopId !== action.stopId || active.course.placeIds[stopIndex] !== local.stops[stopIndex]?.placeId) return null;
@@ -54,19 +55,28 @@ function verifiedNextTravel(input: ConsumeInput) {
 }
 
 export function createPendingNavigationHandoffController(native: PendingNavigationNativePort) {
-  let inFlightActionId: string | null = null;
+  let inFlightRequest: string | null = null;
   const consumedActionIds = new Set<string>();
   return {
     async consume(input: ConsumeInput, trigger: 'automatic' | 'retry') {
-      if (consumedActionIds.has(input.action.actionId)) return { status: 'not_pending' as const };
+      if (!hasManualLocationProof(input.active.session)) return { status: 'manual_location_required' as const };
+      const { action, active, local } = input;
+      // Idempotency must never hide a different run or a terminal/expired local course.
+      if (action.purpose !== 'course_progress_navigation' || active.courseRunId !== action.courseRunId
+        || local.courseRunId !== action.courseRunId || local.terminalAtMs !== null
+        || ['completed', 'cancelled', 'expired', 'incomplete'].includes(local.phase)) return { status: 'invalid' as const };
+      const request = JSON.stringify([active.identity, action.purpose, action.courseRunId, action.actionId, action.stopId, action.baseRevision]);
+      if (consumedActionIds.has(request)) return { status: 'not_pending' as const };
+      // beginRouteIntent changes activeStopId (null for the final destination) before
+      // external open settles. A re-render of this exact request isn't a new departure.
+      if (inFlightRequest === request) return { status: 'busy' as const };
       const currentState = input.action.state;
       if (trigger === 'automatic' && currentState === 'executing') return { status: 'success_unknown' as const };
       if (trigger === 'automatic' && currentState !== 'pending') return { status: 'not_pending' as const };
       if (trigger === 'retry' && currentState !== 'failure' && currentState !== 'executing') return { status: 'not_retryable' as const };
       const verified = verifiedNextTravel(input);
       if (!verified) return { status: 'invalid' as const };
-      if (inFlightActionId === input.action.actionId) return { status: 'busy' as const };
-      inFlightActionId = input.action.actionId;
+      inFlightRequest = request;
       try {
         if (!await native.transition(input.action, currentState, 'executing')) return { status: 'not_pending' as const };
         let opened = false;
@@ -81,10 +91,10 @@ export function createPendingNavigationHandoffController(native: PendingNavigati
         if (await native.transition(executing, 'executing', 'success').catch(() => false)) {
           await native.clear({ ...executing, state: 'success' });
         }
-        consumedActionIds.add(input.action.actionId);
+        consumedActionIds.add(request);
         return { status: 'opened' as const, travel: verified.travel, travelStepIndex: verified.travelStepIndex };
       } finally {
-        inFlightActionId = null;
+        if (inFlightRequest === request) inFlightRequest = null;
       }
     },
   };

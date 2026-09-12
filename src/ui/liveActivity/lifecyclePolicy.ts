@@ -23,6 +23,7 @@ export type CourseProgressPayload = Readonly<{
   nextBoundaryAtMs: number;
   departureReminderAtMs: number | null;
   snoozeUsed?: boolean;
+  completionEligible?: boolean;
 }>;
 
 export type TestFixturePayload = Readonly<{

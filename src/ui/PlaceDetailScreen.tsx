@@ -66,6 +66,7 @@ export function PlaceDetailScreen({ route, navigation }: Props) {
 
   return <View style={s.root}>
     <KakaoRouteMap
+      cameraTop={72}
       points={markers.map(({ lat, lon }) => ({ lat, lon }))}
       line={[]}
       markers={markers}
@@ -85,9 +86,8 @@ export function PlaceDetailScreen({ route, navigation }: Props) {
       </View>
       <Text style={s.description}>{model.description}</Text>
       <PlacePhotoCredit place={candidate} links />
-      <Text style={s.meta}>{model.operatingHoursLabel}</Text>
+      <Text testID="place-detail-hours" style={s.meta}>{model.operatingHoursLabel}</Text>
       <Text style={s.address}>{model.addressLabel}</Text>
-      {!session.deviceLocationSnapshot ? <Text accessibilityLiveRegion="polite" style={s.locationFallback}>현재 위치를 확인하지 못했어요. 설정한 출발지를 기준으로 보여 드려요.</Text> : null}
       {linkError ? <Text accessibilityRole="alert" style={s.error}>{linkError}</Text> : null}
       <Pressable testID="place-detail-kakao" accessibilityRole="link" style={s.link} onPress={() => void openKakao()}><Text style={s.linkText}>카카오맵에서 장소 보기</Text></Pressable>
       </ScrollView>
@@ -112,9 +112,8 @@ const s = StyleSheet.create({
   category: { color: '#78b7ff', fontSize: 12, fontWeight: '800' },
   title: { color: C.txt, fontSize: 21, lineHeight: 27, fontWeight: '800' },
   description: { color: C.txt2, fontSize: 14, lineHeight: 20 },
-  meta: { color: C.green, fontSize: 13, fontWeight: '800' },
+  meta: { color: C.txt, fontSize: 13, fontWeight: '800' },
   address: { color: C.muted, fontSize: 13, lineHeight: 18 },
-  locationFallback: { color: '#ffd08a', fontSize: 12, lineHeight: 18 },
   error: { color: C.red, fontSize: 13, lineHeight: 18 },
   link: { minHeight: 44, alignItems: 'center', justifyContent: 'center' },
   linkText: { color: '#78b7ff', fontSize: 14, fontWeight: '800' },

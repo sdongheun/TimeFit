@@ -12,7 +12,7 @@ test('B actual records panel: A late result cannot appear in B; unavailable neve
     supabaseAccountIdentityResolver: { async resolve() { return { status: 'account', identity: { subject } }; } },
     supabaseAccountCourseCompletionRepository: { readAccountCourseCompletions() { return new Promise(resolve => reads.set(subject, resolve)); } },
   });
-  const runtime = screenRuntime({ './OwnedDeletionPanel': { OwnedDeletionPanel: 'OwnedDeletionPanel' } });
+  const runtime = screenRuntime({ './ActivityDonut': { ActivityDonut: 'ActivityDonut' }, './HistorySwipeRow':{HistorySwipeRow:'HistorySwipeRow'},'./OwnedDeletionPanel': { OwnedDeletionPanel: 'OwnedDeletionPanel' } });
   const { AccountRecordsPanel } = runtime.load('src/ui/AccountRecordsPanel.tsx');
   const screen = runtime.mount(() => AccountRecordsPanel({ subject, getPorts }), {});
   await flush();

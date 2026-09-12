@@ -286,7 +286,10 @@ test('UCOMPLETIONHISTORY01: 화면 source는 성공→기록 탭, 실패 retry/�
   assert.match(progress, /기록 없이 마치기/);
   assert.match(activity, /readOwnedDeviceCourseCompletions/);
   assert.match(activity, /이 기기의/);
-  assert.match(activity, /체류시간 미측정/);
+  assert.match(activity, /ActivityStatistics/);
+  const statistics = fs.readFileSync('src/ui/activity/ActivityStatistics.tsx', 'utf8');
+  assert.match(statistics, /방문.*summary.completedPlaceCount/);
+  assert.doesNotMatch(statistics, /formatDuration|활용한 시간/);
   assert.match(profile, /기기에만 저장/);
   assert.doesNotMatch(`${progress}\n${activity}`, /courseCompletionRepository\.clear/);
 });

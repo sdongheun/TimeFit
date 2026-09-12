@@ -6,6 +6,7 @@ const {
   withEntitlementsPlist,
   withInfoPlist,
   withXcodeProject,
+  IOSConfig,
 } = require('@expo/config-plugins');
 
 const PLUGIN_NAME = 'with-timefit-live-activity';
@@ -17,6 +18,8 @@ const EXTENSION_FILES = [
   'TimeFitLearningEvidence.swift',
   'TimeFitActivityAttributes.swift',
   'TimeFitLiveActivityDiagnostics.swift',
+  'TimeFitDiagnosticFileOrder.swift',
+  'PrivacyInfo.xcprivacy',
   'TimeFitNativeProgressPolicy.swift',
   'TimeFitNativeIntentPolicy.swift',
   'TimeFitLiveActivityIntents.swift',
@@ -26,6 +29,7 @@ const EXTENSION_FILES = [
 ];
 const APP_FILES = [
   'TimeFitActivityAttributes.swift',
+  'TimeFitDiagnosticFileOrder.swift',
   'TimeFitLearningEvidence.swift',
   'TimeFitLiveActivityDiagnostics.swift',
   'TimeFitNativeProgressPolicy.swift',
@@ -103,17 +107,38 @@ function addSourceOnce(project, pathValue, targetUuid, groupKey) {
 }
 
 function configureProject(project, options, projectName) {
+  for (const [, phase] of nonCommentEntries(project.hash.project.objects.PBXShellScriptBuildPhase || {})) {
+    if (unquote(phase.name) !== 'Bundle React Native code and images') continue;
+    let script = JSON.parse(phase.shellScript);
+    const marker = '# TimeFit public archive environment guard';
+    if (!script.includes(marker)) {
+      const index = script.lastIndexOf('\n`"$NODE_BINARY"');
+      if (index < 0) throw new Error('public_bundle_phase_boundary_missing');
+      const guard = '\n' + marker + '\nif [[ "$TIMEFIT_BUILD_PROFILE" = "public" ]]; then\n  "$NODE_BINARY" "$PROJECT_ROOT/scripts/release-build.cjs" assert-native || exit 1\nfi\n';
+      script = script.slice(0, index) + guard + script.slice(index);
+      phase.shellScript = JSON.stringify(script);
+    }
+  }
   for (const [, configuration] of nonCommentEntries(project.pbxXCBuildConfigurationSection())) {
     if (configuration.buildSettings) configuration.buildSettings.IPHONEOS_DEPLOYMENT_TARGET = DEPLOYMENT_TARGET;
   }
 
   const appTarget = project.getFirstTarget();
+  const mainConfigurations = buildConfigurationsForTarget(project, appTarget.firstTarget);
+  for (const configuration of mainConfigurations) {
+    Object.assign(configuration.buildSettings, {
+      TARGETED_DEVICE_FAMILY: '1',
+      MARKETING_VERSION: options.version || '1.0.0',
+      CURRENT_PROJECT_VERSION: options.buildNumber || '1',
+    });
+  }
   const appGroupKey = project.findPBXGroupKey({ name: projectName });
   if (!appGroupKey) throw new Error(`${PLUGIN_NAME}: cannot find app source group ${projectName}`);
   addSourceOnce(project, `${projectName}/TimeFitLiveActivityModule.swift`, appTarget.uuid, appGroupKey);
   addSourceOnce(project, `${projectName}/TimeFitActivityAttributes.swift`, appTarget.uuid, appGroupKey);
   addSourceOnce(project, `${projectName}/TimeFitLearningEvidence.swift`, appTarget.uuid, appGroupKey);
   addSourceOnce(project, `${projectName}/TimeFitLiveActivityDiagnostics.swift`, appTarget.uuid, appGroupKey);
+  addSourceOnce(project, `${projectName}/TimeFitDiagnosticFileOrder.swift`, appTarget.uuid, appGroupKey);
   addSourceOnce(project, `${projectName}/TimeFitNativeProgressPolicy.swift`, appTarget.uuid, appGroupKey);
   addSourceOnce(project, `${projectName}/TimeFitNativeIntentPolicy.swift`, appTarget.uuid, appGroupKey);
   addSourceOnce(project, `${projectName}/TimeFitLiveActivityIntents.swift`, appTarget.uuid, appGroupKey);
@@ -136,6 +161,16 @@ function configureProject(project, options, projectName) {
   addSourceOnce(project, 'TimeFitActivityAttributes.swift', extensionUuid, extensionGroupKey);
   addSourceOnce(project, 'TimeFitLearningEvidence.swift', extensionUuid, extensionGroupKey);
   addSourceOnce(project, 'TimeFitLiveActivityDiagnostics.swift', extensionUuid, extensionGroupKey);
+  addSourceOnce(project, 'TimeFitDiagnosticFileOrder.swift', extensionUuid, extensionGroupKey);
+  // Full path avoids colliding with the main target's same-named resource.
+  if (!project.hasFile(`${TARGET_NAME}/PrivacyInfo.xcprivacy`)) {
+    let resources = project.findPBXGroupKey({ name: 'Resources' });
+    if (!resources) {
+      resources = project.addPbxGroup([], 'Resources').uuid;
+      project.getPBXGroupByKey(project.getFirstProject().firstProject.mainGroup).children.push({ value: resources, comment: 'Resources' });
+    }
+    project.addResourceFile(`${TARGET_NAME}/PrivacyInfo.xcprivacy`, { target: extensionUuid }, resources);
+  }
   addSourceOnce(project, 'TimeFitNativeProgressPolicy.swift', extensionUuid, extensionGroupKey);
   addSourceOnce(project, 'TimeFitNativeIntentPolicy.swift', extensionUuid, extensionGroupKey);
   addSourceOnce(project, 'TimeFitLiveActivityIntents.swift', extensionUuid, extensionGroupKey);
@@ -146,17 +181,17 @@ function configureProject(project, options, projectName) {
       APPLICATION_EXTENSION_API_ONLY: 'YES',
       CODE_SIGN_ENTITLEMENTS: `${TARGET_NAME}/${TARGET_NAME}.entitlements`,
       CODE_SIGN_STYLE: 'Automatic',
-      CURRENT_PROJECT_VERSION: '1',
+      CURRENT_PROJECT_VERSION: options.buildNumber || '1',
       DEVELOPMENT_TEAM: options.developmentTeam,
       GENERATE_INFOPLIST_FILE: 'NO',
       INFOPLIST_FILE: `${TARGET_NAME}/${TARGET_NAME}-Info.plist`,
       IPHONEOS_DEPLOYMENT_TARGET: DEPLOYMENT_TARGET,
-      MARKETING_VERSION: '1.0.0',
+      MARKETING_VERSION: options.version || '1.0.0',
       PRODUCT_BUNDLE_IDENTIFIER: options.extensionBundleIdentifier,
       PRODUCT_NAME: '"$(TARGET_NAME)"',
       SKIP_INSTALL: 'YES',
       SWIFT_VERSION: '5.0',
-      TARGETED_DEVICE_FAMILY: '"1,2"',
+      TARGETED_DEVICE_FAMILY: '1',
     });
   }
 
@@ -187,8 +222,11 @@ function withTimeFitLiveActivity(config, options = {}) {
     return mod;
   }]);
   config = withXcodeProject(config, (mod) => {
+    mod = IOSConfig.PrivacyInfo.setPrivacyInfo(mod, {
+      NSPrivacyAccessedAPITypes: [{ NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryFileTimestamp', NSPrivacyAccessedAPITypeReasons: ['C617.1'] }],
+    });
     const projectName = mod.modRequest.projectName || config.name;
-    mod.modResults = configureProject(mod.modResults, options, projectName);
+    mod.modResults = configureProject(mod.modResults, { ...options, version: config.version, buildNumber: config.ios?.buildNumber }, projectName);
     return mod;
   });
   return config;

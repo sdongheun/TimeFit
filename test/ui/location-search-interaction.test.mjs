@@ -22,13 +22,28 @@ function fixture(options = {}) {
   };
   const host = screenRuntime(overrides);
   overrides['react-native'] = { ...host.native, useWindowDimensions: () => ({ width: 390, height: 844, fontScale: 1 }), Modal: 'Modal', TextInput: 'TextInput', ActivityIndicator: 'ActivityIndicator', KeyboardAvoidingView: 'KeyboardAvoidingView', Platform: { OS: 'ios' }, Keyboard: { scheduleLayoutAnimation(event) { calls.push(['keyboard-animation', event]); }, dismiss() { calls.push(['dismiss']); }, addListener(name, fn) { keyboard.set(name, fn); return { remove() { keyboard.delete(name); } }; } } };
-  const props = { visible: true, title: '출발지 선택', center: { lat: 35.1, lon: 129.1 }, onOpenMap() { calls.push(['map']); }, onClose() { calls.push(['close']); }, onConfirm(p) { calls.push(['confirm', p]); } };
+  const props = { visible: true, title: options.title ?? '출발지 선택', center: { lat: 35.1, lon: 129.1 }, onOpenMap() { calls.push(['map']); }, onClose() { calls.push(['close']); }, onConfirm(p) { calls.push(['confirm', p]); } };
   const screen = host.mount(host.load('src/ui/PlacePicker.tsx').PlacePicker, props);
   const edit = q => { screen.get('location-search-input').props.onChangeText(q); screen.render(); };
   const submit = () => screen.get('location-search-input').props.onSubmitEditing();
   return { screen, props, calls, keyboard, edit, submit };
 }
 const count = (f, name) => f.calls.filter(c => c[0] === name).length;
+for (const title of ['출발지 선택', '도착지 선택']) test(`UX-COLOR-01 ${title}: action and selection text are white, blue remains non-text emphasis`, async () => {
+  const f = fixture({ title });
+  for (const id of ['location-search-submit', 'location-map']) {
+    const button = f.screen.get(id);
+    assert.equal(style(button.props.children.props.style).color, '#f7f7f8');
+    assert.equal(style(button.props.style).backgroundColor, '#2e2f33');
+  }
+  f.edit('사상역'); f.submit(); await tick(); f.screen.press('location-suggestion-0');
+  const row = f.screen.get('location-suggestion-0');
+  const selected = row.props.children.find(n => n?.type === 'Text' && n.props.children === '선택됨');
+  assert.equal(style(selected.props.style).color, '#f7f7f8');
+  assert.equal(style(row.props.style).borderColor, '#4b85cf');
+  assert.equal(style(f.screen.get('location-confirm').props.children.props.style).color, '#ffffff');
+  f.screen.unmount();
+});
 test('ULOC latest failure-first: will-frame owns keyboard+footer together; did events produce no second correction', async () => {
   const f = fixture(); f.edit('사상역'); f.submit(); await tick(); f.screen.press('location-suggestion-0');
   const event = { duration: 237, easing: 'keyboard', endCoordinates: { screenY: 544, height: 300 } };
@@ -91,14 +106,12 @@ test('ULOC latest map loading/address failure directs back to search, preserving
   const confirm = screen.get('map-coordinate-confirm').props.onPress; confirm(); confirm(); assert.equal(confirms, 1);
   screen.nodes(n => n.props.accessibilityLabel === '뒤로가기')[0].props.onPress(); assert.equal(backs, 1); screen.unmount();
 });
-test('ULOC current-location road address populates input without provider search or implicit confirmation', async t => {
-  t.mock.timers.enable({ apis: ['setTimeout'] });
-  const f = fixture(); assert.match(JSON.stringify(f.screen.get('location-current')), /현위치/);
-  f.screen.press('location-current'); await tick();
-  assert.equal(f.screen.get('location-search-input').props.value, '부산광역시 사상구 사상로 201');
-  t.mock.timers.tick(500); await tick(); f.submit(); await tick();
-  assert.equal(count(f, 'label'), 1); assert.equal(count(f, 'search'), 0); assert.equal(count(f, 'confirm'), 0);
-  f.screen.press('location-confirm'); assert.equal(f.calls.find(c => c[0] === 'confirm')[1].label, '부산광역시 사상구 사상로 201'); f.screen.unmount();
+test('UMANUAL search never queries device position or confirms the default map center', async () => {
+  const f = fixture(); await tick();
+  assert.equal(f.screen.nodes(n => n.props.testID === 'location-current').length, 0);
+  for (const name of ['permission', 'gps', 'label', 'search', 'confirm']) assert.equal(count(f, name), 0);
+  f.screen.press('location-map'); assert.equal(count(f, 'map'), 1); assert.equal(count(f, 'confirm'), 0);
+  f.screen.unmount();
 });
 test('ULOC map header supplies opaque dark contrast independent of white map tiles', () => {
   const host = screenRuntime();
@@ -110,17 +123,12 @@ test('ULOC map header supplies opaque dark contrast independent of white map til
   assert.equal(screen.nodes(n => n.props.testID === 'map-search-alternative').length, 0);
   screen.unmount();
 });
-test('ULOC late current-location address never replaces edited input; address failure retains coordinate confirmation', async () => {
-  let finish;
-  const f = fixture({ label: () => new Promise(r => { finish = r; }) });
-  f.screen.press('location-current'); await tick(); f.edit('부산역');
-  finish({ source: 'address', address: '늦은 도로명 주소' }); await tick();
+test('UMANUAL typed query remains independent of device permission and address resolver', async () => {
+  const f = fixture({ label: async () => { throw Error('device resolver must not run'); } });
+  f.edit('부산역'); await tick();
   assert.equal(f.screen.get('location-search-input').props.value, '부산역');
-  assert.equal(f.screen.nodes(n => n.props.testID === 'location-confirm').length, 0); f.screen.unmount();
-  const failed = fixture({ label: async () => { throw Error('fixture'); } });
-  failed.screen.press('location-current'); await tick();
-  assert.equal(failed.screen.get('location-search-input').props.value, '현위치');
-  failed.screen.press('location-confirm'); assert.equal(failed.calls.find(c => c[0] === 'confirm')[1].source, 'device'); failed.screen.unmount();
+  assert.equal(count(f, 'label'), 0); assert.equal(count(f, 'gps'), 0);
+  f.screen.unmount();
 });
 
 test('ULOC failure-first: selection dismisses keyboard; same-query submit keeps selection and calls provider once', async t => {
@@ -137,7 +145,7 @@ test('ULOC failure-first: unselected CTA is absent and horizontal map action sta
   const f = fixture();
   assert.equal(f.screen.nodes(n => n.props.testID === 'location-confirm').length, 0);
   f.edit('사상역'); await f.submit();
-  assert.ok(f.screen.get('location-map')); assert.ok(f.screen.get('location-current'));
+  assert.ok(f.screen.get('location-map')); assert.equal(f.screen.nodes(n => n.props.testID === 'location-current').length, 0);
   assert.equal(f.screen.nodes(n => n.props.testID === 'location-confirm').length, 0);
   f.screen.unmount();
 });
@@ -188,32 +196,17 @@ test('ULOC empty success does not repeat; close and target changes discard query
   assert.equal(count(f, 'search'), 2); assert.equal(count(f, 'confirm'), 0); f.screen.unmount();
 });
 
-test('ULOC GPS success is selected draft only; keyboard closes and explicit confirmation is once', async () => {
-  const f = fixture(); f.screen.press('location-current'); await tick();
-  assert.equal(count(f, 'dismiss'), 1); assert.equal(count(f, 'gps'), 1); assert.equal(count(f, 'confirm'), 0);
-  assert.equal(f.screen.nodes(n => n.props.testID === 'device-location-selection').length, 0);
-  assert.equal(f.screen.get('location-search-input').props.value, '부산광역시 사상구 사상로 201');
+// Supersedes GPS draft tests: manual-only release decision 2026-09-09.
+for (const permission of ['granted', 'denied', 'undetermined']) test(`UMANUAL ${permission}: search/map only, explicit selection once`, async () => {
+  const f = fixture({ permission }); await tick();
+  assert.equal(count(f, 'permission'), 0); assert.equal(count(f, 'gps'), 0);
+  assert.equal(f.screen.nodes(n => n.props.testID === 'location-current').length, 0);
+  assert.equal(style(f.screen.get('location-map').props.style).flex, 1);
+  f.edit('사상역'); f.submit(); await tick(); f.screen.press('location-suggestion-0');
+  assert.equal(count(f, 'confirm'), 0);
   const confirm = f.screen.get('location-confirm').props.onPress; confirm(); confirm();
-  assert.equal(count(f, 'confirm'), 1); assert.equal(f.calls.find(c => c[0] === 'confirm')[1].source, 'device'); f.screen.unmount();
-});
-for (const type of ['denied', 'failed']) test(`ULOC GPS ${type} keeps equal-width search/map alternatives`, async () => {
-  const f = fixture({ permission: type === 'denied' ? 'denied' : 'granted', gps: async () => { throw Error('GPS'); } });
-  f.screen.press('location-current'); await tick(); assert.equal(count(f, 'gps'), type === 'denied' ? 0 : 1);
-  assert.ok(f.screen.get('location-map')); assert.ok(f.screen.get('location-search-input'));
-  assert.equal(f.screen.nodes(n => n.props.testID === 'location-confirm').length, 0); f.screen.unmount();
-});
-for (const action of ['edit', 'map', 'target', 'search']) test(`ULOC GPS pending then ${action} invalidates late coordinate`, async () => {
-  let finish;
-  const f = fixture({ gps: () => new Promise(r => { finish = r; }) });
-  f.edit('사상역'); f.submit(); await tick();
-  f.screen.press('location-current'); await tick();
-  if (action === 'edit') f.edit('부산역');
-  if (action === 'map') f.screen.press('location-map');
-  if (action === 'target') { f.props.title = '도착지 선택'; f.screen.render(); }
-  if (action === 'search') f.submit();
-  finish({ coords: { latitude: 1, longitude: 2 } }); await tick();
-  assert.equal(f.screen.nodes(n => n.props.testID === 'device-location-selection').length, 0);
-  assert.equal(count(f, 'confirm'), 0); f.screen.unmount();
+  assert.equal(count(f, 'confirm'), 1); assert.equal(f.calls.find(c => c[0] === 'confirm')[1].source, 'provider');
+  f.screen.unmount();
 });
 
 const style = v => Object.assign({}, ...[v].flat(Infinity).filter(Boolean));
@@ -236,7 +229,7 @@ test('ULOC selection×keyboard four states have one/no footer; measured row need
   assert.equal(style(f.screen.get('location-keyboard-layout').props.style).paddingBottom, 0);
   assert.equal(f.screen.get('location-results').props.automaticallyAdjustKeyboardInsets, false);
   assert.equal(style(f.screen.get('location-alternatives').props.style).flexDirection, 'row');
-  for (const id of ['location-current', 'location-map']) { assert.equal(style(f.screen.get(id).props.style).flex, 1); assert.ok(style(f.screen.get(id).props.style).minHeight >= 44); }
+  for (const id of ['location-map']) { assert.equal(style(f.screen.get(id).props.style).flex, 1); assert.ok(style(f.screen.get(id).props.style).minHeight >= 44); }
   assert.match(f.screen.get('location-suggestion-0').props.accessibilityLabel, /사상역.*선택됨/);
   assert.equal(JSON.stringify(f.screen.get('location-suggestion-0')).includes('numberOfLines'), false);
   assert.equal(selectedRowScrollOffset(100, 50, { y: 400, height: 150 }), 400);

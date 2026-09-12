@@ -208,3 +208,10 @@ UIUX 단일 작성자가 구현 후 QA로 인계한다. TimeSetup/PlacePicker/Ma
 ### 4. 남은 native 확인
 
 사용자에게 **검색 결과 선택→input 재포커스→키보드 닫기**만 짧은 화면 녹화1회 또는 직접 확인을 요청한다. 키보드와 확정 footer가 같은 전환으로 움직이고 끝난 뒤 두 번째 점프가 없는지 확인받기 전에는 시간차 해결을 최종 수락하지 않는다. 이미 정상 확인된 출발/도착 분리와 현위치 주소 등 전체 smoke 재실행은 요구하지 않는다. 지도/노선/구분선 보완은 자동 검증 완료이며 native 녹화 중 보이는 범위에서 확인할 수 있다.
+
+## UX-COLOR-01 검색 화면 사용자 반환 보완 — 2026-09-08
+
+1. 변경 파일: `src/ui/PlacePicker.tsx`의 검색·현위치·지도에서 선택 버튼 및 선택됨 라벨을 `C.txt` 흰색 계열로 변경. `test/ui/location-search-interaction.test.mjs`에 출발/도착 공용 화면 색상 fixture2건 추가. 본 문서에 기록.
+2. 유지 계약: 회색 보조 설명·주소 위계, 파란 선택 테두리/배경·로딩 인디케이터, 확정 CTA의 파란 배경/흰 글자 유지. 검색·GPS·지도·키보드·선택/확정 handler 및 API/DB/엔진 변경0. 파란 행동 글자 → 짙은 배경에서 낮은 가독성 및 공통 규칙 불일치 → 흰 행동/선택 글자와 비텍스트 파란 강조 분리 → UX-COLOR-01 준수 → 현행 구현 완료.
+3. 검증: 실패 선행 추가2건 FAIL → 집중25/25 PASS. typecheck PASS, UI665건(664 PASS/기존1 SKIP), 전체336/336 PASS, diff check PASS, iOS export 성공(`/private/tmp/timefit-location-color-ios`). 로그 `/private/tmp/timefit-location-color-{red,focused,typecheck,ui,all,export}.log`. 실제 API/GPS/Simulator·실기기 실행0, commit/push0.
+4. 최소 수동 확인: 출발지/목적지 검색에서 세 버튼과 선택됨 글자가 흰색이고 선택 테두리·확정 버튼은 기존 강조를 유지하는지만 확인. 사용자 첨부 캡처는 수정 전 근거이며 수정 후 실기기 수락으로 기록하지 않는다.

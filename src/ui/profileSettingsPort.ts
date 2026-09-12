@@ -1,4 +1,3 @@
-import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import { Linking, Platform } from 'react-native';
 import { nativeLiveActivityPort } from './liveActivity/nativeLiveActivityPort';
@@ -6,7 +5,6 @@ import { nativeLiveActivityPort } from './liveActivity/nativeLiveActivityPort';
 export type ProfilePermissionState = 'granted' | 'denied' | 'undetermined' | 'unavailable' | 'error';
 
 export type ProfilePermissionSnapshot = Readonly<{
-  location: ProfilePermissionState;
   notification: ProfilePermissionState;
   liveActivity: ProfilePermissionState;
 }>;
@@ -43,19 +41,17 @@ async function readOne(read: (() => Promise<PermissionResponseLike>) | undefined
 /** 권한 prompt를 띄우지 않는 내정보 전용 조회 경계다. */
 export async function readProfilePermissionSnapshot(
   dependencies: PermissionDependencies = {
-    getLocationPermission: Location.getForegroundPermissionsAsync,
     getNotificationPermission: Notifications.getPermissionsAsync,
     getLiveActivitySupport: nativeLiveActivityPort.activitySupport,
   },
 ): Promise<ProfilePermissionSnapshot> {
-  const [location, notification, liveActivity] = await Promise.all([
-    readOne(dependencies.getLocationPermission),
+  const [notification, liveActivity] = await Promise.all([
     readOne(dependencies.getNotificationPermission),
     Platform.OS === 'web' || !dependencies.getLiveActivitySupport ? Promise.resolve('unavailable' as const) : dependencies.getLiveActivitySupport()
       .then(value => value.supported ? value.enabled ? 'granted' as const : 'denied' as const : 'unavailable' as const)
       .catch(() => 'error' as const),
   ]);
-  return { location, notification, liveActivity };
+  return { notification, liveActivity };
 }
 
 export async function openProfileSystemSettings(

@@ -3,6 +3,9 @@ import Foundation
 enum TimeFitPendingCreationDecision: Equatable { case reuse, replaceOrphan, reject }
 
 enum TimeFitNativeIntentPolicy {
+  static func permitsCompletion(purpose: String, phase: String, activeStopId: String?, eligible: Bool) -> Bool {
+    purpose == "course_progress" && phase == "traveling" && activeStopId == nil && eligible
+  }
   static func phase(after action: String, current: String) -> String? {
     if action == "arrival_confirmed", current == "traveling" || current == "arrival_pending" { return "dwelling" }
     if action == "departure_confirmed", current == "dwelling" || current == "departure_due" { return "traveling" }

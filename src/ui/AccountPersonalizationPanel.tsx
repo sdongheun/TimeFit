@@ -6,6 +6,7 @@ import { personalizationSession } from './personalizationComposition';
 import type { DwellConsentStateV1 } from '../services/dwellPersonalizationRepository';
 import { C } from './theme';
 import { uuid } from 'expo-modules-core';
+import { profileDisplayChanges } from './profileDisplayModel';
 
 const productionPorts = async () => import('../services/releaseIdentitySupabase');
 type Props = { subject: string; profile?: boolean; getPorts?: typeof productionPorts };
@@ -67,6 +68,7 @@ export function AccountPersonalizationPanel({ subject, profile = false, getPorts
         if (token !== epoch.current) return;
         if (result.status !== 'updated' && result.status !== 'unchanged') { setMessage(result.status === 'invalid_nickname' ? '닉네임은 줄바꿈 없이 1~20자로 입력해주세요.' : '저장하지 못했어요. 다시 시도해주세요.'); return; }
         setNickname(result.profile.nickname ?? '');
+        profileDisplayChanges.notify(subject);
       } else {
         const repo = ports.supabaseDwellPersonalizationRepository;
         const result = kind === 'reset'
@@ -82,14 +84,14 @@ export function AccountPersonalizationPanel({ subject, profile = false, getPorts
         setConsent(result.consent); setGroups([]);
         if (!result.consent.enabled) await ports.supabaseDwellPersonalizationOutbox.discardOwner(subject);
       }
-      mutation.current = null; if (token === epoch.current) setMessage('저장했어요. 변경 사항은 다음 추천부터 적용됩니다.');
+      mutation.current = null; if (token === epoch.current) setMessage(kind === 'nickname' ? '닉네임을 저장했어요.' : '저장했어요. 변경 사항은 다음 추천부터 적용됩니다.');
     } catch { if (token === epoch.current) setMessage('연결을 확인하고 다시 시도해주세요.'); }
     finally { lock.current = false; if (token === epoch.current) setBusy(false); }
   };
   return <View>{loading ? <ActivityIndicator color={C.accent} /> : profile ? <>
     <Text style={s.copy}>닉네임은 선택 사항이에요. 비우고 저장하면 삭제됩니다.</Text>
     <TextInput testID="profile-nickname" value={nickname} editable={!busy} onChangeText={setNickname} style={s.input} placeholder="닉네임" placeholderTextColor={C.muted} />
-    <Pressable testID="profile-nickname-save" disabled={busy} style={s.button} onPress={() => void change('nickname')}><Text style={s.text}>닉네임 저장</Text></Pressable>
+    <Pressable testID="profile-nickname-save" disabled={busy} style={[s.button, s.saveButton]} onPress={() => void change('nickname')}><Text style={s.saveText}>저장</Text></Pressable>
   </> : <>
     <Text style={s.text}>체류 기록으로 맞춤 추천</Text>
     <Text style={s.copy}>동의한 뒤 코스에서 직접 확인한 체류만 사용해요. 같은 활동의 유효 기록이 3개부터 모이면 다음 추천에 제한적으로 반영합니다. 이전 기기 기록을 가져와도 학습에는 쓰지 않아요.</Text>
@@ -98,4 +100,4 @@ export function AccountPersonalizationPanel({ subject, profile = false, getPorts
   </>}{message ? <Text accessibilityLiveRegion="polite" style={s.copy}>{message}</Text> : null}</View>;
 }
 
-const s = StyleSheet.create({ copy: { color: C.muted, fontSize: 13, lineHeight: 20, marginVertical: 10 }, text: { color: C.txt, fontSize: 14 }, input: { color: C.txt, borderWidth: 1, borderColor: C.line, borderRadius: 10, padding: 12, minHeight: 48 }, button: { minHeight: 48, justifyContent: 'center', padding: 12, borderWidth: 1, borderColor: C.line, borderRadius: 10, marginTop: 10 } });
+const s = StyleSheet.create({ copy: { color: C.muted, fontSize: 13, lineHeight: 20, marginVertical: 10 }, text: { color: C.txt, fontSize: 14 }, input: { color: C.txt, backgroundColor: C.panel, fontSize: 16, borderWidth: 1, borderColor: C.line, borderRadius: 12, padding: 14, minHeight: 52 }, button: { minHeight: 48, justifyContent: 'center', padding: 12, borderWidth: 1, borderColor: C.line, borderRadius: 10, marginTop: 10 }, saveButton: { minHeight: 52, backgroundColor: C.accent, borderColor: C.accent, borderRadius: 12, alignItems: 'center', marginTop: 12 }, saveText: { color: C.onAccent, fontSize: 16, fontWeight: '700', textAlign: 'center' } });

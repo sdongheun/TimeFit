@@ -6,7 +6,7 @@ import ts from 'typescript';
 // Execute production TSX/event handlers with deterministic native/port boundaries.
 // This is a hook host, not Yoga or an iOS renderer; native layout is injected explicitly.
 export function screenRuntime(overrides = {}) {
-  const instances = new Map(), modules = new Map(), effects = [];
+  const instances = new Map(), instanceTypes = new Map(), modules = new Map(), effects = [];
   let current, cursor, dirty = false, tree;
   const element = (type, props, key) => ({ type, props: props ?? {}, key });
   const depsEqual = (a, b) => a && b && a.length === b.length && a.every((v, i) => Object.is(v, b[i]));
@@ -20,6 +20,9 @@ export function screenRuntime(overrides = {}) {
   };
   const native = { View: 'View', Text: 'Text', Image: 'Image', ScrollView: 'ScrollView', KeyboardAvoidingView: 'KeyboardAvoidingView', Platform: { OS: 'ios' }, Keyboard: { dismiss() {}, addListener: () => ({ remove() {} }) }, StyleSheet: { create: v => v, absoluteFillObject: {} }, useWindowDimensions: () => ({ width: 320, height: 568, fontScale: 2 }), Linking: {}, Alert: { alert() {} }, AppState: { addEventListener: () => ({ remove() {} }) } };
   const defaults = { react, 'react/jsx-runtime': { jsx: element, jsxs: element, Fragment: 'Fragment' }, 'react-native': native, 'react-native-safe-area-context': { useSafeAreaInsets: () => ({ top: 20, bottom: 16, left: 0, right: 0 }) }, 'expo-web-browser': {}, './AnimatedPressable': { AnimatedPressable: 'Pressable' }, '../AnimatedPressable': { AnimatedPressable: 'Pressable' }, './KakaoRouteMap': { KakaoRouteMap: 'KakaoRouteMap' } };
+  // Deterministic native animation boundary: no timers or real accessibility service.
+  native.AccessibilityInfo = { isReduceMotionEnabled: async () => true, addEventListener: () => ({ remove() {} }) };
+  native.Animated = { View: 'AnimatedView', Value: class { constructor(value) { this.value = value; } setValue(value) { this.value = value; } stopAnimation() {} }, timing: () => ({}), sequence: () => ({}), loop: () => ({ start() {}, stop() {} }) };
   function load(file) {
     file = path.resolve(file);
     if (modules.has(file)) return modules.get(file).exports;
@@ -27,6 +30,7 @@ export function screenRuntime(overrides = {}) {
     const req = createRequire(file);
     const localRequire = id => {
       if (id in overrides) return overrides[id];
+      if (id === './MapCameraButton') return { MapCameraButton: 'MapCameraButton' };
       if (id in defaults) return defaults[id];
       const resolved = req.resolve(id);
       return resolved.endsWith('.tsx') ? load(resolved) : req(id);
@@ -39,6 +43,16 @@ export function screenRuntime(overrides = {}) {
     if (Array.isArray(node)) return node.flatMap((v, i) => expand(v, `${key}/${v?.key ?? i}`));
     if (!node || typeof node !== 'object') return node;
     if (typeof node.type === 'function') {
+      // React remounts a different component type/key at the same tree position.
+      const identity = instanceTypes.get(key);
+      if (identity && (identity.type !== node.type || identity.key !== node.key)) {
+        for (const [childKey, slots] of instances) {
+          if (childKey === key || childKey.startsWith(`${key}/`)) {
+            slots.forEach(slot => slot?.cleanup?.()); instances.delete(childKey); instanceTypes.delete(childKey);
+          }
+        }
+      }
+      instanceTypes.set(key, { type: node.type, key: node.key });
       current = instances.get(key) ?? []; instances.set(key, current); cursor = 0;
       return expand(node.type(node.props), `${key}/render`);
     }

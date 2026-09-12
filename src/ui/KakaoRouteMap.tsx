@@ -1,3 +1,5 @@
+import { MapCameraButton } from './MapCameraButton';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
@@ -38,6 +40,8 @@ type Props = {
   safeErrorPresentation?: boolean;
   focusedMarkerOffsetY?: number;
   initialCenter?: LatLon;
+  cameraControl?: boolean;
+  cameraTop?: number;
   recenterPoint?: LatLon;
   recenterToken?: number;
   recenterOffsetY?: number;
@@ -50,8 +54,9 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, showRouteLegend = true, safeErrorPresentation = false, focusedMarkerOffsetY = 0, initialCenter, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, onMapTap, onMapCenterChange, onMapReady, onMapError, style }: Props) {
+export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, showRouteLegend = true, safeErrorPresentation = false, focusedMarkerOffsetY = 0, cameraControl = true, cameraTop, initialCenter, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, onMapTap, onMapCenterChange, onMapReady, onMapError, style }: Props) {
   const ref = useRef<WebView>(null);
+  const cameraInsets = useSafeAreaInsets();
   const errorReported = useRef(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState('');
@@ -149,6 +154,7 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
           }
         }}
       />
+      {cameraControl && ready && !error ? <MapCameraButton point={recenterPoint ?? initialCenter ?? points[0]} scopeKey={JSON.stringify(points)} style={{ position: 'absolute', right: Math.max(12, cameraInsets.right), top: cameraTop ?? cameraInsets.top + 12 }} onCamera={point => ref.current?.injectJavaScript(`focusMap(${JSON.stringify(point)}, 0);true;`)} /> : null}
       {showRouteLegend ? <View pointerEvents="none" style={s.legend}>
         <View style={s.legendRow}><View style={[s.legendLine, s.legendPrecise]} /><Text style={s.legendTxt}>실경로</Text></View>
         {hasApprox ? <View style={s.legendRow}><View style={[s.legendLine, s.legendApprox]} /><Text style={s.legendTxt}>약식 경로</Text></View> : null}

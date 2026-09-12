@@ -1,6 +1,14 @@
 import type { VerifiedCourseV1 } from '../engine';
 import type { RecommendationSession, RootStackParamList } from './nav';
 import { initialVerifiedCourseProgressState, type VerifiedCourseProgressState } from './recommendation/verifiedCourseProgressModel';
+import { manualReselectionResult, withManualLocationProof, type ManualReselection } from './manualLocationRestoreModel';
+
+export function reconfirmActiveCourseLocations(active: ActiveVerifiedCourse | null, identity: string, expectedSession: RecommendationSession, origin: ManualReselection, destination: ManualReselection, nowMs: number): ActiveVerifiedCourse | null {
+  if (!active || active.identity !== identity || active.session !== expectedSession) return null;
+  const endsAtMs = Date.parse(active.session.nowIso) + active.session.remainingMin * 60000;
+  if (manualReselectionResult(active.session, origin, destination, endsAtMs, nowMs) !== 'ready') return null;
+  return { ...active, session: withManualLocationProof(active.session) };
+}
 
 type LegacyExecution = RootStackParamList['Execution'];
 

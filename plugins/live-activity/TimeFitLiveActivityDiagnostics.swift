@@ -36,7 +36,7 @@ struct TimeFitDiagnosticEvent: Codable {
 
 enum TimeFitLiveActivityDiagnosticStore {
   static let schemaVersion = 2
-  static let nativeSourceRevision = "ula-button-diagnostic-2026-09-06.5"
+  static let nativeSourceRevision = "ula-final-2026-09-08.1"
   static let maximumEntries = 32
   private static let directoryName = "TimeFitLiveActivityDiagnostics-v2"
   private static let logger = Logger(subsystem: "com.dongheun.mobile", category: "live-activity-button")
@@ -86,13 +86,13 @@ enum TimeFitLiveActivityDiagnosticStore {
     do {
       let folder = try streamURL(stream)
       try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-      let order = String(format: "%020llu", DispatchTime.now().uptimeNanoseconds)
-      let location = folder.appendingPathComponent("\(order)-\(UUID().uuidString.lowercased()).json")
+      try TimeFitDiagnosticFileOrder.withNextLocation(in: folder) { location in
       // The filename is unique per event. Foundation rejects combining
       // .atomic and .withoutOverwriting, so atomic replacement is sufficient here.
       try JSONEncoder().encode(value).write(to: location, options: .atomic)
       try? FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: location.path)
       trim(folder)
+      }
       logger.info("stream=\(stream.rawValue, privacy: .public) action=\(action.rawValue, privacy: .public) stage=\(safeStage, privacy: .public) result=\(result.rawValue, privacy: .public) error=\(error.rawValue, privacy: .public)")
       return true
     } catch {

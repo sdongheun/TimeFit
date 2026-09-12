@@ -39,6 +39,7 @@ function executeDocument(options = {}) {
     constructor(element, config) { if (options.initThrows) throw Error('fixture init'); mapCount++; this.element = element; this.config = config; this.level = 6; }
     getProjection() { if (options.runtimeThrows) throw Error('fixture runtime'); return { pointFromCoords: point => ({ x: point.lon * 1000, y: point.lat * 1000 }) }; }
     setBounds(...args) { boundsCalls.push(args); }
+    panTo(point) { this.camera = point; }
     getLevel() { return this.level; }
   }
   class CustomOverlay { constructor(config) { this.config = config; overlays.push(this); } setMap(value) { this.map = value; } }
@@ -59,6 +60,18 @@ test('UNEAR map return failure-first: actual generated inline script parses befo
   const script = inlineScript(productionDocument());
   assert.doesNotThrow(() => new vm.Script(script, { filename: 'nearby-webview-inline.js' }));
   assert.match(script, /\^https:\\\/\\\//);
+});
+
+test('MAP02 generated nearby camera moves without select, new render or automatic refit', () => {
+  const run = executeDocument();
+  const payload = { center: { lat: 35.1, lon: 129.1 }, selectedId: null, bottomInset: 200, places: [{ id: 'a', title: 'A', lat: 35.1, lon: 129.1 }] };
+  run.window.renderNearby(payload);
+  const before = run.boundsCalls.length, messages = JSON.stringify(run.messages);
+  run.window.focusNearbyCamera({ lat: 36, lon: 128 });
+  assert.equal(run.context.map.camera.lat, 36);
+  run.window.renderNearby(JSON.parse(JSON.stringify(payload)));
+  assert.equal(run.boundsCalls.length, before); assert.equal(run.context.map.camera.lat, 36);
+  assert.equal(JSON.stringify(run.messages), messages);
 });
 
 test('UNEAR generated script executes SDK load, creates one map, posts ready, and renders safe default/photo markers', () => {

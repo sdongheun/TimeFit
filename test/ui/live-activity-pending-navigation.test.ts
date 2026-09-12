@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { withManualLocationProof } from '../../src/ui/manualLocationRestoreModel';
 import type { ActiveVerifiedCourse } from '../../src/ui/activeVerifiedCourseModel';
 import {
   createPendingNavigationHandoffController,
@@ -24,7 +25,7 @@ const steps = (count: 1 | 2): readonly VerifiedCourseProgressStep[] => count ===
 ];
 const active = (count: 1 | 2): ActiveVerifiedCourse => ({
   identity: 'active', courseRunId: 'run-current', progress: { stepIndex: 1, routeOpened: false, finished: false },
-  session: { nowIso: '2026-09-06T16:00:00+09:00', remainingMin: 90, arrivalBufferMin: 10, origin: point('origin'), destination: point('final') },
+  session: withManualLocationProof({ nowIso: '2026-09-06T16:00:00+09:00', remainingMin: 90, arrivalBufferMin: 10, origin: point('origin'), destination: point('final') }),
   course: { id: 'course', placeIds: count === 1 ? ['A'] : ['A', 'B'], stops: (count === 1 ? ['A'] : ['A', 'B']).map(placeId => ({ placeId, stayMin: 20, stayState: 'recommended', availabilityState: 'structured_verified', arrivalAt: '', departureAt: '' })), legs: [], travelMin: 0, stayMin: 20 * count, totalMin: 60, arrivalBufferMin: 10, remainingAfterCourseMin: 10, remainingAfterArrivalBufferMin: 0 },
 } as ActiveVerifiedCourse);
 const local = (count: 1 | 2, stopIndex = 0): LocalProgressState => ({
@@ -119,4 +120,25 @@ test('ULA handoff failure-first: 손상 snapshot·교체 run·완료·stale/변�
     const result = await f.controller.consume({ action: action(), ...value, open: async () => { opens += 1; return true; }, onOpened: async () => undefined }, 'automatic');
     assert.equal(result.status, 'invalid'); assert.equal(opens, 0);
   }
+});
+
+test('LAFINALFEEDBACK same final request stays busy across committed state, but mismatched/expired requests remain invalid', async () => {
+  const f = fixture(); let settleOpen!: (value: boolean) => void; let opens = 0, projections = 0;
+  const input = { action: action(), active: active(1), local: local(1), steps: steps(1), open: async () => { opens++; return new Promise<boolean>(resolve => { settleOpen = resolve; }); }, onOpened: async () => { projections++; } };
+  const pending = f.controller.consume(input, 'automatic'); await Promise.resolve();
+  const committed = { ...input, local: { ...input.local, revision: 4, activeStopId: null } };
+  assert.equal((await f.controller.consume(committed, 'automatic')).status, 'busy');
+  for (const changed of [
+    { ...committed, active: { ...input.active, courseRunId: 'other' } },
+    { ...committed, local: { ...committed.local, phase: 'expired' as const, terminalAtMs: 4000 } },
+    { ...committed, action: { ...input.action, baseRevision: 99 } },
+    { ...committed, action: { ...input.action, stopId: 'stop:1:other' } },
+  ]) assert.equal((await f.controller.consume(changed, 'automatic')).status, 'invalid');
+  settleOpen(true); assert.equal((await pending).status, 'opened');
+  assert.equal((await f.controller.consume(committed, 'automatic')).status, 'not_pending');
+  assert.equal((await f.controller.consume({ ...committed, active: { ...input.active, courseRunId: 'other' } }, 'automatic')).status, 'invalid');
+  const oldSession = { ...input.active.session }; delete (oldSession as any).manualLocation;
+  assert.equal((await f.controller.consume({ ...committed, active: { ...input.active, session: oldSession } }, 'automatic')).status, 'manual_location_required');
+  assert.equal(opens, 1); assert.equal(projections, 1);
+  assert.deepEqual(f.calls, ['transition:pending:executing', 'transition:executing:success', 'clear']);
 });

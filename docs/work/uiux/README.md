@@ -1,5 +1,69 @@
 # UIUX 현재 작업
 
+## 현행 실행 — U-RELEASE-ICON-01
+
+[아이콘 적용 명령](../integration-decision/release-docs-icon-closeout.md)의 해당 절 진행. 승인된 파란 시계 시안을 원본 보존하며 최종 규격으로 변환·앱 연결한다. AGE-01은 완료 근거 재사용, 신규 UI 다듬기·Distribution Archive/업로드 없음. DOCS-05-R1과 병렬 가능.
+
+## 현행 실행 — U-RELEASE-AGE-01
+
+[2단계 명령](../integration-decision/release-stage-two.md)의 AGE 절을 진행한다. 신규 가입 만14세 이상 자기확인만 구현, 기존 로그인·DB 계약 유지. 공개 문서 준비와 병렬 가능. 실제 URL/DB registry 인계 후 같은 문서의 LINKS-01 UI 절로 순차 연결한다.
+
+## 최신 — U-RELEASE-EXIT-03 → U-RELEASE-SIGNING-PREP-03
+
+[배포 준비 명령](../integration-decision/release-deploy-preparation.md)의 해당 두 절을 순서대로 진행. 기록 없는 종료의 legacy 목적지·raw 오류 로그만 보완 후 서명 준비. NATIVE-02 manifest 완료 유지, UI 다듬기 없음.
+
+## 최신 — U-RELEASE-NATIVE-02
+
+[최소 보완 명령](../integration-decision/release-minimal-followup.md)의 해당 절 진행. 01 로컬 완료 근거를 유지하고 Extension privacy/API 이유 및 public Archive 경계만 최소 보완. UI·LA 상태 로직 변경 금지.
+
+## 최우선 — U-RELEASE-BUILD-01
+
+[출시 실행 명령](../integration-decision/release-execution-wave.md)의 해당 절 실행. UI 다듬기 종료, 표시명·iPhone·제출 환경·native 검증만 수행. RELEASE-LINKS-01은 URL/승인 후 조건부. 아래 과거 UI 명령 재실행 금지.
+
+## 최신 실행 — U-MAIN-MAP-POLISH-02 → U-MAIN-STACK-01 → U-LIVE-ACTIVITY-FINAL-02
+
+[최종 표현·지도·스택·LA 명령](final-interaction-wave.md). 기존 MAIN-COURSE-POLISH 실기기4항목 사용자 확인 완료. 추가 보완은 일반 UI/지도→메인 스택→LA 배치·최종 완료 액션 순서다. LA 읽기 전용 조사와 사진 데이터 조사는 병렬 가능하나 공유 navigation/controller 구현은 동시에 쓰지 않는다.
+
+## 최신 실행 — U-MAIN-COURSE-POLISH-01
+
+[메인·추천·코스 최종 표현 정리](main-course-final-polish.md). 사용자 승인·구현 전. 메인 문구/여백/영업 상태 색상, 작은 썸네일 코스 확인, 진행 하단 고정 행동·현재 단계 점등·요약 행 취소를 A→B로 수행한다. 사진 조사와 소유 파일을 분리해 병렬 가능. 아래 cleanup은 완료 인계를 선행 기준으로 사용하며 다시 구현하지 않는다.
+
+## 최우선 실행 — U-RELEASE-UI-CLEANUP-01
+
+[시간 설정·추천 화면 정리](release-ui-cleanup.md). 오늘/내일 선택을 없애되 내부 날짜 보존과 최대 180분은 유지한다. 폐기한 10~18시 조건부 추천·수동 코스 진입과 추천 헤더의 빈 네모를 제거한다. 주변 독립 탐색·정상 검증 추천은 유지한다. 아래 과거 조건부 노출 유지 지시보다 이 사용자 확정 명령이 우선한다. 상태: 구현 전.
+
+## 2026-09-08 최신 — U-PROFILE-AUTH-POLISH-02
+
+[프로필 관리·로그인 혜택·닉네임 제목·폼 격리](profile-management-auth-polish.md). 내정보 inline 관리를 별도 화면으로 교체하고 닉네임/삭제/로그아웃 순서, 실제 동의 조건을 포함한 혜택 문구, 계정별 제목과 로그인/가입 입력 분리를 구현한다. U-HISTORY-FINAL-03은 사용자 완료 보고.
+
+## 2026-09-08 최신 — U-HISTORY-FINAL-03
+
+[드래그 우선 복구 → 지도 요약·삭제 메뉴](history-motion-summary-menu.md). 현재 Animated 구현 뒤 남은 끊김을 A에서 재현/수정한 뒤 B의 지도·방문 횟수·카테고리 요약과 날짜/⋯/long press 삭제를 적용한다. 기존 상시 swipe 설명과 첫 사용 자동 시연 제안은 새 구현에 넣지 않는다.
+
+## 2026-09-08 최신 — U-HISTORY-POLISH-02
+
+[기록 카드·필터·드래그 보완](history-card-filter-gesture.md): 둥근14pt 기록/삭제 카드, 제목 오른쪽 전체 삭제, 카테고리 목록 필터와 실제 표시 위치 기반 gesture 진단·수정. 기존 completionId 삭제 단위와 전체 삭제 범위는 유지한다. U-HISTORY-SWIPE-01은 구현 보고됐으나 실기기 끊김을 이번 작업에서 보완한다.
+
+## 2026-09-08 최신 — U-NEARBY-HANDOFF-02 → U-HISTORY-SWIPE-01
+
+[주변 검색·handoff 오류와 계정 기록 스와이프 삭제](nearby-handoff-and-history-polish.md)를 A→B 순서로 수행한다. 주변 단순화는 완료 보고됐으나 실제 길찾기 후 실패 문구 관찰을 후속 진단한다. 계정 기록은 기존 삭제 서비스를 행 스와이프에 연결하며 새로운 DB 삭제 정책은 만들지 않는다.
+
+## 2026-09-08 현재 — U-NEARBY-SIMPLE-01
+
+[주변 UI 간소화·독립 길찾기](nearby-simple-directions.md): 시트 `가까운 순`, 접기/펼치기 텍스트 제거·손잡이 탭/접근성 유지, 상세 반복 경고 제거 및 독립 외부 길찾기. 추천·기록·체류·Live Activity 연결0. 추천 조건부 영역 제거와 전체 UI 재정리는 별도 후속이다.
+
+## 2026-09-08 현재 — U-CONDITIONAL-PREVIEW-01
+
+[조건부 장소 개발 미리보기](conditional-place-preview.md)를 먼저 추가한다. 사용자의 목적은 새벽에도 현재 조건부 UI를 보며 수정하는 것이며, 실제10~18시 정책이나 일반 추천 시간을 변경하지 않는다. U-TEST-CLOCK-01은 진단 완료이며 발견한 시계 혼용 버그는 별도 잔여다. 미리보기 추가 → 사용자 UI 피드백/수정 → 배포 전 전용 연결 제거 순서다.
+
+## 2026-09-08 현재 — U-TEST-CLOCK-01
+
+[테스트 시각 추천 실패 진단](test-clock-recommendation-diagnosis.md)을 진행한다. U-GUEST-IMPORT-01은 사용자 실기기 정상 확인으로 수락됐으며 추가 가져오기/C 반복은 하지 않는다. 이번은 시계 경계 진단·고정 재현만이며 시장 UI/시간 상한/제품 정책 변경은 다음 순서다.
+
+## 2026-09-08 현재 — U-GUEST-IMPORT-01
+
+[가져온 계정 기록 표시 보완](guest-import-record-display.md): DB 가져오기 제한 복구·사용자 계정 기록 표시 확인 뒤, 계정 통계 레이아웃과 sibling key 충돌을 보완한다. DB 복구·개인화 C는 재실행하지 않는다. 테스트 시각/시장 카드/시간 확장은 다음 순서다.
+
 ## 현재 실행 — U-LIVE-LEARNING-EVIDENCE-01
 
 [앱·Live Activity 학습 증거 연결 명령](live-learning-evidence-integration.md)을 지금 수행한다. DB-LIVE-LEARNING-EVIDENCE-01 서비스 계약은 통합 수락됐으며 계약 대기는 해제됐다. 기존 B await starts/cold proof 잔여 연결도 이번 명령 A에 포함한다. 아래 조사 전용/인계 대기는 과거 이력이고 본 명령이 우선한다. UI/native를 별도 writer로 나누어 같은 파일을 동시에 수정하지 않는다.

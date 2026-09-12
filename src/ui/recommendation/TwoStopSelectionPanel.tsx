@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import { C } from '../theme';
 import { PlacePhoto, PlacePhotoCredit } from '../PlacePhoto';
@@ -26,12 +26,12 @@ export function TwoStopSelectionPanel({ state, pairEnabled, regionMode, candidat
     <View style={s.status}>
       <Text style={s.sectionTitle}>선택한 장소와 함께 가능한 곳</Text>
       {!pairEnabled ? <Text style={s.statusText}>이 장소는 한 곳 코스로 확인할 수 있어요</Text> : null}
-      {pairEnabled && (!state || state.loading) ? <Text accessibilityLiveRegion="polite" style={s.statusText}>함께 갈 장소를 확인하고 있어요{candidates.length ? ` · 현재 ${candidates.length}곳` : ''}</Text> : null}
+      {pairEnabled && (!state || state.loading) ? <View accessibilityLiveRegion="polite" style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><ActivityIndicator color={C.accent} /><Text style={s.statusText}>함께 들를 곳을 찾고 있어요</Text></View> : null}
       {pairEnabled && state && !state.loading && state.reason ? <Text accessibilityRole="alert" style={s.statusText}>{twoStopSelectionReasonMessage(state.reason)}</Text> : null}
       {pairEnabled && regionMode === 'pair_terminal' && !state?.reason ? <Text style={s.statusText}>함께 갈 수 있는 다른 장소를 찾지 못했어요</Text> : null}
     </View>
     {regionMode === 'pair_loading' ? <View testID="two-stop-pair-skeletons" accessible={false} style={s.skeletonList}>{[0, 1, 2].map((slot) => <View key={slot} testID={`two-stop-pair-skeleton-${slot}`} pointerEvents="none" style={s.skeleton}><View style={s.skeletonMedia} /><View style={s.skeletonCopy}><View style={s.skeletonLineWide} /><View style={s.skeletonLine} /></View></View>)}</View> : null}
-    {candidates.map((candidate) => <TwoStopCandidate key={candidate.placeId} candidate={candidate} selected={candidate.course === selectedPairCourse} onPress={() => onSelectCandidate(candidate.course)} />)}
+    {(regionMode === 'pair_loading' ? [] : candidates).map((candidate) => <TwoStopCandidate key={candidate.placeId} candidate={candidate} selected={candidate.course === selectedPairCourse} onPress={() => onSelectCandidate(candidate.course)} />)}
     {pairEnabled && state?.pageState === 'more_available' ? <Pressable accessibilityRole="button" accessibilityState={{ disabled: state.loading, busy: state.loading }} disabled={state.loading} style={[s.more, state.loading && s.disabled]} onPress={onContinue}><Text style={s.moreText}>{state.loading ? '함께 갈 장소 확인 중…' : '함께 갈 장소 더 보기'}</Text></Pressable> : null}
   </View>;
 }

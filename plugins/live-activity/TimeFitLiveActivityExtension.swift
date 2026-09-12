@@ -2,45 +2,52 @@ import ActivityKit
 import SwiftUI
 import WidgetKit
 
+private struct TimeFitLiveStatus: View {
+  let context: ActivityViewContext<TimeFitActivityAttributes>
+  var body: some View {
+    VStack(alignment: .leading, spacing: 5) {
+      Text(context.state.targetTitle).font(.headline).fixedSize(horizontal: false, vertical: true)
+      Text(context.state.phase == "dwelling" || context.state.phase == "departure_due" ? "머무는 중" : "이동 중")
+        .font(.subheadline).foregroundStyle(.secondary)
+      if let departure = context.state.departureReminderAtMs, context.state.phase == "dwelling" || context.state.phase == "departure_due" {
+        Text("출발 권장 \(Date(timeIntervalSince1970: departure / 1000), style: .time)").font(.caption)
+      } else if let arrival = context.state.arrivalPromptAtMs {
+        Text("도착 확인 예정 \(Date(timeIntervalSince1970: arrival / 1000), style: .time)").font(.caption)
+      }
+    }
+  }
+}
+
+private struct TimeFitLiveActions: View {
+  let context: ActivityViewContext<TimeFitActivityAttributes>
+  var body: some View {
+    VStack(alignment: .trailing, spacing: 8) {
+      if TimeFitNativeIntentPolicy.permitsCompletion(purpose: TimeFitActivityIdentityPolicy.purpose(context.attributes), phase: context.state.phase, activeStopId: context.state.activeStopId, eligible: context.state.completionEligible) {
+        Button(intent: TimeFitCompletionIntent(courseRunId: context.attributes.courseRunId, revision: context.state.revision)) {
+          Text("도착 후 코스 마치기").fixedSize(horizontal: false, vertical: true)
+        }
+      } else if let stopId = context.state.activeStopId {
+        if context.state.phase == "traveling" || context.state.phase == "arrival_pending" {
+          Button(intent: TimeFitArrivalIntent(courseRunId: context.attributes.courseRunId, stopId: stopId, revision: context.state.revision)) { Text("도착했어요") }
+        } else if context.state.phase == "dwelling" || context.state.phase == "departure_due" {
+          Button(intent: TimeFitDepartureIntent(courseRunId: context.attributes.courseRunId, stopId: stopId, revision: context.state.revision)) { Text("이제 출발해요") }
+        }
+      }
+    }
+    .font(.caption.weight(.semibold))
+    .buttonStyle(.borderedProminent)
+    .tint(.blue)
+    .frame(maxWidth: 140, alignment: .trailing)
+    .fixedSize(horizontal: false, vertical: true)
+  }
+}
+
 private struct TimeFitLiveActivityView: View {
   let context: ActivityViewContext<TimeFitActivityAttributes>
-
   var body: some View {
-    VStack(alignment: .leading, spacing: 10) {
-      Text(context.state.targetTitle).font(.headline).lineLimit(2)
-      Text(context.state.phase == "dwelling" ? "머무는 중" : "이동 중")
-        .font(.subheadline).foregroundStyle(.secondary)
-      if context.state.phase == "dwelling", let departure = context.state.departureReminderAtMs {
-        HStack(spacing: 4) {
-          Text("출발 권장")
-          Text(Date(timeIntervalSince1970: departure / 1000), style: .time)
-        }
-        .font(.caption).foregroundStyle(.secondary)
-      } else if let arrival = context.state.arrivalPromptAtMs {
-        HStack(spacing: 4) {
-          Text("도착 확인 예정")
-          Text(Date(timeIntervalSince1970: arrival / 1000), style: .time)
-        }
-        .font(.caption).foregroundStyle(.secondary)
-      }
-      if let stopId = context.state.activeStopId {
-        HStack(spacing: 8) {
-          if context.state.phase == "traveling" || context.state.phase == "arrival_pending" {
-            Button(intent: TimeFitArrivalIntent(courseRunId: context.attributes.courseRunId, stopId: stopId, revision: context.state.revision)) {
-              Text("도착했어요")
-            }
-            if !context.state.snoozeUsed, let nextBoundaryAtMs = context.state.nextBoundaryAtMs {
-              Button(intent: TimeFitSnoozeIntent(courseRunId: context.attributes.courseRunId, stopId: stopId, revision: context.state.revision, nextBoundaryAtMs: nextBoundaryAtMs)) {
-                Text("5분 뒤")
-              }
-            }
-          } else if context.state.phase == "dwelling" || context.state.phase == "departure_due" {
-            Button(intent: TimeFitDepartureIntent(courseRunId: context.attributes.courseRunId, stopId: stopId, revision: context.state.revision)) {
-              Text("이제 출발해요")
-            }
-          }
-        }.font(.caption.weight(.semibold))
-      }
+    HStack(alignment: .center, spacing: 12) {
+      TimeFitLiveStatus(context: context).frame(maxWidth: .infinity, alignment: .leading)
+      TimeFitLiveActions(context: context)
     }
     .padding()
     .activityBackgroundTint(Color(red: 0.04, green: 0.07, blue: 0.14))
@@ -54,15 +61,12 @@ struct TimeFitLiveActivityWidget: Widget {
       TimeFitLiveActivityView(context: context)
     } dynamicIsland: { context in
       DynamicIsland {
-        DynamicIslandExpandedRegion(.leading) { Image(systemName: "figure.walk") }
-        DynamicIslandExpandedRegion(.trailing) { Text("TimeFit").font(.caption) }
-        DynamicIslandExpandedRegion(.bottom) {
-          Text(context.state.targetTitle).lineLimit(1)
-        }
+        DynamicIslandExpandedRegion(.leading) { TimeFitLiveStatus(context: context) }
+        DynamicIslandExpandedRegion(.trailing) { TimeFitLiveActions(context: context) }
       } compactLeading: {
         Image(systemName: "figure.walk")
       } compactTrailing: {
-        Text(context.state.phase == "dwelling" ? "체류" : "이동")
+        Text(context.state.phase == "dwelling" || context.state.phase == "departure_due" ? "체류" : "이동")
       } minimal: {
         Image(systemName: "figure.walk")
       }

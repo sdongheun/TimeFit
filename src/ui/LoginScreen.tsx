@@ -11,42 +11,78 @@ import { C } from './theme';
 import { CaptchaVerificationSheet } from './CaptchaVerificationSheet';
 import { resolveCaptchaChallengeUrl, captchaDiagnosticsEnabled } from './captchaVerificationModel';
 import { safePasswordLoginFailure, passwordLoginFailureMessage, type PasswordLoginFailure } from './passwordLoginModel';
+import { readPublicDocuments, validPublicDocuments, samePublicDocuments } from './publicDocuments';
+import { safeSignupFailure, signupFailureMessage } from './signupFailureModel';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'> & { readDocuments?: () => Promise<ReadSignupConsentDocumentsResultV1> };
-const readSignupDocuments = async () => (await import('../services/releaseIdentitySupabase')).readSignupConsentDocuments();
+const readSignupDocuments = readPublicDocuments;
+const emptyForm = () => ({ email: '', password: '', passwordConfirm: '', failure: null as PasswordLoginFailure | null, error: '', touched: {} as Record<string, boolean> });
 
 export function LoginScreen({ navigation, readDocuments = readSignupDocuments }: Props) {
   const { authKind, signIn, signUp } = useAuth();
   const [documents, setDocuments] = useState<readonly SignupConsentDocumentV1[]>([]);
   const [accepted, setAccepted] = useState<Record<string, boolean>>({});
+  const [opened, setOpened] = useState<Record<string, boolean>>({});
+  const openedRef = useRef<Record<string, boolean>>({});
+  const documentEpoch = useRef(0);
+  const [documentReload, setDocumentReload] = useState(0);
+  const resetDocumentConsent = () => { documentEpoch.current++; openedRef.current = {}; setOpened({}); setAccepted({}); };
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
+  const ageConfirmedRef = useRef(false);
+  const confirmAge = (value: boolean) => { ageConfirmedRef.current = value; setAgeConfirmed(value); };
   const signupRequest = useRef<string | null>(null);
   const insets = useSafeAreaInsets();
   const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [forms, setForms] = useState(() => ({ login: emptyForm(), signup: emptyForm() }));
+  const mode = isSignUp ? 'signup' : 'login';
+  const { email, password, passwordConfirm, failure: loginFailure, error: formError } = forms[mode];
+  const field = (key: 'email' | 'password' | 'passwordConfirm', value: string) => setForms(current => ({ ...current, [mode]: { ...current[mode], [key]: value, touched: { ...current[mode].touched, [key]: true } } }));
+  const setEmail = (value: string) => field('email', value);
+  const setPassword = (value: string) => field('password', value);
+  const setPasswordConfirm = (value: string) => field('passwordConfirm', value);
+  const setLoginFailure = (failure: PasswordLoginFailure | null) => setForms(current => ({ ...current, [mode]: { ...current[mode], failure } }));
+  const setFormError = (error: string) => setForms(current => ({ ...current, [mode]: { ...current[mode], error } }));
+  const clearSecrets = () => setForms(current => ({ login: { ...current.login, password: '', passwordConfirm: '' }, signup: { ...current.signup, password: '', passwordConfirm: '' } }));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const submitLock = useRef(false);
   const attempt = useRef(0);
   const [captchaAttempt, setCaptchaAttempt] = useState<number | null>(null);
-  const [loginFailure, setLoginFailure] = useState<PasswordLoginFailure | null>(null);
   const challengeUrl = resolveCaptchaChallengeUrl(process.env.EXPO_PUBLIC_CAPTCHA_CHALLENGE_URL);
   const activeRef = useRef(true);
   const awaitingAccountRef = useRef(false);
   const returnedRef = useRef(false);
+  const switchMode = (signup: boolean) => {
+    if (submitLock.current || signup === isSignUp) return;
+    attempt.current++; setCaptchaAttempt(null); awaitingAccountRef.current = false;
+    confirmAge(false);
+    resetDocumentConsent();
+    setForms(current => ({ ...current, [mode]: { ...current[mode], password: '', passwordConfirm: '', failure: null, error: '', touched: {} } }));
+    setIsSignUp(signup);
+  };
   useEffect(() => {
     if (!isSignUp) return;
     let active = true;
-    setDocuments([]); setAccepted({});
-    void readDocuments().then(result => { if (active && result.status === 'ok') setDocuments(result.documents); }).catch(() => undefined);
+    setDocuments([]); resetDocumentConsent();
+    void readDocuments().then(result => { if (active) setDocuments(validPublicDocuments(result)); }).catch(() => undefined);
     return () => { active = false; };
-  }, [isSignUp, readDocuments]);
-  const signupReady = documents.length === 2 && documents.every(document => accepted[document.documentId]);
+  }, [isSignUp, readDocuments, documentReload]);
+  const signupReady = ageConfirmed && documents.length === 2 && documents.every(document => opened[document.documentId] && accepted[document.documentId]);
+  const openDocument = async (document: SignupConsentDocumentV1) => {
+    if (submitLock.current) return;
+    const epoch = documentEpoch.current;
+    openedRef.current = { ...openedRef.current, [document.documentId]: false };
+    setOpened(openedRef.current); setAccepted(value => ({ ...value, [document.documentId]: false }));
+    try {
+      await Linking.openURL(document.url);
+      if (epoch !== documentEpoch.current) return;
+      openedRef.current = { ...openedRef.current, [document.documentId]: true }; setOpened(openedRef.current);
+    } catch { if (epoch === documentEpoch.current) Alert.alert('안내', '문서를 열지 못했어요. 다시 시도해 주세요.'); }
+  };
 
   useEffect(() => {
     activeRef.current = true;
     const removeFocus = navigation.addListener('focus', () => { activeRef.current = true; });
-    const removeBlur = navigation.addListener('blur', () => { activeRef.current = false; attempt.current++; submitLock.current = false; awaitingAccountRef.current = false; setCaptchaAttempt(null); setIsSubmitting(false); });
+    const removeBlur = navigation.addListener('blur', () => { clearSecrets(); confirmAge(false); activeRef.current = false; attempt.current++; submitLock.current = false; awaitingAccountRef.current = false; setCaptchaAttempt(null); setIsSubmitting(false); });
     return () => {
       activeRef.current = false;
       attempt.current++;
@@ -58,10 +94,13 @@ export function LoginScreen({ navigation, readDocuments = readSignupDocuments }:
   useEffect(() => {
     if (authKind !== 'account' || !awaitingAccountRef.current || !activeRef.current || returnedRef.current) return;
     returnedRef.current = true;
+    clearSecrets();
     navigation.goBack();
   }, [authKind, navigation]);
 
   const cancel = () => {
+    clearSecrets();
+    confirmAge(false);
     attempt.current++;
     submitLock.current = false;
     setCaptchaAttempt(null);
@@ -74,35 +113,49 @@ export function LoginScreen({ navigation, readDocuments = readSignupDocuments }:
     if (submitLock.current || !activeRef.current) return;
     const normalizedEmail = email.trim();
     if (!normalizedEmail || !password) {
-      Alert.alert('입력 확인', '이메일과 비밀번호를 입력해주세요.');
+      setFormError('이메일과 비밀번호를 입력해주세요.');
       return;
     }
     if (isSignUp) {
-      if (!signupReady) return;
-      if (password !== passwordConfirm) { Alert.alert('입력 확인', '비밀번호가 일치하지 않아요.'); return; }
+      if (!ageConfirmedRef.current || !signupReady || !documents.every(d => openedRef.current[d.documentId])) return;
+      if (password !== passwordConfirm) { setFormError('비밀번호가 일치하지 않아요.'); return; }
     }
 
     submitLock.current = true;
     setLoginFailure(null);
+    setFormError('');
     setIsSubmitting(true);
-    if (!isSignUp) {
-      setCaptchaAttempt(++attempt.current);
-      return;
-    }
+    setCaptchaAttempt(++attempt.current);
+  };
+
+  const submitSignup = async (token: string, signupAttempt: number) => {
     awaitingAccountRef.current = true;
     try {
       if (isSignUp) {
+        if (!ageConfirmedRef.current || !signupReady || !documents.every(d => openedRef.current[d.documentId])) { awaitingAccountRef.current = false; return; }
+        const fresh = validPublicDocuments(await readDocuments());
+        if (!activeRef.current || attempt.current !== signupAttempt) return;
+        if (!samePublicDocuments(documents, fresh)) {
+          awaitingAccountRef.current = false; resetDocumentConsent(); setDocuments(fresh);
+          setFormError(fresh.length ? '문서가 변경됐어요. 다시 읽고 동의해 주세요.' : '가입 문서를 확인하지 못했어요. 다시 확인해 주세요.');
+          return;
+        }
         signupRequest.current ??= uuid.v4();
         const terms = documents.find(d => d.documentId === 'terms-of-service')!;
         const privacy = documents.find(d => d.documentId === 'privacy-policy')!;
-        const ready = await signUp({ requestId: signupRequest.current, email: normalizedEmail, password, requiredConsents: { terms: { documentId: terms.documentId, documentVersion: terms.documentVersion, accepted: true }, privacy: { documentId: privacy.documentId, documentVersion: privacy.documentVersion, accepted: true } } });
+        const ready = await signUp({ requestId: signupRequest.current, email: email.trim(), password, captchaToken: token, requiredConsents: { terms: { documentId: terms.documentId, documentVersion: terms.documentVersion, accepted: true }, privacy: { documentId: privacy.documentId, documentVersion: privacy.documentVersion, accepted: true } } });
+        if (!activeRef.current || attempt.current !== signupAttempt) return;
+        clearSecrets();
         if (!ready) { awaitingAccountRef.current = false; Alert.alert('이메일 확인', '받은 이메일에서 가입을 확인한 뒤 로그인해주세요.'); }
       }
     } catch (error) {
+      if (!activeRef.current || attempt.current !== signupAttempt) return;
       awaitingAccountRef.current = false;
-      if (activeRef.current) Alert.alert(isSignUp ? '회원가입 실패' : '로그인 실패', '입력과 연결 상태를 확인하고 다시 시도해주세요.');
+      const failure = safeSignupFailure(error);
+      if (failure.kind === 'consent') { resetDocumentConsent(); setDocumentReload(value => value + 1); }
+      setFormError(signupFailureMessage(failure));
     } finally {
-      if (activeRef.current && !awaitingAccountRef.current) { submitLock.current = false; setIsSubmitting(false); }
+      if (activeRef.current && attempt.current === signupAttempt && !awaitingAccountRef.current) { submitLock.current = false; setIsSubmitting(false); }
     }
   };
 
@@ -117,6 +170,7 @@ export function LoginScreen({ navigation, readDocuments = readSignupDocuments }:
     if (!activeRef.current || !submitLock.current || attempt.current !== expected) return;
     const authAttempt = ++attempt.current;
     setCaptchaAttempt(null);
+    if (isSignUp) { await submitSignup(token, authAttempt); return; }
     awaitingAccountRef.current = true;
     try { await signIn(email.trim(), password, token); }
     catch (error) {
@@ -138,8 +192,8 @@ export function LoginScreen({ navigation, readDocuments = readSignupDocuments }:
       <Text style={s.copy}>로그인해도 현재 기기의 코스 진행과 완료 기록은 그대로 유지됩니다.</Text>
       <View style={s.card}>
         <View style={s.switchRow}>
-          <Pressable testID="login-mode-login" disabled={isSubmitting} accessibilityState={{ selected: !isSignUp }} style={[s.switchButton, !isSignUp && s.switchButtonOn]} onPress={() => { if (!submitLock.current) setIsSignUp(false); }}><Text style={[s.switchText, !isSignUp && s.switchTextOn]}>로그인</Text></Pressable>
-          <Pressable testID="login-mode-signup" disabled={isSubmitting} accessibilityState={{ selected: isSignUp }} style={[s.switchButton, isSignUp && s.switchButtonOn]} onPress={() => { if (!submitLock.current) setIsSignUp(true); }}><Text style={[s.switchText, isSignUp && s.switchTextOn]}>회원가입</Text></Pressable>
+          <Pressable testID="login-mode-login" disabled={isSubmitting} accessibilityState={{ selected: !isSignUp }} style={[s.switchButton, !isSignUp && s.switchButtonOn]} onPress={() => switchMode(false)}><Text style={[s.switchText, !isSignUp && s.switchTextOn]}>로그인</Text></Pressable>
+          <Pressable testID="login-mode-signup" disabled={isSubmitting} accessibilityState={{ selected: isSignUp }} style={[s.switchButton, isSignUp && s.switchButtonOn]} onPress={() => switchMode(true)}><Text style={[s.switchText, isSignUp && s.switchTextOn]}>회원가입</Text></Pressable>
         </View>
         <Text style={s.label}>이메일</Text>
         <TextInput testID="login-email" value={email} onChangeText={value => { if (!submitLock.current) setEmail(value); }} editable={!isSubmitting} autoCapitalize="none" autoCorrect={false} keyboardType="email-address" placeholder="name@example.com" placeholderTextColor={C.placeholder} style={s.input} />
@@ -148,11 +202,16 @@ export function LoginScreen({ navigation, readDocuments = readSignupDocuments }:
         {isSignUp ? <>
           <Text style={s.label}>비밀번호 확인</Text>
           <TextInput testID="signup-password-confirm" value={passwordConfirm} onChangeText={value => { if (!submitLock.current) setPasswordConfirm(value); }} editable={!isSubmitting} secureTextEntry placeholder="비밀번호를 다시 입력" placeholderTextColor={C.placeholder} style={s.input} />
-          {documents.length !== 2 ? <Text style={s.notice}>회원가입에 필요한 약관과 개인정보 안내를 준비하고 있어요. 지금은 로그인 없이 코스를 이용할 수 있어요.</Text> : documents.map(document => <View key={document.documentId}>
-            <Pressable testID={`signup-document-${document.documentId}`} onPress={() => { if (document.url.startsWith('https://')) void Linking.openURL(document.url).catch(() => Alert.alert('안내', '문서를 열지 못했어요.')); }}><Text style={s.notice}>{document.documentId === 'terms-of-service' ? '이용약관 읽기' : '개인정보 처리방침 읽기'}</Text></Pressable>
-            <Pressable testID={`signup-consent-${document.documentId}`} disabled={isSubmitting} accessibilityRole="checkbox" accessibilityState={{ checked: accepted[document.documentId] === true }} onPress={() => setAccepted(value => ({ ...value, [document.documentId]: !value[document.documentId] }))}><Text style={s.label}>{accepted[document.documentId] ? '☑' : '☐'} 필수 동의</Text></Pressable>
+          <Pressable testID="signup-age-confirm" disabled={isSubmitting} accessibilityRole="checkbox" accessibilityLabel="[필수] 만 14세 이상입니다" accessibilityState={{ checked: ageConfirmed, disabled: isSubmitting }} style={s.ageRow} onPress={() => { if (!submitLock.current && activeRef.current) confirmAge(!ageConfirmedRef.current); }}>
+            <View style={[s.ageBox, ageConfirmed && s.ageBoxOn]}><Text style={s.ageCheck}>{ageConfirmed ? '✓' : ''}</Text></View>
+            <Text style={s.ageLabel}>[필수] 만 14세 이상입니다</Text>
+          </Pressable>
+          {documents.length !== 2 ? <View><Text style={s.notice}>회원가입에 필요한 약관과 개인정보 안내를 준비하고 있어요. 지금은 로그인 없이 코스를 이용할 수 있어요.</Text><Pressable testID="signup-documents-retry" disabled={isSubmitting} onPress={() => setDocumentReload(value => value + 1)}><Text style={s.notice}>문서 다시 확인</Text></Pressable></View> : documents.map(document => <View key={document.documentId}>
+            <Pressable testID={`signup-document-${document.documentId}`} disabled={isSubmitting} onPress={() => openDocument(document)}><Text style={s.notice}>{document.documentId === 'terms-of-service' ? '이용약관 읽기' : '개인정보 처리방침 읽기'}</Text></Pressable>
+            <Pressable testID={`signup-consent-${document.documentId}`} disabled={isSubmitting || !opened[document.documentId]} accessibilityRole="checkbox" accessibilityState={{ checked: accepted[document.documentId] === true, disabled: isSubmitting || !opened[document.documentId] }} onPress={() => { if (!submitLock.current && openedRef.current[document.documentId]) setAccepted(value => ({ ...value, [document.documentId]: !value[document.documentId] })); }}><Text style={s.label}>{accepted[document.documentId] ? '☑' : '☐'} 필수 동의</Text></Pressable>
           </View>)}
         </> : null}
+        {formError ? <Text testID="auth-form-error" accessibilityRole="alert" style={s.notice}>{formError}</Text> : null}
         {loginFailure ? <Text testID="login-error" accessibilityRole="alert" style={s.notice}>{passwordLoginFailureMessage(loginFailure)}</Text> : null}
         {loginFailure && captchaDiagnosticsEnabled(process.env.EXPO_PUBLIC_CAPTCHA_DIAGNOSTICS) ? <Text testID="login-diagnostic" selectable style={s.notice}>{JSON.stringify(loginFailure)}</Text> : null}
         <Pressable testID="login-submit" busy={isSubmitting} disabled={isSubmitting || (isSignUp && !signupReady)} style={s.primary} onPress={submit}>
@@ -160,7 +219,7 @@ export function LoginScreen({ navigation, readDocuments = readSignupDocuments }:
         </Pressable>
       </View>
     </ScrollView>
-    {captchaAttempt !== null ? <CaptchaVerificationSheet key={captchaAttempt} visible challengeUrl={challengeUrl} purpose="login" onClose={() => { if (attempt.current === captchaAttempt) closeCaptcha(); }} onVerified={token => void verifiedCaptcha(token, captchaAttempt)} /> : null}
+    {captchaAttempt !== null ? <CaptchaVerificationSheet key={captchaAttempt} visible challengeUrl={challengeUrl} purpose={isSignUp ? 'signup' : 'login'} onClose={() => { if (attempt.current === captchaAttempt) closeCaptcha(); }} onVerified={token => void verifiedCaptcha(token, captchaAttempt)} /> : null}
   </KeyboardAvoidingView>;
 }
 
@@ -181,6 +240,11 @@ const s = StyleSheet.create({
   label: { color: C.txt2, fontSize: 13, fontWeight: '800', marginBottom: 7, marginTop: 12 },
   input: { minHeight: 50, borderWidth: 1, borderColor: C.line, backgroundColor: C.bg, borderRadius: 10, paddingHorizontal: 13, color: C.txt, fontSize: 16 },
   notice: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 14 },
+  ageRow: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 12 },
+  ageBox: { width: 24, height: 24, borderWidth: 1, borderColor: C.line, backgroundColor: C.bg, borderRadius: 5, alignItems: 'center', justifyContent: 'center' },
+  ageBoxOn: { backgroundColor: C.accent, borderColor: C.accent },
+  ageCheck: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
+  ageLabel: { color: C.txt, fontSize: 14, fontWeight: '800', flex: 1 },
   primary: { minHeight: 52, borderRadius: 12, backgroundColor: C.accent, justifyContent: 'center', alignItems: 'center', marginTop: 20 },
   primaryText: { color: C.onAccent, fontSize: 16, fontWeight: '900' },
 });

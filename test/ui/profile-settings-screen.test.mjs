@@ -94,8 +94,9 @@ test('내정보 로그인 안내는 별도 Login 화면으로 navigate하고 acc
 
   const account = profileFixture('account');
   const allText = account.screen.nodes((node) => node.type === 'Text').map(textOf).join('|');
-  assert.match(allText, /닉네임 설정하기/);
-  assert.match(allText, /프로필 관리에서 닉네임/);
+  assert.doesNotMatch(allText, /닉네임 설정하기|프로필 관리에서 닉네임/);
+  account.screen.press('profile-manage-entry');
+  assert.deepEqual(account.calls, [['navigate', 'ProfileManagement']]);
   assert.doesNotMatch(allText, /저장 계약|공개 채널|문의 채널|repository|metadata|endpoint/);
   assert.doesNotMatch(allText, /계정 삭제/);
   assert.doesNotMatch(allText, /@/);
@@ -220,14 +221,14 @@ test('권한 adapter는 request 없이 상태를 구분하고 설정 열기 실�
     getNotificationPermission: async () => { notificationReads += 1; return { status: 'denied', granted: false }; },
     getLiveActivitySupport: async () => ({ supported: true, enabled: true }),
   });
-  assert.deepEqual(snapshot, { location: 'undetermined', notification: 'denied', liveActivity: 'granted' });
-  assert.equal(locationReads, 1);
+  assert.deepEqual(snapshot, { notification: 'denied', liveActivity: 'granted' });
+  assert.equal(locationReads, 0);
   assert.equal(notificationReads, 1);
-  assert.deepEqual(await readProfilePermissionSnapshot({}), { location: 'unavailable', notification: 'unavailable', liveActivity: 'unavailable' });
+  assert.deepEqual(await readProfilePermissionSnapshot({}), { notification: 'unavailable', liveActivity: 'unavailable' });
   assert.deepEqual(await readProfilePermissionSnapshot({
     getLocationPermission: async () => { throw new Error('read failed'); },
     getNotificationPermission: async () => ({ status: 'granted', granted: true }),
     getLiveActivitySupport: async () => ({ supported: true, enabled: false }),
-  }), { location: 'error', notification: 'granted', liveActivity: 'denied' });
+  }), { notification: 'granted', liveActivity: 'denied' });
   await assert.rejects(() => openProfileSystemSettings({ openSettings: async () => { throw new Error('blocked'); } }), /blocked/);
 });

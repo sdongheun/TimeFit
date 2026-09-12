@@ -1,4 +1,4 @@
-export const LIVE_ACTIVITY_DIAGNOSTIC_JS_REVISION = 'ula-button-diagnostic-2026-09-06.5';
+export const LIVE_ACTIVITY_DIAGNOSTIC_JS_REVISION = 'ula-final-2026-09-08.1';
 const streams = ['intent', 'app'] as const;
 const actions = ['arrival', 'snooze', 'departure', 'boot', 'foreground', 'receipt', 'screen', 'pending', 'route'] as const;
 const results = ['started', 'succeeded', 'rejected', 'failed', 'observed', 'absent'] as const;

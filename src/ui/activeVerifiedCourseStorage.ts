@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { ActiveVerifiedCourse } from './activeVerifiedCourseModel';
+import { RELEASE_MAX_MINUTES } from './timeSetup/releaseTimeBoundary';
 
 const KEY = '@timefit/active-verified-course-v1';
 const text = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0;
@@ -9,6 +10,7 @@ export function decodePersistedActiveVerifiedCourse(raw: string | null): ActiveV
   try {
     const value = JSON.parse(raw) as ActiveVerifiedCourse;
     if (!value || !text(value.identity) || !text(value.courseRunId) || !value.session || !Number.isFinite(Date.parse(value.session.nowIso))
+      || !Number.isInteger(value.session.remainingMin) || value.session.remainingMin < 1 || value.session.remainingMin > RELEASE_MAX_MINUTES
       || !value.course || !Array.isArray(value.course.stops) || value.course.stops.length < 1 || value.course.stops.length > 2
       || !Array.isArray(value.course.placeIds) || value.course.placeIds.length !== value.course.stops.length
       || !Array.isArray(value.course.legs) || value.course.legs.length !== value.course.stops.length + 1

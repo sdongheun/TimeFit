@@ -34,19 +34,23 @@ export function RecommendationLoadingProgress({ stage }: { stage: Recommendation
       transform: [{ scale: pulse.interpolate({ inputRange: [0, 1], outputRange: [1, 1.16] }) }],
     };
 
-  return <View accessibilityLabel={`계산 진행: ${items.map((item) => `${item.label} ${item.state}`).join(', ')}`}>
+  return <View testID="recommendation-progress" style={s.container} accessibilityLabel={`계산 진행: ${items.map((item) => `${item.label} ${item.state}`).join(', ')}`}>
+    <View testID="recommendation-progress-columns" style={s.columns}>
     {items.map((item) => <View key={item.stage} style={s.row}>
       <Animated.View style={[s.dot, item.state === 'done' && s.done, item.state === 'current' && s.current, item.state === 'current' && pulseStyle]} />
       <Text style={[s.label, item.state !== 'pending' && s.labelOn]}>{item.label}</Text>
     </View>)}
+    </View>
   </View>;
 }
 
 const s = StyleSheet.create({
-  row: { width: 280, minHeight: 34, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  container: { width: '100%', alignItems: 'center' },
+  columns: { alignSelf: 'center', maxWidth: '100%' },
+  row: { minHeight: 34, flexDirection: 'row', alignItems: 'center', gap: 12 },
   dot: { width: 12, height: 12, borderRadius: 6, borderWidth: 2, borderColor: '#697385', backgroundColor: 'transparent' },
   done: { borderColor: C.green, backgroundColor: C.green },
   current: { borderColor: '#72b2ff', backgroundColor: '#72b2ff' },
-  label: { color: C.muted, fontSize: 14 },
+  label: { flexShrink: 1, color: C.muted, fontSize: 14 },
   labelOn: { color: C.txt2, fontWeight: '700' },
 });

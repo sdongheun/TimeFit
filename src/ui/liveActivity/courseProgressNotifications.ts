@@ -65,7 +65,6 @@ export const liveCourseNotificationPort = {
     }
     await Notifications.setNotificationCategoryAsync(ARRIVAL_CATEGORY, [
       { identifier: 'arrival_confirmed', buttonTitle: '도착했어요' },
-      { identifier: 'arrival_snoozed', buttonTitle: '5분 뒤' },
     ]);
     await Notifications.setNotificationCategoryAsync(DEPARTURE_CATEGORY, [
       { identifier: 'departure_confirmed', buttonTitle: '이제 출발해요' },

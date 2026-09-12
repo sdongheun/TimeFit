@@ -399,7 +399,7 @@ test('UTWOSTOP03: production은 인라인 선택·sticky tray·fixed CTA만 사�
   const confirm = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf8');
   const results = fs.readFileSync('src/ui/ResultsScreen.tsx', 'utf8');
   assert.match(panel, /선택한 장소/);
-  assert.match(panel, /함께 갈 장소를 확인하고 있어요/);
+  assert.match(panel, /함께 들를 곳을 찾고 있어요/); // U-MAIN-MAP-POLISH-02: actual pending copy + indicator.
   assert.match(panel, /twoStopCandidateDurationLabel\(candidate\)/);
   assert.doesNotMatch(panel, /candidate\.courseMin/);
   assert.match(panel, /accessibilityState=\{\{ selected \}\}/);
@@ -419,7 +419,7 @@ test('UTWOSTOP03: production은 인라인 선택·sticky tray·fixed CTA만 사�
   assert.doesNotMatch(confirm, /TwoStopSecondaryAction|한 곳 더 고르기|recordTwoStopSelectionIntent/);
   assert.match(results, /TwoStopSelectionPanel/);
   assert.match(results, /createInlineTwoStopSelectionController/);
-  assert.match(results, /beforeRemove/);
+  assert.match(results, /usePreventRemove/);
   assert.match(results, /selected \? 86 \+ Math\.max\(insets\.bottom, 10\) : 34/);
   assert.doesNotMatch(results, /consumeTwoStopSelectionIntent/);
   assert.doesNotMatch(results, /beginReleaseTwoStopSelectionV1/);
@@ -430,7 +430,7 @@ test('UTWOSTOP03 사용자 반환 failure-first: 선택 전후는 같은 Results
   assert.equal((results.match(/ref=\{scrollRef\}/g) ?? []).length, 1);
   assert.doesNotMatch(results, /if \(inlineState\.mode !== 'idle'\) \{[\s\S]*?return <View style=\{s\.root\}>/);
   assert.match(results, /resultsCourseRegionMode/);
-  assert.match(results, /style=\{s\.traySlot\}/);
+  assert.match(results, /style=\{selected \? s\.selectedTraySlot : s\.traySlot\}/); // U-MAIN-COURSE-POLISH-01: same persistent slot, selected-only spacing.
   assert.match(results, /style=\{s\.ctaSlot\}/);
   const immediate = { mode: 'first_selected', firstCourse: first, selectedPairCourse: null, snapshot, pairEnabled: true } as const;
   assert.equal(resultsCourseRegionMode({ mode: 'idle' }, null), 'one_stop');

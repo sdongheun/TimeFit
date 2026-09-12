@@ -7,6 +7,12 @@ export type Appointment = { label: string; lat: number; lon: number } | null;
 // modeLabel: 사용자가 입력한 수단(도보/자차/버스/택시) — 엔진 mode(walk|car)와 별개 표시용
 export type PlanCtx = {
   startMin: number;
+  /** Original dated start instant, never regenerated at save/replan time. Optional only for legacy read compatibility. */
+  startedAtIso?: string;
+  /** Repository-validated original deadline (UTC ISO); never infer from a replanned duration. */
+  endsAtIso?: string;
+  /** Repository restoration issue; retained until an explicitly confirmed separate new plan. */
+  courseDateIssue?: 'missing' | 'invalid' | 'conflict';
   mode: Mode;
   modeLabel: string;
   originLabel?: string;
@@ -71,6 +77,7 @@ export type RootStackParamList = {
   Feedback: { course: Course; ctx: PlanCtx };
   ActivityRecord: undefined;
   Profile: undefined;
+  ProfileManagement: undefined;
   Login: undefined;
 };
 

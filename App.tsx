@@ -20,6 +20,7 @@ import { OneStopResultsScreen } from "./src/ui/OneStopResultsScreen";
 import { ExecutionScreen } from "./src/ui/ExecutionScreen";
 import { FeedbackScreen } from "./src/ui/FeedbackScreen";
 import { ProfileScreen } from "./src/ui/ProfileScreen";
+import { ProfileManagementScreen } from "./src/ui/ProfileManagementScreen";
 import { LoginScreen } from "./src/ui/LoginScreen";
 import { ActivityRecordScreen } from "./src/ui/ActivityRecordScreen";
 import { AppFlowProvider } from "./src/ui/AppFlowContext";
@@ -86,6 +87,7 @@ function AppNavigation() {
         />
         <Stack.Screen name="Feedback" component={FeedbackScreen} options={{ title: "코스 완료", headerBackVisible: false }} />
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false, animation: 'none' }} />
+        <Stack.Screen name="ProfileManagement" component={ProfileManagementScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ActivityRecord" component={ActivityRecordScreen} options={{ headerShown: false, animation: 'none' }} />
       </Stack.Navigator>

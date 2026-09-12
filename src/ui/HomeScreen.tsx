@@ -22,7 +22,7 @@ export function HomeScreen({ navigation }: Props) {
   const active = homeActiveCourseProjection(activeVerifiedCourse, activeCourse, (placeId) => placeTitles.get(placeId));
   return <View style={s.root}>
     <ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 26, paddingBottom: 112 }]}>
-      <View style={s.topRow}><Text style={s.eyebrow}>TIMEFIT</Text><Pressable
+      <View style={s.topRow}><Pressable
         variant="icon"
         testID="home-profile-entry"
         accessibilityLabel={authKind === 'account' ? '내정보 열기' : '로그인 열기'}
@@ -30,8 +30,8 @@ export function HomeScreen({ navigation }: Props) {
         style={s.profileButton}
         onPress={() => navigation.navigate(authKind === 'account' ? 'Profile' : 'Login')}
       ><Feather name="user" size={19} color={C.accent} /></Pressable></View>
-      <Text style={s.title}>지금 남는 시간을{`\n`}정해볼까요?</Text>
-      <Text style={s.copy}>도착 시간에 늦지 않도록,{`\n`}잠깐 들를 한 곳을 찾습니다.</Text>
+      <Text style={s.title}>약속 전 남는 시간,{`\n`}어디 들러볼까요?</Text>
+      <Text style={s.copy}>약속 시간에 맞춰 들를 만한 곳을 찾아드려요.</Text>
       <Pressable style={s.primary} onPress={() => navigation.navigate('TimeSetup')}><Text style={s.primaryText}>자투리 시간 설정하기</Text></Pressable>
       {active.kind === 'verified' ? <Pressable accessibilityLabel={active.accessibilityLabel} style={s.active} onPress={() => navigation.navigate(active.target, active.params)}><Text style={s.activeEyebrow}>진행 중인 코스</Text><Text style={s.activeTitle} numberOfLines={2}>{active.title} ›</Text></Pressable>
         : active.kind === 'legacy' ? <Pressable accessibilityLabel={active.accessibilityLabel} style={s.active} onPress={() => navigation.navigate(active.target, active.params)}><Text style={s.activeEyebrow}>진행 중인 코스</Text><Text style={s.activeTitle} numberOfLines={1}>{active.title} ›</Text></Pressable>
@@ -43,7 +43,7 @@ export function HomeScreen({ navigation }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg }, body: { paddingHorizontal: 22 }, eyebrow: { color: '#6eacff', fontSize: 13, fontWeight: '800' },
-  topRow: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, profileButton: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel, alignItems: 'center', justifyContent: 'center' },
+  topRow: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }, profileButton: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel, alignItems: 'center', justifyContent: 'center' },
   title: { color: C.txt, fontSize: 37, lineHeight: 42, fontWeight: '800', marginTop: 10 }, copy: { color: C.muted, fontSize: 15, lineHeight: 23, marginTop: 13 },
   primary: { minHeight: 54, marginTop: 32, borderRadius: 12, backgroundColor: C.accent, alignItems: 'center', justifyContent: 'center' }, primaryText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
   placeholder: { marginTop: 26, padding: 16, borderRadius: 16, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel }, placeholderText: { color: C.muted, fontSize: 13, lineHeight: 20 },

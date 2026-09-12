@@ -31,12 +31,16 @@ test('actual signup: registry documents unchecked, two explicit consents, stable
   const inputs = [];
   const runtime = screenRuntime({ './CaptchaVerificationSheet': { CaptchaVerificationSheet: 'Captcha' }, 'expo-modules-core': { uuid }, './AuthContext': { useAuth: () => ({ authKind: 'guest', signUp: async input => { inputs.push(input); return false; } }) } });
   const { LoginScreen } = runtime.load('src/ui/LoginScreen.tsx');
+  runtime.native.Linking.openURL = async () => {};
   const screen = runtime.mount(LoginScreen, { navigation: { addListener: () => () => {}, goBack() {} }, readDocuments: async () => ({ status: 'ok', documents: ['terms-of-service','privacy-policy'].map(documentId => ({ documentId, documentVersion: 'fixture-v1', url: 'https://fixture.invalid/doc' })) }) });
   screen.press('login-mode-signup'); screen.render(); await flush();
   assert.equal(screen.get('login-submit').props.disabled, true);
   screen.get('login-email').props.onChangeText('fixture@example.test'); screen.get('login-password').props.onChangeText('fixture-password'); screen.get('signup-password-confirm').props.onChangeText('fixture-password');
+  await screen.press('signup-document-terms-of-service'); await screen.press('signup-document-privacy-policy');
   screen.press('signup-consent-terms-of-service'); screen.press('signup-consent-privacy-policy');
+  screen.press('signup-age-confirm');
   await screen.press('login-submit');
+  screen.nodes(n=>n.type==='Captcha')[0].props.onVerified('fresh-fixture');await flush();
   assert.equal(inputs.length, 1); assert.equal(inputs[0].requiredConsents.terms.accepted, true);
   assert.doesNotMatch(JSON.stringify(inputs), /age|birth|timestamp/);
 });
@@ -53,6 +57,9 @@ test('actual deletion: server reauthentication and unknown result never clear un
   runtime.native.Alert.alert = (_title, _copy, buttons) => { confirmed = buttons.at(-1).onPress; };
   const { OwnedDeletionPanel } = runtime.load('src/ui/OwnedDeletionPanel.tsx');
   const screen = runtime.mount(OwnedDeletionPanel, { subject: 'A', account: true, getPorts: async () => ({ supabaseAccountIdentityResolver: { resolve: async () => ({ status: 'account', identity: { subject: 'A' } }) }, deleteOwnedAccount: async input => { ids.push(input.requestId); return result; }, recheckOwnedAccountDeletion: async () => ({ status: 'unknown' }) }) });
+  const action = screen.get('owned-delete-all');
+  assert.equal(action.props.style.alignItems, 'center'); assert.equal(action.props.style.borderWidth, 1);
+  assert.equal(action.props.style.backgroundColor, '#171719'); assert.equal(action.props.children.props.style.textAlign, 'center');
   screen.press('owned-delete-all'); confirmed(); await flush();
   screen.get('delete-account-password').props.onChangeText('fixture-password');
   result = { status: 'retryable_failure', stage: 'verification' };

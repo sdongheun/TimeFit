@@ -9,6 +9,7 @@ import {
 
 const origin: LatLon = { lat: 35.1578, lon: 129.0594 };
 const appointment = { lat: 35.1796, lon: 129.0756 };
+const exactRoutes = { finalMode: 'walk' as const, read: (from: LatLon, to: LatLon) => ({ min: 8, src: 'TMAP', geo: [from, to] }) };
 
 const ctx: PlanCtx = {
   startMin: 12 * 60,
@@ -45,6 +46,7 @@ test("장바구니 코스는 선택한 도착 구간 수단을 보존하고 마�
     appointment,
     ctx,
     { first: "walk", second: "car" },
+    exactRoutes,
   );
 
   const travelLegs = course.legs.filter((leg) => leg.mode);
@@ -62,11 +64,25 @@ test("장바구니 코스는 이동·체류 합계가 안전 여유를 제외한
     origin,
     appointment,
     ctx,
+    {},
+    exactRoutes,
   );
 
   assert.ok(course.totalMin <= ctx.remainingMin);
   assert.ok(course.bufferLeftMin >= 0);
   assert.ok(course.legs.some((leg) => leg.label.startsWith("체류 가능")));
+});
+
+test('실경로 없는 코스는 성공 Course를 반환하지 않는다', () => {
+  assert.throws(() => buildBasketCourse([spot('one', '장소 1', 35.1601, 129.0602)], origin, appointment, ctx), /basket_route_unavailable/);
+});
+
+test('유한 근사 시간도 성공으로 승격하지 않고 마지막 누락 구간을 거절한다', () => {
+  for (const missing of [{ min: Infinity, src: 'transit_fallback' }, { min: 8, src: 'haversine' }]) {
+    assert.throws(() => buildBasketCourse([spot('one', '장소 1', 35.1601, 129.0602)], origin, appointment, ctx, {}, {
+      read: (from, to) => to === appointment ? missing : exactRoutes.read(from, to),
+    }), /basket_route_unavailable/);
+  }
 });
 
 test("자동 정렬은 장소를 삭제하거나 중복하지 않고 입력 장소만 재배열한다", () => {

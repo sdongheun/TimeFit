@@ -29,6 +29,7 @@ private struct TimeFitDecodedActivityPayload {
   let nextBoundaryAtMs: Double
   let departureReminderAtMs: Double?
   let snoozeUsed: Bool
+  let completionEligible: Bool
 
   static func decode(_ value: NSDictionary, expectedPurpose: String) -> Self? {
     guard value["purpose"] as? String == expectedPurpose,
@@ -51,7 +52,8 @@ private struct TimeFitDecodedActivityPayload {
       purpose: expectedPurpose, schemaVersion: schemaVersion, courseRunId: courseRunId,
       stopId: stopId, revision: revision, phase: phase, targetTitle: targetTitle,
       arrivalPromptAtMs: arrival?.doubleValue, nextBoundaryAtMs: boundary.doubleValue,
-      departureReminderAtMs: reminder?.doubleValue, snoozeUsed: snoozeUsed
+      departureReminderAtMs: reminder?.doubleValue, snoozeUsed: snoozeUsed,
+      completionEligible: expectedPurpose == "course_progress" && stopId == "final-destination" && phase == "traveling" && value["completionEligible"] as? Bool == true
     )
   }
 
@@ -59,7 +61,7 @@ private struct TimeFitDecodedActivityPayload {
     .init(
       activeStopId: stopId == "final-destination" ? nil : stopId, phase: phase, revision: revision, targetTitle: targetTitle,
       arrivalPromptAtMs: arrivalPromptAtMs, nextBoundaryAtMs: nextBoundaryAtMs,
-      departureReminderAtMs: departureReminderAtMs, snoozeUsed: snoozeUsed
+      departureReminderAtMs: departureReminderAtMs, snoozeUsed: snoozeUsed, completionEligible: completionEligible
     )
   }
 }
@@ -297,6 +299,21 @@ final class TimeFitLiveActivityModule: RCTEventEmitter {
     Task { @MainActor in enqueue {
       do { try TimeFitLocalProgressReceiptWriter.acknowledgeCourseReceipt(eventId: eventId); resolve(nil) }
       catch { reject("live_progress_receipt_ack_failed", "Local progress receipt could not be acknowledged", error) }
+    } }
+  }
+
+  @objc
+  func revokeCompletionActions(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    Task { @MainActor in enqueue {
+      do {
+        for activity in Activity<TimeFitActivityAttributes>.activities where TimeFitActivityIdentityPolicy.purpose(activity.attributes) == "course_progress" {
+          try TimeFitPendingNavigationActionStore.revokeCompletion(activity.attributes.courseRunId)
+        }
+        if let pending = TimeFitPendingNavigationActionStore.read(), pending.purpose == "course_progress_completion" {
+          try TimeFitPendingNavigationActionStore.revokeCompletion(pending.courseRunId)
+        }
+        resolve(nil)
+      } catch { reject("completion_revocation_failed", "Completion request could not be revoked", nil) }
     } }
   }
 

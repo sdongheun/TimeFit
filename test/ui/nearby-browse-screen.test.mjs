@@ -13,6 +13,8 @@ catalog.matched.data[0].imageEvidence = approvedPhotoEvidence;
 
 function fixture(options = {}) {
   const calls = [];
+  const openedUrls = [];
+  const activeCourse = Object.freeze({ courseRunId: 'fixture-active', stepIndex: 2 });
   let gpsResolve;
   let pendingAnimation;
   let pendingStop;
@@ -48,11 +50,13 @@ function fixture(options = {}) {
   }
   const FlatList = props => ({ type: 'FlatList', props: { ...props, children: props.data.map((item, index) => props.renderItem({ item, index })) } });
   const dimensions = options.dimensions ?? { width: 390, height: 844, fontScale: 1 };
-  const native = { ...host.native, ActivityIndicator: 'ActivityIndicator', FlatList, Image: 'Image', Linking: { async canOpenURL() { calls.push('can-open'); return false; }, async openURL() { calls.push('open'); } }, PanResponder: { create: handlers => ({ panHandlers: handlers }) }, Animated: { Value, View: 'AnimatedView', spring(value, config) { return { start(callback) { if (activeAnimation) { const cancelled = activeAnimation; activeAnimation = undefined; animationEvents.push({ type: 'cancel', at: cancelled.value.value, target: cancelled.target }); cancelled.callback?.({ finished: false }); } const animation = { value, target: config.toValue, callback }; activeAnimation = animation; animationEvents.push({ type: 'start', at: value.value, target: config.toValue }); const finish = () => { if (activeAnimation !== animation) return; activeAnimation = undefined; value.advanceTo(config.toValue); animationEvents.push({ type: 'finish', at: value.value, target: config.toValue }); callback?.({ finished: true }); }; if (options.manualAnimation) { pendingAnimation = finish; animationFinishes.push(finish); } else finish(); } }; } }, useWindowDimensions: () => dimensions };
+  const native = { ...host.native, ActivityIndicator: 'ActivityIndicator', FlatList, Image: 'Image', Linking: { async canOpenURL() { calls.push('can-open'); return false; }, async openURL(url) { calls.push('open'); openedUrls.push(url); return options.openExternal?.(url); } }, PanResponder: { create: handlers => ({ panHandlers: handlers }) }, Animated: { Value, View: 'AnimatedView', spring(value, config) { return { start(callback) { if (activeAnimation) { const cancelled = activeAnimation; activeAnimation = undefined; animationEvents.push({ type: 'cancel', at: cancelled.value.value, target: cancelled.target }); cancelled.callback?.({ finished: false }); } const animation = { value, target: config.toValue, callback }; activeAnimation = animation; animationEvents.push({ type: 'start', at: value.value, target: config.toValue }); const finish = () => { if (activeAnimation !== animation) return; activeAnimation = undefined; value.advanceTo(config.toValue); animationEvents.push({ type: 'finish', at: value.value, target: config.toValue }); callback?.({ finished: true }); }; if (options.manualAnimation) { pendingAnimation = finish; animationFinishes.push(finish); } else finish(); } }; } }, useWindowDimensions: () => dimensions };
   const overrides = {
     'react-native': native,
     '@expo/vector-icons': { Feather: 'Feather' },
     '../data/busan_poi_catalog.json': catalog,
+    './AppFlowContext': { useAppFlow: () => ({ activeVerifiedCourse: activeCourse, startActiveVerifiedCourse() { calls.push('course-write'); throw Error('forbidden'); } }) },
+    './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: new Proxy({}, { get() { return () => { calls.push('lifecycle'); throw Error('forbidden'); }; } }) },
     './NearbyBrowseMap': { NearbyBrowseMap: 'NearbyBrowseMap' },
     './FloatingTabBar': { FloatingTabBar: 'FloatingTabBar' },
     './PlacePicker': { PlacePicker: 'PlacePicker' },
@@ -60,9 +64,9 @@ function fixture(options = {}) {
     './AnimatedPressable': { AnimatedPressable: 'Pressable' },
     './mainTabNavigation': { resetToMain() { calls.push('main'); }, resetToActivityRecord() { calls.push('record'); }, resetToProfile() { calls.push('profile'); } },
     '../services/kakaoLocationLabelAdapter': { createKakaoLocationLabelAdapter: () => ({ async resolve() { return { source: 'address', address: '부산광역시 중구 기준로 1' }; } }) },
-    './locationSearchDraft': { createLocationSearchDraft: () => ({ start() {}, end() {}, resume() {} }) },
+    './locationSearchDraft': { createLocationSearchDraft: () => ({ start() { calls.push('draft-start'); }, end() {}, resume() {} }) },
     './recommendation/courseV1PlacePreviewModel': { async openKakaoPlaceWithAppFallback() { calls.push('kakao'); return 'failed'; } },
-    'expo-web-browser': { async openBrowserAsync() { calls.push('browser'); } },
+    'expo-web-browser': { async openBrowserAsync(url) { calls.push('browser'); openedUrls.push(url); return options.openBrowser?.(url); } },
     'expo-location': {
       Accuracy: { Balanced: 1 },
       async getForegroundPermissionsAsync() { calls.push('permission-read'); return { status: options.permission ?? 'granted' }; },
@@ -74,8 +78,84 @@ function fixture(options = {}) {
   const runtime = screenRuntime(overrides);
   const navigation = { addListener() { return () => {}; } };
   const screen = runtime.mount(runtime.load('src/ui/NearbyBrowseScreen.tsx').NearbyBrowseScreen, { navigation });
-  return { screen, calls, animatedValues, animationEvents, finishAnimation() { pendingAnimation?.(); pendingAnimation = undefined; }, finishAnimationAt(index) { animationFinishes[index]?.(); }, finishStopAnimation() { pendingStop?.(); pendingStop = undefined; }, resolveGps(value = { coords: { latitude: 35.2, longitude: 129.2 } }) { gpsResolve(value); } };
+  if (!options.noCenter && options.permission !== 'denied' && !options.pendingGps) screen.nodes(n => n.type === 'PlacePicker')[0].props.onConfirm({ lat: 35, lon: 129, label: '선택한 장소', source: 'provider' });
+  return { screen, calls, openedUrls, activeCourse, animatedValues, animationEvents, finishAnimation() { pendingAnimation?.(); pendingAnimation = undefined; }, finishAnimationAt(index) { animationFinishes[index]?.(); }, finishStopAnimation() { pendingStop?.(); pendingStop = undefined; }, resolveGps(value = { coords: { latitude: 35.2, longitude: 129.2 } }) { gpsResolve(value); } };
 }
+
+test('UNEAR SIMPLE failure-first: handle tap/accessibility replaces toggle, white action text and standalone destination', async () => {
+  const f = fixture(); await tick();
+  assert.doesNotMatch(JSON.stringify(f.screen.render()), /기준 위치에서 가까운 순 · 직선거리|nearby-sheet-toggle/);
+  let handle = f.screen.get('nearby-sheet-handle');
+  assert.equal(handle.props.accessibilityState.expanded, false);
+  handle.props.onPanResponderGrant(); handle.props.onPanResponderRelease(null, { dx: 0, dy: 0, vy: 0 });
+  handle = f.screen.get('nearby-sheet-handle');
+  assert.equal(handle.props.accessibilityState.expanded, true);
+  handle.props.onAccessibilityAction({ nativeEvent: { actionName: 'collapse' } });
+  assert.equal(f.screen.get('nearby-sheet-handle').props.accessibilityState.expanded, false);
+  f.screen.press('nearby-row-far');
+  assert.doesNotMatch(JSON.stringify(f.screen.render()), /정보 탐색 장소 · 방문 전/);
+  assert.ok(f.screen.get('nearby-directions'));
+  for (const label of ['카카오맵 길찾기', '카카오맵에서 장소 확인']) { // MAP02: current-location is now a camera icon.
+    const text = f.screen.nodes(n => n.type === 'Text' && n.props.children === label)[0];
+    assert.ok(text);
+    const styles = [text.props.style].flat(Infinity).filter(Boolean);
+    assert.equal(Object.assign({}, ...styles).color, '#f7f7f8');
+  }
+  f.screen.press('nearby-directions'); f.screen.press('nearby-directions'); await tick();
+  assert.equal(f.calls.filter(c => c === 'open').length, 1);
+  assert.ok(f.screen.get('nearby-detail-close'));
+});
+
+test('UNEAR SIMPLE manual center, delayed failure and return preserve destination/detail/active course', async () => {
+  let reject;
+  const f = fixture({ permission: 'denied', openExternal: () => new Promise((_, fail) => { reject = fail; }), openBrowser: async () => { throw Error('fixture failure'); } }); await tick();
+  f.screen.press('nearby-change-location');
+  f.screen.nodes(n => n.type === 'PlacePicker')[0].props.onConfirm({ lat: 35, lon: 129, label: '탐색 기준', source: 'provider' });
+  f.screen.press('nearby-row-far');
+  const snapshot = JSON.stringify(f.activeCourse);
+  const before = f.calls.length;
+  f.screen.press('nearby-directions'); f.screen.press('nearby-directions');
+  assert.equal(f.calls.filter(c => c === 'open').length, 1);
+  reject(Error('fixture failure')); await tick();
+  assert.deepEqual(f.openedUrls, [f.openedUrls[0], f.openedUrls[0]]);
+  assert.match(decodeURIComponent(f.openedUrls[0]), /\/link\/to\/먼 곳,35.001,129$/);
+  assert.doesNotMatch(f.openedUrls[0], /sp=|from|탐색/);
+  assert.deepEqual(f.calls.slice(before), ['open', 'browser']);
+  assert.equal(JSON.stringify(f.activeCourse), snapshot);
+  assert.match(JSON.stringify(f.screen.render()), /길찾기를 열지 못했어요/);
+  assert.ok(f.screen.get('nearby-directions'));
+  assert.match(JSON.stringify(f.screen.render()), /탐색 기준/);
+});
+
+test('UNEAR SIMPLE a drag returning to zero is not a tap and accessibility interrupts spring safely', async () => {
+  const f = fixture({ manualAnimation: true }); await tick();
+  const handle = f.screen.get('nearby-sheet-handle');
+  handle.props.onPanResponderGrant();
+  handle.props.onPanResponderMove(null, { dy: -80 });
+  handle.props.onPanResponderMove(null, { dy: 0 });
+  handle.props.onPanResponderRelease(null, { dy: 0, vy: 0 });
+  assert.equal(f.screen.get('nearby-sheet-handle').props.accessibilityState.expanded, false);
+  f.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
+  f.finishAnimation();
+  assert.equal(f.screen.get('nearby-sheet-handle').props.accessibilityState.expanded, true);
+});
+
+test('UNEAR HANDOFF browser cancel is neutral and stale errors cannot overwrite a new selection', async () => {
+  for (const type of ['cancel', 'dismiss']) {
+    const f = fixture({ openExternal: async () => { throw Error(); }, openBrowser: async () => ({ type }) }); await tick();
+    f.screen.press('nearby-row-far'); f.screen.press('nearby-directions'); await tick();
+    assert.doesNotMatch(JSON.stringify(f.screen.render()), /길찾기를 열지 못했어요/);
+    assert.equal(f.screen.get('nearby-change-location').props.accessibilityLabel, '기준 위치 검색');
+    assert.equal(f.screen.get('nearby-change-location').props.variant, undefined);
+  }
+  let fail;
+  const f = fixture({ openExternal: () => new Promise((_, reject) => { fail = reject; }), openBrowser: async () => { throw Error(); } }); await tick();
+  f.screen.press('nearby-row-far'); f.screen.press('nearby-directions');
+  f.screen.nodes(n => n.type === 'NearbyBrowseMap')[0].props.onSelect('near');
+  fail(Error()); await tick();
+  assert.doesNotMatch(JSON.stringify(f.screen.render()), /길찾기를 열지 못했어요/);
+  assert.ok(f.screen.get('nearby-directions'));
+});
 
 test('photo integration: nearby row/detail share approved URL, visible credit and load failure fallback', async () => {
   const f = fixture(); await tick();
@@ -103,27 +183,43 @@ test('UNEAR production screen uses one dataset for map/list and marker/list open
   assert.ok(f.screen.get('nearby-row-near'));
   map.props.onSelect('far');
   assert.match(JSON.stringify(f.screen.render()), /먼 곳/);
-  assert.match(JSON.stringify(f.screen.render()), /정보 탐색 장소/);
+  assert.doesNotMatch(JSON.stringify(f.screen.render()), /정보 탐색 장소 · 방문 전/);
   f.screen.get('nearby-detail-image-fallback');
   f.screen.press('nearby-detail-close');
   assert.equal(f.screen.get('nearby-row-far').props.style.flat(Infinity).filter(Boolean).at(-1).borderColor, '#0066ff');
   assert.equal(f.calls.filter(call => ['recommendation', 'route', 'save', 'dwell'].includes(call)).length, 0);
 });
 
-test('UNEAR denied entry does not prompt; explicit current does, map failure keeps empty/list recovery', async () => {
-  const f = fixture({ permission: 'denied' }); await tick();
-  assert.equal(f.calls.filter(call => call === 'permission-request').length, 0);
-  f.screen.press('nearby-current'); await tick();
-  assert.equal(f.calls.filter(call => call === 'permission-request').length, 1);
+test('UMANUAL Nearby without reference never reads GPS or requests routes; offers manual selection', async () => {
+  const f = fixture({ noCenter: true }); await tick();
+  assert.equal(f.calls.filter(call => ['permission-read', 'permission-request', 'gps', 'route', 'recommendation'].includes(call)).length, 0);
+  assert.equal(f.screen.nodes(n => n.props.testID === 'nearby-selected').length, 0);
   assert.ok(f.screen.get('nearby-empty-location'));
+  assert.equal(f.screen.nodes(n => n.props.testID?.startsWith('nearby-row-')).length, 0);
+  f.screen.press('nearby-empty-location');
+  assert.equal(f.calls.filter(c => c === 'draft-start').length, 1);
+  assert.equal(f.screen.nodes(n => n.type === 'PlacePicker')[0].props.visible, true);
 });
 
-test('UNEAR manual reference invalidates late GPS and labels selection honestly', async () => {
+test('MAP02 nearby camera callback preserves reference, list, selected detail and every route/storage port', async () => {
+  const f = fixture(); await tick();
+  f.screen.press('nearby-row-far');
+  const before = f.screen.nodes(n => n.type === 'NearbyBrowseMap')[0].props;
+  const calls = [...f.calls];
+  const camera = f.screen.get('nearby-selected');
+  assert.equal(camera.type, 'MapCameraButton');
+  camera.props.onCamera({ lat: 35.3, lon: 129.3 });
+  const after = f.screen.nodes(n => n.type === 'NearbyBrowseMap')[0].props;
+  assert.deepEqual(after.center, before.center); assert.deepEqual(after.places, before.places); assert.equal(after.selectedId, before.selectedId);
+  assert.deepEqual(after.cameraPoint, { lat: 35.3, lon: 129.3 }); assert.deepEqual(f.calls, calls);
+});
+
+test('UMANUAL manual reference works without starting GPS and labels selection honestly', async () => {
   const f = fixture({ pendingGps: true }); await tick();
   f.screen.press('nearby-change-location');
   const picker = f.screen.nodes(node => node.type === 'PlacePicker')[0];
   picker.props.onConfirm({ lat: 35, lon: 129, label: '부산역', source: 'provider' });
-  f.resolveGps(); await tick();
+  assert.equal(f.calls.includes('gps'), false); await tick();
   const location = f.screen.nodes(node => node.type === 'Text' && Array.isArray(node.props.children) && node.props.children.includes('부산역'))[0];
   assert.deepEqual(location.props.children, ['선택 위치 기준 · ', '부산역']);
   assert.doesNotMatch(JSON.stringify(f.screen.render()), /현위치 기준/);
@@ -160,7 +256,7 @@ test('UNEAR expanded list and detail keep terminal touch targets above the measu
   const f = fixture(); await tick();
   const tab = f.screen.nodes(node => node.type === 'FloatingTabBar')[0];
   tab.props.onFrame({ x: 16, y: 744, width: 358, height: 66 });
-  f.screen.press('nearby-sheet-toggle');
+  f.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
   assert.equal(f.screen.nodes(node => node.type === 'NearbyBrowseMap')[0].props.bottomInset, f.screen.get('nearby-sheet').props.style.flat(Infinity).at(-1).height.value);
 
   f.screen.press('nearby-row-near');
@@ -220,7 +316,7 @@ test('UNEAR opening does not cancel the pending spring or refit the map before a
   const setCountBeforeOpen = value.setCount;
   const mapInsetBeforeOpen = f.screen.nodes(node => node.type === 'NearbyBrowseMap')[0].props.bottomInset;
 
-  f.screen.press('nearby-sheet-toggle');
+  f.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
   f.screen.render();
   assert.equal(value.setCount, setCountBeforeOpen, 'state synchronization must not overwrite an in-flight spring');
   assert.equal(f.screen.nodes(node => node.type === 'NearbyBrowseMap')[0].props.bottomInset, mapInsetBeforeOpen, 'map viewport work waits for settled sheet geometry');
@@ -232,7 +328,7 @@ test('UNEAR opening does not cancel the pending spring or refit the map before a
 test('UNEAR drag regression: a re-grab during spring continues from current 318 to 326', async () => {
   const f = fixture({ manualAnimation: true }); await tick();
   f.screen.nodes(node => node.type === 'FloatingTabBar')[0].props.onFrame({ x: 16, y: 744, width: 358, height: 66 });
-  f.screen.press('nearby-sheet-toggle');
+  f.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
   f.screen.render();
   const value = f.animatedValues[0];
   value.advanceTo(318);
@@ -287,10 +383,10 @@ test('UNEAR diagnostic fake distinguishes cancellation, completion, and stale co
   const f = fixture({ manualAnimation: true }); await tick();
   f.screen.nodes(node => node.type === 'FloatingTabBar')[0].props.onFrame({ x: 16, y: 744, width: 358, height: 66 });
   const collapsedInset = f.screen.nodes(node => node.type === 'NearbyBrowseMap')[0].props.bottomInset;
-  f.screen.press('nearby-sheet-toggle');
+  f.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
   f.screen.render();
   f.animatedValues[0].advanceTo(318);
-  f.screen.press('nearby-sheet-toggle');
+  f.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
   f.screen.render();
   assert.deepEqual(f.animationEvents.slice(-2), [
     { type: 'cancel', at: 318, target: 610 },
@@ -334,7 +430,7 @@ test('UNEAR drag regression: range clamp rebases cumulative dy before the next m
 test('UNEAR drag regression: expanded downward swipe settles collapsed and unmount blocks pending completion', async () => {
   const f = fixture(); await tick();
   f.screen.nodes(node => node.type === 'FloatingTabBar')[0].props.onFrame({ x: 16, y: 744, width: 358, height: 66 });
-  f.screen.press('nearby-sheet-toggle');
+  f.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
   const handle = f.screen.get('nearby-sheet-handle');
   handle.props.onPanResponderGrant(null, { dy: 0, vy: 0 });
   handle.props.onPanResponderMove(null, { dy: 100, vy: 0.5 });
@@ -343,7 +439,7 @@ test('UNEAR drag regression: expanded downward swipe settles collapsed and unmou
   assert.equal(f.animatedValues[0].value, 277);
 
   const pending = fixture({ manualAnimation: true }); await tick();
-  pending.screen.press('nearby-sheet-toggle');
+  pending.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
   pending.screen.unmount();
   assert.doesNotThrow(() => pending.finishAnimation());
   assert.equal(pending.calls.filter(call => ['main', 'record', 'profile', 'kakao'].includes(call)).length, 0);
@@ -352,10 +448,10 @@ test('UNEAR drag regression: expanded downward swipe settles collapsed and unmou
 test('UNEAR drag regression: a re-grab during collapsing spring continues downward from its current height', async () => {
   const f = fixture({ manualAnimation: true }); await tick();
   f.screen.nodes(node => node.type === 'FloatingTabBar')[0].props.onFrame({ x: 16, y: 744, width: 358, height: 66 });
-  f.screen.press('nearby-sheet-toggle');
+  f.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
   f.finishAnimationAt(0);
   assert.equal(f.animatedValues[0].value, 610);
-  f.screen.press('nearby-sheet-toggle');
+  f.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
   f.screen.render();
   f.animatedValues[0].advanceTo(500);
   const handle = f.screen.get('nearby-sheet-handle');
@@ -365,7 +461,7 @@ test('UNEAR drag regression: a re-grab during collapsing spring continues downwa
   assert.deepEqual(f.animationEvents.at(-1), { type: 'cancel', at: 500, target: 277 });
 });
 
-test('UNEAR drag regression: grant immediately followed by release waits for baseline and settles nearest endpoint once', async () => {
+test('UNEAR drag regression: tap release waits for baseline and toggles exactly once', async () => {
   const f = fixture({ manualStopAnimation: true }); await tick();
   f.screen.nodes(node => node.type === 'FloatingTabBar')[0].props.onFrame({ x: 16, y: 744, width: 358, height: 66 });
   const handle = f.screen.get('nearby-sheet-handle');
@@ -373,6 +469,6 @@ test('UNEAR drag regression: grant immediately followed by release waits for bas
   handle.props.onPanResponderRelease(null, { dy: 0, vy: 0 });
   assert.equal(f.animationEvents.filter(event => event.type === 'start').length, 0);
   f.finishStopAnimation();
-  assert.equal(f.animatedValues[0].value, 277);
-  assert.equal(f.animationEvents.filter(event => event.type === 'start' && event.target === 277).length, 1);
+  assert.equal(f.animatedValues[0].value, 610);
+  assert.equal(f.animationEvents.filter(event => event.type === 'start' && event.target === 610).length, 1);
 });

@@ -1,8 +1,10 @@
+import { courseReplanTiming, preserveCourseDateContext } from './courseDateContext';
 import { currentPlacePhoto } from './currentPlacePhoto';
 import { PlacePhoto, PlacePhotoCredit } from './PlacePhoto';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Slider from '@react-native-community/slider';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { isCourseDateError } from '../services/courseRepository';
 import { ActivityIndicator, Alert, Linking, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -45,7 +47,7 @@ function asKakaoDisplayPlace(spot: Spot): CourseV1DisplayPlace {
 }
 
 export function OneStopResultsScreen({ route, navigation }: Props) {
-  const { result, origin, ctx } = route.params;
+  const { result, origin, ctx, editingCourseId } = route.params;
   const target = ctx.appointment ? { lat: ctx.appointment.lat, lon: ctx.appointment.lon } : origin;
   const insets = useSafeAreaInsets();
   const flow = useAppFlow();
@@ -57,6 +59,7 @@ export function OneStopResultsScreen({ route, navigation }: Props) {
   const [representativeFailed, setRepresentativeFailed] = useState(false);
   const [searchRadiusM, setSearchRadiusM] = useState<number>(DEFAULT_ONE_STOP_SEARCH_RADIUS_M);
   const [saving, setSaving] = useState(false);
+  const savingLock = useRef(false);
   const routeService = useMemo(() => createOneStopRouteService(), []);
   const scopedSpots = useMemo(() => filterOneStopCandidatesByRadius({
     spots: result.spatialCandidates as Spot[], origin, destination: ctx.appointment ? target : null,
@@ -80,20 +83,57 @@ export function OneStopResultsScreen({ route, navigation }: Props) {
     catch { Alert.alert('카카오맵을 열 수 없어요', '잠시 후 다시 시도해 주세요.'); }
   };
   const startCourse = async () => {
-    if (!active || active.status === 'unavailable' || saving) return;
+    if (!active || active.status === 'unavailable' || savingLock.current) return;
+    savingLock.current = true;
     setSaving(true);
     try {
+      const expired = (context: typeof ctx) => {
+        // Only a brand-new plan may derive its initial end from its original input.
+        // Existing edits must use the repository-restored end, never the reduced duration.
+        const initialEnd = !editingCourseId && context.endsAtIso === undefined
+          ? Date.parse(context.startedAtIso ?? '') + context.remainingMin * 60_000 : NaN;
+        const dated = Number.isFinite(initialEnd) ? { ...context, endsAtIso: new Date(initialEnd).toISOString() } : context;
+        if (courseReplanTiming(dated, Date.now()).kind !== 'expired') return false;
+        Alert.alert('코스 시간이 지났어요', '기존 기록은 그대로 유지됩니다. 시간을 다시 설정해 주세요.', [
+          { text: '닫기', style: 'cancel' }, { text: '시간 다시 설정', onPress: () => navigation.navigate('TimeSetup') },
+        ]);
+        return true;
+      };
+      if (expired(ctx)) return;
       const spot = active.spot as Spot;
-      const course = buildBasketCourse([spot], origin, target, ctx, { [spot.contentId]: active.mode });
+      const course = buildBasketCourse([spot], origin, target, ctx, { [spot.contentId]: active.mode }, { finalMode: active.mode });
       const stay = course.legs.find((leg) => leg.label.startsWith('체류 가능'))?.min ?? 0;
       const opening = await validateCourseOpening([spot], origin, target, [active.mode, active.mode], ctx.startMin, [stay]);
       if (!opening.ok) { Alert.alert('이 시간에는 담기 어려워요', opening.reason ?? '운영시간을 확인해 주세요.'); return; }
-      const base = { course, origin, ctx };
-      let params: { course: Course; origin: LatLon; ctx: typeof ctx; courseId: string } = { ...base, courseId: `local-${Date.now()}` };
-      try { const saved = await flow.saveCourse(params); params = { ...base, courseId: saved.id }; } catch { /* 비로그인에서도 현재 코스 진행은 제공 */ }
+      if (expired(ctx)) return;
+      const base = { course, origin, ctx: preserveCourseDateContext(ctx) };
+      const params = editingCourseId
+        ? await flow.replaceCourse(editingCourseId, { ...base, courseId: editingCourseId })
+        : await flow.saveCourse(base);
+      if (expired(params.ctx)) return;
       flow.setActiveCourse(params); navigation.replace('Execution', params);
-    } catch (error) { Alert.alert('코스를 만들지 못했어요', error instanceof Error ? error.message : '잠시 후 다시 시도해 주세요.'); }
-    finally { setSaving(false); }
+    } catch (error) {
+      if (error instanceof Error && error.message === 'basket_route_unavailable') {
+        Alert.alert('실제 경로를 확인하지 못했어요', '경로 확인이 되기 전에는 이 장소를 추천하지 않습니다.', [
+          { text: '닫기', style: 'cancel' },
+          { text: '다시 확인', onPress: () => openDetail(active, true) },
+        ]);
+        return;
+      }
+      if (isCourseDateError(error)) {
+        const message = error.code === 'course_date_unavailable' ? '원래 코스 시간을 확인하지 못했어요. 잠시 후 다시 시도해 주세요.'
+          : error.code === 'course_date_conflict' ? '저장된 코스 시간과 일치하지 않아요. 기존 기록은 그대로 유지됩니다.'
+          : '코스 날짜를 확인할 수 없어요. 시간을 다시 설정해 주세요.';
+        Alert.alert('코스 시간을 확인해 주세요', message, [
+          { text: '닫기', style: 'cancel' },
+          ...(error.code === 'course_date_unavailable' ? [{ text: '다시 시도', onPress: () => void startCourse() }] : []),
+          { text: '시간 다시 설정', onPress: () => navigation.navigate('TimeSetup') },
+        ]);
+        return;
+      }
+      Alert.alert('코스를 만들지 못했어요', '저장하지 못했어요. 잠시 후 다시 시도해 주세요.');
+    }
+    finally { savingLock.current = false; setSaving(false); }
   };
   const Header = ({ title, back }: { title: string; back: () => void }) => <View style={s.header}><Pressable variant="icon" style={s.icon} onPress={back}><Text style={s.backIcon}>‹</Text></Pressable><Text style={s.headerTitle}>{title}</Text><View style={s.icon} /></View>;
   const statusChip = (item: OneStopRecommendation) => <View style={[s.chip, { backgroundColor: `${statusColor(item.status)}28` }]}><Text style={[s.chipText, { color: statusColor(item.status) }]}>{statusText(item.status)}</Text></View>;

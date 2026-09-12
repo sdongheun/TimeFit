@@ -99,14 +99,28 @@ export function buildBasketCourse(
   target: LatLon,
   ctx: PlanCtx,
   arrivalModes: Partial<Record<string, Mode>> = {},
+  routes: {
+    finalMode?: Mode;
+    read?: (from: LatLon, to: LatLon, mode: Mode) => { min: number; src: string; geo?: LatLon[] };
+  } = {},
 ): Course {
   const travelPlan = automaticTravelLegs(selected, origin, target, arrivalModes);
+  if (routes.finalMode) travelPlan[travelPlan.length - 1].mode = routes.finalMode;
+  const read = routes.read ?? ((from: LatLon, to: LatLon, mode: Mode) => ({
+    min: travelMin(from, to, mode), src: travelSrc(from, to, mode), geo: travelGeo(from, to, mode),
+  }));
+  const resolved = travelPlan.map(leg => read(leg.from, leg.to, leg.mode));
+  // This legacy builder reads TMAP exact cache only. No-route and distance estimates
+  // are not saveable routes; historical ODsay snapshots are not rebuilt here.
+  if (!selected.length || resolved.some(leg => !Number.isFinite(leg.min) || leg.min < 0 || leg.src !== 'TMAP')) {
+    throw new Error('basket_route_unavailable');
+  }
   // 단일 장소 흐름에서는 사용자가 설정한 도착 여유를 최종 코스에도 동일하게 적용한다.
   // 이전 다중 코스 입력에는 필드가 없으므로 기존 수단별 안전 여유를 유지한다.
   const buffer = ctx.arrivalBufferMin ?? Math.max(...travelPlan.map((leg) => safetyBufferMin(leg.mode)));
   const budget = ctx.remainingMin - buffer;
-  const moveMin = travelPlan.reduce(
-    (sum, leg) => sum + travelMin(leg.from, leg.to, leg.mode),
+  const moveMin = resolved.reduce(
+    (sum, leg) => sum + leg.min,
     0,
   );
   const stayPool = Math.max(0, budget - moveMin);
@@ -127,23 +141,23 @@ export function buildBasketCourse(
     allocatedLeft -= stay;
     legs.push({
       label: `${index === 0 ? "출발" : "이동"} → ${spot.title}`,
-      min: travelMin(current, spot, travel.mode),
-      src: travelSrc(current, spot, travel.mode),
+      min: resolved[index].min,
+      src: resolved[index].src,
       mode: travel.mode,
-      geo: travelGeo(current, spot, travel.mode),
+      geo: resolved[index].geo,
     });
     legs.push({ label: `체류 가능 · ${spot.title}`, min: stay, src: spot.dwellSrc });
     current = spot;
   });
 
   const finalTravel = travelPlan[travelPlan.length - 1];
-  const lastMove = travelMin(current, target, finalTravel.mode);
+  const lastMove = resolved[resolved.length - 1].min;
   legs.push({
     label: ctx.appointment ? "다음 스케줄로" : "출발지로 복귀",
     min: lastMove,
-    src: travelSrc(current, target, finalTravel.mode),
+    src: resolved[resolved.length - 1].src,
     mode: finalTravel.mode,
-    geo: travelGeo(current, target, finalTravel.mode),
+    geo: resolved[resolved.length - 1].geo,
   });
 
   const totalStay = stayPool - allocatedLeft;

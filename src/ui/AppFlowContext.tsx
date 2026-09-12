@@ -25,6 +25,8 @@ import type { PendingNavigationAction } from './liveActivity/pendingNavigationHa
 import { ownedCourseLifecycle } from './ownedCourseLifecycle';
 import { liveLearningEvidence } from './liveActivity/learningEvidenceComposition';
 import { GuestImportPanel } from './GuestImportPanel';
+import { reconfirmActiveCourseLocations } from './activeVerifiedCourseModel';
+import type { ManualReselection } from './manualLocationRestoreModel';
 
 type ResultsParams = RootStackParamList['Results'];
 type ExecutionParams = RootStackParamList['Execution'];
@@ -36,6 +38,7 @@ type AppFlowContextValue = {
   activeCourse: ExecutionParams | null;
   activeVerifiedCourse: ActiveVerifiedCourse | null;
   pendingNavigationAction: PendingNavigationAction | null;
+  isActiveVerifiedCourseRun: (courseRunId: string) => boolean;
   savedCourses: SavedCourse[];
   isCoursesLoading: boolean;
   coursesError: string;
@@ -44,6 +47,7 @@ type AppFlowContextValue = {
   startActiveVerifiedCourse: (params: RootStackParamList['CourseConfirm']) => ActiveVerifiedCourse;
   updateActiveVerifiedCourse: (identity: string, update: (progress: VerifiedCourseProgressState) => VerifiedCourseProgressState) => void;
   clearActiveVerifiedCourse: (identity: string) => void;
+  reconfirmActiveLocations: (identity: string, session: RootStackParamList['CourseConfirm']['session'], origin: ManualReselection, destination: ManualReselection) => ActiveVerifiedCourse | null;
   refreshPendingNavigationAction: () => Promise<PendingNavigationAction | null>;
   refreshSavedCourses: () => Promise<void>;
   saveCourse: (params: ExecutionParams) => Promise<SavedCourse>;
@@ -74,6 +78,13 @@ export function AppFlowProvider({ children }: PropsWithChildren) {
   const pendingSyncQueuedRef = useRef(false);
   const setLatestResults = useCallback((params: ResultsParams) => setLatestResultsState(params), []);
   const setActiveCourse = useCallback((params: ExecutionParams | null) => setActiveCourseState(params), []);
+  const reconfirmActiveLocations = useCallback((identity: string, session: RootStackParamList['CourseConfirm']['session'], origin: ManualReselection, destination: ManualReselection) => {
+    const next = reconfirmActiveCourseLocations(activeVerifiedCourseRef.current, identity, session, origin, destination, Date.now());
+    if (!next) return null;
+    activeVerifiedCourseRef.current = next;
+    setActiveVerifiedCourseState(next);
+    return next;
+  }, []);
   const startActiveVerifiedCourse = useCallback((params: RootStackParamList['CourseConfirm']) => {
     const active = createActiveVerifiedCourse(params.session, params.course, verifiedIdentityFactory, undefined, verifiedCourseRunIdFactory);
     liveLearningEvidence.start(active.courseRunId);
@@ -242,12 +253,14 @@ export function AppFlowProvider({ children }: PropsWithChildren) {
     activeCourse,
     activeVerifiedCourse,
     pendingNavigationAction,
+    isActiveVerifiedCourseRun: (courseRunId: string) => activeVerifiedCourseRef.current?.courseRunId === courseRunId,
     savedCourses: savedCoursesScope === accountSubject ? savedCourses : [],
     isCoursesLoading,
     coursesError,
     setLatestResults,
     setActiveCourse,
     startActiveVerifiedCourse,
+    reconfirmActiveLocations,
     updateActiveVerifiedCourse,
     clearActiveVerifiedCourse,
     refreshPendingNavigationAction,
@@ -273,7 +286,9 @@ export function useActiveVerifiedCourseFlow() {
   return {
     activeVerifiedCourse: ctx.activeVerifiedCourse,
     pendingNavigationAction: ctx.pendingNavigationAction,
+    isActiveVerifiedCourseRun: ctx.isActiveVerifiedCourseRun,
     startActiveVerifiedCourse: ctx.startActiveVerifiedCourse,
+    reconfirmActiveLocations: ctx.reconfirmActiveLocations,
     updateActiveVerifiedCourse: ctx.updateActiveVerifiedCourse,
     clearActiveVerifiedCourse: ctx.clearActiveVerifiedCourse,
     refreshPendingNavigationAction: ctx.refreshPendingNavigationAction,

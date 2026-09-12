@@ -264,6 +264,7 @@ export async function recommendationRoutesFor(options: RecommendationRuntimeOpti
 
 /** 직렬화된 navigation session을 엔진 호출 직전에만 Date로 복원한다. */
 export function buildRecommendationEngineInput(session: RecommendationSession) {
+  if (!Number.isInteger(session.remainingMin) || session.remainingMin < 1 || session.remainingMin > RELEASE_MAX_MINUTES) throw new RangeError('추천 시간은 1분부터 180분까지 설정해 주세요.');
   return { now: parseRecommendationNowIso(session.nowIso), origin: session.origin, destination: session.destination, remainingMin: session.remainingMin, arrivalBufferMin: session.arrivalBufferMin };
 }
 
@@ -273,9 +274,10 @@ export async function buildRecommendationLimitedInput(
   options: RecommendationRuntimeOptions,
   dependencies: RecommendationRuntimeDependencies,
 ): Promise<CourseV1LimitedInput> {
+  const engineInput = buildRecommendationEngineInput(session);
   const snapshot = await (dependencies.readPersonalizationSnapshot ?? (() => personalizationSession.snapshot()))();
   personalizationSnapshots.set(session, snapshot);
-  return { ...buildRecommendationEngineInput(session), ...(snapshot.samples.length ? { dwellPersonalizationSamples: snapshot.samples } : {}), provider: createCourseV1CandidateProvider(), ...await recommendationPortsFor(options, dependencies) };
+  return { ...engineInput, ...(snapshot.samples.length ? { dwellPersonalizationSamples: snapshot.samples } : {}), provider: createCourseV1CandidateProvider(), ...await recommendationPortsFor(options, dependencies) };
 }
 
 /** Local exploration paging shares a recommendation snapshot but deliberately has no route port. */
@@ -443,3 +445,4 @@ export async function requestConditionalManualCourse(
     receiptRoutes: originalInput.receiptRoutes,
   });
 }
+import { RELEASE_MAX_MINUTES } from '../timeSetup/releaseTimeBoundary';

@@ -31,6 +31,7 @@ type NativeLifecycleModule = Readonly<{
   listLocalProgressReceipts?: () => Promise<readonly unknown[]>;
   acknowledgeLocalProgressReceipt?: (eventId: string) => Promise<void>;
   readPendingNavigationAction?: () => Promise<unknown>;
+  revokeCompletionActions?: () => Promise<void>;
   transitionPendingNavigationAction?: (value: Readonly<{ actionId: string; courseRunId: string; from: PendingNavigationState; to: PendingNavigationState }>) => Promise<unknown>;
   clearPendingNavigationAction?: (value: Readonly<{ actionId: string; courseRunId: string }>) => Promise<void>;
   addListener?: (eventName: string) => void;
@@ -181,6 +182,11 @@ export const nativeLiveProgressStoragePort = {
 };
 
 export const nativePendingNavigationPort = {
+  async revokeCompletion() {
+    if (Platform.OS !== 'ios') return;
+    if (!module?.revokeCompletionActions) throw new Error('completion_revocation_unavailable');
+    await module.revokeCompletionActions();
+  },
   async read(): Promise<PendingNavigationAction | null> {
     if (Platform.OS !== 'ios' || !module?.readPendingNavigationAction) return null;
     const value = await module.readPendingNavigationAction();

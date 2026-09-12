@@ -3,11 +3,9 @@ import { ActivityIndicator, Keyboard, Modal, ScrollView, StyleSheet, Text, TextI
 import { useLocationKeyboardLayout } from './locationKeyboardLayout';
 import { AnimatedPressable as Pressable } from './AnimatedPressable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as Location from 'expo-location';
 import type { LatLon } from '../engine';
 import { createKakaoLocationSearchAdapter } from '../services/kakaoLocationSearchAdapter';
 import { createKakaoLocationLabelAdapter } from '../services/kakaoLocationLabelAdapter';
-import { displayLocationLabel } from './locationLabelDisplayModel';
 import { C } from './theme';
 import { shouldDebounceLocationSearch } from './locationSelectionModel';
 import { createLocationSearchDraft, locationCandidateId, selectedRowScrollOffset, type DraftPlace, type LocationSearchDraft } from './locationSearchDraft';
@@ -21,20 +19,18 @@ type Props = {
 };
 
 /** The parent owns the editing lifetime; map round trips retain only that session's draft. */
-export function PlacePicker({ visible, title, showGps = true, editingSession, labelAdapter, onOpenMap, onClose, onConfirm }: Props) {
+export function PlacePicker({ visible, title, editingSession, onOpenMap, onClose, onConfirm }: Props) {
   const ownSession = useRef(createLocationSearchDraft()).current;
   const draft = editingSession ?? ownSession;
   const [, refresh] = useState(0);
   const insets = useSafeAreaInsets();
   const keyboardLayout = useLocationKeyboardLayout(visible, insets.bottom);
   const locationSearch = useRef(createKakaoLocationSearchAdapter()).current;
-  const ownLabelAdapter = useRef<ReturnType<typeof createKakaoLocationLabelAdapter> | null>(null);
-  if (!labelAdapter && !ownLabelAdapter.current) ownLabelAdapter.current = createKakaoLocationLabelAdapter();
-  const locationLabel = labelAdapter ?? ownLabelAdapter.current!;
   const list = useRef<ScrollView>(null);
   const viewport = useRef(0);
   const rowFrames = useRef(new Map<string, { y: number; height: number }>());
-  const state = draft.get(), choice = draft.choice();
+  const state = draft.get(), candidate = draft.choice();
+  const choice = candidate?.source === 'device' ? null : candidate;
   const choiceId = state.deviceLocation ? 'device' : state.selectedId;
   useEffect(() => draft.subscribe(() => refresh(n => n + 1)), [draft]);
   useEffect(() => {
@@ -70,22 +66,6 @@ export function PlacePicker({ visible, title, showGps = true, editingSession, la
   };
   const close = () => { Keyboard.dismiss(); draft.end(); onClose(); };
   const openMap = () => { Keyboard.dismiss(); draft.pause(); onOpenMap(); };
-  async function useMyLocation() {
-    Keyboard.dismiss();
-    const request = draft.beginGps();
-    if (!request) return;
-    try {
-      const permission = await Location.requestForegroundPermissionsAsync();
-      if (!draft.current(request)) return;
-      if (permission.status !== 'granted') { draft.fail(request, '위치 권한이 거부됐어요. 검색이나 지도로 선택하세요.'); return; }
-      const p = await Location.getCurrentPositionAsync({});
-      if (!draft.current(request)) return;
-      const point = { lat: p.coords.latitude, lon: p.coords.longitude };
-      let label = '현위치';
-      try { label = displayLocationLabel(await locationLabel.resolve(point, 'gps_auto'), '현위치'); } catch { /* 좌표는 유지하고 주소 실패는 수동 대안으로 표시한다. */ }
-      draft.resolveGps(request, point, label);
-    } catch { draft.fail(request, '위치를 가져오지 못했어요. 검색이나 지도로 선택하세요.'); }
-  }
   const revealSelection = () => {
     const current = draft.get();
     if (!visible || current.phase !== 'search') return;
@@ -95,6 +75,7 @@ export function PlacePicker({ visible, title, showGps = true, editingSession, la
   };
   const frame = (id: string, value: { y: number; height: number }) => { rowFrames.current.set(id, value); if (id === choiceId) revealSelection(); };
   const confirm = () => {
+    if (draft.choice()?.source === 'device') return;
     const selected = draft.claimConfirmation(state.epoch);
     if (!selected) return;
     Keyboard.dismiss(); onConfirm(selected); draft.end(); onClose();
@@ -110,7 +91,6 @@ export function PlacePicker({ visible, title, showGps = true, editingSession, la
           <Pressable testID="location-search-submit" accessibilityLabel="위치 검색" style={s.searchBtn} onPress={() => { void search(true); }}>{state.busy === 'search' ? <ActivityIndicator color={C.accent} /> : <Text style={s.searchBtnTxt}>검색</Text>}</Pressable>
         </View>
         <View testID="location-alternatives" style={s.searchRow}>
-          {showGps ? <Pressable testID="location-current" accessibilityLabel="현위치 조회" style={[s.searchBtn, s.half]} onPress={() => { void useMyLocation(); }} disabled={state.busy === 'gps'}>{state.busy === 'gps' ? <ActivityIndicator color={C.accent} accessibilityLabel="현재 위치 확인 중" /> : <Text style={s.searchBtnTxt}>현위치</Text>}</Pressable> : null}
           <Pressable testID="location-map" style={[s.searchBtn, s.half]} onPress={openMap}><Text style={s.searchBtnTxt}>지도에서 선택</Text></Pressable>
         </View>
         {state.message ? <Text accessibilityLiveRegion="polite" style={s.msg}>{state.message}</Text> : null}
@@ -131,8 +111,8 @@ const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 18, paddingBottom: 10 }, title: { flex: 1, color: C.txt, fontSize: 18, fontWeight: '800' }, closeButton: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' }, close: { color: C.muted, fontSize: 20, fontWeight: '700' },
   searchRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 18, paddingBottom: 10 }, input: { flex: 1, minHeight: 44, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 11, paddingVertical: 11, paddingHorizontal: 14, color: C.txt, fontSize: 15 },
-  searchBtn: { minHeight: 44, minWidth: 44, paddingVertical: 11, paddingHorizontal: 12, borderRadius: 11, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' }, half: { flex: 1 }, searchBtnTxt: { color: C.accent, fontWeight: '700', fontSize: 14, textAlign: 'center' },
-  msg: { color: C.muted, fontSize: 13, paddingHorizontal: 20, marginBottom: 8 }, row: { minHeight: 44, paddingVertical: 12, paddingHorizontal: 12, marginHorizontal: 18, marginBottom: 6, borderWidth: 1, borderColor: 'transparent', borderRadius: 10 }, rowOn: { backgroundColor: 'rgba(0,102,255,0.10)', borderColor: '#4b85cf' }, rowName: { color: C.txt, fontSize: 16, fontWeight: '700' }, rowAddr: { color: C.txt2, fontSize: 14, marginTop: 4 }, selected: { color: '#83baff', fontSize: 13, marginTop: 4, fontWeight: '700' },
+  searchBtn: { minHeight: 44, minWidth: 44, paddingVertical: 11, paddingHorizontal: 12, borderRadius: 11, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' }, half: { flex: 1 }, searchBtnTxt: { color: C.txt, fontWeight: '700', fontSize: 14, textAlign: 'center' },
+  msg: { color: C.muted, fontSize: 13, paddingHorizontal: 20, marginBottom: 8 }, row: { minHeight: 44, paddingVertical: 12, paddingHorizontal: 12, marginHorizontal: 18, marginBottom: 6, borderWidth: 1, borderColor: 'transparent', borderRadius: 10 }, rowOn: { backgroundColor: 'rgba(0,102,255,0.10)', borderColor: '#4b85cf' }, rowName: { color: C.txt, fontSize: 16, fontWeight: '700' }, rowAddr: { color: C.txt2, fontSize: 14, marginTop: 4 }, selected: { color: C.txt, fontSize: 13, marginTop: 4, fontWeight: '700' },
   separator: { height: 1, backgroundColor: '#454952', marginHorizontal: 18, marginBottom: 6 },
   footer: { paddingHorizontal: 18, paddingTop: 8, borderTopWidth: 1, borderTopColor: C.line }, cta: { minHeight: 52, backgroundColor: C.accent, borderRadius: 12, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 12, paddingVertical: 12 }, ctaTxt: { color: C.onAccent, fontSize: 15, fontWeight: '800', textAlign: 'center' },
 });

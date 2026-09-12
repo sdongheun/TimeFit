@@ -48,16 +48,41 @@ function fixture(options = {}) {
     overrides['../services/kakaoLocationSearchAdapter'] = { createKakaoLocationSearchAdapter: () => ({ async search(query) { calls.push(['search', query]); return { suggestions: [{ ...O, address: 'fixture address', kind: 'place' }], attempts: [{ status: 'ok' }], diagnostics: { providerRequests: 1, fallbackCount: 0, cache: 'miss' } }; } }) };
   }
   const host = screenRuntime(overrides);
+  if (options.publicEnv) overrides.__process = { env: options.publicEnv };
   overrides['react-native'] = { ...host.native, TextInput: 'TextInput', Modal: 'Modal', ActivityIndicator: 'ActivityIndicator', useWindowDimensions: () => ({ width: options.width ?? 375, height: options.height ?? 812, fontScale: options.fontScale ?? 1 }) };
   const navigation = { goBack() { calls.push(['back']); }, replace(...args) { calls.push(['replace', ...args]); }, navigate(...args) { calls.push(['navigate', ...args]); }, addListener(name, fn) { listeners.set(name, fn); return () => listeners.delete(name); } };
-  const screen = host.mount(host.load('src/ui/TimeSetupScreen.tsx').TimeSetupScreen, { navigation, route: { params: { presetMin: 60 } } });
+  const screen = host.mount(host.load('src/ui/TimeSetupScreen.tsx').TimeSetupScreen, { navigation, route: { params: { presetMin: options.presetMin ?? 60 } } });
   const node = type => screen.nodes(n => n.type === type)[0];
   const choose = (field, place) => { screen.press(`route-${field}-field`); node('PlacePicker').props.onConfirm(place); };
   return { screen, calls, auth, listeners, choose, node, setNow: value => { now = value; }, setRun: value => { result = value; } };
 }
 
+test('QA ODsay public TimeSetup routes through proxy without retired key reads or legacy storage', async () => {
+  const keyReads = [];
+  const env = new Proxy({ EXPO_PUBLIC_ROUTE_PROXY_ENABLED: 'true', EXPO_PUBLIC_ODSAY_API_KEY: 'fixture', ODSAY_API_KEY: 'fixture' }, {
+    get(target, key) { if (String(key).includes('ODSAY')) keyReads.push(key); return target[key]; },
+  });
+  const f = fixture({ publicEnv: env, auth: { user: { id: 'fixture-account' } } });
+  try {
+    await tick(); f.choose('origin', O); f.choose('destination', D);
+    f.screen.press('setup-recommend'); await tick();
+    const runs = f.calls.filter(c => c[0] === 'recommend');
+    assert.equal(runs.length, 1);
+    assert.equal(runs[0][2].routeProxyEnabled, true);
+    assert.deepEqual(keyReads, []);
+    assert.ok(f.calls.some(c => c[0] === 'navigate' && c[1] === 'Results'));
+    assert.doesNotMatch(JSON.stringify(f.calls), /ODsay|api\.odsay\.com/);
+    // This screen boundary injects runner, not provider: actual proxy/travel contracts
+    // are covered separately by recommendation-runtime-boundary and adapter fixtures.
+  } finally { f.screen.unmount(); }
+});
+
 test('USETUP failure-first: direct fields, permanent wheel, return mode, picker cancellation and fixed CTA', async () => {
   const f = fixture(); await tick();
+  const connector = f.screen.get('setup-route-connector');
+  assert.equal(connector.props.accessible, false);
+  assert.equal(connector.props.pointerEvents, 'none');
+  assert.equal(connector.props.children.length, 3);
   assert.ok(f.screen.get('route-origin-field'));
   assert.equal(f.screen.nodes(n => n.props.accessibilityLabel === '도착 시각 시').length, 1);
   f.choose('origin', O); f.choose('destination', D);
@@ -78,18 +103,97 @@ test('USETUP failure-first: direct fields, permanent wheel, return mode, picker 
   assert.equal(session.destination, null); assert.equal(session.origin.label, O.label);
 });
 
-test('USETUP failure-first: already-permitted GPS initializes once on unified setup; late label cannot replace manual origin', async () => {
-  let resolveLabel;
-  const f = fixture({ permission: 'granted', label: () => new Promise(r => { resolveLabel = r; }) });
-  await tick();
-  assert.equal(f.calls.filter(c => c[0] === 'gps').length, 1);
-  f.choose('origin', O); resolveLabel({ source: 'address', address: '오래된 GPS 주소' }); await tick();
+test('RELEASE-BUILD public input overrides local internal flags at the actual setup entry', async () => {
+  const { publicEnvironment } = require('../../scripts/release-build.cjs');
+  const env = publicEnvironment({ EXPO_PUBLIC_SUPABASE_URL: 'https://fixture.supabase.co', EXPO_PUBLIC_SUPABASE_KEY: 'sb_publishable_fixture', EXPO_PUBLIC_CAPTCHA_CHALLENGE_URL: 'https://fixture.example/challenge', EXPO_PUBLIC_KAKAO_JAVASCRIPT_API_KEY: 'fixture', EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS: 'true', EXPO_PUBLIC_C_VALIDATION_INTERNAL: 'true' });
+  const f = fixture({ internal: false, publicEnv: env }); await tick();
+  assert.equal(f.screen.nodes(n => ['setup-development-tools', 'dev-test-clock', 'qa-release-one-stop-launcher', 'live-activity-a3-launcher', 'live-activity-diagnostics-launcher'].includes(n.props.testID)).length, 0);
+  assert.equal(f.calls.some(c => /live-diagnostic|live-activity-a3|recommend/.test(c[0])), false);
+  f.screen.unmount();
+});
+
+test('UMANUAL granted setup starts without GPS; only manual origin is accepted', async () => {
+  const f = fixture({ permission: 'granted' }); await tick();
+  assert.equal(f.calls.filter(c => ['gps', 'permission-read', 'permission-prompt', 'label'].includes(c[0])).length, 0);
+  f.screen.press('setup-recommend'); await tick();
+  assert.equal(f.calls.filter(c => c[0] === 'recommend').length, 0);
+  f.choose('origin', O);
   assert.match(JSON.stringify(f.screen.get('route-origin-field')), /수동 출발지/);
-  f.screen.render(); assert.equal(f.calls.filter(c => c[0] === 'gps').length, 1);
-  assert.equal(f.calls.filter(c => c[0] === 'permission-prompt').length, 0);
+  f.screen.unmount();
 });
 
 const count = (f, name) => f.calls.filter(c => c[0] === name).length;
+test('STACK01 recommendation preserves setup inputs and permits a fresh explicit run after return', async () => {
+  const f = fixture(); await tick(); f.choose('origin', O); f.choose('destination', D);
+  f.screen.press('setup-recommend'); await tick();
+  assert.equal(count(f, 'replace'), 0);
+  assert.equal(count(f, 'navigate'), 1);
+  assert.match(JSON.stringify(f.screen.get('route-origin-field')), /수동 출발지/);
+  assert.match(JSON.stringify(f.screen.get('route-destination-field')), /약속 장소/);
+  f.screen.press('setup-recommend'); await tick();
+  assert.equal(count(f, 'recommend'), 2);
+  f.screen.unmount();
+});
+
+test('STACK01 back during calculation restores inputs and discards late result, never navigates', async () => {
+  let resolve;
+  const f = fixture({ run: () => new Promise(r => { resolve = r; }) }); await tick(); f.choose('origin', O);
+  f.screen.press('setup-recommend'); await tick();
+  f.screen.render(); f.listeners.get('remove')(); f.screen.render();
+  assert.ok(f.screen.get('setup-recommend'));
+  resolve({ representativeCourse: null, alternativeCourses: [] }); await tick();
+  assert.equal(count(f, 'navigate') + count(f, 'replace'), 0);
+  assert.equal(count(f, 'latest'), 0);
+  f.screen.unmount();
+});
+
+test('STACK01 removed setup cannot publish or navigate on a late response', async () => {
+  let resolve;
+  const f = fixture({ run: () => new Promise(r => { resolve = r; }) }); await tick(); f.choose('origin', O);
+  f.screen.press('setup-recommend'); await tick(); f.screen.unmount();
+  resolve({ representativeCourse: null, alternativeCourses: [] }); await tick();
+  assert.equal(count(f, 'latest') + count(f, 'navigate') + count(f, 'replace'), 0);
+});
+test('URELEASEUICLEANUP: no date choice; only valid midnight selection shows next-day helper', async () => {
+  for (const [hour, minute, selected, allowed, nextDay] of [[12, 0, 900, true, false], [12, 0, 901, false, false], [12, 0, 660, false, false], [23, 59, 179, true, true], [23, 59, 180, false, false]]) {
+    const f = fixture({ now: new Date(2026, 11, 31, hour, minute) }); await tick(); f.choose('origin', O); arrival(f, selected);
+    assert.equal(f.screen.nodes(n => n.props.accessibilityLabel === '도착 날짜').length, 0);
+    assert.equal(f.screen.nodes(n => n.props.testID === 'setup-next-day-arrival').length, nextDay ? 1 : 0);
+    f.screen.press('setup-recommend'); await tick(); assert.equal(count(f, 'recommend'), allowed ? 1 : 0);
+    if (!allowed) assert.ok(f.screen.get('setup-input-error'));
+    f.screen.unmount();
+  }
+});
+test('URELEASE180: cleanup: no date wheel, next-day helper and dated deadline across midnight', async () => {
+  const f = fixture({ now: new Date(2026, 8, 8, 23, 59), presetMin: 180 }); await tick();
+  f.choose('origin', O);
+  assert.match(JSON.stringify(f.screen.get('setup-general-inputs')), /최대 3시간/);
+  assert.equal(f.screen.nodes(n => n.props.accessibilityLabel === '도착 날짜').length, 0);
+  assert.match(JSON.stringify(f.screen.get('setup-general-inputs')), /다음 날 도착/);
+  f.setNow(new Date(2026, 8, 9, 0, 0));
+  f.screen.press('setup-recommend'); await tick();
+  const session = f.calls.find(c => c[0] === 'recommend')[1];
+  assert.equal(session.remainingMin, 179);
+  assert.equal(new Date(Date.parse(session.nowIso) + session.remainingMin * 60000).getDate(), 9);
+  assert.equal(new Date(Date.parse(session.nowIso) + session.remainingMin * 60000).getHours(), 2);
+  f.screen.unmount();
+});
+test('URELEASE180: development 23:59 remains dated and frozen even if actual day changes', async () => {
+  const f = fixture({ internal: true, now: new Date(2026, 8, 30, 10, 0) }); await tick(); f.choose('origin', O);
+  f.screen.press('dev-test-clock');
+  wheel(f, '테스트 현재 시각 오전 오후', 1);
+  wheel(f, '테스트 현재 시각 시', 10);
+  wheel(f, '테스트 현재 시각 분', 59);
+  f.screen.nodes(n => n.type === 'Pressable' && JSON.stringify(n.props.children).includes('테스트 시각 적용'))[0].props.onPress();
+  f.setNow(new Date(2026, 9, 1, 0, 2));
+  f.screen.press('setup-recommend'); await tick();
+  const session = f.calls.find(c => c[0] === 'recommend')[1];
+  assert.equal(session.remainingMin, 180);
+  assert.equal(new Date(session.nowIso).getDate(), 30);
+  const end = new Date(Date.parse(session.nowIso) + 180 * 60000);
+  assert.equal(end.getMonth(), 9); assert.equal(end.getDate(), 1); assert.equal(end.getHours(), 2); assert.equal(end.getMinutes(), 59);
+  f.screen.unmount();
+});
 test('ULOC TimeSetup real picker: same-edit map cancel/search restores draft, selection and list; final close/new target resets only draft', async () => {
   const f = fixture({ realPickers: true }); await tick();
   const general = JSON.stringify(f.screen.get('setup-general-inputs'));
@@ -195,7 +299,7 @@ test('USETUP picker map→search, map confirm, close and interactive removal pre
 for (const permission of ['denied', 'undetermined', 'granted']) test(`USETUP ${permission} GPS failure/manual fallback, no rerender retries`, async () => {
   const f = fixture({ permission, gps: async () => { throw Error('GPS unavailable'); } }); await tick();
   f.screen.render(); f.screen.render(); f.choose('origin', O);
-  assert.equal(count(f, 'permission-read'), 1); assert.equal(count(f, 'gps'), permission === 'granted' ? 1 : 0);
+  assert.equal(count(f, 'permission-read'), 0); assert.equal(count(f, 'gps'), 0);
   assert.equal(count(f, 'permission-prompt'), 0);
   f.screen.press('setup-recommend'); await tick();
   assert.equal(count(f, 'recommend'), 1);
@@ -207,12 +311,12 @@ for (const action of ['manual', 'blur', 'unmount']) test(`USETUP late coordinate
   if (action === 'manual') f.choose('origin', O);
   if (action === 'blur') f.listeners.get('blur')();
   if (action === 'unmount') f.screen.unmount();
-  resolveGps({ coords: { latitude: 1, longitude: 2 } }); await tick();
+  assert.equal(resolveGps, undefined); assert.equal(count(f, 'gps'), 0); await tick();
   assert.equal(count(f, 'label'), 0);
   if (action === 'manual') assert.match(JSON.stringify(f.screen.get('route-origin-field')), /수동 출발지/);
 });
 
-test('USETUP wheel commits immediately, inertia settles once; slider user changes only haptic; session preserves fields and device point', async () => {
+test('USETUP wheel commits immediately, inertia settles once; slider user changes only haptic; session preserves manual fields without device point', async () => {
   const f = fixture({ permission: 'granted' }); await tick(); f.choose('origin', O); f.choose('destination', D);
   assert.equal(count(f, 'haptic'), 0);
   const root = f.screen.nodes(n => n.props.accessibilityLabel === '도착 시각 분')[0];
@@ -230,14 +334,15 @@ test('USETUP wheel commits immediately, inertia settles once; slider user change
   const session = f.calls.find(c => c[0] === 'recommend')[1];
   assert.equal(session.remainingMin, 62); assert.equal(session.arrivalBufferMin, 20);
   assert.equal(session.origin.label, O.label); assert.equal(session.destination.label, D.label);
-  assert.deepEqual(session.deviceLocationSnapshot, { lat: 35.1, lon: 129.1 });
+  assert.equal(session.deviceLocationSnapshot, undefined);
+  assert.equal(require('../../src/ui/manualLocationRestoreModel.ts').hasManualLocationProof(session), true);
 });
 
-for (const minutes of [0, 1, 120, 121]) test(`USETUP ${minutes} minute boundary executes only valid session`, async () => {
+for (const minutes of [0, 1, 120, 121, 179, 180, 181]) test(`USETUP ${minutes} minute boundary executes only valid session`, async () => {
   const f = fixture(); await tick(); f.choose('origin', O); arrival(f, 720 + minutes);
   f.screen.press('setup-recommend'); await tick();
-  assert.equal(count(f, 'recommend'), minutes > 0 && minutes <= 120 ? 1 : 0);
-  if (minutes === 0 || minutes === 121) assert.ok(f.screen.get('setup-input-error'));
+  assert.equal(count(f, 'recommend'), minutes > 0 && minutes <= 180 ? 1 : 0);
+  if (minutes === 0 || minutes === 181) assert.ok(f.screen.get('setup-input-error'));
 });
 test('USETUP missing origin, elapsed execution and midnight do not invent a next-day duration', async () => {
   const missing = fixture(); await tick(); missing.screen.press('setup-recommend');
@@ -246,7 +351,8 @@ test('USETUP missing origin, elapsed execution and midnight do not invent a next
   elapsed.screen.press('setup-recommend'); await tick(); assert.equal(count(elapsed, 'recommend'), 0); assert.ok(elapsed.screen.get('setup-input-error'));
   const midnight = fixture({ now: new Date(2026, 8, 5, 23, 50) }); await tick(); midnight.choose('origin', O);
   midnight.setNow(new Date(2026, 8, 6, 0, 1)); midnight.screen.press('setup-recommend'); await tick();
-  assert.equal(count(midnight, 'recommend'), 0); assert.match(JSON.stringify(midnight.screen.get('setup-input-error')), /120|2시간/);
+  assert.equal(count(midnight, 'recommend'), 1);
+  assert.equal(midnight.calls.find(c => c[0] === 'recommend')[1].remainingMin, 49);
 });
 
 test('USETUP CAPTCHA wait captures fresh remaining time once, loading progress remains connected', async () => {
@@ -257,7 +363,7 @@ test('USETUP CAPTCHA wait captures fresh remaining time once, loading progress r
   assert.equal(count(f, 'recommend'), 1); assert.equal(f.calls.find(c => c[0] === 'recommend')[1].remainingMin, 55);
   assert.equal(f.node('RecommendationLoadingProgress').props.stage, 'input_ready');
   assert.equal(f.screen.nodes(n => n.props.testID === 'setup-recommend').length, 0);
-  finish({ representativeCourse: null, alternativeCourses: [] }); await tick(); assert.equal(count(f, 'replace'), 1);
+  finish({ representativeCourse: null, alternativeCourses: [] }); await tick(); assert.equal(count(f, 'navigate'), 1);
 });
 
 test('USETUP CAPTCHA cancel/stale verification, success and same-tick duplicate taps', async () => {
@@ -308,6 +414,61 @@ test('USETUP production hides dev tools, internal test-clock restore is silent a
   assert.equal(scenarios.length, 8);
   for (const id of scenarios) { f.screen.press(id); await tick(); }
   assert.equal(count(f, 'recommend'), 8);
+});
+
+test('UCONDITIONALPREVIEW failure-first: dawn/night local preview preserves inputs and blocks execution', async () => {
+  for (const hour of [2, 20]) {
+    const f = fixture({ internal: true, now: new Date(2026, 8, 8, hour, 0) }); await tick();
+    f.choose('origin', O); f.choose('destination', D);
+    const beforeOrigin = JSON.stringify(f.screen.get('route-origin-field'));
+    const beforeDestination = JSON.stringify(f.screen.get('route-destination-field'));
+    const beforeTime = JSON.stringify(f.screen.nodes(n => n.props.accessibilityLabel?.startsWith('도착 시각')));
+    const beforeCalls = f.calls.length;
+    assert.equal(f.screen.nodes(n => n.props.testID === 'conditional-preview-launcher').length, 0);
+    // Retired entry stays disconnected; preserve the isolated developer fixture's safety contract.
+    const previewHost = screenRuntime({ __DEV__: true });
+    const preview = previewHost.mount(previewHost.load('src/ui/dev/ConditionalPlacePreview.tsx').ConditionalPlacePreview, { onClose() {} });
+    assert.ok(preview.get('conditional-preview-close'));
+    assert.match(JSON.stringify(preview.nodes(n => n.type === 'Text')), /개발용 미리보기 · 실제 추천\/저장 없음/);
+    assert.equal(preview.nodes(n => n.props.testID?.startsWith('conditional-manual-')).length, 2);
+    preview.press('conditional-visit-more');
+    assert.equal(preview.nodes(n => n.props.testID?.startsWith('conditional-manual-')).length, 4);
+    preview.press('conditional-manual-preview-market');
+    assert.match(JSON.stringify(preview.nodes(n => n.type === 'Text')), /미리보기에서는 실행하지 않아요/);
+    const kakao = preview.nodes(n => n.type === 'Pressable' && JSON.stringify(n.props.children).includes('카카오맵에서 확인'))[0];
+    kakao.props.onPress();
+    preview.press('conditional-preview-loading');
+    assert.equal(preview.get('conditional-manual-preview-market').props.disabled, true);
+    preview.press('conditional-preview-error');
+    assert.match(JSON.stringify(preview.nodes(n => n.type === 'Text')), /고정 오류 예시/);
+    preview.press('conditional-preview-close');
+    assert.equal(JSON.stringify(f.screen.get('route-origin-field')), beforeOrigin);
+    assert.equal(JSON.stringify(f.screen.get('route-destination-field')), beforeDestination);
+    assert.equal(JSON.stringify(f.screen.nodes(n => n.props.accessibilityLabel?.startsWith('도착 시각'))), beforeTime);
+    assert.equal(f.calls.length, beforeCalls, 'preview invokes no runtime callbacks');
+  }
+});
+
+test('UCONDITIONALPREVIEW failure-first: production has no entry and direct preview render is rejected', async () => {
+  const f = fixture({ internal: false, diagnostics: true }); await tick();
+  assert.equal(f.screen.nodes(n => n.props.testID === 'conditional-preview-launcher').length, 0);
+  const host = screenRuntime({ __DEV__: false });
+  const screen = host.mount(host.load('src/ui/dev/ConditionalPlacePreview.tsx').ConditionalPlacePreview, { onClose() { throw Error('must not run'); } });
+  assert.equal(screen.nodes(n => n.props.testID === 'conditional-preview-close').length, 0);
+});
+
+test('UCONDITIONALPREVIEW shared production section preserves map/confirm/more callback values', () => {
+  const calls = [];
+  const host = screenRuntime({});
+  const display = { title: '운영 조건부 장소', lat: 35.15, lon: 129.06, imageUrl: null };
+  const screen = host.mount(host.load('src/ui/recommendation/ConditionalVisitSection.tsx').ConditionalVisitSection, {
+    places: [{ id: 'market', title: display.title }], nextCursor: 8, displayPlace: () => display,
+    discoveryContext: () => null, manualStates: {}, session: { nowIso: '2026-09-08T06:00:00.000Z' },
+    onOpenKakao: place => calls.push(['map', place]), onConfirm: id => calls.push(['confirm', id]), onMore: () => calls.push(['more']),
+  });
+  screen.nodes(n => n.type === 'Pressable' && JSON.stringify(n.props.children).includes('카카오맵에서 확인'))[0].props.onPress();
+  screen.press('conditional-manual-market'); screen.press('conditional-visit-more');
+  assert.deepEqual(calls, [['map', display], ['confirm', 'market'], ['more']]);
 });
 
 test('ULA button diagnostics failure-first: internal Release에서 조회·복사하고 일반 Release에는 노출하지 않는다', async () => {

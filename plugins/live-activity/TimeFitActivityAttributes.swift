@@ -11,11 +11,12 @@ struct TimeFitActivityAttributes: ActivityAttributes {
     let nextBoundaryAtMs: Double?
     let departureReminderAtMs: Double?
     let snoozeUsed: Bool
+    let completionEligible: Bool
 
     init(
       activeStopId: String?, phase: String, revision: Int, targetTitle: String,
       arrivalPromptAtMs: Double?, nextBoundaryAtMs: Double?, departureReminderAtMs: Double?,
-      snoozeUsed: Bool = false
+      snoozeUsed: Bool = false, completionEligible: Bool = false
     ) {
       self.activeStopId = activeStopId
       self.phase = phase
@@ -25,10 +26,11 @@ struct TimeFitActivityAttributes: ActivityAttributes {
       self.nextBoundaryAtMs = nextBoundaryAtMs
       self.departureReminderAtMs = departureReminderAtMs
       self.snoozeUsed = snoozeUsed
+      self.completionEligible = completionEligible
     }
 
     private enum CodingKeys: String, CodingKey {
-      case activeStopId, phase, revision, targetTitle, arrivalPromptAtMs, nextBoundaryAtMs, departureReminderAtMs, snoozeUsed
+      case activeStopId, phase, revision, targetTitle, arrivalPromptAtMs, nextBoundaryAtMs, departureReminderAtMs, snoozeUsed, completionEligible
     }
 
     init(from decoder: Decoder) throws {
@@ -41,6 +43,7 @@ struct TimeFitActivityAttributes: ActivityAttributes {
       nextBoundaryAtMs = try values.decodeIfPresent(Double.self, forKey: .nextBoundaryAtMs)
       departureReminderAtMs = try values.decodeIfPresent(Double.self, forKey: .departureReminderAtMs)
       snoozeUsed = try values.decodeIfPresent(Bool.self, forKey: .snoozeUsed) ?? false
+      completionEligible = try values.decodeIfPresent(Bool.self, forKey: .completionEligible) ?? false
     }
   }
 
@@ -134,7 +137,7 @@ enum TimeFitLiveActivityTargetStore {
     guard let activity = Activity<TimeFitActivityAttributes>.activities.first(where: { $0.id == target.activityId }) else { return .activityMissing }
     guard TimeFitActivityIdentityPolicy.purpose(activity.attributes) == "course_progress"
       && activity.attributes.courseRunId == courseRunId && activity.attributes.schemaVersion == target.schemaVersion
-      && activity.content.state.activeStopId == stopId && activity.content.state.revision == revision else { return .identityMismatch }
+      && (activity.content.state.activeStopId ?? "final-destination") == stopId && activity.content.state.revision == revision else { return .identityMismatch }
     return .found(activity)
   }
 }
@@ -298,6 +301,25 @@ enum TimeFitPendingNavigationSignal {
 }
 
 enum TimeFitPendingNavigationActionStore {
+  // Revoked completion capability, not account identity or learning evidence.
+  // Only one real course may be active; retain its revocation across app restart.
+  private static func completionRevocationURL() throws -> URL {
+    try url().deletingLastPathComponent().appendingPathComponent("TimeFitCompletionRevokedRun-v1.json")
+  }
+  static func completionRevoked(_ run: String) -> Bool {
+    guard let location = try? completionRevocationURL() else { return true }
+    if !FileManager.default.fileExists(atPath: location.path) { return false }
+    guard let data = try? Data(contentsOf: location), let revoked = try? JSONDecoder().decode(String.self, from: data) else { return true }
+    return revoked == run
+  }
+  static func revokeCompletion(_ run: String) throws {
+    let location = try completionRevocationURL()
+    try JSONEncoder().encode(run).write(to: location, options: .atomic)
+    try FileManager.default.setAttributes([.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: location.path)
+    if let pending = read(), pending.courseRunId == run, pending.purpose == "course_progress_completion" {
+      try clearExact(actionId: pending.actionId, courseRunId: run)
+    }
+  }
   private static let filename = "TimeFitPendingNavigation-v1.json"
   private static let states: Set<String> = ["pending", "executing", "success", "failure"]
   private static func url() throws -> URL {
@@ -307,7 +329,7 @@ enum TimeFitPendingNavigationActionStore {
     return container.appendingPathComponent(filename)
   }
   static func valid(_ value: TimeFitPendingNavigationAction) -> Bool {
-    value.schemaVersion == 1 && value.purpose == "course_progress_navigation"
+    value.schemaVersion == 1 && ["course_progress_navigation", "course_progress_completion"].contains(value.purpose)
       && !value.actionId.isEmpty && value.actionId.count <= 200
       && !value.courseRunId.isEmpty && value.courseRunId.count <= 200
       && !value.stopId.isEmpty && value.stopId.count <= 200

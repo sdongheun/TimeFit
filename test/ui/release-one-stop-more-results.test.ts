@@ -127,11 +127,12 @@ test('UONEMORE01: 명시 tap wrapper는 같은 session 메모리 input과 현재
   assert.equal(received, expected);
 });
 
-test('UONEMORE01: 검증 더보기와 조건부 로컬 더보기는 testID·호출 경계를 공유하지 않는다', () => {
+test('UONEMORE01: 검증 더보기는 유지하고 조건부 로컬 더보기의 Results 연결은 철회한다', () => {
   const results = fs.readFileSync('src/ui/ResultsScreen.tsx', 'utf8');
   const session = fs.readFileSync('src/ui/recommendation/v1Session.ts', 'utf8');
   assert.match(results, /testID="verified-course-more"/);
-  assert.match(results, /testID="conditional-visit-more"/);
+  assert.doesNotMatch(results, /ConditionalVisitSection|conditional-visit-more/);
+  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /testID="conditional-visit-more"/);
   assert.match(results, /continueReleaseRecommendationSession/);
   assert.match(session, /continueReleaseOneStopRepresentativeCourseV1/);
   assert.doesNotMatch(results, /continueLimitedRepresentativeCourseV1/);
