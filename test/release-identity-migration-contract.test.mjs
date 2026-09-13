@@ -59,11 +59,3 @@ test('DB-DWELL-01 migration: 최소 payload·180일·동의 epoch·시간순·se
   assert.match(dwell, /public\.purge_expired_dwell_samples/);
   assert.match(dwell, /revoke execute on function public\.purge_expired_dwell_samples\(\) from authenticated/);
 });
-
-test('DB-RELEASE-IDENTITY B repository: anonymous guard와 단일 transaction RPC 재시도를 사용한다', () => {
-  const source = fs.readFileSync('src/services/courseRepository.ts', 'utf8');
-  assert.match(source, /data\.user\.is_anonymous === true/);
-  assert.match(source, /supabase\.rpc\('create_course_plan'/);
-  assert.doesNotMatch(source, /Promise\.all\(\[\s*planRows\.stops/);
-  assert.match(source, /Retry once with the same request ID/);
-});

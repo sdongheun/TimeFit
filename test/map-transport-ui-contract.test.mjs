@@ -152,8 +152,8 @@ test('URECDIAG01: 추천량 진단은 exact internal flag일 때만 Results 최�
 });
 
 test('결과 진입점은 V1 대표 코스와 읽기 전용 확인 화면을 사용한다', () => {
-  assert.doesNotMatch(resultEntry, /ConditionalVisitSection/); // U-RELEASE-UI-CLEANUP-01 retires Results entry only.
-  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /CourseV1Journey/);
+  assert.doesNotMatch(resultEntry, /ConditionalVisitSection/);
+  assert.equal(fs.existsSync('src/ui/recommendation/ConditionalVisitSection.tsx'), false);
   assert.match(resultEntry, /CourseConfirm/);
   assert.doesNotMatch(resultEntry, /OneStopResultsScreen|BasketPanel|candidateRadiusKm/);
 });
@@ -162,7 +162,6 @@ test('URELEASEONESTOP01/UONEMORE01: 결과는 single 대표·누적 대안을 �
   assert.match(results, /moreState\.representativeCourse/);
   assert.match(results, /no_representative_candidates/);
   assert.match(results, /courseV1OutcomeMessage\(result.primaryOutcomeReason\)/); // MAP02: empty resultState alone no longer asserts a cause.
-  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /CourseV1PlacePreview/);
   assert.match(results, /이 시간에 가능한 다른 장소/);
   assert.match(results, /releaseOneStopDisplayResult/);
   assert.match(results, /testID="verified-course-more"/);
@@ -170,8 +169,6 @@ test('URELEASEONESTOP01/UONEMORE01: 결과는 single 대표·누적 대안을 �
   assert.match(results, /continueReleaseRecommendationSession/);
   assert.match(recommendationSession, /continueReleaseOneStopRepresentativeCourseV1/);
   assert.doesNotMatch(results, /continueRecommendationSession|continueLimitedRepresentativeCourseV1|다른 검증 코스 더 보기|검증 대안/);
-  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /운영시간 확인 후 들러볼 곳/);
-  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /운영시간을 카카오맵에서 확인해 주세요/);
   assert.doesNotMatch(results, /conditionalVisitPage/);
   assert.doesNotMatch(results, /AppState\.addEventListener/);
   assert.doesNotMatch(results, /millisecondsUntilConditionalVisibilityBoundary/);
@@ -183,10 +180,7 @@ test('URELEASEONESTOP01/UONEMORE01: 결과는 single 대표·누적 대안을 �
   assert.match(courseConfirm, /Linking\.canOpenURL/);
   assert.doesNotMatch(results, /createCourseV1CandidateProvider\(\)\.listConditionalVisitCandidates/);
   assert.doesNotMatch(results, /runConditionalManualAction/);
-  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /확인했어요, 이 장소로 코스 계산/);
-  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /운영시간 확인 필요\(사용자 확인\)/);
   assert.doesNotMatch(results, /conditionalManualLocks\.tryLock/);
-  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /testID="conditional-visit-more"/);
   assert.doesNotMatch(results, /buildRecommendationExplorationPage|verifyRecommendationExplorationPlace|ExplorationPlaceCard/);
   assert.doesNotMatch(results, /지도에서 더 보기/);
   assert.doesNotMatch(results, /길찾기 시작|장바구니|buildBasketCourse/);
@@ -207,19 +201,27 @@ test('UKAKAO-DEEPLINK01: 현재 장소 상세와 길찾기는 canOpenURL 확인 
   assert.match(executionSchedule, /browser_fallback_cancelled/);
 });
 
-test('URELEASEONESTOP01: 새 V1 흐름은 체류 분을 숨기고 short 의미만 숫자 없이 표시한다', () => {
-  const journey = fs.readFileSync('src/ui/recommendation/CourseV1Journey.tsx', 'utf-8');
-  const preview = fs.readFileSync('src/ui/recommendation/CourseV1PlacePreview.tsx', 'utf-8');
-  const listModel = fs.readFileSync('src/ui/recommendation/courseV1ResultListModel.ts', 'utf-8');
-
-  assert.doesNotMatch(preview, /stayMin|stayState|courseV1StopDwellLabel/);
-  assert.match(journey, /segment\.stayState === 'short'/);
-  assert.match(journey, /가볍게 둘러보기/);
-  assert.doesNotMatch(`${results}\n${journey}\n${preview}\n${courseConfirmV1}\n${verifiedProgress}`, /짧게 가능|활동 \$\{segment\.min\}분|분 머물기|출발 예정/);
-  assert.doesNotMatch(`${results}\n${journey}\n${preview}`, /maxStay|minStay|최대\s*체류/);
-  assert.doesNotMatch(`${results}\n${journey}\n${preview}`, /Slider|체류시간.*(수정|조절)|setStay/);
-  assert.match(listModel, /remainingAfterCourseMin/);
-  assert.doesNotMatch(listModel, /remainingAfterArrivalBufferMin/);
+test('URELEASEONESTOP01: 현재 review 상세만 계획 체류를 표시하고 결과·장소 상세·active는 숨긴다', () => {
+  const summary = fs.readFileSync('src/ui/recommendation/CourseV1SummaryCard.tsx', 'utf8');
+  const detail = fs.readFileSync('src/ui/recommendation/CourseV1VerticalDetail.tsx', 'utf8');
+  const model = fs.readFileSync('src/ui/recommendation/courseV1CardDetailModel.ts', 'utf8');
+  const active = fs.readFileSync('src/ui/courseConfirmActiveModel.ts', 'utf8');
+  assert.match(results, /CourseV1SummaryCard/);
+  assert.match(summary, /summary.short/);
+  assert.match(summary, /가볍게 둘러보기/);
+  assert.doesNotMatch(summary + placeDetail, /stayMin|stayLabel/);
+  assert.match(courseConfirm, /<CourseV1VerticalDetail[^\n]*model=\{detail\} mode=\{mode\}/);
+  assert.match(detail, /showPlannedStay=\{mode === 'review'\}/);
+  assert.match(detail, /showPlannedStay \? <Text style=\{s.stay\}>\{stop.stayLabel\}/);
+  assert.match(detail, /stop.stayLabel.startsWith\('가볍게'\)/);
+  assert.match(model, /stayMin: stop.stayMin/);
+  assert.match(model, /약 \$\{stop.stayMin\}분/);
+  assert.match(model, /courseMin: course.travelMin \+ course.stayMin/);
+  assert.match(active, /가볍게 둘러보기/);
+  assert.doesNotMatch(active, /stayMin|stayLabel/);
+  assert.doesNotMatch(results + summary + placeDetail, /Slider|체류시간.*(수정|조절)|setStay/);
+  // Actual review expansion / active resume / Results and PlaceDetail rendering is
+  // also exercised by place-course-screen-runtime's two PF restore cases.
 });
 
 test('UPROGRESS01: V1 진행은 검증 snapshot과 명시 단계 전환만 사용하고 legacy 자동화 경계를 호출하지 않는다', () => {

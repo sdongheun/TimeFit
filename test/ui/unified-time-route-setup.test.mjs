@@ -416,7 +416,7 @@ test('USETUP production hides dev tools, internal test-clock restore is silent a
   assert.equal(count(f, 'recommend'), 8);
 });
 
-test('UCONDITIONALPREVIEW failure-first: dawn/night local preview preserves inputs and blocks execution', async () => {
+test('UUNUSED03: dawn/night setup keeps manual inputs and has no retired preview entry', async () => {
   for (const hour of [2, 20]) {
     const f = fixture({ internal: true, now: new Date(2026, 8, 8, hour, 0) }); await tick();
     f.choose('origin', O); f.choose('destination', D);
@@ -425,51 +425,19 @@ test('UCONDITIONALPREVIEW failure-first: dawn/night local preview preserves inpu
     const beforeTime = JSON.stringify(f.screen.nodes(n => n.props.accessibilityLabel?.startsWith('도착 시각')));
     const beforeCalls = f.calls.length;
     assert.equal(f.screen.nodes(n => n.props.testID === 'conditional-preview-launcher').length, 0);
-    // Retired entry stays disconnected; preserve the isolated developer fixture's safety contract.
-    const previewHost = screenRuntime({ __DEV__: true });
-    const preview = previewHost.mount(previewHost.load('src/ui/dev/ConditionalPlacePreview.tsx').ConditionalPlacePreview, { onClose() {} });
-    assert.ok(preview.get('conditional-preview-close'));
-    assert.match(JSON.stringify(preview.nodes(n => n.type === 'Text')), /개발용 미리보기 · 실제 추천\/저장 없음/);
-    assert.equal(preview.nodes(n => n.props.testID?.startsWith('conditional-manual-')).length, 2);
-    preview.press('conditional-visit-more');
-    assert.equal(preview.nodes(n => n.props.testID?.startsWith('conditional-manual-')).length, 4);
-    preview.press('conditional-manual-preview-market');
-    assert.match(JSON.stringify(preview.nodes(n => n.type === 'Text')), /미리보기에서는 실행하지 않아요/);
-    const kakao = preview.nodes(n => n.type === 'Pressable' && JSON.stringify(n.props.children).includes('카카오맵에서 확인'))[0];
-    kakao.props.onPress();
-    preview.press('conditional-preview-loading');
-    assert.equal(preview.get('conditional-manual-preview-market').props.disabled, true);
-    preview.press('conditional-preview-error');
-    assert.match(JSON.stringify(preview.nodes(n => n.type === 'Text')), /고정 오류 예시/);
-    preview.press('conditional-preview-close');
     assert.equal(JSON.stringify(f.screen.get('route-origin-field')), beforeOrigin);
     assert.equal(JSON.stringify(f.screen.get('route-destination-field')), beforeDestination);
     assert.equal(JSON.stringify(f.screen.nodes(n => n.props.accessibilityLabel?.startsWith('도착 시각'))), beforeTime);
-    assert.equal(f.calls.length, beforeCalls, 'preview invokes no runtime callbacks');
+    assert.equal(f.calls.length, beforeCalls, 'checking retired entry absence invokes no runtime callbacks');
   }
 });
 
-test('UCONDITIONALPREVIEW failure-first: production has no entry and direct preview render is rejected', async () => {
+test('UUNUSED03: public setup has no retired preview entry even with diagnostics enabled', async () => {
   const f = fixture({ internal: false, diagnostics: true }); await tick();
   assert.equal(f.screen.nodes(n => n.props.testID === 'conditional-preview-launcher').length, 0);
-  const host = screenRuntime({ __DEV__: false });
-  const screen = host.mount(host.load('src/ui/dev/ConditionalPlacePreview.tsx').ConditionalPlacePreview, { onClose() { throw Error('must not run'); } });
-  assert.equal(screen.nodes(n => n.props.testID === 'conditional-preview-close').length, 0);
+
 });
 
-test('UCONDITIONALPREVIEW shared production section preserves map/confirm/more callback values', () => {
-  const calls = [];
-  const host = screenRuntime({});
-  const display = { title: '운영 조건부 장소', lat: 35.15, lon: 129.06, imageUrl: null };
-  const screen = host.mount(host.load('src/ui/recommendation/ConditionalVisitSection.tsx').ConditionalVisitSection, {
-    places: [{ id: 'market', title: display.title }], nextCursor: 8, displayPlace: () => display,
-    discoveryContext: () => null, manualStates: {}, session: { nowIso: '2026-09-08T06:00:00.000Z' },
-    onOpenKakao: place => calls.push(['map', place]), onConfirm: id => calls.push(['confirm', id]), onMore: () => calls.push(['more']),
-  });
-  screen.nodes(n => n.type === 'Pressable' && JSON.stringify(n.props.children).includes('카카오맵에서 확인'))[0].props.onPress();
-  screen.press('conditional-manual-market'); screen.press('conditional-visit-more');
-  assert.deepEqual(calls, [['map', display], ['confirm', 'market'], ['more']]);
-});
 
 test('ULA button diagnostics failure-first: internal Release에서 조회·복사하고 일반 Release에는 노출하지 않는다', async () => {
   const release = fixture(); await tick();

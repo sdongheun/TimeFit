@@ -132,7 +132,7 @@ test('UONEMORE01: 검증 더보기는 유지하고 조건부 로컬 더보기의
   const session = fs.readFileSync('src/ui/recommendation/v1Session.ts', 'utf8');
   assert.match(results, /testID="verified-course-more"/);
   assert.doesNotMatch(results, /ConditionalVisitSection|conditional-visit-more/);
-  assert.match(fs.readFileSync('src/ui/recommendation/ConditionalVisitSection.tsx', 'utf8'), /testID="conditional-visit-more"/);
+  assert.equal(fs.existsSync('src/ui/recommendation/ConditionalVisitSection.tsx'), false);
   assert.match(results, /continueReleaseRecommendationSession/);
   assert.match(session, /continueReleaseOneStopRepresentativeCourseV1/);
   assert.doesNotMatch(results, /continueLimitedRepresentativeCourseV1/);

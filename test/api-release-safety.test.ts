@@ -5,7 +5,6 @@ import vm from 'node:vm';
 import ts from 'typescript';
 import { createRouteBaselineService } from '../src/engine/routeBaselineService';
 import { createKakaoLocationSearchAdapter } from '../src/services/kakaoLocationSearchAdapter';
-import { purgeLegacyRouteBaselineCache } from '../src/services/legacyRouteBaselineCleanup';
 import { createAuthenticatedRouteProxyInvoker } from '../src/services/routeProxyClientAdapter';
 
 const a = { lat: 35.12345, lon: 129.12345 }, b = { lat: 35.23456, lon: 129.23456 };
@@ -84,16 +83,6 @@ test('SAFETY-04: memory-only baseline replacement changes restart fetch count (d
   assert.equal(calls, 3);
 });
 
-test('SAFETY-05: dedicated purge preserves auth, active course, completion and lookalike keys', async () => {
-  const key = 'timefit:route-baselines:v1:35.12345,129.12345:35.23456,129.23456';
-  const keep = ['sb-fixture-auth-token', '@timefit/active-verified-course-v1', '@timefit/course-completions-v1', 'timefit:tmap-route-usage:v1', 'other:' + key, key + ':extra', 'timefit:route-baselines:v2:35.12345,129.12345:35.23456,129.23456'];
-  const values = new Map([key, ...keep].map((k) => [k, 'fixture-private-value']));
-  const result = await purgeLegacyRouteBaselineCache({ getAllKeys: async () => [...values.keys()], removeItem: async (k) => { values.delete(k); } });
-  assert.deepEqual(result, { status: 'completed', removedCount: 1, failedCount: 0 });
-  assert.deepEqual([...values.keys()], keep);
-  assert.deepEqual(await purgeLegacyRouteBaselineCache({ getAllKeys: async () => [key, key], removeItem: async () => { throw new Error('fixture-private-error'); } }), { status: 'partial', removedCount: 0, failedCount: 1 });
-  assert.deepEqual(await purgeLegacyRouteBaselineCache({ getAllKeys: async () => { throw new Error('fixture-private-error'); }, removeItem: async () => assert.fail() }), { status: 'unavailable', removedCount: 0, failedCount: 0 });
-});
 
 test('SAFETY-06: raw Edge rejection and cancellation are safe failures, never route success', async () => {
   for (const name of ['Error', 'AbortError']) {

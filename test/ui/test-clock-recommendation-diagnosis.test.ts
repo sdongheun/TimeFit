@@ -5,7 +5,6 @@ import { buildReleaseOneStopRepresentativeCourseV1, type CourseV1Candidate, type
 import { captureRecommendationNowIso, startMinuteForRecommendation } from '../../src/ui/recommendation/recommendationSessionTime';
 import { runRecommendationSession, requestConditionalManualCourse } from '../../src/ui/recommendation/v1Session';
 import { buildCourseV1DetailModel } from '../../src/ui/recommendation/courseV1CardDetailModel';
-import { isConditionalManualConfirmTime } from '../../src/ui/recommendation/verifiedCourseResultsModel';
 import { buildQaReleaseOneStopSession, qaReleaseOneStopLauncherEnabled } from '../../src/ui/qaReleaseOneStopLauncherModel';
 import { releaseTimeSetupValidation } from '../../src/ui/timeSetup/releaseTimeBoundary';
 import { resolveTimeSetupClock, suggestedEndForTestClock } from '../../src/ui/timeSetup/testClock';
@@ -53,7 +52,6 @@ test('CLOCK-DIAG: actual 02/20, manual and QA 15:00 both reach real engine/provi
       const serialized = JSON.parse(JSON.stringify({ session, course: result.representativeCourse }));
       assert.ok(buildCourseV1DetailModel(serialized.course, serialized.session, () => ({ ...place, category: '문화시설' })));
     }
-    assert.equal(isConditionalManualConfirmTime(actual), false);
     const real = await run(sessionAt(actual, null));
     assert.equal(real.result.representativeCourse, null, '14–18 structured fixture is closed on actual clock');
   }
@@ -71,7 +69,6 @@ test('CLOCK-DIAG observed limitation: conditional confirmation subtracts test/ac
   for (const [actual, expected] of [[date('17:00'), 0], [date('10:00'), 120]] as const) {
     const session = sessionAt(actual);
     await run(session);
-    assert.equal(isConditionalManualConfirmTime(actual), true);
     let budget: number | undefined;
     await requestConditionalManualCourse(session, 'fixture-market', actual, { buildConditionalManual: async input => {
       budget = input.remainingMin;

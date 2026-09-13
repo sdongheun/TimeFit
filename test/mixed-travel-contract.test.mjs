@@ -7,7 +7,6 @@ const travel = fs.readFileSync('src/engine/travel.ts', 'utf-8');
 const results = fs.readFileSync('src/ui/PlaceDetailScreen.tsx', 'utf-8');
 const execution = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8');
 const executionSchedule = fs.readFileSync('src/ui/execution/schedule.ts', 'utf-8');
-const repository = fs.readFileSync('src/services/courseRepository.ts', 'utf-8');
 
 test('자동 혼합 이동은 가까운 구간을 도보, 먼 구간을 대중교통으로 정한다', () => {
   assert.match(mixedTravel, /AUTO_WALK_LIMIT_MIN = 14/);
@@ -33,8 +32,7 @@ test('현재 장소 상세는 선택·운영시간을 표시하고 이동 구간
   assert.doesNotMatch(results, /openTransportPicker|selectedArrivalModes|modePicker/);
 });
 
-test('저장과 실행은 각 이동 구간의 mode를 유지한다', () => {
-  assert.match(repository, /mode: leg\.mode \?\? ctx\.mode/);
+test('보존 schedule과 현재 실행은 각 이동 구간의 mode를 유지한다', () => {
   assert.match(executionSchedule, /incomingMode: leg\.mode \?\? ctx\.mode/);
   assert.match(execution, /openKakaoRouteWithFallback\(stage, travel.mode/);
   const progress = fs.readFileSync('src/ui/recommendation/verifiedCourseProgressModel.ts', 'utf8');

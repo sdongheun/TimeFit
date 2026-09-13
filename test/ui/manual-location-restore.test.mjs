@@ -24,7 +24,7 @@ function hostFixture() {
   './ownedCourseLifecycle':{ownedCourseLifecycle:{}},
   './mainTabNavigation':{},
   './KakaoRouteMap':{KakaoRouteMap:'KakaoRouteMap',buildRouteMapSegments:()=>[]},
-  './liveActivity/courseProgressNotifications':{prepareLiveCourseNotifications:async()=>true},
+  './liveActivity/courseProgressNotifications':{prepareLiveCourseNotifications:async()=>{calls.push('notification');}},
   './liveActivity/liveActivityDiagnostics':{createDiagnosticAttemptId:()=> 'fixture',recordLiveActivityAppDiagnostic:async()=>{}},
   './liveActivity/courseProgressComposition':{liveCourseProgressRuntime:{}},
   './liveActivity/nativeLiveActivityPort':{nativePendingNavigationPort:{}},
@@ -33,7 +33,6 @@ function hostFixture() {
   '../services/kakaoLocationLabelAdapter':{createKakaoLocationLabelAdapter:()=>({resolve(){calls.push('label');}})},
   '../engine/travel':{precompute(){calls.push('route');return Promise.resolve();},precomputeTransit(){calls.push('route');return Promise.resolve();}},
   '../engine':{travelGeo:()=>[],timeContext:()=>({})},
-  '../services/courseNotifications':{scheduleCourseNotifications(){calls.push('notification');return Promise.resolve({});}},
   './execution/CourseProgress':{CourseProgress:'CourseProgress'},'./FloatingTabBar':{FloatingTabBar:'FloatingTabBar'},
  });
  return {host,calls};

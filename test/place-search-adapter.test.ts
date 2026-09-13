@@ -3,7 +3,6 @@ import test from 'node:test';
 import { kakaoPoiSearchMulti, kakaoPoiSearchMultiResult } from '../src/engine/kakao';
 import { tmapPoiSearchMultiResult } from '../src/engine/travel';
 import { matchPlaceNameQuery } from '../src/services/placeNameSemanticMatch';
-import { searchPlaceSuggestions } from '../src/services/placeSearchSuggestionAdapter';
 
 const response = (status: number, body: unknown) => ({ ok: status >= 200 && status < 300, status, json: async () => body }) as Response;
 
@@ -85,46 +84,16 @@ function actualTmapSearcher(categoryName?: string) {
   });
 }
 
-test('APIS4R-01: Kakao 원문 교통 카테고리의 노선 token은 실제 변환 뒤 base fallback suggestion으로 이어진다', async () => {
-  const result = await searchPlaceSuggestions({
-    query: '사상역 2호선',
-    searchers: { kakao: actualKakaoSearcher('교통, 지하철역, 부산2호선'), tmap: actualTmapSearcher() },
-  });
-  assert.deepEqual(result.results[1]?.pois[0]?.providerMetadata, { placeType: 'transit_place', lineLabels: ['2호선'], labelSource: 'provider' });
-  assert.deepEqual(result.suggestions.map(({ match, label, labelSource }) => ({ match, label, labelSource })), [{ match: 'base_transit_place', label: '사상역', labelSource: 'provider_name' }]);
-  assert.deepEqual(result.diagnostics, { providerCalls: { kakao: 2, tmap: 2 }, fallbackCalls: { kakao: 1, tmap: 1 } });
+test('provider category mapping retains Kakao and TMAP transit line metadata without retired suggestions', async () => {
+  for (const search of [actualKakaoSearcher, actualTmapSearcher]) {
+    const result = await search('교통, 지하철역, 부산2호선')('사상역');
+    assert.deepEqual(result.pois[0]?.providerMetadata, { placeType: 'transit_place', lineLabels: ['2호선'], labelSource: 'provider' });
+  }
 });
 
-test('APIS4R-02: TMAP 원문 교통 카테고리의 노선 token은 실제 변환 뒤 base fallback suggestion으로 이어진다', async () => {
-  const result = await searchPlaceSuggestions({
-    query: '사상역 2호선',
-    searchers: { kakao: actualKakaoSearcher(), tmap: actualTmapSearcher('교통, 지하철역, 부산2호선') },
-  });
-  assert.deepEqual(result.results[3]?.pois[0]?.providerMetadata, { placeType: 'transit_place', lineLabels: ['2호선'], labelSource: 'provider' });
-  assert.deepEqual(result.suggestions.map(({ match, label, labelSource }) => ({ match, label, labelSource })), [{ match: 'base_transit_place', label: '사상역', labelSource: 'provider_name' }]);
-  assert.deepEqual(result.diagnostics, { providerCalls: { kakao: 2, tmap: 2 }, fallbackCalls: { kakao: 1, tmap: 1 } });
-});
-
-test('APIS4R-03: 교통 유형만 있고 원문 카테고리에 노선 token이 없으면 노선을 합성하거나 fallback 제안을 만들지 않는다', async () => {
-  const result = await searchPlaceSuggestions({
-    query: '사상역 2호선',
-    searchers: { kakao: actualKakaoSearcher('교통, 지하철역'), tmap: actualTmapSearcher() },
-  });
-  assert.deepEqual(result.results[1]?.pois[0]?.providerMetadata, { placeType: 'transit_place', labelSource: 'provider' });
-  assert.deepEqual(result.suggestions, []);
-  assert.doesNotMatch(JSON.stringify(result), /lineLabels|2호선/);
-});
-
-test('APIS4R-04: 다른 노선 또는 일반 상호 카테고리는 실제 변환 경로에서도 제안하지 않는다', async () => {
-  const differentLine = await searchPlaceSuggestions({
-    query: '사상역 2호선',
-    searchers: { kakao: actualKakaoSearcher('교통, 지하철역, 부산3호선'), tmap: actualTmapSearcher() },
-  });
-  const generalShop = await searchPlaceSuggestions({
-    query: '사상역 2호선',
-    searchers: { kakao: actualKakaoSearcher(), tmap: actualTmapSearcher('음식점, 부산2호선') },
-  });
-  assert.deepEqual(differentLine.suggestions, []);
-  assert.deepEqual(generalShop.results[3]?.pois[0]?.providerMetadata, undefined);
-  assert.deepEqual(generalShop.suggestions, []);
+test('provider category mapping never invents missing lines or marks a shop as transit', async () => {
+  const missing = await actualKakaoSearcher('교통, 지하철역')('사상역');
+  const shop = await actualTmapSearcher('음식점, 부산2호선')('사상역');
+  assert.deepEqual(missing.pois[0]?.providerMetadata, { placeType: 'transit_place', labelSource: 'provider' });
+  assert.equal(shop.pois[0]?.providerMetadata, undefined);
 });
