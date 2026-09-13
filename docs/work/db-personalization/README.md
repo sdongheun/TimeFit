@@ -1,5 +1,7 @@
 # DB·개인화 현재 작업
 
+2026-09-14 [DB-UNUSED-COURSE-REPOSITORY-REMOVE-01](unused-course-repository-removal-01.md): 미연결 courseRepository1개 제거·현재 완료/owner/guest37건 전후 PASS·부재 gate2 PASS·typecheck PASS. 테이블/기존 데이터/nav 불변. UI/QA 혼합 테스트 잔여 참조는 케이스별 인계했으며 전체 회귀 수락은 아직 아님.
+
 2026-09-09 [DB-SIGNUP-FAILURE-01 repository 완료·API/UI 인계](signup-failure.md): transient captchaToken 전달/누락 Auth0 및 allowlist code·HTTP·registry/auth stage 계약. 집중20/typecheck/UI777(기존skip1)/core465 PASS. 실제 가입·메일·운영변경0. API의 Auth options/오류 정제 및 UI fresh CAPTCHA/failure 소비는 후속이며 end-to-end 완료 아님.
 
 2026-09-09 **DEPLOY-05 운영 배포 승인 완료**: 통합 대화의 사용자 “승인한다”를 [명령의 승인 경계](../integration-decision/release-delete-links-final.md)에 기록했다. 함수1개·사후 검증·조건부 제거만 승인. 동일 승인 재질문 없이 원격 사전 조건 확인부터 재개하며 실제 계정 삭제 테스트는 제외한다. 배포 결과는 아직 미확인이다.
