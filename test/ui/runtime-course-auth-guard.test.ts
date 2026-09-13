@@ -104,6 +104,7 @@ function startHarness() {
   let confirmation: ActiveVerifiedCourseStartConfirmation | null = null;
   const navigated: ActiveVerifiedCourse[] = [];
   const controller = createActiveVerifiedCourseStartController({
+    canStart: () => true, // This fixture isolates identity/confirmation; expiry has its own fixed-clock tests.
     start(request) {
       starts += 1;
       active = startActiveVerifiedCourse(request.session, request.course, () => `runtime-${starts}`, () => {

@@ -4,7 +4,7 @@ import test from 'node:test';
 
 const migration = fs.readFileSync('supabase/migrations/202608150009_replace_course_plan.sql', 'utf-8');
 const repository = fs.readFileSync('src/services/courseRepository.ts', 'utf-8');
-const execution = fs.readFileSync('src/ui/ExecutionScreen.tsx', 'utf-8');
+const execution = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8');
 
 test('코스 변경은 최초 시작·약속 도착 시각을 바꾸지 않고 마지막 재계산 시각만 기록한다', () => {
   assert.match(migration, /create or replace function public\.replace_course_plan/);
@@ -21,9 +21,10 @@ test('코스 변경은 같은 코스 ID의 장소·구간을 원자적으로 교
   assert.match(repository, /supabase\.rpc\('replace_course_plan'/);
 });
 
-test('수동 위치 출시: legacy GPS 재추천 entry는 실행하지 않고 수동 입력을 안내한다', () => {
+test('수동 위치 출시: 현재 확인도 GPS 재추천 없이 증명 없는 복원을 수동 입력 게이트로 보낸다', () => {
   assert.doesNotMatch(execution, /expo-location|Location\.getCurrentPositionAsync|planTimeFit|getActualRouteBaselines/);
-  assert.match(execution, /장소를 직접 선택해 주세요/);
-  assert.match(execution, /이 코스는 그대로 유지됩니다/);
+  assert.match(execution, /if \(!hasManualLocationProof\(session\)\) return <ManualLocationRestoreGate/);
+  assert.match(execution, /endsAtMs=\{Date.parse\(session.nowIso\)\+session.remainingMin\*60000\}/);
+  assert.match(execution, /if \(!next\) return false/);
   assert.doesNotMatch(execution, /navigate\('LegacyResults'/);
 });

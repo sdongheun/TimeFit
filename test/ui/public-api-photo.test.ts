@@ -5,7 +5,6 @@ import { buildPlaceDetailModel, buildPlaceDetailMarkers } from '../../src/ui/pla
 import { buildNearbyBrowseDataset } from '../../src/ui/nearbyBrowseModel';
 import catalog from '../../src/data/busan_poi_catalog.json';
 import { approvedPlacePhoto } from '../../src/ui/placePhotoModel';
-import { currentPlacePhoto } from '../../src/ui/currentPlacePhoto';
 import { buildCourseV1CardSummary, buildCourseV1DetailModel, buildCourseV1DetailMarkers } from '../../src/ui/recommendation/courseV1CardDetailModel';
 
 export const photoPlace = {contentId:'photo-1',title:'공식 사진 장소',lat:35.1,lon:129.1,classification:'representative_core',imageUrl:'https://example.org/approved.jpg',imageSource:'busan_official',imageEvidence:{usagePermission:{status:'verified',rightsHolder:'부산광역시',sourcePageUrl:'https://example.org/source',licenseName:'이용허락범위 제한 없음',licenseUrl:'https://example.org/license',attribution:'사진 제공: 부산광역시',commercialUseAllowed:true,modificationAllowed:true,verifiedAt:'2026-09-07'}}};
@@ -35,13 +34,14 @@ test('current public catalog photos resolve identically without resurrecting his
   assert.ok(photos.length>0,'data handoff must restore at least one approved URL before actual recovery is claimed');
   for(const row of photos) {
     const approved=approvedPlacePhoto(row)!;
-    assert.equal(approvedPlacePhoto(currentPlacePhoto(row.contentId))?.url,approved.url);
+    const image=buildPlaceDetailModel(row,'first').image;
+    assert.equal(image.kind==='remote' ? image.url : null,approved.url);
     assert.equal(getPlacePreviewKind(row,false).kind,'image');
     assert.equal(buildPlaceDetailModel(row,'first').image.kind,'remote');
     const nearby=buildNearbyBrowseDataset(row,[row]);
     if(nearby.length) assert.equal(nearby[0].imageUrl,approved.url);
   }
-  assert.equal(approvedPlacePhoto(currentPlacePhoto('historical-removed-place')),null);
+  assert.equal(approvedPlacePhoto(rows.find(row=>row.contentId==='historical-removed-place')),null);
 });
 test('data handoff fixed attraction/food/shopping/TourAPI fixtures agree across recommendation, course and maps', () => {
   const rows=new Map([...catalog.matched.data,...catalog.unmatched.data].map(row=>[row.contentId,row]));

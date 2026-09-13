@@ -48,7 +48,7 @@ for (const count of [1, 2]) test(`REFACTOR-SAFE: ${count}곳 코스는 과거 �
   const initial = activeCourse(count);
   const progress = { stepIndex: 2, routeOpened: true, finished: false };
   const active = updateActiveVerifiedCourse(initial, initial.identity, () => progress);
-  const target = homeActiveCourseProjection(active, null, id => `장소 ${id}`);
+  const target = homeActiveCourseProjection(active, id => `장소 ${id}`);
   assert.equal(target.kind, 'verified');
   assert.equal(target.target, 'CourseConfirm');
   assert.equal(target.params.activeId, initial.identity);

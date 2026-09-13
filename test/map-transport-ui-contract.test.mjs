@@ -12,10 +12,9 @@ const placePicker = fs.readFileSync('src/ui/PlacePicker.tsx', 'utf-8');
 const captchaSheet = fs.readFileSync('src/ui/CaptchaVerificationSheet.tsx', 'utf-8');
 const recommendationSession = fs.readFileSync('src/ui/recommendation/v1Session.ts', 'utf-8');
 const recommendationLoading = fs.readFileSync('src/ui/recommendation/RecommendationLoadingProgress.tsx', 'utf-8');
-const explorationCard = fs.readFileSync('src/ui/recommendation/ExplorationPlaceCard.tsx', 'utf-8');
 const courseConfirm = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8');
-const legacyResults = fs.readFileSync('src/ui/OneStopResultsScreen.tsx', 'utf-8');
-const execution = fs.readFileSync('src/ui/ExecutionScreen.tsx', 'utf-8');
+const placeDetail = fs.readFileSync('src/ui/PlaceDetailScreen.tsx', 'utf-8');
+const execution = courseConfirm;
 const executionSchedule = fs.readFileSync('src/ui/execution/schedule.ts', 'utf-8');
 const verifiedProgress = courseConfirm;
 const courseConfirmV1 = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8');
@@ -193,11 +192,11 @@ test('URELEASEONESTOP01/UONEMORE01: 결과는 single 대표·누적 대안을 �
   assert.doesNotMatch(results, /길찾기 시작|장바구니|buildBasketCourse/);
 });
 
-test('UKAKAO-DEEPLINK01: 활성·레거시 장소와 길찾기는 canOpenURL 확인 뒤 앱 우선으로 연다', () => {
-  assert.match(legacyResults, /openKakaoPlaceWithAppFallback/);
-  assert.match(legacyResults, /canOpenApp: Linking\.canOpenURL/);
-  assert.match(legacyResults, /openBrowser: WebBrowser\.openBrowserAsync/);
-  assert.doesNotMatch(legacyResults, /Linking\.openURL\(spot\.kakaoPlaceUrl/);
+test('UKAKAO-DEEPLINK01: 현재 장소 상세와 길찾기는 canOpenURL 확인 뒤 앱 우선으로 연다', () => {
+  assert.match(placeDetail, /openKakaoPlaceWithAppFallback/);
+  assert.match(placeDetail, /canOpenApp: Linking\.canOpenURL/);
+  assert.match(placeDetail, /openBrowser: WebBrowser\.openBrowserAsync/);
+  assert.doesNotMatch(placeDetail, /Linking\.openURL\(candidate\.kakaoPlaceUrl/);
   assert.match(execution, /openKakaoRouteWithFallback/);
   assert.match(execution, /canOpenApp: Linking\.canOpenURL/);
   assert.match(execution, /openBrowser: WebBrowser\.openBrowserAsync/);

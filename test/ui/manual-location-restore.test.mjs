@@ -44,9 +44,9 @@ test('RESTORE old Home/LA CourseConfirm mounts only manual gate, never map or ro
  await settle(); assert.ok(screen.get('manual-restore-gate'));
  assert.equal(screen.nodes(n=>n.type==='KakaoRouteMap').length,0);assert.deepEqual(calls,[]);screen.unmount();
 });
-test('RESTORE legacy Execution cannot hydrate, notify or map before manual re-selection',async()=>{
- const {host,calls}=hostFixture();const params={origin:session.origin,ctx:{startMin:720,remainingMin:180,startedAtIso:session.nowIso,mode:'walk',appointment:null},course:{spots:[{title:'A',lat:35.2,lon:129.2}],legs:[{label:'이동',min:5},{label:'체류',min:20},{label:'복귀',min:5}]}};
- const screen=host.mount(host.load('src/ui/ExecutionScreen.tsx').ExecutionScreen,{route:{params},navigation:{goBack(){}}});await settle();
+test('RESTORE current review cannot hydrate, notify or map before manual re-selection',async()=>{
+ const {host,calls}=hostFixture();
+ const screen=host.mount(host.load('src/ui/CourseConfirmScreen.tsx').CourseConfirmScreen,{route:{params:{session,course}},navigation:{goBack(){}}});await settle();
  assert.ok(screen.get('manual-restore-gate'));assert.deepEqual(calls,[]);assert.equal(screen.nodes(n=>n.type==='KakaoRouteMap').length,0);screen.unmount();
 });
 test('RESTORE storage round trip keeps new manual proof; old write/read never promotes unknown source',async()=>{

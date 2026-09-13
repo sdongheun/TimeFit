@@ -83,12 +83,13 @@ test('LEGACY-QUERY-01: 비로그인에서 로그인해도 과거 조회 없이 �
   } finally { h.screen.unmount(); }
 });
 
-test('LEGACY-QUERY-01: 과거 목록 명시 새로고침 계약은 이번 단계에서 보존', async () => {
+test('LEGACY-QUERY-01: 전용 과거 상태·API는 노출하지 않고 저장소 조회도 하지 않는다', async () => {
   const h = harness(account('fixture-a'));
   try {
     await h.settle();
-    const before = h.calls.legacyReads;
-    await h.value().refreshSavedCourses();
-    assert.equal(h.calls.legacyReads, before + 1);
+    for (const key of ['activeCourse', 'savedCourses', 'isCoursesLoading', 'coursesError', 'refreshSavedCourses', 'saveCourse', 'replaceCourse', 'removeSavedCourse', 'setActiveCourse']) {
+      assert.equal(key in h.value(), false, key);
+    }
+    assert.equal(h.calls.legacyReads, 0);
   } finally { h.screen.unmount(); }
 });

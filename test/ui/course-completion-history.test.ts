@@ -91,6 +91,7 @@ test('UCOMPLETIONHISTORY01 failure-first: 다른 코스 명시 교체는 이전 
   const replacementActions: Array<() => void> = [];
   let navigated = 0;
   const controller = createActiveVerifiedCourseStartController({
+    canStart: () => true, // Completion/identity fixture, no wall-clock dependency.
     start(request) {
       return startActiveVerifiedCourse(request.session, request.course, () => 'replacement-identity', undefined, () => `replacement-run-${++runCreations}`);
     },

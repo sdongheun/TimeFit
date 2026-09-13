@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import type { VerifiedCourseV1 } from '../../src/engine';
-import type { RecommendationSession, RootStackParamList } from '../../src/ui/nav';
+import type { RecommendationSession } from '../../src/ui/nav';
 import {
   clearActiveVerifiedCourse,
   createActiveVerifiedCourseFinishLock,
@@ -47,12 +47,11 @@ function course(id = 'course-a', placeId = 'place-a'): VerifiedCourseV1 {
   };
 }
 
-const legacy = { course: { spots: [{ title: '기존 코스' }] } } as RootStackParamList['Execution'];
 const resolveTitle = (id: string) => id === 'place-a' ? '부산시민공원' : id === 'place-b' ? '송상현광장' : undefined;
 
 test('UPROGRESSRESUME01 failure-first: V1 시작 뒤 Home은 placeholder가 아니라 verified 이어가기를 투영한다', () => {
   const active = startActiveVerifiedCourse(session, course(), () => 'v1-1');
-  const home = homeActiveCourseProjection(active, null, resolveTitle);
+  const home = homeActiveCourseProjection(active, resolveTitle);
   assert.equal(home.kind, 'verified');
   if (home.kind === 'verified') {
     assert.equal(home.title, '부산시민공원');
@@ -64,23 +63,22 @@ test('UPROGRESSRESUME01 failure-first: V1 시작 뒤 Home은 placeholder가 아�
 test('UPROGRESSRESUME01 failure-first: 진행 2단계는 Home 왕복 뒤 초기화되지 않는다', () => {
   const active = startActiveVerifiedCourse(session, course(), () => 'v1-1');
   const progressed = updateActiveVerifiedCourse(active, active.identity, () => ({ stepIndex: 2, routeOpened: true, finished: false }));
-  const home = homeActiveCourseProjection(progressed, null, resolveTitle);
+  const home = homeActiveCourseProjection(progressed, resolveTitle);
   assert.equal(home.kind, 'verified');
   if (home.kind === 'verified') assert.deepEqual(home.progress, { stepIndex: 2, routeOpened: true, finished: false });
 });
 
 test('UPROGRESSRESUME01: 로그인·비로그인은 같은 V1 runtime과 Home 표시를 사용한다', () => {
-  const project = (_login: object | null) => homeActiveCourseProjection(startActiveVerifiedCourse(session, course(), () => 'same-id'), null, resolveTitle);
+  const project = (_login: object | null) => homeActiveCourseProjection(startActiveVerifiedCourse(session, course(), () => 'same-id'), resolveTitle);
   assert.deepEqual(project(null), project({ user: { id: 'login-fixture' } }));
 });
 
-test('UPROGRESSRESUME01: legacy 단독은 Execution을 유지하고 V1과 함께면 V1만 우선한다', () => {
-  const legacyOnly = homeActiveCourseProjection(null, legacy, resolveTitle);
-  assert.equal(legacyOnly.kind, 'legacy');
-  if (legacyOnly.kind === 'legacy') assert.equal(legacyOnly.target, 'Execution');
+test('UPROGRESSRESUME01: 현재 코스 없음은 placeholder, 현재 코스는 CourseConfirm', () => {
+  assert.deepEqual(homeActiveCourseProjection(null, resolveTitle), { kind: 'placeholder' });
   const active = startActiveVerifiedCourse(session, course(), () => 'v1-1');
-  assert.equal(homeActiveCourseProjection(active, legacy, resolveTitle).kind, 'verified');
-  assert.equal(legacy.course.spots[0]?.title, '기존 코스');
+  const home = homeActiveCourseProjection(active, resolveTitle);
+  assert.equal(home.kind, 'verified');
+  if (home.kind === 'verified') assert.equal(home.target, 'CourseConfirm');
 });
 
 test('UPROGRESSRESUME01: 첫 시작은 initial progress를 한 번만 만들고 새 시작은 한 건으로 교체한다', () => {
@@ -115,7 +113,7 @@ test('UPROGRESSRESUME01: stay 다음 route 성공 상태도 Home 왕복 뒤 유�
   progress = (await requestNextVerifiedCourseRoute(steps, progress, async () => true)).state;
   const active = startActiveVerifiedCourse(session, item, () => 'v1-1');
   const saved = updateActiveVerifiedCourse(active, active.identity, () => progress);
-  const home = homeActiveCourseProjection(saved, null, resolveTitle);
+  const home = homeActiveCourseProjection(saved, resolveTitle);
   assert.equal(home.kind, 'verified');
   if (home.kind === 'verified') assert.deepEqual(home.progress, progress);
 });
@@ -163,7 +161,7 @@ test('UPROGRESSRESUME01: pure active 경계는 외부 호출·저장·로그인 
 
 test('UPROGRESSRESUME01: Home 이어가기 접근성과 26px 간격·일반 tap 무햅틱을 유지한다', () => {
   const active = startActiveVerifiedCourse(session, course(), () => 'v1-1');
-  const home = homeActiveCourseProjection(active, null, resolveTitle);
+  const home = homeActiveCourseProjection(active, resolveTitle);
   assert.equal(home.kind, 'verified');
   if (home.kind === 'verified') assert.equal(home.accessibilityLabel, '진행 중인 코스, 부산시민공원, 이어가기');
   const source = fs.readFileSync('src/ui/HomeScreen.tsx', 'utf8');
@@ -183,5 +181,5 @@ test('UPROGRESSRESUME01: 화면 container는 start → verified navigation과 �
   assert.match(confirm, /matchesActiveVerifiedCourse/);
   assert.match(confirm, /flow\.updateActiveVerifiedCourse/);
   assert.match(confirm, /flow\.clearActiveVerifiedCourse/);
-  assert.match(home, /homeActiveCourseProjection\(activeVerifiedCourse, activeCourse/);
+  assert.match(home, /homeActiveCourseProjection\(activeVerifiedCourse,/);
 });

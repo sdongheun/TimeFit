@@ -4,7 +4,7 @@ import { StackRouter, CommonActions } from '@react-navigation/routers';
 import { screenRuntime } from './support/screenRuntime.mjs';
 
 test('STACK01 actual stack router preserves keys through detail/review back and terminal resets remove history', () => {
-  const options = { routeNames: ['Home', 'TimeSetup', 'Results', 'PlaceDetail', 'CourseConfirm', 'NearbyBrowse', 'Profile', 'ActivityRecord', 'MyCourses'], routeParamList: {}, routeGetIdList: {} };
+  const options = { routeNames: ['Home', 'TimeSetup', 'Results', 'PlaceDetail', 'CourseConfirm', 'NearbyBrowse', 'Profile', 'ActivityRecord'], routeParamList: {}, routeGetIdList: {} };
   const router = StackRouter({ initialRouteName: 'Home' });
   let state = router.getInitialState(options);
   const dispatch = action => {

@@ -10,7 +10,12 @@ const { createLiveCourseProgressController } = require('../../src/ui/liveActivit
 
 test('QA release: failed handoff must restore an existing Live Activity update', async context => {
   context.mock.method(globalThis, 'fetch', async () => { throw Error('network forbidden'); });
-  const session = require('../../src/ui/manualLocationRestoreModel.ts').withManualLocationProof({ nowIso: '2026-09-07T06:00:00Z', remainingMin: 120, arrivalBufferMin: 10, origin: { id: 'origin', label: 'O', lat: 35.1, lon: 129.1 }, destination: null });
+  const session = require('../../src/ui/manualLocationRestoreModel.ts').withManualLocationProof({ nowIso: '2026-09-07T06:00:00.000Z', remainingMin: 120, arrivalBufferMin: 10, origin: { id: 'origin', label: 'O', lat: 35.1, lon: 129.1 }, destination: null });
+  const nowMs = Date.parse(session.nowIso) + 60000;
+  class Clock extends Date {
+    constructor(...args) { super(...(args.length ? args : [nowMs])); }
+    static now() { return nowMs; }
+  }
   const course = { id: 'A', placeIds: ['A'], stops: [{ placeId: 'A', stayMin: 30, stayState: 'recommended', availabilityState: 'structured_verified', arrivalAt: '2026-09-07T06:05:00Z', departureAt: '2026-09-07T06:35:00Z' }], legs: [{ fromId: 'origin', toId: 'A', mode: 'walk', min: 5 }, { fromId: 'A', toId: 'origin', mode: 'walk', min: 5 }], travelMin: 10, stayMin: 30, totalMin: 50, arrivalBufferMin: 10, remainingAfterCourseMin: 80, remainingAfterArrivalBufferMin: 70 };
   const before = { schemaVersion: 1, courseRunId: 'run', revision: 1, phase: 'traveling', finalArrivalAtMs: Date.parse(session.nowIso) + 120 * 60000, arrivalBufferMin: 10, activeStopId: 'stop:0:A', route: null, stops: [{ stopId: 'stop:0:A', placeId: 'A', title: 'A', plannedStayMin: 30, arrivedAtMs: null, departedAtMs: null, snoozeUsed: false }], processedEventIds: [], updatedAtMs: Date.parse(session.nowIso), terminalAtMs: null };
   let local = before;
@@ -22,10 +27,11 @@ test('QA release: failed handoff must restore an existing Live Activity update',
   });
   const flow = { activeVerifiedCourse: null, pendingNavigationAction: null, isActiveVerifiedCourseRun(run) { return this.activeVerifiedCourse?.courseRunId === run; }, startActiveVerifiedCourse() { return this.activeVerifiedCourse = startActiveVerifiedCourse(session, course, () => 'active', undefined, () => 'run'); }, updateActiveVerifiedCourse() {}, clearActiveVerifiedCourse() {} };
   const runtime = screenRuntime({
+    __Date: Clock,
     '@react-navigation/native': { usePreventRemove() {} },
     '../data/busan_poi_catalog.json': { matched: { data: [{ contentId: 'A', title: 'A', lat: 35.11, lon: 129.11, category: '문화시설' }] }, unmatched: { data: [] } },
     './AppFlowContext': { useActiveVerifiedCourseFlow: () => flow },
-    './mainTabNavigation': { resetToMain() {}, resetToActivityRecord() {}, resetToMyCourses() {} },
+    './mainTabNavigation': { resetToMain() {}, resetToActivityRecord() {} },
     './privateWalkConnectorComposition': { appPrivateWalkConnectorPort: null },
     './courseCompletionComposition': { courseCompletionRepository: { async complete() { throw Error('completion forbidden'); } } },
     './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: controller },
