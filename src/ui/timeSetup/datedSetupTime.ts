@@ -1,4 +1,15 @@
 import { RELEASE_MAX_MINUTES } from './releaseTimeBoundary';
+import { parseRecommendationNowIso } from '../recommendation/recommendationSessionTime';
+
+/** Original recommendation deadline, never a fresh duration granted at click time. */
+export function canStartRecommendationSession(session: { nowIso: string; remainingMin: number }, nowMs: number): boolean {
+  try {
+    const startMs = parseRecommendationNowIso(session.nowIso).getTime();
+    return Number.isFinite(nowMs) && Number.isInteger(session.remainingMin)
+      && session.remainingMin > 0 && session.remainingMin <= RELEASE_MAX_MINUTES
+      && nowMs < startMs + session.remainingMin * 60_000;
+  } catch { return false; }
+}
 
 /** Infer tomorrow only inside the next three hours, anchored to the setup clock's date. */
 export function resolveArrivalMinute(nowMin: number, selectedMinute: number): number {

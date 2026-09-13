@@ -22,27 +22,10 @@ export function resetToActivityRecord(navigation: NavigationProp<RootStackParamL
   }));
 }
 
-export function resetToMyCourses(navigation: NavigationProp<RootStackParamList>) {
-  navigation.dispatch(CommonActions.reset({
-    index: 0,
-    routes: [{ name: 'MyCourses' }],
-  }));
-}
-
-/** visible top-level destination; MyCourses remains a separate legacy saved-course route. */
+/** 주변 둘러보기 탭으로 이동한다. */
 export function resetToNearbyBrowse(navigation: NavigationProp<RootStackParamList>) {
   navigation.dispatch(CommonActions.reset({
     index: 0,
     routes: [{ name: 'NearbyBrowse' }],
-  }));
-}
-
-export function resetToBasket(
-  navigation: NavigationProp<RootStackParamList>,
-  params: RootStackParamList['LegacyResults'],
-) {
-  navigation.dispatch(CommonActions.reset({
-    index: 0,
-    routes: [{ name: 'LegacyResults', params }],
   }));
 }

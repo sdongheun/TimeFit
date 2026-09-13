@@ -10,8 +10,6 @@ export function reconfirmActiveCourseLocations(active: ActiveVerifiedCourse | nu
   return { ...active, session: withManualLocationProof(active.session) };
 }
 
-type LegacyExecution = RootStackParamList['Execution'];
-
 export type ActiveVerifiedCourse = Readonly<{
   identity: string;
   courseRunId: string;
@@ -42,7 +40,6 @@ export type ActiveVerifiedCourseStartConfirmation = Readonly<{
 
 export type HomeActiveCourseProjection =
   | Readonly<{ kind: 'verified'; title: string; accessibilityLabel: string; target: 'CourseConfirm'; params: RootStackParamList['CourseConfirm']; progress: VerifiedCourseProgressState }>
-  | Readonly<{ kind: 'legacy'; title: string; accessibilityLabel: string; target: 'Execution'; params: LegacyExecution }>
   | Readonly<{ kind: 'placeholder' }>;
 
 /** 프로세스 메모리 비교에만 쓰는 UI identity다. 장소명·좌표·영속 run ID를 포함하지 않는다. */
@@ -114,6 +111,8 @@ export function createActiveVerifiedCourseStartController(dependencies: Readonly
   navigate: (active: ActiveVerifiedCourse) => void;
   confirm: (confirmation: ActiveVerifiedCourseStartConfirmation) => void;
   onError?: () => void;
+  canStart: (request: ActiveVerifiedCourseStartRequest) => boolean;
+  onExpired?: () => void;
 }>) {
   let locked = false;
   let pendingToken = 0;
@@ -128,7 +127,15 @@ export function createActiveVerifiedCourseStartController(dependencies: Readonly
       dependencies.onError?.();
     }
   };
+  const checkStart = (request: ActiveVerifiedCourseStartRequest) => {
+    if (dependencies.canStart(request)) return true;
+    locked = false;
+    pendingToken = 0;
+    dependencies.onExpired?.();
+    return false;
+  };
   const startAndNavigate = (request: ActiveVerifiedCourseStartRequest) => {
+    if (!checkStart(request)) return;
     const next = dependencies.start(request);
     dependencies.navigate(next);
   };
@@ -146,6 +153,8 @@ export function createActiveVerifiedCourseStartController(dependencies: Readonly
         run(() => dependencies.navigate(decision.active));
         return;
       }
+
+      if (!checkStart(request)) return;
 
       const token = ++sequence;
       pendingToken = token;
@@ -178,7 +187,6 @@ export function createActiveVerifiedCourseStartController(dependencies: Readonly
 
 export function homeActiveCourseProjection(
   activeVerifiedCourse: ActiveVerifiedCourse | null,
-  activeCourse: LegacyExecution | null,
   resolvePlaceTitle: (placeId: string) => string | undefined,
 ): HomeActiveCourseProjection {
   if (activeVerifiedCourse) {
@@ -191,10 +199,6 @@ export function homeActiveCourseProjection(
       params: { session: activeVerifiedCourse.session, course: activeVerifiedCourse.course, activeId: activeVerifiedCourse.identity },
       progress: activeVerifiedCourse.progress,
     };
-  }
-  if (activeCourse) {
-    const title = activeCourse.course.spots[0]?.title ?? '현재 코스';
-    return { kind: 'legacy', title, accessibilityLabel: `진행 중인 코스, ${title}, 이어가기`, target: 'Execution', params: activeCourse };
   }
   return { kind: 'placeholder' };
 }

@@ -18,8 +18,8 @@ const placeTitles = new Map([...runtimeCatalog.matched.data, ...runtimeCatalog.u
 export function HomeScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const { authKind } = useAuth();
-  const { activeCourse, activeVerifiedCourse } = useAppFlow();
-  const active = homeActiveCourseProjection(activeVerifiedCourse, activeCourse, (placeId) => placeTitles.get(placeId));
+  const { activeVerifiedCourse } = useAppFlow();
+  const active = homeActiveCourseProjection(activeVerifiedCourse, (placeId) => placeTitles.get(placeId));
   return <View style={s.root}>
     <ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 26, paddingBottom: 112 }]}>
       <View style={s.topRow}><Pressable
@@ -34,7 +34,6 @@ export function HomeScreen({ navigation }: Props) {
       <Text style={s.copy}>약속 시간에 맞춰 들를 만한 곳을 찾아드려요.</Text>
       <Pressable style={s.primary} onPress={() => navigation.navigate('TimeSetup')}><Text style={s.primaryText}>자투리 시간 설정하기</Text></Pressable>
       {active.kind === 'verified' ? <Pressable accessibilityLabel={active.accessibilityLabel} style={s.active} onPress={() => navigation.navigate(active.target, active.params)}><Text style={s.activeEyebrow}>진행 중인 코스</Text><Text style={s.activeTitle} numberOfLines={2}>{active.title} ›</Text></Pressable>
-        : active.kind === 'legacy' ? <Pressable accessibilityLabel={active.accessibilityLabel} style={s.active} onPress={() => navigation.navigate(active.target, active.params)}><Text style={s.activeEyebrow}>진행 중인 코스</Text><Text style={s.activeTitle} numberOfLines={1}>{active.title} ›</Text></Pressable>
           : <View style={s.placeholder}><Text style={s.placeholderText}>진행 중인 코스가 생기면 이곳에서 바로 이어갈 수 있습니다.</Text></View>}
     </ScrollView>
     <FloatingTabBar active="main" onMain={() => undefined} onCourse={() => resetToNearbyBrowse(navigation)} onRecord={() => resetToActivityRecord(navigation)} onProfile={() => resetToProfile(navigation)} />

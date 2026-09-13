@@ -3,9 +3,7 @@ import { uuid } from 'expo-modules-core';
 import { AppState } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { RootStackParamList } from './nav';
-import { listSavedCoursesFromRepository, removeCourseFromRepository, replaceCoursePlanInRepository, saveCourseToRepository } from '../services/courseRepository';
 import { useAuth } from './AuthContext';
-import { requireAccountSession } from './authStateModel';
 import {
   clearActiveVerifiedCourse as clearActiveVerifiedCourseState,
   createActiveVerifiedCourseIdentityFactory,
@@ -29,55 +27,33 @@ import { reconfirmActiveCourseLocations } from './activeVerifiedCourseModel';
 import type { ManualReselection } from './manualLocationRestoreModel';
 
 type ResultsParams = RootStackParamList['Results'];
-type ExecutionParams = RootStackParamList['Execution'];
-
-export type SavedCourse = ExecutionParams & { id: string; title: string; createdAt: number };
-
 type AppFlowContextValue = {
   latestResults: ResultsParams | null;
-  activeCourse: ExecutionParams | null;
   activeVerifiedCourse: ActiveVerifiedCourse | null;
   pendingNavigationAction: PendingNavigationAction | null;
   isActiveVerifiedCourseRun: (courseRunId: string) => boolean;
-  savedCourses: SavedCourse[];
-  isCoursesLoading: boolean;
-  coursesError: string;
   setLatestResults: (params: ResultsParams) => void;
-  setActiveCourse: (params: ExecutionParams | null) => void;
   startActiveVerifiedCourse: (params: RootStackParamList['CourseConfirm']) => ActiveVerifiedCourse;
   updateActiveVerifiedCourse: (identity: string, update: (progress: VerifiedCourseProgressState) => VerifiedCourseProgressState) => void;
   clearActiveVerifiedCourse: (identity: string) => void;
   reconfirmActiveLocations: (identity: string, session: RootStackParamList['CourseConfirm']['session'], origin: ManualReselection, destination: ManualReselection) => ActiveVerifiedCourse | null;
   refreshPendingNavigationAction: () => Promise<PendingNavigationAction | null>;
-  refreshSavedCourses: () => Promise<void>;
-  saveCourse: (params: ExecutionParams) => Promise<SavedCourse>;
-  replaceCourse: (courseId: string, params: ExecutionParams) => Promise<ExecutionParams>;
-  removeSavedCourse: (id: string) => Promise<void>;
 };
 
 const AppFlowContext = createContext<AppFlowContextValue | null>(null);
 
 export function AppFlowProvider({ children }: PropsWithChildren) {
   const { accountSession } = useAuth();
-  const accountSubject = accountSession?.user.id ?? null;
-  const accountSubjectRef = useRef(accountSubject);
-  accountSubjectRef.current = accountSubject;
   const [latestResults, setLatestResultsState] = useState<ResultsParams | null>(null);
-  const [activeCourse, setActiveCourseState] = useState<ExecutionParams | null>(null);
   const [activeVerifiedCourse, setActiveVerifiedCourseState] = useState<ActiveVerifiedCourse | null>(null);
   const [pendingNavigationAction, setPendingNavigationAction] = useState<PendingNavigationAction | null>(null);
   const activeVerifiedCourseRef = useRef<ActiveVerifiedCourse | null>(null);
   const [activeRestoreFinished, setActiveRestoreFinished] = useState(false);
   const verifiedIdentityFactory = useRef(createActiveVerifiedCourseIdentityFactory()).current;
   const verifiedCourseRunIdFactory = useRef(createOpaqueCourseRunIdFactory(uuid.v4)).current;
-  const [savedCourses, setSavedCourses] = useState<SavedCourse[]>([]);
-  const [savedCoursesScope, setSavedCoursesScope] = useState<string | null>(null);
-  const [isCoursesLoading, setIsCoursesLoading] = useState(false);
-  const [coursesError, setCoursesError] = useState('');
   const pendingSyncRunningRef = useRef(false);
   const pendingSyncQueuedRef = useRef(false);
   const setLatestResults = useCallback((params: ResultsParams) => setLatestResultsState(params), []);
-  const setActiveCourse = useCallback((params: ExecutionParams | null) => setActiveCourseState(params), []);
   const reconfirmActiveLocations = useCallback((identity: string, session: RootStackParamList['CourseConfirm']['session'], origin: ManualReselection, destination: ManualReselection) => {
     const next = reconfirmActiveCourseLocations(activeVerifiedCourseRef.current, identity, session, origin, destination, Date.now());
     if (!next) return null;
@@ -202,69 +178,18 @@ export function AppFlowProvider({ children }: PropsWithChildren) {
   useEffect(() => nativePendingNavigationPort.subscribe(() => {
     void reconcileAndRefreshPendingNavigation('pending_signal');
   }), [reconcileAndRefreshPendingNavigation]);
-  const refreshSavedCourses = useCallback(async () => {
-    const subject = accountSession?.user.id ?? null;
-    if (!accountSession) {
-      setSavedCourses([]);
-      setCoursesError('');
-      return;
-    }
-    setIsCoursesLoading(true);
-    setCoursesError('');
-    try {
-      const next = await listSavedCoursesFromRepository();
-      if (accountSubjectRef.current !== subject) return;
-      setSavedCourses(next); setSavedCoursesScope(subject);
-    } catch (error) {
-      if (accountSubjectRef.current === subject) setCoursesError('저장한 코스를 불러오지 못했습니다.');
-    } finally {
-      if (accountSubjectRef.current === subject) setIsCoursesLoading(false);
-    }
-  }, [accountSession]);
-
-  const saveCourse = useCallback(async (params: ExecutionParams) => {
-    requireAccountSession(accountSession, false);
-    const saved = await saveCourseToRepository(params);
-    if (accountSubjectRef.current !== accountSession?.user.id) throw Error('계정이 변경되어 다시 확인해야 합니다.');
-    setSavedCoursesScope(accountSubjectRef.current);
-    setSavedCourses((prev) => [saved, ...prev]);
-    return saved;
-  }, [accountSession]);
-  const replaceCourse = useCallback(async (courseId: string, params: ExecutionParams) => {
-    requireAccountSession(accountSession, false);
-    const updated = await replaceCoursePlanInRepository(courseId, params);
-    if (accountSubjectRef.current !== accountSession?.user.id) throw Error('계정이 변경되어 다시 확인해야 합니다.');
-    await refreshSavedCourses();
-    return updated;
-  }, [accountSession, refreshSavedCourses]);
-  const removeSavedCourse = useCallback(async (id: string) => {
-    requireAccountSession(accountSession, false);
-    await removeCourseFromRepository(id);
-    if (accountSubjectRef.current !== accountSession?.user.id) return;
-    setSavedCourses((prev) => prev.filter((course) => course.id !== id));
-  }, [accountSession]);
-
   const value = useMemo<AppFlowContextValue>(() => ({
     latestResults,
-    activeCourse,
     activeVerifiedCourse,
     pendingNavigationAction,
     isActiveVerifiedCourseRun: (courseRunId: string) => activeVerifiedCourseRef.current?.courseRunId === courseRunId,
-    savedCourses: savedCoursesScope === accountSubject ? savedCourses : [],
-    isCoursesLoading,
-    coursesError,
     setLatestResults,
-    setActiveCourse,
     startActiveVerifiedCourse,
     reconfirmActiveLocations,
     updateActiveVerifiedCourse,
     clearActiveVerifiedCourse,
     refreshPendingNavigationAction,
-    refreshSavedCourses,
-    saveCourse,
-    replaceCourse,
-    removeSavedCourse,
-  }), [latestResults, activeCourse, activeVerifiedCourse, pendingNavigationAction, savedCourses, savedCoursesScope, accountSubject, isCoursesLoading, coursesError, setLatestResults, setActiveCourse, startActiveVerifiedCourse, updateActiveVerifiedCourse, clearActiveVerifiedCourse, refreshPendingNavigationAction, refreshSavedCourses, saveCourse, replaceCourse, removeSavedCourse]);
+  }), [latestResults, activeVerifiedCourse, pendingNavigationAction, setLatestResults, startActiveVerifiedCourse, reconfirmActiveLocations, updateActiveVerifiedCourse, clearActiveVerifiedCourse, refreshPendingNavigationAction]);
 
   return <AppFlowContext.Provider value={value}>{children}{accountSession ? <GuestImportPanel key={accountSession.user.id} subject={accountSession.user.id} surface="login" /> : null}</AppFlowContext.Provider>;
 }

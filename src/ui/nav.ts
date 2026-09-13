@@ -61,7 +61,7 @@ export type RootStackParamList = {
     course: VerifiedCourseV1;
     firstCourse?: VerifiedCourseV1;
   };
-  /** V1 저장 계약이 준비되기 전 기존 진행 코스의 변경 흐름만 유지한다. */
+  /** 비실행 호환 타입: 과거 화면은 미등록. 하위 컴포넌트/저장소 DTO 분리는 후속이다. */
   LegacyResults: {
     result: PlanResult;
     usedTimeLabel: string;
@@ -73,6 +73,7 @@ export type RootStackParamList = {
   };
   MyCourses: undefined;
   NearbyBrowse: undefined;
+  /** courseRepository 등 보존 코드용 비실행 저장소 호환 타입. 화면 재등록 금지. */
   Execution: { course: Course; origin: LatLon; ctx: PlanCtx; courseId?: string };
   Feedback: { course: Course; ctx: PlanCtx };
   ActivityRecord: undefined;
