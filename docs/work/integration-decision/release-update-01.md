@@ -1,7 +1,7 @@
 # RELEASE-UPDATE-01 — 1.1.0(2) 공개 빌드 기준
 
-날짜: 2026-09-16  
-상태: 구현·자동 검증 완료 / 서명 Archive·실기기·App Store 업로드 전
+날짜: 2026-09-17
+상태: 구현·자동 검증·개발 서명 Archive 감사 완료 / App Store 배포 재서명·실기기·업로드 전
 
 ## 변경 이력과 목적
 
@@ -39,10 +39,21 @@ App Store에 공개된 `1.0.0(1)` 이후 사진·UI 변경을 업데이트하려
 - `node scripts/release-build.cjs export`: 공개 환경 iOS Hermes export PASS, 산출물 `/private/tmp/timefit-public-export`.
 - `git diff --check`: PASS.
 
+### 2026-09-17 Archive 감사
+
+- `pod install`: PASS. 생성 iOS workspace와 98개 dependency/97개 pod 설치를 확인했다.
+- `node scripts/release-build.cjs archive /private/tmp/timefit-public-1.1.0-2-20260917.xcarchive`: `ARCHIVE SUCCEEDED`.
+- `node scripts/audit-release-artifact.cjs <archive>`: 서버 전용 비밀값 0건, private key 0건, 필수 공개 endpoint 2종 포함, main app·Live Activity extension의 개인정보 매니페스트 포함을 확인했다.
+- 번들에 포함된 공유 공급자 credential 2건은 공개 클라이언트 입력으로 분류된 `TOURAPI_KEY`, `TMAP_APP_KEY`다. 감사 스크립트의 실패 대상인 서버 전용 비밀값에는 해당하지 않으며 값 자체는 출력하지 않았다.
+- main app: `com.dongheun.mobile`, `1.1.0(2)`, iOS 17, iPhone 전용, 위치 권한 description 0건, Live Activity 지원 확인.
+- extension: `com.dongheun.mobile.liveactivity`, `1.1.0(2)`, iOS 17, 위치 권한 description 0건 확인.
+- `xcrun codesign -d --entitlements -`: main/extension 모두 Team `642X5R37S7`, App Group `group.com.dongheun.mobile.timefit` 일치 확인.
+- 이 Archive의 현재 서명은 `Apple Development`이고 `get-task-allow=true`다. 따라서 소스·네이티브 설정 검증용 기준점이며 App Store 업로드용 IPA로 간주하지 않는다. Organizer의 `Distribute App` 단계에서 App Store 배포 프로필로 재서명해야 한다.
+
 ## 4. 다음 결정·위험·재현 조건
 
-- 아직 새 Distribution Archive/IPA를 만들거나 App Store Connect에 업로드하지 않았다. `1.1.0(2)` 제출 성공으로 기록하면 안 된다.
+- 개발 서명 Archive는 생성했지만 새 Distribution IPA를 만들거나 App Store Connect에 업로드하지 않았다. `1.1.0(2)` 제출 성공으로 기록하면 안 된다.
 - 공개 Archive는 반드시 `node scripts/release-build.cjs archive <절대경로.xcarchive>` 경로로 생성한다. Xcode 직접 Release는 공개 환경 변수가 갖춰지지 않으면 의도적으로 실패한다.
 - 내부 Release가 정말 필요한 경우에만 `TIMEFIT_BUILD_PROFILE=internal`을 명시한다. 이 프로필 산출물을 App Store 후보로 사용하지 않는다.
-- 새 Archive에서 main app/Live Activity extension의 version·build·서명·App Group 일치와 내부 UI 비노출을 감사한 뒤, 변경된 사진/UI 및 Live Activity를 실기기에서 확인해야 한다.
+- Archive의 main app/Live Activity extension version·build·App Group 및 공개 번들은 감사했다. 다음 단계는 App Store 배포 재서명 후 업로드하고, 변경된 사진/UI 및 Live Activity를 TestFlight 실기기에서 확인하는 것이다.
 - Expo SDK 57 major upgrade와 SDK 56 patch 정렬은 이번 업데이트에 섞지 않았다. 별도 유지보수 범위로 진행한다.
