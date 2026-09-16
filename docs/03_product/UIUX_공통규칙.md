@@ -1,5 +1,9 @@
 # TimeFit UIUX 공통 규칙
 
+## 장소 사진 공개 범위 변경 (2026-09-16)
+
+기존 권리 검증 사진 101개만 표시하고 나머지를 기본 이미지로 대체하던 방식은 `DEC-PLACE-PHOTO-ALL-01`로 교체한다. DATA는 부산 쇼핑 29개·TourAPI 73개를 `operator_approved`로 구분해 총 203개를 연결했다. 지도 사진 마커를 유지한다는 이전 후속안은 철회하며 모든 지도는 일반 장소 마커만 사용한다. 주변 둘러보기·추천 계열 카드와 상세 사진은 `contain`으로 원본 전체를 표시하고 사진/frame에는 border radius나 clip을 적용하지 않는다. 바깥 카드 모서리는 유지할 수 있지만 사진을 잘라서는 안 된다. 신규 102개를 라이선스 검증 완료로 표현하지 않으며 사진 없음·실패·timeout은 기본 이미지로 유지한다. 사진은 추천 자격이나 사용자 행동 상태를 변경하지 않는다. 상태: **DATA 완료·UIUX 구현 전**. 상세 계약은 [all-place-photo-rollout.md](../work/integration-decision/all-place-photo-rollout.md)를 따른다.
+
 ## 현행 화면 계약 정정 — DOCS-CURRENT-STRUCTURE-01 (2026-09-12)
 
 [현재 코드 연결](현재기능과구조.md)을 근거로 당시 ‘구현 전’과 실제 연결 상태를 구분한다. 새 정책 변경은 없다.
