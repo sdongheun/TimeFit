@@ -111,13 +111,18 @@ function configureProject(project, options, projectName) {
     if (unquote(phase.name) !== 'Bundle React Native code and images') continue;
     let script = JSON.parse(phase.shellScript);
     const marker = '# TimeFit public archive environment guard';
-    if (!script.includes(marker)) {
+    const guard = '\n' + marker + '\nif [[ "$CONFIGURATION" = *Release* && "$TIMEFIT_BUILD_PROFILE" != "internal" ]]; then\n  "$NODE_BINARY" "$PROJECT_ROOT/scripts/release-build.cjs" assert-native || exit 1\nfi\n';
+    const existingGuardStart = script.indexOf(`\n${marker}\n`);
+    if (existingGuardStart >= 0) {
+      const existingGuardEnd = script.indexOf('\nfi\n', existingGuardStart);
+      if (existingGuardEnd < 0) throw new Error('public_bundle_phase_guard_end_missing');
+      script = script.slice(0, existingGuardStart) + guard + script.slice(existingGuardEnd + '\nfi\n'.length);
+    } else {
       const index = script.lastIndexOf('\n`"$NODE_BINARY"');
       if (index < 0) throw new Error('public_bundle_phase_boundary_missing');
-      const guard = '\n' + marker + '\nif [[ "$TIMEFIT_BUILD_PROFILE" = "public" ]]; then\n  "$NODE_BINARY" "$PROJECT_ROOT/scripts/release-build.cjs" assert-native || exit 1\nfi\n';
       script = script.slice(0, index) + guard + script.slice(index);
-      phase.shellScript = JSON.stringify(script);
     }
+    phase.shellScript = JSON.stringify(script);
   }
   for (const [, configuration] of nonCommentEntries(project.pbxXCBuildConfigurationSection())) {
     if (configuration.buildSettings) configuration.buildSettings.IPHONEOS_DEPLOYMENT_TARGET = DEPLOYMENT_TARGET;
