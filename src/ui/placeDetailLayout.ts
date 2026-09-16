@@ -5,5 +5,7 @@ export function placeDetailLayout(height: number, top: number, bottom: number, m
   const visibleMapMin = Math.min(160, mapHeight * 0.28);
   const maxHeight = Math.max(0, mapHeight - closeSpace - visibleMapMin - 16);
   const sheetHeight = measuredHeight > 0 ? Math.min(measuredHeight, maxHeight) : maxHeight;
-  return { maxHeight, paddingBottom: 18 + Math.max(bottom, 8), boundsPadding: { top: closeSpace, right: 34, bottom: sheetHeight + 16, left: 34 } };
+  const boundsPadding = { top: closeSpace, right: 34, bottom: sheetHeight + 16, left: 34 };
+  const recenterOffsetY = Math.max(0, Math.round((boundsPadding.bottom - boundsPadding.top) / 2));
+  return { maxHeight, paddingBottom: 18 + Math.max(bottom, 8), boundsPadding, recenterOffsetY };
 }

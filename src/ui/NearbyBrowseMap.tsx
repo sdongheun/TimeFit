@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { C } from './theme';
-import { approvedPlacePhoto } from './placePhotoModel';
 import { parseNearbyMapMessage, type NearbyBrowsePlace, type NearbyMapFailureReason, type NearbyPoint } from './nearbyBrowseModel';
 
 const BASE_URL = 'https://timefit.local';
@@ -48,7 +47,7 @@ export function NearbyBrowseMap({ cameraPoint, center, places, selectedId, botto
       center,
       selectedId,
       bottomInset,
-      places: places.map(({ id, title, lat, lon, source }) => ({ id, title, lat, lon, imageUrl: approvedPlacePhoto(source)?.url ?? null })),
+      places: places.map(({ id, title, lat, lon }) => ({ id, title, lat, lon })),
     });
     ref.current?.injectJavaScript(`window.renderNearby(${payload});true;`);
   }, [ready, places, selectedId, bottomInset, center]);
@@ -85,7 +84,7 @@ export function NearbyBrowseMap({ cameraPoint, center, places, selectedId, botto
 export function buildNearbyBrowseMapDocument(center: NearbyPoint): string {
   const key = encodeURIComponent(KAKAO_KEY);
   return String.raw`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><style>
-html,body,#map{width:100%;height:100%;margin:0;background:#eef1f4;overflow:hidden}.pin,.cluster{border:0;font-family:-apple-system,sans-serif;box-shadow:0 3px 12px rgba(0,0,0,.28);cursor:pointer}.pin{position:relative;width:42px;height:42px;border-radius:21px;background:#0066ff;border:3px solid #fff;padding:0;overflow:hidden}.pin img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.pin.fallback:after{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;content:'●';color:#fff;font-size:18px}.pin.selected{width:54px;height:54px;border-radius:27px;border-color:#171719;outline:3px solid #0066ff}.name{position:absolute;left:50%;top:58px;transform:translateX(-50%);white-space:nowrap;background:#171719;color:#fff;border-radius:8px;padding:5px 8px;font-size:12px;font-weight:700}.cluster{min-width:44px;height:44px;border-radius:22px;background:#171719;color:#fff;border:3px solid #4cc2ff;font-size:14px;font-weight:800}
+html,body,#map{width:100%;height:100%;margin:0;background:#eef1f4;overflow:hidden}.pin,.cluster{border:0;font-family:-apple-system,sans-serif;box-shadow:0 3px 12px rgba(0,0,0,.28);cursor:pointer}.pin{position:relative;width:42px;height:42px;border-radius:21px;background:#0066ff;border:3px solid #fff;padding:0}.pin:after{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;content:'●';color:#fff;font-size:18px}.pin.selected{width:54px;height:54px;border-radius:27px;border-color:#171719;outline:3px solid #0066ff}.name{position:absolute;left:50%;top:58px;transform:translateX(-50%);white-space:nowrap;background:#171719;color:#fff;border-radius:8px;padding:5px 8px;font-size:12px;font-weight:700}.cluster{min-width:44px;height:44px;border-radius:22px;background:#171719;color:#fff;border:3px solid #4cc2ff;font-size:14px;font-weight:800}
 </style><script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${key}&autoload=false" onerror="window.__nearbySdkFailed=true"></script></head><body><div id="map"></div><script>
 var map = null;
 var overlays = [];
@@ -119,31 +118,12 @@ function markerGroups() {
 
 function createMarker(place) {
   var selected = place.id === data.selectedId;
-  var hasPhoto = /^https:\/\//.test(String(place.imageUrl || ''));
   var root = document.createElement('div');
   root.style.position = 'relative';
   var button = document.createElement('button');
-  button.className = 'pin fallback' + (selected ? ' selected' : '');
+  button.className = 'pin' + (selected ? ' selected' : '');
   button.setAttribute('aria-label', String(place.title || '장소'));
   button.addEventListener('click', function () { post({ action: 'select', id: place.id }); });
-  if (hasPhoto) {
-    var image = document.createElement('img');
-    image.loading = 'lazy';
-    image.alt = '';
-    image.style.opacity = '0';
-    var photoTimer = setTimeout(failPhoto, 12000);
-    function failPhoto() {
-      if (image.dataset.failed === '1') return;
-      image.dataset.failed = '1';
-      button.classList.add('fallback');
-      if (image.parentNode) image.parentNode.removeChild(image);
-      clearTimeout(photoTimer);
-    }
-    image.addEventListener('error', failPhoto, { once: true });
-    image.addEventListener('load', function () { clearTimeout(photoTimer); if (image.dataset.failed === '1') return; image.style.opacity = '1'; button.className = button.className.replace('fallback', ''); }, { once: true });
-    button.appendChild(image);
-    image.src = place.imageUrl;
-  }
   root.appendChild(button);
   if (selected) {
     var name = document.createElement('span');

@@ -8,7 +8,7 @@ type Draft = {
   suggestions: LocationSuggestion[]; selectedId: string | null; deviceLocation: DraftPlace | null;
   searchStatus: SearchStatus; busy: '' | 'search' | 'gps'; message: string; scrollY: number;
 };
-const empty = (epoch = 0, target = ''): Draft => ({ epoch, target, phase: 'closed', query: '', suggestions: [], selectedId: null, deviceLocation: null, searchStatus: 'idle', busy: '', message: '장소 이름으로 검색하세요', scrollY: 0 });
+const empty = (epoch = 0, target = ''): Draft => ({ epoch, target, phase: 'closed', query: '', suggestions: [], selectedId: null, deviceLocation: null, searchStatus: 'idle', busy: '', message: '검색하거나 지도에서 직접 선택하세요', scrollY: 0 });
 export const locationCandidateId = (p: LocationSuggestion) => JSON.stringify([p.provider, p.kind, p.label, p.lat, p.lon, p.address]);
 
 /** Ephemeral UI editing session only; no provider cache, location persistence or parent confirmation. */
@@ -37,7 +37,7 @@ export function createLocationSearchDraft() {
       if (state.phase !== 'search' || query === state.query) return;
       if (query.trim() === state.query.trim()) { update({ query }); return; }
       requestId++;
-      update({ query, suggestions: [], selectedId: null, deviceLocation: null, searchStatus: 'idle', busy: '', scrollY: 0, message: query.trim() ? '검색 버튼을 눌러 장소를 찾으세요' : '장소 이름으로 검색하세요' });
+      update({ query, suggestions: [], selectedId: null, deviceLocation: null, searchStatus: 'idle', busy: '', scrollY: 0, message: query.trim() ? '검색 버튼을 눌러 장소를 찾으세요' : '검색하거나 지도에서 직접 선택하세요' });
     },
     beginSearch(explicit: boolean): Request | null {
       if (explicit && state.busy === 'gps') cancelPending();

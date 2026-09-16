@@ -39,16 +39,14 @@ export function HistorySwipeRow({ id, open, busy, onOpen, onClose, onDelete, chi
   return <View style={s.root}>
     {open ? <Pressable testID={`history-trash-${id}`} accessibilityLabel="방문 기록 삭제" disabled={busy} style={s.trash} onPress={() => { if (!busy && motion.isRevealed()) onDelete(); }}><Feather name="trash-2" size={22} color={C.onAccent} /></Pressable> : null}
     <Animated.View testID={`history-swipe-${id}`} accessibilityActions={[{ name: 'delete', label: '방문 기록 삭제' }]} onAccessibilityAction={({ nativeEvent }) => { if (!busy && nativeEvent.actionName === 'delete') onDelete(); }} {...pan.panHandlers} style={[s.content, { transform: [{ translateX: position }] }]}>
-      <View style={{ flexDirection: 'row', gap: 8 }}>
-        <Pressable testID={`history-longpress-${id}`} style={{ flex: 1, minWidth: 0 }} disabled={busy} delayLongPress={500}
+      <View style={s.header}><Text testID={`history-date-${id}`} style={s.date}>{date}</Text><Pressable testID={`history-menu-${id}`} accessibilityLabel="삭제 버튼 펼치기" accessibilityState={{ expanded: open }} disabled={busy} style={s.menu} onPress={() => { if (busy) return; touch.current.cancelled = true; motion.sync(true, true); onOpen(); }}><Feather name="chevron-right" size={22} color={C.txt} /></Pressable></View>
+      <Pressable testID={`history-longpress-${id}`} style={s.body} disabled={busy} delayLongPress={500}
           accessibilityActions={[{ name: 'delete', label: '방문 기록 삭제' }]} onAccessibilityAction={({ nativeEvent }) => { if (!busy && nativeEvent.actionName === 'delete') onDelete(); }}
           onPressIn={({ nativeEvent }) => { touch.current = { cancelled: false, x: nativeEvent.pageX, y: nativeEvent.pageY }; }}
           onTouchMove={({ nativeEvent }) => { if (Math.abs(nativeEvent.pageX - touch.current.x) > 6 || Math.abs(nativeEvent.pageY - touch.current.y) > 6) touch.current.cancelled = true; }}
           onTouchCancel={() => { touch.current.cancelled = true; }}
           onLongPress={() => { if (!busy && !touch.current.cancelled) { touch.current.cancelled = true; onMenu?.(); } }}>{children}</Pressable>
-        <View style={{ flexShrink: 0, alignItems: 'flex-end' }}><Text style={{ color: C.muted, fontSize: 12 }}>{date}</Text><Pressable testID={`history-menu-${id}`} accessibilityLabel="삭제 버튼 펼치기" accessibilityState={{ expanded: open }} disabled={busy} style={{ minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' }} onPress={() => { if (busy) return; touch.current.cancelled = true; motion.sync(true, true); onOpen(); }}><Feather name="chevron-right" size={22} color={C.txt} /></Pressable></View>
-      </View>
     </Animated.View>
   </View>;
 }
-const s = StyleSheet.create({ root: { overflow: 'hidden', borderRadius: 14, marginBottom: 10 }, content: { backgroundColor: C.panel, borderWidth: 1, borderColor: C.line, borderRadius: 14, padding: 16 }, trash: { position: 'absolute', right: 0, top: 0, bottom: 0, width: HISTORY_DELETE_WIDTH, borderRadius: 14, backgroundColor: C.red, alignItems: 'center', justifyContent: 'center' } });
+const s = StyleSheet.create({ root: { overflow: 'hidden', borderRadius: 14, marginBottom: 10 }, content: { backgroundColor: C.panel, borderWidth: 1, borderColor: C.line, borderRadius: 14, paddingHorizontal: 16, paddingTop: 8, paddingBottom: 12 }, header: { minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8 }, date: { flex: 1, minWidth: 0, color: C.muted, fontSize: 12, lineHeight: 17, fontWeight: '700' }, menu: { width: 44, height: 44, marginRight: -10, alignItems: 'center', justifyContent: 'center' }, body: { minWidth: 0 }, trash: { position: 'absolute', right: 0, top: 0, bottom: 0, width: HISTORY_DELETE_WIDTH, borderRadius: 14, backgroundColor: C.red, alignItems: 'center', justifyContent: 'center' } });

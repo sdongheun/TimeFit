@@ -139,3 +139,60 @@ fixture entry: `node --test test/ui/unified-time-route-setup.test.mjs`. 주요 t
 ### 4. 다음 결정·위험
 
 실기기에서 일반 입력 그룹 간격과 고정 CTA를 확인하고, internal에서는 스크롤하여 개발 버튼에 접근하는지 확인한다. 실제 API/DB/Simulator는 실행하지 않았다. 기존 키보드·제스처·햅틱 실기기 확인 항목은 유지한다.
+
+## UI 시각 체계 보완 — 시간 설정·추천 로딩 / 2026-09-16
+
+관계: U-SETUP-UNIFIED-01의 **보완**. 이전의 시간 설정 화면은 기능 그룹 사이 간격이 균일해 정보 위계가 약했고, 둥근 시간 휠 surface·파란 slider 값·본문형 뒤로가기 버튼이 최근 정리된 메인·주변·기록·내정보 화면의 어두운 카드 체계와 달랐다. 추천 로딩은 실제 첫 단계가 시작됐는데도 잠시 아무 단계도 활성화되지 않았고, 완료·진행 표시의 구분과 사용자가 빠져나갈 방법이 부족했다. 이를 `얇은 18pt 카드·24pt 섹션 간격·흰색 핵심 값·파란 단일 CTA·44pt 투명 헤더 행동`으로 통일하고, 로딩은 즉시 첫 단계를 표시하며 안전한 취소를 제공하는 방식으로 교체했다. 로딩 단계의 사용자 문구는 요청에 따라 `들를 장소 찾기`가 아니라 **`장소 찾기`**로 확정했다. 상태: **구현·자동 검증 완료, 실기기 시각 확인 대기**.
+
+### 1. 변경 파일과 변경 목적
+
+- `src/ui/TimeSetupScreen.tsx`: 제목을 `시간과 장소 설정`, CTA를 `코스 추천받기`로 정리했다. 44pt 투명 뒤로가기, 얇은 시간 휠 surface, 흰색 여유 시간 값, 비활성 CTA 대비를 공통 시각 규칙에 맞췄다. 추천 시작 즉시 첫 진행 단계를 표시하고 `취소`로 현재 실행만 무효화해 입력 화면으로 돌아오게 했다.
+- `src/ui/timeSetup/UnifiedSetupInputs.tsx`: 출발지·도착 시각·도착 전 여유를 24pt 단위의 명확한 그룹으로 분리하고 출발지/목적지 값 시작선을 맞췄다.
+- `src/ui/recommendation/recommendationLoadingModel.ts`, `src/ui/recommendation/RecommendationLoadingProgress.tsx`: 단계 문구를 `시간과 장소 확인 → 이동 시간 확인 → 장소 찾기 → 코스 정리`로 간결화했다. 완료는 초록 체크, 현재는 파란 진행 점, 대기는 빈 원으로 구분했다.
+- `test/ui/unified-time-route-setup.test.mjs`, `test/ui/release-visual-polish.test.ts`, `test/ui/main-map-polish.test.mjs`: 새 위계·문구·상태 표시·취소 후 늦은 결과 무시를 production handler 기준으로 고정했다.
+
+### 2. 유지한 공개 계약·정책 경계
+
+- 시간 상한, 자정·익일 처리, 위치 선택, 추천 session/호출 예산, CAPTCHA, 엔진·API·DB·개인화 정책은 변경하지 않았다.
+- 추천 단계 식별자와 실제 진행 순서, Reduce Motion, 일반 버튼 haptic 0과 wheel/slider 전용 haptic을 유지했다.
+- 취소는 진행 코스·추천 결과를 생성하지 않으며, 취소 전에 시작된 늦은 성공/실패가 화면을 이동시키지 않는다.
+- 중앙 공통 규칙, 보드, 다른 화면 구조, 운영 데이터는 수정하지 않았고 Simulator·실기기·외부 API를 실행하지 않았다. commit/push도 수행하지 않았다.
+
+### 3. 실패 선행 및 테스트 결과
+
+- 실패 선행 fixture에서 이전 제목/CTA, 20pt 둥근 휠, 파란 slider 값, 첫 로딩 단계 미표시, 취소 행동 부재, 이전 단계 문구를 각각 재현한 뒤 기대값을 현행 계약으로 전환했다.
+- 집중 UI fixture: **통과**. 취소 1회 뒤 늦은 추천 결과에서 화면 이동 0, 최신 결과 반영 0을 확인했다.
+- `npm run test:typecheck`: **통과**.
+- `npm run test:ui`: **803 pass / 0 fail / 기존 skip 1** (전체 804).
+- `npm test`: **559/559 통과**.
+- `npx expo export --platform ios --output-dir /private/tmp/timefit-setup-loading-visual-ios`: **통과**, 1,330 modules. 생성 bundle: `_expo/static/js/ios/index-1ef72bb3e08d5b18f72d684b4d77ae26.hbc`.
+- `git diff --check`: **통과**.
+
+### 4. 다음 결정·위험·실기기 확인
+
+- 실기기에서는 작은 화면과 큰 글씨에서 상시 휠·slider·고정 CTA가 겹치지 않는지, 키보드 복귀 뒤 섹션 간격, 로딩 취소의 탭 반응과 VoiceOver 읽기 순서를 확인한다.
+- 완료 체크는 텍스트 기호 `✓`를 사용하므로 실제 iOS 폰트에서 원형 점과 중심 정렬이 어색하지 않은지 시각 확인이 남아 있다.
+- 과거 `release-visual-polish.md`의 이전 로딩 문구는 당시 이력이며 이번 현행 문구로 복원 대상이 아니다. 중앙 공통 규칙에 이 시각 체계를 전역 규칙으로 승격할지는 단일 작성자 결정 세션에 인계한다.
+
+## 사용자 반환 보완 — 입력 섹션 간격 / 2026-09-16
+
+이전 24pt 섹션 간격과 제목에 바로 붙은 시간 휠, 남길 시간에 붙어 보이는 밸리데이션 → 장소·도착 시각·남길 시간·입력 상태의 경계가 한눈에 분리되지 않음 → 세 그룹 사이 32pt, `도착 시각` 제목과 시간 휠 사이 14pt, 남길 시간과 밸리데이션 사이 16pt 적용 → 카드나 구분선을 추가하지 않고도 기존 화면의 정보 위계를 명확히 유지 → **구현 현행**.
+
+### 1. 변경 파일과 목적
+
+- `src/ui/timeSetup/UnifiedSetupInputs.tsx`: 장소 다음 도착 시각, 도착 시각 다음 남길 시간의 간격을 각각 32pt로 늘리고 도착 시각 heading과 휠 사이에 14pt 내부 간격을 추가했다. `출발 위치를 선택해주세요` 같은 밸리데이션에는 16pt 위 여백을 두어 남길 시간 slider의 보조 문구로 오인되지 않게 했다.
+- `test/ui/unified-time-route-setup.test.mjs`: 실제 화면 tree에서 32pt/14pt/16pt 간격 계약을 검증하도록 보완했다.
+
+### 2. 유지한 계약
+
+- 세 입력의 순서·기능, 상시 시간 휠, slider, 고정 CTA, 작은 화면 overflow와 개발 도구 배치를 유지했다. 시간·추천·위치·API·DB·개인화 계약은 변경하지 않았다.
+
+### 3. 테스트 결과
+
+- 실패 선행: 기존 `marginTop=24`, 도착 시각 내부 `gap` 없음, 밸리데이션 `marginTop` 없음으로 새 기대값이 실패하는 것을 확인했다.
+- 집중 fixture **45/45 통과**, typecheck **통과**, UI 전체 회귀 **통과**, 전체 테스트 **통과**.
+- iOS export **통과**: `/private/tmp/timefit-setup-section-spacing-ios`, bundle `_expo/static/js/ios/index-a576070655ce522932320ee2cd1a8f1f.hbc`, 1,330 modules.
+
+### 4. 다음 확인·위험
+
+- 실제 작은 화면에서 늘어난 두 외부 간격과 시간 휠 내부 간격이 고정 CTA를 가리지 않는지 시각 확인이 남아 있다. Simulator·실기기는 실행하지 않았다.

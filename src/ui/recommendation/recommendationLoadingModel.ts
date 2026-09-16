@@ -9,10 +9,10 @@ export type RecommendationProgressStage = (typeof RECOMMENDATION_PROGRESS_STAGES
 export type RecommendationProgressItemState = 'done' | 'current' | 'pending';
 
 const LABELS: Readonly<Record<RecommendationProgressStage, string>> = {
-  input_ready: '입력 확인',
-  route_port_ready: '경로 연결',
-  verifying: '후보·시간 검증',
-  complete: '결과 준비',
+  input_ready: '시간과 장소 확인',
+  route_port_ready: '이동 시간 확인',
+  verifying: '장소 찾기',
+  complete: '코스 정리',
 };
 
 export function advanceRecommendationProgress(

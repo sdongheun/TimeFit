@@ -5,7 +5,6 @@ import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { LatLon } from '../engine';
 import { C } from './theme';
-import { approvedPlacePhoto, type PlacePhotoInput } from './placePhotoModel';
 import {
   buildRouteMapSegments,
   type RouteMapSegment,
@@ -21,7 +20,7 @@ const KAKAO_JS_KEY =
   ?? process.env.Kakao_JAVASCRIPT_API_KEY
   ?? '';
 
-export type RouteMapMarker = PlacePhotoInput & {
+export type RouteMapMarker = {
   lat: number;
   lon: number;
   label: string;
@@ -29,13 +28,27 @@ export type RouteMapMarker = PlacePhotoInput & {
   active?: boolean;
 };
 
+function withoutPhotoFields(marker: RouteMapMarker): RouteMapMarker {
+  const {
+    imageUrl: _imageUrl,
+    imageSource: _imageSource,
+    imageEvidence: _imageEvidence,
+    ...safeMarker
+  } = marker as RouteMapMarker & {
+    imageUrl?: unknown;
+    imageSource?: unknown;
+    imageEvidence?: unknown;
+  };
+  return safeMarker;
+}
+
 type Props = {
   points: LatLon[];
   line: LatLon[];
   markers: RouteMapMarker[];
   segments?: readonly RouteMapSegment[];
+  highlightedLegIndex?: number;
   showMarkerLabels?: boolean;
-  usePhotoMarkers?: boolean;
   showRouteLegend?: boolean;
   safeErrorPresentation?: boolean;
   focusedMarkerOffsetY?: number;
@@ -54,7 +67,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabels = false, usePhotoMarkers = false, showRouteLegend = true, safeErrorPresentation = false, focusedMarkerOffsetY = 0, cameraControl = true, cameraTop, initialCenter, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, onMapTap, onMapCenterChange, onMapReady, onMapError, style }: Props) {
+export function KakaoRouteMap({ points, line, markers, segments, highlightedLegIndex, showMarkerLabels = false, showRouteLegend = true, safeErrorPresentation = false, focusedMarkerOffsetY = 0, cameraControl = true, cameraTop, initialCenter, recenterPoint, recenterToken = 0, recenterOffsetY = 0, boundsPadding, onMarkerTap, onMapTap, onMapCenterChange, onMapReady, onMapError, style }: Props) {
   const ref = useRef<WebView>(null);
   const cameraInsets = useSafeAreaInsets();
   const errorReported = useRef(false);
@@ -94,17 +107,17 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
   useEffect(() => {
     if (!ready) return;
     const route = JSON.stringify({
-      markers: (markers ?? []).map(marker => ({ ...marker, imageUrl: approvedPlacePhoto(marker)?.url ?? null })),
+      markers: (markers ?? []).map(withoutPhotoFields),
       segments: routeSegments,
+      highlightedLegIndex,
       showMarkerLabels,
-      usePhotoMarkers,
       focusedMarkerOffsetY,
       boundsPadding,
       markerTapEnabled: Boolean(onMarkerTap),
       mapTapEnabled: Boolean(onMapTap),
     });
     ref.current?.injectJavaScript(`setRoute(${route});true;`);
-  }, [ready, markers, routeSegments, showMarkerLabels, usePhotoMarkers, focusedMarkerOffsetY, boundsPadding, onMarkerTap]);
+  }, [ready, markers, routeSegments, highlightedLegIndex, showMarkerLabels, focusedMarkerOffsetY, boundsPadding, onMarkerTap]);
 
   useEffect(() => {
     if (!ready || !recenterPoint || recenterToken < 1) return;
@@ -154,7 +167,7 @@ export function KakaoRouteMap({ points, line, markers, segments, showMarkerLabel
           }
         }}
       />
-      {cameraControl && ready && !error ? <MapCameraButton point={recenterPoint ?? initialCenter ?? points[0]} scopeKey={JSON.stringify(points)} style={{ position: 'absolute', right: Math.max(12, cameraInsets.right), top: cameraTop ?? cameraInsets.top + 12 }} onCamera={point => ref.current?.injectJavaScript(`focusMap(${JSON.stringify(point)}, 0);true;`)} /> : null}
+      {cameraControl && ready && !error ? <MapCameraButton point={recenterPoint ?? initialCenter ?? points[0]} scopeKey={JSON.stringify(points)} style={{ position: 'absolute', right: Math.max(12, cameraInsets.right), top: cameraTop ?? cameraInsets.top + 12 }} onCamera={point => ref.current?.injectJavaScript(`focusMap(${JSON.stringify(point)}, ${Math.round(recenterOffsetY)});true;`)} /> : null}
       {showRouteLegend ? <View pointerEvents="none" style={s.legend}>
         <View style={s.legendRow}><View style={[s.legendLine, s.legendPrecise]} /><Text style={s.legendTxt}>실경로</Text></View>
         {hasApprox ? <View style={s.legendRow}><View style={[s.legendLine, s.legendApprox]} /><Text style={s.legendTxt}>약식 경로</Text></View> : null}
@@ -184,23 +197,10 @@ html,body,#map{margin:0;padding:0;width:100%;height:100%;background:#111820}
 .spot .label{background:#f59e0b}
 .appointment .label{background:${C.green}}
 .marker.active .label{transform:scale(1.22);box-shadow:0 0 0 4px rgba(76,194,255,.28),0 3px 10px rgba(0,0,0,.25)}
-.photo-marker{position:relative;width:40px;height:48px;justify-content:flex-start;filter:drop-shadow(0 3px 5px rgba(0,0,0,.3))}
-.photo-marker .photo-frame{position:relative;z-index:1;width:36px;height:36px;overflow:hidden;border:3px solid #fff;border-radius:50%;background:#f59e0b;box-sizing:border-box}
-.photo-marker .photo-frame img{display:block;width:100%;height:100%;object-fit:cover}
-.photo-marker .photo-tail{position:relative;z-index:0;width:14px;height:14px;margin-top:-8px;background:#fff;transform:rotate(45deg);border-radius:2px}
-.photo-marker.active .photo-frame{width:72px;height:72px;border-width:4px;box-shadow:0 0 0 5px rgba(76,194,255,.3)}
-.photo-marker.active{width:78px;height:90px}
-.photo-marker.active .photo-tail{width:20px;height:20px;margin-top:-12px}
 .marker-name{max-width:112px;padding:4px 7px;border:1px solid rgba(22,27,34,.18);border-radius:6px;background:rgba(255,255,255,.96);color:#1c242d;font:800 10px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 2px 6px rgba(0,0,0,.2);transform:translateY(8px)}
-.arrow{width:26px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:rgba(255,255,255,.92);box-shadow:0 2px 7px rgba(0,0,0,.22)}
-.arrow svg{width:18px;height:18px;overflow:visible}
-.arrow path.body{fill:none;stroke:${C.accent};stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
-.arrow.approx{background:rgba(240,249,255,.88)}
-.arrow.approx path.body{stroke:#38bdf8}
-.arrow.fallback{background:rgba(248,250,252,.82)}
-.arrow.walk path.body{stroke:${C.accent}}
-.arrow.transit path.body{stroke:${C.amber}}
-.arrow.fallback path.body{stroke:#94a3b8;stroke-dasharray:2 2}
+.route-arrow{width:12px;height:12px;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 1px 1px rgba(0,0,0,.28))}
+.route-arrow svg{width:12px;height:12px;overflow:visible}
+.route-arrow path.body{fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 </style>
 <script>
 function post(m){ window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify(m)); }
@@ -328,11 +328,19 @@ function interpolate(a, b, ratio){
     lon: a.lon + (b.lon - a.lon) * ratio
   };
 }
+function turnAngle(points, index){
+  if (index <= 0 || index >= points.length - 1) return 0;
+  var incoming = bearing(points[index - 1], points[index]);
+  var outgoing = bearing(points[index], points[index + 1]);
+  return Math.abs(((outgoing - incoming + 540) % 360) - 180);
+}
 function arrowMarks(points){
   if (points.length < 2) return [];
   var total = 0;
   for (var i = 1; i < points.length; i++) total += distanceM(points[i - 1], points[i]);
-  var desired = total < 160 ? 1 : Math.max(2, Math.min(8, Math.floor(total / 260)));
+  // Small chevrons need a repeated rhythm to make A→B direction readable.
+  // Keep roughly 110m spacing, while capping overlays on long overview routes.
+  var desired = total < 70 ? 1 : Math.max(2, Math.min(12, Math.round(total / 110)));
   var targets = [];
   for (var m = 1; m <= desired; m++) targets.push(total * m / (desired + 1));
   var marks = [], walked = 0, next = 0;
@@ -342,10 +350,16 @@ function arrowMarks(points){
     var d = distanceM(points[j - 1], points[j]);
     while (next < targets.length && walked + d >= targets[next]) {
       var ratio = d <= 0 ? 0 : (targets[next] - walked) / d;
-      marks.push({
-        point: interpolate(prev, cur, Math.max(0, Math.min(1, ratio))),
-        angle: bearing(prev, cur) - 90
-      });
+      var along = Math.max(0, Math.min(d, targets[next] - walked));
+      var nearSharpStart = j > 1 && turnAngle(points, j - 1) >= 30 && along < 28;
+      var nearSharpEnd = j < points.length - 1 && turnAngle(points, j) >= 30 && d - along < 28;
+      var nearRouteEnd = targets[next] < 20 || total - targets[next] < 20;
+      if (!nearSharpStart && !nearSharpEnd && !nearRouteEnd) {
+        marks.push({
+          point: interpolate(prev, cur, Math.max(0, Math.min(1, ratio))),
+          angle: bearing(prev, cur) - 90
+        });
+      }
       next++;
     }
     walked += d;
@@ -356,9 +370,9 @@ function addDirectionArrows(points, quality){
   arrowMarks(points).forEach(function(mark){
     var kind = quality || 'fallback';
     var content =
-      '<div class="arrow ' + kind + '" style="transform:rotate(' + mark.angle + 'deg)">' +
-      '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path class="body" d="M9 5 L16 12 L9 19"></path>' +
+      '<div class="route-arrow ' + kind + '" style="transform:rotate(' + mark.angle + 'deg)">' +
+      '<svg viewBox="0 0 12 12" aria-hidden="true">' +
+      '<path class="body" d="M3 2 L8 6 L3 10"></path>' +
       '</svg>' +
       '</div>';
     var overlay = new kakao.maps.CustomOverlay({
@@ -381,30 +395,44 @@ function setRoute(data){
   var bounds = new kakao.maps.LatLngBounds();
   var focusedPoint = null;
   var segments = Array.isArray(data.segments) ? data.segments : [];
-  segments.forEach(function(seg){
+  var hasHighlight = Number.isInteger(data.highlightedLegIndex);
+  var orderedSegments = segments.slice().sort(function(a, b){
+    if (!hasHighlight) return 0;
+    return Number(a.legIndex === data.highlightedLegIndex) - Number(b.legIndex === data.highlightedLegIndex);
+  });
+  orderedSegments.forEach(function(seg){
     var path = (seg.points || []).map(function(p){ var point = ll(p); bounds.extend(point); return point; });
     if (path.length <= 1) return;
+    var highlighted = !hasHighlight || seg.legIndex === data.highlightedLegIndex;
     var isApprox = seg.quality === 'approx';
     var isFallback = seg.quality === 'fallback';
     var isWalk = seg.mode === 'walk';
     var isTransit = seg.mode === 'transit';
+    var strokeStyle = isTransit ? 'dash' : isFallback ? 'shortdash' : isApprox ? 'dash' : 'solid';
+    var outline = new kakao.maps.Polyline({
+      map: map,
+      path: path,
+      strokeWeight: highlighted ? (isFallback ? 8 : 11) : 7,
+      strokeColor: '#ffffff',
+      strokeOpacity: highlighted ? (isFallback ? 0.48 : 0.82) : 0.18,
+      strokeStyle: strokeStyle
+    });
     var line = new kakao.maps.Polyline({
       map: map,
       path: path,
-      strokeWeight: isFallback ? 4 : 5,
+      strokeWeight: highlighted ? (isFallback ? 5 : 7) : 4,
       strokeColor: isWalk ? '${C.accent}' : isTransit ? '${C.amber}' : isFallback ? '#94a3b8' : isApprox ? '#38bdf8' : '${C.accent}',
-      strokeOpacity: isFallback ? 0.65 : isApprox ? 0.75 : 0.92,
-      strokeStyle: isTransit ? 'dash' : isFallback ? 'shortdash' : isApprox ? 'dash' : 'solid'
+      strokeOpacity: highlighted ? (isFallback ? 0.65 : isApprox ? 0.75 : 0.92) : 0.28,
+      strokeStyle: strokeStyle
     });
-    overlays.push(line);
-    addDirectionArrows(seg.points || [], seg.mode || seg.quality);
+    overlays.push(outline, line);
+    if (highlighted) addDirectionArrows(seg.points || [], seg.mode || seg.quality);
   });
   (data.markers || []).forEach(function(m, i){
     var point = ll(m);
     bounds.extend(point);
     if (m.active) focusedPoint = point;
     var kind = m.kind || 'spot';
-    var hasPhoto = data.usePhotoMarkers && (kind === 'spot' || kind === 'candidate') && /^https:\/\//.test(String(m.imageUrl || ''));
     if (kind === 'origin') {
       var originMarker = createMapMarker(point, m, kind, !!m.active);
       if (data.markerTapEnabled) {
@@ -413,51 +441,6 @@ function setRoute(data){
         })(i));
       }
       overlays.push(originMarker);
-      addMarkerLabel(m, point, i, data.showMarkerLabels, !!m.active);
-      return;
-    }
-    if (hasPhoto) {
-      var fallbackMarker = createMapMarker(point, m, kind, !!m.active);
-      if (data.markerTapEnabled) {
-        kakao.maps.event.addListener(fallbackMarker, 'click', (function(index){
-          return function(){ post({type:'marker', index:index}); };
-        })(i));
-      }
-      overlays.push(fallbackMarker);
-      var activePhoto = m.active ? ' active' : '';
-      var photoClick = data.markerTapEnabled ? ' onclick="post({type:&quot;marker&quot;,index:' + i + '})"' : '';
-      var photoContent =
-        '<button class="marker spot photo-marker' + activePhoto + '"' + photoClick + '>' +
-          '<span class="photo-frame"><img src="' + escapeHtml(m.imageUrl) + '" onerror="this.parentNode.parentNode.style.display=&quot;none&quot;"></span>' +
-          '<span class="photo-tail"></span>' +
-        '</button>';
-      var photoOverlay = new kakao.maps.CustomOverlay({
-        map: map,
-        position: point,
-        content: photoContent,
-        yAnchor: 1,
-        xAnchor: 0.5,
-        clickable: !!data.markerTapEnabled,
-        zIndex: m.active ? 100 : 10
-      });
-      overlays.push(photoOverlay);
-      var photoProbe = new Image();
-      var photoDone = false;
-      var photoTimer = setTimeout(function(){ if (!photoDone) { photoDone = true; photoOverlay.setMap(null); } }, 12000);
-      photoProbe.onload = function(){ if (!photoDone) { photoDone = true; clearTimeout(photoTimer); } };
-      photoProbe.onerror = function(){ photoDone = true; clearTimeout(photoTimer); photoOverlay.setMap(null); };
-      photoProbe.src = m.imageUrl;
-      addMarkerLabel(m, point, i, data.showMarkerLabels, !!m.active);
-      return;
-    }
-    if (data.usePhotoMarkers) {
-      var marker = createMapMarker(point, m, kind, !!m.active);
-      if (data.markerTapEnabled) {
-        kakao.maps.event.addListener(marker, 'click', (function(index){
-          return function(){ post({type:'marker', index:index}); };
-        })(i));
-      }
-      overlays.push(marker);
       addMarkerLabel(m, point, i, data.showMarkerLabels, !!m.active);
       return;
     }

@@ -19,10 +19,17 @@ import { LegacyCompletionPanel } from './LegacyCompletionPanel';
 import { monthCompletionPlaces, type CompletedMapPlace } from './activity/completedPlaceMapModel';
 import { useAuth } from './AuthContext';
 import { useRecordTitle } from './useRecordTitle';
+import { RecordEmptyState } from './RecordEmptyState';
+import { openCompletedPlaceInKakao } from './activity/openCompletedPlaceInKakao';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ActivityRecord'>;
 
 const EMPTY: ActivitySummary = { completedPlaceCount: 0, completedDwellMin: 0, measuredCount: 0, unmeasuredCount: 0, dwellPresentation: { kind: 'empty' }, categories: [] };
+
+function compactRecordTitle(title: string) {
+  if (title === '나의 자투리 기록') return '나의 기록';
+  return title.replace(/님의 자투리 기록$/, '님의 기록');
+}
 
 export function ActivityRecordScreen({ navigation }: Props) {
   const { accountSession } = useAuth();
@@ -71,19 +78,16 @@ export function ActivityRecordScreen({ navigation }: Props) {
   return (
     <View style={s.root}>
       <ScrollView contentContainerStyle={[s.scroll, { paddingTop: insets.top + 18 }]}>
-        <Text style={s.h1}>{title}</Text>
-        <Text style={s.sub}>{subject ? '로그인한 계정의 기록입니다. 기기의 이전 기록은 자동으로 합치지 않아요.' : '이 기기의 이번 달 완료 기록입니다.'}</Text>
-        {subject ? <AccountRecordsPanel key={subject} subject={subject} /> : isLoading ? <View style={s.loading}><ActivityIndicator color={C.accent} /></View> : loadError ? <View style={s.empty}>
+        <Text style={s.h1}>{compactRecordTitle(title)}</Text>
+        <Text style={s.sub}>다녀온 장소와 코스를 한눈에 확인해 보세요.</Text>
+        {subject ? <AccountRecordsPanel key={subject} subject={subject} onCreateCourse={() => resetToMain(navigation)} onOpenKakao={openCompletedPlaceInKakao} /> : isLoading ? <View style={s.loading}><ActivityIndicator color={C.accent} /></View> : loadError ? <View style={s.empty}>
           <Text style={s.emptyTitle}>기기 기록을 불러오지 못했어요</Text>
           <Text style={s.emptyCopy}>{loadError === 'storage_corrupt' ? '기존 기록을 덮어쓰지 않았어요. 다시 시도해 주세요.' : '잠시 후 다시 시도해 주세요.'}</Text>
           <Pressable testID="completion-history-retry" style={s.retry} onPress={() => setReloadSequence((value) => value + 1)}><Text style={s.retryText}>다시 시도</Text></Pressable>
         </View> : hasRecords ? <>
-          <ActivityStatistics summary={summary} completedPlaces={completedPlaces} mapKey={`guest:${accountVersion}`} scope="이번 달 기기 완료 기록 · 같은 장소의 반복 방문 포함" />
-          <View style={s.note}><Text style={s.noteText}>비로그인 상태에서 코스 마치기로 남긴 기록입니다. 이전 방식의 기록은 계정으로 직접 가져올 때 구분해 확인할 수 있어요. 측정하지 않은 체류시간은 합산하지 않습니다.</Text></View>
-        </> : <View style={s.empty}>
-          <Text style={s.emptyTitle}>아직 완료한 활동이 없어요</Text>
-          <Text style={s.emptyCopy}>코스를 마치면 후기 없이도 이 기기에 자투리 기록이 쌓입니다.</Text>
-        </View>}
+          <ActivityStatistics summary={summary} completedPlaces={completedPlaces} mapKey={`guest:${accountVersion}`} periodLabel="이번 달" scope="이번 달 기기 기록 · 반복 방문 포함" onOpenKakao={openCompletedPlaceInKakao} />
+          <View style={s.note}><Text style={s.noteText}>측정하지 않은 체류시간은 합산하지 않아요.</Text></View>
+        </> : <RecordEmptyState onCreateCourse={() => resetToMain(navigation)} />}
         {!subject && !isLoading && !loadError ? <LegacyCompletionPanel /> : null}
         <View style={{ height: 112 }} />
       </ScrollView>
@@ -100,7 +104,7 @@ export function ActivityRecordScreen({ navigation }: Props) {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-  scroll: { paddingHorizontal: 20, paddingBottom: 32 },
+  scroll: { paddingHorizontal: 22, paddingBottom: 32 },
   h1: { color: C.txt, fontSize: 28, fontWeight: '900' },
   sub: { color: C.muted, fontSize: 14, marginTop: 6, marginBottom: 22 },
   loading: { minHeight: 260, justifyContent: 'center', alignItems: 'center' },
@@ -109,6 +113,6 @@ const s = StyleSheet.create({
   empty: { minHeight: 320, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 28 },
   emptyTitle: { color: C.txt, fontSize: 20, fontWeight: '900', textAlign: 'center' },
   emptyCopy: { color: C.muted, fontSize: 14, lineHeight: 21, textAlign: 'center', marginTop: 10 },
-  retry: { minHeight: 46, minWidth: 128, marginTop: 18, paddingHorizontal: 18, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: C.accent },
-  retryText: { color: C.onAccent, fontSize: 14, fontWeight: '800' },
+  retry: { minHeight: 52, minWidth: 128, marginTop: 18, paddingHorizontal: 18, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: C.accent },
+  retryText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
 });

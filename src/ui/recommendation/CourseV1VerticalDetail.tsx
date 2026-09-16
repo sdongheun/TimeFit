@@ -5,11 +5,11 @@ import { C } from '../theme';
 import type { CourseV1DetailModel, CourseV1DetailStop } from './courseV1CardDetailModel';
 import { type CourseV1DisplayPlace } from './courseV1PlacePreviewModel';
 import type { ActiveCourseStepRow } from '../courseConfirmActiveModel';
-import { PlacePhoto, PlacePhotoCredit } from '../PlacePhoto';
+import { PlacePhoto } from '../PlacePhoto';
 import { CourseStepIndicator } from './CourseStepIndicator';
 
 export type CourseVerticalProgress = { rows: readonly ActiveCourseStepRow[] };
-export function CourseV1VerticalDetail({ model, mode, onOpenKakao, progress, cancelAction, expansionKey = JSON.stringify(model.legs) }: { model: CourseV1DetailModel; mode: 'review' | 'active'; onOpenKakao: (place: CourseV1DisplayPlace) => void; progress?: CourseVerticalProgress; cancelAction?: React.ReactNode; expansionKey?: string }) {
+export function CourseV1VerticalDetail({ model, mode, onOpenKakao, progress, cancelAction, showSummary = true, expansionKey = JSON.stringify(model.legs) }: { model: CourseV1DetailModel; mode: 'review' | 'active'; onOpenKakao: (place: CourseV1DisplayPlace) => void; progress?: CourseVerticalProgress; cancelAction?: React.ReactNode; showSummary?: boolean; expansionKey?: string }) {
   const travel = (index: number) => {
     const leg = model.legs[index];
     const stepIndex = index * 2;
@@ -29,7 +29,7 @@ export function CourseV1VerticalDetail({ model, mode, onOpenKakao, progress, can
   items.push(<TimelineText key="buffer" kind="buffer" text={`도착 전 ${model.arrivalBufferMin}분 여유`} last />);
 
   return <View style={s.root} accessibilityLabel={`약 ${model.courseMin}분 코스`}>
-    <View style={s.summary}><View testID="course-summary-row" style={s.summaryRow}><Text style={s.summaryTitle}>약 {model.courseMin}분 코스</Text>{cancelAction}</View><Text style={s.summarySub}>도착 전 여유는 별도로 확보했어요</Text></View>
+    {showSummary ? <View style={s.summary}><View testID="course-summary-row" style={s.summaryRow}><Text style={s.summaryTitle}>약 {model.courseMin}분 코스</Text>{cancelAction}</View><Text style={s.summarySub}>도착 전 여유는 별도로 확보했어요</Text></View> : null}
     <View style={s.timeline}>{items}</View>
   </View>;
 }
@@ -54,7 +54,6 @@ function DetailStop({ stop, showPlannedStay, onOpenKakao, status }: { stop: Cour
       </View>
       <View style={s.stopContent}>
         <Text style={s.stopTitle}>{stop.place.title}</Text>
-        <PlacePhotoCredit place={stop.place} links />
         {showPlannedStay ? <Pressable testID={`course-detail-toggle-${stop.placeId}`} accessibilityRole="button" accessibilityLabel={`${stop.place.title} ${expanded ? '접기' : '상세 보기'}`} accessibilityState={{ expanded }} style={s.link} onPress={() => setExpanded(value => !value)}><Text style={s.linkText}>{expanded ? '접기' : '상세 보기'}</Text></Pressable> : null}
         {(!showPlannedStay || expanded) ? <><Text style={s.activity}>{stop.activityLabel}</Text>
         {showPlannedStay ? <Text style={s.stay}>{stop.stayLabel}</Text> : stop.stayLabel.startsWith('가볍게') ? <Text style={s.stay}>가볍게 둘러보기</Text> : null}</> : null}
@@ -88,7 +87,7 @@ const s = StyleSheet.create({
   bufferText: { color: C.muted, fontSize: 14, fontWeight: '800' },
   stopRow: { flexDirection: 'row', alignItems: 'stretch', gap: 10, paddingVertical: 4 },
   stopCard: { flex: 1, flexDirection: 'row', alignItems: 'flex-start', padding: 10, gap: 10, overflow: 'hidden', borderRadius: 14, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
-  media: { width: 56, height: 56, borderRadius: 10, overflow: 'hidden', backgroundColor: C.panel2 },
+  media: { width: 56, height: 56, backgroundColor: C.panel2 },
   image: { width: '100%', height: '100%' },
   placeholder: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 4, backgroundColor: '#26384a' },
   placeholderText: { color: C.muted, fontSize: 10, fontWeight: '800' },

@@ -66,14 +66,15 @@ export function PlaceDetailScreen({ route, navigation }: Props) {
 
   return <View style={s.root}>
     <KakaoRouteMap
-      cameraTop={72}
+      cameraTop={14}
       points={markers.map(({ lat, lon }) => ({ lat, lon }))}
       line={[]}
       markers={markers}
       showMarkerLabels
-      usePhotoMarkers
       showRouteLegend={false}
       safeErrorPresentation
+      recenterPoint={session.origin}
+      recenterOffsetY={layout.recenterOffsetY}
       boundsPadding={layout.boundsPadding}
       style={[s.map, { marginTop: insets.top }]}
     />
@@ -84,10 +85,10 @@ export function PlaceDetailScreen({ route, navigation }: Props) {
         <PlacePhoto place={candidate} style={[s.image, {flex:0}]} fallback={<View accessibilityLabel={`${model.categoryLabel} 사진 대체 화면`} style={s.imageFallback}><Text style={s.imageFallbackText}>{model.categoryLabel}</Text></View>} />
         <View style={s.heading}><Text style={s.category}>{model.categoryLabel}</Text><Text style={s.title}>{model.title}</Text></View>
       </View>
-      <Text style={s.description}>{model.description}</Text>
-      <PlacePhotoCredit place={candidate} links />
       <Text testID="place-detail-hours" style={s.meta}>{model.operatingHoursLabel}</Text>
       <Text style={s.address}>{model.addressLabel}</Text>
+      <Text style={s.description}>{model.description}</Text>
+      <PlacePhotoCredit place={candidate} links />
       {linkError ? <Text accessibilityRole="alert" style={s.error}>{linkError}</Text> : null}
       <Pressable testID="place-detail-kakao" accessibilityRole="link" style={s.link} onPress={() => void openKakao()}><Text style={s.linkText}>카카오맵에서 장소 보기</Text></Pressable>
       </ScrollView>
@@ -101,11 +102,11 @@ const s = StyleSheet.create({
   map: { flex: 1 },
   information: { flexShrink: 1 },
   informationContent: { gap: 10 },
-  close: { position: 'absolute', left: 16, width: 42, height: 42, borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' },
+  close: { position: 'absolute', left: 12, width: 44, height: 44, borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: 'rgba(30,30,33,0.92)', alignItems: 'center', justifyContent: 'center' },
   closeText: { color: C.txt, fontSize: 28, lineHeight: 30 },
   sheet: { position: 'absolute', left: 12, right: 12, bottom: 0, gap: 10, padding: 16, borderTopLeftRadius: 22, borderTopRightRadius: 22, backgroundColor: C.panel },
   sheetHeader: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  image: { width: 76, height: 76, borderRadius: 14, backgroundColor: C.panel2 },
+  image: { width: 76, height: 76, backgroundColor: C.panel2 },
   imageFallback: { width: 76, height: 76, borderRadius: 14, alignItems: 'center', justifyContent: 'center', padding: 8, backgroundColor: '#26384a' },
   imageFallbackText: { color: '#b9d8ff', fontSize: 12, fontWeight: '800', textAlign: 'center' },
   heading: { flex: 1, gap: 4 },
@@ -115,8 +116,8 @@ const s = StyleSheet.create({
   meta: { color: C.txt, fontSize: 13, fontWeight: '800' },
   address: { color: C.muted, fontSize: 13, lineHeight: 18 },
   error: { color: C.red, fontSize: 13, lineHeight: 18 },
-  link: { minHeight: 44, alignItems: 'center', justifyContent: 'center' },
-  linkText: { color: '#78b7ff', fontSize: 14, fontWeight: '800' },
+  link: { minHeight: 48, marginTop: 2, borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' },
+  linkText: { color: C.txt, fontSize: 14, fontWeight: '800' },
   primary: { minHeight: 52, flexShrink: 0, paddingVertical: 12, paddingHorizontal: 12, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: C.accent },
   primaryText: { color: C.onAccent, fontSize: 16, fontWeight: '800' },
   secondary: { minHeight: 48, paddingHorizontal: 18, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: C.panel2 },

@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { usePreventRemove } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 import Slider from '@react-native-community/slider';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
@@ -142,7 +143,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
     runningQaToken.current = input.qaRunToken ?? null;
     const isCurrent = () => epoch === recommendationEpoch.current;
     setError(''); setCaptchaDiagnostic(null);
-    setLoadingStage(null);
+    setLoadingStage('input_ready');
     setLoadingUntilMin(startMinuteForRecommendation(session.nowIso) + session.remainingMin);
     setPage('loading');
     try {
@@ -283,6 +284,16 @@ export function TimeSetupScreen({ navigation, route }: Props) {
     if (page === 'setup') navigation.goBack();
     else setPage('setup');
   };
+  const cancelRecommendation = () => {
+    if (page !== 'loading') return;
+    recommendationEpoch.current++;
+    runGuard.reset();
+    if (runningQaToken.current) qaRunController.cancel(runningQaToken.current);
+    runningQaToken.current = null;
+    setQaRunLocked(false);
+    setLoadingStage(null);
+    setPage('setup');
+  };
   const closeCaptcha = () => {
     setCaptchaVisible(false);
     if (!qaCaptchaRequest) { runGuard.reset(); return; }
@@ -301,20 +312,15 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   };
   usePreventRemove(Boolean(searchTarget || mapTarget || captchaVisible || page !== 'setup'), () => {
     if (page === 'loading') {
-      recommendationEpoch.current++;
-      runGuard.reset();
-      if (runningQaToken.current) qaRunController.cancel(runningQaToken.current);
-      runningQaToken.current = null;
-      setQaRunLocked(false);
-      setPage('setup');
+      cancelRecommendation();
     } else if (captchaVisible) closeCaptcha();
     else if (mapTarget) { pickerRequest.current++; locationEditingSession.resume(); setSearchTarget(mapTarget); setMapTarget(null); }
     else if (searchTarget) { pickerRequest.current++; locationEditingSession.end(); setSearchTarget(null); }
     else setPage('setup');
   });
   const captchaSheet = <CaptchaVerificationSheet visible={captchaVisible} challengeUrl={captchaChallengeUrl} onClose={closeCaptcha} onVerified={verifiedCaptcha} />;
-  const Header = ({ title, compact = false }: { title: string; compact?: boolean }) => <View style={[s.header, compact && { marginBottom: 0, height: undefined, minHeight: 52 }]}><Pressable variant="icon" onPress={back} style={s.back}><Text style={s.backText}>‹</Text></Pressable><Text style={[s.headerTitle, compact && { flex: 1, textAlign: 'center' }]}>{title}</Text><View accessible={false} importantForAccessibility="no" style={s.headerSpacer} /></View>;
-  if (page === 'loading') return <View style={s.root}><View style={[s.loading, { paddingTop: insets.top, paddingBottom: insets.bottom }]}><Text style={s.loadingEyebrow}>{datedMinuteLabel(loadingUntilMin)}까지 계산 중</Text><Text style={s.loadingTitle}>시간 안에 들를 곳을{`\n`}찾고 있어요</Text><RecommendationLoadingProgress stage={loadingStage} /></View></View>;
+  const Header = ({ title, compact = false }: { title: string; compact?: boolean }) => <View style={[s.header, compact && { marginBottom: 0, height: undefined, minHeight: 52 }]}><Pressable variant="icon" testID="setup-back" accessibilityLabel="뒤로가기" onPress={back} style={s.back}><Feather name="chevron-left" size={28} color={C.txt} /></Pressable><Text style={[s.headerTitle, compact && { flex: 1, textAlign: 'center' }]}>{title}</Text><View accessible={false} importantForAccessibility="no" style={s.headerSpacer} /></View>;
+  if (page === 'loading') return <View style={s.root}><View style={[s.loading, { paddingTop: insets.top, paddingBottom: insets.bottom }]}><Text style={s.loadingEyebrow}>{datedMinuteLabel(loadingUntilMin)}까지 계산 중</Text><Text style={s.loadingTitle}>시간 안에 들를 곳을{`\n`}찾고 있어요</Text><RecommendationLoadingProgress stage={loadingStage} /><Pressable testID="recommendation-cancel" accessibilityLabel="추천 취소" style={s.loadingCancel} onPress={cancelRecommendation}><Text style={s.loadingCancelText}>취소</Text></Pressable></View></View>;
   if (page === 'test-clock') return <View style={s.root}><ScrollView contentContainerStyle={[s.screen, { paddingTop: insets.top + 14 }]}><Header title="테스트 현재 시각" /><Text style={s.smallCopy}>개발 테스트에서만 추천과 운영시간 판단 시각을 바꿉니다.</Text><View style={s.wheelPanel}><View style={s.meridiem}><TimeWheel accessibilityLabel="테스트 현재 시각 오전 오후" values={MERIDIEMS} index={testPm ? 1 : 0} onChange={(index) => setTestPm(index === 1)} /></View><View style={s.wheelCol}><TimeWheel accessibilityLabel="테스트 현재 시각 시" values={HOURS_12} index={testHour12 - 1} onChange={(index) => setTestHour12(index + 1)} /></View><View style={s.wheelCol}><TimeWheel accessibilityLabel="테스트 현재 시각 분" values={MINUTES} index={testMinute} onChange={setTestMinute} /></View></View><Pressable style={s.primary} onPress={() => { const next = to24(testPm, testHour12, testMinute); const endMinute = suggestedEndForTestClock(next); const end = to12(endMinute); setClockDate(new Date()); setTestNowMin(next); setPm(end.pm); setHour12(end.hour); setMinute(end.minute); setPage('setup'); }}><Text style={s.primaryText}>테스트 시각 적용</Text></Pressable><Pressable style={s.secondary} onPress={() => { const current = new Date(); const endMinute = suggestedEndForTestClock(current.getHours() * 60 + current.getMinutes()); const end = to12(endMinute); setClockDate(current); setTestNowMin(null); setPm(end.pm); setHour12(end.hour); setMinute(end.minute); setPage('setup'); }}><Text style={s.secondaryText}>실제 현재 시각으로 복원</Text></Pressable></ScrollView></View>;
   if (page === 'qa-launcher' && qaLauncherEnabled) {
     const nextScenarioId = nextQaReleaseOneStopScenarioId(qaLastFinishedId);
@@ -331,18 +337,18 @@ export function TimeSetupScreen({ navigation, route }: Props) {
       onContentSizeChange={(_width, height) => setContentHeight(height)}
       scrollEnabled={contentHeight > (viewportHeight || layout.viewportHeight)}>
       <View pointerEvents={captchaVisible || searchTarget || mapTarget ? 'none' : 'auto'}>
-        <UnifiedSetupInputs header={<Header title="자투리 시간 설정" compact />} clockLabel={testNowMin != null ? `테스트 시각 ${fmtHM(now.nowMin)} · 최대 3시간` : `현재 시각 ${fmtHM(now.nowMin)} · 최대 3시간`}
+        <UnifiedSetupInputs header={<Header title="시간과 장소 설정" compact />} clockLabel={testNowMin != null ? `테스트 시각 ${fmtHM(now.nowMin)} · 최대 3시간` : `현재 시각 ${fmtHM(now.nowMin)} · 최대 3시간`}
           viewportHeight={viewportHeight || layout.viewportHeight} originLabel={originLabel} destinationLabel={appointment?.label ?? '출발지로 돌아오기'} hasDestination={Boolean(appointment)} largeText={dimensions.fontScale > 1}
           onOrigin={() => openPicker('origin')} onDestination={() => openPicker('destination')} onReturn={() => { setAppointment(null); setError(''); }}
           nextDayArrival={endMin >= 1440 && remainingMin > 0 && remainingMin <= 180}
-          wheel={<View style={[s.wheelPanel, { minHeight: layout.wheelRowHeight * 4 }]}><View style={s.meridiem}><TimeWheel rowHeight={layout.wheelRowHeight} accessibilityLabel="도착 시각 오전 오후" values={MERIDIEMS} index={pm ? 1 : 0} onChange={(index) => { setError(''); setPm(index === 1); }} /></View><View style={s.wheelCol}><TimeWheel rowHeight={layout.wheelRowHeight} accessibilityLabel="도착 시각 시" values={HOURS_12} index={hour12 - 1} onChange={(index) => { setError(''); setHour12(index + 1); }} /></View><View style={s.wheelCol}><TimeWheel rowHeight={layout.wheelRowHeight} accessibilityLabel="도착 시각 분" values={MINUTES} index={minute} onChange={(value) => { setError(''); setMinute(value); }} /></View></View>}
+          wheel={<View testID="setup-time-wheel-surface" style={[s.wheelPanel, { minHeight: layout.wheelRowHeight * 4 }]}><View style={s.meridiem}><TimeWheel rowHeight={layout.wheelRowHeight} accessibilityLabel="도착 시각 오전 오후" values={MERIDIEMS} index={pm ? 1 : 0} onChange={(index) => { setError(''); setPm(index === 1); }} /></View><View style={s.wheelCol}><TimeWheel rowHeight={layout.wheelRowHeight} accessibilityLabel="도착 시각 시" values={HOURS_12} index={hour12 - 1} onChange={(index) => { setError(''); setHour12(index + 1); }} /></View><View style={s.wheelCol}><TimeWheel rowHeight={layout.wheelRowHeight} accessibilityLabel="도착 시각 분" values={MINUTES} index={minute} onChange={(value) => { setError(''); setMinute(value); }} /></View></View>}
           slider={<View style={{ gap: 4 }}><View style={s.sliderHead}><Text style={s.rowTitle}>도착 전 남길 시간</Text><Text style={s.bufferValue}>{arrivalBufferMin}분</Text></View><Slider style={{ height: 44 }} minimumValue={5} maximumValue={30} step={5} value={arrivalBufferMin} accessibilityLabel="도착 전 남길 시간" accessibilityValue={{ text: `${arrivalBufferMin}분, 5분 단위` }} minimumTrackTintColor={C.accent} maximumTrackTintColor={C.line} thumbTintColor={C.accent} onSlidingStart={() => applyArrivalBufferDecision(arrivalBufferInteraction.begin(arrivalBufferMin))} onValueChange={(value) => applyArrivalBufferDecision(arrivalBufferInteraction.change(value))} onSlidingComplete={(value) => applyArrivalBufferDecision(arrivalBufferInteraction.complete(value))} /><View style={s.rangeEnds}><Text style={{ color: C.muted }}>빠듯하게</Text><Text style={{ color: C.muted }}>여유롭게</Text></View></View>} error={error || validation} />
         {SHOW_TEST_CLOCK || qaLauncherEnabled || liveDiagnosticsEnabled ? <View testID="setup-development-tools" style={{ paddingHorizontal: 22, paddingBottom: 8 }}>{SHOW_TEST_CLOCK ? <Pressable testID="dev-test-clock" style={s.devRow} onPress={() => setPage('test-clock')}><Text style={s.devText}>개발 테스트 시각</Text><Text style={s.devText}>{fmtHM(now.nowMin)} ›</Text></Pressable> : null}{qaLauncherEnabled ? <Pressable testID="qa-release-one-stop-launcher" style={s.devRow} onPress={() => { setError(''); setPage('qa-launcher'); }}><Text style={s.devText}>출시 추천 QA</Text><Text style={s.devText}>8개 시나리오 ›</Text></Pressable> : null}{a3LauncherEnabled ? <><Pressable testID="live-activity-a3-launcher" style={[s.devRow, a3Running && s.primaryOff]} disabled={a3Running} onPress={() => void runLiveActivityA3()}><Text style={s.devText}>Live Activity A3</Text><Text style={s.devText}>{a3Running ? '확인 중…' : '카카오맵 전환 ›'}</Text></Pressable><Pressable testID="live-activity-a3-cleanup" style={[s.devRow, a3Running && s.primaryOff]} disabled={a3Running} onPress={() => void cleanupLiveActivityA3()}><Text style={s.devText}>테스트 Live Activity 종료</Text><Text style={s.devText}>정확한 대상만 ›</Text></Pressable>{a3Status ? <Text testID="live-activity-a3-status" accessibilityRole="alert" style={s.devStatus}>{a3Status}</Text> : null}</> : null}{liveDiagnosticsEnabled ? <Pressable testID="live-activity-diagnostics-launcher" style={s.devRow} onPress={() => { setPage('live-diagnostics'); void readLiveDiagnostics(); }}><Text style={s.devText}>Live Activity 버튼 진단</Text><Text style={s.devText}>조회·복사 ›</Text></Pressable> : null}</View> : null}
         {captchaDiagnostic ? <Text testID="route-proxy-diagnostic" style={s.diagnostic}>CAPTCHA 진단: {captchaDiagnostic}</Text> : null}
       </View>
     </ScrollView>
     <View testID="setup-footer" onLayout={({ nativeEvent }) => setFooterHeight(nativeEvent.layout.height)} style={{ paddingHorizontal: 22, paddingTop: 8, paddingBottom: Math.max(insets.bottom, 12) }}>
-      <Pressable testID="setup-recommend" style={[s.primary, { marginTop: 0, paddingVertical: 12 }, Boolean(validation) && s.primaryOff]} onPress={run} disabled={Boolean(validation || searchTarget || mapTarget || captchaVisible)}><Text style={s.primaryText}>이 시간에 할 일 찾기</Text></Pressable>
+      <Pressable testID="setup-recommend" style={[s.primary, { marginTop: 0, paddingVertical: 12 }, Boolean(validation) && s.primaryOff]} onPress={run} disabled={Boolean(validation || searchTarget || mapTarget || captchaVisible)}><Text style={[s.primaryText, Boolean(validation) && s.primaryTextOff]}>코스 추천받기</Text></Pressable>
     </View>
     {pickers()}{captchaSheet}
   </View>;
@@ -357,10 +363,10 @@ export function TimeSetupScreen({ navigation, route }: Props) {
       applyPlace(target, point, label, source); close(); setPage('setup');
     };
     return <>
-      <MapPlacePicker visible={mapTarget !== null} title={mapTarget === 'origin' ? '출발지 선택' : '도착지 선택'} center={pickerCenter} labelAdapter={locationLabel}
+      <MapPlacePicker visible={mapTarget !== null} title={mapTarget === 'origin' ? '출발지 선택' : '마지막 도착지 선택'} center={pickerCenter} labelAdapter={locationLabel}
         onClose={returnToSearch}
         onConfirm={({ point, label, source }) => confirm(point, label, source)} />
-      <PlacePicker visible={searchTarget !== null} title={target === 'origin' ? '출발지 선택' : '도착지 선택'} center={pickerCenter} editingSession={locationEditingSession} labelAdapter={locationLabel}
+      <PlacePicker visible={searchTarget !== null} title={target === 'origin' ? '출발지 선택' : '마지막 도착지 선택'} center={pickerCenter} editingSession={locationEditingSession} labelAdapter={locationLabel}
         onOpenMap={() => { pickerRequest.current++; locationEditingSession.pause(); setMapTarget(searchTarget); setSearchTarget(null); }} onClose={close}
         onConfirm={(place) => confirm(place, place.label, place.source)} />
     </>;
@@ -368,11 +374,11 @@ export function TimeSetupScreen({ navigation, route }: Props) {
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: C.bg }, screen: { paddingHorizontal: 22, paddingBottom: 42 }, header: { height: 52, marginBottom: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, back: { width: 42, height: 42, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: C.panel2, borderWidth: 1, borderColor: C.line }, headerSpacer: { width: 42, height: 42 }, backText: { color: C.txt, fontSize: 32, lineHeight: 34 }, headerTitle: { color: C.txt, fontSize: 17, fontWeight: '800' }, smallCopy: { color: C.muted, fontSize: 13, lineHeight: 20, marginBottom: 22 },
-  rowTitle: { color: C.txt, fontSize: 15, fontWeight: '800' }, rowValue: { maxWidth: 270, color: C.muted, fontSize: 13, marginTop: 5 }, devRow: { minHeight: 44, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, borderColor: '#4b85cf', backgroundColor: '#1d3045', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }, devText: { color: '#83baff', fontSize: 13, fontWeight: '800' }, devStatus: { color: C.muted, fontSize: 12, lineHeight: 18, paddingHorizontal: 12, marginTop: 6 }, sliderHead: { flexDirection: 'row', justifyContent: 'space-between' }, bufferValue: { color: '#70adff', fontSize: 20, fontWeight: '800' }, rangeEnds: { flexDirection: 'row', justifyContent: 'space-between' },
+  root: { flex: 1, backgroundColor: C.bg }, screen: { paddingHorizontal: 22, paddingBottom: 42 }, header: { height: 52, marginBottom: 18, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, back: { width: 44, height: 44, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' }, headerSpacer: { width: 44, height: 44 }, headerTitle: { color: C.txt, fontSize: 20, fontWeight: '900' }, smallCopy: { color: C.muted, fontSize: 13, lineHeight: 20, marginBottom: 22 },
+  rowTitle: { color: C.txt, fontSize: 15, fontWeight: '800' }, rowValue: { maxWidth: 270, color: C.muted, fontSize: 13, marginTop: 5 }, devRow: { minHeight: 44, paddingHorizontal: 12, borderRadius: 10, borderWidth: 1, borderColor: '#4b85cf', backgroundColor: '#1d3045', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }, devText: { color: '#83baff', fontSize: 13, fontWeight: '800' }, devStatus: { color: C.muted, fontSize: 12, lineHeight: 18, paddingHorizontal: 12, marginTop: 6 }, sliderHead: { flexDirection: 'row', justifyContent: 'space-between' }, bufferValue: { color: C.txt, fontSize: 20, fontWeight: '800' }, rangeEnds: { flexDirection: 'row', justifyContent: 'space-between' },
   qaNext: { color: '#83baff', fontSize: 14, fontWeight: '800', marginBottom: 10 }, qaScenario: { minHeight: 66, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderTopWidth: 1, borderColor: C.line, backgroundColor: C.panel }, qaMinutes: { color: C.green, fontSize: 14, fontWeight: '800' },
   diagnosticPanel: { marginTop: 12, padding: 12, borderRadius: 10, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel }, diagnosticLine: { color: C.muted, fontSize: 11, lineHeight: 17, marginBottom: 5 },
-  primary: { minHeight: 52, marginTop: 12, borderRadius: 12, backgroundColor: C.accent, alignItems: 'center', justifyContent: 'center' }, primaryOff: { backgroundColor: C.panel2 }, primaryText: { color: C.onAccent, fontSize: 16, fontWeight: '800' }, secondary: { minHeight: 52, marginTop: 12, borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' }, secondaryText: { color: C.txt, fontSize: 16, fontWeight: '800' }, error: { color: C.red, fontSize: 13, lineHeight: 19, marginTop: 10 }, diagnostic: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 4 },
-  wheelPanel: { minHeight: 210, flexDirection: 'row', alignItems: 'center', borderRadius: 16, backgroundColor: '#171a20', overflow: 'hidden' }, meridiem: { width: 84 }, wheelCol: { flex: 1 },
-  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 34 }, loadingEyebrow: { color: '#6eacff', fontSize: 13, fontWeight: '800' }, loadingTitle: { color: C.txt, fontSize: 27, lineHeight: 35, fontWeight: '800', textAlign: 'center', marginTop: 12, marginBottom: 34 },
+  primary: { minHeight: 52, marginTop: 12, borderRadius: 12, backgroundColor: C.accent, alignItems: 'center', justifyContent: 'center' }, primaryOff: { backgroundColor: C.panel2 }, primaryText: { color: C.onAccent, fontSize: 16, fontWeight: '800' }, primaryTextOff: { color: C.placeholder }, secondary: { minHeight: 52, marginTop: 12, borderRadius: 12, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' }, secondaryText: { color: C.txt, fontSize: 16, fontWeight: '800' }, error: { color: C.red, fontSize: 13, lineHeight: 19, marginTop: 10 }, diagnostic: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 4 },
+  wheelPanel: { minHeight: 210, flexDirection: 'row', alignItems: 'center', borderRadius: 18, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel, overflow: 'hidden' }, meridiem: { width: 84 }, wheelCol: { flex: 1 },
+  loading: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 34 }, loadingEyebrow: { color: C.txt2, fontSize: 13, fontWeight: '800' }, loadingTitle: { color: C.txt, fontSize: 27, lineHeight: 35, fontWeight: '800', textAlign: 'center', marginTop: 12, marginBottom: 34 }, loadingCancel: { minHeight: 44, minWidth: 88, marginTop: 20, paddingHorizontal: 18, alignItems: 'center', justifyContent: 'center' }, loadingCancelText: { color: C.txt, fontSize: 14, fontWeight: '800' },
 });

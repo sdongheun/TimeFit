@@ -1,6 +1,6 @@
 import type { RouteMapMarker } from './KakaoRouteMap';
 import type { RecommendationSession } from './nav';
-import { approvedPlacePhoto, photoMarkerFields, type PlacePhotoInput } from './placePhotoModel';
+import { approvedPlacePhoto, type PlacePhotoInput } from './placePhotoModel';
 
 export type PlaceDetailSelectionKind = 'first' | 'pair';
 export type PlaceDetailRequestIdentity = Readonly<{
@@ -101,7 +101,7 @@ export function buildPlaceDetailMarkers(
   const markers: RouteMapMarker[] = [];
   if (validPoint(session.origin)) markers.push({ lat: session.origin.lat, lon: session.origin.lon, label: '설정한 출발지', kind: 'origin' });
   if (selected && validPoint(selected)) markers.push({ lat: selected.lat, lon: selected.lon, label: `선택한 장소 · ${selected.title}`, kind: 'selected' });
-  if (validPoint(candidate)) markers.push({ lat: candidate.lat, lon: candidate.lon, label: `선택 후보 · ${candidate.title}`, kind: 'candidate', ...photoMarkerFields(candidate) });
+  if (validPoint(candidate)) markers.push({ lat: candidate.lat, lon: candidate.lon, label: `선택 후보 · ${candidate.title}`, kind: 'candidate' });
   return normalizeCoLocatedMarkers(markers);
 }
 

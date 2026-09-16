@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { AnimatedPressable as Pressable } from '../AnimatedPressable';
 import { C } from '../theme';
-import { PlacePhoto, PlacePhotoCredit } from '../PlacePhoto';
+import { PlacePhoto } from '../PlacePhoto';
 import {
   twoStopSelectionReasonMessage,
   twoStopCandidateDurationLabel,
@@ -40,8 +40,8 @@ function TwoStopCandidate({ candidate, selected, onPress }: { candidate: TwoStop
   return <Pressable accessibilityRole="button" accessibilityLabel={`${candidate.accessibilityLabel}${selected ? ', 선택됨' : ''}`} accessibilityState={{ selected }} style={({ pressed }) => [s.card, selected && s.selected, pressed && s.pressed]} onPress={onPress}>
     <View style={s.media}><PlacePhoto place={candidate.place} fallback={<View accessible={false} style={s.placeholder}><Text style={s.placeholderText}>{candidate.activityLabel}</Text></View>} />
     </View>
-    <PlacePhotoCredit place={candidate.place} />
-    <View style={s.content}><Text style={s.cardEyebrow}>{selected ? '✓ 선택됨' : '함께 둘러볼 장소'}</Text><Text style={s.cardTitle}>{candidate.title}</Text><Text style={s.activity}>{candidate.activityLabel}</Text><Text style={s.duration}>{twoStopCandidateDurationLabel(candidate)}</Text></View>
+    <View style={s.content}>{selected ? <Text style={s.cardEyebrow}>✓ 선택됨</Text> : null}<Text numberOfLines={2} style={s.cardTitle}>{candidate.title}</Text><Text numberOfLines={1} style={s.activity}>{candidate.activityLabel}</Text><Text style={s.duration}>{twoStopCandidateDurationLabel(candidate)}</Text></View>
+    <Text accessible={false} style={s.arrow}>›</Text>
   </Pressable>;
 }
 
@@ -52,23 +52,23 @@ const s = StyleSheet.create({
   sectionTitle: { color: C.txt, fontSize: 18, fontWeight: '800' },
   statusText: { color: C.muted, fontSize: 13, lineHeight: 19 },
   skeletonList: { gap: 12 },
-  skeleton: { overflow: 'hidden', borderRadius: 17, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
-  skeletonMedia: { height: 126, backgroundColor: C.panel2 },
-  skeletonCopy: { padding: 15, gap: 9 },
+  skeleton: { minHeight: 116, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 10, overflow: 'hidden', borderRadius: 16, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
+  skeletonMedia: { width: 96, height: 96, borderRadius: 12, backgroundColor: C.panel2 },
+  skeletonCopy: { flex: 1, gap: 9 },
   skeletonLineWide: { width: '68%', height: 17, borderRadius: 6, backgroundColor: C.panel2 },
   skeletonLine: { width: '42%', height: 13, borderRadius: 6, backgroundColor: C.panel2 },
-  card: { overflow: 'hidden', borderRadius: 17, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
+  card: { minHeight: 116, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 10, overflow: 'hidden', borderRadius: 16, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
   selected: { borderWidth: 2, borderColor: C.accent },
   pressed: { opacity: 0.82 },
-  media: { height: 126, backgroundColor: C.panel2 },
-  image: { width: '100%', height: '100%' },
+  media: { width: 96, height: 96, flexShrink: 0, backgroundColor: C.panel2 },
   placeholder: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#26384a' },
   placeholderText: { color: '#b9d8ff', fontSize: 15, fontWeight: '800' },
-  content: { padding: 15, gap: 5 },
+  content: { flex: 1, minWidth: 0, gap: 5 },
   cardEyebrow: { color: '#74b0ff', fontSize: 12, fontWeight: '800' },
-  cardTitle: { color: C.txt, fontSize: 20, fontWeight: '800' },
-  duration: { color: C.txt, fontSize: 16, fontWeight: '800', marginTop: 2 },
+  cardTitle: { color: C.txt, fontSize: 18, lineHeight: 24, fontWeight: '800' },
+  duration: { color: C.txt, fontSize: 14, fontWeight: '800', marginTop: 2 },
+  arrow: { flexShrink: 0, color: C.muted, fontSize: 26, lineHeight: 30, paddingHorizontal: 2 },
   more: { minHeight: 50, alignItems: 'center', justifyContent: 'center', borderRadius: 14, borderWidth: 1, borderColor: '#4d9df5', backgroundColor: '#17283a' },
   disabled: { opacity: 0.62 },
-  moreText: { color: '#9dcbff', fontSize: 15, fontWeight: '800' },
+  moreText: { color: C.txt, fontSize: 15, fontWeight: '800' },
 });

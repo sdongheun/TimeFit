@@ -27,4 +27,4 @@ export function CompletedPlacesMapButton({ places, children, style, preview = fa
     </Modal> : null}
   </>;
 }
-const s = StyleSheet.create({ root: { flex: 1, backgroundColor: C.bg }, header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20 }, title: { color: C.txt, fontSize: 20, fontWeight: '800' }, close: { minHeight: 48, minWidth: 48, alignItems: 'center', justifyContent: 'center' }, link: { color: C.accent, fontSize: 14, paddingVertical: 12 }, copy: { color: C.muted, padding: 20, lineHeight: 20 }, empty: { flex: 1, alignItems: 'center', justifyContent: 'center' } });
+const s = StyleSheet.create({ root: { flex: 1, backgroundColor: C.bg }, header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20 }, title: { color: C.txt, fontSize: 20, fontWeight: '800' }, close: { minHeight: 48, minWidth: 48, alignItems: 'center', justifyContent: 'center' }, link: { color: C.txt, fontSize: 14, paddingVertical: 12 }, copy: { color: C.muted, padding: 20, lineHeight: 20 }, empty: { flex: 1, alignItems: 'center', justifyContent: 'center' } });

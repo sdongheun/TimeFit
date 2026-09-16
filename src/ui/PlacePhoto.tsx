@@ -9,9 +9,9 @@ import { C } from './theme';
 export const PHOTO_LOAD_TIMEOUT_MS = 12000;
 export function PlacePhoto({ place, style, fallback, testID }: {place: PlacePhotoInput; style?: StyleProp<ViewStyle>; fallback: ReactNode; testID?: string}) {
   const photo = approvedPlacePhoto(place);
-  return <View testID={testID} style={[s.frame, style]}>{photo
-    ? <PhotoRequest key={`${photo.url}:${photo.licenseUrl}:${photo.attribution}`} photo={photo} fallback={fallback} />
-    : fallback}</View>;
+  return <View testID={testID} style={[s.slot, style]}><View style={s.frame}>{photo
+    ? <PhotoRequest key={`${photo.url}:${photo.status}:${photo.attribution}`} photo={photo} fallback={fallback} />
+    : fallback}</View></View>;
 }
 function PhotoRequest({ photo, fallback }: {photo: ApprovedPlacePhoto; fallback: ReactNode}) {
   const [state, setState] = useState<'loading'|'loaded'|'failed'>('loading');
@@ -22,7 +22,7 @@ function PhotoRequest({ photo, fallback }: {photo: ApprovedPlacePhoto; fallback:
   }, [state]);
   return <>
     {state !== 'loaded' ? fallback : null}
-    {state !== 'failed' ? <Image testID="approved-place-photo" accessibilityLabel={photo.attribution} source={{uri:photo.url}} resizeMode="cover" style={[{position:'absolute',top:0,right:0,bottom:0,left:0}, {opacity: state === 'loaded' ? 1 : 0}]} onLoad={() => setState(current => current === 'loading' ? 'loaded' : current)} onError={() => setState('failed')} /> : null}
+    {state !== 'failed' ? <Image testID="approved-place-photo" accessibilityLabel={photo.attribution} source={{uri:photo.url}} resizeMode="contain" style={[s.image, {opacity: state === 'loaded' ? 1 : 0}]} onLoad={() => setState(current => current === 'loading' ? 'loaded' : current)} onError={() => setState('failed')} /> : null}
   </>;
 }
 /** 사용자가 볼 수 있는 출처·이용조건. 접근성 label만으로 대체하지 않는다. */
@@ -32,9 +32,9 @@ export function PlacePhotoCredit({ place, links = false, linkTextColor }: {place
   if (!photo) return null;
   const open = async (url: string) => { try { await Linking.openURL(url); setError(false); } catch { setError(true); } };
   return <View testID="place-photo-credit">
-    <Text style={s.credit}>{photo.attribution} · {photo.licenseName}</Text>
-    {links ? <View style={s.links}><Pressable accessibilityRole="link" accessibilityLabel="사진 출처 보기" onPress={() => void open(photo.sourcePageUrl)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>사진 출처</Text></Pressable><Pressable accessibilityRole="link" accessibilityLabel="사진 이용조건 보기" onPress={() => void open(photo.licenseUrl)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>이용조건</Text></Pressable></View> : null}
+    <Text style={s.credit}>{photo.attribution}{photo.licenseName ? ` · ${photo.licenseName}` : ''}</Text>
+    {links && photo.sourcePageUrl && photo.licenseUrl ? <View style={s.links}><Pressable accessibilityRole="link" accessibilityLabel="사진 출처 보기" onPress={() => void open(photo.sourcePageUrl as string)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>사진 출처</Text></Pressable><Pressable accessibilityRole="link" accessibilityLabel="사진 이용조건 보기" onPress={() => void open(photo.licenseUrl as string)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>이용조건</Text></Pressable></View> : null}
     {error ? <Text accessibilityRole="alert" style={s.credit}>링크를 열지 못했어요. 잠시 후 다시 시도해 주세요.</Text> : null}
   </View>;
 }
-const s = StyleSheet.create({frame:{flex:1,overflow:'hidden'},credit:{color:C.muted,fontSize:11,lineHeight:16},links:{flexDirection:'row',gap:16},link:{minHeight:44,justifyContent:'center'},linkText:{color:C.accent,fontSize:12}});
+const s = StyleSheet.create({slot:{flex:1,minWidth:0,minHeight:0,backgroundColor:C.panel},frame:{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:C.panel},image:{position:'absolute',top:0,right:0,bottom:0,left:0},credit:{color:C.muted,fontSize:11,lineHeight:16},links:{flexDirection:'row',gap:16},link:{minHeight:44,justifyContent:'center'},linkText:{color:C.txt,fontSize:12,textDecorationLine:'underline'}});

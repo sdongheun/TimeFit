@@ -215,3 +215,61 @@ UIUX 단일 작성자가 구현 후 QA로 인계한다. TimeSetup/PlacePicker/Ma
 2. 유지 계약: 회색 보조 설명·주소 위계, 파란 선택 테두리/배경·로딩 인디케이터, 확정 CTA의 파란 배경/흰 글자 유지. 검색·GPS·지도·키보드·선택/확정 handler 및 API/DB/엔진 변경0. 파란 행동 글자 → 짙은 배경에서 낮은 가독성 및 공통 규칙 불일치 → 흰 행동/선택 글자와 비텍스트 파란 강조 분리 → UX-COLOR-01 준수 → 현행 구현 완료.
 3. 검증: 실패 선행 추가2건 FAIL → 집중25/25 PASS. typecheck PASS, UI665건(664 PASS/기존1 SKIP), 전체336/336 PASS, diff check PASS, iOS export 성공(`/private/tmp/timefit-location-color-ios`). 로그 `/private/tmp/timefit-location-color-{red,focused,typecheck,ui,all,export}.log`. 실제 API/GPS/Simulator·실기기 실행0, commit/push0.
 4. 최소 수동 확인: 출발지/목적지 검색에서 세 버튼과 선택됨 글자가 흰색이고 선택 테두리·확정 버튼은 기존 강조를 유지하는지만 확인. 사용자 첨부 캡처는 수정 전 근거이며 수정 후 실기기 수락으로 기록하지 않는다.
+
+## 검색 결과 선택 시 목록 위치 고정 보완 — 2026-09-16
+
+이전 방식: 결과가 있으면 `목록에서 위치를 선택하세요`를 조건부 Text로 표시하고, 행을 선택하면 message를 비우면서 Text 자체를 제거했다. → 관찰: 안내 한 줄의 높이가 즉시 사라져 결과 목록 전체가 위로 밀리고, 선택 피드백이 화면 끊김처럼 보였다. → 교체 방식: 안내 영역은 항상 같은 최소 높이로 유지하고 선택 시 글자만 투명 처리하며 접근성 트리에서도 숨긴다. → 교체 이유: 선택 전후 목록의 시작 위치를 고정하면서 빈 안내를 VoiceOver가 읽지 않게 한다. → 상태: **현행 구현·자동 검증 완료, 장소 행/선택 외형 개선안은 사용자 결정 전**.
+
+### 1. 변경 파일과 변경 목적
+
+- `src/ui/PlacePicker.tsx`: `location-message-slot`을 상시 렌더링하고 한 줄 안내 높이를 보존했다. 선택 후에는 `location-message-text`만 투명하게 만들고 접근성에서 제외해 결과 목록이 위로 이동하지 않는다. 오류처럼 두 줄 이상이 필요한 실제 메시지는 기존처럼 영역이 늘어날 수 있다.
+- `test/ui/location-search-interaction.test.mjs`: 검색 결과 표시→행 선택 전후 message slot의 최소 높이가 같고, 텍스트만 opacity 0 및 accessibility hidden이 되는 failure-first 회귀를 추가했다.
+
+### 2. 유지한 계약
+
+- 검색 결과 순서·provider·명시 선택/확정·같은 query 중복 방지·키보드와 footer 동기화·선택 행 최소 reveal·지도 왕복 draft/scroll 복원은 변경하지 않았다.
+- 선택 전 안내와 검색/오류/빈 결과 문구는 유지했다. 실제 오류 문구를 투명하게 숨기지 않으며, 선택됐을 때의 빈 message만 숨긴다.
+- 추천·API·DB·엔진·GPS 제거·시간 설정 배치와 native 설정은 수정하지 않았다. Simulator/실기기·운영 API/DB·commit/push는 실행하지 않았다.
+
+### 3. 테스트 결과
+
+- 실패 선행: 선택 전 존재하던 안내 Text가 선택 뒤 제거되어 고정 slot을 찾을 수 없는 실패를 재현했다.
+- 집중 검색 화면: **23/23 통과**.
+- `npm run test:typecheck`: 통과.
+- `npm run test:ui`: **807건 중 806 통과·기존 1 skip·실패 0**.
+- `npm test`: **562/562 통과**.
+- `npx expo export --platform ios --output-dir /private/tmp/timefit-location-list-anchor-ios`: 통과. iOS Hermes bundle `_expo/static/js/ios/index-e2c75fea1887c57d7ffc8dfbb5dcd368.hbc`.
+
+### 4. 다음 결정·위험·수동 확인
+
+- 다음 외형 개선 권장안은 결과 행의 고정 높이, 제목/주소 두 단계, 우측 고정 check slot, 선택 시 크기 변화 없는 배경·외곽선, 짧은 하단 확정 CTA다. 현재 `선택됨`이 세 번째 줄로 삽입되어 선택 행 자체의 높이가 변하는 문제는 별도 사용자 확정 후 보완한다.
+- 새 빌드에서 첫 결과의 상단 위치를 기준으로 행 선택 전후 목록이 움직이지 않는지만 확인한다. 실제 iOS 폰트 배율·native 레이아웃 체감은 자동 fixture와 iOS export가 대체하지 않는다.
+
+## 검색 결과 행·선택 UI 마감 — 2026-09-16
+
+이전 방식: 선택된 행에 `선택됨`을 세 번째 텍스트 줄로 삽입하고 하단 CTA에도 장소명을 다시 붙였다. → 관찰: 선택 순간 행 높이와 이후 결과의 위치가 달라질 수 있고 장소명·주소·상태의 위계가 흐려졌으며 긴 CTA가 선택 행의 정보를 중복했다. → 교체 방식: 모든 행에 동일한 28pt 우측 indicator slot을 두고 선택 시에만 파란 원형 check를 표시한다. 장소명과 주소는 좌측의 16/13pt 두 단계로 고정하고 CTA는 `이 위치로 선택`으로 단순화했다. → 교체 이유: 선택 전후 geometry를 유지하면서 상태는 즉시 인식시키고, 최종 행동의 문구를 짧고 일관되게 만들기 위함이다. → 상태: **현행 구현·자동 검증 완료**.
+
+### 1. 변경 파일과 변경 목적
+
+- `src/ui/PlacePicker.tsx`: 결과 행을 최소 72pt의 가로 구조로 재구성했다. 왼쪽은 장소명·주소, 오른쪽은 항상 같은 크기의 선택 indicator이며 선택 상태는 옅은 파란 행 배경·얇은 외곽선·check로 표현한다. 시각적인 `선택됨` 세 번째 줄은 제거했지만 행의 접근성 label/state에는 선택 상태를 유지했다. 하단 버튼은 장소명 반복 없이 `이 위치로 선택`으로 정리하고 접근성 label에는 선택한 장소명을 유지했다.
+- `test/ui/location-search-interaction.test.mjs`: indicator의 선택 전후 고정 폭·행 최소 높이, 장소명/주소 외 추가 상태 줄 부재, check와 색상, 짧은 CTA·접근성 장소명 보존을 실제 화면 fixture로 검증했다.
+
+### 2. 유지한 계약
+
+- 직전 보완의 안내 slot과 목록 시작 위치 고정을 유지한다. 선택 행 강조로 row 최소 높이·우측 slot 폭은 바뀌지 않는다.
+- 긴 장소명·주소를 강제로 한 줄로 자르지 않았고, 큰 글씨에서는 내용에 맞춰 행이 늘어날 수 있다. 선택 자체가 추가 높이를 만드는 구조만 제거했다.
+- 검색/지도/키보드/명시 확정/중복 방지와 provider/API·추천·DB·엔진·GPS 제거 정책은 변경하지 않았다. Simulator/실기기·운영 API/DB·commit/push는 실행하지 않았다.
+
+### 3. 테스트 결과
+
+- 실패 선행: 고정 indicator/copy 영역이 없고 기존 세 번째 상태 줄과 장소명 포함 CTA가 남아 있는 실패 4건을 확인했다.
+- 집중 검색 화면: **24/24 통과**.
+- `npm run test:typecheck`: 통과.
+- `npm run test:ui`: **808건 중 807 통과·기존 1 skip·실패 0**.
+- `npm test`: **563/563 통과**.
+- `npx expo export --platform ios --output-dir /private/tmp/timefit-location-row-polish-ios`: 통과. iOS Hermes bundle `_expo/static/js/ios/index-58e8694c69e27dd909f68759b26e1e22.hbc`.
+
+### 4. 다음 확인·위험
+
+- 새 빌드에서 여러 결과 중 첫째·중간·마지막 행을 번갈아 선택해 목록 위치와 각 행 높이가 튀지 않는지, check·옅은 배경·외곽선만 바뀌는지 확인한다.
+- 긴 장소명/주소와 큰 글씨에서는 행이 콘텐츠에 맞춰 늘어나는 것이 의도다. 이 경우에도 우측 check가 수직 중앙에 있고 하단 CTA와 선택 행이 키보드에 가려지지 않는지 확인한다.

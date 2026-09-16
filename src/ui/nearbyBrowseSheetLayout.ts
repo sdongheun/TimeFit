@@ -59,12 +59,12 @@ export function resolveNearbyBrowseSheetLayout(input: Input): NearbyBrowseSheetL
 
   const handleHeight = finitePositive(input.measured?.handleHeight, 32);
   const listHeaderHeight = finitePositive(input.measured?.listHeaderHeight, 58 + ((fontScale - 1) * 30));
-  const firstRowFallback = input.rowCount > 0 ? 75 + ((fontScale - 1) * 36) : 76 + ((fontScale - 1) * 28);
+  const firstRowFallback = input.rowCount > 0 ? 80 + ((fontScale - 1) * 36) : 76 + ((fontScale - 1) * 28);
   const firstRowHeight = finitePositive(input.measured?.firstRowHeight, firstRowFallback);
   const previewHeight = handleHeight + listHeaderHeight + firstRowHeight;
 
-  // Header is at safeTop + 10 and at least 48pt tall. Keep another 22pt of map separation.
-  const minimumSheetTop = safeTop + 80;
+  // Header is at safeTop + 10 and 64pt tall. Keep another 22pt of map separation.
+  const minimumSheetTop = safeTop + 96;
   const maximumAvailableHeight = Math.max(0, screenHeight - minimumSheetTop);
   const desiredCollapsedHeight = tabObstruction + CONTENT_GAP + previewHeight;
   const collapsedHeight = Math.min(desiredCollapsedHeight, maximumAvailableHeight);

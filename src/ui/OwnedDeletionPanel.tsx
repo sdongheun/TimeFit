@@ -69,7 +69,7 @@ export function OwnedDeletionPanel({ subject, account = false, accountLabel, rec
     const version = scope.current;
     const interaction = ++menuVersion.current;
     confirming.current = true;
-    const description = !account && !id ? '카테고리 필터와 관계없이 이 계정의 모든 방문 기록을 삭제합니다. 되돌릴 수 없습니다.' : [records.find(record => record.completionId === id)?.places?.map(place => place.title).join(' → '), '이 계정의 해당 기록만 삭제됩니다. 되돌릴 수 없습니다.'].filter(Boolean).join('\n');
+    const description = !account && !id ? '현재 지역·카테고리 필터와 관계없이 이 계정의 모든 방문 기록을 삭제합니다. 되돌릴 수 없습니다.' : [records.find(record => record.completionId === id)?.places?.map(place => place.title).join(' → '), '이 계정의 해당 기록만 삭제됩니다. 되돌릴 수 없습니다.'].filter(Boolean).join('\n');
     Alert.alert(account ? '계정을 삭제할까요?' : '계정 방문 기록을 삭제할까요?', description, [{ text: '취소', style: 'cancel', onPress: () => { if (interaction === menuVersion.current) confirming.current = false; } }, { text: '삭제', style: 'destructive', onPress: () => { if (interaction !== menuVersion.current) return; confirming.current = false; if (version === scope.current && latest.current.subject === subject) void perform(id); } }], { cancelable: true, onDismiss: () => { if (interaction === menuVersion.current) confirming.current = false; } });
   };
   const menu = (id: string) => {
@@ -84,7 +84,7 @@ export function OwnedDeletionPanel({ subject, account = false, accountLabel, rec
   return <View>{children?.({ busy, confirm, confirmAll: () => confirm(), menu })}{message ? <Text accessibilityLiveRegion="polite" style={{ color: C.muted, marginVertical: 12 }}>{message}</Text> : null}
     {children && attempt.current && message ? <Pressable testID="owned-delete-retry" disabled={busy} onPress={() => { const key = attempt.current?.key; if (key) confirm(key === 'all' ? undefined : key); }}><Text style={{ color: C.txt, paddingVertical: 12 }}>삭제 결과 다시 확인</Text></Pressable> : null}
     {reauth ? <TextInput testID="delete-account-password" secureTextEntry value={password} onChangeText={setPassword} editable={!busy} placeholder="비밀번호 재확인" placeholderTextColor={C.muted} style={{ color: C.txt, padding: 12 }} /> : null}
-    {!children ? <Pressable testID="owned-delete-all" disabled={busy} style={account ? { minHeight: 52, padding: 14, borderWidth: 1, borderColor: C.line, borderRadius: 12, backgroundColor: C.bg, justifyContent: 'center', alignItems: 'center' } : undefined} onPress={() => confirm()}><Text style={{ color: C.red, paddingVertical: account ? 0 : 16, ...(account ? { fontSize: 16, fontWeight: '600' as const, textAlign: 'center' as const } : {}) }}>{account ? accountLabel ?? '계정 삭제 · 결과 다시 확인' : '내 계정 방문 기록 전체 삭제'}</Text></Pressable> : null}
+    {!children ? <Pressable testID="owned-delete-all" disabled={busy} style={account ? { minHeight: 52, padding: 14, borderWidth: 0, borderRadius: 12, backgroundColor: C.panel, justifyContent: 'center', alignItems: 'center' } : undefined} onPress={() => confirm()}><Text style={{ color: C.red, paddingVertical: account ? 0 : 16, ...(account ? { fontSize: 16, fontWeight: '600' as const, textAlign: 'center' as const } : {}) }}>{account ? accountLabel ?? '계정 삭제 · 결과 다시 확인' : '내 계정 방문 기록 전체 삭제'}</Text></Pressable> : null}
     {!account && !children ? records.map((record, index) => <Pressable key={record.completionId} testID={`owned-delete-${record.completionId}`} disabled={busy} onPress={() => confirm(record.completionId)}><Text style={{ color: C.muted, paddingVertical: 12 }}>{index + 1}번째 방문 기록 삭제</Text></Pressable>) : null}
   </View>;
 }

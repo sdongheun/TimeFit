@@ -1,4 +1,4 @@
-import { buildConfirmedConditionalManualCourseV1, buildExplorationPageV1, buildLimitedRepresentativeCourseV1ForInternalB12, buildReleaseOneStopRepresentativeCourseV1, continueLimitedRepresentativeCourseV1, continueReleaseOneStopRepresentativeCourseV1, verifySelectedExplorationPlaceV1, type ConditionalManualCourseV1Result, type CourseV1Continuation, type CourseV1ContinuationResult, type CourseV1ExplorationPage, type CourseV1LimitedInput, type CourseV1LimitedResult, type CourseV1ReleaseOneStopContinuation, type CourseV1ReleaseOneStopContinuationResult, type CourseV1ReleaseOneStopResult, type CourseV1RouteAdapter, type CourseV1RouteReceiptAdapter, type ExplorationSelectionReason, type ReleaseTwoStopAttemptLedger, type ReleaseTwoStopSelectionResult, type ReleaseTwoStopSessionToken, type ReleaseTwoStopVerifiedPairSeed, type SelectedExplorationResult, type VerifiedCourseV1 } from '../../engine';
+import { buildLimitedRepresentativeCourseV1ForInternalB12, buildReleaseOneStopRepresentativeCourseV1, continueReleaseOneStopRepresentativeCourseV1, type CourseV1LimitedInput, type CourseV1LimitedResult, type CourseV1ReleaseOneStopContinuation, type CourseV1ReleaseOneStopContinuationResult, type CourseV1ReleaseOneStopResult, type CourseV1RouteAdapter, type CourseV1RouteReceiptAdapter, type ReleaseTwoStopAttemptLedger, type ReleaseTwoStopSelectionResult, type ReleaseTwoStopSessionToken, type ReleaseTwoStopVerifiedPairSeed, type VerifiedCourseV1 } from '../../engine';
 import { createCourseV1CandidateProvider } from '../../data/courseV1CandidateProvider';
 import { createCourseV1RouteAdapter } from '../../services/courseV1RouteAdapter';
 import { createActivatedCourseV1RouteAdapter, RouteProxyUnavailableError } from '../../services/routeProxyActivatedCourseAdapter';
@@ -31,7 +31,6 @@ export type RecommendationRuntimeDependencies = {
   /** Legacy seam only; production/default must never select it. */
   buildA8?: (input: CourseV1LimitedInput) => Promise<CourseV1LimitedResult>;
   buildInternalB12?: (input: CourseV1LimitedInput) => Promise<CourseV1LimitedResult>;
-  buildConditionalManual?: typeof buildConfirmedConditionalManualCourseV1;
   /** UI test seam; production always uses the accepted 2-V single page entry. */
   continueRelease?: typeof continueReleaseOneStopRepresentativeCourseV1;
 };
@@ -280,63 +279,6 @@ export async function buildRecommendationLimitedInput(
   return { ...engineInput, ...(snapshot.samples.length ? { dwellPersonalizationSamples: snapshot.samples } : {}), provider: createCourseV1CandidateProvider(), ...await recommendationPortsFor(options, dependencies) };
 }
 
-/** Local exploration paging shares a recommendation snapshot but deliberately has no route port. */
-export function buildRecommendationExplorationPage(
-  session: RecommendationSession,
-  result: RecommendationResult,
-  cursor?: number,
-): CourseV1ExplorationPage {
-  const now = parseRecommendationNowIso(session.nowIso);
-  return buildExplorationPageV1({
-    now,
-    origin: session.origin,
-    destination: session.destination,
-    remainingMin: session.remainingMin,
-    arrivalBufferMin: session.arrivalBufferMin,
-    candidates: createCourseV1CandidateProvider().listDiscoveryCandidates(now),
-    excludedPlaceIds: result.representativeCourse?.placeIds,
-    pageSize: 8,
-    cursor,
-  });
-}
-
-const explorationUnavailable = (): SelectedExplorationResult => ({
-  state: 'rejected', reason: 'route_verification_unavailable', receipt: { adapterCallCount: 0, newProviderAttemptCount: 0, cacheOrSessionReuseCount: 0 },
-});
-
-/** Only an explicit card selection gets a receipt port and enters the engine's one-place verifier. */
-export async function verifyRecommendationExplorationPlace(
-  session: RecommendationSession,
-  result: RecommendationResult,
-  selectedPlaceId: string,
-  options: RecommendationRuntimeOptions,
-  dependencies: RecommendationRuntimeDependencies = productionRecommendationRuntimeDependencies,
-): Promise<SelectedExplorationResult> {
-  const now = parseRecommendationNowIso(session.nowIso);
-  let ports: RecommendationRuntimePorts;
-  try { ports = await recommendationPortsFor(options, dependencies); } catch { return explorationUnavailable(); }
-  if (!ports.receiptRoutes) return explorationUnavailable();
-  return verifySelectedExplorationPlaceV1({
-    now,
-    origin: session.origin,
-    destination: session.destination,
-    remainingMin: session.remainingMin,
-    arrivalBufferMin: session.arrivalBufferMin,
-    candidates: createCourseV1CandidateProvider().listDiscoveryCandidates(now),
-    excludedPlaceIds: result.representativeCourse?.placeIds,
-    selectedPlaceId,
-    receiptRoutes: ports.receiptRoutes,
-  });
-}
-
-export function explorationSelectionMessage(reason: ExplorationSelectionReason): string {
-  switch (reason) {
-    case 'time_budget_exceeded': return '시간이 부족해요.';
-    case 'access_window_unavailable': return '접근 가능 시간을 확인하지 못했어요.';
-    default: return '경로를 확인하지 못했어요.';
-  }
-}
-
 function publicRecommendationEnvironment(dependencies: RecommendationRuntimeDependencies): RecommendationPublicEnvironment {
   return dependencies.getPublicRecommendationEnvironment?.() ?? {
     diagnostics: process.env.EXPO_PUBLIC_RECOMMENDATION_DIAGNOSTICS,
@@ -380,17 +322,6 @@ export async function runRecommendationSession(
   return result;
 }
 
-/** 결과 화면 메모리에 남은 동일 input만 continuation과 결합한다. 세션 재수화·저장은 허용하지 않는다. */
-export async function continueRecommendationSession(
-  session: RecommendationSession,
-  continuation: CourseV1Continuation,
-): Promise<CourseV1ContinuationResult | null> {
-  if (!isRecommendationSessionCurrent(session)) return null;
-  const originalInput = continuationInputs.get(session);
-  if (!originalInput) return null;
-  return continueLimitedRepresentativeCourseV1({ ...originalInput, continuation });
-}
-
 /** 출시 Results의 명시 tap만 같은 메모리 input과 single continuation을 결합한다. */
 export async function continueReleaseRecommendationSession(
   session: RecommendationSession,
@@ -417,32 +348,4 @@ export async function continueReleaseRecommendationSession(
   });
 }
 
-export type ConditionalManualUiResult = ConditionalManualCourseV1Result | Readonly<{
-  state: 'unavailable';
-  receipt: { adapterCallCount: 0; newProviderAttemptCount: 0; cacheOrSessionReuseCount: 0 };
-}>;
-
-/** CTA의 실제 시각만 사용한다. 최초 추천 시각은 예산 차감의 기준일 뿐 now로 재사용하지 않는다. */
-export async function requestConditionalManualCourse(
-  session: RecommendationSession,
-  selectedPlaceId: string,
-  confirmedAt: Date,
-  dependencies: Pick<RecommendationRuntimeDependencies, 'buildConditionalManual'> = {},
-): Promise<ConditionalManualUiResult> {
-  if (!isRecommendationSessionCurrent(session)) return { state: 'unavailable', receipt: { adapterCallCount: 0, newProviderAttemptCount: 0, cacheOrSessionReuseCount: 0 } };
-  const originalInput = continuationInputs.get(session);
-  if (!originalInput?.receiptRoutes) return { state: 'unavailable', receipt: { adapterCallCount: 0, newProviderAttemptCount: 0, cacheOrSessionReuseCount: 0 } };
-  const elapsedMin = Math.max(0, Math.ceil((confirmedAt.getTime() - parseRecommendationNowIso(session.nowIso).getTime()) / 60_000));
-  return (dependencies.buildConditionalManual ?? buildConfirmedConditionalManualCourseV1)({
-    now: confirmedAt,
-    origin: originalInput.origin,
-    destination: originalInput.destination,
-    remainingMin: session.remainingMin - elapsedMin,
-    arrivalBufferMin: session.arrivalBufferMin,
-    conditionalCandidates: createCourseV1CandidateProvider().listConditionalVisitCandidates(confirmedAt),
-    selectedPlaceId,
-    userConfirmedHours: true,
-    receiptRoutes: originalInput.receiptRoutes,
-  });
-}
 import { RELEASE_MAX_MINUTES } from '../timeSetup/releaseTimeBoundary';

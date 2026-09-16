@@ -15,7 +15,7 @@ export type TwoStopTrayPlace = PlacePhotoInput & Readonly<{
 
 export function TwoStopSelectionTray({ rows, announcement }: Readonly<{ rows: readonly TwoStopTrayPlace[]; announcement: string }>) {
   return <View testID="two-stop-selection-tray" accessibilityLabel="선택한 장소" style={s.tray}>
-    <Text style={s.heading}>선택한 장소</Text>
+    <Text style={s.heading}>선택한 장소 {Math.min(rows.length, 2)}/2</Text>
     {rows.slice(0, 2).map((row) => <TrayRow key={row.key} row={row} />)}
     <Text accessibilityLiveRegion="polite" style={s.live}>{announcement}</Text>
   </View>;
@@ -40,7 +40,7 @@ const s = StyleSheet.create({
   tray: { marginHorizontal: 22, gap: 7, padding: 12, borderRadius: 16, borderWidth: 1, borderColor: '#3f78bb', backgroundColor: C.panel },
   heading: { color: C.txt, fontSize: 14, fontWeight: '800' },
   row: { minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 10 },
-  thumb: { width: 40, height: 40, borderRadius: 10, backgroundColor: C.panel2 },
+  thumb: { width: 40, height: 40, backgroundColor: C.panel2 },
   placeholder: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: '#26384a' },
   placeholderText: { color: '#b9d8ff', fontSize: 14, fontWeight: '800' },
   copy: { flex: 1, minWidth: 0 },

@@ -87,23 +87,25 @@ export function PlacePicker({ visible, title, editingSession, onOpenMap, onClose
         onLayout={({ nativeEvent }) => { viewport.current = nativeEvent.layout.height; revealSelection(); }} onScroll={({ nativeEvent }) => draft.rememberScroll(nativeEvent.contentOffset.y)} scrollEventThrottle={16}>
         <View style={[s.head, { paddingTop: insets.top + 12 }]}><Text style={s.title}>{title}</Text><Pressable testID="location-close" variant="icon" accessibilityLabel="위치 검색 닫기" onPress={close} style={s.closeButton}><Text style={s.close}>✕</Text></Pressable></View>
         <View style={s.searchRow}>
-          <TextInput testID="location-search-input" accessibilityLabel="장소명 또는 주소 검색" style={s.input} value={state.query} onChangeText={changeQuery} autoFocus={!state.query && !choice} placeholder="예: 부산역 / 벡스코 / 사상역" placeholderTextColor={C.muted} returnKeyType="search" onSubmitEditing={() => { void search(true); }} />
+          <TextInput testID="location-search-input" accessibilityLabel="장소명 또는 도로명 주소 검색" style={s.input} value={state.query} onChangeText={changeQuery} autoFocus={!state.query && !choice} placeholder="장소명 또는 도로명 주소" placeholderTextColor={C.muted} returnKeyType="search" onSubmitEditing={() => { void search(true); }} />
           <Pressable testID="location-search-submit" accessibilityLabel="위치 검색" style={s.searchBtn} onPress={() => { void search(true); }}>{state.busy === 'search' ? <ActivityIndicator color={C.accent} /> : <Text style={s.searchBtnTxt}>검색</Text>}</Pressable>
         </View>
         <View testID="location-alternatives" style={s.searchRow}>
-          <Pressable testID="location-map" style={[s.searchBtn, s.half]} onPress={openMap}><Text style={s.searchBtnTxt}>지도에서 선택</Text></Pressable>
+          <Pressable testID="location-map" accessibilityLabel="지도에서 직접 선택" style={[s.searchBtn, s.mapChoice, s.half]} onPress={openMap}><Text style={s.searchBtnTxt}>지도에서 직접 선택</Text></Pressable>
         </View>
-        {state.message ? <Text accessibilityLiveRegion="polite" style={s.msg}>{state.message}</Text> : null}
+        <View testID="location-message-slot" style={s.messageSlot}>
+          <Text testID="location-message-text" accessibilityLiveRegion="polite" accessibilityElementsHidden={!state.message} importantForAccessibility={state.message ? 'auto' : 'no-hide-descendants'} style={[s.msg, !state.message && s.msgHidden]}>{state.message || ' '}</Text>
+        </View>
         {state.suggestions.map((p, i) => {
           const id = locationCandidateId(p), selected = state.selectedId === id && !state.deviceLocation;
           return <Fragment key={id}><Pressable testID={`location-suggestion-${i}`} accessibilityRole="button" accessibilityState={{ selected }} accessibilityLabel={`${p.label}, ${p.address}${selected ? ', 선택됨' : ''}`}
             onLayout={({ nativeEvent }) => frame(id, nativeEvent.layout)} style={[s.row, selected && s.rowOn]} onPress={() => { if (draft.select(id)) { Keyboard.dismiss(); revealSelection(); } }}>
-            <Text style={s.rowName}>{p.label}</Text><Text style={s.rowAddr}>{p.address}</Text>
-            {selected ? <Text style={s.selected}>선택됨</Text> : null}
+            <View testID={`location-suggestion-copy-${i}`} style={s.rowCopy}><Text style={s.rowName}>{p.label}</Text><Text style={s.rowAddr}>{p.address}</Text></View>
+            <View testID={`location-selection-indicator-${i}`} accessible={false} importantForAccessibility="no" style={[s.selectionIndicator, selected && s.selectionIndicatorOn]}><Text style={s.selectionCheck}>{selected ? '✓' : ''}</Text></View>
           </Pressable>{i < state.suggestions.length - 1 ? <View testID={`location-separator-${i}`} accessible={false} importantForAccessibility="no" style={s.separator} /> : null}</Fragment>;
         })}
       </ScrollView>
-      {choice ? <View testID="location-footer" style={[s.footer, { paddingBottom: keyboardLayout.footerPadding }]}><Pressable testID="location-confirm" accessibilityLabel={`이 위치로 확정, ${choice.label}`} style={s.cta} onPress={confirm}><Text style={s.ctaTxt}>이 위치로 확정 — {choice.label}</Text></Pressable></View> : null}
+      {choice ? <View testID="location-footer" style={[s.footer, { paddingBottom: keyboardLayout.footerPadding }]}><Pressable testID="location-confirm" accessibilityLabel={`이 위치로 선택, ${choice.label}`} style={s.cta} onPress={confirm}><Text style={s.ctaTxt}>이 위치로 선택</Text></Pressable></View> : null}
     </View>
   </Modal>;
 }
@@ -111,8 +113,8 @@ const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 18, paddingBottom: 10 }, title: { flex: 1, color: C.txt, fontSize: 18, fontWeight: '800' }, closeButton: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' }, close: { color: C.muted, fontSize: 20, fontWeight: '700' },
   searchRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 18, paddingBottom: 10 }, input: { flex: 1, minHeight: 44, backgroundColor: C.panel, borderColor: C.line, borderWidth: 1, borderRadius: 11, paddingVertical: 11, paddingHorizontal: 14, color: C.txt, fontSize: 15 },
-  searchBtn: { minHeight: 44, minWidth: 44, paddingVertical: 11, paddingHorizontal: 12, borderRadius: 11, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' }, half: { flex: 1 }, searchBtnTxt: { color: C.txt, fontWeight: '700', fontSize: 14, textAlign: 'center' },
-  msg: { color: C.muted, fontSize: 13, paddingHorizontal: 20, marginBottom: 8 }, row: { minHeight: 44, paddingVertical: 12, paddingHorizontal: 12, marginHorizontal: 18, marginBottom: 6, borderWidth: 1, borderColor: 'transparent', borderRadius: 10 }, rowOn: { backgroundColor: 'rgba(0,102,255,0.10)', borderColor: '#4b85cf' }, rowName: { color: C.txt, fontSize: 16, fontWeight: '700' }, rowAddr: { color: C.txt2, fontSize: 14, marginTop: 4 }, selected: { color: C.txt, fontSize: 13, marginTop: 4, fontWeight: '700' },
+  searchBtn: { minHeight: 44, minWidth: 44, paddingVertical: 11, paddingHorizontal: 12, borderRadius: 11, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel2, alignItems: 'center', justifyContent: 'center' }, mapChoice: { minHeight: 48, borderColor: '#4b85cf' }, half: { flex: 1 }, searchBtnTxt: { color: C.txt, fontWeight: '700', fontSize: 14, textAlign: 'center' },
+  messageSlot: { minHeight: 27, paddingHorizontal: 20, marginBottom: 8, justifyContent: 'center' }, msg: { color: C.muted, fontSize: 13, lineHeight: 19 }, msgHidden: { opacity: 0 }, row: { minHeight: 72, flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 13, paddingHorizontal: 14, marginHorizontal: 18, marginBottom: 6, borderWidth: 1, borderColor: 'transparent', borderRadius: 12 }, rowOn: { backgroundColor: 'rgba(0,102,255,0.10)', borderColor: '#4b85cf' }, rowCopy: { flex: 1, gap: 4 }, rowName: { color: C.txt, fontSize: 16, lineHeight: 22, fontWeight: '700' }, rowAddr: { color: C.txt2, fontSize: 13, lineHeight: 19 }, selectionIndicator: { width: 28, height: 28, flexShrink: 0, borderRadius: 14, borderWidth: 1, borderColor: C.line, alignItems: 'center', justifyContent: 'center', backgroundColor: C.panel2 }, selectionIndicatorOn: { borderColor: '#4b85cf', backgroundColor: C.accent }, selectionCheck: { color: C.onAccent, fontSize: 15, lineHeight: 19, fontWeight: '900' },
   separator: { height: 1, backgroundColor: '#454952', marginHorizontal: 18, marginBottom: 6 },
   footer: { paddingHorizontal: 18, paddingTop: 8, borderTopWidth: 1, borderTopColor: C.line }, cta: { minHeight: 52, backgroundColor: C.accent, borderRadius: 12, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 12, paddingVertical: 12 }, ctaTxt: { color: C.onAccent, fontSize: 15, fontWeight: '800', textAlign: 'center' },
 });
