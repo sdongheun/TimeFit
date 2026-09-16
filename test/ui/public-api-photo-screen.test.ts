@@ -22,7 +22,7 @@ test('production recommendation card loads, fails safely and preserves selection
     t.mock.timers.tick(24000);
     assert.equal(screen.nodes(isImage).length,0);
     screen.press('verified-course-card-a');assert.equal(taps,1);
-    assert.equal(screen.nodes((n:{props:any})=>n.props.testID==='place-photo-credit').length,1);
+    assert.equal(screen.nodes((n:{props:any})=>n.props.testID==='place-photo-credit').length,0);
   } finally {screen.unmount();}
 });
 test('production photo times out to fallback and ignores late success', t => {
@@ -55,13 +55,13 @@ test('photo-less, unapproved historical, unknown and no-modification inputs neve
   }
 });
 
-test('both production WebView bridges strip unapproved/restricted URLs and preserve approved photos', () => {
+test('both production WebView bridges strip every photo field and keep maps on general pins', () => {
   const inputs=[place,{...place,contentId:'blocked',imageEvidence:undefined},{...place,contentId:'restricted',imageEvidence:{usagePermission:{...approvedPhotoEvidence.usagePermission,modificationAllowed:false}}}];
   for(const kind of ['route','nearby']) {
     const scripts:string[]=[];
     const runtime=screenRuntime({__process:{env:{EXPO_PUBLIC_KAKAO_JAVASCRIPT_API_KEY:'fixture-key'}},'react-native-webview':{WebView:'WebView'}});
     const component=kind==='route'?runtime.load('src/ui/KakaoRouteMap.tsx').KakaoRouteMap:runtime.load('src/ui/NearbyBrowseMap.tsx').NearbyBrowseMap;
-    const props=kind==='route'?{points:[place],line:[],markers:inputs.map(p=>({...p,label:p.title,kind:'spot'})),usePhotoMarkers:true}
+    const props=kind==='route'?{points:[place],line:[],markers:inputs.map(p=>({...p,label:p.title,kind:'spot'}))}
       :{center:place,places:buildNearbyBrowseDataset(place,inputs.map(p=>({...p,classification:'representative_core'}))),selectedId:null,bottomInset:100,retryKey:0,onSelect(){},onCluster(){},onError(){},onReady(){}};
     const screen=runtime.mount(component,props);
     const web=screen.nodes((n:{type:unknown})=>n.type==='WebView')[0];
@@ -70,9 +70,11 @@ test('both production WebView bridges strip unapproved/restricted URLs and prese
     screen.render();
     const script=scripts.at(-1)!;
     const payload=JSON.parse(script.slice(script.indexOf('(')+1,script.lastIndexOf(');true;')));
-    const photos=kind==='route'?payload.markers:payload.places;
-    assert.equal(photos.filter((p:{imageUrl:string|null})=>p.imageUrl===place.imageUrl).length,1);
-    assert.equal(photos.filter((p:{imageUrl:string|null})=>p.imageUrl===null).length,2);
+    const markers=kind==='route'?payload.markers:payload.places;
+    assert.equal(markers.length,3);
+    assert.ok(markers.every((marker:Record<string,unknown>) => !('imageUrl' in marker)));
+    assert.ok(markers.every((marker:Record<string,unknown>) => !('imageSource' in marker)));
+    assert.ok(markers.every((marker:Record<string,unknown>) => !('imageEvidence' in marker)));
     screen.unmount();
   }
 });

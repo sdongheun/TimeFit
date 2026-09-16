@@ -44,11 +44,12 @@ test('UNEAR collapsed preview fits handle, heading, and exactly the first row ab
     fontScale: 1,
     rowCount: 8,
     tabFrame: { x: 16, y: 744, width: 358, height: 66 },
-    measured: { handleHeight: 32, listHeaderHeight: 58, firstRowHeight: 75 },
+    measured: { handleHeight: 44, listHeaderHeight: 58, firstRowHeight: 80 },
   });
   const unobscuredViewport = layout.collapsedHeight - layout.tabObstruction - layout.contentGap;
-  assert.equal(unobscuredViewport, 32 + 58 + 75);
-  assert.ok(unobscuredViewport < 32 + 58 + (75 * 2));
+  assert.equal(layout.minimumSheetTop, 47 + 96);
+  assert.equal(unobscuredViewport, 44 + 58 + 80);
+  assert.ok(unobscuredViewport < 44 + 58 + (80 * 2));
 });
 
 test('UNEAR uses the measured parent-coordinate tab frame instead of the legacy 72pt constant', () => {

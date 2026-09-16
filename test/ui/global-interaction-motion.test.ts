@@ -74,7 +74,7 @@ test('대표 화면은 공용 resolver 입력인 기존 style 참조와 함수�
   const setup = fs.readFileSync('src/ui/TimeSetupScreen.tsx', 'utf8');
   const tabs = fs.readFileSync('src/ui/FloatingTabBar.tsx', 'utf8');
   const twoStop = fs.readFileSync('src/ui/recommendation/TwoStopSelectionPanel.tsx', 'utf8');
-  assert.match(home, /<Pressable style=\{s\.primary\}/);
+  assert.match(home, /<Pressable[^>]*style=\{s\.primary\}/);
   const setupInputs = fs.readFileSync('src/ui/timeSetup/UnifiedSetupInputs.tsx', 'utf8');
   assert.match(setupInputs, /<Pressable[^>]*style=\{s\.field\}/);
   assert.match(setup, /<Pressable[^>]*style=\{s\.primary\}/);

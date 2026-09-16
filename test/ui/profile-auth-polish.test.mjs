@@ -7,11 +7,14 @@ const { recordTitle, profileDisplayChanges } = createRequire(import.meta.url)('.
 const tick=async()=>{for(let n=0;n<80;n++)await Promise.resolve();};
 test('login and signup retain only their own email and clear departing passwords/errors', async()=>{
   const listeners={};
-  const runtime=screenRuntime({'./AuthContext':{useAuth:()=>({authKind:'guest',signIn:async()=>{},signUp:async()=>false})},'./CaptchaVerificationSheet':{CaptchaVerificationSheet:'Captcha'},'expo-modules-core':{uuid:{v4:()=> 'fixture'}}});
+  const runtime=screenRuntime({'@expo/vector-icons':{Feather:'Feather'},'./AuthContext':{useAuth:()=>({authKind:'guest',signIn:async()=>{},signUp:async()=>false})},'./CaptchaVerificationSheet':{CaptchaVerificationSheet:'Captcha'},'expo-modules-core':{uuid:{v4:()=> 'fixture'}}});
   const {LoginScreen}=runtime.load('src/ui/LoginScreen.tsx');
   const screen=runtime.mount(LoginScreen,{navigation:{goBack(){},addListener:(name,fn)=>{listeners[name]=fn;return()=>{};}},readDocuments:async()=>({status:'ok',documents:[]})});
-  screen.press('login-submit'); screen.get('auth-form-error');
+  assert.equal(screen.get('login-submit').props.disabled,true);
   screen.get('login-email').props.onChangeText('login@example.test'); screen.get('login-password').props.onChangeText('login-secret');
+  assert.equal(screen.get('login-submit').props.disabled,false);
+  assert.equal(screen.get('login-password').props.secureTextEntry,true);
+  screen.press('login-password-visibility'); assert.equal(screen.get('login-password').props.secureTextEntry,false);
   screen.press('login-mode-signup');
   assert.equal(screen.nodes(n=>n.props.testID==='auth-form-error').length,0);
   assert.equal(screen.get('login-email').props.value,''); assert.equal(screen.get('login-password').props.value,'');
@@ -30,10 +33,12 @@ test('nickname save publishes a refresh only after successful repository result,
   const {AccountPersonalizationPanel}=runtime.load('src/ui/AccountPersonalizationPanel.tsx');
   const screen=runtime.mount(AccountPersonalizationPanel,{subject:'A',profile:true,getPorts:ports});await tick();assert.equal(notices,0);
   const save=screen.get('profile-nickname-save');
-  assert.equal(save.props.children.props.children,'저장');
+  assert.equal(save.props.disabled,true);
+  assert.equal(screen.get('profile-nickname-count').props.children.join(''),'0/20');
   const saveStyle=Object.assign({},...([save.props.style].flat()));
   assert.equal(saveStyle.backgroundColor,'#0066ff');assert.equal(saveStyle.alignItems,'center');
-  screen.get('profile-nickname').props.onChangeText('새이름');screen.press('profile-nickname-save');await tick();assert.equal(notices,1);assert.equal(screen.get('profile-nickname').props.value,'새이름');
+  screen.get('profile-nickname').props.onChangeText('새이름');assert.equal(screen.get('profile-nickname-save').props.disabled,false);assert.equal(screen.get('profile-nickname-count').props.children.join(''),'3/20');
+  screen.press('profile-nickname-save');await tick();assert.equal(notices,1);assert.equal(screen.get('profile-nickname').props.value,'새이름');assert.equal(screen.get('profile-nickname-save').props.disabled,true);
   screen.unmount();unsubscribe();
 });
 test('record title validates nickname and discards prior owner responses, refreshes after save without consent', async()=>{
@@ -55,11 +60,14 @@ test('record title validates nickname and discards prior owner responses, refres
 });
 test('management is a separate screen, preserves order, guards logout duplicate/failure and clears stack on owner change', async()=>{
   let subject='A',fail=true,calls=0,back=0,resets=0;
-  const runtime=screenRuntime({'@expo/vector-icons':{Feather:'Feather'},'./AuthContext':{useAuth:()=>({authKind:subject?'account':'guest',accountSession:subject?{user:{id:subject}}:null,signOut:async()=>{calls++; if(fail)throw Error('private'); subject=null;}})},'./AccountPersonalizationPanel':{AccountPersonalizationPanel:'Nickname'},'./OwnedDeletionPanel':{OwnedDeletionPanel:'Delete'},'./mainTabNavigation':{resetToProfile:()=>resets++}});
+  const runtime=screenRuntime({'@expo/vector-icons':{Feather:'Feather'},'./AuthContext':{useAuth:()=>({authKind:subject?'account':'guest',accountSession:subject?{user:{id:subject,email:'member@example.test'}}:null,signOut:async()=>{calls++; if(fail)throw Error('private'); subject=null;}})},'./AccountPersonalizationPanel':{AccountPersonalizationPanel:'Nickname'},'./OwnedDeletionPanel':{OwnedDeletionPanel:'Delete'},'./mainTabNavigation':{resetToProfile:()=>resets++}});
   const {ProfileManagementScreen}=runtime.load('src/ui/ProfileManagementScreen.tsx');
   const navigation={goBack:()=>back++};
   const screen=runtime.mount(ProfileManagementScreen,{navigation});
   assert.equal(screen.get('profile-management-back').props.children.props.size,28);
+  assert.equal(screen.get('profile-account-email').props.children,'member@example.test');
+  const dangerCardStyle=screen.get('profile-account-danger-card').props.style;
+  assert.equal(dangerCardStyle.borderWidth,0);assert.equal(dangerCardStyle.backgroundColor,'#171719');assert.equal(dangerCardStyle.padding,0);
   const logoutStyle=screen.get('profile-management-logout').props.style;
   assert.equal(logoutStyle.alignItems,'center'); assert.equal(logoutStyle.borderWidth,1);assert.equal(logoutStyle.backgroundColor,'#171719');
   assert.match(JSON.stringify(screen.render()),/닉네임 변경하기.*Nickname.*Delete.*로그아웃하기/s);
@@ -69,4 +77,20 @@ test('management is a separate screen, preserves order, guards logout duplicate/
   assert.equal(calls,1);assert.equal(resets,0);assert.match(JSON.stringify(screen.render()),/로그아웃하지 못했어요/);assert.doesNotMatch(JSON.stringify(screen.render()),/private/);
   fail=false;await screen.press('profile-management-logout');screen.render();assert.equal(resets,1);assert.equal(screen.nodes(n=>n.type==='Nickname').length,0);screen.unmount();
   subject='A';const next=runtime.mount(ProfileManagementScreen,{navigation});subject='B';next.render();assert.equal(resets,2);assert.equal(next.nodes(n=>n.type==='Nickname').length,0);next.unmount();
+});
+
+test('login and signup expose clear field hierarchy, password visibility and combined required rows', async()=>{
+  const documents=['terms-of-service','privacy-policy'].map(documentId=>({documentId,documentVersion:'1.0',url:`https://fixture.test/${documentId}`}));
+  const runtime=screenRuntime({'@expo/vector-icons':{Feather:'Feather'},'./AuthContext':{useAuth:()=>({authKind:'guest',signIn:async()=>{},signUp:async()=>false})},'./CaptchaVerificationSheet':{CaptchaVerificationSheet:'Captcha'},'expo-modules-core':{uuid:{v4:()=> 'fixture'}}});
+  const {LoginScreen}=runtime.load('src/ui/LoginScreen.tsx');
+  const screen=runtime.mount(LoginScreen,{navigation:{goBack(){},addListener:()=>()=>{}},readDocuments:async()=>({status:'ok',documents})});
+  assert.ok(screen.get('auth-login-heading'));
+  screen.get('login-password').props.onChangeText('x');screen.get('login-password').props.onChangeText('');
+  assert.equal(screen.get('login-submit').props.disabled,true);assert.ok(screen.get('login-password-error'));
+  screen.press('login-mode-signup');screen.render();await tick();screen.render();
+  assert.ok(screen.get('auth-signup-account-section'));assert.ok(screen.get('signup-required-card'));
+  const required=JSON.stringify(screen.get('signup-required-card'));
+  assert.match(required,/이용약관 \(필수\)/);assert.match(required,/개인정보처리방침 \(필수\)/);assert.match(required,/내용 보기/);assert.match(required,/내용을 확인한 뒤 동의할 수 있어요/);
+  screen.get('login-password').props.onChangeText('fixture-password');screen.get('signup-password-confirm').props.onChangeText('fixture-password');
+  assert.ok(screen.get('signup-password-match'));screen.unmount();
 });

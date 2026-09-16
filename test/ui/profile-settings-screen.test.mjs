@@ -29,20 +29,17 @@ function homeFixture(authKind) {
   return { calls, screen: runtime.mount(HomeScreen, { navigation }) };
 }
 
-test('메인 프로필 entry는 guest/anonymous만 Login, account는 Profile이며 loading은 중복 이동하지 않는다', () => {
+test('메인은 중복 프로필 entry를 두지 않고 인증 상태 판정은 유지한다', () => {
   const { authKindFor } = screenRuntime().load('src/ui/authStateModel.ts');
   assert.equal(authKindFor(null, false), 'guest');
   assert.equal(authKindFor({ user: { id: 'proxy', is_anonymous: true } }, false), 'guest');
   assert.equal(authKindFor({ user: { id: 'member' } }, false), 'account');
   assert.equal(authKindFor(null, true), 'loading');
-  for (const [kind, target] of [['guest', 'Login'], ['account', 'Profile']]) {
+  for (const kind of ['guest', 'account', 'loading']) {
     const fixture = homeFixture(kind);
-    fixture.screen.press('home-profile-entry');
-    assert.deepEqual(fixture.calls, [['navigate', target]]);
+    assert.equal(fixture.screen.nodes(node => node.props.testID === 'home-profile-entry').length, 0);
+    assert.deepEqual(fixture.calls, []);
   }
-  const loading = homeFixture('loading');
-  loading.screen.press('home-profile-entry');
-  assert.deepEqual(loading.calls, []);
 });
 
 function profileFixture(authKind = 'guest', { openSettings = async () => {} } = {}) {
@@ -50,7 +47,9 @@ function profileFixture(authKind = 'guest', { openSettings = async () => {} } = 
   let reads = 0;
   let appStateListener;
   const runtime = screenRuntime({
+    '@expo/vector-icons': { Feather: 'Feather' },
     './AccountPersonalizationPanel': { AccountPersonalizationPanel: 'AccountPersonalizationPanel' },
+    './useRecordTitle': { useRecordTitle: (subject) => subject ? '테스터님의 자투리 기록' : '나의 자투리 기록' },
     './AuthContext': { useAuth: () => ({ authKind, accountSession: authKind === 'account' ? { user: { id: 'account' } } : null, signOut: async () => {} }) },
     './theme': theme,
     './FloatingTabBar': { FloatingTabBar: 'FloatingTabBar' },
@@ -80,6 +79,11 @@ test('내정보는 인증 상태와 무관하게 세 영역을 공개하고 권�
   assert.match(allText, /허용됨/);
   assert.match(allText, /거절됨/);
   assert.match(allText, /실시간 현황/);
+  assert.doesNotMatch(allText, /계정과 기기 설정을 한곳에서 확인하세요/);
+  assert.ok(fixture.screen.get('profile-account-card'));
+  assert.ok(fixture.screen.get('profile-permission-notification'));
+  assert.ok(fixture.screen.get('profile-permission-live-activity'));
+  assert.ok(fixture.screen.get('profile-settings-row'));
   assert.equal(fixture.screen.nodes((node) => node.type === 'TextInput').length, 0);
   assert.equal(fixture.reads, 1);
   fixture.activate();
@@ -89,11 +93,16 @@ test('내정보는 인증 상태와 무관하게 세 영역을 공개하고 권�
 
 test('내정보 로그인 안내는 별도 Login 화면으로 navigate하고 account에는 프로필 관리 entry를 제공한다', () => {
   const guest = profileFixture('guest');
+  const guestText = guest.screen.nodes((node) => node.type === 'Text').map(textOf).join('|');
+  assert.match(guestText, /로그인하고 기록을 이어가세요/);
+  assert.match(guestText, /이 기기의 기록은 이 기기에만 저장돼요/);
   guest.screen.press('profile-login-entry');
   assert.deepEqual(guest.calls, [['navigate', 'Login']]);
 
   const account = profileFixture('account');
   const allText = account.screen.nodes((node) => node.type === 'Text').map(textOf).join('|');
+  assert.match(allText, /테스터님의 자투리 기록/);
+  assert.match(allText, /프로필 및 계정 관리/);
   assert.doesNotMatch(allText, /닉네임 설정하기|프로필 관리에서 닉네임/);
   account.screen.press('profile-manage-entry');
   assert.deepEqual(account.calls, [['navigate', 'ProfileManagement']]);

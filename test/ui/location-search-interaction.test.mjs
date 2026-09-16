@@ -38,8 +38,9 @@ for (const title of ['출발지 선택', '도착지 선택']) test(`UX-COLOR-01 
   }
   f.edit('사상역'); f.submit(); await tick(); f.screen.press('location-suggestion-0');
   const row = f.screen.get('location-suggestion-0');
-  const selected = row.props.children.find(n => n?.type === 'Text' && n.props.children === '선택됨');
-  assert.equal(style(selected.props.style).color, '#f7f7f8');
+  const selected = f.screen.get('location-selection-indicator-0');
+  assert.equal(style(selected.props.style).borderColor, '#4b85cf');
+  assert.match(JSON.stringify(selected), /✓/);
   assert.equal(style(row.props.style).borderColor, '#4b85cf');
   assert.equal(style(f.screen.get('location-confirm').props.children.props.style).color, '#ffffff');
   f.screen.unmount();
@@ -58,12 +59,16 @@ test('ULOC latest failure-first: will-frame owns keyboard+footer together; did e
   assert.equal(f.screen.nodes(n => n.type === 'KeyboardAvoidingView').length, 0);
   f.screen.unmount();
 });
-test('ULOC latest failure-first: only name/address/state, separators between rows, no terminal separator', async () => {
+test('ULOC result row polish: name/address and fixed trailing selection affordance, separators only between rows', async () => {
   const named = { ...place, label: '사상역 부산2호선' };
   const f = fixture({ search: async () => response([named, { ...place, label: '두 번째 장소' }]) });
   f.edit('사상역'); f.submit(); await tick(); f.screen.press('location-suggestion-0');
   const row = f.screen.get('location-suggestion-0');
-  assert.deepEqual(row.props.children.filter(n => n?.type === 'Text').map(n => n.props.children), [named.label, named.address, '선택됨']);
+  const copy = f.screen.get('location-suggestion-copy-0');
+  assert.deepEqual(copy.props.children.filter(n => n?.type === 'Text').map(n => n.props.children), [named.label, named.address]);
+  assert.doesNotMatch(JSON.stringify(copy), /선택됨/);
+  assert.equal(style(f.screen.get('location-selection-indicator-0').props.style).width, 28);
+  assert.match(JSON.stringify(f.screen.get('location-selection-indicator-0')), /✓/);
   assert.equal(row.props.accessibilityLabel.split('부산2호선').length - 1, 1);
   assert.ok(f.screen.get('location-separator-0'));
   assert.equal(style(f.screen.get('location-separator-0').props.style).height, 1);
@@ -117,11 +122,19 @@ test('ULOC map header supplies opaque dark contrast independent of white map til
   const host = screenRuntime();
   const screen = host.mount(host.load('src/ui/MapPlacePicker.tsx').MapPlacePicker, { visible: true, title: '출발지 선택', center: { lat: 35, lon: 129 }, labelAdapter: { resolve: async () => ({ source: 'unresolved' }) }, onClose() {}, onConfirm() {} });
   const header = screen.get('map-picker-header');
+  assert.equal(screen.nodes(n => n.props.testID === 'map-retry').length, 0);
   assert.equal(style(header.props.style).backgroundColor, undefined);
   assert.equal(style(screen.get('map-picker-title').props.style).backgroundColor, '#1f2023');
   assert.equal(header.props.children.filter(n => n.type === 'Pressable').length, 1);
   assert.equal(screen.nodes(n => n.props.testID === 'map-search-alternative').length, 0);
   screen.unmount();
+});
+test('UMANUAL polish: search offers place/address and map as two clear manual choices', () => {
+  const f = fixture();
+  assert.equal(f.screen.get('location-search-input').props.placeholder, '장소명 또는 도로명 주소');
+  assert.match(JSON.stringify(f.screen.render()), /검색하거나 지도에서 직접 선택하세요/);
+  assert.match(JSON.stringify(f.screen.get('location-map')), /지도에서 직접 선택/);
+  f.screen.unmount();
 });
 test('UMANUAL typed query remains independent of device permission and address resolver', async () => {
   const f = fixture({ label: async () => { throw Error('device resolver must not run'); } });
@@ -210,6 +223,39 @@ for (const permission of ['granted', 'denied', 'undetermined']) test(`UMANUAL ${
 });
 
 const style = v => Object.assign({}, ...[v].flat(Infinity).filter(Boolean));
+test('ULOC list anchor: selecting a result hides only the guide text and preserves its layout slot', async () => {
+  const f = fixture();
+  f.edit('사상역'); f.submit(); await tick();
+  const before = f.screen.get('location-message-slot');
+  assert.match(JSON.stringify(before), /목록에서 위치를 선택하세요/);
+  assert.ok(style(before.props.style).minHeight > 0);
+  assert.equal(style(f.screen.get('location-message-text').props.style).opacity ?? 1, 1);
+
+  f.screen.press('location-suggestion-0');
+  const after = f.screen.get('location-message-slot');
+  assert.equal(style(after.props.style).minHeight, style(before.props.style).minHeight);
+  assert.equal(style(f.screen.get('location-message-text').props.style).opacity, 0);
+  assert.equal(f.screen.get('location-message-text').props.accessibilityElementsHidden, true);
+  f.screen.unmount();
+});
+test('ULOC row selection changes only emphasis and fixed check slot; confirmation copy stays short', async () => {
+  const f = fixture();
+  f.edit('사상역'); f.submit(); await tick();
+  const beforeRow = f.screen.get('location-suggestion-0');
+  const beforeMinHeight = style(beforeRow.props.style).minHeight;
+  const beforeIndicator = f.screen.get('location-selection-indicator-0');
+  assert.equal(style(beforeIndicator.props.style).width, 28);
+  assert.doesNotMatch(JSON.stringify(beforeIndicator), /✓/);
+
+  f.screen.press('location-suggestion-0');
+  const afterRow = f.screen.get('location-suggestion-0');
+  assert.equal(style(afterRow.props.style).minHeight, beforeMinHeight);
+  assert.equal(style(f.screen.get('location-selection-indicator-0').props.style).width, 28);
+  assert.match(JSON.stringify(f.screen.get('location-selection-indicator-0')), /✓/);
+  assert.equal(f.screen.get('location-confirm').props.children.props.children, '이 위치로 선택');
+  assert.match(f.screen.get('location-confirm').props.accessibilityLabel, /사상역/);
+  f.screen.unmount();
+});
 test('ULOC selection×keyboard four states have one/no footer; measured row needs only minimal scroll, large text is not clipped', async () => {
   const f = fixture(); const scrolls = [];
   f.screen.get('location-results').props.ref.current = { scrollTo: p => scrolls.push(p.y) };

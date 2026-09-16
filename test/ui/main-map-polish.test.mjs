@@ -84,6 +84,20 @@ test('MAP02 return: embedded map camera honors map-local top, full screen retain
   screen.unmount();
 });
 
+test('place detail recenter honors the visible map above its measured sheet', () => {
+  const scripts = [];
+  const host = screenRuntime({ __process: { env: { EXPO_PUBLIC_KAKAO_JAVASCRIPT_API_KEY: 'fixture' } }, 'react-native-webview': { WebView: 'WebView' } });
+  const props = { points: [{ lat: 35, lon: 129 }], line: [], cameraTop: 14, recenterPoint: { lat: 35.1, lon: 129.1 }, recenterOffsetY: 130 };
+  const screen = host.mount(host.load('src/ui/KakaoRouteMap.tsx').KakaoRouteMap, props);
+  const web = screen.nodes(n => n.type === 'WebView')[0];
+  web.props.ref.current = { injectJavaScript: script => scripts.push(script) };
+  web.props.onMessage({ nativeEvent: { data: JSON.stringify({ type: 'ready' }) } });
+  screen.render();
+  screen.nodes(n => n.type === 'MapCameraButton')[0].props.onCamera(props.recenterPoint);
+  assert.match(scripts.at(-1), /focusMap\(\{"lat":35\.1,"lon":129\.1\}, 130\)/);
+  screen.unmount();
+});
+
 test('MAP02 return: progress has centered intrinsic shared columns, not a left-aligned wide block', () => {
   const host = screenRuntime();
   host.native.Easing = { quad: x => x, inOut: x => x };
@@ -92,7 +106,11 @@ test('MAP02 return: progress has centered intrinsic shared columns, not a left-a
   assert.equal(screen.get('recommendation-progress').props.style.alignItems, 'center');
   assert.equal(screen.get('recommendation-progress-columns').props.style.alignSelf, 'center');
   assert.equal(screen.get('recommendation-progress-columns').props.style.width, undefined);
-  const labels = screen.nodes(n => n.type === 'Text');
+  const progressLabels = new Set(['시간과 장소 확인', '이동 시간 확인', '장소 찾기', '코스 정리']);
+  const labels = screen.nodes(n => n.type === 'Text' && progressLabels.has(n.props.children));
   for (const label of labels) { assert.equal(label.props.style[0].flex, undefined); assert.equal(label.props.style[0].flexShrink, 1); }
+  assert.ok(screen.get('recommendation-progress-done-input_ready'));
+  assert.ok(screen.get('recommendation-progress-current-verifying'));
+  assert.match(JSON.stringify(screen.get('recommendation-progress-done-input_ready')), /✓/);
   screen.unmount();
 });

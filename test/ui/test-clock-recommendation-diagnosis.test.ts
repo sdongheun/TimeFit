@@ -3,7 +3,7 @@ import test from 'node:test';
 import type { RecommendationSession } from '../../src/ui/nav';
 import { buildReleaseOneStopRepresentativeCourseV1, type CourseV1Candidate, type CourseV1RouteReceiptAdapter } from '../../src/engine/courseV1';
 import { captureRecommendationNowIso, startMinuteForRecommendation } from '../../src/ui/recommendation/recommendationSessionTime';
-import { runRecommendationSession, requestConditionalManualCourse } from '../../src/ui/recommendation/v1Session';
+import { runRecommendationSession } from '../../src/ui/recommendation/v1Session';
 import { buildCourseV1DetailModel } from '../../src/ui/recommendation/courseV1CardDetailModel';
 import { buildQaReleaseOneStopSession, qaReleaseOneStopLauncherEnabled } from '../../src/ui/qaReleaseOneStopLauncherModel';
 import { releaseTimeSetupValidation } from '../../src/ui/timeSetup/releaseTimeBoundary';
@@ -62,21 +62,6 @@ test('CLOCK-DIAG: identical 15:00 input distinguishes exact success from no-rout
     const { result, observedTimes } = await run(sessionAt(date('02:00')), response);
     assert.equal(observedTimes[0], captureRecommendationNowIso(date('02:00'), 900));
     assert.equal(Boolean(result.representativeCourse), response === 'exact');
-  }
-});
-
-test('CLOCK-DIAG observed limitation: conditional confirmation subtracts test/actual offset, not real waiting duration', async () => {
-  for (const [actual, expected] of [[date('17:00'), 0], [date('10:00'), 120]] as const) {
-    const session = sessionAt(actual);
-    await run(session);
-    let budget: number | undefined;
-    await requestConditionalManualCourse(session, 'fixture-market', actual, { buildConditionalManual: async input => {
-      budget = input.remainingMin;
-      assert.equal(input.now, actual);
-      return { state: 'rejected', reason: 'time_budget_exceeded', receipt: { adapterCallCount: 0, newProviderAttemptCount: 0, cacheOrSessionReuseCount: 0 } };
-    } });
-    // Locks current defect evidence, NOT the desired post-fix expectation.
-    assert.equal(budget, expected);
   }
 });
 

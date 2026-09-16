@@ -159,13 +159,13 @@ test('UPROGRESSRESUME01: pure active 경계는 외부 호출·저장·로그인 
   assert.doesNotMatch(source, /AsyncStorage|Supabase|courseCompletion|fetch\(|Linking|WebBrowser|useAuth|console\./);
 });
 
-test('UPROGRESSRESUME01: Home 이어가기 접근성과 26px 간격·일반 tap 무햅틱을 유지한다', () => {
+test('UPROGRESSRESUME01: Home 이어가기 접근성과 분리된 32px 간격·일반 tap 무햅틱을 유지한다', () => {
   const active = startActiveVerifiedCourse(session, course(), () => 'v1-1');
   const home = homeActiveCourseProjection(active, resolveTitle);
   assert.equal(home.kind, 'verified');
   if (home.kind === 'verified') assert.equal(home.accessibilityLabel, '진행 중인 코스, 부산시민공원, 이어가기');
   const source = fs.readFileSync('src/ui/HomeScreen.tsx', 'utf8');
-  assert.match(source, /active: \{ marginTop: 26/);
+  assert.match(source, /active: \{ marginTop: 32/);
   assert.doesNotMatch(source, /Haptics|performSelectionHaptic/);
 });
 

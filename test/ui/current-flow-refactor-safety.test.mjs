@@ -139,7 +139,7 @@ test('REFACTOR-SAFE: 완료 실패는 진행 유지, 재시도 성공만 기록 
   assert.deepEqual(state.routes.map(r => r.name), ['ActivityRecord']);
 });
 
-for (const authKind of ['guest', 'account']) test(`LEGACY-SCREEN-SAFE: ${authKind} 홈은 과거 상태 없이 설정·현재 코스·계정·탭 이동 가능`, () => {
+for (const authKind of ['guest', 'account']) test(`LEGACY-SCREEN-SAFE: ${authKind} 홈은 과거 상태 없이 추천·현재 코스·탭 이동 가능`, () => {
   const calls = [];
   const active = activeCourse(2);
   const host = screenRuntime({
@@ -154,15 +154,14 @@ for (const authKind of ['guest', 'account']) test(`LEGACY-SCREEN-SAFE: ${authKin
   const navigation = { navigate: (...args) => calls.push(args), dispatch: action => calls.push([action.payload.routes[0].name]) };
   const screen = host.mount(host.load('src/ui/HomeScreen.tsx').HomeScreen, { navigation });
   try {
-    screen.press('home-profile-entry');
     const buttons = screen.nodes(n => n.type === 'Pressable');
-    buttons.find(n => n.props.children?.props?.children === '자투리 시간 설정하기').props.onPress();
+    buttons.find(n => JSON.stringify(n.props.children).includes('코스 추천받기')).props.onPress();
     buttons.find(n => n.props.accessibilityLabel?.includes('이어가기')).props.onPress();
     const tab = screen.nodes(n => n.type === 'TabBar')[0];
     tab.props.onCourse(); tab.props.onRecord(); tab.props.onProfile();
-    assert.deepEqual(calls.map(c => c[0]), [authKind === 'account' ? 'Profile' : 'Login', 'TimeSetup', 'CourseConfirm', 'NearbyBrowse', 'ActivityRecord', 'Profile']);
-    assert.equal(calls[2][1].activeId, active.identity);
-    assert.deepEqual(calls[2][1].course.placeIds, ['p1', 'p2']);
+    assert.deepEqual(calls.map(c => c[0]), ['TimeSetup', 'CourseConfirm', 'NearbyBrowse', 'ActivityRecord', 'Profile']);
+    assert.equal(calls[1][1].activeId, active.identity);
+    assert.deepEqual(calls[1][1].course.placeIds, ['p1', 'p2']);
   } finally { screen.unmount(); }
 });
 

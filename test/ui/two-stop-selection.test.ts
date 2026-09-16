@@ -406,7 +406,7 @@ test('UTWOSTOP03: production은 인라인 선택·sticky tray·fixed CTA만 사�
   assert.match(panel, /✓ 선택됨/);
   assert.doesNotMatch(panel, /선택한 장소 코스 시작하기/);
   assert.match(panel, /선택한 장소와 함께 가능한 곳/);
-  assert.match(panel, /함께 둘러볼 장소/);
+  assert.doesNotMatch(panel, /함께 둘러볼 장소/);
   assert.doesNotMatch(panel, />A[^<]*</);
   assert.doesNotMatch(panel, /첫 번째 장소/);
   assert.match(tray, /two-stop-selection-tray/);

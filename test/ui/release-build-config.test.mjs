@@ -14,6 +14,22 @@ test('public release identity is iPhone-only without changing installed identity
   assert.equal(expo.slug, 'mobile');
 });
 
+test('App Store update version is shared by the app and Live Activity plugin inputs', () => {
+  const { expo } = JSON.parse(fs.readFileSync('app.json', 'utf8'));
+  assert.equal(expo.version, '1.1.0');
+  assert.equal(expo.ios.buildNumber, '2');
+
+  const plugin = fs.readFileSync('plugins/withTimeFitLiveActivity.cjs', 'utf8');
+  assert.match(plugin, /MARKETING_VERSION: options\.version/);
+  assert.match(plugin, /CURRENT_PROJECT_VERSION: options\.buildNumber/);
+});
+
+test('every non-internal native Release build must pass the public environment guard', () => {
+  const plugin = fs.readFileSync('plugins/withTimeFitLiveActivity.cjs', 'utf8');
+  assert.match(plugin, /\$CONFIGURATION[^\n]+Release[^\n]+\$TIMEFIT_BUILD_PROFILE[^\n]+internal/);
+  assert.match(plugin, /release-build\.cjs[^\n]+assert-native/);
+});
+
 test('public C panels stay inert for a signed-in account with previously enabled internal inputs', () => {
   const { publicEnvironment } = require('../../scripts/release-build.cjs');
   const env = publicEnvironment({ EXPO_PUBLIC_SUPABASE_URL: 'https://fixture.supabase.co', EXPO_PUBLIC_SUPABASE_KEY: 'sb_publishable_fixture', EXPO_PUBLIC_CAPTCHA_CHALLENGE_URL: 'https://fixture.example/challenge', EXPO_PUBLIC_KAKAO_JAVASCRIPT_API_KEY: 'fixture', EXPO_PUBLIC_C_VALIDATION_INTERNAL: 'true' });

@@ -84,6 +84,8 @@ test('USETUP failure-first: direct fields, permanent wheel, return mode, picker 
   assert.equal(connector.props.pointerEvents, 'none');
   assert.equal(connector.props.children.length, 3);
   assert.ok(f.screen.get('route-origin-field'));
+  assert.match(JSON.stringify(f.screen.get('route-destination-field')), /마지막 도착지/);
+  assert.match(f.screen.get('route-destination-field').props.accessibilityLabel, /^마지막 도착지,/);
   assert.equal(f.screen.nodes(n => n.props.accessibilityLabel === '도착 시각 시').length, 1);
   f.choose('origin', O); f.choose('destination', D);
   f.screen.press('route-origin-field'); f.node('PlacePicker').props.onOpenMap();
@@ -92,6 +94,8 @@ test('USETUP failure-first: direct fields, permanent wheel, return mode, picker 
   assert.match(JSON.stringify(f.screen.get('route-destination-field')), /약속 장소/);
   f.choose('origin', { ...O, label: '새 출발지' });
   assert.match(JSON.stringify(f.screen.get('route-destination-field')), /약속 장소/);
+  assert.match(JSON.stringify(f.screen.get('route-return-origin')), /출발지로 돌아오기/);
+  assert.ok(flattenStyle(f.screen.get('route-return-origin').props.style).borderWidth >= 1);
   f.screen.press('route-return-origin');
   assert.match(JSON.stringify(f.screen.get('route-destination-field')), /출발지로 돌아오기/);
   f.choose('origin', O);
@@ -101,6 +105,41 @@ test('USETUP failure-first: direct fields, permanent wheel, return mode, picker 
   f.screen.press('setup-recommend'); await tick();
   const session = f.calls.find(c => c[0] === 'recommend')[1];
   assert.equal(session.destination, null); assert.equal(session.origin.label, O.label);
+});
+
+test('USETUP visual system: shared header, section rhythm, surfaces and result-oriented CTA', async () => {
+  const f = fixture(); await tick();
+  assert.match(JSON.stringify(f.screen.get('setup-general-inputs')), /시간과 장소 설정/);
+  const back = flattenStyle(f.screen.get('setup-back').props.style);
+  assert.deepEqual({ width: back.width, height: back.height, backgroundColor: back.backgroundColor }, { width: 44, height: 44, backgroundColor: 'transparent' });
+  const originLabel = f.screen.nodes(n => n.type === 'Text' && n.props.children === '출발지')[0];
+  assert.equal(originLabel.props.style.minWidth, 78);
+  const arrivalSectionStyle = flattenStyle(f.screen.get('setup-arrival-time').props.style);
+  assert.equal(arrivalSectionStyle.marginTop, 32);
+  assert.equal(arrivalSectionStyle.gap, 14);
+  assert.equal(flattenStyle(f.screen.get('setup-buffer-section').props.style).marginTop, 32);
+  assert.equal(flattenStyle(f.screen.get('setup-input-error').props.style).marginTop, 16);
+  const wheelSurface = flattenStyle(f.screen.get('setup-time-wheel-surface').props.style);
+  assert.deepEqual({ borderRadius: wheelSurface.borderRadius, borderWidth: wheelSurface.borderWidth }, { borderRadius: 18, borderWidth: 1 });
+  const buffer = f.screen.nodes(n => n.type === 'Text' && Array.isArray(n.props.children) && n.props.children[0] === 10 && n.props.children[1] === '분')[0];
+  assert.equal(buffer.props.style.color, '#f7f7f8');
+  assert.match(JSON.stringify(f.screen.get('setup-recommend')), /코스 추천받기/);
+  const disabledText = f.screen.nodes(n => n.type === 'Text' && n.props.children === '코스 추천받기')[0];
+  assert.ok([disabledText.props.style].flat(Infinity).filter(Boolean).some(style => style.color === '#70737c'));
+  f.screen.unmount();
+});
+
+test('USETUP loading starts visibly and explicit cancel invalidates a late result', async () => {
+  let resolve;
+  const f = fixture({ run: () => new Promise(r => { resolve = r; }) }); await tick();
+  f.choose('origin', O); f.screen.press('setup-recommend'); await tick();
+  assert.equal(f.node('RecommendationLoadingProgress').props.stage, 'input_ready');
+  assert.match(JSON.stringify(f.screen.get('recommendation-cancel')), /취소/);
+  f.screen.press('recommendation-cancel');
+  assert.ok(f.screen.get('setup-recommend'));
+  resolve({ representativeCourse: null, alternativeCourses: [] }); await tick();
+  assert.equal(count(f, 'navigate') + count(f, 'latest'), 0);
+  f.screen.unmount();
 });
 
 test('RELEASE-BUILD public input overrides local internal flags at the actual setup entry', async () => {
@@ -208,7 +247,7 @@ test('ULOC TimeSetup real picker: same-edit map cancel/search restores draft, se
   assert.equal(f.screen.get('location-search-input').props.value, '사상역');
   assert.equal(f.screen.get('location-suggestion-0').props.accessibilityState.selected, true);
   assert.equal(f.screen.get('location-search-input').props.autoFocus, false);
-  f.screen.press('location-map'); f.screen.nodes(n => n.props.accessibilityLabel === '뒤로가기')[0].props.onPress();
+  f.screen.press('location-map'); f.screen.nodes(n => n.props.accessibilityLabel === '뒤로가기').at(-1).props.onPress();
   assert.ok(f.screen.get('location-confirm')); assert.equal(count(f, 'search'), 1);
   assert.equal(JSON.stringify(f.screen.get('setup-general-inputs')), general);
   f.screen.press('location-confirm');
@@ -225,7 +264,7 @@ test('ULOC real map confirmation locks adapter and parent once; search return in
   const f = fixture({ realPickers: true, label: () => new Promise(resolve => pending.push(resolve)) }); await tick();
   f.screen.press('route-origin-field'); f.screen.press('location-map'); f.node('KakaoRouteMap').props.onMapReady();
   const press = f.screen.get('map-confirm').props.onPress; press(); press(); assert.equal(count(f, 'label'), 1);
-  f.screen.nodes(n => n.props.accessibilityLabel === '뒤로가기')[0].props.onPress(); pending[0]({ source: 'address', address: '늦은 주소' }); await tick();
+  f.screen.nodes(n => n.props.accessibilityLabel === '뒤로가기').at(-1).props.onPress(); pending[0]({ source: 'address', address: '늦은 주소' }); await tick();
   assert.match(JSON.stringify(f.screen.get('route-origin-field')), /출발지 선택/);
   f.screen.press('location-map'); f.node('KakaoRouteMap').props.onMapReady();
   const next = f.screen.get('map-confirm').props.onPress; next(); next(); assert.equal(count(f, 'label'), 2);
@@ -510,7 +549,7 @@ test('USETUP general region uses the whole viewport independently of developer t
       f.screen.get('setup-scroll').props.onLayout({ nativeEvent: { layout: { height: viewport } } });
       const style = flattenStyle(f.screen.get('setup-general-inputs').props.style);
       assert.equal(style.minHeight, viewport);
-      assert.equal(style.justifyContent, 'space-between');
+      assert.equal(style.justifyContent, 'flex-start');
     }
     assert.equal(JSON.stringify(prod.screen.get('setup-general-inputs')), JSON.stringify(internal.screen.get('setup-general-inputs')));
     assert.equal(prod.screen.nodes(n => n.props.testID === 'setup-development-tools').length, 0);

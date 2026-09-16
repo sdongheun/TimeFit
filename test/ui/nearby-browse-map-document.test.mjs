@@ -59,7 +59,7 @@ function executeDocument(options = {}) {
 test('UNEAR map return failure-first: actual generated inline script parses before WebView init', () => {
   const script = inlineScript(productionDocument());
   assert.doesNotThrow(() => new vm.Script(script, { filename: 'nearby-webview-inline.js' }));
-  assert.match(script, /\^https:\\\/\\\//);
+  assert.doesNotMatch(script, /imageUrl|createElement\(['"]img['"]\)|photo-marker|photo-frame/);
 });
 
 test('MAP02 generated nearby camera moves without select, new render or automatic refit', () => {
@@ -74,7 +74,7 @@ test('MAP02 generated nearby camera moves without select, new render or automati
   assert.equal(JSON.stringify(run.messages), messages);
 });
 
-test('UNEAR generated script executes SDK load, creates one map, posts ready, and renders safe default/photo markers', () => {
+test('UNEAR generated script executes SDK load, creates one map, posts ready, and renders general pins without photos', () => {
   const run = executeDocument();
   assert.equal(run.mapCount, 1);
   assert.deepEqual(run.messages, [{ action: 'ready' }]);
@@ -85,19 +85,14 @@ test('UNEAR generated script executes SDK load, creates one map, posts ready, an
   assert.equal(run.overlays.length, 2);
   const defaultButton = run.overlays[0].config.content.children[0];
   const photoButton = run.overlays[1].config.content.children[0];
-  assert.match(defaultButton.className, /fallback/);
+  assert.match(defaultButton.className, /pin/);
   assert.equal(defaultButton.attributes['aria-label'], special.title);
   assert.equal(defaultButton.children.length, 0);
-  assert.equal(photoButton.children.length, 1);
-  assert.equal(photoButton.children[0].src, photo.imageUrl);
-  assert.equal(run.imageRequests, 1);
+  assert.match(photoButton.className, /pin/);
+  assert.equal(photoButton.children.length, 0);
+  assert.equal(run.imageRequests, 0);
   defaultButton.emit('click');
   assert.deepEqual(run.messages.at(-1), { action: 'select', id: special.id });
-  const failedImage = photoButton.children[0];
-  failedImage.emit('error'); failedImage.emit('error');
-  assert.match(photoButton.className, /fallback/);
-  assert.equal(photoButton.children.length, 0);
-  assert.equal(run.imageRequests, 1);
 });
 
 test('UNEAR generated script clusters same coordinates and keeps every member ID accessible', () => {

@@ -14,8 +14,8 @@ test('account records render statistics with unmeasured visits and no duplicate 
     const before=s.get('account-completion-history').props.children.flat(Infinity).filter((x:any)=>x&&typeof x==='object'&&x.key!=null);
     assert.deepEqual([!serialized.includes('activity-summary')?'missing_statistics':null,new Set(before.map((x:any)=>x.key)).size!==before.length?'sibling_key_collision':null].filter(Boolean),[]);
     assert.doesNotMatch(serialized,/활용한 시간|활동 유형/);
-    const summary=s.get('activity-summary');assert.match(JSON.stringify(summary),/카페 2/);
-    assert.deepEqual(s.nodes((x:any)=>x.type==='Text')[0].props.children,['방문 ',2,'회']);
+    const summary=s.get('activity-summary');assert.match(JSON.stringify(summary),/방문 요약/);assert.match(JSON.stringify(summary),/카페 2/);assert.doesNotMatch(JSON.stringify(summary),/기록 구성/);
+    assert.ok(s.nodes((x:any)=>x.type==='Text').some((node:any)=>JSON.stringify(node.props.children)===JSON.stringify(['총 ',2,'번 방문했어요'])));
     const children=s.get('account-completion-history').props.children.flat(Infinity).filter((x:any)=>x&&typeof x==='object'&&x.key!=null);
     assert.equal(new Set(children.map((x:any)=>x.key)).size,children.length);
     assert.equal(s.nodes((x:any)=>x.type==='Import').length,1);assert.equal(s.nodes((x:any)=>x.type==='Delete').length,1);
@@ -48,5 +48,5 @@ test('logout unmount discards late account response and leaves the guest summary
   const {AccountRecordsPanel}=r.load('src/ui/AccountRecordsPanel.tsx');const account=r.mount(AccountRecordsPanel,{subject:'A',getPorts:ports});await tick();account.unmount();
   const {ActivityStatistics}=r.load('src/ui/activity/ActivityStatistics.tsx');
   const guest=r.mount(ActivityStatistics,{summary:{completedPlaceCount:1,completedDwellMin:0,measuredCount:0,unmeasuredCount:1,dwellPresentation:{kind:'unmeasured'},categories:[{category:'공원',count:1,dwellMin:0,ratio:100}]},completedPlaces:[{contentId:'guest',title:'guest-only'}],mapKey:'guest',scope:'이번 달 기기 완료 기록'});
-  resolve({status:'ok',records:[record('late-account')]});await tick();const output=JSON.stringify(guest.render());assert.match(output,/guest-only/);assert.doesNotMatch(output,/가져온 장소|카페|late-account/);guest.unmount();
+  resolve({status:'ok',records:[record('late-account')]});await tick();const output=JSON.stringify(guest.render());assert.match(output,/총 .*1.*번 방문했어요/);assert.doesNotMatch(output,/가져온 장소|카페|late-account/);guest.unmount();
 });

@@ -35,8 +35,10 @@ test('B actual consent panel: unchecked, failed mutation stays off, duplicate su
   });
   const runtime = screenRuntime({ './personalizationComposition': { personalizationSession: { invalidate() { invalidations++; } } } });
   const { AccountPersonalizationPanel } = runtime.load('src/ui/AccountPersonalizationPanel.tsx');
-  const screen = runtime.mount(AccountPersonalizationPanel, { subject: 'A', getPorts });
+  const screen = runtime.mount(AccountPersonalizationPanel, { subject: 'A', compact: true, getPorts });
   await flush();
+  assert.match(JSON.stringify(screen.render()), /맞춤 추천/);
+  assert.match(JSON.stringify(screen.render()), /꺼짐 · 설정/);
   assert.equal(screen.get('profile-dwell-consent').props.accessibilityState.checked, false);
   screen.press('profile-dwell-consent'); screen.press('profile-dwell-consent'); await flush();
   assert.equal(submits, 1);
@@ -45,6 +47,7 @@ test('B actual consent panel: unchecked, failed mutation stays off, duplicate su
   screen.press('profile-dwell-consent'); await flush();
   resolveChange({ status: 'updated', consent: { enabled: true, consentEpoch: 'epoch', revision: 1, updatedAt: '' } }); await flush();
   assert.equal(screen.get('profile-dwell-consent').props.accessibilityState.checked, true);
+  assert.match(JSON.stringify(screen.render()), /켜짐 · 끄기/);
   assert.equal(invalidations, 3); // also invalidates reads started during the successful mutation
 });
 

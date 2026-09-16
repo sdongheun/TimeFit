@@ -20,13 +20,13 @@ test('approved, missing, failed and restricted photos are distinct inputs', () =
   assert.equal(buildNearbyBrowseDataset(photoPlace,[restricted])[0].imageUrl,null);
   assert.equal(buildPlaceDetailModel(restricted,'first').image.kind,'category_fallback');
 });
-test('approved metadata reaches detail, nearby rows and marker source', () => {
+test('approved metadata reaches detail and nearby rows while map markers remain photo-free', () => {
   assert.equal(buildPlaceDetailModel(photoPlace,'first').image.kind,'remote');
   assert.equal(buildNearbyBrowseDataset(photoPlace,[photoPlace])[0].imageUrl,photoPlace.imageUrl);
   const session = {origin:{lat:35,lon:129},deviceLocationSnapshot:null} as any;
   const markers = buildPlaceDetailMarkers(session,photoPlace);
-  assert.equal(markers.at(-1)?.imageUrl,photoPlace.imageUrl);
-  assert.deepEqual((markers.at(-1) as any).imageEvidence,photoPlace.imageEvidence);
+  assert.equal('imageUrl' in (markers.at(-1) as any),false);
+  assert.equal('imageEvidence' in (markers.at(-1) as any),false);
 });
 test('current public catalog photos resolve identically without resurrecting historical URLs', () => {
   const rows=[...catalog.matched.data,...catalog.unmatched.data];
@@ -43,9 +43,9 @@ test('current public catalog photos resolve identically without resurrecting his
   }
   assert.equal(approvedPlacePhoto(rows.find(row=>row.contentId==='historical-removed-place')),null);
 });
-test('data handoff fixed attraction/food/shopping/TourAPI fixtures agree across recommendation, course and maps', () => {
+test('data handoff fixtures agree across photo surfaces while course maps keep general pins', () => {
   const rows=new Map([...catalog.matched.data,...catalog.unmatched.data].map(row=>[row.contentId,row]));
-  for(const [id,allowed] of [['poi_19',true],['poi_1047',true],['poi_13',false],['poi_1',false]] as const){
+  for(const [id,allowed] of [['poi_19',true],['poi_1047',true],['poi_13',true],['poi_1',true]] as const){
     const place=rows.get(id)!;assert.ok(place);
     const course:any={id,placeIds:[id],stops:[{placeId:id,stayMin:20,stayState:'normal'}],legs:[{fromId:'origin',toId:id,min:5,mode:'walk'},{fromId:id,toId:'destination',min:5,mode:'walk'}],travelMin:10,stayMin:20,totalMin:40,arrivalBufferMin:10};
     const session:any={origin:{lat:35,lon:129,label:'출발'},destination:null};
@@ -54,7 +54,7 @@ test('data handoff fixed attraction/food/shopping/TourAPI fixtures agree across 
     const markers=buildCourseV1DetailMarkers(detail,session)!;
     assert.equal(!!approvedPlacePhoto(summary.place),allowed);
     assert.equal(!!approvedPlacePhoto(detail.stops[0].place),allowed);
-    assert.equal(!!approvedPlacePhoto(markers.find(m=>m.kind==='spot')),allowed);
+    assert.equal('imageUrl' in (markers.find(m=>m.kind==='spot') as any),false);
     assert.equal(buildPlaceDetailModel(place,'first').image.kind,allowed?'remote':'category_fallback');
     assert.equal(!!buildNearbyBrowseDataset(place,[place])[0].imageUrl,allowed);
   }

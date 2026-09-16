@@ -21,9 +21,11 @@ const courseConfirmV1 = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf-8
 
 test('메인은 한 가지 시작 행동과 진행 중 코스 진입점만 둔다', () => {
   assert.match(home, /약속 전 남는 시간,\{`\\n`\}어디 들러볼까요\?/);
-  assert.match(home, /자투리 시간 설정하기/);
+  assert.match(home, /코스 추천받기/);
+  assert.doesNotMatch(home, /home-profile-entry|자투리 시간 설정하기|진행 중인 코스가 생기면/);
   assert.doesNotMatch(home, /TIMEFIT|도착 시간에 늦지 않도록/); // U-MAIN-COURSE-POLISH-01: redundant copy retired.
-  assert.match(home, /진행 중인 코스/);
+  assert.match(home, /진행 중/);
+  assert.match(home, /이어서 하기/);
 });
 
 test('시간 설정은 통합 필드와 상시 분 단위 휠·여유를 입력한다', () => {
@@ -162,7 +164,7 @@ test('URELEASEONESTOP01/UONEMORE01: 결과는 single 대표·누적 대안을 �
   assert.match(results, /moreState\.representativeCourse/);
   assert.match(results, /no_representative_candidates/);
   assert.match(results, /courseV1OutcomeMessage\(result.primaryOutcomeReason\)/); // MAP02: empty resultState alone no longer asserts a cause.
-  assert.match(results, /이 시간에 가능한 다른 장소/);
+  assert.match(results, /다른 장소/);
   assert.match(results, /releaseOneStopDisplayResult/);
   assert.match(results, /testID="verified-course-more"/);
   assert.match(results, /다른 장소 더 보기/);
@@ -210,7 +212,9 @@ test('URELEASEONESTOP01: 현재 review 상세만 계획 체류를 표시하고 �
   assert.match(summary, /summary.short/);
   assert.match(summary, /가볍게 둘러보기/);
   assert.doesNotMatch(summary + placeDetail, /stayMin|stayLabel/);
-  assert.match(courseConfirm, /<CourseV1VerticalDetail[^\n]*model=\{detail\} mode=\{mode\}/);
+  assert.match(courseConfirm, /mode === 'review' \? <View style=\{s\.modeContent\}>/);
+  assert.match(courseConfirm, /<CourseV1VerticalDetail[^\n]*model=\{detail\} mode="review"/);
+  assert.match(courseConfirm, /<ActiveCourseProgress/);
   assert.match(detail, /showPlannedStay=\{mode === 'review'\}/);
   assert.match(detail, /showPlannedStay \? <Text style=\{s.stay\}>\{stop.stayLabel\}/);
   assert.match(detail, /stop.stayLabel.startsWith\('가볍게'\)/);

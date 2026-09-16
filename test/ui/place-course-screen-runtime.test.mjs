@@ -67,7 +67,7 @@ test('URELEASEUICLEANUP: all result modes/times exclude conditional entry and re
           const spacer = screen.get('results-header-spacer');
           assert.equal(spacer.props.pointerEvents, 'none'); assert.equal(spacer.props.accessible, false);
           const style = Object.assign({}, ...[spacer.props.style].flat(Infinity).filter(Boolean));
-          assert.equal(style.width, 42); assert.equal(style.height, 42);
+          assert.equal(style.width, 44); assert.equal(style.height, 44);
           assert.equal(style.backgroundColor, 'transparent'); assert.equal(style.borderWidth ?? 0, 0);
         };
         check();
@@ -162,9 +162,9 @@ for (const ids of [['A'], ['B', 'A']]) test(`UMAIN B: ${ids.length} stops compac
   assert.doesNotMatch(JSON.stringify(f.screen.render()), /둘러보기 약 \d+분/);
   // Same shared progress consumed after native/LA reconciliation: no local shadow status.
   f.flow.activeVerifiedCourse = { ...f.flow.activeVerifiedCourse, progress: { stepIndex: 1, routeOpened: false, finished: false } };
-  assert.equal(f.screen.nodes(n => n.props.testID === 'active-step-current').length, 1);
-  assert.match(JSON.stringify(f.screen.get(`course-stop-${ids[0]}`)), /지금 둘러보기/);
-  assert.match(JSON.stringify(f.screen.get('course-summary-row')), /active-course-cancel/);
+  assert.equal(f.screen.nodes(n => n.props.testID === 'active-course-step-current').length, 1);
+  assert.match(JSON.stringify(f.screen.get('active-course-current')), new RegExp(ids[0] === 'A' ? '긴 장소 이름 A' : '긴 장소 이름 B'));
+  assert.match(JSON.stringify(f.screen.get('active-course-progress')), /active-course-cancel/);
   assert.equal(f.screen.nodes(n => n.props.testID === 'active-course-cancel').length, 1);
   assert.ok(f.screen.get('active-course-cancel').props.style.minHeight >= 44);
   let buttons;
@@ -176,6 +176,59 @@ for (const ids of [['A'], ['B', 'A']]) test(`UMAIN B: ${ids.length} stops compac
   assert.equal(f.flow.activeVerifiedCourse, original);
   f.screen.press('active-course-cancel'); buttons.find(b => b.style === 'destructive').onPress();
   assert.equal(f.flow.activeVerifiedCourse, null);
+  f.screen.unmount();
+});
+
+test('active course changes from photo review to a high-visibility progress timeline on the same screen', () => {
+  const f = confirmFixture(course());
+  assert.equal(f.screen.nodes(n => n.props.testID?.startsWith('course-thumbnail-')).length, 2);
+  assert.equal(f.screen.nodes(n => n.props.testID === 'active-course-progress').length, 0);
+  f.screen.press('verified-course-start');
+  const rendered = JSON.stringify(f.screen.render());
+  assert.match(rendered, /코스가 시작됐어요/);
+  assert.match(rendered, /1 \/ 2번째 장소/);
+  assert.equal(f.screen.nodes(n => n.props.testID?.startsWith('course-thumbnail-')).length, 0);
+  assert.equal(f.screen.nodes(n => n.props.testID?.startsWith('course-stop-')).length, 0);
+  assert.equal(f.screen.nodes(n => n.props.testID === 'active-course-progress').length, 1);
+  assert.equal(f.screen.nodes(n => n.props.testID === 'active-course-step-current').length, 1);
+  const map = f.screen.nodes(n => n.type === 'KakaoRouteMap')[0];
+  assert.equal('usePhotoMarkers' in map.props, false);
+  assert.equal(map.props.markers.length, 2);
+  f.screen.unmount();
+});
+
+test('course review keeps the full route context but shows arrows for only the selected leg', () => {
+  const routed = course(['B', 'A']);
+  const routePoints = [session.origin, places[1], places[0], session.destination];
+  routed.legs = routed.legs.map((leg, index) => ({
+    ...leg,
+    geometry: {
+      paths: [{
+        mode: 'walk',
+        points: [routePoints[index], routePoints[index + 1]].map(({ lat, lon }) => ({ lat, lon })),
+      }],
+    },
+  }));
+  const f = confirmFixture(routed);
+  let map = f.screen.nodes(n => n.type === 'KakaoRouteMap')[0];
+  assert.deepEqual([...new Set(map.props.segments.map(segment => segment.legIndex))], [0, 1, 2]);
+  assert.equal(map.props.highlightedLegIndex, 0);
+  assert.equal(f.screen.nodes(n => n.props.testID?.startsWith('course-leg-select-')).length, 3);
+  assert.match(JSON.stringify(f.screen.get('course-leg-selection-summary')), /출발.*긴 장소 이름 B.*도보.*5.*분/);
+
+  f.screen.press('course-leg-select-2');
+  map = f.screen.nodes(n => n.type === 'KakaoRouteMap')[0];
+  assert.equal(map.props.highlightedLegIndex, 2);
+  assert.match(JSON.stringify(f.screen.get('course-leg-selection-summary')), /긴 장소 이름 A.*도착.*도보.*5.*분/);
+
+  f.screen.press('verified-course-start');
+  assert.equal(f.screen.nodes(n => n.props.testID?.startsWith('course-leg-select-')).length, 0);
+  map = f.screen.nodes(n => n.type === 'KakaoRouteMap')[0];
+  assert.equal(map.props.highlightedLegIndex, 0);
+  f.flow.activeVerifiedCourse = { ...f.flow.activeVerifiedCourse, progress: { stepIndex: 2, routeOpened: false, finished: false } };
+  f.screen.render();
+  map = f.screen.nodes(n => n.type === 'KakaoRouteMap')[0];
+  assert.equal(map.props.highlightedLegIndex, 1);
   f.screen.unmount();
 });
 
@@ -202,10 +255,10 @@ test('URELEASE180: actual CourseConfirm shows explicit next-day deadline without
   f.screen.unmount();
 });
 
-test('PF remediation failure-first: actual CourseConfirm keeps identical vertical cards/map through start and external handoff', async () => {
+test('active CourseConfirm replaces review photos with current-route progress and preserves external handoff', async () => {
   const f = confirmFixture();
   const cards = () => f.screen.nodes(n => n.props.accessibilityRole === 'link' && n.props.accessibilityLabel?.includes('카카오맵에서 장소 보기')).map(n => n.props.accessibilityLabel);
-  assert.equal(f.screen.nodes(n => n.props.testID === 'place-photo-credit').length, 2);
+  assert.equal(f.screen.nodes(n => n.props.testID === 'place-photo-credit').length, 0);
   const expected = ['긴 장소 이름 B 카카오맵에서 장소 보기', '긴 장소 이름 A 카카오맵에서 장소 보기'];
   assert.deepEqual(cards(), expected);
   const photos = f.screen.nodes(n => n.type === 'Image').map(n => n.props.source.uri);
@@ -214,10 +267,11 @@ test('PF remediation failure-first: actual CourseConfirm keeps identical vertica
   assert.equal(map.props.cameraTop, 12, 'embedded course map camera belongs at its top-right');
   const start = f.screen.get('verified-course-start').props.onPress;
   start(); start();
-  assert.deepEqual(cards(), expected);
-  assert.deepEqual(f.screen.nodes(n => n.type === 'Image').map(n => n.props.source.uri), photos);
+  assert.deepEqual(cards(), []);
+  assert.deepEqual(f.screen.nodes(n => n.type === 'Image').map(n => n.props.source.uri), []);
   assert.doesNotMatch(JSON.stringify(f.screen.render()), /둘러보기 약 \d+분/);
-  assert.deepEqual(f.screen.nodes(n => n.type === 'KakaoRouteMap')[0].props.markers, map.props.markers);
+  assert.equal(f.screen.nodes(n => n.type === 'KakaoRouteMap')[0].props.markers.length, 2);
+  assert.equal('usePhotoMarkers' in f.screen.nodes(n => n.type === 'KakaoRouteMap')[0].props, false);
   assert.deepEqual(f.calls, ['start']);
   f.screen.press('verified-progress-primary'); await settle();
   assert.equal(f.flow.activeVerifiedCourse.progress.routeOpened, false);
@@ -227,10 +281,12 @@ test('PF remediation failure-first: actual CourseConfirm keeps identical vertica
   f.resolve('app_opened'); await settle();
   assert.equal(f.calls.filter(c => c[0] === 'route').length, 2);
   assert.equal(f.flow.activeVerifiedCourse.progress.stepIndex, 0);
-  assert.equal(f.screen.get('course-leg-0').props.accessibilityLabel.includes('진행 중'), true);
+  assert.match(JSON.stringify(f.screen.get('active-course-step-current')), /긴 장소 이름 B까지 도보 5분/);
   f.screen.press('verified-progress-primary');
   assert.equal(f.flow.activeVerifiedCourse.progress.stepIndex, 1);
-  assert.deepEqual(cards(), expected);
+  assert.deepEqual(cards(), []);
+  assert.match(JSON.stringify(f.screen.get('active-course-current')), /도착을 확인했어요/);
+  f.screen.unmount();
 });
 
 test('ROUTESTART screen: first click starts Live Activity before external open and restores on actual failure', async () => {
@@ -533,6 +589,9 @@ test('PF remediation failure-first: actual PlaceDetail measured panel pads map, 
   sheet.props.onLayout({ nativeEvent: { layout: { height: 310 } } });
   const map = screen.nodes(n => n.type === 'KakaoRouteMap')[0];
   assert.equal(map.props.boundsPadding.bottom, 326);
+  assert.equal(map.props.cameraTop, 14);
+  assert.deepEqual(map.props.recenterPoint, session.origin);
+  assert.equal(map.props.recenterOffsetY, 130);
   assert.ok(Object.assign({}, ...screen.get('place-detail-sheet').props.style).maxHeight < 420);
   const scroll = screen.get('place-detail-information');
   assert.ok(scroll);
@@ -565,6 +624,8 @@ test('PF actual Results + PlaceDetail: open/close/back/stale, explicit A focus-o
   const result = { representativeCourse: first, alternativeCourses: [course(['B'])], resultState: 'verified', alternativeState: 'alternatives_available', continuation: { attemptedCandidateIds: ['A'], verifiedCandidateIds: ['A'], cursor: 1 } };
   const { ResultsScreen } = runtime.load('src/ui/ResultsScreen.tsx');
   const results = runtime.mount(ResultsScreen, { route: { params: { session, result } }, navigation });
+  assert.match(JSON.stringify(results.render()), /장소 추천/);
+  assert.doesNotMatch(JSON.stringify(results.render()), /시간의 추천|대표 추천|다른 추천 1/);
   assert.ok(results.get('results-alternatives-region').props.style.paddingTop > results.get('results-alternatives-region').props.style.gap);
   const node = type => results.nodes(n => n.type === type)[0];
   const cards = () => results.nodes(n => n.type === 'CourseV1SummaryCard');
@@ -587,6 +648,7 @@ test('PF actual Results + PlaceDetail: open/close/back/stale, explicit A focus-o
     open();
     assert.equal(placeDetailSelectionHandoff.select(firstRequest), false);
     const d = detail(); const choose = d.get('place-detail-select').props.onPress; choose(); choose(); focus(); focus();
+    assert.match(JSON.stringify(results.render()), /코스 구성/);
     assert.equal(calls.filter(c => c === 'pair').length, 1);
     assert.equal(pairInput.firstCourse, first);
     assert.equal(pairInput.signal.aborted, false);
@@ -705,8 +767,8 @@ test('PF restore failure-first: explicit review shows snapshot short20/recommend
   assert.match(JSON.stringify(f.screen.get('course-stop-A')), /둘러보기 약 35분/);
   f.screen.press('verified-course-start');
   assert.doesNotMatch(JSON.stringify(f.screen.render()), /둘러보기 약 \d+분/);
-  assert.match(JSON.stringify(f.screen.get('course-stop-B')), /가볍게 둘러보기/);
-  assert.doesNotMatch(JSON.stringify(f.screen.get('course-stop-A')), /가볍게 둘러보기/);
+  assert.equal(f.screen.nodes(n => n.props.testID?.startsWith('course-stop-')).length, 0);
+  assert.match(JSON.stringify(f.screen.get('active-course-progress')), /긴 장소 이름 B/);
   const resumed = f.resume();
   assert.doesNotMatch(JSON.stringify(resumed.render()), /둘러보기 약 \d+분/);
   f.flow.activeVerifiedCourse = null;

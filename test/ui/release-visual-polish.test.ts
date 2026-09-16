@@ -37,6 +37,7 @@ test('URELEASEVISUAL01 failure-first: 네 loading 상태는 순서대로만 전�
   stage = advanceRecommendationProgress(stage, 'complete');
   assert.equal(advanceRecommendationProgress(stage, 'verifying'), 'complete');
   assert.deepEqual(recommendationProgressItems('route_port_ready').map(({ state }) => state), ['done', 'current', 'pending', 'pending']);
+  assert.deepEqual(recommendationProgressItems('route_port_ready').map(({ label }) => label), ['시간과 장소 확인', '이동 시간 확인', '장소 찾기', '코스 정리']);
 });
 
 test('URELEASEVISUAL01 failure-first: runtime은 실제 port와 builder 경계에서 네 callback을 한 번씩 낸다', async () => {
@@ -101,14 +102,15 @@ test('URELEASEVISUAL01 failure-first: 허용 화면의 시각 밀도와 비시�
   const confirm = fs.readFileSync('src/ui/CourseConfirmScreen.tsx', 'utf8');
   const detail = fs.readFileSync('src/ui/recommendation/CourseV1VerticalDetail.tsx', 'utf8');
 
-  assert.match(home, /placeholder: \{ marginTop: 2[4-9]/);
-  assert.match(home, /active: \{ marginTop: 2[4-9]/);
-  assert.match(card, /media: \{ height: 1(?:0[8-9]|1\d|20)/);
-  assert.match(card, /content: \{ padding: 1[4-6]/);
+  assert.doesNotMatch(home, /placeholder:/);
+  assert.match(home, /active: \{ marginTop: 32/);
+  assert.match(card, /media: \{ width: 96, height: 96/);
+  assert.match(card, /card: \{[^}]*flexDirection: 'row'[^}]*minHeight: 116/);
+  assert.doesNotMatch(card, /PlacePhotoCredit|summary\.label/);
   assert.match(card, /accessibilityLabel=\{summary\.accessibilityLabel\}/);
   assert.match(card, /onPress=\{onPress\}/);
   assert.match(confirm, /mapFrame: \{[^}]*height: 2[6-9]\d[^}]*marginHorizontal: -22/);
-  assert.match(confirm, /segments=\{routeGeometry\.segments\}/);
+  assert.match(confirm, /segments=\{visibleSegments\}/);
   assert.match(confirm, /testID="verified-course-start"/);
   assert.match(detail, /guide/);
   assert.match(detail, /endpointDot/);
@@ -118,7 +120,9 @@ test('URELEASEVISUAL01 failure-first: 허용 화면의 시각 밀도와 비시�
 
   for (const source of [setup, confirm]) {
     assert.match(source, /accessible=\{false\}[^>]*style=\{s\.headerSpacer\}/);
-    assert.match(source, /headerSpacer: \{ width: 42, height: 42 \}/);
   }
+  assert.match(setup, /headerSpacer: \{ width: 44, height: 44 \}/);
+  assert.match(confirm, /headerSpacer: \{ width: 44, height: 44 \}/);
+  assert.match(confirm, /testID="course-review-footer"/);
   assert.doesNotMatch(`${setup}\n${confirm}`, /<View style=\{s\.(?:back|icon)\} \/>/);
 });

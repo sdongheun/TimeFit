@@ -95,7 +95,7 @@ test('UNEAR SIMPLE failure-first: handle tap/accessibility replaces toggle, whit
   f.screen.press('nearby-row-far');
   assert.doesNotMatch(JSON.stringify(f.screen.render()), /정보 탐색 장소 · 방문 전/);
   assert.ok(f.screen.get('nearby-directions'));
-  for (const label of ['카카오맵 길찾기', '카카오맵에서 장소 확인']) { // MAP02: current-location is now a camera icon.
+  for (const label of ['카카오맵 길찾기', '카카오맵에서 장소 정보 보기']) { // MAP02: current-location is now a camera icon.
     const text = f.screen.nodes(n => n.type === 'Text' && n.props.children === label)[0];
     assert.ok(text);
     const styles = [text.props.style].flat(Infinity).filter(Boolean);
@@ -104,6 +104,38 @@ test('UNEAR SIMPLE failure-first: handle tap/accessibility replaces toggle, whit
   f.screen.press('nearby-directions'); f.screen.press('nearby-directions'); await tick();
   assert.equal(f.calls.filter(c => c === 'open').length, 1);
   assert.ok(f.screen.get('nearby-detail-close'));
+});
+
+test('UNEAR visual polish: one map header, readable 80pt rows and clear sheet/detail hierarchy', async () => {
+  const f = fixture(); await tick();
+  const header = f.screen.get('nearby-map-header');
+  const headerStyle = Object.assign({}, ...header.props.style.flat(Infinity).filter(Boolean));
+  assert.equal(headerStyle.minHeight, 64);
+  assert.match(JSON.stringify(header), /주변 둘러보기/);
+  assert.match(JSON.stringify(header), /선택한 장소 기준/);
+  assert.match(JSON.stringify(f.screen.get('nearby-change-location')), /검색/);
+
+  assert.equal(f.screen.get('nearby-list-title').props.children, '가까운 장소');
+  assert.equal(f.screen.get('nearby-list-count').props.children, '2곳');
+  assert.match(f.screen.get('nearby-list-copy').props.children, /선택한 장소 기준 · 직선거리 순/);
+  const row = f.screen.get('nearby-row-near');
+  const rowStyle = Object.assign({}, ...row.props.style.flat(Infinity).filter(Boolean));
+  assert.equal(rowStyle.minHeight, 80);
+  assert.equal(rowStyle.paddingHorizontal, 12);
+  const rowMeta = f.screen.nodes(n => n.type === 'Text' && Array.isArray(n.props.children) && n.props.children[0] === '문화시설')[0];
+  assert.deepEqual(rowMeta.props.children, ['문화시설', ' · ', '부산 중구']);
+  assert.deepEqual({ fontSize: rowMeta.props.style.fontSize, lineHeight: rowMeta.props.style.lineHeight }, { fontSize: 12.5, lineHeight: 17 });
+  const rowTitle = f.screen.nodes(n => n.type === 'Text' && n.props.children === '가까운 곳')[0];
+  assert.deepEqual({ fontSize: rowTitle.props.style.fontSize, lineHeight: rowTitle.props.style.lineHeight }, { fontSize: 16, lineHeight: 21 });
+  const distance = f.screen.nodes(n => n.type === 'Text' && n.props.children === '10m')[0];
+  assert.deepEqual({ minWidth: distance.props.style.minWidth, textAlign: distance.props.style.textAlign }, { minWidth: 44, textAlign: 'right' });
+  const rowPhotoFallback = f.screen.nodes(n => n.type === 'View' && n.props.style?.width === 56 && n.props.style?.height === 56)[0];
+  assert.ok(rowPhotoFallback);
+
+  f.screen.press('nearby-row-near');
+  assert.match(JSON.stringify(f.screen.get('nearby-detail-meta')), /운영시간.*주소/s);
+  assert.match(JSON.stringify(f.screen.get('nearby-open-kakao')), /카카오맵에서 장소 정보 보기/);
+  assert.doesNotMatch(JSON.stringify(f.screen.get('nearby-open-kakao')), /underline/);
 });
 
 test('UNEAR SIMPLE manual center, delayed failure and return preserve destination/detail/active course', async () => {
@@ -145,7 +177,8 @@ test('UNEAR HANDOFF browser cancel is neutral and stale errors cannot overwrite 
     const f = fixture({ openExternal: async () => { throw Error(); }, openBrowser: async () => ({ type }) }); await tick();
     f.screen.press('nearby-row-far'); f.screen.press('nearby-directions'); await tick();
     assert.doesNotMatch(JSON.stringify(f.screen.render()), /길찾기를 열지 못했어요/);
-    assert.equal(f.screen.get('nearby-change-location').props.accessibilityLabel, '기준 위치 검색');
+    assert.equal(f.screen.get('nearby-change-location').props.accessibilityLabel, '기준 장소 변경');
+    assert.match(JSON.stringify(f.screen.get('nearby-change-location')), /검색/);
     assert.equal(f.screen.get('nearby-change-location').props.variant, undefined);
   }
   let fail;
@@ -155,6 +188,17 @@ test('UNEAR HANDOFF browser cancel is neutral and stale errors cannot overwrite 
   fail(Error()); await tick();
   assert.doesNotMatch(JSON.stringify(f.screen.render()), /길찾기를 열지 못했어요/);
   assert.ok(f.screen.get('nearby-directions'));
+});
+
+test('UMANUAL polish: nearby empty state asks once for a reference place and uses one clear action', async () => {
+  const f = fixture({ noCenter: true }); await tick();
+  const rendered = JSON.stringify(f.screen.render());
+  assert.match(rendered, /부산 어디에서 둘러볼까요/);
+  assert.match(rendered, /기준 장소를 선택하면 3km 안의 장소를 가까운 순으로 보여드려요/);
+  assert.match(JSON.stringify(f.screen.get('nearby-change-location')), /검색/);
+  assert.equal(f.screen.get('nearby-change-location').props.accessibilityLabel, '기준 장소 선택');
+  assert.match(JSON.stringify(f.screen.get('nearby-empty-location')), /장소 선택/);
+  assert.doesNotMatch(rendered, /기준 위치가 필요|기준 위치를 선택/);
 });
 
 test('photo integration: nearby row/detail share approved URL, visible credit and load failure fallback', async () => {
@@ -220,8 +264,8 @@ test('UMANUAL manual reference works without starting GPS and labels selection h
   const picker = f.screen.nodes(node => node.type === 'PlacePicker')[0];
   picker.props.onConfirm({ lat: 35, lon: 129, label: '부산역', source: 'provider' });
   assert.equal(f.calls.includes('gps'), false); await tick();
-  const location = f.screen.nodes(node => node.type === 'Text' && Array.isArray(node.props.children) && node.props.children.includes('부산역'))[0];
-  assert.deepEqual(location.props.children, ['선택 위치 기준 · ', '부산역']);
+  const location = f.screen.nodes(node => node.type === 'Text' && node.props.children === '부산역 기준')[0];
+  assert.equal(location.props.children, '부산역 기준');
   assert.doesNotMatch(JSON.stringify(f.screen.render()), /현위치 기준/);
 });
 
@@ -229,10 +273,10 @@ test('UNEAR same-coordinate cluster opens accessible group and returns to all ro
   const f = fixture(); await tick();
   const map = f.screen.nodes(node => node.type === 'NearbyBrowseMap')[0];
   map.props.onCluster(['near', 'far']);
-  assert.match(JSON.stringify(f.screen.render()), /겹친 장소 2곳/);
+  assert.match(JSON.stringify(f.screen.render()), /이 위치의 장소.*2곳/s);
   assert.ok(f.screen.get('nearby-row-near')); assert.ok(f.screen.get('nearby-row-far'));
   f.screen.press('nearby-show-all');
-  assert.match(JSON.stringify(f.screen.render()), /3km 안 장소 2곳/);
+  assert.match(JSON.stringify(f.screen.render()), /가까운 장소.*2곳/s);
 });
 
 test('UNEAR production screen connects the sheet to every bottom edge and measures the unchanged floating tab frame', async () => {
@@ -272,8 +316,27 @@ test('UNEAR expanded list and detail keep terminal touch targets above the measu
 test('UNEAR FloatingTabBar relays its native parent-coordinate frame without changing its layout or handlers', () => {
   const calls = [];
   const frames = [];
+  const host = screenRuntime();
+  class TabValue {
+    constructor(value) { this.value = value; }
+    setValue(value) { this.value = value; }
+    stopAnimation(callback) { callback?.(this.value); }
+    interpolate() { return this.value; }
+  }
   const runtime = screenRuntime({
+    'react-native': {
+      ...host.native,
+      PanResponder: { create: handlers => ({ panHandlers: handlers }) },
+      Animated: {
+        ...host.native.Animated,
+        Value: TabValue,
+        View: 'AnimatedView',
+        spring(value, config) { return { start() { value.setValue(config.toValue); } }; },
+      },
+    },
     '@expo/vector-icons': { Feather: 'Feather' },
+    'expo-blur': { BlurView: 'BlurView' },
+    'expo-glass-effect': { GlassView: 'GlassView', isGlassEffectAPIAvailable: () => true, isLiquidGlassAvailable: () => true },
     'react-native-safe-area-context': { useSafeAreaInsets: () => ({ top: 47, bottom: 34, left: 0, right: 0 }) },
   });
   const screen = runtime.mount(runtime.load('src/ui/FloatingTabBar.tsx').FloatingTabBar, {
@@ -284,13 +347,85 @@ test('UNEAR FloatingTabBar relays its native parent-coordinate frame without cha
     onProfile: () => calls.push('profile'),
     onFrame: frame => frames.push(frame),
   });
+  assert.ok(screen.get('floating-tab-liquid-glass'));
   const wrapper = screen.nodes(node => node.type === 'View' && node.props.pointerEvents === 'box-none')[0];
   assert.equal(wrapper.props.style.flat(Infinity).at(-1).bottom, 34);
   const frame = { x: 16, y: 744, width: 358, height: 66 };
   wrapper.props.onLayout({ nativeEvent: { layout: frame } });
   assert.deepEqual(frames, [frame]);
-  screen.nodes(node => node.type === 'Pressable').forEach(node => node.props.onPress());
-  assert.deepEqual(calls, ['main', 'course', 'record', 'profile']);
+  const strip = screen.nodes(node => node.type === 'View' && typeof node.props.onPanResponderMove === 'function')[0];
+  strip.props.onLayout({ nativeEvent: { layout: { width: 360, height: 64 } } });
+  assert.ok(screen.get('floating-tab-selection-lens'));
+  assert.equal(strip.props.onMoveShouldSetPanResponder(null, { dx: 8, dy: 1 }), true);
+  assert.equal(strip.props.onMoveShouldSetPanResponder(null, { dx: 3, dy: 12 }), false);
+  const tabs = screen.nodes(node => node.type === 'Pressable');
+  tabs[1].props.onPressIn();
+  strip.props.onPanResponderGrant();
+  strip.props.onPanResponderMove(null, { dx: 174 });
+  assert.deepEqual(calls, []);
+  strip.props.onPanResponderRelease(null, { dx: 174 });
+  assert.deepEqual(calls, ['profile']);
+  tabs[3].props.onPressIn();
+  strip.props.onPanResponderGrant();
+  strip.props.onPanResponderMove(null, { dx: -87 });
+  strip.props.onPanResponderRelease(null, { dx: -87 });
+  assert.deepEqual(calls, ['profile', 'record']);
+  tabs[2].props.onPressIn();
+  strip.props.onPanResponderGrant();
+  strip.props.onPanResponderMove(null, { dx: -87 });
+  strip.props.onPanResponderTerminate();
+  assert.deepEqual(calls, ['profile', 'record']);
+  tabs.forEach(node => node.props.onPress());
+  assert.deepEqual(calls, ['profile', 'record', 'main', 'course', 'record', 'profile']);
+});
+
+test('FloatingTabBar regular tap animates selection position once across navigation remount', () => {
+  const springs = [];
+  let valueOrder = 0;
+  const host = screenRuntime();
+  class TapValue {
+    constructor(value) { this.value = value; this.kind = valueOrder++ % 2 === 0 ? 'position' : 'lift'; }
+    setValue(value) { this.value = value; }
+    stopAnimation(callback) { callback?.(this.value); }
+    interpolate() { return this.value; }
+  }
+  const runtime = screenRuntime({
+    'react-native': {
+      ...host.native,
+      AccessibilityInfo: {
+        isReduceTransparencyEnabled: async () => false,
+        isReduceMotionEnabled: async () => false,
+        addEventListener: () => ({ remove() {} }),
+      },
+      PanResponder: { create: handlers => ({ panHandlers: handlers }) },
+      Animated: {
+        ...host.native.Animated,
+        Value: TapValue,
+        View: 'AnimatedView',
+        spring(value, config) {
+          springs.push({ kind: value.kind, target: config.toValue });
+          return { start() { value.setValue(config.toValue); } };
+        },
+      },
+    },
+    '@expo/vector-icons': { Feather: 'Feather' },
+    'expo-blur': { BlurView: 'BlurView' },
+    'expo-glass-effect': { GlassView: 'GlassView', isGlassEffectAPIAvailable: () => true, isLiquidGlassAvailable: () => true },
+    'react-native-safe-area-context': { useSafeAreaInsets: () => ({ top: 47, bottom: 34, left: 0, right: 0 }) },
+  });
+  const FloatingTabBar = runtime.load('src/ui/FloatingTabBar.tsx').FloatingTabBar;
+  let selected = '';
+  const handlers = { onMain() {}, onCourse() {}, onRecord() { selected = 'record'; }, onProfile() {} };
+  const first = runtime.mount(FloatingTabBar, { active: 'main', ...handlers });
+  springs.length = 0;
+  const record = first.nodes(node => node.type === 'Pressable')[2];
+  record.props.onPressIn();
+  record.props.onPressOut();
+  record.props.onPress();
+  assert.equal(selected, 'record');
+  first.unmount();
+  runtime.mount(FloatingTabBar, { active: 'record', ...handlers });
+  assert.equal(springs.filter(item => item.kind === 'position' && item.target === 2).length, 1);
 });
 
 test('UNEAR handle drag changes only visible sheet height per frame and settles map obstruction once released', async () => {
@@ -346,20 +481,20 @@ test('UNEAR drag regression: changed measurement preserves an in-range drag and 
   const handle = f.screen.get('nearby-sheet-handle');
   handle.props.onPanResponderGrant(null, { dy: 0, vy: 0 });
   handle.props.onPanResponderMove(null, { dy: -100 });
-  assert.equal(value.value, 377);
+  assert.equal(value.value, 382);
 
   const summary = f.screen.get('nearby-list-summary');
   const moveBeforeMeasurement = handle.props.onPanResponderMove;
   summary.props.onLayout({ nativeEvent: { layout: { x: 0, y: 0, width: 390, height: 80 } } });
   f.screen.render();
-  assert.equal(value.value, 377, 'changed geometry must preserve the current in-range drag height');
+  assert.equal(value.value, 382, 'changed geometry must preserve the current in-range drag height');
   assert.equal(f.screen.get('nearby-sheet-handle').props.onPanResponderMove, moveBeforeMeasurement, 'active responder remains stable across endpoint changes');
 
-  value.setValue(377);
+  value.setValue(382);
   const setCountBeforeRepeat = value.setCount;
   f.screen.get('nearby-list-summary').props.onLayout({ nativeEvent: { layout: { x: 0, y: 0, width: 390, height: 80 } } });
   f.screen.render();
-  assert.equal(value.value, 377);
+  assert.equal(value.value, 382);
   assert.equal(value.setCount, setCountBeforeRepeat, 'same measurement does not retrigger state or geometry synchronization');
 });
 
@@ -370,13 +505,13 @@ test('UNEAR drag regression: cumulative moves reverse correctly and termination 
   const handle = f.screen.get('nearby-sheet-handle');
   handle.props.onPanResponderGrant(null, { dy: 0, vy: 0 });
   handle.props.onPanResponderMove(null, { dy: -20 });
-  assert.equal(value.value, 297);
+  assert.equal(value.value, 302);
   handle.props.onPanResponderMove(null, { dy: -40 });
-  assert.equal(value.value, 317);
+  assert.equal(value.value, 322);
   handle.props.onPanResponderMove(null, { dy: -10 });
-  assert.equal(value.value, 287);
+  assert.equal(value.value, 292);
   handle.props.onPanResponderTerminate(null, { dy: -10, vy: 0 });
-  assert.equal(value.value, 277, 'a native responder cancellation settles the transient height to the nearest endpoint');
+  assert.equal(value.value, 282, 'a native responder cancellation settles the transient height to the nearest endpoint');
 });
 
 test('UNEAR diagnostic fake distinguishes cancellation, completion, and stale completion', async () => {
@@ -390,12 +525,12 @@ test('UNEAR diagnostic fake distinguishes cancellation, completion, and stale co
   f.screen.render();
   assert.deepEqual(f.animationEvents.slice(-2), [
     { type: 'cancel', at: 318, target: 610 },
-    { type: 'start', at: 318, target: 277 },
+    { type: 'start', at: 318, target: 282 },
   ]);
   f.finishAnimationAt(0);
   assert.equal(f.screen.nodes(node => node.type === 'NearbyBrowseMap')[0].props.bottomInset, collapsedInset, 'stale expand completion has no effect');
   f.finishAnimationAt(1);
-  assert.deepEqual(f.animationEvents.at(-1), { type: 'finish', at: 277, target: 277 });
+  assert.deepEqual(f.animationEvents.at(-1), { type: 'finish', at: 282, target: 282 });
   assert.equal(f.screen.nodes(node => node.type === 'NearbyBrowseMap')[0].props.bottomInset, collapsedInset);
 });
 
@@ -406,7 +541,7 @@ test('UNEAR drag regression: release before asynchronous grant baseline settles 
   handle.props.onPanResponderGrant(null, { dy: 0, vy: 0 });
   handle.props.onPanResponderMove(null, { dy: -100, vy: -0.5 });
   handle.props.onPanResponderRelease(null, { dy: -100, vy: -0.5 });
-  assert.equal(f.animatedValues[0].value, 277);
+  assert.equal(f.animatedValues[0].value, 282);
   f.finishStopAnimation();
   assert.equal(f.animatedValues[0].value, 610);
   assert.equal(f.screen.nodes(node => node.type === 'NearbyBrowseMap')[0].props.bottomInset, 610);
@@ -419,12 +554,12 @@ test('UNEAR drag regression: range clamp rebases cumulative dy before the next m
   const handle = f.screen.get('nearby-sheet-handle');
   handle.props.onPanResponderGrant(null, { dy: 0, vy: 0 });
   handle.props.onPanResponderMove(null, { dy: -100, vy: 0 });
-  assert.equal(f.animatedValues[0].value, 377);
+  assert.equal(f.animatedValues[0].value, 382);
   tab.props.onFrame({ x: 16, y: 500, width: 358, height: 66 });
   f.screen.render();
-  assert.equal(f.animatedValues[0].value, 521);
+  assert.equal(f.animatedValues[0].value, 526);
   f.screen.get('nearby-sheet-handle').props.onPanResponderMove(null, { dy: -110, vy: 0 });
-  assert.equal(f.animatedValues[0].value, 531);
+  assert.equal(f.animatedValues[0].value, 536);
 });
 
 test('UNEAR drag regression: expanded downward swipe settles collapsed and unmount blocks pending completion', async () => {
@@ -436,7 +571,7 @@ test('UNEAR drag regression: expanded downward swipe settles collapsed and unmou
   handle.props.onPanResponderMove(null, { dy: 100, vy: 0.5 });
   assert.equal(f.animatedValues[0].value, 510);
   handle.props.onPanResponderRelease(null, { dy: 100, vy: 0.5 });
-  assert.equal(f.animatedValues[0].value, 277);
+  assert.equal(f.animatedValues[0].value, 282);
 
   const pending = fixture({ manualAnimation: true }); await tick();
   pending.screen.get('nearby-sheet-handle').props.onAccessibilityTap();
@@ -458,7 +593,7 @@ test('UNEAR drag regression: a re-grab during collapsing spring continues downwa
   handle.props.onPanResponderGrant(null, { dy: 0, vy: 0 });
   handle.props.onPanResponderMove(null, { dy: 8, vy: 0 });
   assert.equal(f.animatedValues[0].value, 492);
-  assert.deepEqual(f.animationEvents.at(-1), { type: 'cancel', at: 500, target: 277 });
+  assert.deepEqual(f.animationEvents.at(-1), { type: 'cancel', at: 500, target: 282 });
 });
 
 test('UNEAR drag regression: tap release waits for baseline and toggles exactly once', async () => {

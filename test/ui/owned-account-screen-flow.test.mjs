@@ -58,8 +58,8 @@ test('actual deletion: server reauthentication and unknown result never clear un
   const { OwnedDeletionPanel } = runtime.load('src/ui/OwnedDeletionPanel.tsx');
   const screen = runtime.mount(OwnedDeletionPanel, { subject: 'A', account: true, getPorts: async () => ({ supabaseAccountIdentityResolver: { resolve: async () => ({ status: 'account', identity: { subject: 'A' } }) }, deleteOwnedAccount: async input => { ids.push(input.requestId); return result; }, recheckOwnedAccountDeletion: async () => ({ status: 'unknown' }) }) });
   const action = screen.get('owned-delete-all');
-  assert.equal(action.props.style.alignItems, 'center'); assert.equal(action.props.style.borderWidth, 1);
-  assert.equal(action.props.style.backgroundColor, '#171719'); assert.equal(action.props.children.props.style.textAlign, 'center');
+  assert.equal(action.props.style.alignItems, 'center'); assert.equal(action.props.style.borderWidth, 0);
+  assert.equal(action.props.style.backgroundColor, '#1f2023'); assert.equal(action.props.children.props.style.textAlign, 'center');
   screen.press('owned-delete-all'); confirmed(); await flush();
   screen.get('delete-account-password').props.onChangeText('fixture-password');
   result = { status: 'retryable_failure', stage: 'verification' };

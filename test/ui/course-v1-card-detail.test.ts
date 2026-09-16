@@ -119,7 +119,8 @@ test('UCOURSECARDDETAIL01: 결과 카드와 상세는 전용 표시 경계만 �
   assert.doesNotMatch(card, /CourseV1Journey|카카오맵|arrivalBuffer|remaining|sourceLabel|추천 확인/);
   assert.match(results, /<CourseV1SummaryCard summary=\{summary\} onPress=\{onConfirm\}/);
   assert.match(confirm, /line=\{\[\]\}/);
-  assert.match(confirm, /segments=\{routeGeometry\.segments\}/);
+  assert.match(confirm, /segments=\{visibleSegments\}/);
+  assert.match(confirm, /routeGeometry\.segments\.filter\(segment => segment\.legIndex === activeLegIndex\)/);
   assert.match(confirm, /showRouteLegend=\{false\}/);
   assert.match(confirm, /<CourseV1VerticalDetail/);
   assert.match(confirm, /testID="verified-course-start"/);

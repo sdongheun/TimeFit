@@ -6,13 +6,16 @@ import { projectRuntimeImageWithPermission } from '../scripts/runtime_image_perm
 
 const places = [...runtimeCatalog.matched.data, ...runtimeCatalog.unmatched.data];
 
-test('U-PUBLIC-API-PHOTO-01: API 단위 이용허락이 확인된 부산 명소·맛집 사진 101개만 공개한다', () => {
+test('DATA-PLACE-PHOTO-ALL-01: 검증 사진 101개와 운영자 승인 사진 102개를 분리해 공개한다', () => {
   const photos = places.filter((place) => place.imageUrl);
-  assert.equal(photos.length, 101);
+  assert.equal(photos.length, 203);
   assert.equal(photos.filter((place) => place.imageEvidence.source === 'busan_attraction').length, 85);
   assert.equal(photos.filter((place) => place.imageEvidence.source === 'busan_food').length, 16);
-  assert.equal(photos.filter((place) => place.imageEvidence.source === 'busan_shopping').length, 0);
-  assert.equal(photos.filter((place) => place.imageSource === 'tourapi').length, 0);
+  assert.equal(photos.filter((place) => place.imageEvidence.source === 'busan_shopping').length, 29);
+  assert.equal(photos.filter((place) => place.imageSource === 'tourapi').length, 73);
+  assert.equal(photos.filter((place) => place.imageEvidence.usagePermission.status === 'verified').length, 101);
+  assert.equal(photos.filter((place) => place.imageEvidence.usagePermission.status === 'operator_approved').length, 102);
+  assert.equal(places.length - photos.length, 166);
 });
 
 test('DATA-RELEASE-PERSONALIZATION-01: 사진 부재는 장소 ID와 추천 eligibility를 줄이지 않는다', () => {
@@ -103,4 +106,41 @@ test('DATA-RELEASE-PERSONALIZATION-01: 정확하고 완전한 이용허락만 �
   assert.equal(projectRuntimeImageWithPermission('poi_fixture', candidate, [{ ...permission, modificationAllowed: false }]), null);
   assert.equal(projectRuntimeImageWithPermission('poi_fixture', candidate, [{ ...permission, licenseUrl: '' }]), null);
   assert.equal(projectRuntimeImageWithPermission('poi_fixture', candidate, [permission, permission]), null);
+});
+
+test('DATA-PLACE-PHOTO-ALL-01: 운영자 승인 행은 권리·라이선스·변경 허용을 합성하지 않는다', () => {
+  const candidate = {
+    imageUrl: 'https://images.example.test/operator-approved.jpg',
+    imageSource: 'tourapi',
+    imageEvidence: { source: 'tourapi', sourceId: '1234', httpsValidatedAt: '2026-08-24T17:21:09.283Z' },
+  };
+  const permission = {
+    contentId: 'poi_operator_fixture',
+    source: 'tourapi',
+    sourceId: '1234',
+    imageUrl: candidate.imageUrl,
+    permissionBasis: 'operator_decision',
+    status: 'operator_approved',
+    sourceName: '한국관광공사 TourAPI',
+    attribution: '사진 출처: 한국관광공사 TourAPI',
+    displayConditions: '앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.',
+    approvedAt: '2026-09-16',
+  };
+
+  const projected = projectRuntimeImageWithPermission('poi_operator_fixture', candidate, [permission]);
+  assert.equal(projected?.imageUrl, candidate.imageUrl);
+  assert.deepEqual(projected?.imageEvidence.usagePermission, {
+    basis: 'operator_decision',
+    status: 'operator_approved',
+    sourceName: '한국관광공사 TourAPI',
+    attribution: '사진 출처: 한국관광공사 TourAPI',
+    displayConditions: '앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.',
+    approvedAt: '2026-09-16',
+  });
+  assert.equal('rightsHolder' in projected.imageEvidence.usagePermission, false);
+  assert.equal('licenseName' in projected.imageEvidence.usagePermission, false);
+  assert.equal('modificationAllowed' in projected.imageEvidence.usagePermission, false);
+  assert.equal(projectRuntimeImageWithPermission('other', candidate, [permission]), null);
+  assert.equal(projectRuntimeImageWithPermission('poi_operator_fixture', candidate, [{ ...permission, status: 'verified' }]), null);
+  assert.equal(projectRuntimeImageWithPermission('poi_operator_fixture', candidate, [permission, permission]), null);
 });

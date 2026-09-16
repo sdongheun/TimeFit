@@ -57,6 +57,13 @@ test('RESTORE storage round trip keeps new manual proof; old write/read never pr
   assert.equal(hasManualLocationProof(restored.session),input!==active);assert.deepEqual(restored.progress,active.progress);assert.equal(restored.courseRunId,'run');
  }
  const stamped=withManualLocationProof(session);
+ const legacyExtra={...active,session:{...session,deviceLocationSnapshot:{lat:37,lon:127},unknownLegacyField:'fixture'}};
+ await store.write(legacyExtra);
+ const restoredExtra=await store.read();
+ assert.ok(restoredExtra,'unknown legacy fields must not reject restoration');
+ assert.deepEqual(restoredExtra.progress,active.progress);
+ assert.equal(restoredExtra.courseRunId,active.courseRunId);
+ assert.equal(hasManualLocationProof(restoredExtra.session),false,'extra fields never grant manual-location proof');
  assert.equal(hasManualLocationProof({...stamped,origin:{...stamped.origin,lat:36}}),false);
  assert.equal(hasManualLocationProof({...stamped,destination:session.origin}),false);
 });
@@ -87,13 +94,17 @@ function gateFixture(onConfirm=()=>true){
 }
 test('RESTORE gate cancellation preserves run; changed point refuses any route/authorization',async()=>{
  let grants=0;const f=gateFixture(()=>{grants++;return true;});
+ assert.match(JSON.stringify(f.screen.render()),/예전에 만든 코스/);
+ assert.match(JSON.stringify(f.screen.get('restore-origin')),/출발지.*검색 또는 지도 선택/);
+ assert.match(JSON.stringify(f.screen.get('restore-destination')),/마지막 도착지.*검색 또는 지도 선택/);
+ assert.doesNotMatch(JSON.stringify(f.screen.render()),/이전 버전|좌표|경로 검증/);
  f.pick('origin',session.origin);f.pick('destination',{...session.origin,lat:36});f.screen.press('restore-submit');await settle();
- assert.match(f.screen.get('restore-error').props.children,/다시 검증/);assert.equal(grants,0);assert.deepEqual(f.calls,[]);
+ assert.match(f.screen.get('restore-error').props.children,/기존 코스/);assert.equal(grants,0);assert.deepEqual(f.calls,[]);
  f.screen.press('restore-cancel');assert.equal(f.cancelled(),1);f.screen.unmount();
 });
 test('RESTORE gate map starts at default not old coordinates; both new selections authorize once; authorization failure stays gated',async()=>{
  let finish,calls=0;const f=gateFixture(()=>{calls++;return new Promise(r=>{finish=r;});});
- f.pick('origin',session.origin);f.screen.press('restore-destination');f.screen.nodes(n=>n.type==='PlacePicker')[0].props.onOpenMap();
+ f.pick('origin',session.origin);f.screen.press('restore-destination');assert.equal(f.screen.nodes(n=>n.type==='PlacePicker')[0].props.title,'마지막 도착지 선택');f.screen.nodes(n=>n.type==='PlacePicker')[0].props.onOpenMap();
  const map=f.screen.nodes(n=>n.type==='MapPlacePicker')[0];assert.deepEqual(map.props.center,{lat:35.1578,lon:129.0594});
  map.props.onConfirm({point:session.origin,label:'복귀',source:'map'});
  const submit=f.screen.get('restore-submit').props.onPress;submit();submit();assert.equal(calls,1);finish(false);await settle();

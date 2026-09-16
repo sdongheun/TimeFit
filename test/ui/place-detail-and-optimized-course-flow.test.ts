@@ -31,7 +31,8 @@ const course: VerifiedCourseV1 = {
   remainingAfterArrivalBufferMin: 10,
 };
 
-const session: RecommendationSession = {
+// Unknown legacy storage fields stay tolerated without becoming current navigation fields.
+const session: RecommendationSession & { deviceLocationSnapshot?: { lat: number; lon: number } } = {
   nowIso: '2026-09-05T06:00:00.000Z',
   origin: { id: 'origin', label: '설정한 출발지', lat: 35.15, lon: 129.05 },
   destination: { id: 'destination', label: '약속 장소', lat: 35.2, lon: 129.1 },
@@ -85,11 +86,13 @@ test('UMANUAL: origin/candidate/A marker만 전달하고 과거 device 좌표는
     { kind: 'selected', label: '선택한 장소 · 장소 A' },
     { kind: 'candidate', label: '선택 후보 · 장소 B' },
   ]);
-  const same = buildPlaceDetailMarkers({ ...session, deviceLocationSnapshot: { lat: session.origin.lat, lon: session.origin.lon } }, place('B'));
+  const legacySame = { ...session, deviceLocationSnapshot: { lat: session.origin.lat, lon: session.origin.lon } };
+  const same = buildPlaceDetailMarkers(legacySame, place('B'));
   assert.equal(same.length, 2);
   assert.doesNotMatch(same[0].label, /현재 위치/);
   assert.match(same[0].label, /설정한 출발지/);
-  const fallback = buildPlaceDetailMarkers({ ...session, deviceLocationSnapshot: undefined }, place('B'));
+  const legacyAbsent = { ...session, deviceLocationSnapshot: undefined };
+  const fallback = buildPlaceDetailMarkers(legacyAbsent, place('B'));
   assert.equal(fallback.some((marker) => marker.kind === 'current'), false);
 });
 

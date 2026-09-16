@@ -30,7 +30,7 @@ for (const scenario of ['ok','open_failed','missing','unavailable','stale','refr
 
 for(const scenario of ['missing','read_failed','open_failed'])test(`LINKS profile ${scenario} keeps safe retry and never uses fallback registry URL`,async()=>{
   const opened=[];
-  const host=screenRuntime({'./mainTabNavigation':{},'./AuthContext':{useAuth:()=>({authKind:'guest'})},'./profileSettingsPort':{readProfilePermissionSnapshot:async()=>({notification:'denied',liveActivity:'denied'})},'./FloatingTabBar':{FloatingTabBar:'Tabs'},'./CValidationRecoveryPanel':{cRecoveryInternalEnabled:()=>false},'./CValidationPanel':{},'./AccountPersonalizationPanel':{}});
+  const host=screenRuntime({'@expo/vector-icons':{Feather:'Feather'},'./useRecordTitle':{useRecordTitle:()=>'나의 자투리 기록'},'./mainTabNavigation':{},'./AuthContext':{useAuth:()=>({authKind:'guest'})},'./profileSettingsPort':{readProfilePermissionSnapshot:async()=>({notification:'denied',liveActivity:'denied'})},'./FloatingTabBar':{FloatingTabBar:'Tabs'},'./CValidationRecoveryPanel':{cRecoveryInternalEnabled:()=>false},'./CValidationPanel':{},'./AccountPersonalizationPanel':{}});
   host.native.Linking.openURL=async url=>{opened.push(url);throw Error('fixture-open');};
   const screen=host.mount(host.load('src/ui/ProfileScreen.tsx').ProfileScreen,{navigation:{},readDocuments:async()=>{if(scenario==='read_failed')throw Error('fixture-read');return scenario==='missing'?{status:'not_configured',documents:[]}:{status:'ok',documents:docs};}});
   await screen.get('profile-document-privacy-policy').props.onPress();await tick();
@@ -41,10 +41,23 @@ for(const scenario of ['missing','read_failed','open_failed'])test(`LINKS profil
 
 test('LINKS profile exposes registry privacy/terms and approved support without debug UI',async()=>{
   const opened=[];
-  const host=screenRuntime({__DEV__:false,__process:{env:{}},'./mainTabNavigation':{},'./AuthContext':{useAuth:()=>({authKind:'guest',accountSession:null})},'./profileSettingsPort':{readProfilePermissionSnapshot:async()=>({notification:'denied',liveActivity:'denied'})},'./FloatingTabBar':{FloatingTabBar:'Tabs'},'./CValidationRecoveryPanel':{cRecoveryInternalEnabled:()=>false},'./CValidationPanel':{},'./AccountPersonalizationPanel':{}});
+  const host=screenRuntime({__DEV__:false,__process:{env:{}},'@expo/vector-icons':{Feather:'Feather'},'./useRecordTitle':{useRecordTitle:()=>'나의 자투리 기록'},'./mainTabNavigation':{},'./AuthContext':{useAuth:()=>({authKind:'guest',accountSession:null})},'./profileSettingsPort':{readProfilePermissionSnapshot:async()=>({notification:'denied',liveActivity:'denied'})},'./FloatingTabBar':{FloatingTabBar:'Tabs'},'./CValidationRecoveryPanel':{cRecoveryInternalEnabled:()=>false},'./CValidationPanel':{},'./AccountPersonalizationPanel':{}});
   host.native.Linking.openURL=async url=>{opened.push(url);};
   const screen=host.mount(host.load('src/ui/ProfileScreen.tsx').ProfileScreen,{navigation:{},readDocuments:async()=>({status:'ok',documents:docs})});await tick();
   for(const id of ['privacy-policy','terms-of-service','support']){await screen.get(`profile-document-${id}`).props.onPress();await tick();}
   assert.deepEqual(opened,[...docs.map(d=>d.url),'https://jjaturi-docs.pages.dev/support/']);
+  screen.unmount();
+});
+
+test('LINKS profile keeps Busan SVG attribution discoverable without placing credit in the record map',async()=>{
+  const opened=[]; let attribution;
+  const base=screenRuntime();
+  const host=screenRuntime({__DEV__:false,__process:{env:{}},'react-native':{...base.native,Alert:{alert:(title,message,buttons)=>{attribution={title,message,buttons};}},Linking:{...base.native.Linking,openURL:async url=>{opened.push(url);}}},'@expo/vector-icons':{Feather:'Feather'},'./useRecordTitle':{useRecordTitle:()=>'나의 자투리 기록'},'./mainTabNavigation':{},'./AuthContext':{useAuth:()=>({authKind:'guest',accountSession:null})},'./profileSettingsPort':{readProfilePermissionSnapshot:async()=>({notification:'denied',liveActivity:'denied'})},'./FloatingTabBar':{FloatingTabBar:'Tabs'},'./CValidationRecoveryPanel':{cRecoveryInternalEnabled:()=>false},'./CValidationPanel':{},'./AccountPersonalizationPanel':{}});
+  const screen=host.mount(host.load('src/ui/ProfileScreen.tsx').ProfileScreen,{navigation:{},readDocuments:async()=>({status:'ok',documents:docs})});await tick();
+  screen.press('profile-map-attribution');
+  assert.match(attribution.title,/지도 출처/);assert.match(attribution.message,/Kurykh.*Wikimedia Commons.*CC BY-SA 3\.0.*수정/s);
+  await attribution.buttons.find(button=>button.text==='원본 보기').onPress();
+  await attribution.buttons.find(button=>button.text==='이용조건 보기').onPress();
+  assert.deepEqual(opened,['https://commons.wikimedia.org/wiki/File:Busan_districts.svg','https://creativecommons.org/licenses/by-sa/3.0/']);
   screen.unmount();
 });

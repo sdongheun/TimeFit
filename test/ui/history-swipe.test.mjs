@@ -72,11 +72,12 @@ test('history swipe reveals one action, never deletes on full swipe; vertical sc
   row.props.onAccessibilityAction({ nativeEvent: { actionName: 'delete' } }); assert.equal(deletes, 2);
 });
 
-test('account rows use existing confirmation, pending cleanup same request retry, final refresh and account guard', async () => {
+test('account rows merge district selection, vertical place links and existing deletion without duplicate place carousel', async () => {
   let subject = 'A', buttons, message, confirmations = 0, mode = 'pending', sequence = 0;
-  let rows = ['one', 'two'].map(id => ({ completionId: id, courseRunId: id, completedAtMinute: 1, provenance: 'guest_import', learningEligible: false, places: [{ contentId: id, title: id, category: '카페', stopOrdinal: 1 }] }));
+  const completedAtMinute = new Date(2026, 8, 16, 16, 20).getTime() / 60000;
+  let rows = ['one', 'two'].map(id => ({ completionId: id, courseRunId: id, completedAtMinute, provenance: 'guest_import', learningEligible: false, places: [{ contentId: id, title: id, category: '카페', stopOrdinal: 1 }] }));
   rows[1].places.push({ contentId: 'second-stop', title: '두 번째 장소', category: '문화시설', stopOrdinal: 2 });
-  const requests = [], allRequests = [];
+  const requests = [], allRequests = [], kakaoCalls = [];
   const host = screenRuntime();
   const runtime = screenRuntime({
     'react-native': { ...host.native, Animated: animated, PanResponder: { create: h => ({ panHandlers: h }) }, Alert: { alert: (_t, m, b) => { message = m; buttons = b; confirmations++; } } },
@@ -88,6 +89,11 @@ test('account rows use existing confirmation, pending cleanup same request retry
     './liveActivity/courseProgressComposition': { liveCourseProgressRuntime: { finish() { throw Error('unrelated course'); } } },
     './ownedCourseLifecycle': { ownedCourseLifecycle: { subscribe: () => () => {} } },
     './GuestImportPanel': { GuestImportPanel: 'Import' }, './activity/ActivityStatistics': { ActivityStatistics: 'Statistics' },
+    '../data/busan_poi_catalog.json': { matched: { data: [
+      { contentId: 'one', title: 'one', category: '카페', addr1: '부산광역시 해운대구 중동', lat: 35.16, lon: 129.16 },
+      { contentId: 'two', title: 'two', category: '카페', addr1: '부산광역시 부산진구 전포동', lat: 35.15, lon: 129.06 },
+      { contentId: 'second-stop', title: '두 번째 장소', category: '문화시설', addr1: '부산광역시 부산진구 부전동', lat: 35.16, lon: 129.05 },
+    ] }, unmatched: { data: [] } },
   });
   const getPorts = async () => ({
     supabaseAccountIdentityResolver: { resolve: async () => ({ status: 'account', identity: { subject } }) },
@@ -97,9 +103,21 @@ test('account rows use existing confirmation, pending cleanup same request retry
     deleteAllOwnedAccountRecords: async input => { allRequests.push(input); return { status: 'unavailable' }; },
   });
   const Panel = runtime.load('src/ui/AccountRecordsPanel.tsx').AccountRecordsPanel;
-  const screen = runtime.mount(() => Panel({ subject, getPorts }), {}); await tick();
+  const screen = runtime.mount(() => Panel({ subject, getPorts, onOpenKakao: async place => { kakaoCalls.push(place.contentId); return true; } }), {}); await tick();
   assert.doesNotMatch(JSON.stringify(screen.render()), /번째 방문 기록 삭제|코스 완료 기록/);
   assert.match(JSON.stringify(screen.get('history-swipe-two')), /두 번째 장소/);
+  assert.doesNotMatch(JSON.stringify(screen.get('history-swipe-two')), /1곳 방문|2곳 방문|측정 \d+분/);
+  assert.doesNotMatch(JSON.stringify(screen.get('history-swipe-two')), /two → 두 번째 장소/);
+  assert.equal(screen.get('history-date-two').props.children, '2026년 9월 16일 오후 4:20');
+  const statistics = screen.nodes(n => n.type === 'Statistics')[0];
+  assert.equal(statistics.props.showPlaceList, false);
+  statistics.props.onDistrictFilterChange({ district: '부산진구', contentIds: ['two', 'second-stop'] }); screen.render();
+  assert.equal(screen.nodes(n => n.props.testID === 'history-swipe-one').length, 0);
+  assert.ok(screen.get('history-swipe-two'));
+  assert.match(JSON.stringify(screen.get('history-list-header')), /부산진구 기록 1개/);
+  screen.press('history-place-open-two-second-stop'); await tick();
+  assert.deepEqual(kakaoCalls, ['second-stop']);
+  statistics.props.onDistrictFilterChange(null); screen.render();
   menu(screen,'two');
   assert.equal(message, undefined, 'menu is not yet the destructive confirmation');
   const menuButtons = buttons;
@@ -118,6 +136,7 @@ test('account rows use existing confirmation, pending cleanup same request retry
   screen.render(); staleMenu(); assert.equal(requests.length,0); assert.equal(message,undefined);
   assert.equal(screen.nodes(n => n.props.testID === 'history-swipe-one').length, 0);
   assert.equal(screen.nodes(n => n.type === 'Statistics')[0].props.summary.completedPlaceCount, 3);
+  assert.equal(screen.get('owned-delete-all').props.children.props.style.color, '#989ba2');
   screen.press('owned-delete-all'); assert.match(message, /카테고리 필터와 관계없이 이 계정의 모든 방문 기록을 삭제합니다/); buttons[0].onPress();
   assert.equal(requests.length, 0);
   screen.press('owned-delete-all'); buttons[1].onPress(); await tick(); screen.render();
@@ -149,6 +168,7 @@ test('account rows use existing confirmation, pending cleanup same request retry
   mode = 'clean'; screen.get('history-swipe-one').props.onAccessibilityAction({ nativeEvent: { actionName: 'delete' } }); buttons[1].onPress(); await tick(); screen.render(); await tick();
   assert.equal(requests[2].requestId, requests[3].requestId);
   assert.equal(screen.nodes(n => n.type === 'Statistics').length, 0);
-  assert.equal(screen.get('owned-delete-all').props.disabled, true);
-  assert.match(JSON.stringify(screen.render()), /이 계정에 저장된 방문 기록이 없어요/);
+  assert.equal(screen.nodes(n => n.props.testID === 'owned-delete-all').length, 0);
+  assert.equal(screen.nodes(n => n.props.testID?.startsWith('history-filter-')).length, 0);
+  assert.match(JSON.stringify(screen.render()), /아직 방문 기록이 없어요/);
 });

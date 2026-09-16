@@ -4,6 +4,7 @@ import test from 'node:test';
 
 const catalog = JSON.parse(fs.readFileSync('src/data/busan_poi_catalog.json', 'utf-8'));
 const source = JSON.parse(fs.readFileSync('data/processed/review/부산_장소_근거프로필_재분류.json', 'utf-8'));
+const photoAllowlist = JSON.parse(fs.readFileSync('data/processed/review/사진_이용허락_허용목록.json', 'utf-8'));
 const rows = [...catalog.matched.data, ...catalog.unmatched.data];
 
 const SHORT_STAY_TYPES = new Set(['scenic_pause', 'quick_browse', 'compact_culture', 'quick_rest']);
@@ -55,22 +56,39 @@ test('카카오 확인 링크와 운영시간 신뢰도는 장소별로 추적�
   }
 });
 
-test('공식 API 단위 이용허락과 원천 ID·URL이 정확히 연결된 부산 명소·맛집 사진만 투영한다', () => {
+test('검증 사진과 운영자 승인 사진을 원천 ID·URL에 정확히 연결해 203개만 투영한다', () => {
   const photos = rows.filter((place) => place.imageUrl);
-  assert.equal(photos.length, 101);
+  assert.equal(photos.length, 203);
   assert.deepEqual(
     Object.fromEntries([...new Set(photos.map((place) => place.imageEvidence.source))].sort().map((sourceName) => [sourceName, photos.filter((place) => place.imageEvidence.source === sourceName).length])),
-    { busan_attraction: 85, busan_food: 16 },
+    { busan_attraction: 85, busan_food: 16, busan_shopping: 29, tourapi: 73 },
   );
-  assert.equal(photos.filter((place) => place.imageEvidence.source === 'busan_shopping').length, 0);
-  assert.equal(photos.filter((place) => place.imageSource === 'tourapi').length, 0);
-  for (const place of photos) {
-    assert.equal(place.imageSource, 'busan_official');
+  assert.equal(rows.length - photos.length, 166);
+  const verified = photos.filter((place) => place.imageEvidence.usagePermission.status === 'verified');
+  const operatorApproved = photos.filter((place) => place.imageEvidence.usagePermission.status === 'operator_approved');
+  assert.equal(verified.length, 101);
+  assert.equal(operatorApproved.length, 102);
+  assert.equal(new Set(photos.map((place) => place.contentId)).size, 203);
+  assert.equal(new Set(photos.map((place) => place.imageUrl)).size, 203);
+  assert.deepEqual(
+    new Set(photos.map((place) => `${place.contentId}|${place.imageEvidence.source}|${place.imageEvidence.sourceId}|${place.imageUrl}`)),
+    new Set(photoAllowlist.data.map((place) => `${place.contentId}|${place.source}|${place.sourceId}|${place.imageUrl}`)),
+  );
+  for (const place of verified) {
     assert.equal(place.imageEvidence.usagePermission.basis, 'api_service');
     assert.equal(place.imageEvidence.usagePermission.licenseName, '이용허락범위 제한 없음');
     assert.equal(place.imageEvidence.usagePermission.attributionRequired, false);
     assert.equal(place.imageEvidence.usagePermission.commercialUseAllowed, true);
     assert.equal(place.imageEvidence.usagePermission.modificationAllowed, true);
+  }
+  for (const place of operatorApproved) {
+    assert.equal(place.imageEvidence.usagePermission.basis, 'operator_decision');
+    assert.equal('rightsHolder' in place.imageEvidence.usagePermission, false);
+    assert.equal('licenseName' in place.imageEvidence.usagePermission, false);
+    assert.equal('licenseUrl' in place.imageEvidence.usagePermission, false);
+    assert.equal('commercialUseAllowed' in place.imageEvidence.usagePermission, false);
+    assert.equal('modificationAllowed' in place.imageEvidence.usagePermission, false);
+    if (place.imageEvidence.source === 'tourapi') assert.match(place.imageEvidence.httpsValidatedAt ?? '', /^2026-08-24T/);
   }
 });
 
