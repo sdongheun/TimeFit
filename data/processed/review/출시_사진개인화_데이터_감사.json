@@ -1,7 +1,7 @@
 {
   "meta": {
-    "taskId": "DATA-RELEASE-PERSONALIZATION-01",
-    "asOf": "2026-09-07",
+    "taskId": "DATA-PLACE-PHOTO-ALL-01",
+    "asOf": "2026-09-16",
     "networkCalls": 0
   },
   "imageSafety": {
@@ -12,18 +12,21 @@
     },
     "verifiedApiServices": 2,
     "exactApiPermissionPhotoLinks": 101,
-    "exposedRuntimeImages": 101,
+    "operatorApprovedPhotoLinks": 102,
+    "exposedRuntimeImages": 203,
     "exposedBySource": {
       "busan_attraction": 85,
-      "busan_food": 16
-    },
-    "heldUnconfirmedBySource": {
+      "busan_food": 16,
       "busan_shopping": 29,
       "tourapi": 73
     },
-    "defaultImageFallbackPlaces": 268,
-    "representativeExposedImages": 84,
-    "representativeFallbackPlaces": 107
+    "rightsUnconfirmedBySource": {
+      "busan_shopping": 29,
+      "tourapi": 73
+    },
+    "defaultImageFallbackPlaces": 166,
+    "representativeExposedImages": 179,
+    "representativeFallbackPlaces": 12
   },
   "personalizationCoverage": {
     "beforeFollowup": {

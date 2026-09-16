@@ -31,7 +31,7 @@ function stripImageFields(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(stripImageFields);
   if (!value || typeof value !== 'object') return value;
   return Object.fromEntries(Object.entries(value)
-    .filter(([key]) => !['imageUrl', 'imageSource', 'imageEvidence', 'subCategory', 'generatedAt'].includes(key))
+    .filter(([key]) => !['imageUrl', 'imageSource', 'imageEvidence', 'photos', 'subCategory', 'generatedAt'].includes(key))
     .map(([key, item]) => [key, stripImageFields(item)]));
 }
 
@@ -74,11 +74,11 @@ assert.equal(new Set(places.map((place) => place.contentId)).size, places.length
 assert.equal(places.filter((place) => representativeClasses.has(place.classification)).length, 191);
 assert.equal(places.filter((place) => place.classification === 'conditional_more').length, 178);
 const exposedPhotos = places.filter((place) => place.imageUrl);
-assert.equal(exposedPhotos.length, 101);
+assert.equal(exposedPhotos.length, 203);
 assert.equal(exposedPhotos.filter((place) => place.imageEvidence?.source === 'busan_attraction').length, 85);
 assert.equal(exposedPhotos.filter((place) => place.imageEvidence?.source === 'busan_food').length, 16);
-assert.equal(exposedPhotos.filter((place) => place.imageEvidence?.source === 'busan_shopping').length, 0);
-assert.equal(exposedPhotos.filter((place) => place.imageSource === 'tourapi').length, 0);
+assert.equal(exposedPhotos.filter((place) => place.imageEvidence?.source === 'busan_shopping').length, 29);
+assert.equal(exposedPhotos.filter((place) => place.imageSource === 'tourapi').length, 73);
 assert.equal(photoPermissionAllowlist.summary.allowed, exposedPhotos.length);
 assertExactProjection(representative);
 assertExactProjection(discovery);
@@ -101,18 +101,19 @@ for (const place of places.filter((row) => row.subCategory)) {
 
 const audit = {
   meta: {
-    taskId: 'DATA-RELEASE-PERSONALIZATION-01',
-    asOf: '2026-09-07',
+    taskId: 'DATA-PLACE-PHOTO-ALL-01',
+    asOf: '2026-09-16',
     networkCalls: 0,
   },
   imageSafety: {
     taskStartUniqueRuntimeImages: 203,
     taskStartBySource: { busan_official: 130, tourapi: 73 },
     verifiedApiServices: 2,
-    exactApiPermissionPhotoLinks: photoPermissionAllowlist.summary.allowed,
+    exactApiPermissionPhotoLinks: photoPermissionAllowlist.summary.byStatus.verified,
+    operatorApprovedPhotoLinks: photoPermissionAllowlist.summary.byStatus.operator_approved,
     exposedRuntimeImages: exposedPhotos.length,
     exposedBySource: photoPermissionAllowlist.summary.allowedBySource,
-    heldUnconfirmedBySource: photoPermissionAllowlist.summary.heldBySource,
+    rightsUnconfirmedBySource: photoPermissionAllowlist.summary.rightsUnconfirmedBySource,
     defaultImageFallbackPlaces: places.length - exposedPhotos.length,
     representativeExposedImages: representativePlaces.filter((place) => place.imageUrl).length,
     representativeFallbackPlaces: representativePlaces.filter((place) => !place.imageUrl).length,

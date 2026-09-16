@@ -1,9 +1,9 @@
 {
   "meta": {
-    "contractVersion": 2,
-    "status": "partial_api_service_permission_verified",
-    "generatedAt": "2026-09-07",
-    "permissionPolicy": "API 서비스 단위 이용허락을 공통 근거로 인정하되 contentId/source/sourceId/imageUrl을 정확히 연결한다. 서비스 조건이 미확인인 사진은 허용하지 않는다.",
+    "contractVersion": 3,
+    "status": "verified_and_operator_approved",
+    "generatedAt": "2026-09-16",
+    "permissionPolicy": "기존 API 서비스 단위 verified 101개를 보존하고, 사용자 결정에 따른 operator_approved 102개를 별도 상태로 표시한다. 모든 행은 contentId/source/sourceId/imageUrl을 정확히 연결하며 operator_approved를 권리·라이선스 검증으로 승격하지 않는다.",
     "officialEvidencePages": [
       {
         "serviceName": "부산광역시_부산명소정보 서비스",
@@ -22,19 +22,37 @@
   "summary": {
     "runtimePlaces": 369,
     "storedCandidatePhotos": 203,
-    "allowed": 101,
+    "allowed": 203,
     "allowedBySource": {
       "busan_attraction": 85,
-      "busan_food": 16
+      "busan_food": 16,
+      "busan_shopping": 29,
+      "tourapi": 73
     },
-    "heldUnconfirmed": 102,
-    "heldBySource": {
+    "byStatus": {
+      "verified": 101,
+      "operator_approved": 102
+    },
+    "rightsUnconfirmed": 102,
+    "rightsUnconfirmedBySource": {
       "busan_shopping": 29,
       "tourapi": 73
     },
     "noStoredCandidate": 166
   },
   "data": [
+    {
+      "contentId": "poi_1",
+      "source": "tourapi",
+      "sourceId": "127004",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/68/3026468_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
     {
       "contentId": "poi_1047",
       "source": "busan_food",
@@ -207,6 +225,18 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_107",
+      "source": "tourapi",
+      "sourceId": "1942316",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/73/3026273_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_1070",
       "source": "busan_food",
       "sourceId": "2371",
@@ -243,6 +273,18 @@
       "commercialUseAllowed": true,
       "modificationAllowed": true,
       "verifiedAt": "2026-09-07"
+    },
+    {
+      "contentId": "poi_11",
+      "source": "tourapi",
+      "sourceId": "1013709",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/26/3561926_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
     },
     {
       "contentId": "poi_1141",
@@ -302,6 +344,210 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_122",
+      "source": "tourapi",
+      "sourceId": "1935608",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/44/3552344_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_125",
+      "source": "tourapi",
+      "sourceId": "129631",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/02/3476802_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_13",
+      "source": "busan_shopping",
+      "sourceId": "412",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191230201107580_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_134",
+      "source": "tourapi",
+      "sourceId": "3414171",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/91/3414191_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_144",
+      "source": "tourapi",
+      "sourceId": "2554141",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/22/3337322_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_145",
+      "source": "tourapi",
+      "sourceId": "2614714",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/37/3029337_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_150",
+      "source": "tourapi",
+      "sourceId": "2783380",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/56/2795656_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_151",
+      "source": "tourapi",
+      "sourceId": "2875849",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/42/2875842_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_153",
+      "source": "tourapi",
+      "sourceId": "128564",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/26/2607126_image2_1.bmp",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_16",
+      "source": "tourapi",
+      "sourceId": "1957694",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/46/3049246_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_165",
+      "source": "tourapi",
+      "sourceId": "127149",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/47/3498447_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_166",
+      "source": "tourapi",
+      "sourceId": "2907087",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/82/2907082_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_168",
+      "source": "tourapi",
+      "sourceId": "2708108",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/71/3552571_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_171",
+      "source": "tourapi",
+      "sourceId": "2789334",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/45/3337845_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_173",
+      "source": "tourapi",
+      "sourceId": "126122",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/86/2504686_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_174",
+      "source": "tourapi",
+      "sourceId": "2946508",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/43/2947043_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_176",
+      "source": "tourapi",
+      "sourceId": "126856",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/87/2754987_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_177",
       "source": "busan_attraction",
       "sourceId": "848",
@@ -319,6 +565,18 @@
       "commercialUseAllowed": true,
       "modificationAllowed": true,
       "verifiedAt": "2026-09-07"
+    },
+    {
+      "contentId": "poi_185",
+      "source": "tourapi",
+      "sourceId": "2785762",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/07/3370707_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
     },
     {
       "contentId": "poi_187",
@@ -359,6 +617,102 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_190",
+      "source": "tourapi",
+      "sourceId": "2758469",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/82/3336582_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_193",
+      "source": "tourapi",
+      "sourceId": "2614725",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/24/2614724_image2_1.bmp",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_211",
+      "source": "tourapi",
+      "sourceId": "2614727",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/66/2661666_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_213",
+      "source": "tourapi",
+      "sourceId": "2944033",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/22/2947122_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_219",
+      "source": "tourapi",
+      "sourceId": "129597",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/88/3019388_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_22",
+      "source": "tourapi",
+      "sourceId": "987810",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/47/3350847_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_220",
+      "source": "tourapi",
+      "sourceId": "3017435",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/53/3455153_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_223",
+      "source": "tourapi",
+      "sourceId": "2736392",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/30/3080230_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_225",
       "source": "busan_attraction",
       "sourceId": "1868",
@@ -376,6 +730,42 @@
       "commercialUseAllowed": true,
       "modificationAllowed": true,
       "verifiedAt": "2026-09-07"
+    },
+    {
+      "contentId": "poi_229",
+      "source": "tourapi",
+      "sourceId": "128055",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/63/3370163_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_23",
+      "source": "tourapi",
+      "sourceId": "2834026",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/60/2836060_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_231",
+      "source": "tourapi",
+      "sourceId": "2775565",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/27/3334627_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
     },
     {
       "contentId": "poi_237",
@@ -397,6 +787,18 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_244",
+      "source": "tourapi",
+      "sourceId": "130380",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/82/3476682_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_245",
       "source": "busan_attraction",
       "sourceId": "2121",
@@ -414,6 +816,30 @@
       "commercialUseAllowed": true,
       "modificationAllowed": true,
       "verifiedAt": "2026-09-07"
+    },
+    {
+      "contentId": "poi_246",
+      "source": "tourapi",
+      "sourceId": "130381",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/41/3476741_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_247",
+      "source": "tourapi",
+      "sourceId": "3017112",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/82/3017082_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
     },
     {
       "contentId": "poi_25",
@@ -435,6 +861,294 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_252",
+      "source": "tourapi",
+      "sourceId": "130216",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/88/3336488_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_253",
+      "source": "tourapi",
+      "sourceId": "130798",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/48/3343348_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_256",
+      "source": "tourapi",
+      "sourceId": "130749",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/28/3476728_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_257",
+      "source": "tourapi",
+      "sourceId": "130752",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/01/3336501_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_258",
+      "source": "tourapi",
+      "sourceId": "130797",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/05/3343405_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_260",
+      "source": "tourapi",
+      "sourceId": "1607138",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/13/3332613_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_264",
+      "source": "tourapi",
+      "sourceId": "130834",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/53/3338053_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_265",
+      "source": "tourapi",
+      "sourceId": "1747913",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/87/3343387_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_270",
+      "source": "tourapi",
+      "sourceId": "2556598",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/91/3541891_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_272",
+      "source": "tourapi",
+      "sourceId": "2782714",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/54/2795954_image2_1.png",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_273",
+      "source": "tourapi",
+      "sourceId": "2782757",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/97/2795997_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_274",
+      "source": "tourapi",
+      "sourceId": "2550799",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/81/3081181_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_285",
+      "source": "tourapi",
+      "sourceId": "132574",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/55/3561855_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_287",
+      "source": "busan_shopping",
+      "sourceId": "363",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191227204933593_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_290",
+      "source": "tourapi",
+      "sourceId": "132187",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/25/3561825_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_3",
+      "source": "busan_shopping",
+      "sourceId": "548",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200205165858664_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_302",
+      "source": "tourapi",
+      "sourceId": "132499",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/44/3561844_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_304",
+      "source": "tourapi",
+      "sourceId": "2787128",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/28/2790928_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_305",
+      "source": "tourapi",
+      "sourceId": "132189",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/33/3561833_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_306",
+      "source": "tourapi",
+      "sourceId": "2763981",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/76/3561476_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_34",
+      "source": "tourapi",
+      "sourceId": "2532877",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/90/3542590_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_37",
+      "source": "tourapi",
+      "sourceId": "2784330",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/22/3336622_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_378",
+      "source": "tourapi",
+      "sourceId": "2869159",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/44/2869144_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_4",
+      "source": "busan_shopping",
+      "sourceId": "400",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191230184821145_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_403",
       "source": "busan_food",
       "sourceId": "127",
@@ -454,6 +1168,30 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_41",
+      "source": "tourapi",
+      "sourceId": "2763856",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/77/3343377_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_421",
+      "source": "tourapi",
+      "sourceId": "3452014",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/97/3451897_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_427",
       "source": "busan_food",
       "sourceId": "1464",
@@ -471,6 +1209,114 @@
       "commercialUseAllowed": true,
       "modificationAllowed": true,
       "verifiedAt": "2026-09-07"
+    },
+    {
+      "contentId": "poi_450",
+      "source": "tourapi",
+      "sourceId": "2852696",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/89/2852689_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_473",
+      "source": "tourapi",
+      "sourceId": "2832717",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/15/2832715_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_488",
+      "source": "tourapi",
+      "sourceId": "2836424",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/16/2836416_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_520",
+      "source": "tourapi",
+      "sourceId": "2847877",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/70/2847870_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_551",
+      "source": "tourapi",
+      "sourceId": "2642681",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/90/3423190_image2_1.png",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_552",
+      "source": "tourapi",
+      "sourceId": "2853060",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/42/2853042_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_553",
+      "source": "tourapi",
+      "sourceId": "2852408",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/06/2852406_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_554",
+      "source": "tourapi",
+      "sourceId": "2875345",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/38/2875338_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_570",
+      "source": "tourapi",
+      "sourceId": "2844738",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/32/2844732_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
     },
     {
       "contentId": "poi_608",
@@ -1138,6 +1984,18 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_69",
+      "source": "tourapi",
+      "sourceId": "1013694",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/19/3561919_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_690",
       "source": "busan_attraction",
       "sourceId": "511",
@@ -1193,6 +2051,18 @@
       "commercialUseAllowed": true,
       "modificationAllowed": true,
       "verifiedAt": "2026-09-07"
+    },
+    {
+      "contentId": "poi_7",
+      "source": "tourapi",
+      "sourceId": "3027700",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/53/3027653_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
     },
     {
       "contentId": "poi_70",
@@ -1307,6 +2177,18 @@
       "commercialUseAllowed": true,
       "modificationAllowed": true,
       "verifiedAt": "2026-09-07"
+    },
+    {
+      "contentId": "poi_71",
+      "source": "tourapi",
+      "sourceId": "2554068",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/19/3539019_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
     },
     {
       "contentId": "poi_711",
@@ -1632,6 +2514,18 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_75",
+      "source": "tourapi",
+      "sourceId": "2822343",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/37/2822337_image2_1.png",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_751",
       "source": "busan_attraction",
       "sourceId": "2145",
@@ -1784,6 +2678,18 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_77",
+      "source": "tourapi",
+      "sourceId": "2865236",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/31/2865231_image2_1.jpg",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_773",
       "source": "busan_attraction",
       "sourceId": "2284",
@@ -1820,6 +2726,18 @@
       "commercialUseAllowed": true,
       "modificationAllowed": true,
       "verifiedAt": "2026-09-07"
+    },
+    {
+      "contentId": "poi_78",
+      "source": "busan_shopping",
+      "sourceId": "2581",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250929183544348_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
     },
     {
       "contentId": "poi_781",
@@ -1879,6 +2797,294 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_787",
+      "source": "busan_shopping",
+      "sourceId": "292",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191226103342213_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_789",
+      "source": "busan_shopping",
+      "sourceId": "294",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191226105015522_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_79",
+      "source": "tourapi",
+      "sourceId": "127925",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/42/3071042_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_790",
+      "source": "busan_shopping",
+      "sourceId": "300",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191226131132446_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_791",
+      "source": "busan_shopping",
+      "sourceId": "328",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191227114043326_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_793",
+      "source": "busan_shopping",
+      "sourceId": "422",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191230210800496_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_797",
+      "source": "busan_shopping",
+      "sourceId": "533",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200421182448481_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_800",
+      "source": "busan_shopping",
+      "sourceId": "540",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200207150233726_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_801",
+      "source": "busan_shopping",
+      "sourceId": "541",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200214134014426_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_802",
+      "source": "busan_shopping",
+      "sourceId": "546",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200207110846432_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_803",
+      "source": "busan_shopping",
+      "sourceId": "547",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200207111009687_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_805",
+      "source": "busan_shopping",
+      "sourceId": "552",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200213181053895_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_806",
+      "source": "busan_shopping",
+      "sourceId": "554",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200214105929005_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_807",
+      "source": "busan_shopping",
+      "sourceId": "555",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20200214112440464_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_811",
+      "source": "busan_shopping",
+      "sourceId": "1667",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20230630182744054_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_816",
+      "source": "busan_shopping",
+      "sourceId": "2141",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20241024163108664_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_817",
+      "source": "busan_shopping",
+      "sourceId": "2165",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20241107114741461_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_819",
+      "source": "busan_shopping",
+      "sourceId": "2252",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250117102719733_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_821",
+      "source": "busan_shopping",
+      "sourceId": "2417",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250718181629841_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_822",
+      "source": "busan_shopping",
+      "sourceId": "2537",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250808151250876_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_823",
+      "source": "busan_shopping",
+      "sourceId": "2539",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250808153850223_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_824",
+      "source": "busan_shopping",
+      "sourceId": "2541",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250814180238089_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_825",
+      "source": "busan_shopping",
+      "sourceId": "2555",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20250903122354098_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
+      "contentId": "poi_828",
+      "source": "busan_shopping",
+      "sourceId": "2589",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20251020180018486_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_89",
       "source": "busan_attraction",
       "sourceId": "402",
@@ -1936,6 +3142,18 @@
       "verifiedAt": "2026-09-07"
     },
     {
+      "contentId": "poi_93",
+      "source": "tourapi",
+      "sourceId": "3080300",
+      "imageUrl": "https://tong.visitkorea.or.kr/cms/resource/95/3080295_image2_1.JPG",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "한국관광공사 TourAPI",
+      "attribution": "사진 출처: 한국관광공사 TourAPI",
+      "displayConditions": "HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
+    },
+    {
       "contentId": "poi_94",
       "source": "busan_attraction",
       "sourceId": "550",
@@ -1953,6 +3171,18 @@
       "commercialUseAllowed": true,
       "modificationAllowed": true,
       "verifiedAt": "2026-09-07"
+    },
+    {
+      "contentId": "poi_96",
+      "source": "busan_shopping",
+      "sourceId": "327",
+      "imageUrl": "https://www.visitbusan.net/uploadImgs/files/cntnts/20191227113457795_thumbL",
+      "permissionBasis": "operator_decision",
+      "status": "operator_approved",
+      "sourceName": "부산광역시 부산쇼핑정보 서비스",
+      "attribution": "사진 출처: 부산광역시 부산쇼핑정보 서비스",
+      "displayConditions": "앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.",
+      "approvedAt": "2026-09-16"
     }
   ]
 }

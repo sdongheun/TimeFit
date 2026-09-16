@@ -45,6 +45,24 @@ const SERVICE_PERMISSIONS = {
     verifiedAt: '2026-09-07',
   },
 };
+const OPERATOR_APPROVALS = {
+  busan_shopping: {
+    permissionBasis: 'operator_decision',
+    status: 'operator_approved',
+    sourceName: '부산광역시 부산쇼핑정보 서비스',
+    attribution: '사진 출처: 부산광역시 부산쇼핑정보 서비스',
+    displayConditions: '앱 운영자 표시 결정. 개별 권리·라이선스·변경 허용은 확인되지 않음.',
+    approvedAt: '2026-09-16',
+  },
+  tourapi: {
+    permissionBasis: 'operator_decision',
+    status: 'operator_approved',
+    sourceName: '한국관광공사 TourAPI',
+    attribution: '사진 출처: 한국관광공사 TourAPI',
+    displayConditions: 'HTTPS 도달성 확인 및 앱 운영자 표시 결정. 개별 사진의 공공누리 유형·권리자·변경 허용은 확인되지 않음.',
+    approvedAt: '2026-09-16',
+  },
+};
 
 const read = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
 const rows = (payload) => Array.isArray(payload) ? payload : payload.data ?? payload.items ?? [];
@@ -70,47 +88,54 @@ function officialCandidate(place) {
   return null;
 }
 
-function hasTourapiCandidate(place) {
+function tourapiCandidate(place) {
   const evidence = (place.sourceEvidence ?? []).find((row) => row.source === 'tourapi_aihub' || row.source === 'tourapi_fallback');
-  if (!evidence) return false;
+  if (!evidence) return null;
   const audit = tourapiAuditByPlace.get(place.id);
   const validation = acceptedTourapiByPlace.get(place.id);
   const originalUrl = validation?.originalUrl ?? validation?.image;
-  return Boolean(audit && validation
+  if (!(audit && validation
     && String(audit.tourapiContentId) === String(evidence.sourceId)
     && String(validation.tourapiContentId) === String(evidence.sourceId)
     && audit.image === originalUrl
-    && validation.finalUrl?.startsWith('https://'));
+    && validation.finalUrl?.startsWith('https://'))) return null;
+  return { contentId: place.id, source: 'tourapi', sourceId: String(evidence.sourceId), imageUrl: validation.finalUrl };
 }
 
 const allowed = [];
-const held = { busan_shopping: 0, tourapi: 0 };
 let noStoredCandidate = 0;
 for (const place of active) {
   const official = officialCandidate(place);
   if (official) {
     const permission = SERVICE_PERMISSIONS[official.source];
     if (permission) allowed.push({ ...official, ...permission });
-    else if (official.source === 'busan_shopping') held.busan_shopping += 1;
+    else if (official.source === 'busan_shopping') allowed.push({ ...official, ...OPERATOR_APPROVALS.busan_shopping });
     continue;
   }
-  if (hasTourapiCandidate(place)) held.tourapi += 1;
+  const tourapi = tourapiCandidate(place);
+  if (tourapi) allowed.push({ ...tourapi, ...OPERATOR_APPROVALS.tourapi });
   else noStoredCandidate += 1;
 }
 
 allowed.sort((left, right) => left.contentId.localeCompare(right.contentId));
-const allowedBySource = Object.fromEntries(Object.keys(SERVICE_PERMISSIONS).sort().map((source) => [source, allowed.filter((row) => row.source === source).length]));
-const storedCandidatePhotos = allowed.length + held.busan_shopping + held.tourapi;
-if (active.length !== 369 || allowed.length !== 101 || held.busan_shopping !== 29 || held.tourapi !== 73 || noStoredCandidate !== 166 || storedCandidatePhotos !== 203) {
-  throw new Error(`unexpected photo inventory: ${JSON.stringify({ active: active.length, allowed: allowed.length, held, noStoredCandidate, storedCandidatePhotos })}`);
+const allowedBySource = Object.fromEntries([...Object.keys(SERVICE_PERMISSIONS), ...Object.keys(OPERATOR_APPROVALS)].sort()
+  .map((source) => [source, allowed.filter((row) => row.source === source).length]));
+const byStatus = Object.fromEntries(['verified', 'operator_approved'].map((status) => [status, allowed.filter((row) => row.status === status).length]));
+const rightsUnconfirmedBySource = Object.fromEntries(Object.keys(OPERATOR_APPROVALS).sort()
+  .map((source) => [source, allowed.filter((row) => row.source === source && row.status === 'operator_approved').length]));
+const storedCandidatePhotos = allowed.length;
+if (active.length !== 369 || allowed.length !== 203 || byStatus.verified !== 101 || byStatus.operator_approved !== 102
+  || allowedBySource.busan_attraction !== 85 || allowedBySource.busan_food !== 16
+  || allowedBySource.busan_shopping !== 29 || allowedBySource.tourapi !== 73 || noStoredCandidate !== 166) {
+  throw new Error(`unexpected photo inventory: ${JSON.stringify({ active: active.length, allowed: allowed.length, allowedBySource, byStatus, noStoredCandidate })}`);
 }
 
 const output = {
   meta: {
-    contractVersion: 2,
-    status: 'partial_api_service_permission_verified',
-    generatedAt: '2026-09-07',
-    permissionPolicy: 'API 서비스 단위 이용허락을 공통 근거로 인정하되 contentId/source/sourceId/imageUrl을 정확히 연결한다. 서비스 조건이 미확인인 사진은 허용하지 않는다.',
+    contractVersion: 3,
+    status: 'verified_and_operator_approved',
+    generatedAt: '2026-09-16',
+    permissionPolicy: '기존 API 서비스 단위 verified 101개를 보존하고, 사용자 결정에 따른 operator_approved 102개를 별도 상태로 표시한다. 모든 행은 contentId/source/sourceId/imageUrl을 정확히 연결하며 operator_approved를 권리·라이선스 검증으로 승격하지 않는다.',
     officialEvidencePages: Object.values(SERVICE_PERMISSIONS).map(({ serviceName, sourcePageUrl, licenseName, verifiedAt }) => ({ serviceName, sourcePageUrl, licenseName, verifiedAt })),
   },
   summary: {
@@ -118,12 +143,13 @@ const output = {
     storedCandidatePhotos,
     allowed: allowed.length,
     allowedBySource,
-    heldUnconfirmed: held.busan_shopping + held.tourapi,
-    heldBySource: held,
+    byStatus,
+    rightsUnconfirmed: byStatus.operator_approved,
+    rightsUnconfirmedBySource,
     noStoredCandidate,
   },
   data: allowed,
 };
 
 fs.writeFileSync(OUTPUT, `${JSON.stringify(output, null, 2)}\n`);
-console.log(`공식 API 사진 허용목록: 허용 ${allowed.length} (명소 ${allowedBySource.busan_attraction}, 맛집 ${allowedBySource.busan_food}) / 조건 미확인 ${output.summary.heldUnconfirmed} (쇼핑 ${held.busan_shopping}, TourAPI ${held.tourapi}) / 저장 사진 없음 ${noStoredCandidate}`);
+console.log(`장소 사진 표시목록: ${allowed.length} (verified ${byStatus.verified}, operator_approved ${byStatus.operator_approved}; 명소 ${allowedBySource.busan_attraction}, 맛집 ${allowedBySource.busan_food}, 쇼핑 ${allowedBySource.busan_shopping}, TourAPI ${allowedBySource.tourapi}) / 기본 이미지 ${noStoredCandidate}`);

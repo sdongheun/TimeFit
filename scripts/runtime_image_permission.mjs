@@ -5,13 +5,13 @@ function text(value) {
 }
 
 /**
- * 공개 runtime 사진은 URL의 도달성이 아니라 공식 API 서비스 단위 이용허락과
- * 정확한 contentId/source/sourceId/URL 연결로 허용한다. 현재 UI가 이미지를
- * crop할 수 있으므로 상업 이용과 변경 이용이 모두 확인된 단일 연결 row만
- * 통과시킨다. 불완전·중복·불일치는 모두 기본 이미지다.
+ * 공개 runtime 사진은 정확한 contentId/source/sourceId/URL 단일 연결만 허용한다.
+ * 기존 verified 행은 API 서비스 이용허락과 상업·변경 이용 조건을 모두 요구하고,
+ * operator_approved 행은 권리 검증과 혼동되지 않는 별도 metadata만 투영한다.
+ * 불완전·중복·불일치는 모두 기본 이미지다.
  */
 export function projectRuntimeImageWithPermission(contentId, candidate, permissionRows) {
-  if (!candidate?.imageUrl || !candidate?.imageSource || !candidate?.imageEvidence?.source || !candidate?.imageEvidence?.sourceId) return null;
+  if (!HTTPS.test(text(candidate?.imageUrl)) || !candidate?.imageSource || !candidate?.imageEvidence?.source || !candidate?.imageEvidence?.sourceId) return null;
   const matches = permissionRows.filter((row) => (
     row.contentId === contentId
     && row.imageUrl === candidate.imageUrl
@@ -21,6 +21,31 @@ export function projectRuntimeImageWithPermission(contentId, candidate, permissi
   if (matches.length !== 1) return null;
 
   const permission = matches[0];
+  if (permission.permissionBasis === 'operator_decision') {
+    if (permission.status !== 'operator_approved'
+      || !['busan_shopping', 'tourapi'].includes(permission.source)
+      || !text(permission.sourceName)
+      || !text(permission.attribution)
+      || !text(permission.displayConditions)
+      || !/^\d{4}-\d{2}-\d{2}$/.test(text(permission.approvedAt))) return null;
+
+    return {
+      imageUrl: candidate.imageUrl,
+      imageSource: candidate.imageSource,
+      imageEvidence: {
+        ...candidate.imageEvidence,
+        usagePermission: {
+          basis: 'operator_decision',
+          status: 'operator_approved',
+          sourceName: text(permission.sourceName),
+          attribution: text(permission.attribution),
+          displayConditions: text(permission.displayConditions),
+          approvedAt: text(permission.approvedAt),
+        },
+      },
+    };
+  }
+
   if (permission.permissionBasis !== 'api_service'
     || !text(permission.serviceName)
     || permission.status !== 'verified'

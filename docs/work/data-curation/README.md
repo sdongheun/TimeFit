@@ -1,5 +1,9 @@
 # 데이터 정제 현재 작업
 
+## 최신 완료 — DATA-PLACE-PHOTO-ALL-01
+
+[저장된 장소 사진 203개 데이터 인계](all-place-photo-rollout.md). 기존 `verified` 101개를 그대로 보존하고 부산 쇼핑 29개·TourAPI 73개를 `operator_approved`로 분리해 런타임 카탈로그에 전달했다. 권리·라이선스 검증으로 승격하지 않았으며, 화면 표시는 후속 `U-PLACE-PHOTO-ALL-01`이 필요하다.
+
 ## 최우선 — DATA-RELEASE-ASSETS-01
 
 [출시 실행 명령](../integration-decision/release-execution-wave.md)의 해당 절 실행. 현행 사진 근거·표시·fallback 감사만 수행. 미확인 사진 전량 확보와 카탈로그 재설계를 출시 선행조건으로 만들지 않는다.

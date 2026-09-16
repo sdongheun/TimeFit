@@ -269,6 +269,18 @@ const unmatched = rows
   .map(toRuntime);
 const all = [...matched, ...unmatched];
 const categories = [...new Set(all.map((place) => place.category))].sort();
+const photoSummary = {
+  displayed: all.filter((place) => place.imageUrl).length,
+  fallback: all.filter((place) => !place.imageUrl).length,
+  byStatus: countBy(all.filter((place) => place.imageUrl), (place) => place.imageEvidence?.usagePermission?.status),
+  bySource: countBy(all.filter((place) => place.imageUrl), (place) => place.imageEvidence?.source),
+};
+if (photoSummary.displayed !== 203 || photoSummary.fallback !== 166
+  || photoSummary.byStatus.verified !== 101 || photoSummary.byStatus.operator_approved !== 102
+  || photoSummary.bySource.busan_attraction !== 85 || photoSummary.bySource.busan_food !== 16
+  || photoSummary.bySource.busan_shopping !== 29 || photoSummary.bySource.tourapi !== 73) {
+  throw new Error(`unexpected runtime photo contract: ${JSON.stringify(photoSummary)}`);
+}
 
 const catalog = {
   meta: {
@@ -290,6 +302,7 @@ const catalog = {
     shortStayType: countBy(all, (place) => place.shortStay.type),
     categories: countBy(all, (place) => place.category),
     openingHoursReliability: countBy(all, (place) => place.openingHoursReliability),
+    photos: photoSummary,
   },
   matched: {
     summary: { matched: matched.length, matchScope: countBy(matched, (place) => place.matchScope) },
@@ -306,4 +319,4 @@ const catalog = {
 };
 
 write(OUTPUT, catalog);
-console.log(`자투리 런타임 카탈로그 생성: 매칭 ${matched.length} / 미매칭 ${unmatched.length} / 합계 ${all.length} / 공식 설명 ${officialDetailDescriptions.size} / 이용허락 확인 사진 ${all.filter((place) => place.imageUrl).length}`);
+console.log(`자투리 런타임 카탈로그 생성: 매칭 ${matched.length} / 미매칭 ${unmatched.length} / 합계 ${all.length} / 공식 설명 ${officialDetailDescriptions.size} / 표시 사진 ${photoSummary.displayed} / 기본 이미지 ${photoSummary.fallback}`);
