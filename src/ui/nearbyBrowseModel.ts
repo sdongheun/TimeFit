@@ -15,6 +15,8 @@ export type NearbyCatalogPlace = PlacePhotoInput & Readonly<{
   imageSource?: string | null;
   detailDescription?: string | null;
   operatingHours?: readonly string[] | null;
+  sourceKind?: 'live' | 'traditional_market_standard_static';
+  operatingHoursStatus?: 'unverified';
   mapVerification?: { status?: string | null; placeId?: string | null; placeUrl?: string | null } | null;
 }>;
 

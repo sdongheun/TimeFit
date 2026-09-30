@@ -28,6 +28,7 @@ async function run(session: RecommendationSession, response: 'exact' | 'no_route
       : { result: response, newProviderAttemptCount: 1, reused: false },
   };
   const result = await runRecommendationSession(session, { routeProxyEnabled: true }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => { throw new Error('fixture must not fall back to legacy'); },
     createActivatedProxyRoutes: async () => ports,
     getPublicRecommendationEnvironment: () => ({}),

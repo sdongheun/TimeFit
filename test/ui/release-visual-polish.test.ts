@@ -46,6 +46,7 @@ test('URELEASEVISUAL01 failure-first: runtime은 실제 port와 builder 경계�
     routeProxyEnabled: false,
     onProgress: (stage) => events.push(`progress:${stage}`),
   }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => { events.push('route-port'); return routes; },
     getPublicRecommendationEnvironment: () => ({ diagnostics: 'false', internalB12: 'false' }),
     buildRelease: async () => { events.push('builder'); return emptyResult; },
@@ -69,6 +70,7 @@ test('URELEASEVISUAL01 failure-first: 실패와 callback 오류는 complete·추
     routeProxyEnabled: false,
     onProgress: (stage) => failedStages.push(stage),
   }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => { routeCalls += 1; return routes; },
     getPublicRecommendationEnvironment: () => ({ diagnostics: 'false', internalB12: 'false' }),
     buildRelease: async () => { builderCalls += 1; throw new Error('fixture failure'); },
@@ -80,6 +82,7 @@ test('URELEASEVISUAL01 failure-first: 실패와 callback 오류는 complete·추
     routeProxyEnabled: false,
     onProgress: () => { throw new Error('display callback must be optional'); },
   }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => routes,
     getPublicRecommendationEnvironment: () => ({ diagnostics: 'false', internalB12: 'false' }),
     buildRelease: async () => emptyResult,

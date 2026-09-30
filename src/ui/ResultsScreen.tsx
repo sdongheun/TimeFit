@@ -25,6 +25,7 @@ import { TwoStopFixedCourseCta, TwoStopSelectionTray, type TwoStopTrayPlace } fr
 import { buildTwoStopCandidateCard, createInlineTwoStopSelectionController, createTwoStopSelectionController, resultsCourseRegionMode, type JsonValue } from './recommendation/twoStopSelectionModel';
 import type { CourseV1ReleaseOneStopContinuation, CourseV1ReleaseOneStopPageState } from '../engine';
 import { placeDetailSelectionHandoff, type PlaceDetailRequestIdentity } from './placeDetailModel';
+import { resolveRecommendationPlace } from './recommendation/livePlacePresentation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Results'>;
 type RuntimePlace = (typeof runtimeCatalog.matched.data)[number] | (typeof runtimeCatalog.unmatched.data)[number];
@@ -40,6 +41,7 @@ export function ResultsScreen({ route, navigation }: Props) {
   const [, setPersonalizationVersion] = useState(personalizationSession.version());
   useEffect(() => personalizationSession.subscribe(() => setPersonalizationVersion(personalizationSession.version())), []);
   const { result: engineResult, session } = route.params;
+  const getPlace = (id: string) => resolveRecommendationPlace(session, id, () => places.get(id));
   const result = releaseOneStopDisplayResult(engineResult);
   const initialMoreState = useMemo(() => initialReleaseOneStopMoreState(engineResult), [engineResult]);
   const [moreState, setMoreState] = useState<ReleaseOneStopMoreState>(initialMoreState);
@@ -170,9 +172,9 @@ export function ResultsScreen({ route, navigation }: Props) {
     const outcomeMessage = courseV1OutcomeMessage(result.primaryOutcomeReason);
     return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{renderHeader()}<View style={s.empty}><Text style={s.emptyTitle}>추천을 확인하지 못했어요</Text><Text style={s.copy}>{outcomeMessage ?? '설정한 시간 안에 들를 수 있는 장소를 찾지 못했어요.'}</Text><Pressable style={s.secondary} onPress={() => navigation.goBack()}><Text style={s.secondaryText}>{noRepresentativeCandidates ? '조건 다시 설정' : '시간과 위치 다시 설정'}</Text></Pressable></View>{diagnosticsPanel}</ScrollView></View>;
   }
-  const representative = buildCourseV1CardSummary(course, '', (id) => places.get(id));
+  const representative = buildCourseV1CardSummary(course, '', getPlace);
   const alternatives = alternativeCourses
-    .map((alternative) => buildCourseV1CardSummary(alternative, '', (id) => places.get(id)))
+    .map((alternative) => buildCourseV1CardSummary(alternative, '', getPlace))
     .filter((item): item is CourseV1CardSummary => item !== null);
   if (!representative) {
     return <View style={s.root}><ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 14 }]}>{renderHeader()}<View style={s.empty}><Text style={s.emptyTitle}>코스 정보를 안전하게 표시할 수 없어요</Text><Text style={s.copy}>시간과 위치를 다시 설정해 추천을 받아 주세요.</Text><Pressable style={s.secondary} onPress={() => navigation.goBack()}><Text style={s.secondaryText}>시간과 위치 다시 설정</Text></Pressable></View>{diagnosticsPanel}</ScrollView></View>;
@@ -180,9 +182,9 @@ export function ResultsScreen({ route, navigation }: Props) {
   const inlineState = inlineSelection.getState();
   const selection = inlineSelection.getPairSelection();
   const selected = inlineState.mode !== 'idle';
-  const firstSummary = selected ? buildCourseV1CardSummary(inlineState.firstCourse, '선택한 장소', (id) => places.get(id)) : null;
+  const firstSummary = selected ? buildCourseV1CardSummary(inlineState.firstCourse, '선택한 장소', getPlace) : null;
   const candidates = selected ? (selection?.courses ?? [])
-    .map((item) => buildTwoStopCandidateCard(item, inlineState.firstCourse, (id) => places.get(id)))
+    .map((item) => buildTwoStopCandidateCard(item, inlineState.firstCourse, getPlace))
     .filter((item): item is NonNullable<typeof item> => item !== null) : [];
   const selectedCandidate = selected ? candidates.find((item) => item.course === inlineState.selectedPairCourse) ?? null : null;
   const regionMode = resultsCourseRegionMode(inlineState, selection);

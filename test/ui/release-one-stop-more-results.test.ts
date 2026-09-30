@@ -115,6 +115,7 @@ test('UONEMORE01: 명시 tap wrapper는 같은 session 메모리 input과 현재
   };
   const initial = result(course('A'), [course('B')]);
   await runRecommendationSession(recommendationSession, { routeProxyEnabled: false }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => ({ async getRoute() { return null; } }),
     buildRelease: async () => initial,
   });

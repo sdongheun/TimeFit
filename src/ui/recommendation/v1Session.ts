@@ -11,6 +11,8 @@ import type { TwoStopSelectionPort } from './twoStopSelectionModel';
 import type { RecommendationProgressStage } from './recommendationLoadingModel';
 import { personalizationSession, recommendationPersonalizationSnapshots as personalizationSnapshots, isPersonalizationScopeCurrent } from '../personalizationComposition';
 import type { PersonalizationSessionSnapshot } from '../personalizationSessionModel';
+import type { LivePublicDataBridge, LivePublicDataPorts } from './livePublicDataSession';
+import { attachLivePlaceSnapshot } from './livePlacePresentation';
 
 export type RecommendationRuntimeOptions = {
   routeProxyEnabled: boolean;
@@ -18,6 +20,8 @@ export type RecommendationRuntimeOptions = {
   captchaToken?: string;
   /** 화면 보조 진행 표시 전용. 저장·navigation·engine input에는 포함하지 않는다. */
   onProgress?: (stage: RecommendationProgressStage) => void;
+  /** Cancels an in-progress live source facade when the loading screen leaves. */
+  signal?: AbortSignal;
 };
 
 export type RecommendationRuntimeDependencies = {
@@ -33,6 +37,10 @@ export type RecommendationRuntimeDependencies = {
   buildInternalB12?: (input: CourseV1LimitedInput) => Promise<CourseV1LimitedResult>;
   /** UI test seam; production always uses the accepted 2-V single page entry. */
   continueRelease?: typeof continueReleaseOneStopRepresentativeCourseV1;
+  /** Live fixture seam; production always loads the live public-data path. */
+  loadLivePorts?: () => Promise<LivePublicDataPorts>;
+  /** Legacy engine regression seam only. Production never supplies this. */
+  useLegacyStaticFixture?: () => boolean;
 };
 
 const productionRecommendationRuntimeDependencies: RecommendationRuntimeDependencies = {
@@ -57,6 +65,7 @@ type RecommendationSessionRuntime = {
   verifiedPairSeeds: Map<string, ReleaseTwoStopVerifiedPairSeed>;
   operationTail: Promise<void>;
   operationCount: number;
+  liveBridge?: LivePublicDataBridge;
 };
 
 const continuationInputs = new WeakMap<RecommendationSession, CourseV1LimitedInput>();
@@ -73,7 +82,7 @@ export type ReleaseOneStopUiContinuationResult = CourseV1ReleaseOneStopContinuat
 
 function initialAttemptCount(result: RecommendationResult): number {
   const value = result.diagnostics.newProviderAttemptCount;
-  return Number.isInteger(value) && value! >= 0 && value! <= 8 ? value! : 8;
+  return Number.isInteger(value) && value! >= 0 && value! <= 16 ? value! : 8;
 }
 
 function commitLedger(runtime: RecommendationSessionRuntime, next: ReleaseTwoStopAttemptLedger): void {
@@ -149,7 +158,7 @@ function commitVerifiedPairResult(runtime: RecommendationSessionRuntime, result:
   }
 }
 
-function createSessionRuntime(input: CourseV1LimitedInput, result: RecommendationResult, pairEnabled: boolean): RecommendationSessionRuntime {
+function createSessionRuntime(input: CourseV1LimitedInput, result: RecommendationResult, pairEnabled: boolean, liveBridge?: LivePublicDataBridge): RecommendationSessionRuntime {
   const initialOneStopAttempts = initialAttemptCount(result);
   const displayed = releaseOneStopDisplayResult(result);
   const runtime: RecommendationSessionRuntime = {
@@ -167,13 +176,18 @@ function createSessionRuntime(input: CourseV1LimitedInput, result: Recommendatio
     verifiedPairSeeds: new Map(),
     operationTail: Promise.resolve(),
     operationCount: 0,
+    ...(liveBridge ? { liveBridge } : {}),
   };
+  if (liveBridge) runtime.ledger = liveBridge.ledger;
   if (pairEnabled && input.receiptRoutes) {
     const enginePort = createTwoStopSelectionEnginePort({
       ...input,
       receiptRoutes: input.receiptRoutes,
       ledger: runtime.ledger,
-      ledgerStore: { read: () => runtime.ledger, commit: (next) => commitLedger(runtime, next) },
+      ledgerStore: { read: () => runtime.ledger, commit: (next) => {
+        liveBridge?.ledgerStore.commit(next);
+        commitLedger(runtime, next);
+      } },
       onCompletedExact: (completed) => commitVerifiedPairResult(runtime, completed),
     });
     const seededPort = createFrozenTwoStopSeedPort(
@@ -183,8 +197,10 @@ function createSessionRuntime(input: CourseV1LimitedInput, result: Recommendatio
       runtime.pairSessionToken,
     );
     runtime.twoStopPort = {
-      begin: (request) => runSessionOperation(runtime, () => seededPort.begin(request)),
-      continue: (request) => runSessionOperation(runtime, () => seededPort.continue(request)),
+      begin: (request) => runSessionOperation(runtime, () => liveBridge
+        ? liveBridge.run('automatic', runtime.ledger, () => seededPort.begin(request)) : seededPort.begin(request)),
+      continue: (request) => runSessionOperation(runtime, () => liveBridge
+        ? liveBridge.run('shared', runtime.ledger, () => seededPort.continue(request)) : seededPort.continue(request)),
     };
   }
   return runtime;
@@ -305,6 +321,47 @@ export async function runRecommendationSession(
   const emitProgress = (stage: RecommendationProgressStage) => {
     try { options.onProgress?.(stage); } catch { /* 표시 callback은 추천 성공·실패 의미를 바꾸지 않는다. */ }
   };
+  if (!dependencies.useLegacyStaticFixture?.()) {
+    const { runLivePublicDataInitial, productionLivePublicDataPorts, LivePublicDataUnavailableError } = await import('./livePublicDataSession');
+    emitProgress('input_ready');
+    const context = buildRecommendationEngineInput(session);
+    const snapshot = await (dependencies.readPersonalizationSnapshot ?? (() => personalizationSession.snapshot()))();
+    personalizationSnapshots.set(session, snapshot);
+    if (options.signal?.aborted || !isRecommendationSessionCurrent(session)) throw new Error('recommendation_scope_changed');
+    if (!options.routeProxyEnabled) throw new LivePublicDataUnavailableError();
+    const routePorts = await recommendationPortsFor(options, dependencies);
+    if (!routePorts.receiptRoutes) throw new LivePublicDataUnavailableError();
+    if (options.signal?.aborted || !isRecommendationSessionCurrent(session)) throw new Error('recommendation_scope_changed');
+    emitProgress('route_port_ready');
+    let bridge: LivePublicDataBridge;
+    let displayProjection: Awaited<ReturnType<typeof runLivePublicDataInitial>>['displayProjection'];
+    try {
+      const ports = await (dependencies.loadLivePorts ?? productionLivePublicDataPorts)();
+      if (options.signal?.aborted || !isRecommendationSessionCurrent(session)) throw new Error('recommendation_scope_changed');
+      emitProgress('verifying');
+      ({ bridge, displayProjection } = await runLivePublicDataInitial({
+        context: { ...context, ...(snapshot.samples.length ? { dwellPersonalizationSamples: snapshot.samples } : {}) },
+        receiptRoutes: routePorts.receiptRoutes,
+        isCurrent: () => isRecommendationSessionCurrent(session),
+        signal: options.signal,
+        ports,
+      }));
+    } catch (error) {
+      if (options.signal?.aborted || !isRecommendationSessionCurrent(session)) throw new Error('recommendation_scope_changed');
+      throw error instanceof LivePublicDataUnavailableError ? error : new LivePublicDataUnavailableError();
+    }
+    if (options.signal?.aborted || !isRecommendationSessionCurrent(session)) throw new Error('recommendation_scope_changed');
+    try { attachLivePlaceSnapshot(session, displayProjection); }
+    catch { throw new LivePublicDataUnavailableError(); }
+    const runtime = createSessionRuntime(bridge.input, bridge.result, true, bridge);
+    // The screen's abort signal owns only the initial loading task. Once Results owns the
+    // sealed runtime, leaving TimeSetup must not disable pair/continuation operations.
+    runtime.isCurrent = () => isRecommendationSessionCurrent(session);
+    continuationInputs.set(session, bridge.input);
+    sessionRuntimes.set(session, runtime);
+    emitProgress('complete');
+    return bridge.result;
+  }
   const environment = publicRecommendationEnvironment(dependencies);
   const internalPolicy = recommendationInternalPolicyForEnvironment(environment);
   const builder = recommendationBuilderForEnvironment(environment, dependencies);
@@ -339,11 +396,24 @@ export async function continueReleaseRecommendationSession(
       return { appendedCourses: [], continuation, pageState: 'shared_attempt_limit', outcomeReasons: [], diagnostics: { newProviderAttemptCount: 0 } };
     }
     const pageProviderAttemptLimit = Math.min(8, remaining) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-    const page = await (dependencies.continueRelease ?? continueReleaseOneStopRepresentativeCourseV1)({ ...originalInput, continuation, pageProviderAttemptLimit });
+    const calculatePage = () => (dependencies.continueRelease ?? continueReleaseOneStopRepresentativeCourseV1)({ ...originalInput, continuation, pageProviderAttemptLimit });
+    const page = runtime.liveBridge
+      ? await runtime.liveBridge.run('shared', runtime.ledger, async () => {
+        const nextPage = await calculatePage();
+        const observed = nextPage.diagnostics.newProviderAttemptCount;
+        const added = Number.isInteger(observed) && observed! >= 0 && observed! <= pageProviderAttemptLimit ? observed! : pageProviderAttemptLimit;
+        const nextLedger = { ...runtime.ledger, sharedExpansionAttempts: runtime.ledger.sharedExpansionAttempts + added,
+          totalNewProviderAttempts: runtime.ledger.totalNewProviderAttempts + added };
+        runtime.liveBridge!.ledgerStore.commit(nextLedger);
+        commitLedger(runtime, nextLedger);
+        return nextPage;
+      }) : await calculatePage();
     registerDisplayedOneStopPage(runtime, page.appendedCourses);
-    const observed = page.diagnostics.newProviderAttemptCount;
-    const added = Number.isInteger(observed) && observed! >= 0 && observed! <= pageProviderAttemptLimit ? observed! : pageProviderAttemptLimit;
-    commitLedger(runtime, { ...runtime.ledger, sharedExpansionAttempts: runtime.ledger.sharedExpansionAttempts + added });
+    if (!runtime.liveBridge) {
+      const observed = page.diagnostics.newProviderAttemptCount;
+      const added = Number.isInteger(observed) && observed! >= 0 && observed! <= pageProviderAttemptLimit ? observed! : pageProviderAttemptLimit;
+      commitLedger(runtime, { ...runtime.ledger, sharedExpansionAttempts: runtime.ledger.sharedExpansionAttempts + added });
+    }
     return page;
   });
 }

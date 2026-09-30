@@ -66,6 +66,19 @@ function fixture(options = {}) {
     '../services/kakaoLocationLabelAdapter': { createKakaoLocationLabelAdapter: () => ({ async resolve() { return { source: 'address', address: '부산광역시 중구 기준로 1' }; } }) },
     './locationSearchDraft': { createLocationSearchDraft: () => ({ start() { calls.push('draft-start'); }, end() {}, resume() {} }) },
     './recommendation/courseV1PlacePreviewModel': { async openKakaoPlaceWithAppFallback() { calls.push('kakao'); return 'failed'; } },
+    './nearbyLiveSession': { productionNearbyLivePorts: async () => { throw Error('must not load in fixture'); }, createNearbyLiveSessionController: () => ({
+      load() { calls.push('live-load'); return Promise.resolve(options.liveResult ?? { status: 'ready', catalog: [...catalog.matched.data, ...catalog.unmatched.data] }); },
+      retry() { calls.push('live-retry'); return Promise.resolve(options.liveRetryResult ?? options.liveResult ?? { status: 'ready', catalog: [...catalog.matched.data, ...catalog.unmatched.data] }); },
+      cancel() { calls.push('live-cancel'); },
+    }) },
+    './nearbyGuestAuthGate': { productionNearbyGuestAuthPort: async () => { throw Error('must not authenticate outside fixture'); }, createNearbyGuestAuthGate: () => ({
+      prepare() { calls.push('auth-prepare'); return Promise.resolve(options.authPrepare ?? 'ready'); },
+      verify() { calls.push('auth-verify'); return Promise.resolve(options.authVerify ?? 'ready'); },
+      cancel() { calls.push('auth-cancel'); },
+      close() { calls.push('auth-close'); },
+    }) },
+    './captchaVerificationModel': { resolveCaptchaChallengeUrl: () => options.invalidChallenge ? null : 'https://example.test/challenge' },
+    './CaptchaVerificationSheet': { CaptchaVerificationSheet: 'CaptchaVerificationSheet' },
     'expo-web-browser': { async openBrowserAsync(url) { calls.push('browser'); openedUrls.push(url); return options.openBrowser?.(url); } },
     'expo-location': {
       Accuracy: { Balanced: 1 },
@@ -78,7 +91,13 @@ function fixture(options = {}) {
   const runtime = screenRuntime(overrides);
   const navigation = { addListener() { return () => {}; } };
   const screen = runtime.mount(runtime.load('src/ui/NearbyBrowseScreen.tsx').NearbyBrowseScreen, { navigation });
-  if (!options.noCenter && options.permission !== 'denied' && !options.pendingGps) screen.nodes(n => n.type === 'PlacePicker')[0].props.onConfirm({ lat: 35, lon: 129, label: '선택한 장소', source: 'provider' });
+  if (!options.noCenter && options.permission !== 'denied' && !options.pendingGps) {
+    screen.nodes(n => n.type === 'PlacePicker')[0].props.onConfirm({ lat: 35, lon: 129, label: '선택한 장소', source: 'provider' });
+    // The real React renderer schedules a render after the picker updates state.
+    // This hook-host test runtime is synchronous, so explicitly cross that render
+    // boundary before awaiting the live controller promise.
+    screen.render();
+  }
   return { screen, calls, openedUrls, activeCourse, animatedValues, animationEvents, finishAnimation() { pendingAnimation?.(); pendingAnimation = undefined; }, finishAnimationAt(index) { animationFinishes[index]?.(); }, finishStopAnimation() { pendingStop?.(); pendingStop = undefined; }, resolveGps(value = { coords: { latitude: 35.2, longitude: 129.2 } }) { gpsResolve(value); } };
 }
 
@@ -143,6 +162,7 @@ test('UNEAR SIMPLE manual center, delayed failure and return preserve destinatio
   const f = fixture({ permission: 'denied', openExternal: () => new Promise((_, fail) => { reject = fail; }), openBrowser: async () => { throw Error('fixture failure'); } }); await tick();
   f.screen.press('nearby-change-location');
   f.screen.nodes(n => n.type === 'PlacePicker')[0].props.onConfirm({ lat: 35, lon: 129, label: '탐색 기준', source: 'provider' });
+  f.screen.render(); await tick();
   f.screen.press('nearby-row-far');
   const snapshot = JSON.stringify(f.activeCourse);
   const before = f.calls.length;
@@ -606,4 +626,113 @@ test('UNEAR drag regression: tap release waits for baseline and toggles exactly 
   f.finishStopAnimation();
   assert.equal(f.animatedValues[0].value, 610);
   assert.equal(f.animationEvents.filter(event => event.type === 'start' && event.target === 610).length, 1);
+});
+
+test('LIVE-NEARBY: public screen shows only confirmed memory snapshot and center reselection never reloads it', async () => {
+    const f = fixture({ liveResult: { status: 'partial', catalog: [{ contentId: 'live', title: '실시간 장소', lat: 35.0002, lon: 129, classification: 'representative_core', category: '관광지' }] } });
+    f.screen.render();
+    await tick();
+    assert.equal(f.calls.filter(call => call === 'live-load').length, 1);
+    assert.equal(f.screen.nodes(n => n.props?.testID === 'nearby-row-live').length, 1);
+    assert.equal(f.screen.nodes(n => n.props?.testID === 'nearby-row-near').length, 0);
+    assert.ok(f.screen.get('nearby-live-partial'));
+    f.screen.nodes(n => n.type === 'PlacePicker')[0].props.onConfirm({ lat: 35.0001, lon: 129, label: '다시 선택', source: 'provider' });
+    await tick();
+    assert.equal(f.calls.filter(call => call === 'live-load').length, 1);
+    f.screen.unmount();
+    assert.equal(f.calls.filter(call => call === 'live-cancel').length, 1);
+});
+
+test('LIVE-NEARBY: public default loads live snapshot and never reads bundled fallback rows', async () => {
+  const f = fixture({ liveResult: { status: 'ready', catalog: [{ contentId: 'live-default', title: '실시간 기본', lat: 35.0002, lon: 129, classification: 'representative_core', category: '관광지' }] } });
+  await tick();
+  assert.equal(f.calls.filter(call => call === 'live-load').length, 1);
+  assert.ok(f.screen.get('nearby-row-live-default'));
+  assert.equal(f.screen.nodes(n => n.props?.testID === 'nearby-row-near').length, 0);
+  f.screen.unmount();
+});
+
+test('LIVE-NEARBY: public screen waits for an explicit manual center before loading a snapshot', async () => {
+    const f = fixture({ noCenter: true, liveResult: { status: 'ready', catalog: [{ contentId: 'live', title: '실시간 장소', lat: 35.0002, lon: 129, classification: 'representative_core', category: '관광지' }] } });
+    f.screen.render(); await tick();
+    assert.equal(f.calls.includes('live-load'), false);
+    assert.equal(f.screen.nodes(n => n.props?.testID === 'nearby-row-near').length, 0);
+    f.screen.nodes(n => n.type === 'PlacePicker')[0].props.onConfirm({ lat: 35, lon: 129, label: '수동 선택', source: 'provider' });
+    f.screen.render();
+    await tick();
+    assert.equal(f.calls.filter(call => call === 'live-load').length, 1);
+    assert.equal(f.screen.nodes(n => n.props?.testID === 'nearby-row-live').length, 1);
+    f.screen.unmount();
+});
+
+test('LIVE-NEARBY: unavailable session shows retry and no static place', async () => {
+    const f = fixture({ liveResult: { status: 'failed', catalog: [] } }); f.screen.render(); await tick();
+    assert.equal(f.screen.nodes(n => n.props?.testID === 'nearby-row-near').length, 0);
+    assert.ok(f.screen.get('nearby-empty-location'));
+    assert.equal(f.calls.filter(call => call === 'live-load').length, 1);
+    f.screen.press('nearby-empty-location'); await tick();
+    assert.equal(f.calls.filter(call => call === 'live-retry').length, 1);
+    f.screen.unmount();
+});
+
+test('LIVE-NEARBY guest: no session waits for explicit CAPTCHA, then loads once despite duplicate callback', async () => {
+    const f = fixture({ authPrepare: 'captcha_required', liveResult: { status: 'ready', catalog: [] } });
+    f.screen.render(); await tick(); f.screen.render();
+    assert.equal(f.calls.filter(call => call === 'live-load').length, 0);
+    const sheet = f.screen.nodes(node => node.type === 'CaptchaVerificationSheet')[0];
+    assert.equal(sheet.props.visible, true);
+    sheet.props.onVerified('fixture-token'); sheet.props.onVerified('duplicate-token');
+    await tick(); f.screen.render();
+    assert.equal(f.calls.filter(call => call === 'auth-verify').length, 1);
+    assert.equal(f.calls.filter(call => call === 'live-load').length, 1);
+    assert.equal(f.screen.nodes(node => node.type === 'CaptchaVerificationSheet')[0].props.visible, false);
+    f.screen.unmount();
+});
+
+test('LIVE-NEARBY guest: cancel and auth failure never call provider; retry asks for a fresh challenge', async () => {
+    const cancelled = fixture({ authPrepare: 'captcha_required' });
+    cancelled.screen.render(); await tick(); cancelled.screen.render();
+    cancelled.screen.nodes(node => node.type === 'CaptchaVerificationSheet')[0].props.onClose();
+    await tick(); cancelled.screen.render();
+    assert.equal(cancelled.calls.filter(call => call === 'live-load').length, 0);
+    cancelled.screen.press('nearby-empty-location'); await tick(); cancelled.screen.render();
+    assert.equal(cancelled.calls.filter(call => call === 'auth-prepare').length, 2);
+    assert.equal(cancelled.screen.nodes(node => node.type === 'CaptchaVerificationSheet')[0].props.visible, true);
+    cancelled.screen.unmount();
+
+    const failed = fixture({ authPrepare: 'captcha_required', authVerify: 'failed' });
+    failed.screen.render(); await tick(); failed.screen.render();
+    failed.screen.nodes(node => node.type === 'CaptchaVerificationSheet')[0].props.onVerified('fixture-token');
+    await tick(); failed.screen.render();
+    assert.equal(failed.calls.filter(call => call === 'live-load').length, 0);
+    assert.ok(failed.screen.get('nearby-empty-location'));
+    failed.screen.unmount();
+});
+
+test('LIVE-NEARBY guest: invalid challenge config fails closed', async () => {
+    const invalid = fixture({ authPrepare: 'captcha_required', invalidChallenge: true });
+    invalid.screen.render(); await tick(); invalid.screen.render();
+    assert.equal(invalid.calls.filter(call => call === 'live-load').length, 0);
+    assert.equal(invalid.screen.nodes(node => node.type === 'CaptchaVerificationSheet')[0].props.visible, false);
+    assert.ok(invalid.screen.get('nearby-empty-location'));
+    invalid.screen.unmount();
+
+});
+
+test('LIVE-NEARBY market: static-only partial names its source, unknown hours and keeps directions available', async () => {
+    const market = { contentId: 'market', title: '저장된 시장', lat: 35.0002, lon: 129, classification: 'conditional_more', category: '시장', addr1: '부산 중구 시장길 1', sourceKind: 'traditional_market_standard_static', operatingHoursStatus: 'unverified' };
+    const f = fixture({ liveResult: { status: 'partial', staticMarketOnly: true, catalog: [market] } });
+    f.screen.render(); await tick(); f.screen.render();
+    assert.match(JSON.stringify(f.screen.get('nearby-live-partial')), /실시간 장소는 확인하지 못했어요/);
+    assert.match(JSON.stringify(f.screen.get('nearby-row-market')), /전통시장 자료 · 운영시간 미확인/);
+    f.screen.press('nearby-row-market');
+    assert.match(JSON.stringify(f.screen.get('nearby-static-market-detail')), /전국전통시장표준데이터 저장 정보/);
+    assert.match(JSON.stringify(f.screen.render()), /운영시간 확인 필요/);
+    assert.match(JSON.stringify(f.screen.render()), /영업·출입을 확인/);
+    assert.equal(f.screen.nodes(node => node.type === 'Image' && node.props?.source?.uri).length, 0);
+    f.screen.press('nearby-directions'); await tick();
+    assert.equal(f.calls.filter(call => call === 'open').length, 1);
+    assert.match(decodeURIComponent(f.openedUrls[0]), /저장된 시장,35\.0002,129/);
+    assert.equal(f.calls.filter(call => call === 'course-write' || call === 'lifecycle').length, 0);
+    f.screen.unmount();
 });

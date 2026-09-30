@@ -13,7 +13,14 @@ const https = (value: unknown): boolean => { try { const url = new URL(string(va
 const date = (value: unknown): boolean => /^\d{4}-\d{2}-\d{2}$/.test(string(value));
 export function approvedPlacePhoto(place: PlacePhotoInput | null | undefined): ApprovedPlacePhoto | null {
   if (!place || !https(place.imageUrl)) return null;
-  const evidence = place.imageEvidence as { source?: unknown; sourceId?: unknown; finalUrl?: unknown; usagePermission?: Record<string, unknown> } | null;
+  const evidence = place.imageEvidence as { source?: unknown; sourceId?: unknown; finalUrl?: unknown; usagePermission?: Record<string, unknown>; liveApprovedPhoto?: Record<string, unknown> } | null;
+  const live = evidence?.liveApprovedPhoto;
+  if (live?.status === 'approved' && string(live.url) === string(place.imageUrl)
+    && live.commercialUseAllowed === true && live.modificationAllowed === true
+    && string(live.licenseName) === '이용허락범위 제한 없음'
+    && string(live.attribution) && https(live.sourcePageUrl) && date(live.verifiedAt)) {
+    return { url: string(place.imageUrl), status: 'verified', attribution: string(live.attribution), licenseName: string(live.licenseName), sourcePageUrl: string(live.sourcePageUrl), licenseUrl: null };
+  }
   const permission = evidence?.usagePermission;
   if (!permission) return null;
   if (permission.status === 'verified') {

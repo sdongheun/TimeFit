@@ -1,4 +1,5 @@
 import { RouteProxyUnavailableError } from '../services/routeProxyActivatedCourseAdapter';
+import { LivePublicDataUnavailableError } from './recommendation/livePublicDataError';
 
 export type RecommendationGateDecision =
   | { kind: 'start_legacy' }
@@ -14,6 +15,7 @@ export function recommendationGateDecision(input: { routeProxyEnabled: boolean; 
 }
 
 export function recommendationFailureMessage(error: unknown): string {
+  if (error instanceof LivePublicDataUnavailableError) return '장소 정보를 확인하지 못했어요. 잠시 후 다시 시도해 주세요.';
   return error instanceof RouteProxyUnavailableError
     ? '안전 확인 또는 경로 연결을 완료하지 못했어요. 다시 시도해 주세요.'
     : `추천을 준비하지 못했어요: ${error instanceof Error ? error.message : '잠시 후 다시 시도해 주세요.'}`;

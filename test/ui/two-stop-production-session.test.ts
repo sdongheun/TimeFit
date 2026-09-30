@@ -53,6 +53,7 @@ async function start(initialAttempts: number | 'missing' = 8, routeReceipt = tru
   const recommendationSession = session();
   const first = course('A');
   await runRecommendationSession(recommendationSession, { routeProxyEnabled: true }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => ({ async getRoute() { return null; } }),
     createActivatedProxyRoutes: routeReceipt ? async () => ({
       async getRoute() { return null; },
@@ -141,6 +142,7 @@ test('UTWOSTOP04: production session은 완료 exact pair를 역선택 첫 후�
   const recommendationSession = session();
   let receiptCalls = 0;
   const result = await runRecommendationSession(recommendationSession, { routeProxyEnabled: true }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => ({ async getRoute() { return null; } }),
     createActivatedProxyRoutes: async () => ({
       async getRoute() { return null; },
@@ -188,6 +190,7 @@ test('UTWOSTOP02 eligibility 반환: secondary 조회는 실제 allowlist snapsh
 
   const routeOnlySession = session();
   await runRecommendationSession(routeOnlySession, { routeProxyEnabled: false }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => ({ async getRoute() { return null; } }),
     buildRelease: async () => result(exact.first),
   });
@@ -195,6 +198,7 @@ test('UTWOSTOP02 eligibility 반환: secondary 조회는 실제 allowlist snapsh
 
   const internalSession = session();
   await runRecommendationSession(internalSession, { routeProxyEnabled: true }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => ({ async getRoute() { return null; } }),
     createActivatedProxyRoutes: async () => ({ async getRoute() { return null; }, async getRouteReceipt() { return { result: 'no_route', newProviderAttemptCount: 0, reused: true }; } }),
     getPublicRecommendationEnvironment: () => ({ diagnostics: 'true', internalB12: 'true' }),
@@ -205,6 +209,7 @@ test('UTWOSTOP02 eligibility 반환: secondary 조회는 실제 allowlist snapsh
   const cappedSession = session();
   const alternatives = ['B', 'C', 'D', 'E'].map(course);
   await runRecommendationSession(cappedSession, { routeProxyEnabled: true }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => ({ async getRoute() { return null; } }),
     createActivatedProxyRoutes: async () => ({ async getRoute() { return null; }, async getRouteReceipt() { return { result: 'no_route', newProviderAttemptCount: 0, reused: true }; } }),
     buildRelease: async () => ({ ...result(exact.first), alternativeCourses: alternatives }),
@@ -220,13 +225,14 @@ test('UTWOSTOP02 eligibility 반환: secondary 조회는 실제 allowlist snapsh
 test('UTWOSTOP02: 다른 session은 intent를 소비하지 못하고 route-only runtime은 pair entry가 없다', async () => {
   const left = await start(9);
   const right = await start(0);
-  assert.equal(getRecommendationSessionAttemptLedger(left.recommendationSession)?.initialOneStopAttempts, 8);
+  assert.equal(getRecommendationSessionAttemptLedger(left.recommendationSession)?.initialOneStopAttempts, 9);
   assert.equal(recordTwoStopSelectionIntent(left.recommendationSession, left.first), true);
   assert.equal(consumeTwoStopSelectionIntent(right.recommendationSession), null);
   assert.equal(consumeTwoStopSelectionIntent(left.recommendationSession), left.first);
 
   const routeOnlySession = session();
   await runRecommendationSession(routeOnlySession, { routeProxyEnabled: false }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => ({ async getRoute() { return null; } }),
     buildRelease: async () => result(course('A')),
   });

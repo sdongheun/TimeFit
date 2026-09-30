@@ -10,14 +10,17 @@ import { FloatingTabBar } from './FloatingTabBar';
 import { resetToActivityRecord, resetToNearbyBrowse, resetToProfile } from './mainTabNavigation';
 import runtimeCatalog from '../data/busan_poi_catalog.json';
 import { homeActiveCourseProjection } from './activeVerifiedCourseModel';
+import { resolveRecommendationPlace } from './recommendation/livePlacePresentation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
-const placeTitles = new Map([...runtimeCatalog.matched.data, ...runtimeCatalog.unmatched.data].map((place) => [place.contentId, place.title]));
+const places = new Map([...runtimeCatalog.matched.data, ...runtimeCatalog.unmatched.data].map((place) => [place.contentId, place]));
 
 export function HomeScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const { activeVerifiedCourse } = useAppFlow();
-  const active = homeActiveCourseProjection(activeVerifiedCourse, (placeId) => placeTitles.get(placeId));
+  const active = homeActiveCourseProjection(activeVerifiedCourse, (placeId) => activeVerifiedCourse
+    ? resolveRecommendationPlace(activeVerifiedCourse.session, placeId, () => places.get(placeId))?.title
+    : undefined);
   return <View style={s.root}>
     <ScrollView contentContainerStyle={[s.body, { paddingTop: insets.top + 48, paddingBottom: 112 }]}>
       <Text style={s.title}>약속 전 남는 시간,{`\n`}어디 들러볼까요?</Text>

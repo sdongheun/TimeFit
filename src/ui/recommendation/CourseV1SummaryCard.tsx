@@ -27,7 +27,7 @@ export function CourseV1SummaryCard({ summary, onPress }: { summary: CourseV1Car
 const s = StyleSheet.create({
   card: { flexDirection: 'row', minHeight: 116, alignItems: 'center', gap: 12, padding: 10, overflow: 'hidden', borderRadius: 16, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
   pressed: { opacity: 0.82 },
-  media: { width: 96, height: 96, flexShrink: 0, backgroundColor: C.panel2 },
+  media: { width: 96, height: 96, flexShrink: 0, backgroundColor: C.panel },
   placeholder: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 10, backgroundColor: '#26384a' },
   placeholderText: { color: '#b9d8ff', fontSize: 13, fontWeight: '800', textAlign: 'center' },
   content: { flex: 1, minWidth: 0, gap: 6 },

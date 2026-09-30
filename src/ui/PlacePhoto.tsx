@@ -33,7 +33,7 @@ export function PlacePhotoCredit({ place, links = false, linkTextColor }: {place
   const open = async (url: string) => { try { await Linking.openURL(url); setError(false); } catch { setError(true); } };
   return <View testID="place-photo-credit">
     <Text style={s.credit}>{photo.attribution}{photo.licenseName ? ` · ${photo.licenseName}` : ''}</Text>
-    {links && photo.sourcePageUrl && photo.licenseUrl ? <View style={s.links}><Pressable accessibilityRole="link" accessibilityLabel="사진 출처 보기" onPress={() => void open(photo.sourcePageUrl as string)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>사진 출처</Text></Pressable><Pressable accessibilityRole="link" accessibilityLabel="사진 이용조건 보기" onPress={() => void open(photo.licenseUrl as string)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>이용조건</Text></Pressable></View> : null}
+    {links && photo.sourcePageUrl ? <View style={s.links}><Pressable accessibilityRole="link" accessibilityLabel="사진 출처 보기" onPress={() => void open(photo.sourcePageUrl as string)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>사진 출처</Text></Pressable>{photo.licenseUrl ? <Pressable accessibilityRole="link" accessibilityLabel="사진 이용조건 보기" onPress={() => void open(photo.licenseUrl as string)} style={s.link}><Text style={[s.linkText, linkTextColor ? { color: linkTextColor } : null]}>이용조건</Text></Pressable> : null}</View> : null}
     {error ? <Text accessibilityRole="alert" style={s.credit}>링크를 열지 못했어요. 잠시 후 다시 시도해 주세요.</Text> : null}
   </View>;
 }

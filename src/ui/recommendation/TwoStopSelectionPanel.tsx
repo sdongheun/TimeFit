@@ -60,7 +60,7 @@ const s = StyleSheet.create({
   card: { minHeight: 116, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 10, overflow: 'hidden', borderRadius: 16, borderWidth: 1, borderColor: C.line, backgroundColor: C.panel },
   selected: { borderWidth: 2, borderColor: C.accent },
   pressed: { opacity: 0.82 },
-  media: { width: 96, height: 96, flexShrink: 0, backgroundColor: C.panel2 },
+  media: { width: 96, height: 96, flexShrink: 0, backgroundColor: C.panel },
   placeholder: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#26384a' },
   placeholderText: { color: '#b9d8ff', fontSize: 15, fontWeight: '800' },
   content: { flex: 1, minWidth: 0, gap: 5 },

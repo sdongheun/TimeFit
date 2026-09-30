@@ -99,6 +99,15 @@ test('R1 photo letterbox blends into the dark card surface without cropping or i
   screen.unmount();
 });
 
+test('recommendation media wrappers use the same surface as the photo slot, without a gray outer band', () => {
+  const { C } = screenRuntime().load('src/ui/theme.ts');
+  for (const file of ['CourseV1SummaryCard.tsx', 'TwoStopSelectionPanel.tsx', 'TwoStopSelectionTray.tsx']) {
+    const source = fs.readFileSync(`src/ui/recommendation/${file}`, 'utf8');
+    assert.match(source, /(?:media|thumb):\s*\{[^}]*backgroundColor:\s*C\.panel\b/, file);
+  }
+  assert.equal(C.panel, '#1f2023');
+});
+
 test('R1 maps receive no photo URL and contain no image-marker compatibility branch', () => {
   const nearby = fs.readFileSync('src/ui/NearbyBrowseMap.tsx', 'utf8');
   const route = fs.readFileSync('src/ui/KakaoRouteMap.tsx', 'utf8');

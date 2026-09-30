@@ -17,6 +17,7 @@ test('B public runtime freezes samples across first/continue and blocks old-acco
   let samples: unknown, continued = 0;
   const diagnostics = { providerCandidateCount: 0, preselectionCandidateCount: 0, candidatePoolCount: 0, generatedOrderedCourseCount: 0, preselectedCourseIds: [], exactCourseAttemptCount: 0, routeRejected: 0, openingRejected: 0, budgetRejected: 0, relationshipRejected: 0, classificationExcluded: 0, newProviderAttemptCount: 0 };
   await runRecommendationSession(session, { routeProxyEnabled: false }, {
+    useLegacyStaticFixture: () => true,
     createLegacyRoutes: () => legacy,
     getPublicRecommendationEnvironment: () => ({}),
     readPersonalizationSnapshot: () => controller.snapshot(),
@@ -79,6 +80,7 @@ test('URELEASEONESTOP01: exact B12 외 모든 환경은 release entry만 한 번
   ] as const;
   for (const environment of combinations) {
     const received = await runRecommendationSession(session, { routeProxyEnabled: false }, {
+      useLegacyStaticFixture: () => true,
       createLegacyRoutes: () => { routePortCalls += 1; return legacy; },
       getPublicRecommendationEnvironment: () => environment,
       buildRelease: async () => { releaseCalls += 1; return result as CourseV1ReleaseOneStopResult; },

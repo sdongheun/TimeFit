@@ -38,6 +38,7 @@ import { personalizationSession } from './personalizationComposition';
 import { createPendingCompletionController } from './liveActivity/pendingCompletionModel';
 import { ManualLocationRestoreGate } from './ManualLocationRestoreGate';
 import { hasManualLocationProof, withManualLocationProof } from './manualLocationRestoreModel';
+import { preserveSelectedLivePlaces, resolveRecommendationPlace } from './recommendation/livePlacePresentation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CourseConfirm'>;
 type RuntimePlace = (typeof runtimeCatalog.matched.data)[number] | (typeof runtimeCatalog.unmatched.data)[number];
@@ -52,7 +53,7 @@ const liveEventId = () => `app:${Date.now()}:${++liveEventSequence}`;
 export function CourseConfirmScreen({ route, navigation }: Props) {
   const flow = useActiveVerifiedCourseFlow();
   const { session, course, activeId } = route.params;
-  if (!hasManualLocationProof(session)) return <ManualLocationRestoreGate key={activeId ?? session.nowIso} origin={session.origin} destination={session.destination} endsAtMs={Date.parse(session.nowIso)+session.remainingMin*60000} titles={course.placeIds.map(id=>places.get(id)?.title ?? '선택한 장소')} onCancel={()=>navigation.goBack()} onConfirm={(origin,destination)=>{
+  if (!hasManualLocationProof(session)) return <ManualLocationRestoreGate key={activeId ?? session.nowIso} origin={session.origin} destination={session.destination} endsAtMs={Date.parse(session.nowIso)+session.remainingMin*60000} titles={course.placeIds.map(id=>resolveRecommendationPlace(session,id,()=>places.get(id))?.title ?? '선택한 장소')} onCancel={()=>navigation.goBack()} onConfirm={(origin,destination)=>{
     if (activeId) {
       const next=flow.reconfirmActiveLocations(activeId,session,origin,destination);
       if (!next) return false;
@@ -67,6 +68,7 @@ function CourseConfirmContent({ route, navigation }: Props) {
   const insets = useSafeAreaInsets();
   const flow = useActiveVerifiedCourseFlow();
   const { session, course } = route.params;
+  const getPlace = (id: string) => resolveRecommendationPlace(session, id, () => places.get(id));
   const [activeId, setActiveId] = useState(route.params.activeId);
   const activeIdRef = useRef(route.params.activeId);
   const activeRunIdRef = useRef<string | null>(null);
@@ -100,7 +102,11 @@ function CourseConfirmContent({ route, navigation }: Props) {
   const startController = useRef(createActiveVerifiedCourseStartController({
     canStart: (request) => canStartRecommendationSession(request.session, Date.now()),
     onExpired: () => setStartExpired(true),
-    start: (request) => { if (!isPersonalizationScopeCurrent(request.session)) throw new Error('recommendation_scope_changed'); return flow.startActiveVerifiedCourse(request); },
+    start: (request) => {
+      if (!isPersonalizationScopeCurrent(request.session)) throw new Error('recommendation_scope_changed');
+      if (!preserveSelectedLivePlaces(request.session, request.course.placeIds)) throw new Error('live_display_unavailable');
+      return flow.startActiveVerifiedCourse(request);
+    },
     navigate: (next) => {
       if (next.session === session && next.course === course) {
         activeIdRef.current = next.identity;
@@ -133,13 +139,13 @@ function CourseConfirmContent({ route, navigation }: Props) {
     },
   })).current;
   const [connectorState, setConnectorState] = useState(EMPTY_CONNECTOR_STATE);
-  const detail = buildCourseV1DetailModel(course, session, (id) => places.get(id));
+  const detail = buildCourseV1DetailModel(course, session, getPlace);
   const markers = detail ? buildCourseV1DetailMarkers(detail, session) : null;
   const mapMarkers = markers?.map((marker) => ({ ...marker, active: false })) ?? null;
   // Valid one/two-stop snapshots produce only missing endpoints (at most 4/6).
-  const connectorRequests = useMemo(() => buildCourseV1ConnectorRequests(course, session, (id) => places.get(id)), [course, session]);
+  const connectorRequests = useMemo(() => buildCourseV1ConnectorRequests(course, session, getPlace), [course, session]);
   const steps = useMemo(() => buildVerifiedCourseProgressSteps(course, session.origin, session.destination ?? session.origin, (id) => {
-    const place = places.get(id);
+    const place = getPlace(id);
     return place ? { id: place.contentId, label: place.title, lat: place.lat, lon: place.lon } : undefined;
   }), [course, session]);
   const livePlan = useMemo(() => active && steps ? buildLiveCoursePlan(active, steps) : null, [active, steps]);
@@ -301,7 +307,7 @@ function CourseConfirmContent({ route, navigation }: Props) {
       const actualDwell = await liveCourseProgressRuntime.readActualDwell(active.courseRunId);
       if (!isCurrent()) return;
       if (!completionInput.current) {
-        const projected = buildCompleteCourseInput(active, (id) => places.get(id), Date.now(), actualDwell);
+        const projected = buildCompleteCourseInput(active, getPlace, Date.now(), actualDwell);
         if (projected.status !== 'ready') { finishController.failInvalidSnapshot(); return; }
         completionInput.current = projected.input;
       }
@@ -373,7 +379,7 @@ function CourseConfirmContent({ route, navigation }: Props) {
   return <KeyboardAvoidingView style={s.root} behavior="padding"><View style={s.root}><ScrollView ref={scrollRef} testID="course-confirm-scroll" keyboardShouldPersistTaps="handled" contentContainerStyle={[s.body, { paddingTop: insets.top + 14, paddingBottom: hasReviewFooter || hasActiveFooter ? footerReserve + 16 : 34 }]}>{header}
     <InPlaceTransition transitionKey={mode}>{mode === 'review' ? <View style={s.modeContent}>
       <View testID="course-overview" style={s.overview}><View testID="course-summary-row" style={s.overviewRow}><Text style={s.overviewTitle}>약 {detail.courseMin}분 코스</Text></View><Text testID="course-deadline" style={s.copy}>{recommendationDeadlineLabel(session)}까지 도착 · 도착 전 {detail.arrivalBufferMin}분 여유</Text></View>
-      {isPersonalizationScopeCurrent(session) && personalizedCoursePlaceIds(course).length ? <Text testID="verified-personalization-applied" style={s.copy}>내 체류 기록 반영: {personalizedCoursePlaceIds(course).map(id => places.get(id)?.title ?? '선택한 장소').join(', ')}</Text> : null}
+      {isPersonalizationScopeCurrent(session) && personalizedCoursePlaceIds(course).length ? <Text testID="verified-personalization-applied" style={s.copy}>내 체류 기록 반영: {personalizedCoursePlaceIds(course).map(id => getPlace(id)?.title ?? '선택한 장소').join(', ')}</Text> : null}
       {courseMap}
       {reviewLegSelector}
       <CourseV1VerticalDetail expansionKey={`${session.nowIso}:${course.id}`} model={detail} mode="review" onOpenKakao={openPlace} showSummary={false} />

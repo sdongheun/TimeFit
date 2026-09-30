@@ -18,6 +18,7 @@ import { openKakaoPlaceWithAppFallback } from './recommendation/courseV1PlacePre
 import { C } from './theme';
 import { placeDetailLayout } from './placeDetailLayout';
 import { PlacePhoto, PlacePhotoCredit } from './PlacePhoto';
+import { resolveRecommendationPlace } from './recommendation/livePlacePresentation';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'PlaceDetail'>;
 type RuntimePlace = PlaceDetailCatalogPlace;
@@ -25,7 +26,7 @@ const places = new Map<string, RuntimePlace>(
   [...runtimeCatalog.matched.data, ...runtimeCatalog.unmatched.data].map((place) => [place.contentId, place as RuntimePlace]),
 );
 
-/** 로컬 catalog와 이미 획득된 위치 snapshot만 표시하는 계층형 장소 상세다. */
+/** 추천 세션의 확정 장소 snapshot과 이미 획득된 위치만 표시한다. */
 export function PlaceDetailScreen({ route, navigation }: Props) {
   const insets = useSafeAreaInsets();
   const window = useWindowDimensions();
@@ -33,9 +34,9 @@ export function PlaceDetailScreen({ route, navigation }: Props) {
   const layout = placeDetailLayout(window.height, insets.top, insets.bottom, sheetHeight);
   const { requestId, selectionKind, placeId, course, firstCourse, session } = route.params;
   const request: PlaceDetailRequestIdentity = { requestId, selectionKind, placeId, courseId: course.id };
-  const candidate = places.get(placeId);
+  const candidate = resolveRecommendationPlace(session, placeId, () => places.get(placeId));
   const firstPlaceId = firstCourse?.placeIds[0];
-  const selected = selectionKind === 'pair' && firstPlaceId ? places.get(firstPlaceId) : undefined;
+  const selected = selectionKind === 'pair' && firstPlaceId ? resolveRecommendationPlace(session, firstPlaceId, () => places.get(firstPlaceId)) : undefined;
   const model = candidate ? buildPlaceDetailModel(candidate, selectionKind) : null;
   const markers = candidate ? buildPlaceDetailMarkers(session, candidate, selected) : [];
   const selectLock = useRef(false);

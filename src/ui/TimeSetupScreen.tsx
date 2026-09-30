@@ -104,8 +104,9 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const locationLabel = useRef(createKakaoLocationLabelAdapter()).current;
   const runGuard = useRef(createSetupRunGuard()).current;
   const recommendationEpoch = useRef(0);
+  const recommendationAbort = useRef<AbortController | null>(null);
   const runningQaToken = useRef<QaReleaseOneStopRunToken | null>(null);
-  useEffect(() => () => { recommendationEpoch.current++; }, []);
+  useEffect(() => () => { recommendationEpoch.current++; recommendationAbort.current?.abort(); }, []);
   const endMin = resolveArrivalMinute(now.nowMin, to24(pm, hour12, minute));
   const remainingMin = endMin - now.nowMin;
   const validation = releaseTimeSetupValidation(Boolean(origin), remainingMin);
@@ -140,6 +141,9 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   };
   const executeRecommendation = async (session: RecommendationSession, input: { captchaToken?: string; proxyEnabled: boolean; qaRunToken?: QaReleaseOneStopRunToken }) => {
     const epoch = ++recommendationEpoch.current;
+    recommendationAbort.current?.abort();
+    const abort = new AbortController();
+    recommendationAbort.current = abort;
     runningQaToken.current = input.qaRunToken ?? null;
     const isCurrent = () => epoch === recommendationEpoch.current;
     setError(''); setCaptchaDiagnostic(null);
@@ -151,6 +155,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
       const result = await runRecommendationSession(session, {
         routeProxyEnabled: input.proxyEnabled,
         captchaToken: input.captchaToken,
+        signal: abort.signal,
         onProgress: (stage) => {
           if (!isCurrent()) return;
           if (input.qaRunToken && !qaRunController.isCurrent(input.qaRunToken)) return;
@@ -287,6 +292,7 @@ export function TimeSetupScreen({ navigation, route }: Props) {
   const cancelRecommendation = () => {
     if (page !== 'loading') return;
     recommendationEpoch.current++;
+    recommendationAbort.current?.abort();
     runGuard.reset();
     if (runningQaToken.current) qaRunController.cancel(runningQaToken.current);
     runningQaToken.current = null;
