@@ -42,3 +42,47 @@
 - 남은 QA 참조는 `test/map-transport-ui-contract.test.mjs:83`의 `searchPlaceSuggestions` 금지 regex다. 제거된 모듈을 import/실행하지 않는 음성 assertion으로 타입/실행 실패는 없으며, 해당 파일의 기존 UI 세션 변경을 보존했다. QA는 이를 현행 검색 runtime 보존 증거와 혼동하지 말고 필요 시 현행 경계 중심으로 정리한다. 파일 전체 삭제를 요구하지 않는다.
 - 과거 작업 기록의 삭제 모듈명/검증 이력은 보존했다. 다른 QA 제품 import 잔존0(재검색 결과는 신규 부재 테스트와 위 금지 regex뿐).
 - release export 및 실제 수정 빌드 정상 확인은 세 역할 완료 뒤 QA/통합 소유. 이번 API 세션에서 export/Archive·스토어 업데이트·원격 배포·운영 데이터 정리 미실행. 이전 IPA/산출물은 보존하며 현재 제거본과 같다고 주장하지 않는다.
+
+## 2026-09-21 재확인 인계
+
+### 변경 파일 / 목적
+
+- 본 작업 문서만 갱신했다. 제거 대상5개는 현재 트리에서 모두 부재하고 완료·통합 수락 기록도 있어 제품 코드를 다시 변경하지 않았다.
+
+### 유지한 계약
+
+- 현행 Kakao 검색·위치 label adapter, Supabase `route-proxy` handler, production ports와 `routeProxyClientAdapter`를 보존했다. API 키·환경변수·공급자·요청 경로·cache 정책 및 저장 데이터는 변경하지 않았다.
+
+### 테스트 결과
+
+- 제거 부재 gate와 현행 API 계약 집중 실행: **57/57 PASS**, skip0.
+- `npm run test:typecheck`: **PASS**.
+- `git diff --check`: **PASS**.
+- 실제 provider·운영 DB 호출0, 배포·commit·push0.
+
+### 다음 결정·위험
+
+- API 제거 범위에는 남은 조치가 없다. 전체 출시 동등성은 기존 QA 수락 기록을 따르며, 이번 재확인은 Archive/IPA·실기기·운영 서버를 새로 검증한 결과가 아니다.
+
+## 2026-09-23 현재 트리 재검증
+
+### 변경 파일 / 목적
+
+- 본 작업 문서에 현재 트리 재검증 결과만 추가했다. 제거 대상 서비스5개는 모두 계속 부재하고 삭제 집합 밖 제품 유입도0이므로, 완료된 제거를 반복하거나 제품 코드를 추가 변경하지 않았다.
+
+### 유지한 계약
+
+- 현행 Kakao 검색·위치 label adapter, Supabase `route-proxy` handler, production ports와 `routeProxyClientAdapter`를 그대로 유지했다. 새 실시간 공공데이터 전환 작업, API 키·환경변수·공급자·요청 경로·cache 정책·저장 데이터는 변경하지 않았다.
+- baseline cleanup을 실행하지 않았고 AsyncStorage·운영 DB·원격 함수·기존 사용자 데이터 정리를 수행하지 않았다.
+
+### 테스트 결과
+
+- 제거 부재 gate와 현행 API 계약 집중 실행: **57/57 PASS**, skip0.
+- `npm run test:typecheck`: **PASS**.
+- `git diff --check`: **PASS**.
+- 실제 provider·운영 DB 호출0, 배포·stage·commit·push0.
+
+### 다음 결정·위험
+
+- `API-UNUSED-SERVICES-REMOVE-01`의 API 소유 범위에는 남은 구현 조치가 없다. 기존 QA 통합 수락을 유지하며, 이번 재검증은 Archive/IPA·실기기·운영 서버 동등성을 새로 확인한 결과가 아니다.
+- 병행 중인 실시간 공공데이터 전환 파일은 이 제거 작업의 대상이 아니며 별도 작업 묶음의 검증·활성화 절차를 따른다.

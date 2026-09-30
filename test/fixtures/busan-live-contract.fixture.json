@@ -1,0 +1,163 @@
+{
+  "contractVersion": 1,
+  "request": {
+    "action": "catalog_snapshot",
+    "liveSourceSnapshotId": "busan-live-fixture-001",
+    "approvedSourceIds": {
+      "busan_attraction": ["A-101", "A-102"],
+      "busan_food": ["F-201"],
+      "busan_shopping": ["S-301"]
+    }
+  },
+  "providerPolicy": {
+    "transport": "authenticated_supabase_edge_nonpersistent",
+    "pageSize": 500,
+    "maxPagesPerSource": 2,
+    "maxProviderCallsPerSnapshot": 6,
+    "automaticRetries": 0,
+    "requestFields": ["ServiceKey", "pageNo", "numOfRows", "resultType"],
+    "resultType": "json",
+    "userCoordinatesSent": false,
+    "rawProviderBodyPersisted": false,
+    "staleFallbackAllowed": false
+  },
+  "cases": {
+    "ready": {
+      "status": "ready",
+      "liveSourceSnapshotId": "busan-live-fixture-001",
+      "sources": {
+        "busan_attraction": {
+          "status": "ready",
+          "complete": true,
+          "providerCalls": 1,
+          "activeApprovedSourceIds": ["A-101"],
+          "inactiveApprovedSourceIds": ["A-102"],
+          "records": [
+            {
+              "sourceId": "A-101",
+              "title": "fixture attraction",
+              "openingText": "fixture hours",
+              "photo": {
+                "status": "not_returned_without_approved_evidence"
+              }
+            }
+          ]
+        },
+        "busan_food": {
+          "status": "ready",
+          "complete": true,
+          "providerCalls": 1,
+          "activeApprovedSourceIds": ["F-201"],
+          "inactiveApprovedSourceIds": [],
+          "records": [
+            {
+              "sourceId": "F-201",
+              "title": "fixture food",
+              "openingText": null,
+              "photo": {
+                "status": "not_returned_without_approved_evidence"
+              }
+            }
+          ]
+        },
+        "busan_shopping": {
+          "status": "ready",
+          "complete": true,
+          "providerCalls": 1,
+          "activeApprovedSourceIds": ["S-301"],
+          "inactiveApprovedSourceIds": [],
+          "records": [
+            {
+              "sourceId": "S-301",
+              "title": "fixture shopping",
+              "openingText": "fixture hours",
+              "photo": {
+                "status": "not_returned_without_approved_evidence"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "partial": {
+      "status": "partial",
+      "liveSourceSnapshotId": "busan-live-fixture-001",
+      "sources": {
+        "busan_attraction": {
+          "status": "ready",
+          "complete": true,
+          "providerCalls": 1,
+          "activeApprovedSourceIds": ["A-101"],
+          "inactiveApprovedSourceIds": ["A-102"],
+          "records": []
+        },
+        "busan_food": {
+          "status": "unavailable",
+          "complete": false,
+          "providerCalls": 1,
+          "reason": "timeout"
+        },
+        "busan_shopping": {
+          "status": "ready",
+          "complete": true,
+          "providerCalls": 1,
+          "activeApprovedSourceIds": ["S-301"],
+          "inactiveApprovedSourceIds": [],
+          "records": []
+        }
+      }
+    },
+    "pageIncomplete": {
+      "status": "partial",
+      "liveSourceSnapshotId": "busan-live-fixture-001",
+      "sources": {
+        "busan_attraction": {
+          "status": "unavailable",
+          "complete": false,
+          "providerCalls": 2,
+          "reason": "page_limit"
+        },
+        "busan_food": {
+          "status": "ready",
+          "complete": true,
+          "providerCalls": 1,
+          "activeApprovedSourceIds": ["F-201"],
+          "inactiveApprovedSourceIds": [],
+          "records": []
+        },
+        "busan_shopping": {
+          "status": "ready",
+          "complete": true,
+          "providerCalls": 1,
+          "activeApprovedSourceIds": ["S-301"],
+          "inactiveApprovedSourceIds": [],
+          "records": []
+        }
+      }
+    },
+    "unavailable": {
+      "status": "unavailable",
+      "liveSourceSnapshotId": "busan-live-fixture-001",
+      "sources": {
+        "busan_attraction": {
+          "status": "unavailable",
+          "complete": false,
+          "providerCalls": 1,
+          "reason": "unauthorized"
+        },
+        "busan_food": {
+          "status": "unavailable",
+          "complete": false,
+          "providerCalls": 1,
+          "reason": "unauthorized"
+        },
+        "busan_shopping": {
+          "status": "unavailable",
+          "complete": false,
+          "providerCalls": 1,
+          "reason": "unauthorized"
+        }
+      }
+    }
+  }
+}

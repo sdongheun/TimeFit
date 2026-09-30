@@ -100,6 +100,16 @@ test('API4ACT04BR-05: current snapshot representative pair만 public ID scope이
   assert.doesNotMatch(JSON.stringify(requests[0]?.body ?? ''), /catalogVersion|fromPoiId|toPoiId/);
 });
 
+test('API-LIVE-QUOTA-CONNECT-02: same representative ID with changed live coordinates uses private exact coordinates', async () => {
+  const liveA = { ...representativeA, lat: representativeA.lat + 0.0001 };
+  const resolver = createRouteProxyCatalogScopeResolver({ snapshot });
+  assert.deepEqual(resolver(liveA, representativeB), { kind: 'private_request' });
+  const { edge, requests } = edgeFixture();
+  const adapter = await createActivatedCourseV1RouteAdapter({ enabled: true, auth: authFixture('jwt'), edge, snapshot });
+  assert.deepEqual(await adapter.getRoute(liveA, representativeB), { mode: 'walk', min: 8, exact: true });
+  assert.deepEqual(requests[0], { body: { mode: 'walk', scope: { kind: 'private_request' }, origin: { lat: liveA.lat, lon: liveA.lon }, destination: { lat: representativeB.lat, lon: representativeB.lon } }, headers: { Authorization: 'Bearer jwt' } });
+});
+
 test('API4ACT04BR-06: service는 public build/Worker URL 설정을 읽거나 추측하지 않는다', async () => {
   const source = await import('node:fs/promises').then((fs) => fs.readFile('src/services/routeProxyActivatedCourseAdapter.ts', 'utf8'));
   assert.doesNotMatch(source, /EXPO_PUBLIC_ROUTE_PROXY_ENABLED|CAPTCHA_CHALLENGE_URL|workers\.dev|TMAP|ODsay|KAKAO/i);
