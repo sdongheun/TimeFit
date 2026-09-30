@@ -1,0 +1,1773 @@
+{
+  "meta": {
+    "taskId": "DATA-LIVE-MAPPING-CONTRACT-02",
+    "contractVersion": 1,
+    "deterministic": true,
+    "externalCalls": 0,
+    "freshnessBoundary": "TourAPI live facts may be current in phase 1; every 부산 row in this artifact is a stored static snapshot and is never labelled latest."
+  },
+  "summary": {
+    "overlapPlaces": 20,
+    "overlapBusanSourceLinks": 21,
+    "sourceCombination": {
+      "busan_shopping+tourapi_aihub": 5,
+      "busan_attraction+tourapi_fallback": 5,
+      "busan_attraction+tourapi_aihub": 7,
+      "busan_shopping+tourapi_fallback": 1,
+      "busan_food+tourapi_fallback": 2
+    },
+    "storedTourapiSnapshotExactlyMatchesRuntimeCommonFields": 20,
+    "busanTitleRelations": {
+      "known_reviewed_alias": 8,
+      "exact_normalized_title": 13
+    },
+    "busanCoordinateDistanceBands": {
+      "lte_100m": 19,
+      "gt_100m_lte_250m": 2
+    },
+    "busanCoordinateDistanceMaxM": 178,
+    "busanRowsWithOperatingHoursText": 20,
+    "busanRowsWithDetailDescription": 21
+  },
+  "phase1Policy": {
+    "activeProvider": "tourapi",
+    "apply": "TourAPI complete-list active/inactive membership, modified facts, and returned common fields only after exact-ID identity gate.",
+    "preserve": "Busan-only reviewed fields and every app-derived category/dwell/classification/relationship field.",
+    "forbid": "Calling stored Busan values latest, whole-record provider priority, live auto-reclassification, static resurrection after explicit TourAPI deletion.",
+    "traditionalMarketOnly": {
+      "count": 118,
+      "disposition": "review_required_provider_out_of_scope",
+      "tourapiFreshnessClaim": false
+    }
+  },
+  "fieldContract": [
+    {
+      "fields": [
+        "contentId"
+      ],
+      "ownership": "app_stable_identity",
+      "tourapiPhase1": "preserve",
+      "busanStoredSnapshot": "preserve",
+      "conflictResolution": "never_replace_internal_id_with_provider_id"
+    },
+    {
+      "fields": [
+        "tourapiContentId",
+        "sourceEvidence"
+      ],
+      "ownership": "reviewed_identity_mapping",
+      "tourapiPhase1": "exact_join_key_only",
+      "busanStoredSnapshot": "exact_join_key_only",
+      "conflictResolution": "new_or_reused_source_id_requires_review_no_similarity_auto_join"
+    },
+    {
+      "fields": [
+        "availability",
+        "deleted",
+        "modifiedAt"
+      ],
+      "ownership": "tourapi_live_lifecycle_phase1",
+      "tourapiPhase1": "derive_active_or_inactive_only_from_a_complete_area_list_and_apply_modifiedAt_when_present",
+      "busanStoredSnapshot": "not_a_freshness_signal",
+      "conflictResolution": "complete_list_confirmed_inactive_excludes_tourapi_linked_place_from_session_no_static_resurrection"
+    },
+    {
+      "fields": [
+        "title",
+        "addr1",
+        "lat",
+        "lon"
+      ],
+      "ownership": "provider_fact_with_identity_gate",
+      "tourapiPhase1": "overlay_present_live_value_only_after_identity_acceptance",
+      "busanStoredSnapshot": "retain_with_static_snapshot_provenance",
+      "conflictResolution": "phase1_tourapi_value_is_session_fact_busan_value_is_not_called_latest"
+    },
+    {
+      "fields": [
+        "contentTypeId",
+        "tourapiContentTypeId"
+      ],
+      "ownership": "tourapi_fact_plus_legacy_compatibility",
+      "tourapiPhase1": "overlay_present_live_value_only_after_identity_acceptance",
+      "busanStoredSnapshot": "not_applicable",
+      "conflictResolution": "type_change_requires_review_and_never_changes_app_category_automatically"
+    },
+    {
+      "fields": [
+        "operatingHours"
+      ],
+      "ownership": "provider_fact_separate_from_product_window",
+      "tourapiPhase1": "use_only_when_selected_operation_returns_a_current_value",
+      "busanStoredSnapshot": "preserve_as_static_snapshot_not_latest",
+      "conflictResolution": "do_not_merge_texts_or_substitute_conditionalVisit_or_access_window"
+    },
+    {
+      "fields": [
+        "detailDescription"
+      ],
+      "ownership": "busan_reviewed_snapshot_phase1",
+      "tourapiPhase1": "do_not_erase_or_synthesize",
+      "busanStoredSnapshot": "preserve_existing_value_and_exact_source_provenance",
+      "conflictResolution": "busan_only_field_survives_tourapi_overlay_but_has_no_live_freshness_claim"
+    },
+    {
+      "fields": [
+        "category",
+        "subCategory",
+        "availabilityProfile"
+      ],
+      "ownership": "app_derived_policy",
+      "tourapiPhase1": "preserve",
+      "busanStoredSnapshot": "preserve",
+      "conflictResolution": "provider_title_or_type_never_reclassifies_automatically"
+    },
+    {
+      "fields": [
+        "shortStay",
+        "dwell",
+        "dwellSourceName",
+        "aihubName",
+        "aihubCategory",
+        "matchType",
+        "matchDistanceM"
+      ],
+      "ownership": "app_derived_dwell_evidence",
+      "tourapiPhase1": "preserve",
+      "busanStoredSnapshot": "preserve",
+      "conflictResolution": "never_synthesize_or_replace_from_live_place_fact"
+    },
+    {
+      "fields": [
+        "classification",
+        "classificationReason",
+        "discovery",
+        "conditionalVisit",
+        "evidenceProfile"
+      ],
+      "ownership": "app_derived_recommendation_eligibility",
+      "tourapiPhase1": "preserve_except_session_exclusion_on_explicit_delete_or_invalid_identity",
+      "busanStoredSnapshot": "preserve",
+      "conflictResolution": "no_live_auto_promotion_or_grade_change"
+    },
+    {
+      "fields": [
+        "aliases",
+        "mergedPlaceIds",
+        "siteGroupId",
+        "siteRole"
+      ],
+      "ownership": "app_derived_identity_relationship",
+      "tourapiPhase1": "preserve_and_use_for_identity_review",
+      "busanStoredSnapshot": "preserve",
+      "conflictResolution": "live_match_to_other_internal_relation_requires_review_no_relink"
+    },
+    {
+      "fields": [
+        "imageUrl",
+        "imageSource",
+        "imageEvidence"
+      ],
+      "ownership": "provider_url_plus_separate_rights_gate",
+      "tourapiPhase1": "retain_only_exactly_permission_mapped_url_otherwise_default_image",
+      "busanStoredSnapshot": "retain_only_exactly_permission_mapped_url",
+      "conflictResolution": "reachability_or_provider_identity_does_not_infer_photo_permission"
+    },
+    {
+      "fields": [
+        "mapVerification"
+      ],
+      "ownership": "app_derived_kakao_contract",
+      "tourapiPhase1": "preserve",
+      "busanStoredSnapshot": "preserve",
+      "conflictResolution": "never_overwrite_from_tourapi_or_busan_fact"
+    }
+  ],
+  "reviewRules": {
+    "status": "proposed_data_contract_for_adapter_tests_not_product_code",
+    "normalization": {
+      "title": "NFKC + lowercase + remove whitespace/punctuation/symbols; reviewed aliases are exact normalized alternatives",
+      "coordinateDistance": "haversine_meters"
+    },
+    "autoApplyAllRequired": [
+      "provider source ID exactly equals the reviewed mapping",
+      "normalized live title equals current title or one reviewed alias",
+      "live coordinate is valid and no more than 100m from the mapped place when coordinates are returned",
+      "contentTypeId is unchanged when returned",
+      "source ID still maps to the same internal contentId and not another merged/site-group relation"
+    ],
+    "reviewRequiredIfAny": [
+      "normalized live title is neither current title nor a reviewed alias",
+      "coordinate movement exceeds 100m",
+      "contentTypeId changes",
+      "same provider source ID resolves to multiple internal IDs",
+      "live identity is closer to or names another mergedPlaceId/siteGroup member instead of the mapped contentId"
+    ],
+    "probableIdReuseSignals": [
+      "unknown title and coordinate movement exceeds 250m",
+      "coordinate movement exceeds 1000m even when title is retained",
+      "contentTypeId changes together with unknown title or coordinate movement"
+    ],
+    "reviewDisposition": "keep_mapping_unchanged_exclude_conflicting_live_overlay_from_session_and_emit_review_record",
+    "partialResponseRule": "missing optional field does not erase stored value; only complete-list-confirmed inactive membership removes the TourAPI-linked place from the session; detail failure is not deletion",
+    "scopeNote": "These thresholds are audit proposals for adapter fixtures. They are not recommendation policy and are not written into UI, engine, API adapter, or DB code by this task."
+  },
+  "integrationHandoff": {
+    "observedCurrentAdapterContract": {
+      "operations": [
+        "areaBasedList2",
+        "detailIntro2"
+      ],
+      "resultStatuses": [
+        "ready",
+        "partial",
+        "unavailable"
+      ],
+      "normalizedPlaceFields": [
+        "contentId",
+        "contentTypeId",
+        "title",
+        "address?",
+        "lat",
+        "lon",
+        "modifiedAt?",
+        "opening"
+      ],
+      "note": "Observed from the current worktree only; this data task did not modify the adapter."
+    },
+    "blockingAmbiguityForMappingLayer": {
+      "currentShape": "snapshot.places contains active approved IDs whose detailIntro2 succeeded; partial.failures are not content-ID scoped",
+      "consequence": "an approved ID omitted from a partial snapshot cannot be distinguished as inactive from active-with-detail-failure",
+      "requiredResolution": "return a complete active-approved ID set plus content-ID-scoped detail failures, or return one status per approved ID: active_ready | active_detail_failed | inactive"
+    },
+    "engineInputAfterResolution": "accepted session places only, retaining internal contentId/category/subCategory/dwell/classification/relationship fields and excluding confirmed inactive or identity-conflict rows"
+  },
+  "overlaps": [
+    {
+      "contentId": "poi_13",
+      "runtimeTitle": "부산 자갈치시장",
+      "classification": "representative_core",
+      "sourceIds": {
+        "tourapi": "132190",
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "412"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "부산 자갈치시장",
+          "자갈치시장"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": "jagalchi_tourism_area",
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "132190",
+          "title": "부산 자갈치시장",
+          "addr1": "부산광역시 중구 자갈치해안로 52",
+          "lat": 35.0966511661,
+          "lon": 129.0306042201,
+          "contentTypeId": "38",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "412",
+            "mainTitle": "자갈치시장",
+            "identityTitle": "자갈치시장",
+            "addr1": "부산광역시 중구 자갈치해안로 52",
+            "lat": 35.096664,
+            "lon": 129.03055,
+            "operatingHoursText": "05:00~22:00",
+            "holidayText": "매달 1,3,5번째 화요일",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "known_reviewed_alias",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 5
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 5,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_177",
+      "runtimeTitle": "부산 치유의 숲",
+      "classification": "conditional_more",
+      "sourceIds": {
+        "tourapi": "2660770",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "848"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "부산 치유의 숲",
+          "부산치유의 숲(한, 영)",
+          "부산치유의 숲"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "2660770",
+          "title": "부산 치유의 숲",
+          "addr1": "부산광역시 기장군 철마면 철마천로 101",
+          "lat": 35.2690086937,
+          "lon": 129.1298103057,
+          "contentTypeId": "12",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "848",
+            "mainTitle": "부산치유의 숲(한, 영)",
+            "identityTitle": "부산치유의 숲",
+            "addr1": "부산광역시 기장군 철마면 철마천로 101",
+            "lat": 35.26948,
+            "lon": 129.12955,
+            "operatingHoursText": "매일",
+            "holidayText": "설날∙추석 당일 휴무",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 57
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 57,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_187",
+      "runtimeTitle": "색채마을",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "3064931",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "2106"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "색채마을",
+          "색채마을(한,영,중간,중번,일)"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "3064931",
+          "title": "색채마을",
+          "addr1": "부산광역시 중구 망양로 327-1 (대청동4가)",
+          "lat": 35.1070333171,
+          "lon": 129.0294707029,
+          "contentTypeId": "12",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "2106",
+            "mainTitle": "색채마을(한,영,중간,중번,일)",
+            "identityTitle": "색채마을",
+            "addr1": "부산광역시 중구 망양로327-1",
+            "lat": 35.106995,
+            "lon": 129.02943,
+            "operatingHoursText": "매일 00:00~24:00",
+            "holidayText": null,
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 6
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 6,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_19",
+      "runtimeTitle": "동백공원",
+      "classification": "representative_core",
+      "sourceIds": {
+        "tourapi": "128810",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "2274"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "동백공원",
+          "동백섬",
+          "동백섬(한,영,중간,중번,일)"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": "dongbaek_park_island",
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "128810",
+          "title": "동백공원",
+          "addr1": "부산광역시 해운대구 동백로 99 (우동)",
+          "lat": 35.1536609221,
+          "lon": 129.1523226328,
+          "contentTypeId": "12",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "2274",
+            "mainTitle": "동백섬(한,영,중간,중번,일)",
+            "identityTitle": "동백섬",
+            "addr1": "부산광역시 해운대구 우동 710-1",
+            "lat": 35.15397,
+            "lon": 129.1523,
+            "operatingHoursText": null,
+            "holidayText": null,
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "known_reviewed_alias",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 34
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 34,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_225",
+      "runtimeTitle": "친환경 스카이웨이 전망대(이바구길)",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "2656194",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "1868"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "친환경 스카이웨이 전망대(이바구길)",
+          "친환경스카이웨이전망대(한,영,중간,중번,일)",
+          "친환경스카이웨이전망대"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "2656194",
+          "title": "친환경 스카이웨이 전망대(이바구길)",
+          "addr1": "부산광역시 동구 초량동",
+          "lat": 35.1213095185,
+          "lon": 129.0306535435,
+          "contentTypeId": "12",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "1868",
+            "mainTitle": "친환경스카이웨이전망대(한,영,중간,중번,일)",
+            "identityTitle": "친환경스카이웨이전망대",
+            "addr1": "부산광역시 동구 망양로 533-33",
+            "lat": 35.12086,
+            "lon": 129.03201,
+            "operatingHoursText": "24시간",
+            "holidayText": null,
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "known_reviewed_alias",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 133
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 133,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_237",
+      "runtimeTitle": "화명수목원",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "2756696",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "457"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "화명수목원",
+          "화명수목원(한,영,중간,중번,일)"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "2756696",
+          "title": "화명수목원",
+          "addr1": "부산광역시 북구 산성로 299",
+          "lat": 35.2510535364,
+          "lon": 129.0426767218,
+          "contentTypeId": "12",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "457",
+            "mainTitle": "화명수목원(한,영,중간,중번,일)",
+            "identityTitle": "화명수목원",
+            "addr1": "부산광역시 북구 산성로 299",
+            "lat": 35.25257,
+            "lon": 129.04205,
+            "operatingHoursText": "화~일\n09:00~18:00(3~10월)\n09:00~17:00(11~2월)\n※ 입장은 관람종료 1시간 전까지 가능합니다.",
+            "holidayText": "월요일, 1월 1일, 추석‧설 당일\n(월요일이 공휴일인 경우 다음날 휴무)",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 178
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 178,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_245",
+      "runtimeTitle": "누리마루 APEC하우스",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "1918263",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "2121"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "누리마루 APEC하우스",
+          "누리마루 APEC하우스 (한,영,중간,중번,일)"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "1918263",
+          "title": "누리마루 APEC하우스",
+          "addr1": "부산광역시 해운대구 동백로 116",
+          "lat": 35.1523943787,
+          "lon": 129.1513116443,
+          "contentTypeId": "14",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "2121",
+            "mainTitle": "누리마루 APEC하우스 (한,영,중간,중번,일)",
+            "identityTitle": "누리마루 APEC하우스",
+            "addr1": "부산광역시 해운대구 동백로 116 누리마루APEC하우스",
+            "lat": 35.152336,
+            "lon": 129.15132,
+            "operatingHoursText": "매일 09:00~18:00",
+            "holidayText": "매달 첫 번째 월요일 정기휴무",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 7
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 7,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_25",
+      "runtimeTitle": "부산시립미술관",
+      "classification": "representative_core",
+      "sourceIds": {
+        "tourapi": "130166",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "289"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "부산시립미술관",
+          "부산 시립미술관"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "130166",
+          "title": "부산시립미술관",
+          "addr1": "부산광역시 해운대구 APEC로 58",
+          "lat": 35.1666980687,
+          "lon": 129.1370458254,
+          "contentTypeId": "14",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "289",
+            "mainTitle": "부산시립미술관",
+            "identityTitle": "부산시립미술관",
+            "addr1": "부산광역시 해운대구 APEC로 58",
+            "lat": 35.16702,
+            "lon": 129.1369,
+            "operatingHoursText": "본관/ 화요일~일요일 10:00~18:00 \n이우환 공간(별관) /화요일~일요일 10:00~18:00(입장 17:30까지) ",
+            "holidayText": "1월 1일, 매주 월요일\n※ 월요일이 공휴일인 경우 그 다음날 휴관합니다.",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 38
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 38,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_287",
+      "runtimeTitle": "구포시장",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "1250885",
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "363"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "구포시장",
+          "구포시장(한,영,중간,중번,일)"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "1250885",
+          "title": "구포시장",
+          "addr1": "부산광역시 북구 구포시장2길 7 (구포동)",
+          "lat": 35.2087575605,
+          "lon": 129.0037896031,
+          "contentTypeId": "38",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "363",
+            "mainTitle": "구포시장(한,영,중간,중번,일)",
+            "identityTitle": "구포시장",
+            "addr1": "부산광역시 북구 구포시장2길 7",
+            "lat": 35.209274,
+            "lon": 129.00357,
+            "operatingHoursText": "08:00~20:00",
+            "holidayText": "가게별 상이",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 61
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 61,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_3",
+      "runtimeTitle": "신세계백화점 센텀시티점",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "767084",
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "548"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "신세계백화점 센텀시티점"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "767084",
+          "title": "신세계백화점 센텀시티점",
+          "addr1": "부산광역시 해운대구 센텀남대로 35",
+          "lat": 35.1687865886,
+          "lon": 129.1297408475,
+          "contentTypeId": "38",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "548",
+            "mainTitle": "신세계백화점 센텀시티점",
+            "identityTitle": "신세계백화점 센텀시티점",
+            "addr1": "부산광역시 해운대구 센텀남대로 35",
+            "lat": 35.168625,
+            "lon": 129.12907,
+            "operatingHoursText": "월-목 10:30~20:00\n금-일 10:30~20:30",
+            "holidayText": "월1회 휴점",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 64
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 64,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_4",
+      "runtimeTitle": "부평깡통시장",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "1878218",
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "400"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "부평깡통시장",
+          "부평 깡통시장"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "1878218",
+          "title": "부평깡통시장",
+          "addr1": "부산광역시 중구 부평1길 48",
+          "lat": 35.1015921962,
+          "lon": 129.0260517037,
+          "contentTypeId": "38",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "400",
+            "mainTitle": "부평깡통시장",
+            "identityTitle": "부평깡통시장",
+            "addr1": "부산광역시 중구 부평1길 48",
+            "lat": 35.102184,
+            "lon": 129.02582,
+            "operatingHoursText": "매일 19:30-24:00",
+            "holidayText": "연중무휴(가게별 상이)",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 69
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 69,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_403",
+      "runtimeTitle": "모모스커피 본점",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "2832729",
+        "busan": [
+          {
+            "provider": "busan_food",
+            "sourceId": "127"
+          },
+          {
+            "provider": "busan_food",
+            "sourceId": "1634"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "모모스커피 본점",
+          "모모스커피"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "2832729",
+          "title": "모모스커피 본점",
+          "addr1": "부산광역시 금정구 오시게로 20 (부곡동)",
+          "lat": 35.2192717995,
+          "lon": 129.0864960018,
+          "contentTypeId": "39",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_food",
+            "sourceId": "127",
+            "mainTitle": "모모스커피",
+            "identityTitle": "모모스커피",
+            "addr1": "금정구 오시게로 20",
+            "lat": 35.21928,
+            "lon": 129.08643,
+            "operatingHoursText": "08:00-18:00",
+            "holidayText": null,
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "known_reviewed_alias",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 6
+            }
+          },
+          {
+            "provider": "busan_food",
+            "sourceId": "1634",
+            "mainTitle": "모모스커피",
+            "identityTitle": "모모스커피",
+            "addr1": "부산 금정구 오시게로 20 (부곡동)",
+            "lat": 35.219234,
+            "lon": 129.08647,
+            "operatingHoursText": "08:00-18:00\n(17:30 라스트 오더)",
+            "holidayText": null,
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "known_reviewed_alias",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 5
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 6,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_427",
+      "runtimeTitle": "브레이크인커피",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "2853145",
+        "busan": [
+          {
+            "provider": "busan_food",
+            "sourceId": "1464"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "브레이크인커피"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "2853145",
+          "title": "브레이크인커피",
+          "addr1": "부산광역시 기장군 병산로 117",
+          "lat": 35.340837641,
+          "lon": 129.1778263576,
+          "contentTypeId": "39",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_food",
+            "sourceId": "1464",
+            "mainTitle": "브레이크인커피",
+            "identityTitle": "브레이크인커피",
+            "addr1": "기장군 정관읍 병산로 117",
+            "lat": 35.340794,
+            "lon": 129.17773,
+            "operatingHoursText": "월-일 : 10:00-21:50\n(21:00 라스트 오더)",
+            "holidayText": null,
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 10
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 10,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_70",
+      "runtimeTitle": "벡스코(BEXCO)",
+      "classification": "conditional_more",
+      "sourceIds": {
+        "tourapi": "130668",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "420"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "벡스코(BEXCO)",
+          "벡스코"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "130668",
+          "title": "벡스코(BEXCO)",
+          "addr1": "부산광역시 해운대구 APEC로 55",
+          "lat": 35.1691116738,
+          "lon": 129.1363347095,
+          "contentTypeId": "14",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "420",
+            "mainTitle": "벡스코",
+            "identityTitle": "벡스코",
+            "addr1": "부산광역시 해운대구 APEC로 55",
+            "lat": 35.169247,
+            "lon": 129.13628,
+            "operatingHoursText": "행사별 상이(홈페이지 참조)",
+            "holidayText": "연중무휴",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "known_reviewed_alias",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 16
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 16,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_78",
+      "runtimeTitle": "고래서이뻐",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "3336600",
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "2581"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "고래서이뻐",
+          "고래서 이뻐"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "3336600",
+          "title": "고래서이뻐",
+          "addr1": "부산광역시 해운대구 우동1로38번길 15-1 (우동)",
+          "lat": 35.1657319056,
+          "lon": 129.1583856629,
+          "contentTypeId": "38",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "2581",
+            "mainTitle": "고래서이뻐",
+            "identityTitle": "고래서이뻐",
+            "addr1": "부산 해운대구 우동1로38번길 15-1 1층",
+            "lat": 35.165718,
+            "lon": 129.15836,
+            "operatingHoursText": "매일 10:00~21:00",
+            "holidayText": null,
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 3
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 3,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_89",
+      "runtimeTitle": "범어사 성보박물관",
+      "classification": "representative_core",
+      "sourceIds": {
+        "tourapi": "2554111",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "402"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "범어사 성보박물관",
+          "범어사",
+          "범어사 (한,영,중간,중번,일)"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "2554111",
+          "title": "범어사 성보박물관",
+          "addr1": "부산광역시 금정구 범어사로 250",
+          "lat": 35.2839753157,
+          "lon": 129.0681152667,
+          "contentTypeId": "14",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "402",
+            "mainTitle": "범어사 (한,영,중간,중번,일)",
+            "identityTitle": "범어사",
+            "addr1": "부산광역시 금정구 범어사로 250",
+            "lat": 35.283646,
+            "lon": 129.06854,
+            "operatingHoursText": "매일 08:00 - 17:00",
+            "holidayText": "연중무휴",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "known_reviewed_alias",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 53
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 53,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_90",
+      "runtimeTitle": "부산 영화의 전당",
+      "classification": "conditional_more",
+      "sourceIds": {
+        "tourapi": "2456837",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "421"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "부산 영화의 전당",
+          "영화의 전당",
+          "영화의 전당(한,영,중간,중번,일)"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "2456837",
+          "title": "부산 영화의 전당",
+          "addr1": "부산광역시 해운대구 수영강변대로 120",
+          "lat": 35.170794647,
+          "lon": 129.1270576924,
+          "contentTypeId": "12",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "421",
+            "mainTitle": "영화의 전당(한,영,중간,중번,일)",
+            "identityTitle": "영화의 전당",
+            "addr1": "부산광역시 해운대구 수영강변대로 120",
+            "lat": 35.171055,
+            "lon": 129.12703,
+            "operatingHoursText": "매일 / 프로그램별 상이(홈페이지 참조)",
+            "holidayText": "연중무휴",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "known_reviewed_alias",
+              "addressNormalizedExact": true,
+              "coordinateDistanceM": 29
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 29,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_92",
+      "runtimeTitle": "부산근현대역사관 본관",
+      "classification": "representative_core",
+      "sourceIds": {
+        "tourapi": "3083767",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "1881"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "부산근현대역사관 본관",
+          "부산 근현대 역사관 별관",
+          "부산근현대역사관 본관(한,영,중간,중번,일)"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "3083767",
+          "title": "부산근현대역사관 본관",
+          "addr1": "부산광역시 중구 대청로 112 (대청동1가)",
+          "lat": 35.1027616225,
+          "lon": 129.032190027,
+          "contentTypeId": "14",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "1881",
+            "mainTitle": "부산근현대역사관 본관(한,영,중간,중번,일)",
+            "identityTitle": "부산근현대역사관 본관",
+            "addr1": "부산광역시 중구 대청로 112 부산근현대역사관 본관\n주차장 없음(공영주차장 이용)",
+            "lat": 35.102566,
+            "lon": 129.03214,
+            "operatingHoursText": "매주 화요일~일요일 09:00~18:00",
+            "holidayText": "매주 월요일 휴관\n(월요일이 공휴일인 경우 그 다음날)",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 22
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 22,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_94",
+      "runtimeTitle": "부산타워",
+      "classification": "representative_standard",
+      "sourceIds": {
+        "tourapi": "1277679",
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "550"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "부산타워",
+          "부산타워(한,영,중간,중번,일)"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "1277679",
+          "title": "부산타워",
+          "addr1": "부산광역시 중구 용두산길 37-30 (광복동2가)",
+          "lat": 35.1011951345,
+          "lon": 129.0323594995,
+          "contentTypeId": "12",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_attraction",
+            "sourceId": "550",
+            "mainTitle": "부산타워(한,영,중간,중번,일)",
+            "identityTitle": "부산타워",
+            "addr1": "부산광역시 중구 용두산길 37-30",
+            "lat": 35.10119,
+            "lon": 129.0323,
+            "operatingHoursText": "10:00 - 22:00(발권마감 21:30)",
+            "holidayText": "연중무휴",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 5
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 5,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    },
+    {
+      "contentId": "poi_96",
+      "runtimeTitle": "부전마켓타운",
+      "classification": "conditional_more",
+      "sourceIds": {
+        "tourapi": "132188",
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "327"
+          }
+        ]
+      },
+      "internalIdentityRelations": {
+        "aliases": [
+          "부전마켓타운",
+          "부전시장"
+        ],
+        "mergedPlaceIds": [],
+        "siteGroupId": null,
+        "siteRole": null
+      },
+      "storedSnapshots": {
+        "tourapi": {
+          "provider": "tourapi",
+          "sourceId": "132188",
+          "title": "부전마켓타운",
+          "addr1": "부산광역시 부산진구 중앙대로755번길 21",
+          "lat": 35.1624610334,
+          "lon": 129.0614025211,
+          "contentTypeId": "38",
+          "comparisonToRuntime": {
+            "titleNormalizedExact": true,
+            "addressNormalizedExact": true,
+            "coordinateDistanceM": 0,
+            "contentTypeExact": true
+          }
+        },
+        "busan": [
+          {
+            "provider": "busan_shopping",
+            "sourceId": "327",
+            "mainTitle": "부전시장",
+            "identityTitle": "부전마켓타운",
+            "addr1": "부산광역시 부산진구 중앙대로 786 10",
+            "lat": 35.162804,
+            "lon": 129.06134,
+            "operatingHoursText": "월~일 07:00~19:00(가게별 상이) ",
+            "holidayText": "가게별 상이",
+            "detailDescriptionPresent": true,
+            "imageUrlPresent": true,
+            "comparisonToRuntime": {
+              "titleRelation": "exact_normalized_title",
+              "addressNormalizedExact": false,
+              "coordinateDistanceM": 39
+            }
+          }
+        ]
+      },
+      "existingMappingAssessment": {
+        "disposition": "preserve_reviewed_exact_source_links",
+        "tourapiSnapshotExactlyMatchesRuntimeCommonFields": true,
+        "busanTitlesResolveByReviewedTitleOrAlias": true,
+        "maxBusanCoordinateDistanceM": 39,
+        "freshnessClaim": "none_stored_snapshots_only"
+      },
+      "phase1Resolution": {
+        "tourapiLifecycle": "apply_complete_live_list_membership_active_or_inactive_and_modified_fact_after_identity_gate",
+        "tourapiCommonFields": "overlay_only_fields_present_in_accepted_live_response",
+        "busanCommonFields": "retain_as_stored_provenance_but_do_not_override_tourapi_phase1_or_claim_latest",
+        "busanOnlyFields": "preserve_existing_reviewed_snapshot_value_and_provenance",
+        "appDerivedFields": "preserve_without_live_reclassification",
+        "photos": "preserve_existing_rights_gate_new_or_changed_url_falls_back_until_exact_permission_mapping"
+      }
+    }
+  ]
+}

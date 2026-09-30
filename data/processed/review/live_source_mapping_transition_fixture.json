@@ -1,0 +1,281 @@
+{
+  "meta": {
+    "taskId": "DATA-LIVE-MAPPING-CONTRACT-02",
+    "contractVersion": 1,
+    "kind": "normalized_mapping_boundary_fixture",
+    "containsRealApiResponse": false,
+    "containsSecret": false,
+    "thresholdsReference": "proposed_data_contract_for_adapter_tests_not_product_code"
+  },
+  "cases": [
+    {
+      "id": "LIVE-MAP-NEW-01",
+      "scenario": "new_source_id",
+      "local": null,
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-new-100",
+        "availability": "active",
+        "title": "신규 테스트 장소",
+        "lat": 35.1,
+        "lon": 129.1,
+        "contentTypeId": "12"
+      },
+      "expected": {
+        "disposition": "review_required",
+        "autoJoin": false,
+        "autoClassification": false,
+        "synthesizedDwellAllowed": false
+      }
+    },
+    {
+      "id": "LIVE-MAP-DELETED-01",
+      "scenario": "existing_source_confirmed_inactive_or_deleted",
+      "local": {
+        "contentId": "fixture-place-200",
+        "sourceId": "fixture-200",
+        "classification": "representative_standard"
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-200",
+        "availability": "inactive",
+        "lifecycleEvidence": "absent_from_complete_area_list",
+        "fetchedAt": "2026-09-21T00:00:00Z"
+      },
+      "expected": {
+        "disposition": "exclude_session",
+        "staticResurrectionAllowed": false,
+        "appDerivedDataDeleted": false
+      }
+    },
+    {
+      "id": "LIVE-MAP-TITLE-ALIAS-01",
+      "scenario": "existing_source_title_changes_to_reviewed_alias",
+      "local": {
+        "contentId": "fixture-place-300",
+        "sourceId": "fixture-300",
+        "title": "테스트 공원",
+        "aliases": [
+          "테스트 공원",
+          "테스트섬"
+        ],
+        "lat": 35.1,
+        "lon": 129.1,
+        "contentTypeId": "12",
+        "classification": "representative_core"
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-300",
+        "availability": "active",
+        "title": "테스트섬",
+        "lat": 35.1002,
+        "lon": 129.1002,
+        "contentTypeId": "12"
+      },
+      "expected": {
+        "disposition": "apply_live_overlay",
+        "updatedFields": [
+          "title",
+          "lat",
+          "lon"
+        ],
+        "preservedFields": [
+          "classification",
+          "aliases"
+        ]
+      }
+    },
+    {
+      "id": "LIVE-MAP-TITLE-UNKNOWN-01",
+      "scenario": "existing_source_title_changes_without_reviewed_alias",
+      "local": {
+        "contentId": "fixture-place-400",
+        "sourceId": "fixture-400",
+        "title": "기존 테스트 미술관",
+        "aliases": [
+          "기존 테스트 미술관"
+        ],
+        "lat": 35.1,
+        "lon": 129.1,
+        "contentTypeId": "14"
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-400",
+        "availability": "active",
+        "title": "다른 테스트 시설",
+        "lat": 35.1001,
+        "lon": 129.1001,
+        "contentTypeId": "14"
+      },
+      "expected": {
+        "disposition": "review_required",
+        "autoRelink": false,
+        "liveOverlayApplied": false
+      }
+    },
+    {
+      "id": "LIVE-MAP-COORD-SMALL-01",
+      "scenario": "existing_source_coordinate_changes_within_100m",
+      "local": {
+        "contentId": "fixture-place-500",
+        "sourceId": "fixture-500",
+        "title": "좌표 테스트",
+        "aliases": [
+          "좌표 테스트"
+        ],
+        "lat": 35.1,
+        "lon": 129.1,
+        "contentTypeId": "12"
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-500",
+        "availability": "active",
+        "title": "좌표 테스트",
+        "lat": 35.1004,
+        "lon": 129.1004,
+        "contentTypeId": "12"
+      },
+      "expected": {
+        "disposition": "apply_live_overlay",
+        "coordinateDistanceBand": "lte_100m",
+        "appDerivedFieldsPreserved": true
+      }
+    },
+    {
+      "id": "LIVE-MAP-COORD-LARGE-01",
+      "scenario": "existing_source_coordinate_changes_over_100m",
+      "local": {
+        "contentId": "fixture-place-600",
+        "sourceId": "fixture-600",
+        "title": "좌표 이동 테스트",
+        "aliases": [
+          "좌표 이동 테스트"
+        ],
+        "lat": 35.1,
+        "lon": 129.1,
+        "contentTypeId": "12"
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-600",
+        "availability": "active",
+        "title": "좌표 이동 테스트",
+        "lat": 35.102,
+        "lon": 129.102,
+        "contentTypeId": "12"
+      },
+      "expected": {
+        "disposition": "review_required",
+        "coordinateDistanceBand": "gt_100m",
+        "liveOverlayApplied": false
+      }
+    },
+    {
+      "id": "LIVE-MAP-ID-REUSE-01",
+      "scenario": "probable_source_id_reuse",
+      "local": {
+        "contentId": "fixture-place-700",
+        "sourceId": "fixture-700",
+        "title": "기존 박물관",
+        "aliases": [
+          "기존 박물관"
+        ],
+        "lat": 35.1,
+        "lon": 129.1,
+        "contentTypeId": "14",
+        "siteGroupId": "fixture-site-a"
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-700",
+        "availability": "active",
+        "title": "신규 쇼핑몰",
+        "lat": 35.11,
+        "lon": 129.11,
+        "contentTypeId": "38"
+      },
+      "expected": {
+        "disposition": "review_required_probable_id_reuse",
+        "autoRelink": false,
+        "liveOverlayApplied": false
+      }
+    },
+    {
+      "id": "LIVE-MAP-BOTH-CONFLICT-01",
+      "scenario": "tourapi_live_and_busan_stored_snapshot_conflict",
+      "local": {
+        "contentId": "fixture-place-800",
+        "tourapiSourceId": "fixture-tour-800",
+        "busanSourceId": "fixture-busan-800",
+        "category": "문화시설",
+        "subCategory": "미술관",
+        "detailDescription": "검토된 부산 설명",
+        "classification": "representative_core",
+        "recommendedStayMin": 60
+      },
+      "tourapiLive": {
+        "provider": "tourapi",
+        "sourceId": "fixture-tour-800",
+        "availability": "active",
+        "title": "실시간 테스트 미술관",
+        "addr1": "부산 테스트구 실시간로 1",
+        "lat": 35.1,
+        "lon": 129.1,
+        "contentTypeId": "14",
+        "operatingHours": [
+          "10:00-18:00"
+        ]
+      },
+      "busanStoredSnapshot": {
+        "provider": "busan_attraction",
+        "sourceId": "fixture-busan-800",
+        "title": "부산 테스트 문화관",
+        "addr1": "부산 테스트구 과거로 2",
+        "operatingHours": [
+          "09:00-17:00"
+        ],
+        "detailDescription": "검토된 부산 설명"
+      },
+      "expected": {
+        "disposition": "apply_field_level_contract",
+        "sessionTitleSource": "tourapi_live",
+        "sessionAddressSource": "tourapi_live",
+        "sessionHoursSource": "tourapi_live",
+        "detailDescriptionSource": "busan_stored_snapshot",
+        "busanFreshnessClaim": false,
+        "preservedFields": [
+          "category",
+          "subCategory",
+          "classification",
+          "recommendedStayMin"
+        ]
+      }
+    },
+    {
+      "id": "LIVE-MAP-PHOTO-RIGHTS-01",
+      "scenario": "accepted_place_with_changed_photo_url_without_permission_mapping",
+      "local": {
+        "contentId": "fixture-place-900",
+        "sourceId": "fixture-900",
+        "imageUrl": "https://example.invalid/allowed-old.jpg",
+        "photoPermissionStatus": "operator_approved"
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-900",
+        "availability": "active",
+        "title": "사진 테스트",
+        "imageUrl": "https://example.invalid/unmapped-new.jpg"
+      },
+      "expected": {
+        "disposition": "apply_place_without_new_photo",
+        "imageDisposition": "default_image",
+        "rightsInferred": false
+      }
+    }
+  ]
+}

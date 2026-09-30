@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "taskId": "DATA-LIVE-SOURCE-INVENTORY-01",
+    "contractVersion": 1,
+    "kind": "normalized_provider_boundary_fixture_design",
+    "containsRealApiResponse": false,
+    "containsSecret": false,
+    "note": "API별 raw schema가 아니라 A2 adapter 이후 정규화 경계를 검증하기 위한 최소 fixture다."
+  },
+  "cases": [
+    {
+      "id": "LIVE-SOURCE-UNCHANGED-01",
+      "scenario": "existing_unchanged",
+      "local": {
+        "contentId": "fixture_place_existing",
+        "sourceId": "fixture-source-100",
+        "classification": "representative_standard",
+        "recommendedStayMin": 30
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-source-100",
+        "availability": "available",
+        "title": "Fixture Place",
+        "addr1": "부산광역시 테스트구",
+        "lat": 35.1,
+        "lon": 129.1,
+        "operatingHours": [
+          "10:00-18:00"
+        ],
+        "modifiedAt": "2026-09-20T00:00:00Z"
+      },
+      "expected": {
+        "disposition": "join",
+        "liveFieldsUpdated": false,
+        "appDerivedFieldsPreserved": true
+      }
+    },
+    {
+      "id": "LIVE-SOURCE-MODIFIED-01",
+      "scenario": "existing_modified",
+      "local": {
+        "contentId": "fixture_place_modified",
+        "sourceId": "fixture-source-200",
+        "classification": "representative_standard",
+        "recommendedStayMin": 30
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-source-200",
+        "availability": "available",
+        "title": "Fixture Place Renamed",
+        "addr1": "부산광역시 변경구",
+        "lat": 35.11,
+        "lon": 129.11,
+        "operatingHours": [
+          "11:00-19:00"
+        ],
+        "modifiedAt": "2026-09-21T00:00:00Z"
+      },
+      "expected": {
+        "disposition": "join",
+        "liveFieldsUpdated": true,
+        "appDerivedFieldsPreserved": true
+      }
+    },
+    {
+      "id": "LIVE-SOURCE-DELETED-01",
+      "scenario": "existing_deleted",
+      "local": {
+        "contentId": "fixture_place_deleted",
+        "sourceId": "fixture-source-300",
+        "classification": "representative_core",
+        "recommendedStayMin": 30
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-source-300",
+        "availability": "deleted",
+        "modifiedAt": "2026-09-21T00:00:00Z"
+      },
+      "expected": {
+        "disposition": "exclude_session",
+        "localFallbackAllowed": false
+      }
+    },
+    {
+      "id": "LIVE-SOURCE-NEW-01",
+      "scenario": "new_source_id",
+      "local": null,
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-source-new",
+        "availability": "available",
+        "title": "New Fixture Place",
+        "addr1": "부산광역시 신규구",
+        "lat": 35.12,
+        "lon": 129.12,
+        "operatingHours": [
+          "10:00-17:00"
+        ],
+        "modifiedAt": "2026-09-21T00:00:00Z"
+      },
+      "expected": {
+        "disposition": "review_required",
+        "autoPromote": false,
+        "synthesizedDwellAllowed": false
+      }
+    },
+    {
+      "id": "LIVE-SOURCE-ID-REUSE-01",
+      "scenario": "source_id_reuse_or_identity_conflict",
+      "local": {
+        "contentId": "fixture_place_conflict",
+        "sourceId": "fixture-source-400",
+        "title": "Original Fixture Place",
+        "lat": 35.1,
+        "lon": 129.1,
+        "classification": "representative_standard",
+        "recommendedStayMin": 30
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-source-400",
+        "availability": "available",
+        "title": "Different Fixture Entity",
+        "addr1": "부산광역시 충돌구",
+        "lat": 36.1,
+        "lon": 128.1,
+        "operatingHours": [
+          "09:00-18:00"
+        ],
+        "modifiedAt": "2026-09-21T00:00:00Z"
+      },
+      "expected": {
+        "disposition": "conflict_review",
+        "autoJoin": false,
+        "thresholdDecisionRequired": true
+      }
+    },
+    {
+      "id": "LIVE-SOURCE-IMAGE-RIGHTS-01",
+      "scenario": "new_image_without_rights_mapping",
+      "local": {
+        "contentId": "fixture_place_image",
+        "sourceId": "fixture-source-500",
+        "classification": "representative_standard",
+        "recommendedStayMin": 30
+      },
+      "live": {
+        "provider": "tourapi",
+        "sourceId": "fixture-source-500",
+        "availability": "available",
+        "title": "Image Fixture Place",
+        "imageUrl": "https://example.invalid/new-image.jpg",
+        "modifiedAt": "2026-09-21T00:00:00Z"
+      },
+      "expected": {
+        "disposition": "join",
+        "placeRetained": true,
+        "imageDisposition": "fallback",
+        "rightsInferredFromReachability": false
+      }
+    }
+  ]
+}

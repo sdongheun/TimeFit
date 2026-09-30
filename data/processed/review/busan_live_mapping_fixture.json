@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "taskId": "DATA-BUSAN-LIVE-MAPPING-01",
+    "fixtureVersion": 1,
+    "externalCalls": 0
+  },
+  "invariants": {
+    "busanOfficialPlaces": 132,
+    "busanOfficialLinks": 133,
+    "representativePlaces": 109,
+    "representativeLinks": 110,
+    "representativeBusanOnlyPlaces": 93,
+    "representativeTourapiAndBusanPlaces": 16,
+    "allTourapiAndBusanPlaces": 20,
+    "traditionalMarketOnlyOutOfScope": 118
+  },
+  "cases": [
+    {
+      "id": "BUSAN-LIVE-EXACT-01",
+      "input": "known provider + exact UC_SEQ",
+      "expected": "join_existing_internal_id"
+    },
+    {
+      "id": "BUSAN-LIVE-NEW-01",
+      "input": "unknown UC_SEQ",
+      "expected": "review_required_no_auto_promotion"
+    },
+    {
+      "id": "BUSAN-LIVE-PARTIAL-01",
+      "input": "missing mapped UC_SEQ in incomplete/error page set",
+      "expected": "unknown_not_deleted"
+    },
+    {
+      "id": "BUSAN-LIVE-DELETED-01",
+      "input": "missing mapped UC_SEQ after complete list proof",
+      "expected": "provider_inactive"
+    },
+    {
+      "id": "BUSAN-LIVE-BOTH-EQUAL-01",
+      "input": "TourAPI and Busan live field semantically equal",
+      "expected": "auto_merge_with_both_provenance"
+    },
+    {
+      "id": "BUSAN-LIVE-BOTH-CONFLICT-01",
+      "input": "both live values differ and freshness is not comparable",
+      "expected": "review_required_no_provider_wide_priority"
+    },
+    {
+      "id": "BUSAN-LIVE-MARKET-SCOPE-01",
+      "input": "traditional_market_standard-only source",
+      "expected": "provider_out_of_scope_unchanged"
+    }
+  ]
+}

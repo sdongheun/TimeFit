@@ -1,0 +1,7165 @@
+{
+  "meta": {
+    "taskId": "DATA-LIVE-SOURCE-INVENTORY-01",
+    "contractVersion": 1,
+    "sourceCatalog": "src/data/busan_poi_catalog.json",
+    "deterministic": true,
+    "note": "원천 ID exact mapping inventory. 이름·좌표 유사도로 새 연결을 만들지 않는다."
+  },
+  "summary": {
+    "runtimePlaces": 369,
+    "uniqueInternalIds": 369,
+    "targetProviderCoverage": {
+      "tourapi": 139,
+      "busanOfficial": 132,
+      "bothTourapiAndBusan": 20,
+      "unionTourapiOrBusan": 251,
+      "traditionalMarketOnly": 118
+    },
+    "joinDisposition": {
+      "auto_join_exact_tourapi": 119,
+      "auto_join_exact_busan_phase2": 112,
+      "auto_join_exact_multi_source_conflict_policy_pending": 20,
+      "review_required_provider_out_of_scope": 118
+    },
+    "sourceLinks": {
+      "tourapi": {
+        "links": 139,
+        "linkedPlaces": 139,
+        "uniqueSourceIds": 139,
+        "reusedSourceIds": []
+      },
+      "busan_attraction": {
+        "links": 85,
+        "linkedPlaces": 85,
+        "uniqueSourceIds": 85,
+        "reusedSourceIds": []
+      },
+      "busan_food": {
+        "links": 19,
+        "linkedPlaces": 18,
+        "uniqueSourceIds": 19,
+        "reusedSourceIds": []
+      },
+      "busan_shopping": {
+        "links": 29,
+        "linkedPlaces": 29,
+        "uniqueSourceIds": 29,
+        "reusedSourceIds": []
+      },
+      "traditional_market_standard": {
+        "links": 118,
+        "linkedPlaces": 118,
+        "uniqueSourceIds": 118,
+        "reusedSourceIds": []
+      }
+    },
+    "sourceCombination": {
+      "tourapi_aihub": 20,
+      "busan_food": 16,
+      "tourapi_fallback": 99,
+      "busan_shopping+tourapi_aihub": 5,
+      "busan_attraction+tourapi_fallback": 5,
+      "busan_attraction+tourapi_aihub": 7,
+      "busan_shopping+tourapi_fallback": 1,
+      "busan_food+tourapi_fallback": 2,
+      "busan_attraction": 73,
+      "busan_shopping": 23,
+      "traditional_market_standard": 118
+    },
+    "catalogBaseline": {
+      "classification": {
+        "representative_core": 28,
+        "conditional_more": 178,
+        "representative_standard": 163
+      },
+      "displayOperatingHours": 122,
+      "structuredAvailability": 170,
+      "displayOrStructuredAvailability": 206,
+      "detailDescription": 127,
+      "photos": 203,
+      "photoStatus": {
+        "operator_approved": 102,
+        "verified": 101
+      },
+      "subCategory": 236,
+      "siteGroupedPlaces": 6,
+      "uniqueSiteGroups": 3,
+      "reviewDueAt": 369
+    }
+  },
+  "data": [
+    {
+      "contentId": "poi_1",
+      "title": "해운대 관광특구",
+      "classification": "representative_core",
+      "tourapiContentId": "127004",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_10",
+      "title": "미술의거리",
+      "classification": "conditional_more",
+      "tourapiContentId": "985921",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_1047",
+      "title": "웨이브온커피",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "174"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1049",
+      "title": "피아크 카페&베이커리",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1445"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1051",
+      "title": "커피스가모 인 서면",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1447"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1052",
+      "title": "이흥용과자점 부산대직영점",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1452"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1057",
+      "title": "보리종파티세리 본점",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1466"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1059",
+      "title": "토북베이커리",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1802"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1060",
+      "title": "카페호밀",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1803"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1065",
+      "title": "그리다부부",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1838"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1068",
+      "title": "보느파티쓰리",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "2354"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_107",
+      "title": "영도봉래시장",
+      "classification": "representative_standard",
+      "tourapiContentId": "1942316",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_1070",
+      "title": "연화제과",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "2371"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1071",
+      "title": "히떼로스터리 전포점",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "2386"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_11",
+      "title": "아리랑거리",
+      "classification": "representative_standard",
+      "tourapiContentId": "1013709",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_1141",
+      "title": "백구당",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1611"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1152",
+      "title": "머그디저트랩",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1628"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1153",
+      "title": "보느파티쓰 리",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1630"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1154",
+      "title": "브레드365",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1631"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_1158",
+      "title": "히떼로스터리",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1637"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_122",
+      "title": "가톨릭 특성화 거리",
+      "classification": "representative_standard",
+      "tourapiContentId": "1935608",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_123",
+      "title": "감지해변",
+      "classification": "representative_standard",
+      "tourapiContentId": "2785289",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_125",
+      "title": "경상좌수영성지",
+      "classification": "representative_standard",
+      "tourapiContentId": "129631",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_13",
+      "title": "부산 자갈치시장",
+      "classification": "representative_core",
+      "tourapiContentId": "132190",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "412"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_134",
+      "title": "금곡동 율리 바위그늘유적",
+      "classification": "representative_standard",
+      "tourapiContentId": "3414171",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_144",
+      "title": "낙동강문화관",
+      "classification": "representative_standard",
+      "tourapiContentId": "2554141",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_145",
+      "title": "낙동강하구 (부산 국가지질공원)",
+      "classification": "representative_standard",
+      "tourapiContentId": "2614714",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_150",
+      "title": "대연수목전시원",
+      "classification": "representative_standard",
+      "tourapiContentId": "2783380",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_151",
+      "title": "대천공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "2875849",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_153",
+      "title": "대항 어촌체험 휴양마을",
+      "classification": "representative_standard",
+      "tourapiContentId": "128564",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_16",
+      "title": "용두산 자갈치 관광특구",
+      "classification": "representative_core",
+      "tourapiContentId": "1957694",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_165",
+      "title": "민주공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "127149",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_166",
+      "title": "반송공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "2907087",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_168",
+      "title": "범일 이중섭거리",
+      "classification": "representative_standard",
+      "tourapiContentId": "2708108",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_171",
+      "title": "보람공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "2789334",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_173",
+      "title": "부산 송도해수욕장",
+      "classification": "representative_standard",
+      "tourapiContentId": "126122",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_174",
+      "title": "부산 영화의 거리",
+      "classification": "representative_standard",
+      "tourapiContentId": "2946508",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_176",
+      "title": "부산 중앙공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "126856",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_177",
+      "title": "부산 치유의 숲",
+      "classification": "conditional_more",
+      "tourapiContentId": "2660770",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "848"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_185",
+      "title": "사상근린공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "2785762",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_187",
+      "title": "색채마을",
+      "classification": "representative_standard",
+      "tourapiContentId": "3064931",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2106"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_19",
+      "title": "동백공원",
+      "classification": "representative_core",
+      "tourapiContentId": "128810",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2274"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_190",
+      "title": "소두방공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "2758469",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_193",
+      "title": "송도반도 (부산 국가지질공원)",
+      "classification": "representative_standard",
+      "tourapiContentId": "2614725",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_203",
+      "title": "영주하늘눈전망대",
+      "classification": "representative_standard",
+      "tourapiContentId": "2721157",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_211",
+      "title": "장산 (부산 국가지질공원)",
+      "classification": "representative_standard",
+      "tourapiContentId": "2614727",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_213",
+      "title": "전포 삼거리",
+      "classification": "representative_standard",
+      "tourapiContentId": "2944033",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_214",
+      "title": "절영해안산책로",
+      "classification": "representative_standard",
+      "tourapiContentId": "252561",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_219",
+      "title": "죽도공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "129597",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_22",
+      "title": "해운대 동백섬",
+      "classification": "representative_core",
+      "tourapiContentId": "987810",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_220",
+      "title": "중리노을전망대",
+      "classification": "representative_standard",
+      "tourapiContentId": "3017435",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_221",
+      "title": "천마산하늘전망대",
+      "classification": "representative_standard",
+      "tourapiContentId": "2721158",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_223",
+      "title": "청학수변공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "2736392",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_225",
+      "title": "친환경 스카이웨이 전망대(이바구길)",
+      "classification": "representative_standard",
+      "tourapiContentId": "2656194",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1868"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_229",
+      "title": "평화공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "128055",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_23",
+      "title": "갤러리이알디 부산",
+      "classification": "representative_standard",
+      "tourapiContentId": "2834026",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_231",
+      "title": "학리항(학리방파제)",
+      "classification": "representative_standard",
+      "tourapiContentId": "2775565",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_233",
+      "title": "해돋이전망대",
+      "classification": "representative_standard",
+      "tourapiContentId": "3017347",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_237",
+      "title": "화명수목원",
+      "classification": "representative_standard",
+      "tourapiContentId": "2756696",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "457"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_239",
+      "title": "황령산 전망대",
+      "classification": "representative_standard",
+      "tourapiContentId": "2733472",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_241",
+      "title": "UN조각공원",
+      "classification": "representative_standard",
+      "tourapiContentId": "2945389",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_243",
+      "title": "금정문화원",
+      "classification": "conditional_more",
+      "tourapiContentId": "130383",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_244",
+      "title": "기장문화원",
+      "classification": "representative_standard",
+      "tourapiContentId": "130380",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_245",
+      "title": "누리마루 APEC하우스",
+      "classification": "representative_standard",
+      "tourapiContentId": "1918263",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2121"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_246",
+      "title": "동래문화원",
+      "classification": "representative_standard",
+      "tourapiContentId": "130381",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_247",
+      "title": "동래읍성 임진왜란 역사관",
+      "classification": "representative_standard",
+      "tourapiContentId": "3017112",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_25",
+      "title": "부산시립미술관",
+      "classification": "representative_core",
+      "tourapiContentId": "130166",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "289"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_251",
+      "title": "반여도서관",
+      "classification": "conditional_more",
+      "tourapiContentId": "130796",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_252",
+      "title": "부산 강서문화원",
+      "classification": "representative_standard",
+      "tourapiContentId": "130216",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_253",
+      "title": "부산 동구도서관",
+      "classification": "representative_standard",
+      "tourapiContentId": "130798",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_254",
+      "title": "부산광역시 기장도서관",
+      "classification": "conditional_more",
+      "tourapiContentId": "130799",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_255",
+      "title": "부산광역시 영도도서관",
+      "classification": "conditional_more",
+      "tourapiContentId": "130793",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_256",
+      "title": "부산광역시립 명장도서관",
+      "classification": "representative_standard",
+      "tourapiContentId": "130749",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_257",
+      "title": "부산광역시립 시민도서관",
+      "classification": "representative_standard",
+      "tourapiContentId": "130752",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_258",
+      "title": "부산광역시립 연산도서관",
+      "classification": "representative_standard",
+      "tourapiContentId": "130797",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_259",
+      "title": "부산광역시립 중앙도서관",
+      "classification": "conditional_more",
+      "tourapiContentId": "130795",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_260",
+      "title": "부산대학교 박물관",
+      "classification": "representative_standard",
+      "tourapiContentId": "1607138",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_261",
+      "title": "부산문화회관",
+      "classification": "conditional_more",
+      "tourapiContentId": "129725",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_264",
+      "title": "부산점자도서관",
+      "classification": "representative_standard",
+      "tourapiContentId": "130834",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_265",
+      "title": "북구문화예술회관 공연장",
+      "classification": "representative_standard",
+      "tourapiContentId": "1747913",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_266",
+      "title": "사상문화원",
+      "classification": "representative_standard",
+      "tourapiContentId": "130382",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_267",
+      "title": "을숙도문화회관",
+      "classification": "conditional_more",
+      "tourapiContentId": "1748028",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_270",
+      "title": "정관박물관",
+      "classification": "representative_standard",
+      "tourapiContentId": "2556598",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_272",
+      "title": "책방봄봄",
+      "classification": "representative_standard",
+      "tourapiContentId": "2782714",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_273",
+      "title": "책방오월",
+      "classification": "representative_standard",
+      "tourapiContentId": "2782757",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_274",
+      "title": "한국기독교선교박물관",
+      "classification": "representative_standard",
+      "tourapiContentId": "2550799",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_276",
+      "title": "해성아트베이",
+      "classification": "conditional_more",
+      "tourapiContentId": "3451794",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_277",
+      "title": "해운대문화회관",
+      "classification": "conditional_more",
+      "tourapiContentId": "1748157",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_282",
+      "title": "송도해안볼레길",
+      "classification": "conditional_more",
+      "tourapiContentId": "2784356",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_283",
+      "title": "해안누리길 몰운대길",
+      "classification": "conditional_more",
+      "tourapiContentId": "2708164",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_285",
+      "title": "광복 지하도상가",
+      "classification": "representative_standard",
+      "tourapiContentId": "132574",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_286",
+      "title": "구서오시게시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "1303759",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_287",
+      "title": "구포시장",
+      "classification": "representative_standard",
+      "tourapiContentId": "1250885",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "363"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping",
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_288",
+      "title": "남산시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2788830",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_289",
+      "title": "남천 해변시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "1303784",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_290",
+      "title": "남포동 지하도상가",
+      "classification": "representative_standard",
+      "tourapiContentId": "132187",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_292",
+      "title": "남항시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "1942298",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_294",
+      "title": "대변시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2796940",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_295",
+      "title": "덕포시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2785611",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_297",
+      "title": "명지시장",
+      "classification": "representative_standard",
+      "tourapiContentId": "2742601",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_298",
+      "title": "반송3동골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2875862",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_299",
+      "title": "부곡상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2763881",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_3",
+      "title": "신세계백화점 센텀시티점",
+      "classification": "representative_standard",
+      "tourapiContentId": "767084",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "548"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_302",
+      "title": "부산 자유도매시장",
+      "classification": "representative_standard",
+      "tourapiContentId": "132499",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_303",
+      "title": "부산 중앙시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "132572",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_304",
+      "title": "부산새벽시장",
+      "classification": "representative_standard",
+      "tourapiContentId": "2787128",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_305",
+      "title": "부산진시장",
+      "classification": "representative_standard",
+      "tourapiContentId": "132189",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_306",
+      "title": "서동미로시장",
+      "classification": "representative_standard",
+      "tourapiContentId": "2763981",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_307",
+      "title": "송정전통재래시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "1117817",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_308",
+      "title": "수영팔도시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2869279",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_309",
+      "title": "신평종합시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2867542",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_310",
+      "title": "연동시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2788444",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_311",
+      "title": "장림골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2788451",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_312",
+      "title": "정관신도시시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2776286",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_313",
+      "title": "좌동재래시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2875886",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_314",
+      "title": "좌천동 가구거리",
+      "classification": "conditional_more",
+      "tourapiContentId": "1304515",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_317",
+      "title": "청학시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2790483",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_318",
+      "title": "초량시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2869135",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_319",
+      "title": "충무동 새벽시장",
+      "classification": "conditional_more",
+      "tourapiContentId": "2744582",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_320",
+      "title": "해운대 로데오거리",
+      "classification": "conditional_more",
+      "tourapiContentId": "1304431",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_34",
+      "title": "신세계사이먼 부산 프리미엄 아울렛",
+      "classification": "representative_core",
+      "tourapiContentId": "2532877",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_37",
+      "title": "미포항",
+      "classification": "representative_core",
+      "tourapiContentId": "2784330",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_378",
+      "title": "디원카페",
+      "classification": "representative_standard",
+      "tourapiContentId": "2869159",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_4",
+      "title": "부평깡통시장",
+      "classification": "representative_standard",
+      "tourapiContentId": "1878218",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "400"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_403",
+      "title": "모모스커피 본점",
+      "classification": "representative_standard",
+      "tourapiContentId": "2832729",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "127",
+          "1634"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food",
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_41",
+      "title": "놀이마루",
+      "classification": "conditional_more",
+      "tourapiContentId": "2763856",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_421",
+      "title": "부산 카페 라운지",
+      "classification": "representative_standard",
+      "tourapiContentId": "3452014",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_427",
+      "title": "브레이크인커피",
+      "classification": "representative_standard",
+      "tourapiContentId": "2853145",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [
+          "1464"
+        ],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_food",
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_450",
+      "title": "수안커피컴퍼니 커피하우스",
+      "classification": "representative_standard",
+      "tourapiContentId": "2852696",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_473",
+      "title": "어라우즈로스터리",
+      "classification": "representative_standard",
+      "tourapiContentId": "2832717",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_488",
+      "title": "오구카페",
+      "classification": "representative_standard",
+      "tourapiContentId": "2836424",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_5",
+      "title": "부평동한복거리",
+      "classification": "conditional_more",
+      "tourapiContentId": "132550",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_520",
+      "title": "일광 카페 숲",
+      "classification": "representative_standard",
+      "tourapiContentId": "2847877",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_551",
+      "title": "카페 385",
+      "classification": "representative_standard",
+      "tourapiContentId": "2642681",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_552",
+      "title": "카페 도토리 로스터스",
+      "classification": "representative_standard",
+      "tourapiContentId": "2853060",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_553",
+      "title": "카페 만디",
+      "classification": "representative_standard",
+      "tourapiContentId": "2852408",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_554",
+      "title": "카페공지",
+      "classification": "representative_standard",
+      "tourapiContentId": "2875345",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_555",
+      "title": "카페썬번",
+      "classification": "representative_standard",
+      "tourapiContentId": "2807808",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_570",
+      "title": "팜카페",
+      "classification": "representative_standard",
+      "tourapiContentId": "2844738",
+      "tourapiEvidenceKinds": [
+        "tourapi_fallback"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_fallback"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_608",
+      "title": "국립해양박물관",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "257"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_612",
+      "title": "임랑해수욕장",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "262"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_614",
+      "title": "백산기념관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "267"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_615",
+      "title": "한성1918 부산생활문화센터",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "268"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_616",
+      "title": "조선통신사역사관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "269"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_617",
+      "title": "부산해양자연사박물관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "270"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_618",
+      "title": "보수동책방골목",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "272"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_619",
+      "title": "임시수도기념관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "273"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_620",
+      "title": "동아대학교 석당박물관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "274"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_621",
+      "title": "국립일제강제동원역사관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "275"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_622",
+      "title": "부산박물관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "276"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_628",
+      "title": "민락수변공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "285"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_629",
+      "title": "송도해수욕장",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "286"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_630",
+      "title": "아미산전망대",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "287"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_632",
+      "title": "오랑대공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "290"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_636",
+      "title": "우장춘 기념관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "297"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_637",
+      "title": "누리바라기전망대",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "298"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_639",
+      "title": "수영사적공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "301"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_641",
+      "title": "을숙도",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "304"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_645",
+      "title": "삼락생태공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "325"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_646",
+      "title": "암남공원/송도해안볼레길",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "326"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_650",
+      "title": "국립부산과학관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "340"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_652",
+      "title": "부산어린이대공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "344"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_656",
+      "title": "부산시민공원",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "354"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_659",
+      "title": "영화의 거리",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "361"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_660",
+      "title": "APEC나루공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "362"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_661",
+      "title": "40계단",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "364"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_662",
+      "title": "다대포 해수욕장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "366"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_666",
+      "title": "황령산 전망쉼터",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "371"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_667",
+      "title": "F1963",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "372"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_669",
+      "title": "광안리 해수욕장",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "377"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_673",
+      "title": "상해거리",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "415"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_674",
+      "title": "이중섭문화거리",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "418"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_685",
+      "title": "대신공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "456"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_689",
+      "title": "부산커피박물관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "508"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_69",
+      "title": "만물의거리",
+      "classification": "representative_core",
+      "tourapiContentId": "1013694",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_690",
+      "title": "사상생활사박물관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "511"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_692",
+      "title": "신평소공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "757"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_694",
+      "title": "부산신발이야기",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "813"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_7",
+      "title": "청사포 기찻길",
+      "classification": "representative_core",
+      "tourapiContentId": "3027700",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_70",
+      "title": "벡스코(BEXCO)",
+      "classification": "conditional_more",
+      "tourapiContentId": "130668",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "420"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_700",
+      "title": "부산도서관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1031"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_703",
+      "title": "KT&G상상마당 부산",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1185"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_704",
+      "title": "광안종합시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1305"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_705",
+      "title": "현대 모터스튜디오 부산",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1322"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_709",
+      "title": "부산근현대역사관",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1444"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_71",
+      "title": "부산영화체험박물관",
+      "classification": "representative_core",
+      "tourapiContentId": "2554068",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_711",
+      "title": "서면미술관",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1653"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_712",
+      "title": "부산현대미술관",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1671"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_713",
+      "title": "대저생태공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1673"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_714",
+      "title": "맥도생태공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1674"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_718",
+      "title": "유엔평화공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1731"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_719",
+      "title": "정중앙공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1772"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_72",
+      "title": "조명의거리",
+      "classification": "conditional_more",
+      "tourapiContentId": "1013721",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_722",
+      "title": "땅뫼산 황토숲길",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1798"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_723",
+      "title": "부산 인도문화원",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1857"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_724",
+      "title": "KF아세안문화원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1862"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_733",
+      "title": "용소웰빙공원",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2065"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_735",
+      "title": "부산 수학문화관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2077"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_738",
+      "title": "북항 친수공원",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2081"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_740",
+      "title": "문화예술플랫폼",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2085"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_743",
+      "title": "망양로 산복도로 전시관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2102"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_744",
+      "title": "닥밭골 벽화마을",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2104"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_745",
+      "title": "대청스카이전망대",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2105"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_746",
+      "title": "뮤직컴플렉스 서울 부산점",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2119"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_75",
+      "title": "해운대 그린레일웨이 (미포~송정 구간)",
+      "classification": "representative_core",
+      "tourapiContentId": "2822343",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_751",
+      "title": "도모헌",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2145"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_755",
+      "title": "오시리아 해안 산책로",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2172"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_758",
+      "title": " 부산항 제 1부두",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2187"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_759",
+      "title": "유엔평화기념관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2188"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_761",
+      "title": "포디움다이브엠",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2191"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_762",
+      "title": "갤러리 수정",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2200"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_764",
+      "title": "디오티 미술관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2204"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_766",
+      "title": "갤러리 플레이리스트",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2210"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_77",
+      "title": "희와제과",
+      "classification": "representative_core",
+      "tourapiContentId": "2865236",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_773",
+      "title": "BNK부산은행 아트시네마 모퉁이극장",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2284"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_778",
+      "title": "황령산봉수전망대",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2551"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_78",
+      "title": "고래서이뻐",
+      "classification": "representative_standard",
+      "tourapiContentId": "3336600",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2581"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_781",
+      "title": "충무동 해안시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2588"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_783",
+      "title": "고려제강기념관",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2598"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_785",
+      "title": "리틀 프린스 하우스",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "2678"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_787",
+      "title": "기장시장",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "292"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_789",
+      "title": "해운대시장",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "294"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_79",
+      "title": "광안리해변 테마거리",
+      "classification": "representative_core",
+      "tourapiContentId": "127925",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_790",
+      "title": "남항시장 / 봉래시장",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "300"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_791",
+      "title": "서면시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "328"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_793",
+      "title": "동래시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "422"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_797",
+      "title": "부산 그대로를 담은 부산관광기념품",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "533"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_800",
+      "title": "롯데면세점 김해공항점",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "540"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_801",
+      "title": "롯데백화점 부산본점",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "541"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_802",
+      "title": "롯데백화점 센텀시티점",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "546"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_803",
+      "title": "롯데백화점 동래점",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "547"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_805",
+      "title": "부산프리미엄아울렛",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "552"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_806",
+      "title": "NC백화점 해운대점",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "554"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_807",
+      "title": "NC백화점 부산대점",
+      "classification": "representative_core",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "555"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_811",
+      "title": "해운대 선물가게",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "1667"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_816",
+      "title": "부산",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2141"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_817",
+      "title": "아비베르컴퍼니",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2165"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_819",
+      "title": "페이퍼가든",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2252"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_821",
+      "title": "오브젝트 서면점",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2417"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_822",
+      "title": "오월상점",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2537"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_823",
+      "title": "포셋 전포",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2539"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_824",
+      "title": "부산슈퍼 청사포점",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2541"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_825",
+      "title": "미피카페 부산",
+      "classification": "representative_standard",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2555"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_828",
+      "title": "문현동 골동품거리",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "2589"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping"
+      ],
+      "joinDisposition": "auto_join_exact_busan_phase2"
+    },
+    {
+      "contentId": "poi_89",
+      "title": "범어사 성보박물관",
+      "classification": "representative_core",
+      "tourapiContentId": "2554111",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "402"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_90",
+      "title": "부산 영화의 전당",
+      "classification": "conditional_more",
+      "tourapiContentId": "2456837",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "421"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_92",
+      "title": "부산근현대역사관 본관",
+      "classification": "representative_core",
+      "tourapiContentId": "3083767",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "1881"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_93",
+      "title": "부산전자종합시장",
+      "classification": "representative_standard",
+      "tourapiContentId": "3080300",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "poi_94",
+      "title": "부산타워",
+      "classification": "representative_standard",
+      "tourapiContentId": "1277679",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [
+          "550"
+        ],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_attraction",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_96",
+      "title": "부전마켓타운",
+      "classification": "conditional_more",
+      "tourapiContentId": "132188",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": [
+          "327"
+        ]
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "busan_shopping",
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_multi_source_conflict_policy_pending"
+    },
+    {
+      "contentId": "poi_99",
+      "title": "송도 구름산책로",
+      "classification": "conditional_more",
+      "tourapiContentId": "2557807",
+      "tourapiEvidenceKinds": [
+        "tourapi_aihub"
+      ],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [],
+      "sourceCombination": [
+        "tourapi_aihub"
+      ],
+      "joinDisposition": "auto_join_exact_tourapi"
+    },
+    {
+      "contentId": "traditional_market_001",
+      "title": "우동종합상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "우동종합상가시장:35.170679:129.138864"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_002",
+      "title": "신평골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "신평골목시장:35.091078:128.977124"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_003",
+      "title": "개금골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "개금골목시장:35.151832:129.024797"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_004",
+      "title": "반송골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "반송골목시장:35.224288:129.150330"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_005",
+      "title": "반송큰시장(반송2동시장)",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "반송큰시장:35.231117:129.156210"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_007",
+      "title": "영주시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "영주시장:35.111682:129.037369"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_008",
+      "title": "새영주시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "새영주시장:35.112702:129.036309"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_009",
+      "title": "만물의거리시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "만물의거리시장:35.101484:129.028551"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_010",
+      "title": "신창상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "신창상가:35.101177:129.030201"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_012",
+      "title": "창선상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "창선상가:35.101939:129.027751"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_013",
+      "title": "보수종합시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "보수종합시장:35.104211:129.021818"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_014",
+      "title": "신천지시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "신천지시장:35.097045:129.027816"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_016",
+      "title": "부산자갈밭시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "부산자갈밭시장:35.096629:129.030569"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_017",
+      "title": "연일시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "연일시장:35.185570:129.084887"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_018",
+      "title": "연미새시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "연미새시장:35.252209:129.208839"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_019",
+      "title": "영남종합시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "영남종합시장:35.180776:129.077026"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_020",
+      "title": "거제시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "거제시장:35.181932:129.072793"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_021",
+      "title": "민락씨랜드시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "민락씨랜드시장:35.156976:129.126396"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_022",
+      "title": "민락골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "민락골목시장:35.157112:129.124453"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_023",
+      "title": "재송한마음시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "재송한마음시장:35.186079:129.124602"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_024",
+      "title": "재송시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "재송시장:35.186581:129.123672"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_025",
+      "title": "반여3동골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "반여3동골목시장:35.199942:129.132056"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_026",
+      "title": "반여2동상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "반여2동상가시장:35.196021:129.129044"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_027",
+      "title": "반여시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "반여시장:35.197701:129.133424"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_028",
+      "title": "민락회타운시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "민락회타운시장:35.155552:129.123819"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_029",
+      "title": "장전상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "장전상가시장:35.230850:129.086111"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_030",
+      "title": "장성시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "장성시장:35.237447:129.085555"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_031",
+      "title": "서동향토시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "서동향토시장:35.215935:129.103353"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_032",
+      "title": "서동전통골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "서동전통골목시장:35.215278:129.102249"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_033",
+      "title": "서동시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "서동시장:35.216412:129.102359"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_034",
+      "title": "금사제일상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "금사제일상가시장:35.220452:129.112551"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_035",
+      "title": "민락어패류시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "민락어패류시장:35.155696:129.124361"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_036",
+      "title": "충렬상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "충렬상가시장:35.198096:129.109953"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_037",
+      "title": "안락상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "안락상가시장:35.195480:129.103308"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_038",
+      "title": "서원시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "서원시장:35.200394:129.099011"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_039",
+      "title": "수안인정시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "수안인정시장:35.201492:129.086578"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_040",
+      "title": "사직시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "사직시장:35.200051:129.062322"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_041",
+      "title": "국민시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "국민시장:35.198401:129.058241"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_042",
+      "title": "신정시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "신정시장:35.196791:129.069486"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_043",
+      "title": "명장시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "명장시장:35.204031:129.107471"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_044",
+      "title": "초량전통시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "초량전통시장:35.118041:129.039666"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_045",
+      "title": "초량상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "초량상가시장:35.118901:129.039984"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_046",
+      "title": "수정전통시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "수정전통시장:0.000000:0.000000"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_047",
+      "title": "수정시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "수정시장:35.128237:129.046392"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_048",
+      "title": "범일골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "범일골목시장:35.141615:129.054461"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_049",
+      "title": "부산남문시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "부산남문시장:35.135923:129.058685"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_050",
+      "title": "부산자유시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "부산자유시장:35.140966:129.061039"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_051",
+      "title": "우암골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "우암골목시장:35.126181:129.070911"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_052",
+      "title": "용호1동골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "용호1동골목시장:35.124358:129.110204"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_053",
+      "title": "용호시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "용호시장:35.114914:129.112773"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_054",
+      "title": "용호삼성시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "용호삼성시장:35.123899:129.110537"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_055",
+      "title": "용호골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "용호골목시장:35.116406:129.111462"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_056",
+      "title": "대연시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "대연시장:35.135676:129.088418"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_057",
+      "title": "못골골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "못골골목시장:35.135862:129.089630"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_058",
+      "title": "남광시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "남광시장:35.123993:129.088718"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_059",
+      "title": "성곡종합시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "성곡종합시장:35.174786:129.048078"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_060",
+      "title": "전포놀이터시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "전포놀이터시장:35.158729:129.067303"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_061",
+      "title": "서면중앙시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "서면중앙시장:35.160879:129.063289"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_062",
+      "title": "연지시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "연지시장:35.170904:129.051400"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_063",
+      "title": "양정전통시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "양정전통시장:35.173594:129.069435"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_064",
+      "title": "양정시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "양정시장:35.172781:129.069788"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_065",
+      "title": "부전기장골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "부전기장골목시장:35.162203:129.061234"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_067",
+      "title": "부전상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "부전상가:35.160348:129.059553"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_068",
+      "title": "부전인삼시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "부전인삼시장:35.163234:129.060906"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_069",
+      "title": "서면종합시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "서면종합시장:35.161917:129.058978"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_070",
+      "title": "골드테마거리",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "골드테마거리:35.141933:129.059780"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_071",
+      "title": "철뚝시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "철뚝시장:35.142219:129.061564"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_072",
+      "title": "부산평화시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "부산평화시장:35.141693:129.060673"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_073",
+      "title": "동평새시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "동평새시장:35.166629:129.040912"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_074",
+      "title": "국제상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "국제상가:35.168438:129.028205"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_075",
+      "title": "당감새시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "당감새시장:35.165059:129.042146"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_076",
+      "title": "당감골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "당감골목시장:35.163548:129.041428"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_077",
+      "title": "개금큰시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "개금큰시장:35.148511:129.017886"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_078",
+      "title": "가야벽산상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "가야벽산상가:35.147463:129.028134"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_080",
+      "title": "금성상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "금성상가시장:35.208177:129.071937"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_081",
+      "title": "금강시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "금강시장:35.201621:129.068565"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_082",
+      "title": "사하시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "사하시장:35.098351:128.986466"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_083",
+      "title": "괴정골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "괴정골목시장:35.099341:128.993705"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_084",
+      "title": "감천2동시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "감천2동시장:35.093879:129.008848"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_085",
+      "title": "감천시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "감천시장:35.088270:129.005538"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_086",
+      "title": "영해종합시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "영해종합시장:35.140709:128.987956"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_087",
+      "title": "학장반도보라상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "학장반도보라상가:35.137284:128.979173"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_088",
+      "title": "구덕대림상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "구덕대림상가:35.135322:128.992246"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_089",
+      "title": "주례럭키종합상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "주례럭키종합상가:35.148745:129.002919"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_090",
+      "title": "주례현대무지개상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "주례현대무지개상가:35.144962:129.004988"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_093",
+      "title": "모라전통시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "모라전통시장:35.187633:128.987441"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_094",
+      "title": "우신종합상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "우신종합상가:35.183118:128.991282"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_095",
+      "title": "복이있는덕포시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "복이있는덕포시장:35.171281:128.982258"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_096",
+      "title": "사상시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "사상시장:35.166658:128.985503"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_097",
+      "title": "르네시떼시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "르네시떼시장:35.164335:128.977721"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_099",
+      "title": "감전시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "감전시장:35.156102:128.984607"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_100",
+      "title": "부산산업용재유통상가",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "부산산업용재유통상가:35.153296:128.981080"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_101",
+      "title": "감전제일상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "감전제일상가시장:35.156329:128.984550"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_102",
+      "title": "만덕2동제일상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "만덕2동제일상가시장:35.202234:129.036127"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_103",
+      "title": "만덕시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "만덕시장:35.214497:129.035368"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_104",
+      "title": "구포축산물도매시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "구포축산물도매시장:35.196192:128.989208"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_105",
+      "title": "정이있는구포시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "정이있는구포시장:35.208360:129.003856"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_106",
+      "title": "초읍시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "초읍시장:35.177317:129.052860"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_107",
+      "title": "광안어패류시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "광안어패류시장:35.155594:129.124533"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_108",
+      "title": "망미중앙시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "망미중앙시장:35.175682:129.106878"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_109",
+      "title": "망미새상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "망미새상가시장:35.173605:129.100461"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_110",
+      "title": "망미삼성상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "망미삼성상가시장:35.169426:129.102813"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_111",
+      "title": "삼익비치A상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "삼익비치a상가시장:35.143216:129.113987"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_112",
+      "title": "삼익비치B상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "삼익비치b상가시장:35.143216:129.113987"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_113",
+      "title": "광안시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "광안시장:35.160179:129.112467"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_114",
+      "title": "충무동골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "충무동골목시장:35.094284:129.023658"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_115",
+      "title": "송남시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "송남시장:35.078510:129.016811"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_116",
+      "title": "아미시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "아미시장:35.099650:129.017486"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_117",
+      "title": "서대신동골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "서대신동골목시장:35.110413:129.017323"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_118",
+      "title": "서대신1동골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "서대신1동골목시장:35.108659:129.014440"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_119",
+      "title": "대신시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "대신시장:35.110373:129.019702"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_120",
+      "title": "동대신1동골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "동대신1동골목시장:35.110310:129.019196"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_121",
+      "title": "에덴골목시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "에덴골목시장:35.111147:128.962726"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_122",
+      "title": "하단오일상설시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "하단오일상설시장:35.103726:128.970806"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_123",
+      "title": "장림시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "장림시장:35.080930:128.967746"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_124",
+      "title": "하단시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "하단시장:35.106279:128.969485"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_125",
+      "title": "당리시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "당리시장:35.105463:128.975344"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    },
+    {
+      "contentId": "traditional_market_126",
+      "title": "가락타운상가시장",
+      "classification": "conditional_more",
+      "tourapiContentId": null,
+      "tourapiEvidenceKinds": [],
+      "busanSourceIds": {
+        "busan_attraction": [],
+        "busan_food": [],
+        "busan_shopping": []
+      },
+      "traditionalMarketSourceIds": [
+        "가락타운상가시장:35.101077:128.957967"
+      ],
+      "sourceCombination": [
+        "traditional_market_standard"
+      ],
+      "joinDisposition": "review_required_provider_out_of_scope"
+    }
+  ]
+}

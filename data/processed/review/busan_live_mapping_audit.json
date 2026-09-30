@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "taskId": "DATA-BUSAN-LIVE-MAPPING-01",
+    "deterministic": true,
+    "externalCalls": 0
+  },
+  "checks": {
+    "expectedCoverage": "passed",
+    "exactSourceIdsExistInStoredInputs": "passed",
+    "duplicateProviderSourceIds": 0,
+    "representativeCoveragePreserved": "passed",
+    "traditionalMarketOnlyOutOfScopePreserved": "passed",
+    "originalCollectorScriptIdentified": false,
+    "exactIdOperationProven": false,
+    "paginationParameterNamesProven": false
+  },
+  "hashes": {
+    "manifest": "b4f97e3a2e727dcb0ea391d956e16d16895fb0ee057ef894eb32caa8ccd03cd0",
+    "fixture": "067743d03b22f1848cbe970a9acd7c0deefda1b37099805e6fbfab2fecc44138"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "taskId": "DATA-LIVE-MAPPING-CONTRACT-02",
+    "contractVersion": 1,
+    "externalCalls": 0
+  },
+  "checks": {
+    "overlap20Exhaustive": true,
+    "storedTourapiCommonFieldsMatchRuntime20": true,
+    "busanLinks21Resolve": true,
+    "busanTitlesWithinReviewedAliases": true,
+    "fieldLevelContractPresent": true,
+    "identityReviewRulesPresentOutsideProductCode": true,
+    "requiredTransitionFixturesPresent": true,
+    "runtimeIdentityClassificationDwellPhotoBaselinesPreserved": true,
+    "traditionalMarket118ProviderOutOfScopePreserved": true
+  },
+  "baselines": {
+    "runtimePlaces": 369,
+    "classification": {
+      "representative_core": 28,
+      "conditional_more": 178,
+      "representative_standard": 163
+    },
+    "subCategory": 236,
+    "operatingHours": 122,
+    "detailDescription": 127,
+    "photos": 203,
+    "photoStatus": {
+      "operator_approved": 102,
+      "verified": 101
+    },
+    "overlapPlaces": 20,
+    "overlapBusanSourceLinks": 21,
+    "traditionalMarketOnly": 118
+  },
+  "hashes": {
+    "fieldContractSha256": "d5029009a38132be92cca15aff70447679c4bdfcf79a6e9a45cb25fa0770c0b2",
+    "reviewRulesSha256": "08fdde43650c0c78c17198e6736398321f1a0545830a1654805619681dfa7140",
+    "overlapRowsSha256": "15a6ea3b537ddb97ec1fa5765b5b12ff57df68f372c33d3d0cf6e16b28eeb7a1",
+    "fixtureCasesSha256": "265236bf8046d4e9d0cf09d2fb11e477f512c7ac66abc0cff1fd23c9f852e29a"
+  }
+}

@@ -1,0 +1,4311 @@
+{
+  "meta": {
+    "taskId": "DATA-BUSAN-LIVE-MAPPING-01",
+    "contractVersion": 1,
+    "deterministic": true,
+    "externalCalls": 0,
+    "sourceMapping": "data/processed/review/live_source_place_mapping_manifest.json",
+    "overlapContract": "data/processed/review/live_source_overlap_field_contract.json",
+    "unknownRule": "facts not proven by stored metadata or repository history remain unknown"
+  },
+  "summary": {
+    "busanOfficialPlaces": 132,
+    "busanOfficialLinks": 133,
+    "representative": {
+      "places": 109,
+      "links": 110,
+      "busanOnlyPlaces": 93,
+      "tourapiAndBusanPlaces": 16
+    },
+    "allTourapiAndBusanPlaces": 20,
+    "traditionalMarketOnlyOutOfScope": 118,
+    "providers": {
+      "busan_attraction": {
+        "all": {
+          "places": 85,
+          "links": 85
+        },
+        "representative": {
+          "places": 68,
+          "links": 68
+        }
+      },
+      "busan_food": {
+        "all": {
+          "places": 18,
+          "links": 19
+        },
+        "representative": {
+          "places": 18,
+          "links": 19
+        }
+      },
+      "busan_shopping": {
+        "all": {
+          "places": 29,
+          "links": 29
+        },
+        "representative": {
+          "places": 23,
+          "links": 23
+        }
+      }
+    }
+  },
+  "services": [
+    {
+      "provider": "busan_attraction",
+      "serviceName": "부산광역시 부산명소정보 서비스",
+      "servicePageUrl": "https://www.data.go.kr/data/15063481/openapi.do",
+      "storedInput": {
+        "file": "data/processed/부산시_명소정보.json",
+        "generatedAt": "2026-08-09T17:01:42.425Z",
+        "records": 213,
+        "endpoint": "https://apis.data.go.kr/6260000/AttractionService/getAttractionKr",
+        "operation": "getAttractionKr",
+        "originalCollectorScript": "unknown",
+        "collectorScriptSearchResult": "no repository script writes this stored input or names its operation"
+      },
+      "requestContract": {
+        "exactSourceIdRequestSupported": "unknown",
+        "exactSourceIdParameter": "unknown",
+        "listRequestRequiredForTransition": true,
+        "paginationRequired": true,
+        "paginationParameterNames": "unknown",
+        "completeListProofRequired": [
+          "all_pages_received",
+          "no_duplicate_UC_SEQ",
+          "stable_response_snapshot_id"
+        ],
+        "deletionRule": "missing UC_SEQ means inactive only after a complete list; partial/error pages never mean deleted",
+        "modificationRule": "no stored per-row modified field; compare normalized field digest between complete snapshots"
+      },
+      "identity": {
+        "sourceIdField": "UC_SEQ",
+        "join": "exact_only",
+        "schemaContainsSourceId": true
+      },
+      "sourceSchemaKeys": [
+        "ADDR1",
+        "CNTCT_TEL",
+        "GUGUN_NM",
+        "HLDY_INFO",
+        "HOMEPAGE_URL",
+        "ITEMCNTNTS",
+        "LAT",
+        "LNG",
+        "MAIN_IMG_NORMAL",
+        "MAIN_IMG_THUMB",
+        "MAIN_TITLE",
+        "MIDDLE_SIZE_RM1",
+        "PLACE",
+        "SUBTITLE",
+        "TITLE",
+        "TRFC_INFO",
+        "UC_SEQ",
+        "USAGE_AMOUNT",
+        "USAGE_DAY",
+        "USAGE_DAY_WEEK_AND_TIME",
+        "catalogMatch"
+      ],
+      "fieldContract": {
+        "title": {
+          "sourceFields": [
+            "MAIN_TITLE",
+            "PLACE",
+            "MAIN_PLACE",
+            "TITLE"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 85,
+          "mappedLinks": 85,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "address": {
+          "sourceFields": [
+            "ADDR1",
+            "ADDR2"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 85,
+          "mappedLinks": 85,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "lat": {
+          "sourceFields": [
+            "LAT"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 85,
+          "mappedLinks": 85,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "lon": {
+          "sourceFields": [
+            "LNG"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 85,
+          "mappedLinks": 85,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "opening": {
+          "sourceFields": [
+            "USAGE_DAY_WEEK_AND_TIME",
+            "USAGE_DAY"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 78,
+          "mappedLinks": 85,
+          "consumption": "opening_normalizer_input_never_product_window"
+        },
+        "closed": {
+          "sourceFields": [
+            "HLDY_INFO"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 64,
+          "mappedLinks": 85,
+          "consumption": "opening_normalizer_input_never_product_window"
+        },
+        "description": {
+          "sourceFields": [
+            "ITEMCNTNTS"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 85,
+          "mappedLinks": 85,
+          "consumption": "optional_detail_after_exact_identity"
+        },
+        "image": {
+          "sourceFields": [
+            "MAIN_IMG_NORMAL",
+            "MAIN_IMG_THUMB"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 85,
+          "mappedLinks": 85,
+          "consumption": "exact_url_rights_gate_else_default_image"
+        },
+        "modified": {
+          "sourceFields": [],
+          "schemaProvidesField": false,
+          "mappedLinksWithValue": 0,
+          "mappedLinks": 85,
+          "consumption": "unavailable_compare_snapshot_field_digest"
+        },
+        "deleted": {
+          "sourceFields": [],
+          "schemaProvidesField": false,
+          "mappedLinksWithValue": 0,
+          "mappedLinks": 85,
+          "consumption": "derive_provider_inactive_only_from_complete_list_absence"
+        }
+      },
+      "mappedCoverage": {
+        "all": {
+          "places": 85,
+          "links": 85
+        },
+        "representative": {
+          "places": 68,
+          "links": 68
+        }
+      }
+    },
+    {
+      "provider": "busan_food",
+      "serviceName": "부산광역시 부산맛집정보 서비스",
+      "servicePageUrl": "https://www.data.go.kr/data/15063472/openapi.do",
+      "storedInput": {
+        "file": "data/processed/부산시_맛집정보.json",
+        "generatedAt": "2026-08-09T17:13:41.963Z",
+        "records": 437,
+        "endpoint": "https://apis.data.go.kr/6260000/FoodService/getFoodKr",
+        "operation": "getFoodKr",
+        "originalCollectorScript": "unknown",
+        "collectorScriptSearchResult": "no repository script writes this stored input or names its operation"
+      },
+      "requestContract": {
+        "exactSourceIdRequestSupported": "unknown",
+        "exactSourceIdParameter": "unknown",
+        "listRequestRequiredForTransition": true,
+        "paginationRequired": true,
+        "paginationParameterNames": "unknown",
+        "completeListProofRequired": [
+          "all_pages_received",
+          "no_duplicate_UC_SEQ",
+          "stable_response_snapshot_id"
+        ],
+        "deletionRule": "missing UC_SEQ means inactive only after a complete list; partial/error pages never mean deleted",
+        "modificationRule": "no stored per-row modified field; compare normalized field digest between complete snapshots"
+      },
+      "identity": {
+        "sourceIdField": "UC_SEQ",
+        "join": "exact_only",
+        "schemaContainsSourceId": true
+      },
+      "sourceSchemaKeys": [
+        "ADDR1",
+        "ADDR2",
+        "CNTCT_TEL",
+        "GUGUN_NM",
+        "HOMEPAGE_URL",
+        "ITEMCNTNTS",
+        "LAT",
+        "LNG",
+        "MAIN_IMG_NORMAL",
+        "MAIN_IMG_THUMB",
+        "MAIN_TITLE",
+        "PLACE",
+        "RPRSNTV_MENU",
+        "SUBTITLE",
+        "TITLE",
+        "UC_SEQ",
+        "USAGE_DAY_WEEK_AND_TIME",
+        "catalogMatch",
+        "suggestedCategory"
+      ],
+      "fieldContract": {
+        "title": {
+          "sourceFields": [
+            "MAIN_TITLE",
+            "PLACE",
+            "MAIN_PLACE",
+            "TITLE"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 19,
+          "mappedLinks": 19,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "address": {
+          "sourceFields": [
+            "ADDR1",
+            "ADDR2"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 19,
+          "mappedLinks": 19,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "lat": {
+          "sourceFields": [
+            "LAT"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 19,
+          "mappedLinks": 19,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "lon": {
+          "sourceFields": [
+            "LNG"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 19,
+          "mappedLinks": 19,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "opening": {
+          "sourceFields": [
+            "USAGE_DAY_WEEK_AND_TIME",
+            "USAGE_DAY"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 19,
+          "mappedLinks": 19,
+          "consumption": "opening_normalizer_input_never_product_window"
+        },
+        "closed": {
+          "sourceFields": [
+            "HLDY_INFO"
+          ],
+          "schemaProvidesField": false,
+          "mappedLinksWithValue": 0,
+          "mappedLinks": 19,
+          "consumption": "opening_normalizer_input_never_product_window"
+        },
+        "description": {
+          "sourceFields": [
+            "ITEMCNTNTS"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 19,
+          "mappedLinks": 19,
+          "consumption": "optional_detail_after_exact_identity"
+        },
+        "image": {
+          "sourceFields": [
+            "MAIN_IMG_NORMAL",
+            "MAIN_IMG_THUMB"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 17,
+          "mappedLinks": 19,
+          "consumption": "exact_url_rights_gate_else_default_image"
+        },
+        "modified": {
+          "sourceFields": [],
+          "schemaProvidesField": false,
+          "mappedLinksWithValue": 0,
+          "mappedLinks": 19,
+          "consumption": "unavailable_compare_snapshot_field_digest"
+        },
+        "deleted": {
+          "sourceFields": [],
+          "schemaProvidesField": false,
+          "mappedLinksWithValue": 0,
+          "mappedLinks": 19,
+          "consumption": "derive_provider_inactive_only_from_complete_list_absence"
+        }
+      },
+      "mappedCoverage": {
+        "all": {
+          "places": 18,
+          "links": 19
+        },
+        "representative": {
+          "places": 18,
+          "links": 19
+        }
+      }
+    },
+    {
+      "provider": "busan_shopping",
+      "serviceName": "부산광역시 부산쇼핑정보 서비스",
+      "servicePageUrl": "unknown",
+      "storedInput": {
+        "file": "data/processed/부산시_쇼핑정보.json",
+        "generatedAt": "2026-08-09T17:13:41.952Z",
+        "records": 55,
+        "endpoint": "https://apis.data.go.kr/6260000/ShoppingService/getShoppingKr",
+        "operation": "getShoppingKr",
+        "originalCollectorScript": "unknown",
+        "collectorScriptSearchResult": "no repository script writes this stored input or names its operation"
+      },
+      "requestContract": {
+        "exactSourceIdRequestSupported": "unknown",
+        "exactSourceIdParameter": "unknown",
+        "listRequestRequiredForTransition": true,
+        "paginationRequired": true,
+        "paginationParameterNames": "unknown",
+        "completeListProofRequired": [
+          "all_pages_received",
+          "no_duplicate_UC_SEQ",
+          "stable_response_snapshot_id"
+        ],
+        "deletionRule": "missing UC_SEQ means inactive only after a complete list; partial/error pages never mean deleted",
+        "modificationRule": "no stored per-row modified field; compare normalized field digest between complete snapshots"
+      },
+      "identity": {
+        "sourceIdField": "UC_SEQ",
+        "join": "exact_only",
+        "schemaContainsSourceId": true
+      },
+      "sourceSchemaKeys": [
+        "ADDR1",
+        "ADDR2",
+        "CNTCT_TEL",
+        "GUGUN_NM",
+        "HLDY_INFO",
+        "HOMEPAGE_URL",
+        "ITEMCNTNTS",
+        "LAT",
+        "LNG",
+        "MAIN_IMG_NORMAL",
+        "MAIN_IMG_THUMB",
+        "MAIN_PLACE",
+        "MAIN_TITLE",
+        "MIDDLE_SIZE_RM1",
+        "PLACE",
+        "SUBTITLE",
+        "TITLE",
+        "TRFC_INFO",
+        "UC_SEQ",
+        "USAGE_AMOUNT",
+        "USAGE_DAY",
+        "USAGE_DAY_WEEK_AND_TIME",
+        "catalogMatch",
+        "suggestedCategory"
+      ],
+      "fieldContract": {
+        "title": {
+          "sourceFields": [
+            "MAIN_TITLE",
+            "PLACE",
+            "MAIN_PLACE",
+            "TITLE"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 29,
+          "mappedLinks": 29,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "address": {
+          "sourceFields": [
+            "ADDR1",
+            "ADDR2"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 27,
+          "mappedLinks": 29,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "lat": {
+          "sourceFields": [
+            "LAT"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 29,
+          "mappedLinks": 29,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "lon": {
+          "sourceFields": [
+            "LNG"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 29,
+          "mappedLinks": 29,
+          "consumption": "identity_gate_then_session_fact"
+        },
+        "opening": {
+          "sourceFields": [
+            "USAGE_DAY_WEEK_AND_TIME",
+            "USAGE_DAY"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 26,
+          "mappedLinks": 29,
+          "consumption": "opening_normalizer_input_never_product_window"
+        },
+        "closed": {
+          "sourceFields": [
+            "HLDY_INFO"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 18,
+          "mappedLinks": 29,
+          "consumption": "opening_normalizer_input_never_product_window"
+        },
+        "description": {
+          "sourceFields": [
+            "ITEMCNTNTS"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 29,
+          "mappedLinks": 29,
+          "consumption": "optional_detail_after_exact_identity"
+        },
+        "image": {
+          "sourceFields": [
+            "MAIN_IMG_NORMAL",
+            "MAIN_IMG_THUMB"
+          ],
+          "schemaProvidesField": true,
+          "mappedLinksWithValue": 29,
+          "mappedLinks": 29,
+          "consumption": "exact_url_rights_gate_else_default_image"
+        },
+        "modified": {
+          "sourceFields": [],
+          "schemaProvidesField": false,
+          "mappedLinksWithValue": 0,
+          "mappedLinks": 29,
+          "consumption": "unavailable_compare_snapshot_field_digest"
+        },
+        "deleted": {
+          "sourceFields": [],
+          "schemaProvidesField": false,
+          "mappedLinksWithValue": 0,
+          "mappedLinks": 29,
+          "consumption": "derive_provider_inactive_only_from_complete_list_absence"
+        }
+      },
+      "mappedCoverage": {
+        "all": {
+          "places": 29,
+          "links": 29
+        },
+        "representative": {
+          "places": 23,
+          "links": 23
+        }
+      }
+    }
+  ],
+  "overlapMergeContract": {
+    "scope": "20 reviewed TourAPI+Busan places; rules apply only after both exact source IDs pass their identity gates",
+    "freshnessOrder": [
+      "use a field only from an accepted live response in the same session snapshot",
+      "when both providers return the field, use a strictly newer comparable per-record modified timestamp",
+      "Busan stored/live schema has no verified modified field, so retrieval time alone never makes its value newer",
+      "if freshness is not comparable, use semantic equivalence/presence rules below; never apply a provider-wide priority"
+    ],
+    "fields": {
+      "title": {
+        "autoMerge": "normalized values equal, or one value is absent and the present value equals current title/reviewed alias",
+        "reviewRequired": "both present and different after normalization, or either fails the reviewed title/alias identity gate"
+      },
+      "address": {
+        "autoMerge": "normalized values equal, or only one accepted source provides a non-empty value",
+        "reviewRequired": "both present and materially different without a comparable newer modified timestamp"
+      },
+      "latLon": {
+        "autoMerge": "coordinate pairs are equal after numeric normalization; if only one pair exists use it after identity validation",
+        "reviewRequired": "both pairs exist and differ without a comparable newer modified timestamp; over 100m is also identity conflict"
+      },
+      "opening": {
+        "autoMerge": "normalized texts equal, or only one source provides a non-empty value; then pass that text to its normalizer",
+        "reviewRequired": "both non-empty texts differ; never concatenate or prefer a provider globally"
+      },
+      "closed": {
+        "autoMerge": "normalized texts equal, or only one source explicitly provides a value",
+        "reviewRequired": "both explicit values differ; missing is unknown and never means no holiday"
+      },
+      "description": {
+        "autoMerge": "normalized texts equal, only one accepted source provides text, or a strictly newer comparable modified timestamp exists",
+        "reviewRequired": "both present and different with no comparable field freshness"
+      },
+      "image": {
+        "autoMerge": "only the exact URL with an existing rights record may be exposed; identical accepted URLs share provenance",
+        "reviewRequired": "changed/different URLs do not merge; show default image until a URL-specific rights decision exists"
+      },
+      "modified": {
+        "autoMerge": "never collapse provider timestamps; retain provider-scoped value and field digest",
+        "reviewRequired": "invalid or future timestamp; Busan field is currently unavailable"
+      },
+      "deleted": {
+        "autoMerge": "retain provider-scoped active/inactive state; place is globally inactive only when every mapped live provider is confirmed inactive by complete lists",
+        "reviewRequired": "any incomplete page/error, ID reuse signal, or unresolved identity conflict"
+      }
+    }
+  },
+  "mappings": [
+    {
+      "contentId": "poi_700",
+      "title": "부산도서관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1031",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1031",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_703",
+      "title": "KT&G상상마당 부산",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "1185",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1185",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_704",
+      "title": "광안종합시장",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "1305",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1305",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_705",
+      "title": "현대 모터스튜디오 부산",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1322",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1322",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_709",
+      "title": "부산근현대역사관",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1444",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1444",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_711",
+      "title": "서면미술관",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1653",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1653",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_712",
+      "title": "부산현대미술관",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1671",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1671",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_713",
+      "title": "대저생태공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1673",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1673",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_714",
+      "title": "맥도생태공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1674",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1674",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_718",
+      "title": "유엔평화공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1731",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1731",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_719",
+      "title": "정중앙공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1772",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1772",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_722",
+      "title": "땅뫼산 황토숲길",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "1798",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1798",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_723",
+      "title": "부산 인도문화원",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "1857",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1857",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_724",
+      "title": "KF아세안문화원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1862",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1862",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_225",
+      "title": "친환경 스카이웨이 전망대(이바구길)",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1868",
+      "tourapiContentId": "2656194",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1868",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_92",
+      "title": "부산근현대역사관 본관",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "1881",
+      "tourapiContentId": "3083767",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "1881",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_733",
+      "title": "용소웰빙공원",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "2065",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2065",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_735",
+      "title": "부산 수학문화관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2077",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2077",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_738",
+      "title": "북항 친수공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2081",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2081",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_740",
+      "title": "문화예술플랫폼",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2085",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2085",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_743",
+      "title": "망양로 산복도로 전시관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2102",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2102",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_744",
+      "title": "닥밭골 벽화마을",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2104",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2104",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_745",
+      "title": "대청스카이전망대",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2105",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2105",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_187",
+      "title": "색채마을",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2106",
+      "tourapiContentId": "3064931",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2106",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_746",
+      "title": "뮤직컴플렉스 서울 부산점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2119",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2119",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_245",
+      "title": "누리마루 APEC하우스",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2121",
+      "tourapiContentId": "1918263",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2121",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_751",
+      "title": "도모헌",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2145",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2145",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_755",
+      "title": "오시리아 해안 산책로",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "2172",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2172",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_758",
+      "title": " 부산항 제 1부두",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "2187",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2187",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_759",
+      "title": "유엔평화기념관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2188",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2188",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_761",
+      "title": "포디움다이브엠",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2191",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2191",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_762",
+      "title": "갤러리 수정",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2200",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2200",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_764",
+      "title": "디오티 미술관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2204",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2204",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_766",
+      "title": "갤러리 플레이리스트",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2210",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2210",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_19",
+      "title": "동백공원",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2274",
+      "tourapiContentId": "128810",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2274",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_773",
+      "title": "BNK부산은행 아트시네마 모퉁이극장",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2284",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2284",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_778",
+      "title": "황령산봉수전망대",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "2551",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2551",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_608",
+      "title": "국립해양박물관",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "257",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "257",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_781",
+      "title": "충무동 해안시장",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "2588",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2588",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_783",
+      "title": "고려제강기념관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2598",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2598",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_612",
+      "title": "임랑해수욕장",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "262",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "262",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_614",
+      "title": "백산기념관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "267",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "267",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_785",
+      "title": "리틀 프린스 하우스",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "2678",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "2678",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_615",
+      "title": "한성1918 부산생활문화센터",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "268",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "268",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_616",
+      "title": "조선통신사역사관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "269",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "269",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_617",
+      "title": "부산해양자연사박물관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "270",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "270",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_618",
+      "title": "보수동책방골목",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "272",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "272",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_619",
+      "title": "임시수도기념관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "273",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "273",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_620",
+      "title": "동아대학교 석당박물관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "274",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "274",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_621",
+      "title": "국립일제강제동원역사관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "275",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "275",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_622",
+      "title": "부산박물관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "276",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "276",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_628",
+      "title": "민락수변공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "285",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "285",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_629",
+      "title": "송도해수욕장",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "286",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "286",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_630",
+      "title": "아미산전망대",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "287",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "287",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_25",
+      "title": "부산시립미술관",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "289",
+      "tourapiContentId": "130166",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "289",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_632",
+      "title": "오랑대공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "290",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "290",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_636",
+      "title": "우장춘 기념관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "297",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "297",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_637",
+      "title": "누리바라기전망대",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "298",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "298",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_639",
+      "title": "수영사적공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "301",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "301",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_641",
+      "title": "을숙도",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "304",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "304",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_645",
+      "title": "삼락생태공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "325",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "325",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_646",
+      "title": "암남공원/송도해안볼레길",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "326",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "326",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_650",
+      "title": "국립부산과학관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "340",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "340",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_652",
+      "title": "부산어린이대공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "344",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "344",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_656",
+      "title": "부산시민공원",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "354",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "354",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_659",
+      "title": "영화의 거리",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "361",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "361",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_660",
+      "title": "APEC나루공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "362",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "362",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_661",
+      "title": "40계단",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "364",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "364",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_662",
+      "title": "다대포 해수욕장",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "366",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "366",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_666",
+      "title": "황령산 전망쉼터",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "371",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "371",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_667",
+      "title": "F1963",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "372",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "372",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_669",
+      "title": "광안리 해수욕장",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "377",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "377",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_89",
+      "title": "범어사 성보박물관",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "402",
+      "tourapiContentId": "2554111",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "402",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_673",
+      "title": "상해거리",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "415",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "415",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_674",
+      "title": "이중섭문화거리",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "418",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "418",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_70",
+      "title": "벡스코(BEXCO)",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "420",
+      "tourapiContentId": "130668",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "420",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_90",
+      "title": "부산 영화의 전당",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "421",
+      "tourapiContentId": "2456837",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "421",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_685",
+      "title": "대신공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "456",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "456",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_237",
+      "title": "화명수목원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "457",
+      "tourapiContentId": "2756696",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "457",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_689",
+      "title": "부산커피박물관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "508",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "508",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_690",
+      "title": "사상생활사박물관",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "511",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "511",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_94",
+      "title": "부산타워",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "550",
+      "tourapiContentId": "1277679",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "550",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_692",
+      "title": "신평소공원",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "757",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "757",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_694",
+      "title": "부산신발이야기",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_attraction",
+      "sourceId": "813",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "813",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_177",
+      "title": "부산 치유의 숲",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_attraction",
+      "sourceId": "848",
+      "tourapiContentId": "2660770",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_attraction",
+        "field": "UC_SEQ",
+        "value": "848",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_403",
+      "title": "모모스커피 본점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "127",
+      "tourapiContentId": "2832729",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "127",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1049",
+      "title": "피아크 카페&베이커리",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1445",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1445",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1051",
+      "title": "커피스가모 인 서면",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1447",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1447",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1052",
+      "title": "이흥용과자점 부산대직영점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1452",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1452",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_427",
+      "title": "브레이크인커피",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1464",
+      "tourapiContentId": "2853145",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1464",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1057",
+      "title": "보리종파티세리 본점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1466",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1466",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1141",
+      "title": "백구당",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1611",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1611",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1152",
+      "title": "머그디저트랩",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1628",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1628",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1153",
+      "title": "보느파티쓰 리",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1630",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1630",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": false,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1154",
+      "title": "브레드365",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1631",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1631",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": false,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_403",
+      "title": "모모스커피 본점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1634",
+      "tourapiContentId": "2832729",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1634",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1158",
+      "title": "히떼로스터리",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1637",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1637",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1047",
+      "title": "웨이브온커피",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "174",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "174",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1059",
+      "title": "토북베이커리",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1802",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1802",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1060",
+      "title": "카페호밀",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1803",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1803",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1065",
+      "title": "그리다부부",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "1838",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "1838",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1068",
+      "title": "보느파티쓰리",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "2354",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "2354",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1070",
+      "title": "연화제과",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "2371",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "2371",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_1071",
+      "title": "히떼로스터리 전포점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_food",
+      "sourceId": "2386",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_food",
+        "field": "UC_SEQ",
+        "value": "2386",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_811",
+      "title": "해운대 선물가게",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "1667",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "1667",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_816",
+      "title": "부산",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_shopping",
+      "sourceId": "2141",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2141",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": false,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_817",
+      "title": "아비베르컴퍼니",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "2165",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2165",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_819",
+      "title": "페이퍼가든",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "2252",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2252",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_821",
+      "title": "오브젝트 서면점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "2417",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2417",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_822",
+      "title": "오월상점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "2537",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2537",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_823",
+      "title": "포셋 전포",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "2539",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2539",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_824",
+      "title": "부산슈퍼 청사포점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "2541",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2541",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_825",
+      "title": "미피카페 부산",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "2555",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2555",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_78",
+      "title": "고래서이뻐",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "2581",
+      "tourapiContentId": "3336600",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2581",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_828",
+      "title": "문현동 골동품거리",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_shopping",
+      "sourceId": "2589",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "2589",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_787",
+      "title": "기장시장",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "292",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "292",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_789",
+      "title": "해운대시장",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "294",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "294",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_790",
+      "title": "남항시장 / 봉래시장",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "300",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "300",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_96",
+      "title": "부전마켓타운",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_shopping",
+      "sourceId": "327",
+      "tourapiContentId": "132188",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "327",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_791",
+      "title": "서면시장",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_shopping",
+      "sourceId": "328",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "328",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_287",
+      "title": "구포시장",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "363",
+      "tourapiContentId": "1250885",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "363",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_4",
+      "title": "부평깡통시장",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "400",
+      "tourapiContentId": "1878218",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "400",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_13",
+      "title": "부산 자갈치시장",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "412",
+      "tourapiContentId": "132190",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "412",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_793",
+      "title": "동래시장",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_shopping",
+      "sourceId": "422",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "422",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_797",
+      "title": "부산 그대로를 담은 부산관광기념품",
+      "classification": "conditional_more",
+      "representative": false,
+      "provider": "busan_shopping",
+      "sourceId": "533",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "533",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": false,
+        "lat": true,
+        "lon": true,
+        "opening": false,
+        "closed": false,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_800",
+      "title": "롯데면세점 김해공항점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "540",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "540",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_801",
+      "title": "롯데백화점 부산본점",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "541",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "541",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_802",
+      "title": "롯데백화점 센텀시티점",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "546",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "546",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_803",
+      "title": "롯데백화점 동래점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "547",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "547",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_3",
+      "title": "신세계백화점 센텀시티점",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "548",
+      "tourapiContentId": "767084",
+      "overlapsTourapi": true,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "548",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_805",
+      "title": "부산프리미엄아울렛",
+      "classification": "representative_standard",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "552",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "552",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_806",
+      "title": "NC백화점 해운대점",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "554",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "554",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    },
+    {
+      "contentId": "poi_807",
+      "title": "NC백화점 부산대점",
+      "classification": "representative_core",
+      "representative": true,
+      "provider": "busan_shopping",
+      "sourceId": "555",
+      "tourapiContentId": null,
+      "overlapsTourapi": false,
+      "joinKey": {
+        "provider": "busan_shopping",
+        "field": "UC_SEQ",
+        "value": "555",
+        "match": "exact_only"
+      },
+      "fieldsPresent": {
+        "title": true,
+        "address": true,
+        "lat": true,
+        "lon": true,
+        "opening": true,
+        "closed": true,
+        "description": true,
+        "image": true,
+        "modified": false,
+        "deleted": false
+      }
+    }
+  ]
+}

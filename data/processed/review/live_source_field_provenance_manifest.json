@@ -1,0 +1,591 @@
+{
+  "meta": {
+    "taskId": "DATA-LIVE-SOURCE-INVENTORY-01",
+    "contractVersion": 1,
+    "ownershipValues": [
+      "source_live",
+      "app_derived",
+      "mixed",
+      "unresolved"
+    ],
+    "currentCatalogMode": "bundled_snapshot",
+    "note": "ownership은 전환 뒤 책임 분류이며 currentMode는 현재 번들 snapshot 상태를 별도로 기록한다."
+  },
+  "summary": {
+    "runtimeFieldCount": 37,
+    "manifestFieldCount": 38,
+    "uncoveredRuntimeFields": [],
+    "byOwnership": {
+      "app_derived": 27,
+      "source_live": 6,
+      "mixed": 5
+    }
+  },
+  "data": [
+    {
+      "field": "contentId",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "검토 카탈로그의 내부 안정 ID",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider",
+        "UI catalog lookup",
+        "routeProxyCatalogSnapshot"
+      ],
+      "transitionRule": "실시간 원천 ID와 분리해 유지",
+      "presentCount": 369
+    },
+    {
+      "field": "title",
+      "ownership": "source_live",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "현재는 정제 snapshot의 장소명",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "place detail",
+        "nearby browse",
+        "results/course screens"
+      ],
+      "transitionRule": "세션 snapshot의 최신 원천명 사용",
+      "presentCount": 369
+    },
+    {
+      "field": "contentTypeId",
+      "ownership": "mixed",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "TourAPI legacy 값 또는 앱 category fallback",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "원천 제공 여부와 fallback 의미를 분리해야 함",
+      "presentCount": 369
+    },
+    {
+      "field": "contentTypeName",
+      "ownership": "mixed",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "TourAPI legacy 이름 또는 앱 fallback 문구",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "사용 여부 확인 뒤 원천/앱 필드 분리",
+      "presentCount": 369
+    },
+    {
+      "field": "category",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "짜투리 활동·개인화 분류",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider",
+        "detail/nearby/results UI"
+      ],
+      "transitionRule": "실시간 응답으로 자동 재분류 금지",
+      "presentCount": 369
+    },
+    {
+      "field": "subCategory",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "기존 scope/검토된 공식 subtitle 기반 로컬 분류",
+      "generators": [
+        "build_runtime_poi_catalog.mjs",
+        "카페문화시설_세부분류_감사.json"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider",
+        "detail/nearby UI"
+      ],
+      "transitionRule": "명칭만으로 추정 금지",
+      "presentCount": 236
+    },
+    {
+      "field": "availabilityProfile",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "장소 성격별 운영시간 게이트 프로필",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "시설/권역/야외 의미 유지",
+      "presentCount": 369
+    },
+    {
+      "field": "addr1",
+      "ownership": "source_live",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "현재는 공식 원천 snapshot 주소",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "detail/nearby/activity UI",
+        "Kakao search fallback"
+      ],
+      "transitionRule": "세션 snapshot 최신 주소 사용",
+      "presentCount": 369
+    },
+    {
+      "field": "lat",
+      "ownership": "source_live",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "현재는 공식 원천 snapshot 좌표",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "candidate provider",
+        "route/map/detail/nearby"
+      ],
+      "transitionRule": "유효성 검증 후 사용; 급변은 충돌 대기",
+      "presentCount": 369
+    },
+    {
+      "field": "lon",
+      "ownership": "source_live",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "현재는 공식 원천 snapshot 좌표",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "candidate provider",
+        "route/map/detail/nearby"
+      ],
+      "transitionRule": "유효성 검증 후 사용; 급변은 충돌 대기",
+      "presentCount": 369
+    },
+    {
+      "field": "aliases",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "중복 정제 과정의 별칭",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "catalog identity audit"
+      ],
+      "transitionRule": "실시간 이름으로 자동 삭제 금지",
+      "presentCount": 369
+    },
+    {
+      "field": "mergedPlaceIds",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "중복 병합 이력",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "catalog identity audit"
+      ],
+      "transitionRule": "원천 수정과 무관하게 유지",
+      "presentCount": 369
+    },
+    {
+      "field": "siteGroupId",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "동일 단지·중복 관계 키",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider",
+        "courseV1 relationship gate"
+      ],
+      "transitionRule": "자동 코스 중복 제외를 위해 유지",
+      "presentCount": 369
+    },
+    {
+      "field": "siteRole",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "동일 단지 내부 역할 optional",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider"
+      ],
+      "transitionRule": "internal 역할 자동 추천 금지",
+      "presentCount": 0
+    },
+    {
+      "field": "sourceEvidence",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "내부 ID와 공식 원천 ID exact 연결 및 검토 근거",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "build_runtime_poi_catalog.mjs",
+        "audit scripts"
+      ],
+      "transitionRule": "live join의 단일 identity 근거로 유지",
+      "presentCount": 369
+    },
+    {
+      "field": "detailDescription",
+      "ownership": "source_live",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "현재는 부산 공식 설명의 정규화 snapshot",
+      "generators": [
+        "build_place_detail_description.mjs",
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "place detail",
+        "nearby browse"
+      ],
+      "transitionRule": "실시간 원문 검증·정규화 후 optional 사용",
+      "presentCount": 127
+    },
+    {
+      "field": "tourapiContentId",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "내부 ID↔TourAPI content ID exact mapping",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "live join",
+        "legacy engine/data"
+      ],
+      "transitionRule": "신규 ID 자동 승격 금지",
+      "presentCount": 139
+    },
+    {
+      "field": "tourapiContentTypeId",
+      "ownership": "mixed",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "TourAPI legacy content type snapshot",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "실시간 제공값과 기존 fallback의 우선순위 결정 필요",
+      "presentCount": 139
+    },
+    {
+      "field": "matchScope",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "직접 장소/권역/카테고리 fallback 판정",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "실시간 필드로 완화 금지",
+      "presentCount": 369
+    },
+    {
+      "field": "dwellSourceName",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "AI-Hub/정책 체류 근거 이름",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "유지",
+      "presentCount": 369
+    },
+    {
+      "field": "openingHoursSourceName",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "운영시간 표시 근거 연결용 장소명",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "실시간 시간과 provenance를 분리할지 결정 필요",
+      "presentCount": 369
+    },
+    {
+      "field": "openingHoursReliability",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "운영시간 신뢰도 판정",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "legacy engine/planner"
+      ],
+      "transitionRule": "원천 시간 누락을 direct로 합성 금지",
+      "presentCount": 369
+    },
+    {
+      "field": "operatingHours",
+      "ownership": "source_live",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "현재는 공식 원천 운영시간 snapshot",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json",
+        "부산_장소_구조화_운영시간.json"
+      ],
+      "consumers": [
+        "candidate provider availability",
+        "detail/nearby UI",
+        "opening gate"
+      ],
+      "transitionRule": "원문과 구조화 결과를 세션 snapshot에 결합",
+      "presentCount": 369
+    },
+    {
+      "field": "mapVerification",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "Kakao 별도 검증·연결 결과",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "detail/nearby/results Kakao handoff",
+        "legacy engine"
+      ],
+      "transitionRule": "TourAPI 실시간 사실로 덮지 않음",
+      "presentCount": 369
+    },
+    {
+      "field": "shortStay",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "최소·권장·최대 체류와 활동 유형",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json",
+        "AI-Hub category statistics"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider",
+        "engine/data",
+        "detail UI"
+      ],
+      "transitionRule": "실시간 응답으로 기본값 합성·변경 금지",
+      "presentCount": 369
+    },
+    {
+      "field": "classification",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "대표/조건부 추천 자격",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider",
+        "nearby UI"
+      ],
+      "transitionRule": "신규·수정 원천으로 자동 승격 금지",
+      "presentCount": 369
+    },
+    {
+      "field": "classificationReason",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "추천 자격 검토 이유",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "audit only"
+      ],
+      "transitionRule": "유지",
+      "presentCount": 369
+    },
+    {
+      "field": "discovery",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "대표/area_access/conditional 발견 계약",
+      "generators": [
+        "권역형_발견후보_감사.json",
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider",
+        "courseV1 exploration"
+      ],
+      "transitionRule": "누락 시 conditional fail-closed",
+      "presentCount": 369
+    },
+    {
+      "field": "conditionalVisit",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "시장·거리 정보 확인용 10:00–18:00 제품 창",
+      "generators": [
+        "조건부_시장거리_발견후보_감사.json",
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider",
+        "courseV1 conditional flow"
+      ],
+      "transitionRule": "실제 영업시간으로 해석 금지",
+      "presentCount": 142
+    },
+    {
+      "field": "evidenceProfile",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "동일성·활동·체류·가용성·재검토 근거",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "courseV1CandidateProvider review gate",
+        "discovery mapping"
+      ],
+      "transitionRule": "verifiedAt/reviewDueAt 포함 유지",
+      "presentCount": 369
+    },
+    {
+      "field": "aihubName",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "정확 매칭된 AI-Hub 장소명",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "분석 근거로 유지",
+      "presentCount": 46
+    },
+    {
+      "field": "aihubCategory",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "AI-Hub 체류 통계 연결 카테고리",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "실시간 분류로 교체 금지",
+      "presentCount": 46
+    },
+    {
+      "field": "matchType",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "AI-Hub 매칭 방식",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "유지",
+      "presentCount": 46
+    },
+    {
+      "field": "matchDistanceM",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "AI-Hub 매칭 거리",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "유지",
+      "presentCount": 46
+    },
+    {
+      "field": "dwell",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "AI-Hub 장소별 체류 통계",
+      "generators": [
+        "부산_장소_근거프로필_재분류.json"
+      ],
+      "consumers": [
+        "legacy engine/data"
+      ],
+      "transitionRule": "실시간 응답으로 교체 금지",
+      "presentCount": 46
+    },
+    {
+      "field": "imageUrl",
+      "ownership": "mixed",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "원천 URL + 사진 권리/운영자 승인 gate",
+      "generators": [
+        "build_public_api_photo_permissions.mjs",
+        "runtime_image_permission.mjs",
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "placePhotoModel",
+        "cards/detail/maps"
+      ],
+      "transitionRule": "새 URL은 권리 상태 없으면 fallback",
+      "presentCount": 203
+    },
+    {
+      "field": "imageSource",
+      "ownership": "app_derived",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "사진 공급 원천 표식",
+      "generators": [
+        "build_runtime_poi_catalog.mjs"
+      ],
+      "consumers": [
+        "placePhotoModel"
+      ],
+      "transitionRule": "실제 공급자와 exact 유지",
+      "presentCount": 203
+    },
+    {
+      "field": "imageEvidence",
+      "ownership": "mixed",
+      "currentMode": "bundled_snapshot",
+      "currentOrigin": "원천 ID·HTTPS 도달성·권리/운영자 승인 metadata",
+      "generators": [
+        "runtime_image_permission.mjs",
+        "사진_이용허락_허용목록.json"
+      ],
+      "consumers": [
+        "placePhotoModel",
+        "photo credit"
+      ],
+      "transitionRule": "실시간 URL과 별도 유지",
+      "presentCount": 203
+    }
+  ]
+}

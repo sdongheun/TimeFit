@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "taskId": "DATA-LIVE-SOURCE-INVENTORY-01",
+    "contractVersion": 1,
+    "externalCalls": 0
+  },
+  "checks": {
+    "runtimeCountExact": true,
+    "internalIdsUnique": true,
+    "allPlacesHaveSourceIdentity": true,
+    "tourapiEvidenceExact": true,
+    "busanStoredSourceIdsResolve": true,
+    "sourceIdsNotReusedWithinProvider": true,
+    "allRuntimeFieldsClassified": true,
+    "minimalTransitionFixturesPresent": true
+  },
+  "counts": {
+    "runtimePlaces": 369,
+    "uniqueInternalIds": 369,
+    "targetProviderCoverage": {
+      "tourapi": 139,
+      "busanOfficial": 132,
+      "bothTourapiAndBusan": 20,
+      "unionTourapiOrBusan": 251,
+      "traditionalMarketOnly": 118
+    },
+    "joinDisposition": {
+      "auto_join_exact_tourapi": 119,
+      "auto_join_exact_busan_phase2": 112,
+      "auto_join_exact_multi_source_conflict_policy_pending": 20,
+      "review_required_provider_out_of_scope": 118
+    },
+    "sourceLinks": {
+      "tourapi": {
+        "links": 139,
+        "linkedPlaces": 139,
+        "uniqueSourceIds": 139,
+        "reusedSourceIds": []
+      },
+      "busan_attraction": {
+        "links": 85,
+        "linkedPlaces": 85,
+        "uniqueSourceIds": 85,
+        "reusedSourceIds": []
+      },
+      "busan_food": {
+        "links": 19,
+        "linkedPlaces": 18,
+        "uniqueSourceIds": 19,
+        "reusedSourceIds": []
+      },
+      "busan_shopping": {
+        "links": 29,
+        "linkedPlaces": 29,
+        "uniqueSourceIds": 29,
+        "reusedSourceIds": []
+      },
+      "traditional_market_standard": {
+        "links": 118,
+        "linkedPlaces": 118,
+        "uniqueSourceIds": 118,
+        "reusedSourceIds": []
+      }
+    },
+    "sourceCombination": {
+      "tourapi_aihub": 20,
+      "busan_food": 16,
+      "tourapi_fallback": 99,
+      "busan_shopping+tourapi_aihub": 5,
+      "busan_attraction+tourapi_fallback": 5,
+      "busan_attraction+tourapi_aihub": 7,
+      "busan_shopping+tourapi_fallback": 1,
+      "busan_food+tourapi_fallback": 2,
+      "busan_attraction": 73,
+      "busan_shopping": 23,
+      "traditional_market_standard": 118
+    },
+    "catalogBaseline": {
+      "classification": {
+        "representative_core": 28,
+        "conditional_more": 178,
+        "representative_standard": 163
+      },
+      "displayOperatingHours": 122,
+      "structuredAvailability": 170,
+      "displayOrStructuredAvailability": 206,
+      "detailDescription": 127,
+      "photos": 203,
+      "photoStatus": {
+        "operator_approved": 102,
+        "verified": 101
+      },
+      "subCategory": 236,
+      "siteGroupedPlaces": 6,
+      "uniqueSiteGroups": 3,
+      "reviewDueAt": 369
+    }
+  },
+  "hashes": {
+    "placeMappingSha256": "dcb6f93dbdff4171069a9ba485fefd8763456afef868239b249610f03d091190",
+    "fieldProvenanceSha256": "85c1ae06f8de2ca5e6e7ee3a5a06d66865f6a494d3898fdde9a2ebb75c56ae7c",
+    "fixtureSha256": "fe6d25a50f0fb45ad498ec8f3c0ae1cd236de84225098c26a23479aa94afea6b"
+  }
+}
