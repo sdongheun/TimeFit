@@ -3,7 +3,7 @@ set -eu
 
 # Every mode creates its own disposable cluster; never accepts a DB URL.
 MODE=${1:-empty}
-case "$MODE" in empty|upgrade|email|privileges|cli|c-cleanup|digest-extensions|digest-public) ;; *) echo 'unknown local test mode' >&2; exit 2 ;; esac
+case "$MODE" in empty|upgrade|email|privileges|cli|c-cleanup|digest-extensions|digest-public|live-budget) ;; *) echo 'unknown local test mode' >&2; exit 2 ;; esac
 
 ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 FIXTURE_FILE="$ROOT_DIR/test/fixtures/db-release-identity-a-v1.json"
@@ -81,6 +81,7 @@ done
 case "$MODE" in
   digest-*) node "$ROOT_DIR/scripts/test_digest_schema_compat.mjs" "$DB_ROOT" "$PG_PORT" "$MODE"; exit ;;
   c-cleanup) node "$ROOT_DIR/scripts/test_c_validation_cleanup.mjs" "$DB_ROOT" "$PG_PORT"; exit ;;
+  live-budget) node "$ROOT_DIR/scripts/test_live_provider_budget_local_db.mjs" "$DB_ROOT" "$PG_PORT"; exit ;;
   upgrade) $PSQL -f "$ROOT_DIR/test/fixtures/release-migration-compat-after.sql"; exit ;;
   email|privileges) $PSQL -f "$ROOT_DIR/test/fixtures/release-migration-compat-$MODE.sql"; exit ;;
 esac

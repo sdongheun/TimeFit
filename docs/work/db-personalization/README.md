@@ -1,5 +1,7 @@
 # DB·개인화 현재 작업
 
+2026-09-22 [DB-LIVE-PROVIDER-BUDGET-01](live-provider-budget.md): live 공급자별 빈 설정+rolling 24시간 원자 예약 RPC의 로컬 구현·격리 DB 검증. API fetch 연결·운영 cap 설정·migration 적용은 별도.
+
 2026-09-14 [DB-UNUSED-COURSE-REPOSITORY-REMOVE-01](unused-course-repository-removal-01.md): 미연결 courseRepository1개 제거·현재 완료/owner/guest37건 전후 PASS·부재 gate2 PASS·typecheck PASS. 테이블/기존 데이터/nav 불변. UI/QA 혼합 테스트 잔여 참조는 케이스별 인계했으며 전체 회귀 수락은 아직 아님.
 
 2026-09-09 [DB-SIGNUP-FAILURE-01 repository 완료·API/UI 인계](signup-failure.md): transient captchaToken 전달/누락 Auth0 및 allowlist code·HTTP·registry/auth stage 계약. 집중20/typecheck/UI777(기존skip1)/core465 PASS. 실제 가입·메일·운영변경0. API의 Auth options/오류 정제 및 UI fresh CAPTCHA/failure 소비는 후속이며 end-to-end 완료 아님.
