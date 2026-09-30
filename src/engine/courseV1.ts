@@ -246,6 +246,8 @@ export type CourseV1Result = {
 export const COURSE_V1_EXACT_COURSE_LIMIT = 4;
 /** 공간 사전선정이 보관하는 장소 수 상한. 18곳이면 1~3곳 순서 코스는 최대 5,220개다. */
 export const COURSE_V1_PRESELECTION_PLACE_POOL_LIMIT = 18;
+/** Existing release first-page target: representative plus at most three alternatives. */
+export const COURSE_V1_RELEASE_RESULT_TARGET = 4;
 /** 장소 풀에서 정확 경로 호출 전에 만들 수 있는 순서 코스 수의 상한. */
 export const COURSE_V1_PRESELECTION_ORDERED_COURSE_LIMIT =
   COURSE_V1_PRESELECTION_PLACE_POOL_LIMIT
@@ -434,6 +436,8 @@ export type CourseV1ContinuationResult = Readonly<{
 }>;
 
 export const COURSE_V1_PROVIDER_ATTEMPT_LIMIT = 8;
+/** 첫 8회로 목표 4곳을 채우지 못했을 때만 사용하는 최초 결과 전체 상한. */
+export const COURSE_V1_INITIAL_PROVIDER_ATTEMPT_LIMIT = 16;
 export const COURSE_V1_ADAPTER_CALL_LIMIT = 24;
 export const COURSE_V1_VERIFIED_COURSE_LIMIT = 9;
 
@@ -561,7 +565,7 @@ export async function buildLimitedRepresentativeCourseV1(
 
 /**
  * 출시 자동 추천의 명시적 1곳 receipt 경계다. 기존 A8/B12와 달리 후보 간 leg,
- * continuation, 8→16 보충을 만들지 않는다. 각 후보는 endpoint→candidate→endpoint만
+ * continuation이나 다장소 조립을 만들지 않는다. 각 후보는 endpoint→candidate→endpoint만
  * 실제 검증하며, 검증된 수가 하나여도 정상 결과다.
  */
 export async function buildReleaseOneStopRepresentativeCourseV1(
@@ -583,7 +587,16 @@ export async function buildReleaseOneStopRepresentativeCourseV1(
   if (!input.receiptRoutes || !selection.eligibleCandidateCount) {
     return asRelease(limitedNoCourse('no_representative_candidates', diagnostics));
   }
-  const page = await verifyReleaseOneStopPage(input, selection, emptyReleaseOneStopContinuation(selection), 4, diagnostics);
+  // 목표 4곳을 먼저 채우면 즉시 멈춘다. 첫 8회 안에 부족할 때만 같은 후보 큐를
+  // 이어 검증하므로 실제 호출은 0~16회이고, 16회를 선사용하지 않는다.
+  const page = await verifyReleaseOneStopPage(
+    input,
+    selection,
+    emptyReleaseOneStopContinuation(selection),
+    COURSE_V1_RELEASE_RESULT_TARGET,
+    diagnostics,
+    COURSE_V1_INITIAL_PROVIDER_ATTEMPT_LIMIT,
+  );
   const continuation = page.pageState === 'more_available' ? page.continuation : undefined;
   if (!page.courses.length) {
     return {
@@ -591,7 +604,7 @@ export async function buildReleaseOneStopRepresentativeCourseV1(
       ...(continuation ? { continuation } : {}),
     };
   }
-  const selected = [...page.courses].sort(compareRepresentativeCourses).slice(0, 4);
+  const selected = [...page.courses].sort(compareRepresentativeCourses).slice(0, COURSE_V1_RELEASE_RESULT_TARGET);
   const [representativeCourse, ...alternativeCourses] = selected;
   return {
     representativeCourse: representativeCourse!, alternativeCourses,
@@ -2017,7 +2030,7 @@ function selectSpatialCandidatePool(
   };
 }
 
-function candidateSpatialBurden(candidate: CourseV1Point, origin: CourseV1Point, target: CourseV1Point, isRoundTrip: boolean): number {
+export function candidateSpatialBurden(candidate: CourseV1Point, origin: CourseV1Point, target: CourseV1Point, isRoundTrip: boolean): number {
   if (isRoundTrip) return planarDistanceSquared(origin, candidate) * 2;
   return planarDistanceSquared(origin, candidate) + planarDistanceSquared(candidate, target) - planarDistanceSquared(origin, target);
 }

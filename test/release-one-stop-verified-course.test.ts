@@ -36,6 +36,25 @@ test('2-U: receipt 요청은 endpoint↔candidate만 사용하며 candidate↔ca
   assert.ok((result.diagnostics.newProviderAttemptCount ?? 0) <= 8);
 });
 
+test('REC-31-R1: 첫 8회로 4곳이 안 되면 남은 후보를 총 16회 안에서 자동 보충한다', async () => {
+  const candidates = Array.from({ length: 8 }, (_, index) => place(`adaptive-${index}`));
+  const failed = new Set(candidates.slice(0, 4).map((candidate) => candidate.id));
+  const calls: string[] = [];
+  const result = await buildReleaseOneStopRepresentativeCourseV1(input(candidates, {
+    async getRouteReceipt(from, to) {
+      calls.push(`${from.id}>${to.id}`);
+      if (from.id === origin.id && failed.has(to.id)) {
+        return { result: 'no_route', newProviderAttemptCount: 1, reused: false };
+      }
+      return { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: 1, reused: false };
+    },
+  }));
+
+  assert.equal([result.representativeCourse, ...result.alternativeCourses].filter(Boolean).length, 4);
+  assert.equal(result.diagnostics.newProviderAttemptCount, 12);
+  assert.equal(calls.length, 12);
+});
+
 test('2-U: no_route/unavailable/운영시간 실패 후보는 건너뛰고 다른 single 후보만 검증한다', async () => {
   const calls: string[] = [];
   const candidates = [

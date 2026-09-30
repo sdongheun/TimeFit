@@ -128,33 +128,33 @@ test('QA-ONE-MORE-01 밀집 A: initial→page1→page2는 상한 안에서 고�
   assert.ok(allIds.length > initialCourses.length);
 });
 
-test('QA-ONE-MORE-01 밀집 B: initial 0건은 자동 종료하지 않고 명시 page 뒤 첫 검증 course를 대표로 표시한다', async () => {
+test('REC-31-R1 밀집 B: 첫 8회가 전부 실패하면 16회 안에서 자동 보충하고 남은 큐만 명시 page로 잇는다', async () => {
   const candidates = denseCandidates('dense-b');
   const initialFailures = new Set(candidates.slice(0, 8).map((item) => item.id));
   const receipt = exactReceiptFixture(initialFailures);
   const fixedRequest = request(candidates, receipt.adapter);
 
   const initial = await buildReleaseOneStopRepresentativeCourseV1(fixedRequest);
-  assert.equal(initial.representativeCourse, null);
-  assert.equal(initial.alternativeCourses.length, 0);
+  assert.equal(initial.representativeCourse?.placeIds[0], candidates[8]!.id);
+  assert.equal(initial.alternativeCourses.length, 3);
   assert.ok(initial.continuation);
-  assert.equal(initial.diagnostics.newProviderAttemptCount, 8);
+  assert.equal(initial.diagnostics.newProviderAttemptCount, 16);
   assert.equal(initial.diagnostics.cacheOrSessionReuseCount ?? 0, 0);
 
   const initialUi = initialReleaseOneStopMoreState(initial);
   assert.equal(initialUi.pageState, 'more_available');
-  assert.equal(initialUi.representativeCourse, null);
+  assert.equal(initialUi.representativeCourse?.placeIds[0], candidates[8]!.id);
   assert.equal(releaseOneStopMoreEndMessage(initialUi.pageState), null);
-  assert.equal(receipt.pairs.length, 8, 'initial 계산 뒤 page가 자동 호출되면 안 됩니다.');
+  assert.equal(receipt.pairs.length, 16, '자동 보충은 목표 4곳에서 즉시 멈춰야 합니다.');
 
   const page1 = await continueReleaseOneStopRepresentativeCourseV1({ ...fixedRequest, continuation: initial.continuation });
   assertPageReceipt(page1);
   assert.equal(page1.appendedCourses.length, 3);
   assert.equal(page1.diagnostics.newProviderAttemptCount, 6);
-  assert.equal(receipt.pairs.length, 14);
+  assert.equal(receipt.pairs.length, 22);
   const afterTap = appendReleaseOneStopPage(initialUi, page1);
-  assert.equal(afterTap.representativeCourse?.placeIds[0], page1.appendedCourses[0]!.placeIds[0]);
-  assert.deepEqual(idsOf(afterTap.alternativeCourses), idsOf(page1.appendedCourses.slice(1)));
+  assert.equal(afterTap.representativeCourse?.placeIds[0], candidates[8]!.id);
+  assert.deepEqual(idsOf(afterTap.alternativeCourses.slice(-3)), idsOf(page1.appendedCourses));
 });
 
 test('QA-ONE-MORE-01 상태 계약: signature 불일치·provider 종료·큐 소진은 안전 상태와 고정 문구로 분리된다', async () => {

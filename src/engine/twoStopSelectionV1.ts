@@ -18,7 +18,7 @@ import {
 
 export const RELEASE_TWO_STOP_AUTOMATIC_ATTEMPT_LIMIT = 16;
 export const RELEASE_TWO_STOP_SHARED_ATTEMPT_LIMIT = 12;
-export const RELEASE_TWO_STOP_SESSION_ATTEMPT_LIMIT = 36;
+export const RELEASE_TWO_STOP_SESSION_ATTEMPT_LIMIT = 44;
 export const RELEASE_TWO_STOP_INITIAL_TARGET = 3;
 export const RELEASE_TWO_STOP_TOTAL_LIMIT = 6;
 
@@ -612,7 +612,7 @@ function addAttempts(ledger: ReleaseTwoStopAttemptLedger, stage: 'automatic' | '
 
 function validLedger(value: ReleaseTwoStopAttemptLedger): boolean {
   return value?.version === 1
-    && Number.isInteger(value.initialOneStopAttempts) && value.initialOneStopAttempts >= 0 && value.initialOneStopAttempts <= 8
+    && Number.isInteger(value.initialOneStopAttempts) && value.initialOneStopAttempts >= 0 && value.initialOneStopAttempts <= 16
     && Number.isInteger(value.automaticTwoStopAttempts) && value.automaticTwoStopAttempts >= 0 && value.automaticTwoStopAttempts <= 16
     && Number.isInteger(value.sharedExpansionAttempts) && value.sharedExpansionAttempts >= 0 && value.sharedExpansionAttempts <= 12
     && Number.isInteger(value.totalNewProviderAttempts)

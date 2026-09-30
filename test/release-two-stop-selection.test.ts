@@ -631,7 +631,7 @@ test('2-Y: continue 누적 결과는 6에서 닫히고 새 후보는 페이지�
   assert.equal(calls, 0);
 });
 
-test('2-Y: initial 8 + auto 16 + shared 12 = 36 뒤 37번째 provider attempt는 0이다', async () => {
+test('REC-31-R1: initial 16 + auto 16 + shared 12 = 44 뒤 45번째 provider attempt는 0이다', async () => {
   const list = ['a', 'b', 'c', 'd', 'e'].map((id) => place(id));
   let calls = 0;
   const maxCost: CourseV1RouteReceiptAdapter = {
@@ -640,16 +640,17 @@ test('2-Y: initial 8 + auto 16 + shared 12 = 36 뒤 37번째 provider attempt는
       return { result: 'exact', route: { mode: 'walk', min: 5, exact: true }, newProviderAttemptCount: budget.maxNewProviderAttemptCount, reused: false };
     },
   };
-  const automatic = await beginReleaseTwoStopSelectionV1(request(list, maxCost));
+  const initial16 = ledger({ initialOneStopAttempts: 16, totalNewProviderAttempts: 16 });
+  const automatic = await beginReleaseTwoStopSelectionV1(request(list, maxCost, { ledger: initial16 }));
   assert.equal(automatic.ledger.automaticTwoStopAttempts, 16);
-  assert.equal(automatic.ledger.totalNewProviderAttempts, 24);
+  assert.equal(automatic.ledger.totalNewProviderAttempts, 32);
   const expanded = await continueReleaseTwoStopSelectionV1({ ...request(list, maxCost, { ledger: automatic.ledger }), continuation: automatic.continuation, ledger: automatic.ledger });
   assert.equal(expanded.ledger.sharedExpansionAttempts, 12);
-  assert.equal(expanded.ledger.totalNewProviderAttempts, 36);
-  const callsAt36 = calls;
+  assert.equal(expanded.ledger.totalNewProviderAttempts, 44);
+  const callsAt44 = calls;
   const closed = await continueReleaseTwoStopSelectionV1({ ...request(list, maxCost, { ledger: expanded.ledger }), continuation: expanded.continuation, ledger: expanded.ledger });
   assert.equal(closed.state, 'exhausted');
-  assert.equal(calls, callsAt36);
+  assert.equal(calls, callsAt44);
 });
 
 test('2-Y: one-stop shared 8회 뒤 pair more에는 4회만 남는다', async () => {

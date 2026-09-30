@@ -42,3 +42,32 @@
 - C/D: 과거 저장 코스 열기·geometry 누락·명시 재계산의 실제 UI/저장 경계, Kakao proxy exact source·cache/receipt/CAPTCHA와 최종 bundle을 검증한다. read-only/disabled 호환 문자열을 신규 provider 활성 경로와 구분한다.
 - **U-ODSAY-REMOVE-01 활성 인계:** `basketPlanner`가 실패 시간을 가진 Course 객체를 반환하는 경계와 호출자의 저장/성공 표시 차단을 확인해야 한다. 위 UI fixture는 성공을 위한 정확 경로를 주입하는 회귀와 실경로 없음의 실패 회귀로 분리할 필요가 있다. Infinity를 저장 가능한 유한 시간으로 바꾸거나 근사 transit을 복원해 테스트만 통과시키지 않는다. 이 확인 전 전체 작업 완료/출시 제거 수락을 요청하지 않는다.
 - 공개 수신자 문안 삭제는 QA 수락 후 출시 문서 담당만 수행한다. 외부 API·DB·Simulator·운영 배포·게시·stage/commit/push 모두0.
+
+## 2026-09-22 동일 작업 재확인 인계
+
+사용자의 `2-ODSAY-REMOVE-01` 재실행 요청으로 현재 코드와 위 최초 명령을 다시 대조했다. 보드와 역할 README에는 이 ID의 현재 실행 행이 없지만, 사용자 직접 지정과 연결된 부모 §4 A를 범위로 삼았다. 기존 제거 구현이 이미 존재하므로 재작성하지 않았다. 위 2026-09-09의 UI 실패·API 대기는 당시 이력이며 현재 미해결 판정으로 복사하지 않는다. 후속 UI·QA 인계와 이번 실행 결과로 UI 회귀 해소를 확인했다.
+
+### 1. 변경 파일 / 목적
+
+- 본 문서만 변경: 동일 작업의 현재 검증 결과와 과거 보류 상태의 구분을 추가했다. 제품 코드·테스트 변경 없음. 기존 `courseV1.ts`, 앱 설정·의존성·보드 및 다른 세션의 미커밋/미추적 변경은 보존했다.
+- 이전 제거 구현 → 재요청 시 잔여 조치 여부 확인 → 현행 무호출 동작을 재검증하고 유지 → 불필요한 재작성과 폐기 경로 복원을 피함 → **엔진 범위 재검증 완료**.
+
+### 2. 유지한 계약
+
+- `precomputeTransit`의 무호출 no-route, transit Infinity/실패 source/geometry 없음, deprecated usage zero-only 유지. `getOdsayTransitUsage`는 index 및 진단 스크립트 호출자가 있어 삭제하지 않았다.
+- 기존 ODsay 저장 snapshot의 source·시간·geometry 읽기 호환과 신규 경로 cache의 분리 유지. Kakao proxy exact transit·TMAP 보행, 최대180분/2곳, 체류·개인화·운영시간·도착 여유·호출 예산 불변.
+- UI·서비스·환경·DB·중앙 정책·작업 보드 변경 없음. 운영 API·Simulator·배포·stage/commit/push 없음.
+
+### 3. 테스트 결과
+
+- 엔진 집중: `node --import tsx --test test/engine-odsay-removal.test.ts test/api-release-safety.test.ts test/course-v1-route-adapter.test.ts test/course-v1-route-geometry.test.ts test/route-proxy-geometry.test.ts test/release-three-hour-engine.test.ts` → **39/39 PASS**. 합성 키 주입·동일/근거리/원거리/retry의 ODsay HTTP0/key-read0/storage-write0, TMAP 실패 이후 transit 대체0, 과거 snapshot 호환을 재확인했다.
+- 추가 집중: `test/api-odsay-removal.test.ts`, `test/ui/odsay-removal-screen.test.mjs`, `test/ui/qa-odsay-removal-execution.test.mjs`, `test/route-proxy-kakao-request.test.ts` → **16/16 PASS**. 실패 저장 차단·과거 Execution snapshot·Kakao 요청 회귀. 로그: `/private/tmp/engine-odsay-recheck-integration.log`.
+- 최초 집중 명령은 과거 목록의 `test/route-provider-adapter.test.ts` 부재로 시작하지 못했다. 이는 `API-UNUSED-SERVICES-REMOVE-01`에서 미사용 prototype과 함께 승인 제거된 파일임을 확인했다. 복원하지 않고 현존 계약 파일로 위 집중 실행을 완료했다.
+- `npm run test:typecheck` → **PASS(exit0)**. `npm test` → **587/587 PASS**, 로그 `/private/tmp/engine-odsay-recheck-core.log`.
+- `npm run test:ui`는 tsx IPC `EPERM`으로 테스트 시작 전 실패했다. 설정·권한을 변경하지 않고 동일 파일 glob을 `node --import tsx --test test/ui/*.test.ts test/ui/*.test.mjs`로 실행 → **824건 중823 PASS/0 FAIL/기존1 SKIP**. 로그 `/private/tmp/engine-odsay-recheck-ui.log`, `/private/tmp/engine-odsay-recheck-ui-node.log`. npm 명령 자체의 성공으로 기록하지 않는다.
+- `src/engine` 내 `api.odsay.com`, `EXPO_PUBLIC_ODSAY_API_KEY`, `ODSAY_API_KEY`, `ODSAY_USAGE`, `markOdsay`, `odsayTransit`, `transitCache.set` 검색 **0건**. disabled/read-only `ODsay` 문자열은 허용 호환으로 유지했다. `git diff --check` **PASS**.
+
+### 4. 다음 결정·위험
+
+- 엔진 범위 추가 수정 없음. 이전 UI 실패1건을 다시 보완 대기로 등록하지 않는다. UI/QA 문서의 후속 완료와 이번 전체 UI 회귀가 해소 근거다.
+- 이번 검증은 소스·고정 fixture의 근거다. 환경 변수·CI secret·최종 iOS bundle/Archive·실기기·공개 고지의 현재 운영 상태는 재검사하지 않았으며 완료를 새로 선언하지 않는다. 해당 마감은 API/빌드·QA·출시 문서 담당 범위다.
