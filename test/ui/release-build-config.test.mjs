@@ -17,11 +17,12 @@ test('public release identity is iPhone-only without changing installed identity
 test('App Store update version is shared by the app and Live Activity plugin inputs', () => {
   const { expo } = JSON.parse(fs.readFileSync('app.json', 'utf8'));
   assert.equal(expo.version, '1.1.0');
-  assert.equal(expo.ios.buildNumber, '2');
+  assert.equal(expo.ios.buildNumber, '3');
 
   const plugin = fs.readFileSync('plugins/withTimeFitLiveActivity.cjs', 'utf8');
   assert.match(plugin, /MARKETING_VERSION: options\.version/);
   assert.match(plugin, /CURRENT_PROJECT_VERSION: options\.buildNumber/);
+  assert.match(plugin, /DEVELOPMENT_TEAM: options\.developmentTeam/);
 });
 
 test('every non-internal native Release build must pass the public environment guard', () => {

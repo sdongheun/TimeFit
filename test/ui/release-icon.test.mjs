@@ -13,7 +13,7 @@ test('ICON rejects wrong dimensions, alpha and non-sRGB fixtures',()=>{
 test('ICON approved asset is the Expo consumer and is opaque 1024 sRGB PNG',()=>{
   const {expo}=JSON.parse(fs.readFileSync('app.json','utf8'));
   assert.equal(expo.icon,'./assets/jjaturi-icon-blue.png');assert.equal(expo.ios.icon,undefined);
-  assert.equal(expo.name,'mobile');assert.equal(expo.slug,'mobile');assert.equal(expo.scheme,'timefit');assert.equal(expo.version,'1.1.0');assert.equal(expo.ios.buildNumber,'2');
+  assert.equal(expo.name,'mobile');assert.equal(expo.slug,'mobile');assert.equal(expo.scheme,'timefit');assert.equal(expo.version,'1.1.0');assert.equal(expo.ios.buildNumber,'3');
   assert.equal(expo.ios.bundleIdentifier,'com.dongheun.mobile');assert.equal(expo.ios.supportsTablet,false);
   const file=expo.icon;assert.ok(fs.existsSync(file));
   const bytes=fs.readFileSync(file);assert.equal(bytes.subarray(0,8).toString('hex'),'89504e470d0a1a0a');

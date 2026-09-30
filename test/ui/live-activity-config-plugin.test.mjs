@@ -14,6 +14,17 @@ const entitlements = fs.readFileSync(new URL('../../plugins/live-activity/TimeFi
 
 test('A2 failure-first: iOS 17과 실제 App Group을 로컬 config plugin 한 곳에서 재생성한다', () => {
   assert.equal(app.expo.ios.deploymentTarget, '17.0');
+  assert.deepEqual(
+    app.expo.plugins.find(p => (Array.isArray(p) ? p[0] : p) === 'expo-build-properties'),
+    [
+      'expo-build-properties',
+      {
+        ios: {
+          enableSceneSupport: true,
+        },
+      },
+    ],
+  );
   assert.deepEqual(app.expo.plugins[0], [
     './plugins/withTimeFitLiveActivity.cjs',
     {

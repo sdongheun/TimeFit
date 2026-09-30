@@ -132,9 +132,11 @@ function configureProject(project, options, projectName) {
   const mainConfigurations = buildConfigurationsForTarget(project, appTarget.firstTarget);
   for (const configuration of mainConfigurations) {
     Object.assign(configuration.buildSettings, {
+      CODE_SIGN_STYLE: 'Automatic',
       TARGETED_DEVICE_FAMILY: '1',
       MARKETING_VERSION: options.version || '1.0.0',
       CURRENT_PROJECT_VERSION: options.buildNumber || '1',
+      DEVELOPMENT_TEAM: options.developmentTeam,
     });
   }
   const appGroupKey = project.findPBXGroupKey({ name: projectName });

@@ -1,5 +1,18 @@
 # RELEASE-UPDATE-01 — 1.1.0(2) 공개 빌드 기준
 
+## 2026-09-29 후속 — 실시간 공공데이터 전환 빌드
+
+- **이전 방식:** `1.1.0(2)`는 정적 공공데이터 기반 업데이트 후보였으며, 당시 생성한 Archive는 개발 서명 상태로 App Store Connect 제출 완료 근거가 아니었다.
+- **발생한 문제/관찰:** 공개 추천과 주변 둘러보기를 TourAPI·부산 공공데이터 실시간 조회로 전환했으므로, 기존 빌드와 구분되는 새 TestFlight 검증 대상이 필요하다.
+- **교체한 방식:** 마케팅 버전은 `1.1.0`으로 유지하고 iOS build를 `3`으로 증가한다. 공개 경로는 실시간 원천만 성공 데이터로 사용하며, 번들 카탈로그 성공 폴백은 허용하지 않는다.
+- **교체 이유:** App Store Connect 빌드 번호 중복을 피하고, 실시간 전환 산출물을 이전 Archive와 명확히 구분하기 위함이다.
+- **상태:** 현행. `1.1.0(3)` Archive·감사·TestFlight 실기기 검증 완료 전에는 배포 완료로 기록하지 않는다.
+- **빌드 재현성 보완:** Xcode 27에서 prebuild 후 메인 앱 target의 개발팀이 누락되어 Archive가 실패한 것을 확인했다. Live Activity 확장에만 있던 `DEVELOPMENT_TEAM`·자동 서명 설정을 메인 앱 target에도 같은 config plugin에서 적용하도록 교체했다. 일회성 Xcode 수동 설정은 현행 방식으로 사용하지 않는다.
+- **Archive 결과:** `/private/tmp/timefit-public-1.1.0-3-20260929.xcarchive` 생성 성공. 앱과 Live Activity 확장은 모두 `1.1.0(3)`, iOS 17+, iPhone 전용이며 위치 권한 문구가 없다.
+- **산출물 감사:** 서버 전용 비밀·개인키 검출 0건, 공개 Supabase·CAPTCHA endpoint 포함, `tourapi-live`·`busan-live`·실시간 실패 타입 포함, 폐기한 `EXPO_PUBLIC_LIVE_PUBLIC_DATA_ENABLED` 미포함을 확인했다. 앱·확장 Privacy Manifest도 모두 존재한다.
+- **검증:** `npm run test:typecheck` PASS, `npm run test:ui` 863건 중 862 PASS·의도적 1 SKIP, `npm test` 602/602 PASS, `git diff --check` PASS.
+- **남은 게이트:** 현재 Archive는 Apple Development 서명이다. App Store Connect 업로드 시 Xcode Organizer의 `Distribute App` 단계에서 App Store 배포 서명으로 다시 서명해야 하며, 업로드·TestFlight 실기기 확인 전에는 출시 후보 수락으로 기록하지 않는다.
+
 날짜: 2026-09-17
 상태: 구현·자동 검증·개발 서명 Archive 감사 완료 / App Store 배포 재서명·실기기·업로드 전
 
