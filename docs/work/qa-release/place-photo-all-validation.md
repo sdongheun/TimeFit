@@ -60,3 +60,11 @@ public iOS 산출물:
 4. 네트워크가 느리거나 사진이 실패해도 fallback이 나타나며 카드 선택·상세 진입·카카오 길찾기를 계속할 수 있다.
 
 실기기에서 crop·흰/회색 띠·사진 마커·허위 링크·사진 실패로 인한 흐름 차단이 발견되면 `U-PLACE-PHOTO-ALL-01-R1`에 화면과 장소 ID, 네트워크 조건을 함께 반환한다. 사진 수·ID/URL·승인 metadata 문제라면 `DATA-PLACE-PHOTO-ALL-01`에 반환한다.
+
+## 2026-09-22 현재 작업 트리 재검증
+
+- 변경 파일과 목적: 이 QA 문서에 최신 자동 검증 결과와 미해결 전체 회귀를 추가했다. 제품 코드·fixture·사진 정책·운영 데이터는 수정하지 않았고 다른 역할의 미커밋 변경을 보존했다.
+- 사진 집중 7파일: `node --import tsx --test`로 **95/95 PASS**. 최초 `node --test` 호출은 `.ts` loader를 지정하지 않아 3개 파일 실행 오류가 났으며, 같은 대상을 올바른 loader로 재실행해 통과했다.
+- `npm run test:typecheck`: **PASS**. `npm run test:ui`: **833 PASS / 1 기존 skip / 0 FAIL**. `node scripts/release-build.cjs export`: **PASS**, `/private/tmp/timefit-public-export/_expo/static/js/ios/index-f83f118f587ca7bba15edd9d5c5e7ad0.hbc` 생성. 해당 번들에서 `photo-marker`·`photo-frame`·`usePhotoMarkers` 문자열은 0건. `git diff --check`: **PASS**.
+- `npm test`: **589 PASS / 2 FAIL**로 전체 게이트는 미통과. 하나는 `test/live-multisource-production-safety.test.mjs`의 “production composition is not imported by public UI or App” 기대가 현재 `src/ui/recommendation/livePublicDataSession.ts`의 조건부 production import와 충돌한 것이다. 다른 하나는 이를 포함한 `test/index.js`의 전체 테스트 발견 경계 재검증 실패다. 사진 계약의 실패는 재현되지 않았다. 실시간 공공데이터 UI 연결·외부 API 계약 소유 역할이 공개 빌드의 OFF/ON 경계와 기존 안전 테스트의 유효성을 판정해야 하며, 이 사진 QA에서 기대값을 완화하거나 제품 코드를 수정하지 않는다.
+- 남은 조건: 이 재검증은 public iOS JS export이지 서명·설치된 수정 빌드의 실기기 렌더링 근거가 아니다. 기존 4개 최소 실기기 육안 항목이 모두 확인되어야 최종 수락한다. 새 실시간 데이터 기능의 전체 회귀 충돌도 별도 게이트에서 해소되어야 한다. 실제 공급자 API·운영 DB·Simulator·실기기는 사용하지 않았고 stage/commit/push도 하지 않았다.

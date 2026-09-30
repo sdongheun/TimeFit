@@ -6,6 +6,8 @@
 
 ## 먼저 읽기
 
+현재 대규모 변경 계획: [DEC-LIVE-PUBLIC-DATA-01 실시간 공공데이터 전환 마스터 계획](work/integration-decision/live-public-data-transition-master-plan.md). TourAPI·부산 공공데이터 실시간 전환과 관련된 모든 세션은 역할 작업 전에 이 계획의 선행 단계·체크박스·미확정 결정을 확인한다. 현재 상태는 **로컬 공개 기본 전환·자동 회귀 완료, 새 TestFlight/배포 빌드 검증 전**이다.
+
 1. [프로젝트 README](../README.md): 사용자 흐름·현재 코드 진입점·로컬/서버 저장·DB 관계. [현재 기능과 구조](03_product/현재기능과구조.md)는 2026-09-12 상세 점검 기록
 2. [추천 정책](03_product/추천로직.md), [UIUX 공통 규칙](03_product/UIUX_공통규칙.md): 현행 정정 절부터 읽기
 3. [요구사항과 검증 상태](테스트.md), [UIUX 테스트 명세](03_product/UIUX_테스트명세.md)

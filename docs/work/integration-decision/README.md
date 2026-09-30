@@ -1,5 +1,7 @@
 # 통합·결정 현재 작업
 
+2026-09-21 최신 계획: [DEC-LIVE-PUBLIC-DATA-01 실시간 공공데이터 전환 마스터 계획](live-public-data-transition-master-plan.md). TourAPI 원천 사실은 실제 추천 세션에서 조회하고 기존 정제·체류·개인화 정책과 결합한다. 원본 응답 영구 저장·형식적 호출·신규 장소 자동 승격은 금지하며, TourAPI 수락 후 부산 공공데이터를 같은 계약으로 전환한다. 모든 관련 세션은 이 문서를 먼저 읽고 단계별 완료 근거를 통합에 인계한다. 사용자가 계획과 자동 세션 인계를 수락했으며 현재 `DATA-LIVE-SOURCE-INVENTORY-01`·`API-TOUR-LIVE-CONTRACT-01` 조사 단계다.
+
 2026-09-09 최신 완료: [DOCS-KAKAO-ROUTE-START-02](kakao-route-start-decision.md). 코스 클릭 기준과 사용자 수동 확인 수락을 중앙 문서에 반영. 기능 추가/재검증 작업 없음. 다음은 제출용 스크린샷·공개 문서/링크·Connect·최종 빌드 마감이며 위치 문의 조건과 수동 출시를 유지한다.
 
 2026-09-08 최신: [최대3시간·2곳 확정 및 세션 분담](release-three-hour-two-stop.md). 정책 확정·구현 전. 문서 정리의 새 시간 기준이며 과거120분 상한을 재도입하지 않는다.
